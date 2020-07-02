@@ -1,0 +1,256 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Internet Search</title>
+
+  <!-- favicon -->
+    <link rel="shortcut icon" href="/img/search.ico">
+
+
+    <!-- Framework CSS -->
+    
+    <link rel="stylesheet" href="/css/start.css" type="text/css" media="screen, projection">
+
+    
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+  <script type="text/javascript">
+      $(document).ready(function() {
+        var input = $("input[name='k']");
+        if(input.length){
+          var v = input.val();
+          input.first().focus();
+          input.val('').val(v);
+        }
+      });
+      
+      var isCtrl = false;
+      $(document).keyup(function(e){
+        if(e.which == 17 || e.which == 224 || e.which == 91 || e.which == 93) isCtrl=false;
+      });
+      
+      $(document).keydown(function(e){
+        if(e.which == 17 || e.which == 224 || e.which == 91 || e.which == 93) isCtrl=true;
+      });
+      
+      $(document).keypress(function(e) {
+        if((isCtrl == true) && ((e.which >= 48 && e.which <= 57) || (e.which >= 65 && e.which <= 90) || (e.which >= 97 && e.which <= 122))){
+          //do nothing
+        }
+        else {
+          if(document.activeElement != document.getElementById("search_keyword")){
+            var target = e.target;
+
+            var character = String.fromCharCode(e.which);
+            if(/[a-zA-Z0-9\t\n ./<>?;:"'`!@#$%^&*\(\)\[\]\{\}_+=|\\-]/.test(character) && $(target).attr("id") != "search_keyword" ){
+              var input = $("input[name='k']");
+              if(input.length){   
+                if($.browser.mozilla){
+                  input.val(input.val()+character);
+                }
+                input.first().focus();
+                if(input.val() != ""){
+                  var v = input.val();
+                  input.val('').val(v);
+                }
+              }
+            }
+          }
+        }
+        
+      });
+    </script>
+    <style>
+      #clearhistory {cursor:pointer; margin-right: 10px; float: left;}
+      #sethistoryflag {cursor:pointer;}
+    </style>
+  </head>
+  <body>
+
+
+<div class="wrapper">
+
+<!----- START HEADER ----->
+  <div id="topnav">
+    <ul>
+            <li class="active">
+        <a href='#_'>Web</a>      </li>
+                  <li >
+        <a href='/images?i=&serpv=31&campaign=&aid=&pub=&k=&action=web_image_search'>Images</a>      </li>
+                        <li >
+       <a href='/news?i=&serpv=31&campaign=&aid=&pub=&k=&action=web_news_search'>News</a>      </li>
+                  <li >
+       <a href='/videos?i=&serpv=31&campaign=&aid=&pub=&k=&action=web_video_search'>Videos</a>      </li>
+          </ul>
+  </div>
+
+<!----- end topnav ----->
+
+<!----- START CONTENT ----->
+ <div id="content">
+ <div class="container">
+ <div class="prepend-3 append-3 span-18 last">
+
+<!-- search -->
+<form method="GET" action="/serp">
+<div id="searchInput">
+     <input type="hidden" name="s" value="0">
+     <input type="hidden" name="filter_level" value="1" class="filter_level">
+     <input name="k" type="text" id="search_keyword" size="90" maxlength="2048" value="" autocomplete="off" class="ac_input">
+     <div id="autocomplete" style="display:none"></div>
+     <input type="hidden" name ="guid" value="">
+     <input type="hidden" name ="action" value="homepage_search">
+     <input type="hidden" name ="parent_action" value="homepage_search">
+     <input type="hidden" name ="serpv" value="31">
+     <input type="hidden" name ="i" value="">
+     <input type="hidden" name ="aid" value="">
+     <input type="hidden" name ="campaign" value="">
+     <input type="hidden" name ="pub" value="">
+</div><!-- end searchInput -->
+
+
+<div id="searchSubmit">
+<input type="submit" value="Search">
+<!-- /search -->
+</div><!-- end searchSubmit -->
+<script language="javascript" type="text/javascript">
+    var ispace_txtElements = ['search_keyword'];
+    var ispace_brand = 'tightrope'; 
+   </script>
+   <script language="javascript" type="text/javascript" src="http://imagecdn.infospace.com/search/lib/ptwidget-1.0.js"></script> 
+</form>
+
+<script type="text/javascript">
+  $("#clearhistory").click(function() {
+    var domain = ".search.us.com";
+    var newText;
+    var flagtext = $("#sethistoryflag").text();
+    if (flagtext.toLowerCase().indexOf("on") >= 0){
+      newText = '<br><b>Search History:</b> <abbr title="Save Search History">Turn On</abbr>';
+    }
+    else {
+      newText = '<br><b>Search History:</b> <abbr title="Do Not Save Search History">Turn Off</abrr>';
+    }
+    $.ajax({
+      dataType: "html",
+      type: "POST",
+      evalScripts: true,
+      url: '/clearhistory',
+      data: ({domain:domain}),
+      success: function (data){
+        $("#searchhistory").remove();
+        $("#clearhistory").remove();
+        $("#sethistoryflag").html(newText);
+      }
+    });
+  });
+  
+  $("#sethistoryflag").click(function() {
+    var domain = ".search.us.com";
+    var flag;
+    var newText;
+    var flagtext = $("#sethistoryflag").text();
+    if (flagtext.toLowerCase().indexOf("on") >= 0){
+      flag = 'on';
+      newText = '<br><b>Search History:</b> <abbr title="Do Not Save Search History">Turn Off</abbr>';
+    }
+    else {
+      flag = 'off';
+      newText = '<br><b>Search History:</b> <abbr title="Save Search History">Turn On</abrr>';
+    }
+    $.ajax({
+      dataType: "html",
+      type: "POST",
+      evalScripts: true,
+      url: '/sethistoryflag',
+      data: ({domain:domain, flag:flag}),
+      success: function (data){
+        $("#searchhistory").remove();
+        $("#clearhistory").remove();
+        $("#sethistoryflag").html(newText);
+      }
+    });
+  });
+</script>
+
+
+   <div id="social_media_btns">
+      <div class="prepend-4 span-14 last"><p>Quick links to your favorite sites:</p></div>
+      <a href="https://www.facebook.com/" target="_blank"><img src="/img/facebook_btn.png" alt="facebook button" title="facebook" /></a> 
+      <a href="https://twitter.com/" target="_blank"><img src="/img/twitter_btn.png" alt="twitter button" title="twitter" /></a>
+      <a href="http://www.wikipedia.org/" target="_blank"><img src="/img/wikipedia_btn.png" alt="wikipedia button" title="wikipedia" /></a>
+      <a href="http://affiliate.rakuten.com/fs-bin/click?id=4U0nLRnMvZo&offerid=288682&type=3&subid=0" target="_blank"><img src="/img/rakoten1.png" alt="rakuten button" title="rakuten" /></a>
+   </div><!-- end social_media_btns -->
+
+
+ </div><!-- end content prepend-4 span-20 last -->
+ </div><!-- end content container -->
+ </div><!----- end content ----->
+
+
+<div class="push"></div><!-- end push -->
+</div><!-- end wrapper -->
+
+
+
+
+
+
+<div class="sticky_footer">
+
+
+ <div id="searchus_logo">
+   <img src="/img/searchus_logo.png" alt="search.us.com logo" title="search.us.com logo" />
+ </div><!-- end searchus_logo -->
+
+
+
+
+
+<!----- START FOOTER ----->
+ <div id="footer">
+ <div class="container">
+
+<center>
+
+<p>
+<a href="http://www.search.us.com">©2014 Search.us.com</a>
+|
+<a href="http://support.search.us.com/about.php">About Search.us.com</a>
+|
+<a href="http://support.search.us.com/privacy.php">Privacy Policy</a>
+|
+<a href="http://support.search.us.com/terms.php">Terms of Use</a>
+|
+<a href="http://support.search.us.com/license.php">License Agreement</a>
+|
+<a href="http://support.search.us.com/help.php">Help</a>
+|
+<a href="http://support.search.us.com/uninstall.php">Uninstall</a>
+</p>
+ 
+</center>
+
+ </div><!-- end footer container -->
+ </div><!----- end footer ----->
+
+
+ </div><!-- end sticky_footer -->
+
+  <script type='text/javascript' src='/js/autoCompleteSelector.js'></script>
+  <script type="text/javascript">
+    var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+    document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+    try {
+        var pageTracker = _gat._getTracker("UA-12362346-5");
+        pageTracker._setDomainName("search.us.com");
+        pageTracker._trackPageview();
+    } catch(err) {}
+</script>
+  </body>
+</html>
+

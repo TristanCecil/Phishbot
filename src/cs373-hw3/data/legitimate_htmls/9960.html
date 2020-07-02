@@ -1,0 +1,567 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GetGo123 - Web surfing from the GetGo</title>
+<link href="./css/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="./css/main.css" rel="stylesheet" type="text/css">
+<script src="js/jquery-1.11.3.min.js"></script>
+<script src="./css/bootstrap/js/bootstrap.min.js"></script>
+<script>
+    (function(i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] || function() {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date();
+        a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+    ga('create', 'UA-51074272-1', 'getgo123.com');
+    ga('send', 'pageview');
+</script>
+
+<!-- google analytics outgoing Javascript -->
+<!--<script src="http://www.google-analytics.com/urchin.js" type="text/javascript"></script>
+<script type="text/javascript">
+		_uacct = "UA-51074272-1";
+		urchinTracker();
+</script>
+-->
+
+<!-- Start Alexa Certify Javascript -->
+<script type="text/javascript">
+_atrk_opts = { atrk_acct:"w3Olk1a0CM00oD", domain:"getgo123.com",dynamic: true};
+(function() { var as = document.createElement('script'); as.type = 'text/javascript'; as.async = true; as.src = "https://d31qbv1cthcecs.cloudfront.net/atrk.js"; var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(as, s); })();
+</script>
+<noscript><img src="https://d5nxst8fruw4z.cloudfront.net/atrk.gif?account=w3Olk1a0CM00oD" style="display:none" height="1" width="1" alt="" /></noscript>
+<!-- End Alexa Certify Javascript -->  
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+var pageTracker = _gat._getTracker("UA-51074272-1");
+pageTracker._initData();
+pageTracker._trackPageview();
+</script>
+
+<script>
+	$(function() {
+		function Pointer(x, y) {
+			this.x = x ;
+			this.y = y ;
+		}
+		function Position(left, top) {
+			this.left = left ;
+			this.top = top ;
+		}
+		$(".item_content .item").each(function(i) {
+			this.init = function() { // 初始化
+				this.box = $(this).parent() ;
+				$(this).attr("index", i).css({
+					position : "absolute",
+					left : this.box.offset().left,
+					top : this.box.offset().top
+				}).appendTo(".item_content") ;
+				this.drag() ;
+			},
+			this.move = function(callback) {  // 移动
+				$(this).stop(true).animate({
+					left : this.box.offset().left,
+					top : this.box.offset().top
+				}, 500, function() {
+					if(callback) {
+						callback.call(this) ;
+					}
+				}) ;
+			},
+			this.collisionCheck = function() {
+				var currentItem = this ;
+				var direction = null ;
+				$(this).siblings(".item").each(function() {
+					if(
+						currentItem.pointer.x > this.box.offset().left &&
+						currentItem.pointer.y > this.box.offset().top &&
+						(currentItem.pointer.x < this.box.offset().left + this.box.width()) &&
+						(currentItem.pointer.y < this.box.offset().top + this.box.height())
+					) {
+						// 返回对象和方向
+						if(currentItem.box.offset().top < this.box.offset().top) {
+							direction = "down" ;
+						} else if(currentItem.box.offset().top > this.box.offset().top) {
+							direction = "up" ;
+						} else {
+							direction = "normal" ;
+						}
+						this.swap(currentItem, direction) ;
+					}
+				}) ;
+			},
+			this.swap = function(currentItem, direction) { // 交换位置
+				if(this.moveing) return false ;
+				var directions = {
+					normal : function() {
+						var saveBox = this.box ;
+						this.box = currentItem.box ;
+						currentItem.box = saveBox ;
+						this.move() ;
+						$(this).attr("index", this.box.index()) ;
+						$(currentItem).attr("index", currentItem.box.index()) ;
+					},
+					down : function() {
+						// 移到上方
+						var box = this.box ;
+						var node = this ;
+						var startIndex = currentItem.box.index() ;
+						var endIndex = node.box.index(); ;
+						for(var i = endIndex; i > startIndex ; i--) {
+							var prevNode = $(".item_content .item[index="+ (i - 1) +"]")[0] ;
+							node.box = prevNode.box ;
+							$(node).attr("index", node.box.index()) ;
+							node.move() ;
+							node = prevNode ;
+						}
+						currentItem.box = box ;
+						$(currentItem).attr("index", box.index()) ;
+					},
+					up : function() {
+						// 移到上方
+						var box = this.box ;
+						var node = this ;
+						var startIndex = node.box.index() ;
+						var endIndex = currentItem.box.index(); ;
+						for(var i = startIndex; i < endIndex; i++) {
+							var nextNode = $(".item_content .item[index="+ (i + 1) +"]")[0] ;
+							node.box = nextNode.box ;
+							$(node).attr("index", node.box.index()) ;
+							node.move() ;
+							node = nextNode ;
+						}
+						currentItem.box = box ;
+						$(currentItem).attr("index", box.index()) ;
+					}
+				}
+				directions[direction].call(this) ;
+			},
+			this.drag = function() { // 拖拽
+				var oldPosition = new Position() ;
+				var oldPointer = new Pointer() ;
+				var isDrag = false ;
+				var currentItem = null ;
+				$(this).mousedown(function(e) {
+					e.preventDefault() ;
+					oldPosition.left = $(this).position().left ;
+					oldPosition.top =  $(this).position().top ;
+					oldPointer.x = e.clientX ;
+					oldPointer.y = e.clientY ;
+					isDrag = true ;
+					
+					currentItem = this ;
+					
+				}) ;
+				$(document).mousemove(function(e) {
+					var currentPointer = new Pointer(e.clientX, e.clientY) ;
+					if(!isDrag) return false ;
+					$(currentItem).css({
+						"opacity" : "0.8",
+						"z-index" : 999
+					}) ;
+					var left = currentPointer.x - oldPointer.x + oldPosition.left ;
+					var top = currentPointer.y - oldPointer.y + oldPosition.top ;
+					$(currentItem).css({
+						left : left,
+						top : top
+					}) ;
+					currentItem.pointer = currentPointer ;
+					// 开始交换位置
+					
+					currentItem.collisionCheck() ;
+					
+					
+				}) ;
+				$(document).mouseup(function() {
+					if(!isDrag) return false ;
+					isDrag = false ;
+					currentItem.move(function() {
+						$(this).css({
+							"opacity" : "1",
+							"z-index" : 0
+						}) ;
+					}) ;
+				}) ;
+			}
+			//this.init() ;
+		}) ;
+
+		
+		$("#showown").on("click",function(){
+			$(this).addClass("a_selected");
+			$("#showmain").removeClass("a_selected");
+			$("#popular").addClass("hide");
+			$("#own").removeClass("hide");
+		})
+
+		$("#showmain").click(function(){
+			$(this).addClass("a_selected");
+			$("#showown").removeClass("a_selected");
+			$("#own").addClass("hide");
+			$("#popular").removeClass("hide");
+		})	
+
+		/*$("#own ul li.empty").click(function(){
+			ShowDiv('MyDiv','fade');
+			var index = $(this).index();
+			$("#js_sug-id").val(index);
+			
+		})*/
+
+		$("#link a").click(function(){
+			$("#link a").css("color","#a8acb0");
+			$(this).css("color","#464e54");
+			var id = $(this).attr("id");
+			if(id=="web")
+			{
+				$(".nav_searchtext form input:hidden").val('');
+			}
+			if(id=="image")
+			{
+				$(".nav_searchtext form input:hidden").val('isch');
+			}
+			if(id=="video")
+			{
+				$(".nav_searchtext form input:hidden").val("vid");
+			}
+			return false;
+		})	
+
+
+		$("#own ul").on("click","li.empty", function(){
+			ShowDiv('MyDiv','fade');
+			var index = $(this).index();
+			$("#js_sug-id").val(index);
+		});
+
+
+		$("#own ul li.full a.item1").hover(function(){
+			$(this).addClass("fullselected");
+			$(this).find(".yandex").children('img').attr('src','./images/play4.svg');
+		},	function(){
+			$(this).removeClass("fullselected");
+			$(this).find(".yandex").children('img').attr('src','./images/play3.svg');
+			}
+		)
+
+		$("#own ul li.empty a.item1").hover(function(){
+			$(this).addClass("emptyselected");			
+		},	function(){
+			$(this).removeClass("emptyselected");			
+			}
+		)
+
+		/*$("#own ul li.full").on("mouseover mouseout","div.item1",function(event){
+			 if(event.type == "mouseover"){
+			  $(this).addClass("fullselected");
+			 }else if(event.type == "mouseout"){
+			  $(this).removeClass("fullselected");
+			 }
+		});*/
+		
+
+		$("#own ul li.full a.item1").on("click",".delete",function(){	
+			var index = $(this).parent().parent().index();
+			$.ajax({ 	    
+               type: "POST",
+               url: "./delete.php",
+               dataType: "json",
+               data : {"tag":index},
+               beforeSend: function(){                  
+               },
+               success: function(response){
+				   $("#own ul li:eq(" + index + ")").remove();
+				   $("#own ul").append("<li class='empty'><a class='item1'><div class='plus' style='width:32px;height:32px;'></div></a></li>");
+
+				   //trigger 1
+				   $("#own ul li.empty a.item1").hover(function(){
+				   $(this).addClass("emptyselected");		
+					},	function(){
+						$(this).removeClass("emptyselected");
+						}
+				   )
+               }				    		
+    	  });
+
+		  return false;
+		
+		})
+
+		$("#MyDiv a.add").click(function(){
+			var name = $("#MyDiv input[name='js_sug-name']").val();
+            var site = $("#MyDiv input[name='js_sug-url']").val();
+			var tag  = $("#MyDiv input[name='js_sug-id']").val();
+			
+			if(name == ''  || site == '')
+				return false;
+
+			$.ajax({ 	    
+               type: "POST",
+               url: "./save.php",
+               dataType: "json",
+               data : {"name":name,"site":site,"tag":tag},
+               beforeSend: function(){                  
+               },
+               success: function(response){
+				  //console.log(response.code);
+				  CloseDiv('MyDiv','fade');				  
+
+				  var imgerror = " onerror='this.src=\"images/favicon.ico\"' ";
+				  var html = "<div class='border'><a class='item1' target='__blank' href='" + response.site + "' title='" + response.showlabel + "'><div class='delete'></div><p><img src='" + response.icon + "' " + imgerror  + ">&nbsp;&nbsp;&nbsp;" + response.name + "</p></a></div>";
+				  $("#own ul li:eq(" + tag + ")").removeClass('empty').addClass("full").unbind("click");
+				  $("#own ul li:eq(" + tag + ")").empty().append(html);
+
+				  //trigger1
+				  $("#own ul li.full a.item1").hover(function(){
+						$(this).addClass("fullselected");		
+					},	function(){
+						$(this).removeClass("fullselected");
+						}
+				  );
+				  //trigger2
+				  $("#own ul li.full a.item1").on("click",".delete",function(){	
+					var index = $(this).parent().parent().parent().index();
+					$.ajax({ 	    
+					   type: "POST",
+					   url: "./delete.php",
+					   dataType: "json",
+					   data : {"tag":index},
+					   beforeSend: function(){                  
+					   },
+					   success: function(response){
+						   $("#own ul li:eq(" + index + ")").remove();
+						   $("#own ul").append("<li class='empty'><div class='border'><a class='item1'><div class='plus' style='width:32px;height:32px;'></div></a></div></li>");
+
+						   //trigger 1
+						   $("#own ul li.empty a.item1").hover(function(){
+						   $(this).addClass("emptyselected");		
+							},	function(){
+								$(this).removeClass("emptyselected");
+								}
+						   )
+					   }				    		
+				  });
+				  return false;
+				 })
+              }				    		
+    	  });
+
+		});
+
+
+		$("#fade").click(function(){
+			 CloseDiv('MyDiv','fade');
+		})
+		
+		$("#MyDiv a.close1").click(function(){
+			 CloseDiv('MyDiv','fade');
+		})
+
+	});
+
+	function ShowDiv(show_div,bg_div)
+	{
+		document.getElementById(show_div).style.display='block';
+		document.getElementById(bg_div).style.display='block' ;
+		var bgdiv = document.getElementById(bg_div);
+		bgdiv.style.width = document.body.scrollWidth;
+		// bgdiv.style.height = $(document).height();
+		$("#"+bg_div).height($(document).height());
+	};
+
+	function CloseDiv(show_div,bg_div)
+	{
+		$("#MyDiv input[name='js_sug-name']").val('');
+		$("#MyDiv input[name='js_sug-url']").val('');
+		document.getElementById(show_div).style.display='none';
+		document.getElementById(bg_div).style.display='none';
+	};
+
+</script>
+</head>
+<body>
+	<div class="header">
+		<div id="logo" style="float:left;height:40px"><a href="./"><img src="images/logo3.jpg" /></a></div>
+		<div id="link" style="float:left;height:40px;margin-left:40px"><a id="web">Web</a><a id="image">Image</a><a id="video">Video</a></div>
+		<div style="clear:both"></div>
+	</div>
+	<div class="nav">
+		<div class="nav_searchlogo"><img src="images/google1.jpg" /></div>
+		<div class="nav_searchtext">
+		<form action="http://www.google.com/search" method="GET" target="__blank"><input type="text"  class="form-control" placeholder="SEARCH..." aria-describedby="basic-addon1" name="q" onfocus="if(this.placeholder == 'SEARCH...') this.placeholder = ''" onblur="if(this.placeholder =='') this.placeholder = 'SEARCH...'"><input id="tbm" type="hidden" name="tbm" value=""><input onclick="javascript:pageTracker._trackPageview('/outgoing/new/index_search');" type="submit" class="form-sub" value=""></form>
+		</div>
+	</div>
+
+	<div class="ad" style="margin-top: 25px;">
+		<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+		<!-- GG123_WEBSITE_DISPLAY -->
+		<ins class="adsbygoogle"
+			 style="display:inline-block;width:720px;height:90px"
+			 data-ad-client="ca-pub-0617099609370432"
+			 data-ad-slot="6091046852"></ins>
+		<script>
+		(adsbygoogle = window.adsbygoogle || []).push({});
+		</script>
+	</div>
+
+	<!--<div class='sites-choose' style=""><a class="a_selected" id="showmain">Most Popular</a><a id="showown">My Favorites</a></div>-->
+
+	<div class="item_container" id="popular">
+		<div class="item_content" style="margin-top: 15px;">
+			<ul>
+				<li>
+					<div class="border">
+						<a href="http://www.youtube.com" onclick="javascript:pageTracker._trackPageview('/outgoing/new/getgo123_youtube');" class="item" target="__blank" title ="www.youtube.com">
+							<div class="image-bg"></div>
+							<img class='img-responsive center-block' src="images/9.jpg"/>
+						</a>
+					</div>					
+				</li>				
+
+				<li class="notfirst">
+					<div class="border">
+						<a href="http://www.download.com" onclick="javascript:pageTracker._trackPageview('/outgoing/new/getgo123_download');" class="item" target="__blank" title="www.download.com">
+							<div class="image-bg"></div>
+							<img class='img-responsive' src="images/10.jpg" />
+						</a>
+					</div>
+				</li>
+				
+				<li class="notfirst">
+					<div class="border">
+						<a href="http://www.ign.com" onclick="javascript:pageTracker._trackPageview('/outgoing/new/getgo123_ign');" class="item" target="__blank" title="www.ign.com">
+							<div class="image-bg"></div>
+							<img class='img-responsive' src="images/1.jpg" />
+						</a>
+					</div>
+				</li>
+				
+				<li class="notfirst">
+					<div class="border">
+						<a href="http://www.gamespot.com" onclick="javascript:pageTracker._trackPageview('/outgoing/new/getgo123_gamespot');" class="item" target="__blank" title="www.gamespot.com">
+							<div class="image-bg"></div>
+							<img class='img-responsive' src="images/2.jpg" />
+						</a>
+					</div>
+				</li>
+				
+				
+				<li class="notfirst">
+					<div class="border">
+						<a href="http://www.facebook.com" onclick="javascript:pageTracker._trackPageview('/outgoing/new/getgo123_facebook');" class="item" target="__blank" title="www.facebook.com">
+							<div class="image-bg"></div>
+							<img class='img-responsive' src="images/3.jpg" />
+						</a>
+					</div>
+				</li>
+				
+				
+				<li>
+					<div class="border">
+						<a href="http://www.twitter.com" onclick="javascript:pageTracker._trackPageview('/outgoing/new/getgo123_twitter');" class="item" target="__blank" title="www.twitter.com">
+							<div class="image-bg"></div>
+							<img class='img-responsive' src="images/4.jpg" />
+						</a>
+					</div>
+				</li>
+				
+				
+				<li class="notfirst">
+					<div class="border">
+						<a href="http://www.softonic.com" onclick="javascript:pageTracker._trackPageview('/outgoing/new/getgo123_softonic');" class="item" target="__blank" title="www.softonic.com">
+							<div class="image-bg"></div>
+							<img class='img-responsive' src="images/5.jpg" />
+						</a>
+					</div>
+				</li>
+				
+				<li class="notfirst">
+					<div class="border">
+						<a href="http://www.dailymotion.com" onclick="javascript:pageTracker._trackPageview('/outgoing/new/getgo123_dailymotion');" class="item" target="__blank" title="www.dailymotion.com">
+							<div class="image-bg"></div>
+							<img class='img-responsive' src="images/6.jpg" />
+						</a>
+					</div>					
+				</li>
+				
+				<li class="notfirst">
+					<div class="border">
+						<a href="http://www.vevo.com" onclick="javascript:pageTracker._trackPageview('/outgoing/new/getgo123_vevo');" class="item" target="__blank" title="www.vevo.com">
+							<div class="image-bg"></div>
+							<img class='img-responsive' src="images/7.jpg" />
+						</a>
+					</div>
+				</li>
+
+				<li class="notfirst">
+					<div class="border">
+						<a href="http://www.software.informer.com" onclick="javascript:pageTracker._trackPageview('/outgoing/new/getgo123_softwareinformer');"  class="item" target="__blank" title="www.software.informer.com">
+							<div class="image-bg"></div>
+							<img class='img-responsive' src="images/8.jpg" />
+						</a>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+
+	<div class="ad">
+		<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+			<!-- GG123_WEBSITE_DISPLAY_728_90 -->
+			<ins class="adsbygoogle"
+				 style="display:inline-block;width:728px;height:90px"
+				 data-ad-client="ca-pub-0617099609370432"
+				 data-ad-slot="2980895251"></ins>
+			<script>
+			(adsbygoogle = window.adsbygoogle || []).push({});
+		</script>
+	</div>
+
+	
+	<div class="item_container" id="own">
+		<div class="item_content" style="height:170px">
+			<ul>
+				<li class='full'><div class='border' style=''><a href='http://www.youtube.com/watch?v=ZwQkBfBs958' onclick='javascript:pageTracker._trackPageview("/outgoing/video/youtube0");' class='item1' target='__blank' title='Hillary Clinton Addresses Her Losing Streak Cold Open - SNL' style='background:url(./crawl/./data/yandex/0.jpg);font-size:12px;color:white;'><div style='margin-left: 136px;'>04:45</div><div style='text-align:center;margin-top:18px' class='yandex'><img src='./images/play3.svg'></div></a><label><a href='http://www.youtube.com/watch?v=ZwQkBfBs958' target='__blank' title='Hillary Clinton Addresses Her Losing Streak Cold Open - SNL'>Hillary Clinton Addr...</a></label></div></li><li class='full'><div class='border' style=''><a href='http://www.youtube.com/watch?v=X2mqrzKHb3w' onclick='javascript:pageTracker._trackPageview("/outgoing/video/youtube1");' class='item1' target='__blank' title='J.Y. Park &quot;Fire&quot; feat.  Conan O&#x27;Brien &amp; Steven Yeun &amp; Jimin Park Official M/V' style='background:url(./crawl/./data/yandex/1.jpg);font-size:12px;color:white;'><div style='margin-left: 136px;'>03:17</div><div style='text-align:center;margin-top:18px' class='yandex'><img src='./images/play3.svg'></div></a><label><a href='http://www.youtube.com/watch?v=X2mqrzKHb3w' target='__blank' title='J.Y. Park &quot;Fire&quot; feat.  Conan O&#x27;Brien &amp; Steven Yeun &amp; Jimin Park Official M/V'>J.Y. Park &quot;Fire...</a></label></div></li><li class='full'><div class='border' style=''><a href='http://www.youtube.com/watch?v=YSIwOp9cdv0' onclick='javascript:pageTracker._trackPageview("/outgoing/video/youtube2");' class='item1' target='__blank' title='Kristen Bell Slaps a Reporter On &#x27;The Boss&#x27; Red Carpet' style='background:url(./crawl/./data/yandex/2.jpg);font-size:12px;color:white;'><div style='margin-left: 136px;'>00:19</div><div style='text-align:center;margin-top:18px' class='yandex'><img src='./images/play3.svg'></div></a><label><a href='http://www.youtube.com/watch?v=YSIwOp9cdv0' target='__blank' title='Kristen Bell Slaps a Reporter On &#x27;The Boss&#x27; Red Carpet'>Kristen Bell Slaps a...</a></label></div></li><li class='full'><div class='border' style=''><a href='http://www.youtube.com/watch?v=sYmQQn_ZSys' onclick='javascript:pageTracker._trackPageview("/outgoing/video/youtube3");' class='item1' target='__blank' title='CRS-8 | First Stage Landing on Droneship' style='background:url(./crawl/./data/yandex/3.jpg);font-size:12px;color:white;'><div style='margin-left: 136px;'>00:40</div><div style='text-align:center;margin-top:18px' class='yandex'><img src='./images/play3.svg'></div></a><label><a href='http://www.youtube.com/watch?v=sYmQQn_ZSys' target='__blank' title='CRS-8 | First Stage Landing on Droneship'>CRS-8 | First Stage ...</a></label></div></li><li class='full'><div class='border' style=''><a href='http://www.youtube.com/watch?v=3UGMDJ9kZCA' onclick='javascript:pageTracker._trackPageview("/outgoing/video/youtube4");' class='item1' target='__blank' title='NCT U_일곱 번째 감각 (The 7th Sense)_Music Video' style='background:url(./crawl/./data/yandex/4.jpg);font-size:12px;color:white;'><div style='margin-left: 136px;'>03:39</div><div style='text-align:center;margin-top:18px' class='yandex'><img src='./images/play3.svg'></div></a><label><a href='http://www.youtube.com/watch?v=3UGMDJ9kZCA' target='__blank' title='NCT U_일곱 번째 감각 (The 7th Sense)_Music Video'>NCT U_일곱 번째 감각 (The ...</a></label></div></li>											
+			</ul>
+		</div>
+	</div>
+
+	<div id="fade" class="black_overlay"></div>
+	<div id="MyDiv" class="white_content">
+			<a class="js_psite-close close1" href="javascript:void(0);"></a>
+			<form>
+				<label for="js_sug-name">Name:</label>
+				<input type="text" name="js_sug-name" class="js_sug-name name" autofocus="autofocus" autocomplete="off"  placeholder="ex: google" onfocus="if(this.placeholder == 'ex: google') this.placeholder = ''" onblur="if(this.placeholder =='') this.placeholder = 'ex: google'">
+				<label for="js_sug-url">Site:</label>
+				<input type="text" name="js_sug-url" class="js_sug-url url" autocomplete="off" placeholder="ex: http://www.google.com" onfocus="if(this.placeholder == 'ex: http://www.google.com') this.placeholder = ''" onblur="if(this.placeholder =='') this.placeholder = 'ex: http://www.google.com'">
+				<input name="js_sug-id" type="hidden" value="1" id="js_sug-id">
+				<a class="add" type="submit">Add</a>
+			</form>
+	</div>
+
+	<div id="footer">
+		<div class="header_part1">
+			<!--<div id="logo"><a href="http://www.getgosoft.com" target="__blank"><img width="123" height="27" border="0" src="images/logo1.png" /></a></div>-->
+			<div class="width-limit" style="">
+			<p>Copyright &copy; 2016 GetGo Software Ltd. All rights reserved.</p>
+			</div>
+			<!--<div id="logo1"><a href="./"><img src="images/logo.png" /></a></div>-->
+		</div>
+		
+	</div>
+
+</body>

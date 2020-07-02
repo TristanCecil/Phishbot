@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href='//fonts.googleapis.com/css?family=Roboto:300,500,700' rel='stylesheet' type='text/css'>
+    <title>Signup - OSM</title>
+        <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0" />
+
+        <script type="text/javascript">
+    // Create a buildreleaseversion variable so that it is available inside the logging script.
+    var buildReleaseVersion = "3.16.2";
+    var appEnvironment = "Live";
+    var world = 1;
+    var webServer = "web01";
+
+    // WEB-4911 temporary fix to further help debug this issue.
+    var serverSideClientSession;
+    </script>
+<script type="text/javascript" src="/Bundles/Scripts/logging.js?v=p2iq64yaaEsftK1t0FEnFIl0k7DR7BfwT0fcUa-_HpE1" charset="utf-8"></script>
+
+    <link href="/Bundles/Content/osm.css?v=cJwXoiIvwTv1_1f3bPW7xzyEsZAU9Lsl1P6C9MJOeYw1" rel="stylesheet"/>
+
+    <link href="/Bundles/Content/views/shared/cleanlayout.css?v=71JRmFzxspm9wvGHfsCUxMoLtHvCc82jMQLjY3bFjAQ1" rel="stylesheet"/>
+
+    
+    <link href="/Bundles/Content/views/account/register.css?v=WZ1h75qvFE_R8QuYc9xWOzvniB97hk_Omc9a8iaS9I01" rel="stylesheet"/>
+
+
+    <script type="text/javascript" src="/Bundles/Scripts/external.js?v=pNdrhCQrs_dEemQokhn7YEqBJWaGiMfBn7JlqTy5sEc1" charset="utf-8"></script>
+
+    <script type="text/javascript" src="/Libraries/branch-sdk/dist/build.min.js" charset="utf-8"></script>
+ 
+        <script type="text/javascript">
+        var branchDataDeferred = Q.defer();
+        branch.init("key_live_dekuglA2wDLCkYkBgP3fOpblohp1wSlW", function (error, data) {
+            // If branch returns an error, reject
+            if (error) {
+                branchDataDeferred.reject(error);
+                return;
+            }
+
+            branchDataDeferred.resolve(data);
+        });
+    </script>
+
+    <script type="text/javascript" src="/Bundles/Scripts/models.js?v=897vV1qui5BuEGn5fbbUHosFOiOaZy4um_AKInh_F0I1" charset="utf-8"></script>
+
+    <script type="text/javascript" src="/Bundles/Scripts/osm.js?v=GZDgxUSUi-mdiZuF3Jjr5dw2ewS8rpXdfKjAt8jiw041" charset="utf-8"></script>
+
+    <script type="text/javascript" src="/Bundles/Scripts/viewmodels/views/shared/cleanLayout.js?v=dGGOIDcuRpLiB0rfS8qB-Z2LfzMCv151zBVYfu4dfTg1" charset="utf-8"></script>
+
+</head>
+<body class=""
+      data-webapiprotocol="https://"
+      data-webapiversion="v1"
+      data-webapiurl="web-api.onlinesoccermanager.com/api"
+      data-culturecode="en-US"
+      data-currency="USD"
+      data-timestamp="1463707872"
+      data-facebookappid="216694208368074"
+      data-webapiclientid="jPs3vVbg4uYnxGoyunSiNf1nIqUJmSFnpqJSVgWrJleu6Ak7Ga"
+      data-webapiclientsecret="ePOVDMfAvU8zcyfaxLMtqYSmND3n6vmmKx9ZlVnNGjGkzucMCt"
+      data-facebookcanvasdomain="facebook.onlinesoccermanager.com"
+      data-worldnr="1">
+        <script>dataLayer = [];</script>
+    <!-- Google Tag Manager -->
+    <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-NF4C43" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <script>(function (w, d, s, l, i) { w[l] = w[l] || []; w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' }); var f = d.getElementsByTagName(s)[0], j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src = '//www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f); })(window, document, 'script', 'dataLayer', 'GTM-NF4C43');</script>
+    <!-- End Google Tag Manager -->
+
+        <script type='text/javascript'>
+        var googletag = googletag || {};
+        googletag.cmd = googletag.cmd || [];
+        (function () {
+            var gads = document.createElement('script');
+            gads.async = true;
+            gads.type = 'text/javascript';
+            var useSSL = 'https:' == document.location.protocol;
+            gads.src = (useSSL ? 'https:' : 'http:') +
+                '//www.googletagservices.com/tag/js/gpt.js';
+            var node = document.getElementsByTagName('script')[0];
+            node.parentNode.insertBefore(gads, node);
+        })();
+    </script>
+
+    <div id="background"></div>
+    <!-- ko stopBinding: true -->
+    <div id="body-content">
+        
+
+<div id="language" dir="ltr">
+<!-- ko ifnot: languagesPartial --><div class="text-center center-absolute knockout-loader"><i class="fa fa-spinner fa-spin"></i></div><!-- /ko --><!-- ko with: languagesPartial --><div class="knockout-loader-content">            <div id="language-current" class="collapsed" data-toggle="collapse" data-target="#language-select" aria-expanded="false" data-bind="with: currentLanguage"><a id="language-current-link" class="link-primary"><span class="icon-flag" data-bind="css: 'icon-flag-small-' + flagCode"></span><span data-bind="text: nativeName"></span></a></div>
+            <div id="language-select" class="collapse" aria-expanded="false">
+                <ul data-bind="foreach: leftItems">
+                        <li>
+<!-- ko if: appViewModel.host() === 'localhost' -->            <a data-bind="click: select" class="link-primary" dir="ltr">    <span class="icon-flag" data-bind="css: 'icon-flag-small-' + flagCode"></span><span data-bind="text: nativeName"></span>
+</a>
+<!-- /ko -->        <!-- ko if: appViewModel.host() === 'hk-test' || appViewModel.host() === 'hk-test2' --><!-- ko if: code !== 'nl' -->                <a href="" data-bind="attr: { href: window.location.protocol + '//' + appViewModel.host() + '-' + code + '.onlinesoccermanager.com' }" class="link-primary" dir="ltr">    <span class="icon-flag" data-bind="css: 'icon-flag-small-' + flagCode"></span><span data-bind="text: nativeName"></span>
+</a>
+<!-- /ko --><!-- /ko -->        <!-- ko if: appViewModel.host() === 'gbbeta' --><!-- ko if: code !== 'nl' -->                <a data-bind="click: select" class="link-primary" dir="ltr">    <span class="icon-flag" data-bind="css: 'icon-flag-small-' + flagCode"></span><span data-bind="text: nativeName"></span>
+</a>
+<!-- /ko --><!-- ko if: code === 'nl' -->                <a href="" data-bind="attr: { href: window.location.protocol + '//' + appViewModel.host() + '.onlinesoccermanager.nl' }" class="link-primary" dir="ltr">    <span class="icon-flag" data-bind="css: 'icon-flag-small-' + flagCode"></span><span data-bind="text: nativeName"></span>
+</a>
+<!-- /ko --><!-- /ko -->        <!-- ko if: appViewModel.host() === 'staging' -->            <a href="" data-bind="attr: { href: window.location.protocol + '//' + appViewModel.host() + '-' + code + '.onlinesoccermanager.com' }" class="link-primary" dir="ltr">    <span class="icon-flag" data-bind="css: 'icon-flag-small-' + flagCode"></span><span data-bind="text: nativeName"></span>
+</a>
+<!-- /ko -->        <!-- ko if: appViewModel.host() === '' --><!-- ko if: code !== 'nl' -->                <a href="" data-bind="attr: { href: window.location.protocol + '//'+ code + '.onlinesoccermanager.com' }" class="link-primary" dir="ltr">    <span class="icon-flag" data-bind="css: 'icon-flag-small-' + flagCode"></span><span data-bind="text: nativeName"></span>
+</a>
+<!-- /ko --><!-- ko if: code === 'nl' -->                <a href="" data-bind="attr: { href: window.location.protocol + '//www.onlinesoccermanager.nl' }" class="link-primary" dir="ltr">    <span class="icon-flag" data-bind="css: 'icon-flag-small-' + flagCode"></span><span data-bind="text: nativeName"></span>
+</a>
+<!-- /ko --><!-- /ko -->    </li>
+
+                </ul>
+                <ul data-bind="foreach: rightItems">
+                        <li>
+<!-- ko if: appViewModel.host() === 'localhost' -->            <a data-bind="click: select" class="link-primary" dir="ltr">    <span class="icon-flag" data-bind="css: 'icon-flag-small-' + flagCode"></span><span data-bind="text: nativeName"></span>
+</a>
+<!-- /ko -->        <!-- ko if: appViewModel.host() === 'hk-test' || appViewModel.host() === 'hk-test2' --><!-- ko if: code !== 'nl' -->                <a href="" data-bind="attr: { href: window.location.protocol + '//' + appViewModel.host() + '-' + code + '.onlinesoccermanager.com' }" class="link-primary" dir="ltr">    <span class="icon-flag" data-bind="css: 'icon-flag-small-' + flagCode"></span><span data-bind="text: nativeName"></span>
+</a>
+<!-- /ko --><!-- /ko -->        <!-- ko if: appViewModel.host() === 'gbbeta' --><!-- ko if: code !== 'nl' -->                <a data-bind="click: select" class="link-primary" dir="ltr">    <span class="icon-flag" data-bind="css: 'icon-flag-small-' + flagCode"></span><span data-bind="text: nativeName"></span>
+</a>
+<!-- /ko --><!-- ko if: code === 'nl' -->                <a href="" data-bind="attr: { href: window.location.protocol + '//' + appViewModel.host() + '.onlinesoccermanager.nl' }" class="link-primary" dir="ltr">    <span class="icon-flag" data-bind="css: 'icon-flag-small-' + flagCode"></span><span data-bind="text: nativeName"></span>
+</a>
+<!-- /ko --><!-- /ko -->        <!-- ko if: appViewModel.host() === 'staging' -->            <a href="" data-bind="attr: { href: window.location.protocol + '//' + appViewModel.host() + '-' + code + '.onlinesoccermanager.com' }" class="link-primary" dir="ltr">    <span class="icon-flag" data-bind="css: 'icon-flag-small-' + flagCode"></span><span data-bind="text: nativeName"></span>
+</a>
+<!-- /ko -->        <!-- ko if: appViewModel.host() === '' --><!-- ko if: code !== 'nl' -->                <a href="" data-bind="attr: { href: window.location.protocol + '//'+ code + '.onlinesoccermanager.com' }" class="link-primary" dir="ltr">    <span class="icon-flag" data-bind="css: 'icon-flag-small-' + flagCode"></span><span data-bind="text: nativeName"></span>
+</a>
+<!-- /ko --><!-- ko if: code === 'nl' -->                <a href="" data-bind="attr: { href: window.location.protocol + '//www.onlinesoccermanager.nl' }" class="link-primary" dir="ltr">    <span class="icon-flag" data-bind="css: 'icon-flag-small-' + flagCode"></span><span data-bind="text: nativeName"></span>
+</a>
+<!-- /ko --><!-- /ko -->    </li>
+
+                </ul>
+            </div>
+</div><!-- /ko --></div>
+
+<div id="page-signup">
+    <div id="manager-image" class="hidden-xs"></div>
+    <div class="page content hidden-before-binding">
+        <div class="logo-small visible-xs"></div>
+        <div class="logo-medium hidden-xs"></div>
+        <h3 id="logo-subtitle">Online Soccer Manager</h3>
+<!-- ko if: currentPage() === RegisterPageType.UserName -->            <div id="tab-username" class="tab">
+                <h1 class="page-title">Sign up and become the world's best soccer manager!</h1>
+                <form class="form-register" data-bind="submit: validateUserName" method="POST">
+                    
+<!-- ko if: !appViewModel.branchLinkData() || (appViewModel.branchLinkData() && appViewModel.branchLinkData().leagueId === 0) --><!-- ko with: $root.facebookPartial() -->                            <button type="button" id="facebook" class="btn btn-facebook" data-appid="Settings_AppId" data-bind="click: $root.registerFacebook.bind($root), buttonState: { isDisabled: !isInitCalled() }">
+                                <span class="icon-facebook"></span>
+<!-- ko if: facebookUserPartial().isLoaded() && facebookUserPartial().firstName -->                                    <span data-bind="stringFormat: [{ key: 'Name', value: facebookUserPartial().firstName}]">Play as {Name}</span>
+<!-- /ko -->                                <!-- ko ifnot: facebookUserPartial().isLoaded() && facebookUserPartial().firstName -->                                    <span>Sign up with Facebook</span>
+<!-- /ko -->                            </button>
+<!-- ko if: facebookUserPartial().isLoaded() && facebookUserPartial().firstName && !appViewModel.isFacebookCanvas() -->                                <a id="facebook-logout" class="semi-bold font-xs" data-bind="click: logout">That's not me</a>
+<!-- /ko -->                            <div id="login-or">or</div>
+<!-- /ko --><!-- /ko -->                    <div class="input-container">
+                        <input tabindex="1" type="text" id="username" class="form-control input-lg" maxlength="25" data-bind="textInput: userName, hasfocus: currentPage() === RegisterPageType.UserName" placeholder="Choose manager name" />
+                        <div class="feedbackcontainer" data-bind="visible: userNameErrorMessage">
+                            <div id="feedback-managername" class="feedback feedback-error"></div>
+                            <span class="feedback-message" data-bind="text: userNameErrorMessage"></span>
+                        </div>
+                    </div>
+                    <button tabindex="2" type="submit" id="signup" class="btn btn-success" data-bind="buttonState: { isDisabled: !isUserNameValid(), isLoading: isAwaitingResponse }"><span>Create account</span></button>
+                </form>
+                <a id="login-link" href="/Login" class="link-primary">I already have an OSM account and want to log in</a>
+            </div>
+<!-- /ko -->        <!-- ko if: currentPage() === RegisterPageType.Password -->            <div id="tab-password" class="tab">
+                <h1 class="page-title" data-bind="stringFormat: [{ key: 'ManagerName', value: userName()}] ">Welcome {managername}!<br />Please secure your career with a password.</h1>
+                <form class="form-register" data-bind="submit: validatePassword" method="POST">
+                    <div class="input-container">
+                        <input tabindex="3" type="password" id="password" class="form-control input-lg" maxlength="30" data-bind="textInput: password, hasfocus: currentPage() === RegisterPageType.Password" placeholder="Choose password" />
+                        <div class="feedbackcontainer" data-bind="visible: passwordErrorMessage">
+                            <div id="feedback-managername" class="feedback feedback-error"></div>
+                            <span class="feedback-message" data-bind="text: passwordErrorMessage"></span>
+                        </div>
+                    </div>
+                    <button tabindex="4" type="submit" id="setpassword" class="btn btn-success" data-bind="buttonState: { isDisabled: !isPasswordValid(), isLoading: isAwaitingResponse }"><span>Confirm</span></button>
+                </form>
+            </div>
+<!-- /ko -->        <!-- ko if: currentPage() === RegisterPageType.Captcha -->            <div id="tab-captcha" class="tab">
+                <h1 class="page-title">Repeat the code below to start!</h1>
+                <img src="/GetCaptcha" id="captcha-image" alt="Captcha" />
+                <form class="form-register" data-bind="submit: validateCaptcha" method="POST">
+                    <div class="input-container">
+                        <input tabindex="5" type="text" id="captcha-input" class="form-control input-lg" maxlength="30" name="captcha" data-bind="textInput: captcha, hasfocus: currentPage() === RegisterPageType.Captcha" placeholder="Repeat code" />
+                        <div class="feedbackcontainer" data-bind="visible: captchaErrorMessage">
+                            <div id="feedback-managername" class="feedback feedback-error"></div>
+                            <span class="feedback-message" data-bind="text: captchaErrorMessage"></span>
+                        </div>
+                    </div>
+                    <button tabindex="6" type="submit" id="captcha-send" class="btn btn-success" data-bind="buttonState: { isDisabled: !isCaptchaValid(), isLoading: isAwaitingResponse }"><span>Start your career</span></button>
+                </form>
+            </div>
+<!-- /ko -->    </div>
+    <footer class="hidden-xs">
+        <div id="license-container" class="horizontal-center-absolute text-center">
+            <div id="license-title">Official partners</div>
+<!-- ko if: showBundesLiga() -->                <img src="/Images/views/account/signup/licences/bundesliga.png" class="license-image hidden-before-binding" alt="BundesLiga" />
+<!-- /ko -->            <img src="/Images/views/account/signup/licences/eredivisie.png" class="license-image" alt="Eredivisie" />
+            <img src="/Images/views/account/signup/licences/jupilerproleague.png" class="license-image" alt="Jupiler Pro League" />
+            <img src="/Images/views/account/signup/licences/fcporto.png" class="license-image" alt="FC Porto" />
+            <img src="/Images/views/account/signup/licences/benfica.png" class="license-image" alt="SL Benfica" />
+            <img src="/Images/views/account/signup/licences/sportingportugal.png" class="license-image" alt="Sporting Portugal" />
+            <img src="/Images/views/account/signup/licences/acmilan.png" class="license-image" alt="AC Milan" />
+            <img src="/Images/views/account/signup/licences/sslazio.png" class="license-image" alt="SS Lazio" />
+        </div>
+    </footer>
+</div>
+<div id="page-info" class="theme-elastico-0">
+    <img class="hidden-xs sidebar-player player-left" src="/Images/views/account/signup/doerak_left.png?v=2" />
+    <img class="hidden-xs sidebar-player player-right" src="/Images/views/account/signup/doerak_right.png?v=2" />
+    <div class="page content container">
+        <div class="row">
+            <div class="col-xs-12">
+                <h1 class="title">What's OSM?</h1>
+                <h3 class="description text-secondary">
+                    <span class='text-hightlight'>Online Soccer Manager</span> is the game in which you can become the <span class='text-hightlight'>manager</span> of your favorite <span class='text-hightlight'>soccer club</span>. Show the world that you are the best <span class='text-hightlight'>soccer manager</span>! Join a <span class='text-hightlight'>league</span> or start one of your own along with your friends.
+                </h3>
+            </div>
+        </div>
+        <div class="row">
+                <div class="block col-xs-12 col-sm-6 col-md-4">
+        <div class="block-image block-club"></div>
+        <div class="intro-title">Choose your favorite club</div>
+        <div class="intro-description">You want to compete for the championship with a top club or like to play against relegation? Everything is possible. Your favorite club needs you!</div>
+    </div>
+
+                <div class="block col-xs-12 col-sm-6 col-md-4">
+        <div class="block-image block-lineup"></div>
+        <div class="intro-title">Determine your Lineup</div>
+        <div class="intro-description">Classic wingers or two strikers? It&#39;s your call. You decide the formation, you decide who plays. Every single game!</div>
+    </div>
+
+                <div class="block col-xs-12 col-sm-6 col-md-4">
+        <div class="block-image block-tactics"></div>
+        <div class="intro-title">Decide your Tactics</div>
+        <div class="intro-description">You&#39;re a fan of the passing game? Or you like to fall back and use the counterattack? As a tactical mastermind, you can perfect your team in all details!</div>
+    </div>
+
+                <div class="block col-xs-12 col-sm-6 col-md-4">
+        <div class="block-image block-transfers"></div>
+        <div class="intro-title">Strengthen your Roster</div>
+        <div class="intro-description">Search the world for the best talents, negotiate with other clubs and sell your dispensable players. With a cunning transfer policy you can compose your ideal team!</div>
+    </div>
+
+                <div class="block col-xs-12 col-sm-6 col-md-4">
+        <div class="block-image block-match"></div>
+        <div class="intro-title">Daily game</div>
+        <div class="intro-description">Manage your club against the competition every day. Train your players on a daily basis and play Friendlies to test your Tactics!</div>
+    </div>
+
+                <div class="block col-xs-12 col-sm-6 col-md-4">
+        <div class="block-image block-friends"></div>
+        <div class="intro-title">Play against friends</div>
+        <div class="intro-description">Of course, playing against friends is the best. Challenge them, join their league and compete like your life depends on it. May the best win!</div>
+    </div>
+
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <button id="registernow" class="btn btn-success" data-bind="click: scrollToSignup">Sign up now!</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="font-xxs col-xs-12">
+                © 2001 - 2016 <a href='http://www.gamebasics.nl/en' target='_blank'>Gamebasics BV</a>, the Netherlands.
+                <span>v.3.16.2</span><br />
+                <span>
+                    <a href="/Terms">Terms</a> | <a href="/Privacy">Privacy Statement</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script id="modal-preloader" type="text/html"><div class="modal" data-bind="css: classes"><div class="modal-backdrop fade in" /><div class=" modal-dialog" id="modal-dialog-preloader"><div class="modal-content"><button aria-label="Close" class="close" data-bind="visible: options().showCloseButton" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>    <div id="preloader-modal-content" data-bind="css: { loading: isLoading }">
+        <div id="preloader-image-container" class="center">
+            <div id="preloader-image"></div>
+        </div>
+        <div class="carousel" data-bind="autoCarousel: $data">
+                <div class="carousel-item">Reading WorldSoccer</div>
+                <div class="carousel-item">Talking to ESPN</div>
+                <div class="carousel-item">Having a laugh with the supporters</div>
+                <div class="carousel-item">Buying some cigars for the chairman</div>
+                <div class="carousel-item">Discussing Tactics with the captain</div>
+                <div class="carousel-item">Preparing press conference</div>
+                <div class="carousel-item">Greeting the lunch lady</div>
+                <div class="carousel-item">Parking your Aston Martin</div>
+                <div class="carousel-item">Patting your assistant on the back</div>
+                <div class="carousel-item">High-fiving the groundsman</div>
+        </div>
+    </div>
+</div></div></div></script>
+
+
+    </div>
+
+    <div class="modalContainer" id="genericModalContainer"></div>
+    <script id="modal-alert" type="text/html"><div class="modal" data-bind="css: classes"><div class="modal-backdrop fade in" /><div class=" modal-dialog" id="modal-dialog-alert"><div class="modal-content"><button aria-label="Close" class="close" data-bind="visible: options().showCloseButton" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>    <div class="theme-elastico-1">
+        <div class="modal-header theme-panna-0">
+            <h3 class="modal-title" data-bind="text: title"></h3>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-xs-12">
+                    <p data-bind="text: content"></p>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div type="button" class="btn btn-xs btn-block btn-success" data-bind="click: okAction, text: okButtonText().length > 0 ? okButtonText : 'Ok'"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div></div></div></script>
+    <!-- /ko -->
+        <span id="screen-size">
+        <span id="screen-size-xs"></span>
+        <span id="screen-size-sm"></span>
+        <span id="screen-size-md"></span>
+        <span id="screen-size-lg"></span>
+    </span>
+
+        <span id="default-error-alert-title">Oops</span>
+    <span id="default-error-message">Something went wrong, please help us by reporting on the forums.</span>
+
+    <div data-NoCookiesText="It seems like your browser disabled cookies. Please use your settings to enable cookies and try again." data-NoCookiesTitle="Cookie Monster" id="viewdata"></div>
+    
+    <script type="text/javascript" src="/Bundles/Scripts/viewmodels/views/account/register.js?v=Dks2eSCzx1JKkRr-P0edreoG57ykWV1FtCyvFss05NU1" charset="utf-8"></script>
+
+    <script type="text/javascript" src="/Bundles/Scripts/viewmodels/views/modals/preloader.js?v=qoqjy2hKdytoIIpvdvwDCeWdu0xMqoQBifltOdjZjNk1" charset="utf-8"></script>
+
+
+        <script type="text/javascript">
+        window.fbAsyncInit = function () {
+            var initFacebook = ko.computed(function () {
+                if (appViewModel && appViewModel.facebookPartial() && !appViewModel.facebookPartial().isInitCalled()) {
+                    appViewModel.facebookPartial().init(216694208368074, "v2.5");
+                }
+            });
+        };
+    </script>
+
+        <!-- generated on server: web01 -->
+
+</body>
+</html>

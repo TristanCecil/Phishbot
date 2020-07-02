@@ -1,0 +1,299 @@
+<!DOCTYPE HTML><html lang="">
+<!-- Mirrored from tools.google.com/dlpage/drive/thankyou.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 23 Sep 2014 08:58:55 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"> <link rel="icon" type="image/ico" href="../res/drive/images/drive-16.png"> <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&amp;lang=en" rel="stylesheet"> <link href="../res/drive/css/drive-dlpage.css" rel="stylesheet" type="text/css"> <link href="../../../www.google.com/css/maia.css" rel="stylesheet"> <link href="../res/drive/css/drive-download.css" rel="stylesheet" type="text/css"> <script type="text/javascript" src="../../../www.gstatic.com/external_hosted/modernizr/modernizr.js"></script>   <title>Google Drive</title> <script type="text/javascript" src="../../tools/dlpage/res/c/gu-util.js">
+  
+</script> <script type="text/javascript">
+  // Set up the global update.installscript namespace.
+  if (!window.update) {
+    update = {};
+  }
+  if (!window.update.installscript) {
+    update.installscript = {};
+  }
+
+  
+  
+  function runTagParamsHook(tag, opt_guid) {return tag;}
+  
+  function runThankYouQueryHook(query) {return query;}
+  
+  function runGetAppsPageHook(apps) {return apps;}
+
+  
+  var referer = "index.html";
+
+  
+  
+     update.installscript.updater_expts = '';
+  
+  
+  
+    update.installscript.app_expts = '';
+  
+
+
+  function resetButtons(name) {
+    var buttons = document.getElementsByName(name);
+    for (i = 0; i < buttons.length; ++i) {
+      buttons[i].disabled = false;
+    }
+  }
+  function showThrobber(isVisible) {
+    var divThrobber = document.getElementById('throbber');
+    var imgThrobber = document.getElementById('throbber-img');
+    if (!divThrobber || !imgThrobber) {
+      return;
+    }
+    if (!isVisible) {
+      divThrobber.style.display = 'none';
+    }
+    
+    imgThrobber.src = isVisible ?
+      
+         "/tools/dlpage/res/c/image/loading-16.gif"
+      
+        : "";
+    if (isVisible) {
+      divThrobber.style.display = 'inline';
+    }
+  }
+  
+  function getThankyouUrl(extraQuery) {
+    var thankYouPath = "thankyou.html";
+    if (areStatsEnabled()) {
+      extraQuery += '&statcb=';
+    }
+    var query = "" + extraQuery;
+    if (query.length > 0 && query.charAt(0) != '?') {
+      query = '?' + query;
+    }
+    query = runThankYouQueryHook(query);
+    return thankYouPath + query;
+  }
+  function queueThankyou(timeout, queryString, opt_navDocument) {
+    var page = getThankyouUrl(queryString);
+    var doc = opt_navDocument || this.document;
+
+    function navigateToThankyou() {
+      showThrobber(false);
+      resetButtons("submitbutton");
+      doc.location.href = page;
+    }
+
+    if (!timeout) {
+      navigateToThankyou();
+      return;
+    }
+
+    setTimeout(navigateToThankyou, timeout);
+  }
+  function getApps() {
+    var apps = new Array();
+    
+    
+    
+    
+      apps.push(_GU_createAppInfo(
+          "{3C122445-AECE-4309-90B7-85A6AEF42AC0}",
+          "Google Drive",
+          "true",
+          runTagParamsHook(
+              "",
+              "{3C122445-AECE-4309-90B7-85A6AEF42AC0}"),
+          update.installscript.app_expts));
+    
+    
+    
+    
+    return runGetAppsPageHook(apps);
+  }
+  function areStatsEnabled() {
+    var statcb = document.getElementById("statcb");
+    return (statcb && statcb.checked);
+  }
+  function isDownloadTaggingEnabled() {
+    
+    return true;
+  }
+  function getDownloadPath() {
+    
+      
+        return "/drive/googledrivesync.exe";
+      
+    
+  }
+  function buildDownloadUrl(statEnable, opt_buildDownloadPath, opt_filePath) {
+     
+
+    var defaultDownloadPath = isDownloadTaggingEnabled() ?
+        _GU_buildDlPath : _GU_buildDlPathNoTag;
+    var buildDownloadPath = opt_buildDownloadPath || defaultDownloadPath;
+    var filePath = opt_filePath || getDownloadPath();
+    var dlServer =
+    "http://dl.google.com/";
+    return buildDownloadPath(getApps(),
+                             "en-GB",
+                             statEnable,
+                             dlServer,
+                             filePath,
+                             update.installscript.updater_expts);
+  }
+  function downloadAndThankYou(delayTime, statEnable, opt_navDocument,
+                               opt_buildDownloadPath, opt_filePath) {
+    
+    if (navigator.appVersion.indexOf('Chrome/index.html') != -1 ||
+        navigator.appVersion.indexOf('Safari/index.html') != -1) {
+      queueThankyou(0, '', opt_navDocument);
+      return;
+    }
+
+    var method = getInstallSource();
+    sendDlPagePing("install", method);
+
+    queueThankyou(delayTime, '', opt_navDocument);
+
+    var downloadUri =
+        buildDownloadUrl(statEnable, opt_buildDownloadPath, opt_filePath);
+
+    if (method === 'clickonce' ||
+        navigator.userAgent.indexOf('Firefox/index.html') != -1) {
+      var windowFeatures = 'toolbar=0,location=no,directories=0,status=0,scrollbars=no,resizable=0,width=1,height=1,top=0,left=0';
+      window.open(downloadUri, '_blank', windowFeatures);
+      window.focus();
+    } else {
+      location.href = downloadUri;
+    }
+
+    showThrobber(true);
+  }
+  function installViaDownload(opt_navDocument) {
+    downloadAndThankYou(4000, areStatsEnabled(), opt_navDocument);
+  }
+  function isClickOnceEnabled() {
+    
+    return false;
+  }
+  function isOneClickEnabled() {
+    return true;
+  }
+  function installViaClickOnce(opt_navDocument) {
+    
+    downloadAndThankYou(10000, areStatsEnabled(), opt_navDocument, _GU_buildClickOncePath, "");
+  }
+  function installViaOneClick(opt_navDocument) {
+    showThrobber(true);
+    window.google.update.oneclick.install(
+      getApps(),
+      "en-GB",
+      areStatsEnabled(),
+      function() {queueThankyou(4000, '\x26oneclickinstalled=', opt_navDocument);},
+      function(hr) {installViaDownload(opt_navDocument);},
+      update.installscript.updater_expts);
+  }
+  function getInstallSource() {
+    
+      
+      
+        return 'download';
+      
+    
+  }
+  function installApp(opt_navDocument) {
+    
+
+    var method = getInstallSource();
+    if (method === 'oneclick') {
+      installViaOneClick(opt_navDocument);
+    } else if (method === 'clickonce') {
+      installViaClickOnce(opt_navDocument);
+    } else {
+      installViaDownload(opt_navDocument);
+    }
+  }
+  
+  function sendDlPagePing(stage, installSource) {
+    var img = new Image();
+    var extra = GU_buildGlobalExtra(
+          "en-GB",
+          areStatsEnabled(),
+          update.installscript.updater_expts);
+    var tag = GU_BuildTag(getApps(), extra);
+    img.src = '//tools.google.com/service/update2/dlpageping?' +
+        tag +
+        '&stage=' + stage +
+        '&installsource=' + installSource;
+  }
+  function downloadInstaller(opt_pageName) {
+    var hasStatcb =
+    
+      false;
+    
+    location.href = buildDownloadUrl(hasStatcb);
+
+    var pageName = opt_pageName || "install";
+    var installMethod = getInstallSource();
+    sendDlPagePing(pageName, installMethod);
+  }
+  var pageTracker;  
+  function doSubmit() {
+    var installMethod = getInstallSource();
+    if (typeof _gaq != 'undefined') {
+      _gaq.push(['_trackPageview'], '/ty/retry_' + installMethod);
+    } else if (pageTracker) {
+      pageTracker._trackPageview("/ty/retry_" + installMethod);
+    }
+    downloadInstaller("retry");
+  }
+  
+    if (navigator.appVersion.indexOf('Chrome/index.html') != -1 ||
+        navigator.appVersion.indexOf('Safari/index.html') != -1) {
+      window.addEventListener('load', downloadInstaller, false);
+    }
+  
+  
+  
+  _GU_OnloadHandlerAdd(
+    function() {
+      if (isOneClickEnabled()) {
+      _GU_SetupOneClick();
+      }
+    }, 0); // front of list
+  
+  _GU_OnloadHandlerAdd(
+    function(pagename) {
+      sendDlPagePing(pagename, getInstallSource());
+    });  // added to end of body.onload handler list
+
+
+</script> <script type="text/javascript">
+  
+  
+</script></head> <script type="text/javascript">
+  function setHl(newHl) {
+    var query = location.search;
+    if (query.length == 0) {
+      location.search = '?hl=' + newHl;
+      return;
+    }
+    if (-1 == query.indexOf("hl=")) {
+      location.search = query + '&hl=' + newHl;
+      return;
+    }
+    location.search = query.replace(/hl=[^&]*/, 'hl=' + newHl);
+  }
+</script> <body class="download thankyou" onload="_GU_OnloadBody(&#39;thankyou&#39;);"><div id="c-doc" class="thankyou-page"><div class="header" role="banner"><div class="header-item with-site-logo"><a class="site-logo site-logo-link" href="http://drive.google.com/?utm_source=en&amp;utm_medium=button&amp;utm_campaign=web&amp;utm_content=gotodrive&amp;usp=drive_landing"><div class="site-logo-image icon icon-google-logo-dark">Google</div>Drive</a></div> <div class="nav-site"><img alt="Drive logo" src="../res/drive/images/logo-drive.png"> <ul><li><a class="meet" href="http://www.google.com/intl/en-GB/drive/">Meet Drive</a></li> <li><a class="using-drive" href="http://www.google.com/intl/en-GB/drive/using-drive/">Using Drive</a></li> <li class="mobile-is-hidden device-is-hidden"><a class="download" href="#">Download</a></li> <li><a class="work" href="http://www.google.com/intx/en-GB/enterprise/apps/business/driveforwork">For Work</a></li> <li class="last-default"><a class="help" href="http://support.google.com/drive/?hl=en-GB">Help</a></li> <li class="mobile-is-hidden float-in"><a class="go-to-drive" href="http://drive.google.com/?utm_source=en&amp;utm_medium=button&amp;utm_campaign=web&amp;utm_content=gotodrive&amp;usp=drive_landing">Go to Google Drive</a></li> <li class="download-app mobile-is-visible crushed-is-visible"><a class="download-mobile-android boxed-in" href="https://play.google.com/store/apps/details?id=com.google.android.apps.docs"></a> <a class="download-mobile-ios boxed-in" href="https://itunes.apple.com/en/app/google-drive/id507874739"></a> <a class="download-mobile boxed-in" style="display: inline-block;" href="http://drive.google.com/?utm_source=en&amp;utm_medium=button&amp;utm_campaign=web&amp;utm_content=gotodrive&amp;usp=drive_landing">Sign in</a></li></ul></div> <div class="mobile-nav-toggle js-mobilenav"><div class="icon icon-mobile-open-dark toggle-nav-open js-mobilenav-toggle"></div> <div class="icon icon-mobile-close toggle-nav-closed js-mobilenav-toggle-close"></div></div></div> <div class="c-child-doc"><noscript><div class="pagewarning">You need a JavaScript-capable browser to download this software. <a href="http://www.google.com/support/bin/answer.py?answer=23852&amp;hl=en-GB">Click here for instructions</a> on how to enable JavaScript in your browser.</div></noscript> <div class="ty-main main" id="maia-main"><div class="maia-cols"><div class="maia-col-12"><div class="drive-ty-logo"><img src="../res/drive/images/drive.png" width="65" height="55" alt="Drive logo"></div> <h1>Thanks for downloading Drive!</h1> <h2 class="retry-header">If your download does not begin, please <a class="retry-link" href="javascript:doSubmit();">click here to retry</a></h2> <h2>Now that you have Drive for your computer, give it a try on your mobile device.</h2> <div class="dropdown-wrapper maia-col-4"><a class="dropdown-trigger" href="http://drive.google.com/?utm_source=en&amp;utm_medium=button&amp;utm_campaign=web&amp;utm_content=gotodrive&amp;usp=drive_landing">Receive the app <span class="icon icon--arrow-dropdown"></span></a> <ul class="dropdown-list"><li class="download-android"><a href="https://play.google.com/store/apps/details?id=com.google.android.apps.docs">Android devices</a></li> <li class="download-ios"><a href="https://itunes.apple.com/en/app/google-drive/id507874739">iPhone and iPad</a></li></ul></div></div></div></div></div> <div class="main-bg"></div> <div class="drive-signature-hldr"><div class="maia-aux"><div id="maia-signature"></div></div></div> <div class="drive-footer" id="maia-footer"><div id="maia-footer-global"><div class="maia-aux"><div class="maia-locales"><form class="langmenu" action="#"><select onchange="javascript:setHl(this.options[this.selectedIndex].value);" title="Language"><option value="" selected>Select a language</option> <option value="bg">&#8234;&#1073;&#1098;&#1083;&#1075;&#1072;&#1088;&#1089;&#1082;&#1080;&#8236;</option> <option value="ca">&#8234;catal&agrave;&#8236;</option> <option value="cs">&#8234;&#269;e&scaron;tina&#8236;</option> <option value="da">&#8234;dansk&#8236;</option> <option value="de">&#8234;Deutsch&#8236;</option> <option value="el">&#8234;&Epsilon;&lambda;&lambda;&eta;&nu;&iota;&kappa;&#940;&#8236;</option> <option value="en">&#8234;English&#8236;</option> <option value="en-GB">&#8234;English (UK)&#8236;</option> <option value="es">&#8234;espa&ntilde;ol&#8236;</option> <option value="et">&#8234;eesti&#8236;</option> <option value="fi">&#8234;suomi&#8236;</option> <option value="fil">&#8234;Filipino&#8236;</option> <option value="fr">&#8234;fran&ccedil;ais&#8236;</option> <option value="hi">&#8234;&#2361;&#2367;&#2306;&#2342;&#2368;&#8236;</option> <option value="hr">&#8234;hrvatski&#8236;</option> <option value="hu">&#8234;magyar&#8236;</option> <option value="id">&#8234;Bahasa Indonesia&#8236;</option> <option value="is">&#8234;&Iacute;slenska&#8236;</option> <option value="it">&#8234;italiano&#8236;</option> <option value="ja">&#8234;&#26085;&#26412;&#35486;&#8236;</option> <option value="ko">&#8234;&#54620;&#44397;&#50612;&#8236;</option> <option value="lt">&#8234;lietuvi&#371;&#8236;</option> <option value="lv">&#8234;latvie&scaron;u&#8236;</option> <option value="nl">&#8234;Nederlands&#8236;</option> <option value="no">&#8234;norsk bokm&aring;l&#8236;</option> <option value="pl">&#8234;polski&#8236;</option> <option value="pt-BR">&#8234;portugu&ecirc;s (Brasil)&#8236;</option> <option value="pt-PT">&#8234;portugu&ecirc;s (Portugal)&#8236;</option> <option value="ro">&#8234;rom&acirc;n&#259;&#8236;</option> <option value="ru">&#8234;&#1088;&#1091;&#1089;&#1089;&#1082;&#1080;&#1081;&#8236;</option> <option value="sk">&#8234;slovensk&yacute;&#8236;</option> <option value="sl">&#8234;sloven&scaron;&#269;ina&#8236;</option> <option value="sr">&#8234;&#1057;&#1088;&#1087;&#1089;&#1082;&#1080;&#8236;</option> <option value="sv">&#8234;svenska&#8236;</option> <option value="th">&#8234;&#3652;&#3607;&#3618;&#8236;</option> <option value="tr">&#8234;T&uuml;rk&ccedil;e&#8236;</option> <option value="uk">&#8234;&#1091;&#1082;&#1088;&#1072;&#1111;&#1085;&#1089;&#1100;&#1082;&#1072;&#8236;</option> <option value="vi">&#8234;Ti&#7871;ng Vi&#7879;t&#8236;</option> <option value="zh-CN">&#8234;&#31616;&#20307;&#20013;&#25991;&#8236;</option> <option value="zh-TW">&#8234;&#32321;&#39636;&#20013;&#25991; (&#21488;&#28771;)&#8236;</option></select></form></div> <ul><li><a href="https://www.google.com/">Google</a></li> <li><a href="http://www.google.com/intl/en-GB/about/">About Google</a></li> <li><a href="http://www.google.com/intl/en-GB/policies/">Privacy &amp;amp; Terms</a></li></ul></div></div></div></div> <script type="text/javascript" src="../../../www.gstatic.com/external_hosted/gsap/TweenMax.min.js"></script> <script type="text/javascript" src="../res/drive/scripts/dlpage-ui.js">
+    
+  </script> 
+<script type="text/javascript">
+var axel = Math.random() + "";
+var a = axel * 10000000000000;
+document.write('<iframe src="https://fls.doubleclick.net/activityi;src=2542116;type=conap955;cat=googl674;ord=1;num='+ a + '?" width="1" height="1" frameborder="0"style="display:none"></iframe>');
+</script>
+<noscript>
+<iframe src="https://fls.doubleclick.net/activityi;src=2542116;type=conap955;cat=googl674;ord=1;num=1?"
+width="1" height="1" frameborder="0" style="display:none"></iframe>
+</noscript>
+     </body>
+<!-- Mirrored from tools.google.com/dlpage/drive/thankyou.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 23 Sep 2014 08:58:55 GMT -->
+</html>

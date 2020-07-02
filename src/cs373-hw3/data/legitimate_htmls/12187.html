@@ -1,0 +1,561 @@
+<!doctype html>
+<html>
+<head>
+    <title>Plati</title>    
+    
+    <meta name=keywords CONTENT="Plati. Все для World of Warcraft, Guild Wars 2, Diablo, BattleField 3, Arma 2, ключи wow, золото wow." />
+	<meta name=description CONTENT="Торговая площадка с мгновенной доставкой товара">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />	
+	<meta http-equiv="Content-Language" content="en" />
+	<meta name="google" content="notranslate" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">    
+    <meta content="width=1200" name="viewport">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link href="/css/reset.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/css/main.css?29012016-2" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/css/dd.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/css/goods-tables.css?14052015-1" media="screen" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="/css/prettyPhoto.css?231" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/css/jquery.qtip.min.css" media="screen" />
+    <link rel="stylesheet" href="/css/jquery-ui.css"> 
+    <script type="text/javascript" src="/js/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="/js/base64.js"></script>    
+    <!--<script type="text/javascript" src="/js/detectmobilebrowser.js"></script>-->
+    <script type="text/javascript" src="/js/isMobile.min.js"></script>
+    <script type="text/javascript" src="/js/jquery.truemodal.js"></script>  
+    <script type="text/javascript" src="/js/jquery.cookie.js"></script>
+    <script type="text/javascript" src="/js/jquery.slider.js"></script>
+    <script type="text/javascript" src="/js/jquery.countdown.min.js?14052015-2"></script>
+    <script type="text/javascript" src="/js/jquery.countdown-en-US.js?14052015"></script>
+    <script type="text/javascript" src="/js/jquery.formatDateTime.min.js"></script>
+    <script type="text/javascript" src="/js/jquery.prettyPhoto.min.js"></script>
+    <script type="text/javascript" src="/js/jquery.dd.js"></script>
+    <script type="text/javascript" src="/js/imagesloaded.pkg.min.js"></script>    
+    <script type="text/javascript" src="/js/jquery.qtip.min.js"></script>        
+    <script type="text/javascript" src="/js/plati.js?14.06.2016-0"></script>
+    <script src="/js/jquery-ui.min.js"></script>    
+    <script type="text/javascript" src="/js/lang-en-US.js?31.01.2014-1"></script>
+    <script type="text/javascript" src="//vk.com/js/api/openapi.js?105"></script>    
+    <script async src="//ulogin.ru/js/ulogin.js"></script>    
+    <script>
+        var cookieDomain = '.plati.ru';        
+    </script>
+    
+    <script id="popup-container" type="text/template">
+        <div id="popup-container-data" class="popup-content">
+            <div style="text-align:right;" class="true-modal-remove"><a class="true-modal-remove">Close</a></div>
+            <span id="popup-table-title"></span>
+            <div id="popup-table-data" style="display:none"></div>
+            <div id="popup-container-login-form">
+                <div id="check_turing">                           
+			    <h3>Sign in via a social network</h3>		            
+                    <div id="ulogin-placeholder" style="margin-top:4px;"></div>
+                    <br />		        
+			        <h2>OR</h2>
+			        <h3>enter your email and press Send button</h3>
+			        <!--<p>A confirmation message will be sent to your email address. Use it to confirm the ownership of the address.</p>-->
+                    <ul class="login-form">
+                        <li class="clearfix">
+				            <label for="f_turing_eml">E-mail:</label>
+				            <input tabindex="1" type="email" class="login-form-email" name="email" id="f_turing_eml" value="" required>
+			            </li>
+			            <li class="login-form-captcha clearfix">
+				            <label for="f_turing_num"><!--Captcha:--></label>
+				            <img id="f_turing_img" name="f_turing_img" src="/asp/captcha.asp?w=150&nocash=0,1421865" onfocus="this.blur()" onclick="javascript:document.getElementById('f_turing_img').src = '/asp/gen_img.asp?w=150&amp;nocash='+Math.random();">
+				            <div>
+					            <input tabindex="2" type="text" maxlength="7" placeholder="Captcha" name="f_turing_num" id="f_turing_num" required="required" onfocus="$('#f_turing_num').css('background-color', '#FFFFFF');">
+					            <span><a id="l_1" onfocus="this.blur()">Refresh image</a></span>			
+				            </div>
+			            </li>
+                    </ul>
+                    <div class="login-form-buttons clearfix">
+			            <input tabindex="3" type="button" id="b_step1" style="width:120px;" value="Send">
+                        <input tabindex="4" type="button" style="width:120px;" value="Cancel" class="true-modal-remove">
+		            </div>
+
+                    <div class="login-form-messages" id="ajax_messages"></div> <!-- по-умолчанию div в display: none; когда нужно показать - переключить div в display: block; -->
+
+                 </div>
+
+                <span class="login-form-loader" id="loader_img"><i class="platiru-loader"></i></span> <!-- по-умолчанию span в display: none; когда нужно показать - переключить span в display: block; -->
+                
+                <div class="login-form-status" id="check_code">
+			        <h3>Enter the confirmation code sent to <span id="email_messages" style="font-weight:bold;"></span> or click on the link in this message</h3>
+
+                    <br />
+
+                    <input maxlength="50" size="50" type="text" id="f_confirm_code" name="f_confirm_code">
+
+			        <div class="login-form-status-buttons clearfix">				        
+				        <input id="b_step2" type="button" value="Confirm">
+				        <input type="button" class="true-modal-remove" value="Cancel">                        
+			        </div>
+
+			        <div class="login-form-messages" id="code_messages"></div> <!-- по-умолчанию div в display: none; когда нужно показать - переключить div в display: block; -->
+		        </div>
+		        
+            </div>
+        </div>
+    </script>
+
+    
+    <script type="text/javascript">
+        var lastItemid = 0;
+        var Curr = 'USD';
+        addItems = function (curr) {
+            $("#itemLoader").show();            
+            addItems.loading = true;     
+            $.get("asp/items.asp?id=" + lastItemid + "&lang=en-US&curr=" + curr + "&rnd=" + Math.random(), function (data) {
+                lastItemid = data.substring(0, data.indexOf('|'));
+                $("#itemLoader").before(data.substring(data.indexOf('|') + 1));
+                addItems.loading = false;
+                $("#itemLoader").hide();
+            });
+        }
+        checkforAdd = function() {
+            if  ($(window).scrollTop() + 400 > $(document).height() - $(window).height()) {                        
+                if (lastItemid > 0) addItems(Curr);
+            }
+        }
+
+        function reloadItems(curr) {
+            Curr = curr;
+            last_ID = 0;
+            lastItemid = 0;
+            $("#itemLoader").prevAll().remove();
+            addItems(curr);
+        }
+
+        $(document).ready(function () {
+            lang = 'en-US';
+            last_ID = 0; addItems(Curr);
+            checkforAdd();        
+            $(window).scroll(function() {                                           
+                if (addItems.loading) return;
+                checkforAdd();
+            });
+
+            // предзаказы
+            $(function () {
+                var $container = $('#slider-games');
+                $($container).platiSlider({
+                    $slider: $('.slider_inner', $container),
+                    $pager: $('.slider_controls', $container)
+                });
+                $('.slider_inner').show();
+            });
+            
+
+        });
+
+        function Goods(page, rows, curr) {  
+            $("#GoodsPager").html('<img style=margin-top:4px src=images/loading.gif />');                           
+            $(".platiru-loader").css("visibility","visible");
+            $.get("asp/block_recommended.asp?page=" + page + "&rows=" + rows + "&curr=" + curr + "&lang=en-US&rnd=" + Math.random(), function (result) {                
+                if (result.length > 10) {
+                    $("#RecommendedBlock").html(result);
+                    qtip_init();
+                }
+		    });
+		    return false;
+        }
+
+    </script>
+</head>
+
+<body class="en" >
+<div class="wrapper main">
+
+
+<div class="header">
+	<div class="logo"><a href="http://plati.ru" title="Plati"></a></div>
+	<div class="top_menu">
+		<ul>
+			<li>                
+                <a href="#" class="with_submenu">Customers<i></i></a>
+                <div class="top_submenu">
+                    <ul>
+                        <li><a href="/howtopay/">How To Pay</a></li>
+                        <li><a href="/buyerterms/">Terms</a></li>              
+                    </ul>
+                </div>
+            </li>
+            
+			<li>
+                <a href="#" class="with_submenu">Affiliates<i></i></a>
+                <div class="top_submenu">
+                    <ul>
+                        <li><a href="/partners/?show=info">Info</a></li>                    
+                        <li><a href="http://www.digiseller.ru/outside/check.asp?redirecturl=http%3A%2F%2Fwww%2Eplati%2Ecom%2Fasp%2Fagent%2Easp&lang=en-US" target="_blank">Sign up</a></li>   
+                        <li><a href="/api/">API</a></li>
+                    </ul>
+                </div>
+			</li>
+		</ul>
+	</div>
+        
+	<div class="langs select_dd">
+		
+        <a class="en_icon active">EN</a>
+        <ul>			
+			<li><a class="ru_icon" href="?lang=ru-RU">RU</a></li>
+		</ul>
+        		
+	</div>
+    <div class="header_controls">
+        <span>
+            <a href="#" class="catalog-menu" id="catalog-arrow"> <!-- или .arrow_bottom -->
+                <span>Category</span><i></i>
+                <span class="no-border"></span>
+            </a> 
+        
+            <div class="catalog_dropdown" id="catalog-dropdown">
+                <ul>
+                    <li><a href="/catf/keysandpins/12549">Activation keys</a>
+                        <ul><div class="dropdown_subcat_arrow"></div><li><a  href="/cat/ip telephony/13">IP Telephony</a></li><li><a  href="/cat/game keys/7682">Game Keys</a></li><li><a  href="/cat/internet providers/11">Internet Providers</a></li><li><a  href="/cat/debit cards/11354">Debit Cards</a></li><li><a  href="/cat/mobile telephony/12">Mobile Telephony</a></li><li><a  href="/cat/satellite tv/9168">Satellite TV</a></li></ul>                
+                    </li>            
+                    <li><a href="/catf/sowtware/21059">Software</a>
+                        <ul><div class="dropdown_subcat_arrow"></div><li><a  href="/cat/pc/121">PC</a></li><li><a  href="/cat/security/70">Security</a></li><li><a  href="/cat/office software/92">Office software</a></li><li><a  href="/cat/games/51">Games</a></li><li><a  href="/cat/internet/7">Internet</a></li><li><a  href="/cat/cell phones/376">Cell Phones</a></li><li><a  href="/cat/multimedia & graphics/42">Multimedia & Graphics</a></li><li><a  href="/cat/education, science & engineering/111">Education, Science & Engineering</a></li><li><a  href="/cat/programming/60">Programming</a></li><li><a  href="/cat/seo/11326">SEO</a></li><li><a  href="/cat/desktop/105">Desktop</a></li><li><a  href="/cat/editors/77">Editors</a></li><li><a  href="/cat/software for pocket pc/125">Software for Pocket PC</a></li><li><a  href="/cat/utilities/82">Utilities</a></li></ul>                
+                    </li>            
+                    <li><a href="/catf/digital+goods/19830">Digital Products</a>
+                        <ul><div class="dropdown_subcat_arrow"></div><li><a  href="/cat/itunes & app store/19830">iTunes & App Store</a></li><li><a  href="/cat/audiobooks/22819">Audiobooks</a></li><li><a  href="/cat/databases/378">Databases</a></li><li><a  href="/cat/banner networks/139">Banner networks</a></li><li><a  href="/cat/courses, lessons/20363">Courses, Lessons</a></li><li><a  href="/cat/design/18409">Design</a></li><li><a  href="/cat/access to resources/198">Access to Resources</a></li><li><a  href="/cat/game accounts/21940">Game Accounts</a></li><li><a  href="/cat/arts/20446">Arts</a></li><li><a  href="/cat/mobile phones/3526">Mobile Phones</a></li><li><a  href="/cat/gift cards/21895">Gift Cards</a></li><li><a  href="/cat/invites/21708">Invites</a></li><li><a  href="/cat/sports predictions/21655">Sports Predictions</a></li><li><a  href="/cat/miscellaneous/5">Miscellaneous</a></li><li><a  href="/cat/active advertising systems/431">Active Advertising Systems</a></li><li><a  href="/cat/photos/7715">Photos</a></li><li><a  href="/cat/hosting/158">Hosting</a></li><li><a  href="/cat/templates/3572">Templates</a></li></ul>    
+                    </li>
+            
+                    <li><a href="/cat/Ebooks/306">EBooks</a>
+                        <ul><div class="dropdown_subcat_arrow"></div><li><a  href="/cat/security/163">Security</a></li><li><a  href="/cat/business & economics/17">Business & Economics</a></li><li><a  href="/cat/for children/26">For Children</a></li><li><a  href="/cat/house, family & entertainment/27">House, Family & Entertainment</a></li><li><a  href="/cat/newspapers & magazines/19">Newspapers & Magazines</a></li><li><a  href="/cat/arts & culture/25">Arts & Culture</a></li><li><a  href="/cat/computers/21">Computers</a></li><li><a  href="/cat/books in foreign languages/22">Books in Foreign Languages</a></li><li><a  href="/cat/medicine/30">Medicine</a></li><li><a  href="/cat/education & science/31">Education & Science</a></li><li><a  href="/cat/website promotion/11327">Website Promotion</a></li><li><a  href="/cat/dictionaries & encyclopedias/28">Dictionaries & Encyclopedias</a></li><li><a  href="/cat/sport, tourism/406">Sport, Tourism</a></li><li><a  href="/cat/engineering/29">Engineering</a></li><li><a  href="/cat/fiction/20">Fiction</a></li><li><a  href="/cat/esoteric/32">Esoteric</a></li><li><a  href="/cat/law/24">Law</a></li></ul>  
+                    </li>
+                </ul>
+            </div>
+
+        </span>
+        
+        <div class="top_search_hldr">
+            <input id="searchstr" value="" type="text" x-webkit-speech="x-webkit-speech" spellcheck="false" name="top_search" placeholder="Search..."  /><a class="search_go" onclick="dosearch();"></a>            
+        </div>
+
+        <div class="top_user_controls">
+            <div class="my-menu">
+                <a class="my_buy" href="https://www.oplata.info/info/?lang=en-US" target="_blank">
+                    <span>My</span>
+                    <span>purchases</span>
+                </a>
+                <div class="my-submenu my-goods-submenu">
+					<ul id="my-goods-submenu-loader">
+                        <li class="my-menu-loader"><i class="platiru-loader"></i></li>	                        											
+					</ul>
+                    <ul id="my-goods-submenu-items" style="display:none"></ul>
+				</div>
+            </div>
+
+            <div class="my-menu">
+                <a class="my_note" onclick="ShowModal('favs');">
+                    <span>My</span>
+                    <span>favorites</span>
+                </a>
+                <div class="my-submenu my-note-submenu">
+					<ul id="my-note-submenu-loader">
+                        <li class="my-menu-loader"><i class="platiru-loader"></i></li>                        
+                    </ul>
+                    <ul id="my-note-submenu-items" style="display:none">
+                    </ul>
+                </div>
+            </div>
+
+            <span class="head_top_icons"></span>                                
+            <div title="My Chat" class="chat_icon" style="cursor:pointer;" onclick="return PopUp(0, 1, 'en-US');"></div>
+
+            
+            <div class="my-menu my-menu-cart">
+                <!--корзина-->
+                <span id="cart_span" onclick="ShowModal('cart');">
+                    <a class="cart_icon"></a>
+                    <span id="cart_count_label" class="cart_icon_counter empty">
+			            <span id="cart_count_item"></span>
+		            </span>                                  
+                </span>
+                
+                <div class="my-submenu my-cart-submenu">
+					<ul id="my-cart-submenu-loader">
+                        <li class="my-menu-loader"><i class="platiru-loader"></i></li>                        
+                    </ul>
+                    <ul id="my-cart-submenu-items" style="display:none"></ul>
+                </div>
+                <!--/корзина-->
+            </div>
+            
+                
+        </div>        
+    </div>    
+</div>
+
+
+
+<script type="text/javascript">
+    lang = 'en-US';    
+    $('#searchstr').on("keypress", function (e) {
+        if ($('#searchstr').val().length>0 && e.keyCode == 13) {
+            dosearch();
+            return false;
+        }
+    });
+</script>
+
+
+<div class="content">
+	<div class="left_side">
+		<div class="left_catalog">
+		    <a href="catf/Keys-and-Pins/20630">Activation keys</a>
+            <ul><li><a href="/cat/ip-telephony/13" >IP Telephony</a>&nbsp;<span>204</span></li><li><a href="/cat/game-keys/7682" style=font-weight:bold;>Game Keys</a>&nbsp;<span>27877</span></li><li><a href="/cat/internet-providers/11" >Internet Providers</a>&nbsp;<span>221</span></li><li><a href="/cat/debit-cards/11354" >Debit Cards</a>&nbsp;<span>690</span></li><li><a href="/cat/mobile-telephony/12" >Mobile Telephony</a>&nbsp;<span>210</span></li><li><a href="/cat/satellite-tv/9168" >Satellite TV</a>&nbsp;<span>34</span></li></ul>
+		    <a href="catf/Software/21059">Software</a>
+		    <ul><li><a href="/cat/pc/121" >PC</a>&nbsp;<span>390</span></li><li><a href="/cat/security/70" >Security</a>&nbsp;<span>815</span></li><li><a href="/cat/office-software/92" >Office software</a>&nbsp;<span>745</span></li><li><a href="/cat/games/51" >Games</a>&nbsp;<span>1731</span></li><li><a href="/cat/internet/7" >Internet</a>&nbsp;<span>5350</span></li><li><a href="/cat/cell-phones/376" >Cell Phones</a>&nbsp;<span>1620</span></li><li><a href="/cat/multimedia-graphics/42" >Multimedia & Graphics</a>&nbsp;<span>857</span></li><li><a href="/cat/education-science-engineering/111" >Education, Science & Engineering</a>&nbsp;<span>1035</span></li><li><a href="/cat/programming/60" >Programming</a>&nbsp;<span>1797</span></li><li><a href="/cat/seo/11326" >SEO</a>&nbsp;<span>320</span></li><li><a href="/cat/desktop/105" >Desktop</a>&nbsp;<span>821</span></li><li><a href="/cat/editors/77" >Editors</a>&nbsp;<span>255</span></li><li><a href="/cat/software-for-pocket-pc/125" >Software for Pocket PC</a>&nbsp;<span>193</span></li><li><a href="/cat/utilities/82" >Utilities</a>&nbsp;<span>756</span></li></ul>
+		    <a href="catf/Digital-Goods/19830">Digital Products</a>
+		    <ul><li><a href="/cat/itunes-app-store/19830" >iTunes & App Store</a>&nbsp;<span>86</span></li><li><a href="/cat/audiobooks/22819" >Audiobooks</a>&nbsp;<span>4</span></li><li><a href="/cat/databases/378" >Databases</a>&nbsp;<span>4453</span></li><li><a href="/cat/banner-networks/139" >Banner networks</a>&nbsp;<span>140</span></li><li><a href="/cat/courses-lessons/20363" >Courses, Lessons</a>&nbsp;<span>1651</span></li><li><a href="/cat/design/18409" >Design</a>&nbsp;<span>2685</span></li><li><a href="/cat/access-to-resources/198" >Access to Resources</a>&nbsp;<span>861</span></li><li><a href="/cat/game-accounts/21940" >Game Accounts</a>&nbsp;<span>9395</span></li><li><a href="/cat/arts/20446" >Arts</a>&nbsp;<span>221</span></li><li><a href="/cat/mobile-phones/3526" >Mobile Phones</a>&nbsp;<span>1702</span></li><li><a href="/cat/gift-cards/21895" >Gift Cards</a>&nbsp;<span>125</span></li><li><a href="/cat/invites/21708" >Invites</a>&nbsp;<span>373</span></li><li><a href="/cat/sports-predictions/21655" >Sports Predictions</a>&nbsp;<span>222</span></li><li><a href="/cat/miscellaneous/5" >Miscellaneous</a>&nbsp;<span>1258</span></li><li><a href="/cat/active-advertising-systems/431" >Active Advertising Systems</a>&nbsp;<span>230</span></li><li><a href="/cat/photos/7715" >Photos</a>&nbsp;<span>1065</span></li><li><a href="/cat/hosting/158" >Hosting</a>&nbsp;<span>166</span></li><li><a href="/cat/templates/3572" >Templates</a>&nbsp;<span>2590</span></li></ul>		
+            <a href="cat/E-Books/19808">EBooks</a>
+		    <ul><li><a href="/cat/security/163" >Security</a>&nbsp;<span>307</span></li><li><a href="/cat/business-economics/17" >Business & Economics</a>&nbsp;<span>4882</span></li><li><a href="/cat/for-children/26" >For Children</a>&nbsp;<span>286</span></li><li><a href="/cat/house-family-entertainment/27" >House, Family & Entertainment</a>&nbsp;<span>2546</span></li><li><a href="/cat/newspapers-magazines/19" >Newspapers & Magazines</a>&nbsp;<span>330</span></li><li><a href="/cat/arts-culture/25" >Arts & Culture</a>&nbsp;<span>3882</span></li><li><a href="/cat/computers/21" >Computers</a>&nbsp;<span>2421</span></li><li><a href="/cat/books-in-foreign-languages/22" >Books in Foreign Languages</a>&nbsp;<span>112</span></li><li><a href="/cat/medicine/30" >Medicine</a>&nbsp;<span>1219</span></li><li><a href="/cat/education-science/31" >Education & Science</a>&nbsp;<span>71452</span></li><li><a href="/cat/website-promotion/11327" >Website Promotion</a>&nbsp;<span>689</span></li><li><a href="/cat/dictionaries-encyclopedias/28" >Dictionaries & Encyclopedias</a>&nbsp;<span>727</span></li><li><a href="/cat/sport-tourism/406" >Sport, Tourism</a>&nbsp;<span>927</span></li><li><a href="/cat/engineering/29" >Engineering</a>&nbsp;<span>3159</span></li><li><a href="/cat/fiction/20" >Fiction</a>&nbsp;<span>2915</span></li><li><a href="/cat/esoteric/32" >Esoteric</a>&nbsp;<span>1100</span></li><li><a href="/cat/law/24" >Law</a>&nbsp;<span>2824</span></li></ul>
+		</div>
+
+        <div class="statistic">
+			<h2>Statistics</h2>
+			<table>
+				<tbody>
+                    
+					    <tr>
+						    <th>Affiliates</th>
+						    <td>638886</td>
+					    </tr>                    
+					    <tr>
+						    <th>Sellers</th>
+						    <td>58869</td>
+					    </tr>
+					    <tr>
+						    <th>Items</th>
+						    <td>256016</td>
+					    </tr>
+                    
+				</tbody>
+			</table>
+			<h3>Yesterday</h3>
+			<table>
+				<tbody>
+                    
+					    <tr>
+						    <th>Sales</th>
+						    <td><strong>6791</strong></td>
+					    </tr>
+                    
+					    <tr class="review-good">
+						    <th>Positive feedbacks</th>
+						    <td>1162</td>
+					    </tr>
+					    <tr class="review-bad">
+						    <th>Negative feedbacks</th>
+						    <td>69</td>
+					    </tr>
+                    
+				</tbody>
+			</table>
+		</div>
+
+	</div>	
+
+	
+	<div class="content_full">
+	
+        <div class="popular_products_links">
+<a title="Access to sites" href="/cat/access-to-sites/22612" class="little_link">Access to sites</a>
+<a title="Anonymous Proxy" href="/cat/anonymous-proxy/21199" class="little_link">Anonymous Proxy</a>
+<a title="Antivirus" href="/cat/antivirus/21062" class="big_link">Antivirus</a>
+<a title="ArcheAge" href="/cat/archeage/22426" class="little_link_grey">ArcheAge</a>
+<a title="ARK: Survival Evolved" href="/cat/ark-survival-evolved/22742" class="little_link">ARK: Survival Evolved</a>
+<a title="Arma" href="/cat/arma/22317" class="medium_link">Arma</a>
+<a title="Assassin's Creed" href="/cat/assassin-s-creed/22703" class="little_link_grey">Assassin's Creed</a>
+<a title="Batman: Arkham Knight" href="/cat/batman-arkham-knight/22735" class="little_link_grey">Batman: Arkham Knight</a>
+<a title="Battlefield 4" href="/cat/battlefield-4/22307" class="little_link_grey">Battlefield 4</a>
+<a title="Blade and Soul" href="/cat/blade-and-soul/22613" class="little_link_grey">Blade and Soul</a>
+<a title="Call of Duty" href="/cat/call-of-duty/18548" class="little_link_grey">Call of Duty</a>
+<a title="Call Of Duty: Black Ops" href="/cat/call-of-duty-black-ops/20916" class="little_link">Call Of Duty: Black Ops</a>
+<a title="CD Keys" href="/cat/cd-keys/21820" class="little_link_grey">CD Keys</a>
+<a title="Cell phone unlock" href="/cat/cell-phone-unlock/377" class="medium_link">Cell phone unlock</a>
+<a title="Cities: Skylines" href="/cat/cities-skylines/22708" class="little_link_grey">Cities: Skylines</a>
+<a title="Colin McRae: Dirt" href="/cat/colin-mcrae-dirt/21728" class="little_link_grey">Colin McRae: Dirt</a>
+<a title="Counter-Strike" href="/cat/counter-strike/20883" class="big_link">Counter-Strike</a>
+<a title="Dark Souls 2" href="/cat/dark-souls-2/22545" class="little_link_grey">Dark Souls 2</a>
+<a title="Dark Souls 3" href="/cat/dark-souls-3/22809" class="little_link_grey">Dark Souls 3</a>
+<a title="Dark Souls: Prepare to Die Edition" href="/cat/dark-souls-prepare-to-die-edition/22117" class="little_link_grey">Dark Souls: Prepare to Die Edition</a>
+<a title="Dead by Daylight" href="/games/dead-by-daylight/602" class="little_link">Dead by Daylight</a>
+<a title="Diablo 3" href="/cat/diablo-3/22082" class="little_link_grey">Diablo 3</a>
+<a title="Doom" href="/cat/doom/23788" class="little_link_grey">Doom</a>
+<a title="Dr.WEB" href="/cat/dr-web/21061" class="little_link_grey">Dr.WEB</a>
+<a title="Dying Light" href="/cat/dying-light/22693" class="little_link_grey">Dying Light</a>
+<a title="Elder Scrolls Online" href="/cat/elder-scrolls-online/22468" class="little_link_grey">Elder Scrolls Online</a>
+<a title="Elder Scrolls V: Skyrim" href="/cat/elder-scrolls-v-skyrim/21814" class="little_link_grey">Elder Scrolls V: Skyrim</a>
+<a title="EVE Online" href="/cat/eve-online/18607" class="little_link">EVE Online</a>
+<a title="Evolve" href="/cat/evolve/22700" class="little_link_grey">Evolve</a>
+<a title="Fallout" href="/cat/fallout/22599" class="little_link_grey">Fallout</a>
+<a title="Far Cry 4" href="/cat/far-cry-4/22625" class="little_link_grey">Far Cry 4</a>
+<a title="Far Cry Primal" href="/cat/far-cry-primal/22783" class="little_link_grey">Far Cry Primal</a>
+<a title="FIFA" href="/cat/fifa/22438" class="big_link">FIFA</a>
+<a title="Final Fantasy" href="/cat/final-fantasy/9901" class="little_link_grey">Final Fantasy</a>
+<a title="Football Manager" href="/cat/football-manager/22572" class="little_link_grey">Football Manager</a>
+<a title="Garry's Mod" href="/cat/garry-s-mod/20886" class="little_link_grey">Garry's Mod</a>
+<a title="Google Play" href="/cat/google-play/22379" class="little_link_grey">Google Play</a>
+<a title="Grand Theft Auto (GTA)" href="/cat/grand-theft-auto-gta/20884" class="little_link">Grand Theft Auto (GTA)</a>
+<a title="Guild Wars 2" href="/cat/guild-wars-2/22087" class="little_link_grey">Guild Wars 2</a>
+<a title="Hearthstone" href="/cat/hearthstone/22580" class="big_link">Hearthstone</a>
+<a title="iTunes" href="/cat/itunes/22243" class="big_link">iTunes</a>
+<a title="Legacy of the Void" href="/cat/legacy-of-the-void/22756" class="little_link">Legacy of the Void</a>
+<a title="LEGO" href="/cat/lego/22471" class="little_link_grey">LEGO</a>
+<a title="Lineage II" href="/cat/lineage-ii/18621" class="little_link_grey">Lineage II</a>
+<a title="Metal Gear Solid" href="/cat/metal-gear-solid/22747" class="little_link_grey">Metal Gear Solid</a>
+<a title="Middle-earth: Shadow of Mordor" href="/cat/middle-earth-shadow-of-mordor/22644" class="little_link_grey">Middle-earth: Shadow of Mordor</a>
+<a title="Minecraft" href="/cat/minecraft/21748" class="little_link_grey">Minecraft</a>
+<a title="Mortal Kombat" href="/cat/mortal-kombat/22361" class="little_link_grey">Mortal Kombat</a>
+<a title="Original Vouchers" href="/cat/original-vouchers/21612" class="little_link_grey">Original Vouchers</a>
+<a title="Overwatch" href="/cat/overwatch/23792" class="medium_link">Overwatch</a>
+<a title="Payday 2" href="/cat/payday-2/22445" class="little_link_grey">Payday 2</a>
+<a title="Perfect World" href="/cat/perfect-world/18324" class="little_link_grey">Perfect World</a>
+<a title="PlayStation Network" href="/cat/playstation-network/20628" class="big_link">PlayStation Network</a>
+<a title="Pokemon GO Accounts" href="/cat/pokemon-go-accounts/23821" class="little_link_grey">Pokemon GO Accounts</a>
+<a title="Prepaid Cards" href="/cat/prepaid-cards/21675" class="little_link">Prepaid Cards</a>
+<a title="Private cheats" href="/cat/private-cheats/22751" class="little_link_grey">Private cheats</a>
+<a title="Pro Evolution Soccer" href="/cat/pro-evolution-soccer/21714" class="little_link_grey">Pro Evolution Soccer</a>
+<a title="Rainbow Six" href="/cat/rainbow-six/22762" class="little_link_grey">Rainbow Six</a>
+<a title="Resident Evil 6" href="/cat/resident-evil-6/22304" class="little_link_grey">Resident Evil 6</a>
+<a title="Rocket League" href="/cat/rocket-league/22746" class="little_link">Rocket League</a>
+<a title="Rust" href="/cat/rust/22446" class="medium_link">Rust</a>
+<a title="Stronghold Kingdoms" href="/cat/stronghold-kingdoms/22773" class="little_link_grey">Stronghold Kingdoms</a>
+<a title="The Division" href="/cat/the-division/22777" class="little_link_grey">The Division</a>
+<a title="The Sims 4" href="/cat/the-sims-4/22276" class="little_link_grey">The Sims 4</a>
+<a title="Tomb Raider" href="/cat/tomb-raider/22292" class="little_link_grey">Tomb Raider</a>
+<a title="Total War" href="/cat/total-war/21526" class="little_link">Total War</a>
+<a title="Windows" href="/cat/windows/20322" class="medium_link">Windows</a>
+<a title="Witcher" href="/cat/witcher/21709" class="little_link_grey">Witcher</a>
+<a title="World of Tanks" href="/cat/world-of-tanks/21952" class="medium_link">World of Tanks</a>
+<a title="World of Warcraft" href="/cat/world-of-warcraft/20328" class="big_link">World of Warcraft</a>
+<a title="Xbox LIVE (MS Points)" href="/cat/xbox-live-ms-points/17588" class="big_link">Xbox LIVE (MS Points)</a>
+<a title="XCOM 2" href="/cat/xcom-2/22813" class="little_link_grey">XCOM 2</a>
+
+</div>
+
+   		
+	    										
+		<div class="right_side">
+            
+		        <div style="height:250px;" class="games_slider" id="slider-games" onclick="document.location='/games/preorders/'">				
+				    <div class="games_slider">	
+                        <div class="slider_inner" style="display:none;">						           
+				            <span><a href="/games/deus-ex-mankind-divided/599" title="Deus Ex: Mankind Divided"><img height="131" width="105" src="http://graph.digiseller.ru/img.ashx?idc=599&w=105&h=131" alt="Deus Ex: Mankind Divided" /></a></span><span><a href="/games/legion/597" title="Legion"><img height="131" width="105" src="http://graph.digiseller.ru/img.ashx?idc=597&w=105&h=131" alt="Legion" /></a></span><span><a href="/games/champions-of-anteria/605" title="Champions of Anteria"><img height="131" width="105" src="http://graph.digiseller.ru/img.ashx?idc=605&w=105&h=131" alt="Champions of Anteria" /></a></span><span><a href="/games/fifa-17/601" title="FIFA 17"><img height="131" width="105" src="http://graph.digiseller.ru/img.ashx?idc=601&w=105&h=131" alt="FIFA 17" /></a></span><span><a href="/games/mafia-iii/592" title="Mafia III"><img height="131" width="105" src="http://graph.digiseller.ru/img.ashx?idc=592&w=105&h=131" alt="Mafia III" /></a></span><span><a href="/games/battlefield-1/603" title="Battlefield 1"><img height="131" width="105" src="http://graph.digiseller.ru/img.ashx?idc=603&w=105&h=131" alt="Battlefield 1" /></a></span><span><a href="/games//604" title=""><img height="131" width="105" src="http://graph.digiseller.ru/img.ashx?idc=604&w=105&h=131" alt="" /></a></span><span><a href="/games/dishonored-2/606" title="Dishonored 2"><img height="131" width="105" src="http://graph.digiseller.ru/img.ashx?idc=606&w=105&h=131" alt="Dishonored 2" /></a></span><span><a href="/games/watch-dogs-2/600" title="Watch Dogs 2"><img height="131" width="105" src="http://graph.digiseller.ru/img.ashx?idc=600&w=105&h=131" alt="Watch Dogs 2" /></a></span><span><a href="/games/crossout/589" title="Crossout"><img height="131" width="105" src="http://graph.digiseller.ru/img.ashx?idc=589&w=105&h=131" alt="Crossout" /></a></span>		    			           			      
+			           </div>
+				    </div>
+                    
+				        <div class="slider_controls"></div>
+                    
+                    <a href="/games/preorders/"><u>Pre-order</u></a>
+                    <span>to guarantee getting the key<br />in the first minute of the official release</span>
+                </div>
+		        <div class="adds_product_images"><a href="/games/pokemon-go/607"><img title="Pokemon GO" src=http://graph.digiseller.ru/img.ashx?idc2=607&h=68&w=180&crop=true /></a><a href="/games/legion/597"><img title="Legion" src=http://graph.digiseller.ru/img.ashx?idc2=597&h=68&w=180&crop=true /></a><a href="/games/total-war-warhammer/591"><img title="Total War: Warhammer" src=http://graph.digiseller.ru/img.ashx?idc2=591&h=68&w=180&crop=true /></a><a href="/games/overwatch-origins-edition/593"><img title="Overwatch: Origins Edition" src=http://graph.digiseller.ru/img.ashx?idc2=593&h=68&w=180&crop=true /></a><a href="/games/the-witcher-3-wild-hunt-blood-and-wine/595"><img title="The Witcher 3: Wild Hunt - Blood and Wine" src=http://graph.digiseller.ru/img.ashx?idc2=595&h=68&w=180&crop=true /></a><a href="/games/doom/585"><img title="DOOM" src=http://graph.digiseller.ru/img.ashx?idc2=585&h=68&w=180&crop=true /></a><a href="/games/dead-by-daylight/602"><img title="Dead by Daylight" src=http://graph.digiseller.ru/img.ashx?idc2=602&h=68&w=180&crop=true /></a><a href="/cat/itunes/19830"><img title="iTunes" src=http://graph.digiseller.ru/img.ashx?idr=19830&w=180&h=68&crop=true /></a><a href="/cat/xbox-live-microsoft-points/17588"><img title="Xbox LIVE (Microsoft Points)" src=http://graph.digiseller.ru/img.ashx?idr=17588&w=180&h=68&crop=true /></a><a href="/cat/playstation-network/20628"><img title="PlayStation Network" src=http://graph.digiseller.ru/img.ashx?idr=20628&w=180&h=68&crop=true /></a></div>
+         
+		</div>
+
+        <div class="content_center">  
+
+                <!--РЕКОМЕНДУЕМЫЕ ТОВАРЫ-->
+                <div id="RecommendedBlock">
+               
+                <h2>Recommended<i class="platiru-loader"></i></h2><div class="sort_by"><select onchange="Goods(1, 15, this.value);reloadItems(this.value);"><option value="RUR">RUB</option><option selected value="USD">USD</option><option value="EUR">EUR</option><option value="UAH">UAH</option></select></div><table class="goods-table"><tr  class="colored_row"><td><div><a class="product-to-notepad" onclick="return noteItem(1902700,0)"><i id="n1902700" class="unchecked" title="Add to favorites"></i></a></div></td><td><div>&nbsp;</div></td><td class="product-title bold"><div><a href="/itm/grand-theft-auto-v-gta-5-social-club-inactivity/1902700">Grand Theft Auto V - GTA 5 - Social Club + inactivity</a></div></td><td class="product-price bold"><div>4.92 $</span> </div></td></td></tr><tr  class="colored_row"><td><div><a class="product-to-notepad" onclick="return noteItem(1978127,0)"><i id="n1978127" class="unchecked" title="Add to favorites"></i></a></div></td><td><div>&nbsp;</div></td><td class="product-title bold"><div><a href="/itm/triggerbot-wh-for-cs-go-tgo-access-1-hour/1978127">Private hack for CSGO from ARMGAMES - Access for 1 hour</a></div></td><td class="product-price bold"><div>0.30 $</span> </div></td></td></tr><tr ><td><div><a class="product-to-notepad" onclick="return noteItem(2117542,0)"><i id="n2117542" class="unchecked" title="Add to favorites"></i></a></div></td><td><div>&nbsp;</div></td><td class="product-title"><div><a href="/itm/steam-key-gift/2117542">STEAM KEY + GIFT</a></div></td><td class="product-price"><div>0.19 $</span> </div></td></td></tr><tr ><td><div><a class="product-to-notepad" onclick="return noteItem(2007166,0)"><i id="n2007166" class="unchecked" title="Add to favorites"></i></a></div></td><td><div>&nbsp;</div></td><td class="product-title"><div><a href="/itm/keys-steam-random-95-more-than-245-p-gift/2007166">Keys steam random  + Gift</a></div></td><td class="product-price"><div>0.19 $</span> </div></td></td></tr><tr ><td><div><a class="product-to-notepad" onclick="return noteItem(1447017,0)"><i id="n1447017" class="unchecked" title="Add to favorites"></i></a></div></td><td><div><i data-tooltip="m=chat" class="chat_online" onclick="return PopUp(115936, 0);"></i></a></div></td><td class="product-title"><div><a href="/itm/10-visa-virtual-rus-online-statement-balance/1447017">10 $ VISA VIRTUAL (RUS) Online Statement Balance</a></div></td><td class="product-price"><div>11.80 $</span> </div></td></td></tr><tr ><td><div><a class="product-to-notepad" onclick="return noteItem(2155837,0)"><i id="n2155837" class="unchecked" title="Add to favorites"></i></a></div></td><td><div>&nbsp;</div></td><td class="product-title"><div><a href="/itm/minecraft-premium-warranty-gifts-nickname-change/2155837">Minecraft PREMIUM [WARRANTY + can change NAME and SKIN]</a></div></td><td class="product-price"><div>0.37 $</span> </div></td></td></tr><tr ><td><div><a class="product-to-notepad" onclick="return noteItem(1931229,0)"><i id="n1931229" class="unchecked" title="Add to favorites"></i></a></div></td><td><div><i data-tooltip="m=chat" class="chat_online" onclick="return PopUp(351994, 0);"></i></a></div></td><td class="product-title"><div><a href="/itm/minecraft-premium-email-change-full-access-change-nick/1931229">MINECRAFT PREMIUM+EMAIL CHANGE+FULL ACCESS+CHANGE NICK</a></div></td><td class="product-price"><div>3.93 $</span> </div></td></td></tr><tr ><td><div><a class="product-to-notepad" onclick="return noteItem(2169306,0)"><i id="n2169306" class="unchecked" title="Add to favorites"></i></a></div></td><td><div><i data-tooltip="m=chat" class="chat_online" onclick="return PopUp(351994, 0);"></i></a></div></td><td class="product-title"><div><a href="/itm/grand-theft-auto-v-gta-5-pc-social-club-account/2169306">Grand Theft Auto V / GTA 5 PC [Social Club Account]</a></div></td><td class="product-price"><div>3.14 $</span> </div></td></td></tr><tr ><td><div><a class="product-to-notepad" onclick="return noteItem(1239468,0)"><i id="n1239468" class="unchecked" title="Add to favorites"></i></a></div></td><td><div>&nbsp;</div></td><td class="product-title"><div><a href="/itm/psn-1000-rubles-playstation-network-rus-card-photo/1239468">PSN 1000 rubles PlayStation Network (RUS) CARD - PHOTO</a></div></td><td class="product-price"><div>15.57 $</span> </div></td></td></tr><tr ><td><div><a class="product-to-notepad" onclick="return noteItem(1239503,0)"><i id="n1239503" class="unchecked" title="Add to favorites"></i></a></div></td><td><div>&nbsp;</div></td><td class="product-title"><div><a href="/itm/psn-2500-rubles-playstation-network-rus-card-photo/1239503">PSN 2500 rubles PlayStation Network (RUS) CARD - PHOTO</a></div></td><td class="product-price"><div>38.67 $</span> </div></td></td></tr><tr ><td><div><a class="product-to-notepad" onclick="return noteItem(1847398,0)"><i id="n1847398" class="unchecked" title="Add to favorites"></i></a></div></td><td><div>&nbsp;</div></td><td class="product-title"><div><a href="/itm/grand-theft-auto-v-gta-5-pc-akkaunt-social-club/1847398">Grand Theft Auto V / GTA 5 PC [Аккаунт Social Club]</a></div></td><td class="product-price"><div>3.41 $</span> </div></td></td></tr><tr ><td><div><a class="product-to-notepad" onclick="return noteItem(2075771,0)"><i id="n2075771" class="unchecked" title="Add to favorites"></i></a></div></td><td><div><i data-tooltip="m=chat" class="chat_online" onclick="return PopUp(551262, 0);"></i></a></div></td><td class="product-title"><div><a href="/itm/windows-10-professional/2075771">Windows 10 Professional + 5 years of protection for PC</a></div></td><td class="product-price"><div>33.53 $</span> </div></td></td></tr><tr ><td><div><a class="product-to-notepad" onclick="return noteItem(1830169,0)"><i id="n1830169" class="unchecked" title="Add to favorites"></i></a></div></td><td><div>&nbsp;</div></td><td class="product-title"><div><a href="/itm/grand-theft-auto-v-gta-5-social-club-warranty-online/1830169">Grand Theft Auto V- GTA 5 -Social Club -Warranty-OnLine</a></div></td><td class="product-price"><div>3.93 $</span> </div></td></td></tr><tr ><td><div><a class="product-to-notepad" onclick="return noteItem(672117,0)"><i id="n672117" class="unchecked" title="Add to favorites"></i></a></div></td><td><div>&nbsp;</div></td><td class="product-title"><div><a href="/itm/10-visa-virtual-express-check-no-3d-secure-price/672117">10 $ VISA VIRTUAL + Express check, NO 3D Secure. PRICE</a></div></td><td class="product-price"><div>11.30 $</span> </div></td></td></tr><tr ><td><div><a class="product-to-notepad" onclick="return noteItem(2079628,0)"><i id="n2079628" class="unchecked" title="Add to favorites"></i></a></div></td><td><div>&nbsp;</div></td><td class="product-title"><div><a href="/itm/minecraft-premium-warranty-your-nickname-your-skin/2079628">Minecraft PREMIUM [Warranty + your nickname, your skin]</a></div></td><td class="product-price"><div>0.37 $</span> </div></td></td></tr></table><div class="pages_nav"><a class="active" onclick="return Goods(1, 15, 'USD');" href="javascript:void();">1</a><a onclick="return Goods(2, 15, 'USD');" href="#">2</a><a onclick="return Goods(3, 15, 'USD');" href="#">3</a><a onclick="return Goods(4, 15, 'USD');" href="#">4</a><a onclick="return Goods(5, 15, 'USD');" href="#">5</a><span>...</span><a onclick="return Goods(24, 15, 'USD');" href="#">24</a></div>
+                </div>
+                <!--/РЕКОМЕНДУЕМЫЕ ТОВАРЫ-->
+
+                <div id="ItemsWrapper" class="popular_products_preview"><div id=itemLoader style=display:none><img src=img/platiru-loader.gif></div></div>		
+		
+	    </div>	
+
+	</div>	<!-- end content -->				
+
+
+</div> <!-- end content -->
+
+</div> <!-- end wrapper -->
+
+<div class="footer">
+    <div class="footer_wrap">
+
+   
+
+	<div class="copyright">
+        <span>© 2016 ООО "ЭЛИТТРАНССЕРВИС"</span><br/>
+        <span>© 1995–2016 Meryl Holdings Ltd.</span><br/>
+
+        <table>
+            <tr><td>
+                <a href="http://wmtransfer.com"><img src="/img/we_accept_wm_en-US.png" /></a>
+
+                </td>
+                <td> 
+                     <div class="socials">
+                        <table>
+			                <tr>
+				                <td class="social-tw"><a href="https://twitter.com/platicom" class="twitter-follow-button" data-width="60px" data-show-count="false" data-lang="en" data-show-screen-name="false"></a><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script></td>
+				                <td class="social-fb"><iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.facebook.com%2Fpages%2FPlatiRu-momentalnye-pokupki%2F113423815390678%3Fv%3Dpage_getting_started&layout=button_count&show_faces=false&width=134&action=like&font=verdana&colorscheme=light&height=21&locale=en_US" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:134px; height:21px;" allowTransparency="true"></iframe></td>
+                                
+			                </tr>
+		                </table>       
+	                </div>
+
+                </td>
+            </tr>
+
+        </table>        
+
+        
+
+        <!-- Google Analytics -->
+        <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');        
+        
+        ga('create', 'UA-744872-1', 'auto');
+               
+        ga('send', 'pageview');
+        </script>
+	    <!-- Google Analytics -->
+        <!-- Google Tag Manager -->
+<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-K3Q8LR"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-K3Q8LR');</script>
+<!-- End Google Tag Manager -->
+        <!-- Yandex.Metrika counter -->
+        <script type="text/javascript"> (function (d, w, c) { (w[c] = w[c] || []).push(function() { try { w.yaCounter32272129 = new Ya.Metrika({ id:32272129, clickmap:true, trackLinks:true, accurateTrackBounce:true, webvisor:true, trackHash:true }); } catch(e) { } }); var n = d.getElementsByTagName("script")[0], s = d.createElement("script"), f = function () { n.parentNode.insertBefore(s, n); }; s.type = "text/javascript"; s.async = true; s.src = "https://mc.yandex.ru/metrika/watch.js"; if (w.opera == "[object Opera]") { d.addEventListener("DOMContentLoaded", f, false); } else { f(); } })(document, window, "yandex_metrika_callbacks");</script><noscript><div><img src="https://mc.yandex.ru/watch/32272129" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+        <!-- /Yandex.Metrika counter -->
+    </div>
+	<div class="footer_menu">
+        <ul></ul>
+		<ul>
+            <li><a href="https://www.oplata.info/info/?lang=en-US" target="_blank">My Purchases</a></li>
+			<li><a onclick="ShowModal('favs');">My Favorites</a></li>
+            <li><a onclick="return PopUp(0, 1, 'en-US');">My Chat</a></li>						
+		</ul>	
+		<!--<ul>
+			<li><a>Подарочные карты</a></li>
+			<li><a>Обмен WebMoney</a></li>
+		</ul>-->
+		<ul>
+			<li><a href="/API/">API</a></li>
+			<li><a href="mailto:support@plati.com">Support</a></li>
+		</ul>	
+	</div>
+    </div>
+</div> 
+<a id="go-top" class="b-back-2-top"></a>
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0023)http://clickshield.net/ -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title>AdProtect.net</title>
+<script type="text/javascript" src="jquery-1.7.min.js"></script>
+<script type="text/javascript">
+function validateEmail(email) { 
+    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
+} 
+
+$(document).ready(function()
+{
+$('#frmComments').submit(function() {
+        //get user input and create random number
+        var input = ($(this).serialize());
+        var rand = Math.random();
+		if($('#comments').val() == '' ) {
+			alert('Please enter comments.');
+			return false;
+		}
+		if(!validateEmail($('#email').val())) {
+			alert('Please enter a valid email address.');
+			return false;
+		}
+
+        //submit post to check.php and reload image
+        $.post('check.php', input, function(data) {
+				var arrData = data.split("|");
+				if(arrData[0]=="1") {
+					//success.. disable submit button
+					$('#btnSubmit').attr('disabled', true);
+					$('p.success').html(arrData[1]);
+					$('p.success').show();
+					
+				} else {
+					$('div.result').html(arrData[1]);
+				}
+                $('img.captcha').attr("src", 'captchacreate.php?' + rand);
+        });
+        return false;
+        });
+
+return false;
+});
+</script>
+</head>
+
+<body bgcolor="#afabb0" style="color:#afabb0" screen_capture_injected="true">
+
+<table align="center"><tbody><tr><td>
+
+<div style="width:700px; background-color: #fff; -webkit-border-radius: 10px; -moz-border-radius: 10px; border-radius: 10px; -webkit-box-shadow: 0px 0px 5px 2px #666;
+box-shadow: 0px 0px 5px 2px #666; -moz-box-shadow:0px 0px 5px 2px #666; -ms-filter:progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color=&#39;#000000&#39;); filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color=&#39;#000000&#39;);">
+
+<br>
+
+<div style="width: 650px; margin: 0 auto;" align="center">
+
+<!--column/row #1-->
+
+<div style="float: left; width: 65px; margin: 0px 0px 0px 0px;">
+
+<div style="margin: 0px 0px 0px 0px; width: 65px; line-height: 0pt;" align="left">
+
+<img src="http://s15.postimg.org/hkolxim23/info.png" width="65px" height="65px">
+
+
+</div>
+
+</div>
+
+<div style="float: left; width: 585px; margin: 0px 0px 0px 0px; background-color: #fff; -webkit-border-radius: 10px; -moz-border-radius: 10px; border-radius: 10px;">
+
+<div style="margin: 0px 0px 0px 0px; width: 555px; line-height: 14pt;" align="left">
+<br>
+
+<p style="text-decoration:none; font-family: Arial, Helvetica, sans-serif; font-size:28px; color:#000; font-weight:bolder; margin:0 0 0 0;">channeltraffic.net</p>
+
+
+</div>
+
+</div>
+
+<div style="clear: both;"></div>
+
+<!--column/row #2-->
+
+</div>
+
+<br>
+<br>
+<p style="text-decoration:none; font-family: Arial, Helvetica, sans-serif; font-size:14px; color:#144295; font-weight:bolder; margin:0 0 20px 100px;">1. What is channeltraffic.net ?</p>
+<p style="text-decoration:none; font-family: Arial, Helvetica, sans-serif; font-size:13px; color:#322d2b; font-weight:normal; margin:0 40px 0 100px;">
+channeltraffic.net is an advertising network technology tracking domain. Advertisers distribute their ads across a broad network of search partners and content sites. Before traffic is delivered to advertisers, channeltraffic.net is used as a network referral ID to identify and qualify traffic sent by traffic partners.</p>
+<br>
+<br>
+<br>
+<p style="text-decoration:none; font-family: Arial, Helvetica, sans-serif; font-size:14px; color:#144295; font-weight:bolder; margin:0 0 20px 100px;">2. Why am I seeing channeltraffic.net on my computer?</p>
+<p style="text-decoration:none; font-family: Arial, Helvetica, sans-serif; font-size:13px; color:#322d2b; font-weight:normal; margin:0 40px 0 100px;">
+Because the advertising network is comprised of thousands of traffic partners, you may have been included within a partner's advertisement distribution network. If you have received any advertisements that contain the url channeltraffic.net, it is important to understand that this property and the advertisements you've seen have no association with the traffic partner that is displaying ads to you. channeltraffic.net is not the source of the advertisements.</p>
+<br /><br />
+<div>
+	<form id="frmComments" method="post">
+			<table class='center'>
+				<tr>
+					<td valign='top' align='right'><span style="text-decoration:none; font-family: Arial, Helvetica, sans-serif; font-size:13px; color:#322d2b; font-weight:normal; margin:0 40px 0 100px;">Comments</span></td>
+					<td><textarea id='comments' name='comments' cols='50' rows='6'></textarea></td>
+				</tr>
+				<tr>
+					<td colspan='2' align='center'>&nbsp;</td>
+				</tr>
+				<tr>
+					<td valign='top' align='right'><span style="text-decoration:none; font-family: Arial, Helvetica, sans-serif; font-size:13px; color:#322d2b; font-weight:normal; margin:0 40px 0 100px;">Email Address</span></td>
+					<td><input type="text" id='email' name="email" size="65"></td>
+				</tr>
+				<tr>
+					<td colspan='2' align='center'>&nbsp;</td>
+				</tr>
+				<tr>
+					<td valign='top' align='right'><strong><span style="text-decoration:none; font-family: Arial, Helvetica, sans-serif; font-size:13px; color:#322d2b; font-weight:normal; margin:0 40px 0 100px;">Enter Code</span></strong></td>
+					<td valign='top'><img class="captcha" src="http://channeltraffic.net/captchacreate.php"> &nbsp;
+					<input type="text" name="userinput" style='vertical-align:top;margin-top:0px'>
+					<!-- result holder -->
+					<div class="result"></div>
+					</td>
+				</tr>
+				<tr>
+					<td colspan='2' valign='top' align='center'>
+						<input type="submit" value="Submit" class='btn btn-primary' id='btnSubmit'>
+					</td>
+				</tr>
+			</table>
+	</form>
+</div>
+
+<br><br>
+<br>
+<br><br>
+<br>
+
+<div align="center">
+<font style="font-size: 18px; color: #000; margin: 0 auto; width:300px;">•&nbsp;&nbsp;&nbsp;•&nbsp;&nbsp;&nbsp;•</font>
+</div>
+<br>
+
+
+</div>
+</td>
+</tr>
+</tbody></table>
+
+<br>
+
+
+
+
+</body></html>

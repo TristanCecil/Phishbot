@@ -1,0 +1,352 @@
+<!DOCTYPE html> 
+<html lang="ko">
+<head>
+	<meta charset="utf-8">	
+	<title data-translate="Afreeca TV" >아프리카TV</title>
+	<meta name="keywords" content="아프리카TV,아프리카,개인방송,신대륙,UCC">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<link rel="shortcut icon" type="image/x-icon" href="http://www.afreecatv.com/afreeca.ico"/> 		
+	<link rel="stylesheet" type="text/css" href="http://www.afreecatv.com/css/global/afmain/afmain.css"/>
+		<link rel="stylesheet" href="http://www.afreecatv.com/css/global/afmain/jquery.mCustomScrollbar.css"/>
+	<script type="text/javascript" src="http://www.afreecatv.com/script/common/jquery.js"></script>
+	<script type="text/javascript" src="http://www.afreecatv.com/script/afmain/jquery.mCustomScrollbar.concat.min.js"></script>
+	<script type="text/javascript" src="http://www.afreecatv.com/script/afmain/mousewheelStopPropagation.min.js"></script>
+	<script type="text/javascript" src="http://www.afreecatv.com/script/new_main/_config.js"></script>
+	<script type="text/javascript" src="http://www.afreecatv.com/script/new_main/afreecacook.js"></script>
+	<script type="text/javascript" src="http://live.afreecatv.com:8057/api/get_main_broad_category.php?szScriptVar=oMainCategory&lang="></script>
+	<script type="text/javascript" src="http://live.afreecatv.com:8057/api/get_broadlist_main_info.php?type=script"></script>
+	<script type="text/javascript">window.szLogAction = 'MAIN_LIST';</script>
+	<script type="text/javascript" src="http://www.afreecatv.com/script/new_main/common.js" charset="euc-kr"></script>
+	<script type="text/javascript" src="http://www.afreecatv.com/data/afreeca_notice_portlet.js" charset="euc-kr"></script>
+	<script type="text/javascript" src="http://static.afreecatv.com/asset/library/requirejs/2.1.8/require.js"></script>
+	<script type="text/javascript" src="http://live.afreecatv.com:8057/script/broad_category.js" charset="euc-kr"></script>
+	<script type="text/javascript" src="http://live.afreecatv.com:8057/script/pop_open.js" charset="euc-kr"></script>
+	<script type="text/javascript" src="http://static.afreecatv.com/asset/service/gnb/gnb_common.js"></script>
+	<script type="text/javascript" src="http://static.afreecatv.com/asset/service/gnb/gnb.js"></script>
+	<script type="text/javascript" src="http://static.afreecatv.com/asset/service/footer/footer.js"></script>
+	
+	<script type="text/javascript">
+	var szLang = '';
+	var _szCurHash = '';
+	var szPageType = ( szLang != "" ) ?  szLang : "list_main";
+	var nCurrentPageType = 2;
+	if(szLang != "china" )
+	{
+		if ( (oMainData.MAIN_PM_RESULT == 1) && _szCurHash == "" )
+		{
+			location.href = AFREECA +"/hotissue.html";
+		}
+	}
+
+	function initSeasonalBnr() {
+		// 시즈널 배너
+		if(oMainData.MAIN_SEASONAL_BNR_RESULT == 1)
+		{
+			var oSeasonalBnr = oMainData.MAIN_SEASONAL_BNR_DATA[0];
+			var szTarget = '';
+
+			if(oSeasonalBnr.target == 'Y')
+			{
+				szTarget = 'target="_blank"';
+			}
+
+			if (oSeasonalBnr.list_img_path != "" && oSeasonalBnr.list_img_path != null)
+			{
+				$('h1#logo').html('<a href="'+ oSeasonalBnr.link +'" '+ szTarget +'><img src="'+ ADMIN_IMG +'/'+ oSeasonalBnr.list_img_path +'" width="210" height="65" title="afreecaTV">');
+			}
+			else
+			{
+				$('h1#logo').html('<a href="'+ AFREECA +'"><img src="'+ AFREECA +'/images/afmain/logo_main.gif" width="210" height="65" title="afreecaTV">');
+			}
+		}
+		else
+		{
+			$('h1#logo').html('<a href="'+ AFREECA +'"><img src="'+ AFREECA +'/images/afmain/logo_main.gif" width="210" height="65" title="afreecaTV">');
+		}
+	}
+
+	function initMainCate() {
+		var aCateHtml = [];
+		var szCate = '';
+
+		if(oMainCategory.MAIN_BROAD_CATEGORY_RESULT == 1)
+		{
+			aCateHtml.push('<ul class="menu_list">');
+			$.each(oMainCategory.MAIN_BROAD_CATEGORY_DATA, function(i, oCategory) {
+					if(oCategory.division_line_yn == "Y") {
+						var oTempHtml = $(aCateHtml.pop());
+						var oTempFrame = $("<div>");
+						oTempHtml.addClass('line');
+						oTempFrame.append(oTempHtml);
+						aCateHtml.push(oTempFrame.html());
+					}
+					else {
+						aCateHtml.push('<li id="'+ oCategory.cate_id +'" name="'+ oCategory.cate_name +'" action_type="'+ oCategory.action_type +'" action_content="'+ oCategory.action_content +'"><a href="http://www.afreecatv.com/?hash='+ oCategory.cate_id +'"><em class="ic_'+ oCategory.cate_id +'"></em>'+ oCategory.cate_name +'<span class="arrow"></span></a></li>');
+					}
+			});
+			aCateHtml.push('</ul>');
+
+			szCate = aCateHtml.join('');
+
+			$('div#categoryScrollArea').html(aCateHtml.join('')).mCustomScrollbar({
+					axis:"yx",
+					theme:"minimal-dark",
+					scrollInertia:100,
+					scrollbarPosition:"inside"
+				});
+			$('#header, #sideArea').mousewheelStopPropagation();
+		}
+	}
+	</script>
+</head>
+
+<body id="listWrap">
+<div class="wa_skip">
+<a href="#categoryMenu" rel="bookmark" tabindex="1" onclick="document.getElementById('categoryMenu').tabIndex = -1;document.getElementById('categoryMenu').focus();return false;">방송 카테고리 바로가기</a>
+<a href="#serviceMenu" rel="bookmark" tabindex="1" onclick="document.getElementById('serviceMenu').tabIndex = -1;document.getElementById('serviceMenu').focus();return false;">주요 서비스 바로가기</a>
+<a href="#studioPlay" rel="bookmark" tabindex="1" onclick="document.getElementById('studioPlay').tabIndex = -1;document.getElementById('studioPlay').focus();return false;">방송하기 바로가기</a>
+<a href="#container" rel="bookmark" tabindex="1" onclick="document.getElementById('container').tabIndex = -1;document.getElementById('container').focus();return false;">방송리스트 바로가기</a>
+<a href="#footer" rel="bookmark" tabindex="1" onclick="document.getElementById('footer').tabIndex = -1;document.getElementById('footer').focus();return false;">하단메뉴 바로가기</a>
+</div>
+<div id="overlay" style="display:none;"></div>
+<!-- 성인 인증 -->
+<div id="adultLayer" class="layer_wrap adult_confirm" style="display:none;">
+	<p class="txt_adult">성인 확인</p>
+	<p class="txt_c">이 정보내용은 청소년 유해매체물로서 정보통신망<br>이용촉진 및 정보보호등에 관한 법률 및<br>청소년보호법의 규정에 의하여<br><strong>만 19세 미만의 청소년이 이용할 수 없습니다.</strong></p>
+	<div class="btn_f"><a href="javascript:;">되돌아가기(만19세 미만)</a></div>
+	<div class="close"><a href="javascript:;"><span>닫기</span></a></div>
+</div>
+<!-- //성인 인증 -->
+
+<div id="wrap">		
+	<!-- header -->
+	<div id="header">	
+		<h1 id="logo"><script type="text/javascript">initSeasonalBnr();</script></h1>
+		<div class="btn_area">
+			<button class="btn_studio" id="studioPlay"><span class="ir">방송하기</span></button>
+			<span class="btn_player_v"><a href="javascript:;" id="playerSetup"><span class="zh" data-translate="설치형플레이어" >설치형 플레이어</span></a></span>
+		</div>
+		<!-- 검색 -->
+		<div class="search_area_t">
+		<fieldset>
+		<legend>검색</legend>
+			<form name="oSearchForm" action="http://www.afreecatv.com/total_search.html" accept-charset="" onsubmit="return false;" method="post">
+			<input type="hidden" id="szSearchType" name="szSearchType" value="total"/>
+			<input type="hidden" name="szStype" value=""/>
+			<div class="search_bar">
+				<input type="text" id="szKeyword" name="szKeyword" autocomplete="off"/>
+				<input type="hidden" id="szKeywordhidden" name="szKeywordhidden" />
+				<div class="search_box" style="display:none;"></div>
+				<button type="button" class="btn_search"><span class="ir">검색</span></button>
+			</div>
+			</form>
+		</fieldset>
+		</div>
+		<script type="text/javascript">oGnb.setMainGnb(szPageType);</script>
+	</div>
+	<!-- //header -->
+	<!-- 카테고리 메뉴 -->
+	<h2 class="blind" id="categoryMenu">방송 카테고리 메뉴</h2>
+	<div id="sideArea">
+		<div class="category_area log_scroll">			
+			<div class="inner">
+				<ul class="menu_list fix_m">
+				<li><a href="javascript:;"><em class="ic_fav"></em><span class="zh" data-translate="즐겨찾기">즐겨찾기</span><span class="arrow"></span></a></li>
+				<li style="display:none;"><a href="javascript:;"><em class="ic_lately"></em><span class="zh" data-translate="최근본방송">최근본방송</span><span class="arrow"></span></a></li>
+				</ul>
+				<div id="categoryScrollArea" class="scrollarea"><script type="text/javascript">initMainCate();</script></div>
+			</div>
+		</div>
+	</div>
+	<!-- //카테고리 메뉴 -->
+	<!-- content -->
+	<div id="container">
+		<div id="topBnrArea" class="banner_area" style="display:none;">
+			<h2 class="blind">배너 영역</h2>
+			<ul class="bannerslide" id="topBnrSlide">	</ul>
+			<a href="javascript:;" class="btn_prev" id="btnPrev"><span>이전배너보기</span></a>
+			<a href="javascript:;" class="btn_next" id="btnNext"><span>다음배너보기</span></a>
+		</div>
+		<!--
+		<div class="ti_banner">
+			<div class="award_2015">
+				<h2 class="blind">2015 아프리카 BJ대상 대상 수장자</h2>
+				<p class="blind">영예의 대상 수상자를 축하해 주세요!</p>
+				<a href="http://afreeca.com/bigbigjo2" target="_blank" class="link01">BJ대상 BJ로이조 방송국 바로가기</a>
+				<a href="http://afreeca.com/ch1716" target="_blank" class="link02">콘텐츠대상 예능인[최군] 방송국 바로가기</a>
+			</div>
+		</div>
+		-->
+		<div id="wideArea" class="content_area">
+			<!-- 핫이슈 -->			
+			<div class="hotissue" id="hotArea" style="display: none;">
+				<h2>핫이슈</h2>
+				<ul class="tab_m" id="hotTab">
+				<li id="live" class="on"><a href="#liveSlider">라이브</a></li>
+				<li id="vod"><a href="#vodSlider">동영상</a></li>
+				</ul>
+				<div class="control">				
+					<button id="toggleList" class="stopButton">stop</button>
+					<button class="prev">이전</button>
+					<button class="next">다음</button>
+				</div>
+				<!-- 라이브 -->
+				<div class="listarea">
+					<ul id="liveSlider" class="hot_issue" style="display: none;">						
+					</ul>			
+				</div>				
+				<!-- //라이브 -->
+				<!-- 동영상 -->
+				<div class="listarea">
+					<ul id="vodSlider" class="hot_issue" style="display: none;">		
+					</ul>								
+				</div>			
+				<!-- //동영상 -->
+				<!-- 새로고침 -->
+				<div class="reloading line_rt" style="display:none;">
+					<p>일시적으로 정보를 불러 오지 못했습니다.<br>잠시 후 다시 새로고침 해 주세요.</p>
+					<button class="icon"><span class="ir" id="reloadHotissue">새로고침</span></button>
+				</div>
+				<!-- //새로고침 -->				
+			</div>
+			<!-- //핫이슈 -->
+			<!--<h2 class="title"><a href="javascript:;" id="titleToggle" class="on">전체<em></em></a></h2>		-->
+			<h2 class="title"></h2>
+			<div id="subCategory"></div>
+			<div id="broad_sv_area" class="sv_area" style="display:none;">
+				<h2 class="blind">정렬보기</h2>
+				<ul class="tab_list">
+				<li class="on" role="recent_date" style="display:none;"><a href="javascript:;"><span data-translate="최근시청순" >최근시청순</span></a></li>
+				<li class="on" role="view_cnt"><a href="javascript:;" ><span data-translate="시청인원순" >시청인원순</span></a></li>
+				<li role="broad_start"><a href="javascript:;"><span data-translate="최신방송순" >최신방송순</span></a></li>
+				<li role="rank"><a href="javascript:;"><span data-translate="BJ랭킹순" >BJ랭킹순</span></a></li>
+				</ul>
+				<button class="btn_delete_all" style="display:none;"><span class="ir">전체삭제</span></button>
+				<button class="btn_reload"><span class="ir">새로고침</span></button>
+			</div>
+			<div class="loading">Loading...</div>
+			<!-- 방송없을시 -->
+			<div class="nt_area" style="display:none">
+				<span class="ic_nocast"></span>
+				<p class="txt01"><span class="zh" data-translate="pc_main_error1" >현재 진행중인 생방송이 없습니다.</span> </p>				
+			</div>
+			<!-- //방송없을시 -->	
+			<!-- 새로고침 -->
+			<div class="reloading" style="display:none">
+				<p>일시적으로 정보를 불러 오지 못했습니다.<br>잠시 후 다시 새로고침 해 주세요.</p>
+				<button class="icon"><span class="ir">새로고침</span></button>
+			</div>
+			<!-- //새로고침 -->
+			<div id="broadlist_area">
+				<div class="listarea">
+					<ul></ul>
+					<div class="more_list" style="display:none;"><a href="javascript:;"><span class="zh" data-translate="더보기">더보기</span><em></em></a></div>
+				</div>
+			</div>
+			
+			<div id="fav_fixlist_area" style="display:none;"></div>
+			<div id="fav_offair_area" style="display:none;"></div>
+			<!-- //list -->
+
+			<!--<div class="more_list" style="display:none;"><a href="#">더보기<em></em></a></div>-->
+
+		</div>
+	</div>
+	<!-- //content -->
+</div>
+<!-- top -->
+<div id="btn_pagetop"><a href="#top"><span class="ir">상단 바로가기</span></a></div>
+<!-- //top -->
+<!-- footer -->
+<div id="footer">
+	<script type="text/javascript">oFooter.getMainFooter();</script>
+</div>
+<!-- //footer -->
+
+<script type="text/javascript">
+	var _szUserId = '';
+	var isLogin = 0;
+
+	if (isLogin == 1)
+	{
+		$('div.category_area').removeClass('log_scroll');
+		$('div.category_area ul.fix_m li:eq(1)').show();
+	}
+
+	// 창크기 변환 리스트
+	$(window).ready(function(){
+		function adjustSize(width) {
+			if (width > 1) {
+				$('div#wideArea').attr('class', 'content_area');
+			} 
+			if (width > 1493) {
+				$('div#wideArea').attr('class', 'content_area listfive');
+			} 
+			if (width > 1737) {
+				$('div#wideArea').attr('class', 'content_area listsix');
+			} 
+		}
+
+		$(function() {
+			adjustSize($(this).width());
+			$(window).resize(function() {
+				adjustSize($(this).width());
+			});
+		});
+	});
+
+	require.config({
+		urlArgs: 'v=' + (+new Date())//AppVersion
+		, paths: {
+			favorite : 'app/main/favorite'
+			, recent : 'app/main/recent'
+			, search : 'app/main/search'
+			, view : 'app/main/view.broadlist'
+			, bxSlider : 'http://www.afreecatv.com/script/common/jquery.bxslider.4.1.2.min'
+			, mousewheel : 'http://www.afreecatv.com/script/afmain/jquery.mousewheel.min'
+			, view : 'app/main/view.broadlist'
+			, li18n : 'app/translation/jquery.li18n'
+			, translation : 'app/translation/translation'
+		}
+		, shim: {
+			'bxSlider' : {
+				deps: ['jquery']
+				, exports : 'jQuery'
+			}
+			,'li18n' : {
+				deps: ['jquery']
+				, exports : 'jQuery'
+			}
+		}
+		, deps: ['http://static.afreecatv.com/asset/service/config/config.js']
+		, callback: function() {
+			requirejs(['app'], function(app) {
+				app.start();
+			}, function(err) {
+			});
+		}
+	});
+
+	define('preLoad', ['afreeca', 'bxSlider'], function() {
+	});
+
+	var _search;
+	define('app', ['afreeca', 'view', 'search', 'preLoad'], function(afreeca, view, search) {
+		var $ = afreeca.$;
+
+		return {
+			start : function()
+			{
+				_search = search;
+
+				view.init();
+				atv.releaseInit('addFav');
+			}
+		}
+	});		
+</script>
+<script type="text/javascript">
+callAnalytics();
+</script>
+</body>
+</html>

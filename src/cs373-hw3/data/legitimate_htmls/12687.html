@@ -1,0 +1,260 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="pt">
+    <head>
+	    <base href="http://new.flytap.com/prjdir/flytap/"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>TAP Portugal</title>
+        <meta name="description" content="TAP" />
+        <meta name="keywords" content="TAP" />
+        <meta name="language" content="en" /> 
+        <link href="http://www.flytap.com/prjdir/flytap/css/general.css" rel="stylesheet" media="all" />
+        <link href="http://www.flytap.com/prjdir/flytap/css/jquery-ui.css" rel="stylesheet" media="all" />
+        <!--[if IE 7]><link href="css/ie7.css" rel="stylesheet" media="all" /><![endif]-->
+        <!--[if IE 8]><link href="css/ie8.css" rel="stylesheet" media="all" /><![endif]-->
+        <link rel="icon" type="image/ico" href="favicon.ico" />
+	    <style>#splash_countries, #splash_languages {width:200px;}</style>
+
+    	<script>var js_site='';var js_lang='';</script>	
+	    <script type="text/javascript" src="http://www.flytap.com/javascript/flytap/jquery-1.4.4.min.js"></script>
+        <script type="text/javascript" src="http://www.flytap.com/javascript/flytap/jquery-ui-1.8.7.min.js"></script>
+        <script type="text/javascript" src="http://www.flytap.com/javascript/flytap/languages/jquery.ui.datepicker-pt.js"></script>        
+        <script type="text/javascript" src="http://www.flytap.com/javascript/flytap/jqueries.min.js"></script>
+        <script type="text/javascript" src="http://www.flytap.com/javascript/flytap/my_scripts.js"></script>
+        <script type="text/javascript" src="http://www.flytap.com/javascript/flytap/languages/jquery.ui.datepicker-pt.js"></script>        
+        <script type="text/javascript">
+            function getCookie(c_name) {
+                var i,x,y,ARRcookies=document.cookie.split(";");
+
+                for (i=0;i<ARRcookies.length;i++) {
+                    x=ARRcookies[i].substr(0,ARRcookies[i].indexOf("="));
+                    y=ARRcookies[i].substr(ARRcookies[i].indexOf("=")+1);
+                    x=x.replace(/^\s+|\s+$/g,"");
+
+                    if (x==c_name) {
+                        return unescape(y);
+                    }
+                }
+
+                return -1 ;
+            }
+
+            vicCookie = getCookie("victoria_hp");
+            if(vicCookie != -1){
+                window.location = vicCookie;
+            }
+
+            var IS_IE = false;
+            var IS_IE_7 = false;
+
+            jQuery.each(jQuery.browser, function(i, val) {
+                if (i == "msie") {
+                    IS_IE = true;
+                }
+
+                if (IS_IE && val == "7.0") {
+                    IS_IE_7 = true;
+                } 
+            });
+
+            jQuery(document).ready(function() {
+                $("#splashpage").show();
+                $('#splash_countries').change(function() {
+                    var M = $(this).getSetSSValue();
+                    $("option[value=" + M + "]", $(this)).attr('selected','selected');
+                    var data = 'getCountryLanguages=' + M + '&translation=en';
+                    var L = 'pt', marketName = 'Portugal';
+                    
+                    $.post(window.location.protocol + '//' + window.location.hostname + '/getMarketLanguages.php', data, function(languages) { 
+                        var html = lis = '', x = 0;
+
+                        $.each(languages, function(i, v) {
+                            if(x == 0) {
+                                var liextra = ' class="hiLite"';							
+                                $('div.languages_select').find('div.selectedTxt').html(v);
+                                L = i;
+                            } else { 
+                                var liextra = ''; 
+                            }
+                            
+                            html += '<option value="' + i + '">' + v + '</option>';
+                            lis += '<li><a href="javascript:;"' + liextra + ' rel="' + i + '">' + v + '</a></li>';
+                            x++;
+                        });
+                        
+                        $('#splash_languages').html(html);
+                        $('div.languages_select').find('ul.newList').html(lis);
+                        
+                        $('div.languages_select').find('ul.newList li a').each(function() {
+                            $(this).click(function() {
+                                $("option[value=" + $(this).attr('rel') + "]", $('#splash_languages')).attr('selected','selected');
+                                $(this).parent().parent().hide();
+                                $('div.languages_select').find('div.selectedTxt').html($(this).text());
+                            });
+                        });
+                        
+                    }, 'json');
+                    
+                    return false;
+                });
+                
+                $('a.checkin_blue_button').click(function() {
+                    window.location=$('#splash_languages :selected').val();
+                });			
+            });	
+		</script>           
+    </head>
+
+    <body class="splashpage">
+          <div id="container">      
+	         <img src="http://www.flytap.com/prjdir/flytap/images/logo_tap_print.gif" width="99" height="47" alt="TAP Portugal" class="logo_print" />
+	         <div id="header">
+	             <div id="logo">
+	                 <a class="logo" title="TAP Portugal"><img src="http://www.flytap.com/prjdir/flytap/mediaRep/editors/logos/logo_tap_en.png" alt="TAP Portugal" /></a>
+	             </div><!-- end #logo -->
+	             <div id="toplanguage">
+	             	<!--
+	                 <ul>
+	                     <li><a href="#" title="Ver em portugu&ecirc;s">Ver em Portugu&ecirc;s</a></li>
+	                 </ul>
+	                 -->
+	             </div><!-- end #toplanguage -->
+	             <span class="clear">&nbsp;</span>
+	         </div><!-- end #header -->
+          </div>
+            <div id="content">
+                
+                <div id="splashpage" style="display:none;">
+                    <div class="top">&nbsp;</div><div class="bottom">&nbsp;</div>
+                    
+                    <div id="body">
+                        <div class="free_area">
+                            <h2>Welcome to FlyTAP</h2>
+                            
+                        </div><!-- end .free_area -->
+                        
+                        <div class="form_container">
+                            <span class="corner_gray_top">&nbsp;</span>
+                            <span class="corner_gray_bottom">&nbsp;</span>
+                                <div class="free_area">
+                                    <p><b>Please select your country of departure:</b></p>
+                                </div>
+                                
+                                <div class="form_fields">
+                                    <span class="gray_form_area_top">&nbsp;</span>
+                                    <span class="gray_form_area_bottom">&nbsp;</span>
+                                    
+                                    <div class="free_area">
+                                        <div class="countries_select">
+                                            <p class="hide"><label for="countries" class="hide">Countries</label></p>
+                                            <p class="combo_topcountries">
+                                            <select name="splash_countries" id="splash_countries" class="combostyle"><option value="0" selected="selected">-- select your country --</option>
+<option value="DZ" title="http://www.flytap.com/prjdir/flytap/images/flags/dz.png">Algérie</option>
+<option value="com" title="http://www.flytap.com/prjdir/flytap/images/flags/com.gif">Angola</option>
+<option value="ar" title="http://www.flytap.com/prjdir/flytap/images/flags/ar.png">Argentina</option>
+<option value="be" title="http://www.flytap.com/prjdir/flytap/images/flags/be.png">Belgium</option>
+<option value="br" title="http://www.flytap.com/prjdir/flytap/images/flags/br.png">Brasil</option>
+<option value="CV" title="http://www.flytap.com/prjdir/flytap/images/flags/cv.png">Cabo Verde</option>
+<option value="CA" title="http://www.flytap.com/prjdir/flytap/images/flags/ca.png">Canada</option>
+<option value="cz" title="http://www.flytap.com/prjdir/flytap/images/flags/cz.png">Česká Republika</option>
+<option value="cl" title="http://www.flytap.com/prjdir/flytap/images/flags/cl.png">Chile</option>
+<option value="CN" title="http://www.flytap.com/prjdir/flytap/images/flags/cn.png">中国</option>
+<option value="CO" title="http://www.flytap.com/prjdir/flytap/images/flags/co.png">Colombia</option>
+<option value="dk" title="http://www.flytap.com/prjdir/flytap/images/flags/dk.png">Danmark</option>
+<option value="de" title="http://www.flytap.com/prjdir/flytap/images/flags/de.png">Deutschland</option>
+<option value="EE" title="http://www.flytap.com/prjdir/flytap/images/flags/ee.png">Eesti</option>
+<option value="EG" title="http://www.flytap.com/prjdir/flytap/images/flags/eg.png">Egypt</option>
+<option value="es" title="http://www.flytap.com/prjdir/flytap/images/flags/es.png">España</option>
+<option value="fr" title="http://www.flytap.com/prjdir/flytap/images/flags/fr.png">France</option>
+<option value="GH" title="http://www.flytap.com/prjdir/flytap/images/flags/gh.png">Ghana</option>
+<option value="gr" title="http://www.flytap.com/prjdir/flytap/images/flags/gr.png">Ελλάδα</option>
+<option value="GN" title="http://www.flytap.com/prjdir/flytap/images/flags/gn.png">Guiné Bissau</option>
+<option value="hk" title="http://www.flytap.com/prjdir/flytap/images/flags/hk.png">香港</option>
+<option value="HR" title="http://www.flytap.com/prjdir/flytap/images/flags/hr.png">Hrvatska</option>
+<option value="IE" title="http://www.flytap.com/prjdir/flytap/images/flags/ie.png">Ireland</option>
+<option value="it" title="http://www.flytap.com/prjdir/flytap/images/flags/it.png">Italia</option>
+<option value="ve" title="http://www.flytap.com/prjdir/flytap/images/flags/ve.png">Latinoamérica</option>
+<option value="LV" title="http://www.flytap.com/prjdir/flytap/images/flags/lv.png">Latvija</option>
+<option value="LT" title="http://www.flytap.com/prjdir/flytap/images/flags/lt.png">Lietuva</option>
+<option value="lu" title="http://www.flytap.com/prjdir/flytap/images/flags/lu.png">Luxembourg</option>
+<option value="hu" title="http://www.flytap.com/prjdir/flytap/images/flags/hu.png">Magyarország</option>
+<option value="ML" title="http://www.flytap.com/prjdir/flytap/images/flags/ml.png">Mali</option>
+<option value="MA" title="http://www.flytap.com/prjdir/flytap/images/flags/ma.png">Maroc</option>
+<option value="MX" title="http://www.flytap.com/prjdir/flytap/images/flags/mx.png">Mexico</option>
+<option value="MZ" title="http://www.flytap.com/prjdir/flytap/images/flags/mz.png">Moçambique</option>
+<option value="nl" title="http://www.flytap.com/prjdir/flytap/images/flags/nl.png">Nederland</option>
+<option value="no" title="http://www.flytap.com/prjdir/flytap/images/flags/no.png">Norge</option>
+<option value="AT" title="http://www.flytap.com/prjdir/flytap/images/flags/at.png">Österreich</option>
+<option value="pa" title="http://www.flytap.com/prjdir/flytap/images/flags/pa.png">Panama</option>
+<option value="pl" title="http://www.flytap.com/prjdir/flytap/images/flags/pl.png">Polska</option>
+<option value="pt" title="http://www.flytap.com/prjdir/flytap/images/flags/pt.png">Portugal</option>
+<option value="ro" title="http://www.flytap.com/prjdir/flytap/images/flags/ro.png">România</option>
+<option value="RU" title="http://www.flytap.com/prjdir/flytap/images/flags/ru.png">Россия</option>
+<option value="ST" title="http://www.flytap.com/prjdir/flytap/images/flags/st.png">São Tomé</option>
+<option value="SN" title="http://www.flytap.com/prjdir/flytap/images/flags/sn.png">Sénégal</option>
+<option value="rs" title="http://www.flytap.com/prjdir/flytap/images/flags/rs.png">Serbia</option>
+<option value="SI" title="http://www.flytap.com/prjdir/flytap/images/flags/si.png">Slovensko</option>
+<option value="za" title="http://www.flytap.com/prjdir/flytap/images/flags/za.png">South Africa</option>
+<option value="fi" title="http://www.flytap.com/prjdir/flytap/images/flags/fi.png">Suomi</option>
+<option value="se" title="http://www.flytap.com/prjdir/flytap/images/flags/se.png">Sverige</option>
+<option value="ch" title="http://www.flytap.com/prjdir/flytap/images/flags/ch.png">Switzerland</option>
+<option value="TR" title="http://www.flytap.com/prjdir/flytap/images/flags/tr.png">Türkiye</option>
+<option value="us" title="http://www.flytap.com/prjdir/flytap/images/flags/us.png">USA</option>
+<option value="UA" title="http://www.flytap.com/prjdir/flytap/images/flags/ua.png">Україна</option>
+<option value="gb" title="http://www.flytap.com/prjdir/flytap/images/flags/gb.png">United Kingdom</option>
+<option value="uy" title="http://www.flytap.com/prjdir/flytap/images/flags/uy.png">Uruguay</option>
+</select>
+                                            </p>
+                                        </div><!-- end .countries_select -->
+                                        
+                                        <div class="languages_select hide">
+                                            <p class="hide"><label for="countries" class="hide">Languages</label></p>
+                                            <p class="combo_topcountries">
+                                            <select name="splash_languages" id="splash_languages" class="combostyle">
+                                            <option disabled="disabled">&#160;</option>
+                                            </select>
+                                            </p>
+                                        </div><!-- end .languages_select -->
+                                        <span class="clear">&nbsp;</span>
+                                        
+                                    </div><!-- end .free_area -->
+                                    
+                                </div><!-- end .form_fields -->
+                                
+                                <div class="free_area">
+                                    <div class="left">
+                                        <div class="btn hide">
+                                            <a title="Enter FlyTAP" class="checkin_blue_button" href="javascript:;">
+                                                <span class="left">&nbsp;</span>
+                                                <span class="text">Enter FlyTAP<span class="arrow">&nbsp;</span></span>
+                                                <span class="right">&nbsp;</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <span class="clear">&nbsp;</span>
+                                </div><!-- end .free_area -->
+                                
+                        </div><!-- end .form_container -->
+                    </div><!-- end #body -->
+                </div><!-- end #splashpage -->
+            <!--</div> end #content -->
+            <div class="push">&nbsp;</div>
+        </div><!-- end #container -->
+        <div id="footer_container">
+            <div id="bottomlinks">
+                <div class="footer_content">
+                    <div class="left">
+                        <div class="copyright">
+                            <span class="title">&copy; 2016 TAP.</span> All Rights Reserved
+                        </div><!-- end .copyright -->
+                    </div><!-- end .left -->
+                    <div class="right">
+                        <a href="http://www.staralliance.com/" title="Star Alliance" target="_blank"><span class="title">A Star Alliance Member</span></a>
+                    </div><!-- end .right -->
+                    <span class="clear">&nbsp;</span>
+                </div><!-- .footer_content -->
+            </div><!-- end #bottomlinks -->
+        </div><!-- end #footer_container -->
+        <!--script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script-->
+        <!--SSF01-->
+    </body>
+</html>

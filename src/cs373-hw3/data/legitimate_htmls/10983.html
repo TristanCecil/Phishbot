@@ -1,0 +1,1734 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<title>西部数码-中国领先的云服务器、虚拟主机、域名注册服务商！</title>
+<meta name="description" content="西部数码是基于云计算领先的互联网服务提供商,14年老品牌。专业提供云服务器、虚拟主机、域名注册、VPS主机、云服务器等，30余万个虚拟主机网站及200余万个域名用户的共同选择！">
+<meta name="keywords" content="云主机,云服务器,虚拟主机,西部数码,域名注册,主机租用,域名交易,服务器租用,网站空间,VPS主机">
+<link href="/css/Global.css" rel="stylesheet" type="text/css" />
+<link href="/css/Default_new2014v2.css?ver=20151102" rel="stylesheet" type="text/css" />
+<link href="/css/weiyanlover.css" rel="stylesheet" type="text/css" />
+<script language="javascript" src="/jscripts/check.js"></script>
+<script language="javascript" src="/jscripts/common.js"></script>
+<script language="javascript" src="/jscripts/cookie.js"></script>
+<script language="javascript" src="/jquery/plugin/lhgdialog.min.js?skin=west&self=true"></script>
+<script language="javascript" src="/jscripts/sales100.js"></script>
+<script language="javascript" src="/jscripts/domaintitile.js"></script>
+<meta property="qc:admins" content="6071725777675346367" />
+<script language=javascript1.2>
+$.cookie("menu_index",1,{path:'/'});
+function CheckIfEnglish( String )
+{ 
+    var Letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890-.";
+     var i;
+     var c;
+      if(String.charAt( 0 )=='-')
+	return false;
+      if( String.charAt( String.length - 1 ) == '-' )
+          return false;
+     for( i = 0; i < String.length; i ++ )
+     {
+          c = String.charAt( i );
+	  if (Letters.indexOf( c ) < 0)
+	     return false;
+     }
+     return true;
+}
+function submitchecken(v) {
+  var domainobj=v.searchedDomainName;
+  var searchedDomainName1=domainobj.value;
+	if (domainobj.value == "") {
+		$.dialog.alert("请输入您要查询的英文域名。");
+		domainobj.focus();
+		return false;
+	}
+	
+	var suftmp="";
+	$("input[name='suffix']:checked").each(function(){
+		suftmp+=","+$(this).val();
+		});
+
+	if(searchedDomainName1.length<1 && (suftmp.indexOf(".cn")>-1 && suftmp.indexOf(".gov.cn")==-1)){
+		$.dialog.alert("查询.cn域名请至少输入1个字符。");
+		domainobj.focus();
+		return false;
+		}
+		
+	if (searchedDomainName1.length<1 && suftmp.indexOf(".cm")>-1 ){
+		$.dialog.alert("查询.cm域名请至少输入1个字符。");
+		domainobj.focus();
+		return false;
+		}
+		
+	if (searchedDomainName1.length<1 && suftmp.indexOf(".hk")>-1 ){
+		$.dialog.alert("查询域名中包含了.hk,请至少输入1个字符。");
+		domainobj.focus();
+		return false;
+		}
+		
+	if(searchedDomainName1.length<1 && suftmp.indexOf(".ws")>-1){
+		$.dialog.alert("查询域名中包含了.ws,请至少输入1个字符。");
+		domainobj.focus();
+		return false;
+		}
+	
+	var   re1   =   /(\n)/g;     
+    var   re2   =   /(\r)/g;     
+    searchedDomainName1=searchedDomainName1.replace(re1 ,"");   
+    searchedDomainName1=searchedDomainName1.replace(re2 ,"");   
+	if (!CheckIfEnglish(searchedDomainName1)) {
+		$.dialog.alert("在查询英文域名应输入英文不能输入中文及非法字符！<br>若需要查询中文域名，请选择中文域名专用区域查询，谢谢！");
+		domainobj.focus();
+		return false;
+	}
+	var domainArray=domainobj.value.split("\r\n");
+	var newdomainstr="";
+	var cur=0;
+
+	for(var u=0;u<domainArray.length;u++){
+		var newstrs=$.trim(domainArray[u])
+		if(newstrs!=""){
+			cur=cur+1;
+		}
+	}
+	if (cur>10){
+		$.dialog.alert("查询英文域名不能多于10个！");
+		return false;
+	}
+
+	$.ajax({
+		async:false,
+		type:'GET',
+		cache:false,
+		url:'/main/whois.asp?act=gettok',
+		data:null,
+		dataType:'script',
+		error:function(jqXHR,textStatus,errorThrown){
+			//alert('获取令牌失败,请重新查询一次');
+			return;
+		}
+	});
+
+	return true;
+}
+
+function submitcheckcn(theform) 
+{
+	dm=theform.searchedDomainName.value;
+
+	if (dm == "") 
+	{
+		$.dialog.alert("请输入您要查询的中文域名。");
+		theform.searchedDomainName.focus();
+		return false;
+	}
+
+	var suftmp="";
+	for(i=0;i<theform.suffix.length;++i){
+		if (theform.suffix[i].checked)
+		{
+			suftmp+=theform.suffix[i].value+',';
+		}
+	}
+	
+	if(suftmp==""){
+		$.dialog.alert("您忘记要选择一个域名后缀了吧!");
+		return false;
+		}
+	
+	
+//	if(suftmp.indexOf(".网络")>-1 || suftmp.indexOf(".公司")>-1 || suftmp.indexOf(".com")>-1 || suftmp.indexOf(".net")>-1 || suftmp.indexOf(".tv")>-1 || suftmp.indexOf(".cc")>-1 || suftmp.indexOf(".biz")>-1 || suftmp.indexOf(".cn")>-1){
+//		if(!isChinese(dm)){
+//			alert("后缀包含国际域名后缀,不能全部是数字或英文,若您要注册【英文/数字.中国】，请取消选择【.com/.cn/公司/网络】等后缀");
+//			return false;
+//			}
+//		}
+		
+	if(dm.length>25){
+			$.dialog.alert("中文域名最长不超过25个字符.");
+			return false;
+		}
+
+		$.ajax({
+			async:false,
+			type:'GET',
+			cache:false,
+			url:'/main/whois.asp?act=gettok',
+			data:null,
+			dataType:'script',
+			error:function(jqXHR,textStatus,errorThrown){
+			//	alert('获取令牌失败,请重新查询一次');
+				return;
+			}
+		});
+		
+		return true;
+}
+
+var news_jumpurl='/news/';
+</script>
+<script type="text/javascript"> 
+var Interval = {}
+Interval.init = function(obj){
+	//元素个数、宽度、父元素
+	obj.eleNum = $$(obj.ele).childElements().length;
+	obj.eleWidth = $$(obj.ele).childElements()[0].getWidth();
+	obj.father = $$(obj.ele).parentNode;
+	//alert($$(obj.ele).childElements()[0].getWidth());
+	
+	//复制现有元素
+	$$(obj.ele).insert($$(obj.ele).innerHTML);
+	
+	//当前元素索引号
+	if(obj.goLeft){
+		obj.currentNum = 0;
+	} else {
+		obj.currentNum = obj.eleNum;
+		obj.father.scrollLeft = obj.eleNum*(obj.eleWidth + obj.marginLeft);
+		//obj.father.scrollLeft=351
+	}
+	$$(obj.ele).onmouseover = new Function("Interval.pause("+obj.objName+");");
+	$$(obj.ele).onmouseout = new Function("Interval.auto("+obj.objName+");");
+	$$(obj.leftPointer).onclick = new Function("Interval.gotoLeft("+obj.objName+");");
+	$$(obj.rightPointer).onclick = new Function("Interval.gotoRight("+obj.objName+");");
+	Interval.auto(obj);
+}
+Interval.pause = function(obj){
+	clearInterval(obj.autoScroller);
+} 
+Interval.gotoLeft = function(obj){
+	clearInterval(obj.autoScroller);
+	//alert(obj.currentNum);
+	if(!obj.goLeft){
+		obj.goLeft = true;
+		//obj.currentNum = obj.eleNum - obj.currentNum;         
+		if (obj.currentNum === obj.eleNum) {
+			obj.currentNum = obj.eleNum-obj.currentNum;
+			obj.father.scrollLeft = obj.father.scrollLeft - obj.eleNum*(obj.eleWidth + obj.marginLeft);
+		}
+	} 
+	clearInterval(obj.sonScrollInterval);
+	Interval.change(obj,obj.currentNum+1);
+	Interval.auto(obj);
+}
+Interval.gotoRight = function(obj){ 
+	clearInterval(obj.autoScroller);
+	//alert(obj.currentNum);
+	if(obj.goLeft){
+		obj.goLeft = false;
+		//obj.currentNum = obj.eleNum - obj.currentNum;
+		if (obj.currentNum === 0) {		
+			obj.currentNum = obj.eleNum-obj.currentNum;
+			//alert(obj.father.scrollLeft); 
+			obj.father.scrollLeft = obj.eleNum*(obj.eleWidth + obj.marginLeft);
+		}       
+		//obj.father.scrollLeft = obj.father.scrollLeft - obj.eleNum*(obj.eleWidth + obj.marginLeft);
+	}
+	
+	clearInterval(obj.sonScrollInterval);
+	Interval.change(obj,obj.currentNum-1);
+	Interval.auto(obj);
+}
+Interval.auto = function(obj){
+	clearInterval(obj.autoScroller);
+	obj.autoScroller = setInterval(function(){
+		//$$("cn").innerHTML=obj.currentNum;
+		if(obj.goLeft){
+			Interval.change(obj,obj.currentNum+1);
+		} else {
+			Interval.change(obj,obj.currentNum-1);
+		}
+	},obj.intervalTime);
+}
+Interval.change = function(obj,index){
+	if(index==obj.currentNum){
+		return;
+	}
+		var count=0;
+		var duration=30;
+		//Download by http://www.code fans.net
+		var begin_value = obj.father.scrollLeft;
+		//alert(begin_value);
+		var eleWidth = obj.eleWidth + obj.marginLeft;
+		var spanNum = index-obj.currentNum;
+		var chang_in_value=spanNum*eleWidth+(obj.currentNum*eleWidth-begin_value);
+		//var chang_in_value=spanNum*eleWidth;
+ 
+			//temp variable
+			//$$("showNum").innerHTML = begin_value+"#"+chang_in_value;
+			//$$("showNum").innerHTML = obj.currentNum*eleWidth-begin_value;
+		
+		obj.sonScrollInterval=setInterval(function(){doit(begin_value,chang_in_value)},10);
+		function doit(b,c){
+			obj.father.scrollLeft=cpu(count,b,c,duration);
+			count++;
+			if(count==duration){
+				clearInterval(obj.sonScrollInterval);
+				sonScrollInterval=0;
+				count=0;
+				if(obj.goLeft){
+					if (obj.currentNum === obj.eleNum-1) {
+						obj.father.scrollLeft=0;
+						obj.currentNum=0;
+					} else {
+						obj.father.scrollLeft=b+c;
+						obj.currentNum=index;
+					}
+				} else {
+					if (obj.currentNum === 1) {						
+						obj.currentNum = obj.eleNum;
+						obj.father.scrollLeft = obj.eleNum*(obj.eleWidth + obj.marginLeft);
+					} else {
+						obj.father.scrollLeft=b+c;
+						obj.currentNum=index;
+					}
+				}
+				
+			}
+		}
+		function cpu(t,b,c,d) {return c*((t=t/d-1)*t*t+1)+b;};
+/*
+	$$(obj.ele).innerHTML = parseInt($$(obj.ele).innerHTML)+1;
+*/
+}
+$(function(){setTimeout(function(){showNewsbox();},200);});
+
+
+$(function () {
+	$('.polist1').hover(
+		function() {
+			$('.newinfo').removeClass("dis");	
+			$('#explain1').addClass('dis');	
+				$('.fourpri').removeClass("disnone");
+				$('.hoverpri').removeClass("dis2");
+			$(this).find('.fourpri').addClass('disnone');	
+			$(this).find('.hoverpri').addClass('dis2');	
+		
+		
+		},
+		function() {
+			$('.fourpri').removeClass("disnone");
+				$('.hoverpri').removeClass("dis2");
+		
+		}		
+	);  
+
+$('.polist2').hover(
+		function() {
+			$('.newinfo').removeClass("dis");	
+			$('#explain2').addClass('dis');	
+				$('.fourpri').removeClass("disnone");
+				$('.hoverpri').removeClass("dis2");
+			$(this).find('.fourpri').addClass('disnone');	
+			$(this).find('.hoverpri').addClass('dis2');	
+		
+		
+		},
+		function() {
+			$('.fourpri').removeClass("disnone");
+				$('.hoverpri').removeClass("dis2");
+		
+		}			
+	);  
+
+$('.polist3').hover(
+		function() {
+			$('.newinfo').removeClass("dis");	
+			$('#explain3').addClass('dis');	
+				$('.fourpri').removeClass("disnone");
+				$('.hoverpri').removeClass("dis2");
+			$(this).find('.fourpri').addClass('disnone');	
+			$(this).find('.hoverpri').addClass('dis2');	
+		
+		
+		},
+		function() {
+			$('.fourpri').removeClass("disnone");
+				$('.hoverpri').removeClass("dis2");
+		
+		}			
+	);  	
+	
+	$('.polist4').hover(
+		function() {
+			$('.newinfo').removeClass("dis");	
+			$('#explain4').addClass('dis');	
+				$('.fourpri').removeClass("disnone");
+				$('.hoverpri').removeClass("dis2");
+			$(this).find('.fourpri').addClass('disnone');	
+			$(this).find('.hoverpri').addClass('dis2');	
+		
+		
+		},
+		function() {
+			$('.fourpri').removeClass("disnone");
+				$('.hoverpri').removeClass("dis2");
+		
+		}			
+	);  
+	
+
+});
+
+//图片切换
+$(function() {
+	jQuery.focus = function(slid) {
+		var sWidth = $(slid).width(); //获取焦点图的宽度（显示面积）
+		var len = $(slid).find("ul li").length; //获取焦点图个数
+		var index = 0;
+		var picTimer;
+		
+		//以下代码添加数字按钮和按钮后的半透明条，还有上一页、下一页两个按钮
+		var btn = "<div class='btnBg'></div><div class='btn'>";
+		for(var i=0; i < len; i++) {
+			var ii = i+1;			
+			btn += "<span>"+ii+"</span>";		
+		}
+		btn += "</div>";
+		$(slid).append(btn);
+		$(slid).find("div.btnBg").css("opacity",1);
+	
+		//为小按钮添加鼠标滑入事件，以显示相应的内容
+		$(slid+" div.btn span").css("opacity",1).mouseenter(function() {
+			index = $(slid+" .btn span").index(this);
+			showPics(index);
+		}).eq(0).trigger("mouseenter");
+	
+		
+	
+
+		//鼠标滑上焦点图时停止自动播放，滑出时开始自动播放
+		$(slid).hover(function() {
+			clearInterval(picTimer);
+		},function() {
+			picTimer = setInterval(function() {				
+				index++;
+				if(index == len) {index = 0;}
+				showPics(index);
+			},6000); //此6000代表自动播放的间隔，单位：毫秒
+		}).trigger("mouseleave");
+		
+		//显示图片函数，根据接收的index值显示相应的内容
+		function showPics(index) { //普通切换
+			var nowLeft = -index*sWidth; //根据index值计算ul元素的left值
+			$(slid+" ul").stop(true,false).animate({"left":nowLeft},0); //通过animate()调整ul元素滚动到计算出的position			
+			$(slid+" ul li").stop(true,false).animate({"opacity":"0.4"},300).eq(index).stop(true,false).animate({"opacity":"1"},300);
+			$(slid+" .btn span").removeClass("on").eq(index).addClass("on"); //为当前的按钮切换到选中的效果
+			$(slid+" .btn span").stop(true,false).animate({"opacity":"0.8"},300).eq(index).stop(true,false).animate({"opacity":"1"},300); //为当前的按钮切换到选中的效果
+		}
+	
+	};
+	
+});
+
+//$(document).ready(function(){
+//	  	$.focus("#focus001");
+//		//loadjobLink();
+//	});
+
+function loadjobLink(){
+	var ajaxurlstr="ip.asp";
+	var info="act=getShi";
+	$.ajax({
+		type: "POST",
+		url: ajaxurlstr,
+		data: info,
+		datatype: "json",
+		timeout:30000,
+		error:function(XmlHttpRequest,textStatus, errorThrown){
+			},
+		success:function(xml){
+			if(xml.indexOf("成2222都")!=-1){
+				$(".qiang_ico").html('<a href="/aboutus/joinus.asp">西部数码诚聘英才!欢迎您加盟...</a>');
+				}
+			}	     
+		 });
+	}
+</script>
+
+
+ 
+<style type="text/css">
+<!--
+.STYLE3 { color: #FF0000 }
+-->
+.mainbox { cursor:default;}
+#domain_float { border:1px solid #cccccc; background:#fff; padding:5px; position:absolute; left:0; top:0; z-index:9999; display:none; width:105px; overflow:hidden; }
+#DomainSearch .mainbox a,#CN_Domain_Price_list a{ font-weight:normal; color:#666;}
+#DomainSearch .mainbox a:hover,#CN_Domain_Price_list a:hover{ color: #f60;}
+</style>
+
+</head>
+<body id="thrColEls">
+<p id="domain_float"><img src="/newimages/waiting.gif" alt="等待中"></p>
+<div class="Style2009">
+  
+<script language="javascript">if(typeof(jQuery)=="undefined") document.write("<sc" + "ript lang" + "uage=\"javas" + "cript\" src=\"/jquery/jquery.js\"></scr" + "ipt>");</script> 
+<script language="javascript">if(typeof($.dialog)=="undefined") document.write("<sc" + "ript lang" + "uage=\"javas" + "cript\" src=\"/jquery/plugin/lhgdialog.min.js?skin=west&self=true\"></scr" + "ipt>");</script>
+
+<link href="/css/menunew2014.css?ver=201603094" rel="stylesheet" type="text/css" />
+<div id="EdwardYang">
+  <div class="header_title">
+    <div id="TitleLogo" >
+    <a href="/" class="tenlogo" title="西部数码"></a> </div>
+    <div class="topright"> 
+      <script type="text/javascript" language="javascript">    
+function mover(){      
+	var submenu=document.getElementById('tel_tips');
+	submenu.style.display="block";  
+}  
+function mout(){      
+	var submenu=document.getElementById('tel_tips');
+	submenu.style.display="none"; 	 
+} 		
+ </script>
+      <div class="header_top">
+        <div class="tel_out floatleft"  onmouseover="mover()" onmouseout="mout()"  >
+          <div class="header_tel "><a href="/manager/talksimple.asp" rel="nofollow"><span>400-6118-263</span><span>028-86263960</span></a>
+            <div class="tel_div" id="tel_tips">
+              <div id="toptips"  > <b class="telarrow" id="telarrow"></b>
+                
+                <div class="tipsm">售前咨询请拨<b class="OrangeText">4</b>,售后服务请拨<b class="OrangeText">5</b><br />
+                  
+                  备案问题请拨<b class="OrangeText">6</b>,技术支持请拨<b class="OrangeText">7</b><br />投诉建议请拨<b class="OrangeText">9</b><br />
+                  
+                </div>
+                
+                <div class="OrangeText">若400电话正忙，请拨总机02886263960 </div>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+        
+       <div class="floatleft"><a href="/zx/" target="_blank"  ><i style="background:url(/newimages/topicon.png) no-repeat left -16px; display:inline-block; width:16px; height:16px; vertical-align:middle"></i>&nbsp;资讯中心</a>&nbsp;</div> 
+      <div class="floatleft"><a href="http://club.west.cn" target="_blank"  rel="nofollow" ><i style="background:url(/newimages/topicon.png) no-repeat left top; display:inline-block; width:16px; height:16px;vertical-align:middle"></i>&nbsp;域名论坛</a></div>
+        <div style="clear:both;"></div>
+      </div>
+      <span style="clear:both;"></span>
+      <!-- 常用链接-->
+      <div class="header_center">
+        
+        <div class="floatleft"><a href="/reg/alipaylog.asp" target="_blank"><img src="/images/alipay.gif" alt="支付宝快捷登录" width="90" height="20" /></a></div>
+        
+        <div class="licon floatleft"><a href="/faq">常见问题</a></div>
+        <div class="licon floatleft"><a href="/CustomerCenter/subquestion.asp" rel="nofollow">提交工单</a></div>
+        <div class="li_list floatleft listwidth1">
+          <div  class="top_list ">我的订单</div>
+          <dl class="order_list_link">
+            <dt> <a href="/ordermanager/orderno.asp" rel="nofollow">未开通订单</a> </dt>
+            <dt> <a href="/ordermanager/orderlist.asp" rel="nofollow">已开通订单</a> </dt>
+            <dt> <a href="/manager/onlinepay.asp" rel="nofollow">我要充值</a> </dt>
+            <dt> <a href="/customercenter/buystep.asp" rel="nofollow">购买流程</a> </dt>
+          </dl>
+        </div>
+        <div class="li_list floatleft listwidth2" >
+          <div  class="top_list " >产品管理|续费</div>
+          <dl class="order_list_link">
+            <dt> <a href="/manager/domain/" rel="nofollow">域名管理</a> </dt>
+            <dt> <a href="/manager/vhost/" rel="nofollow">虚拟主机管理</a> </dt>
+            <dt> <a href="/manager/mail/" rel="nofollow">邮箱管理</a> </dt>
+            <dt> <a href="/manager/database/" rel="nofollow">Mssql数据库</a> </dt>
+            <dt> <a href="/manager/server/" rel="nofollow">主机/vps管理</a> </dt>
+            <dt> <a href="/customercenter/howpay.asp" rel="nofollow">付款方式</a> </dt>
+          </dl>
+        </div>
+        <div class="floatleft" ><a href="/bagshow/" class=" Link_Blank  link_gouwu" style="overflow:hidden;">购物车<span style="color:#F00; padding:0 5px; font-weight:bold;">0</span>件| 去结算&gt;&gt;</a></div>
+      </div>
+      <div style="clear:both;"></div>
+      <!-- 常用链接 结束--> 
+      
+      <!-- 登录-->
+      
+      <script language="JavaScript">
+	  function checkLogin()
+	  {
+	  	if(myform.u_name.value=="")
+		{
+			alert("用户名不能为空！");
+			myform.u_name.focus();
+			return false;
+		}
+	  	if(myform.u_password.value=="")
+		{
+			alert("密码不能为空！");
+			myform.u_password.focus();
+			return false;
+		}		
+	  }
+	  </script>
+      <div id="TitleLoginnew">
+        
+        <form name="myform" action="/login.asp" method="post" onSubmit="return checkLogin(this)">
+          <div id="LoginUname"> 用户名:
+            <input name="u_name" type="text" class="inputbox" value=""  placeholder="输入用户名">
+          </div>
+          <div id="LoginPass" > 密　码:
+            <input name="u_password" type="password" class="inputbox"  placeholder="输入密码" >
+            <label for="chkAutoLogin"><input name="chkAutoLogin" type="checkbox" id="chkAutoLogin" value="OKAY">
+            记住 </label></div>
+          <div id="LoginButton" >
+            <input name="imageField" type="image" src="/newimages/default/shortButton_login.gif" border="0">
+            <input  type="hidden" id="back_path2" name="back_path2" value="">
+          </div>
+          <div id="RegButton" ><a href="/reg"><img src="/newimages/default/shortButton_reg.gif" alt="注册" width="54" height="24" /></a></div>
+          <div id="FindPassButton" ><input type="hidden" name="adds323sdsdsad" value="3546234134sadsa233" ><a href="/reg/forget.asp"><img src="/newimages/default/LongButton_FindPass.gif" alt="找回密码"  width="84" height="24" /></a></div>
+        </form>
+        
+      </div>
+      <div style="clear:both;"></div>
+      
+      <!-- 登录 结束--> 
+    </div>
+  </div>
+</div>
+<DIV id="menunew">
+  <DIV id="menunew_top">
+    <ul	id="menunew_top_list">
+      <li class="first_site act_menunew"><a href="/" class="h_color pcolor">首 页</a><p class="h_color pcolor">Home</p></li>
+      <li ><a href="/services/domain/" class="h_color">域名注册</a><p class="h_color ">Domain</p>
+        <div class="sec_sub nav_width1">
+          <div class="nav_shadow">
+            <div class="nav_sub1">
+              <dl class="nav_con" >
+                <dt><a href="/services/domain/" >域名注册</a></dt>
+                <dd><a href="/services/domain/" class="fleft">英文域名注册</a><a href="/domains/" class="fright">域名批量注册</a></dd>
+                <dd><a href="/manager/domain/reg_zh.asp"  target="_blank" class="fleft" rel='nofollow'>离线注册<img class="ie6img" src="/newimages/Domains/img_dnew.gif" width="21" height="9" alt="new" /></a> 
+                  <a href="/services/yuding/" class="fright">过期域名抢注</a></dd>
+                <dd><a href="/web/whois/whois" class="fleft">whois查询</a><a href="/active/ymh/" class="fright">近期促销<img src="/newimages/Domains/sale_icon.gif" alt="促销"/></a><!--<a href="/services/domain/tywz.asp" class="fright">通用网址</a>--></dd>
+                <dd><a href="/services/transfer/" class="fleft">域名转入</a><a href="/web/mi/" class="fright">域名批量查询</a></dd>
+              </dl>
+              <dl class="nav_con_other">
+                <dt>域名服务</dt>
+                <dd><a href="/services/paimai/?lab=xun" class="fleft">询价交易<img class="ie6img" src="/newimages/Domains/img_dnew.gif" width="21" height="9" alt="new" /></a><a href="/customercenter/guohu.asp" class="fright">域名过户</a></dd>
+                <dd><a href="/services/paimai/index.asp?lab=pai" class="fleft" >域名拍卖<img class="ie6img" src="/newimages/Domains/img_dnew.gif" width="21" height="9" alt="new"/></a><a href="/services/domain/dns.asp" class="fright">DNS管理</a></dd>
+                <dd><a href="/services/domain/getcert.asp" class="fleft">获取域名证书</a><a href="/web/price/domainpricelist" class="fright">域名价格</a></dd>
+              </dl>
+              <dl class="nav_con_other">
+                <dt><a href="/manager/domain/" rel="nofollow">域名管理</a></dt>
+                <dd><a href="/manager/domain/" class="fleft" rel="nofollow">我的域名</a><a href="http://www.myhostadmin.net/" target="_blank" class="fright" rel="nofollow">独立控制面板</a></dd>
+              </dl>
+            </div>
+            <div class="nav_sub3">
+              <div class="three_pa">
+                <dl class="nav_con">
+                  <dt><a href="/faq/2j.asp?id=2" target="_blank">域名常见问题</a></dt>
+                  <dd><a href="/faq/list.asp?unid=154" target="_blank">域名注册常见问题</a></dd>
+                  <dd><a href="/faq/list.asp?unid=828" target="_blank">如何选择域名类型？</a></dd>
+                  <dd><a href="/faq/list.asp?unid=837" target="_blank">如何购买域名（注册流程）？</a></dd>
+                  <dd><a href="/faq/list.asp?unid=848" target="_blank">域名到期了如何续费？</a></dd>
+                  <dd><a href="/faq/list.asp?unid=45" target="_blank">如何转入、转出、过户域名？</a></dd>
+                </dl>
+              </div>
+              <dl class="nav_con_other2">
+                <dd><a href="/active/newdomain/" target="_blank" title="新顶级域，新商机"><img src="/flash/allimg/newdomain_pic.gif" alt="新顶级域，新商机" class="imgborder" /></a></dd>
+                <dd><a href="/active/freetc/" target="_blank"><img src="/flash/images/top_domain_pic2.gif" alt=".com 29元,.cn 19元" class="imgborder" /></a></dd>
+              </dl>
+            </div>
+            <div style="clear:both;"></div>
+          </div>
+        </div>
+      </li>
+      <li ><a href="/jiaoyi" class="h_color">域名交易</a><p class="h_color ">Domain Trader</p>
+        <div class="sec_sub nav_width6  nav_width7">
+          <div class="nav_shadow">
+            <div class="nav_sub1 width4" style="height:345px;">
+              <dl class="nav_con" >                
+                <dd><a href="/services/paimai/index.asp?lab=pai">域名拍卖</a></dd>
+                <dd><a href="/services/paimai/?lab=yuan1">一元起拍</a></dd>
+               <dd><a href="/services/paimai/?lab=elite">推荐拍卖</a></dd> 
+                <dd><a href="/services/paimai/?lab=one">一口价域名</a></dd>                			
+                <dd><a href="/services/paimai/?lab=xun">询价交易</a></dd>
+                <dd><a href="/services/yuding/?mode=chngrab">过期域名抢注</a></dd>
+				<dd><a href="/services/paimai/expire.asp">过期域名竞价</a></dd>
+                <dd><a href="/manager/domain/shop.asp">我的米铺</a></dd>
+                <dd><a href="/web/domaintrade/historyoftrade">最近成交域名</a></dd>
+                <dd><a href="http://club.west.cn/" target="_blank" rel="nofollow">域名论坛</a></dd>
+                <dd><a href="https://www.dai.top/" target="_blank" >玉米贷</a><img class="ie6img" src="/newimages/Domains/img_dnew.gif" width="21" height="9" alt="new"/></dd>
+                <dd><a href="http://www.west.gg/" target="_blank" >米哥哥</a><img class="ie6img" src="/newimages/Domains/img_dnew.gif" width="21" height="9" alt="new"/></dd>
+              </dl>
+            </div>
+            <div class="nav_sub3" style="height:380px;" >
+              <dl style=" padding-right:5px;">
+                <dd><a href="https://www.dai.top/" target="_blank"><img src="/flash/images/2016/dai_nav.gif" alt="玉米贷【dai.top】，登录就送理财红包" class="imgborder" style="margin-left:5px;" /></a></dd>
+                <dd><a href="/domains/xyz.asp" ><img src="/flash/allimg/xyz8_nav.gif" alt=".xyz newG注册量全球第一  仅需8元" class="imgborder" style="margin-left:5px;" /></a></dd>
+                <dd class="top_paimai">
+                  <div class="index_pm_list">
+                    <p>正在竞拍精品域名&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="/services/paimai/" target="_blank">更多>></a></p>
+					<div id="pmTopElitedv">load...</div>
+					</div>
+                </dd>
+              </dl>
+            </div>
+            <div style="clear:both;"></div>
+          </div>
+        </div>
+      </li>
+      <li><a href="/services/webhosting/" class="h_color">虚拟主机</a><p class="h_color">Webhost</p>
+        <div class="sec_sub nav_width2">
+          <div class="nav_shadow">
+            <div class="nav_sub1">
+              <dl class="nav_con">
+                <dt><a href="/services/webhosting/">虚拟主机购买</a></dt>
+                <dd><a href="/services/webhosting/twhost.asp">香港主机</a><span class="nav_price">(免备案)</span><span class="rexiao_ico"></span></dd>
+                <dd><a href="/services/webhosting/usa.asp">美国主机</a><span class="nav_price">(免备案)</span></dd>
+                <dd><a href="/services/webhosting/twolinevhost.asp" class="fleft">双线主机</a><span class="tui_ico"></span><a href="/services/webhosting/morelinevhost.asp" class="fright">多线主机</a></dd>
+                <dd><a href="/services/webhosting/basic.asp" class="fleft">基本型主机</a><span class="rexiao_ico"></span><a href="/services/webhosting/linux_host.asp" class="fright">Linux主机</a></dd>
+                <dd><a href="/services/webhosting/superg.asp" class="fleft">超G型主机</a><span class="tehui_ico"></span><a href="/services/webhosting/java.asp" class="fright">Java主机</a></dd>
+                <dd><a href="/services/dishosting/" class="fleft">集群主机</a><a href="/services/webhosting/asp_net.asp" class="fright">ASP.NET主机</a></dd>
+                <dd><a href="/services/webhosting/StoreHost.asp" class="fleft">网店主机</a><a href="/services/sites/" class="fright">成品网站</a></dd>
+              </dl>
+              <dl class="nav_con_other">
+                <dt>数据库产品</dt>
+                <dd><a href="/services/webhosting/database.asp" class="fleft">MSSQL数据库</a><a href="/services/webhosting/database.asp" class="fright">Mysql数据库</a></dd>
+              </dl>
+              <dl class="nav_con_other">
+                <dt><a href="/manager/vhost/" rel="nofollow">虚拟主机管理</a></dt>
+                <dd><a href="/manager/vhost/" class="fleft" rel="nofollow">我的虚拟主机</a><a href="http://www.myhostadmin.net/" target="_blank" class="fright" rel="nofollow">独立控制面板</a></dd>
+                <dd><a href="http://beian.west.cn/" target="_blank" class="fleft">网站备案</a></dd>
+              </dl>
+            </div>
+            <div class="nav_sub3">
+              <div class="three_pa">
+                <dl class="nav_con">
+                  <dt><a href="/faq/2j.asp?id=1" target="_blank">虚拟主机常见问题</a></dt>
+                  <dd><a href="/faq/list.asp?unid=840" target="_blank">购买虚拟主机常见问题咨询</a></dd>
+                  <dd><a href="/faq/list.asp?unid=844" target="_blank">如何选择合适的虚拟主机？</a></dd>
+                  <dd><a href="/faq/list.asp?unid=831" target="_blank">虚拟主机购买流程</a></dd>
+                  <dd><a href="/faq/list.asp?unid=836" target="_blank">选择多大的空间和流量合适？</a></dd>
+                  <dd><a href="/faq/list.asp?unid=838" target="_blank">虚拟主机如何选择线路？</a></dd>
+                </dl>
+              </div>
+              <dl class="nav_con_other2">
+                <dd><a href="/services/webhosting/v5.asp" target="_blank"><img src="/flash/images/top_w5.gif" alt="w5主机买2年送1年 188元/年" class="imgborder" /></a></dd>
+                <dd><a href="/active/duli/" ><img src="/flash/images/top_webhost_pic2.gif" alt="独立IP虚拟主机 仅+30元/年" class="imgborder" /></a></dd>
+              </dl>
+            </div>
+            <div style="clear:both;"></div>
+          </div>
+        </div>
+      </li>
+      <li><a href="/services/cloudhost/" class="h_color">云服务器</a><p class="h_color"> Cloud Host&nbsp;&nbsp;</p>
+        <div class="sec_sub nav_width4">
+          <div class="nav_shadow">
+            <div class="nav_sub1" style="height:480px;">
+              <dl class="nav_con">
+                <dt><a href="/services/cloudhost/" target="_blank"  class="fleft" rel="nofollow">云服务器购买</a> </dt>
+                <dd> <a href="/services/cloudhost/" class="fleft" rel="nofollow">云服务器购买</a><a href="/manager/server/" target="_blank" class="fright" rel="nofollow">提交工单</a></dd>
+                <dd> <a href="/manager/server/" class="fleft" rel="nofollow">我的云服务器</a> <a href="/services/cdn/" class="fright" target="_blank">CDN加速器</a></dd>
+              </dl>
+              <dl class="nav_con_other">
+                <dt><a href="/services/cloudhost/oem.asp">加盟合作</a><span class="f12 font-weight">(诚邀合作 共赢财富)</span></dt>
+                <dd>独家推出全新OEM分销体系<br />
+                  极具杀伤力的价格，超大利润</dd>               
+                <dt class="m_top"><a href="/services/vhostsoft/">网站管理助手</a></dt>
+                <dt class="m_top"><a href="/services/cloudhost/slb.asp">负载均衡解决方案<img class="ie6img" src="/newimages/Domains/img_dnew.gif" width="21" height="9" alt="new" /></a></dt>
+              </dl>
+              <dl class="nav_con_other" style="padding-top:5px;">
+                <dd style="text-align:center;"><img src="/flash/images/ts_img.gif" alt="云计算特色功能" class="imgborder" /></dd>
+                <dd class="border_ts"><span class="fleft"><b>1</b>.超快IO</span><span class="fright"><b>2</b>.强劲稳定</span></dd>
+                <dd class="border_ts"><span class="fleft"><b>3</b>.性价比高</span><span class="fright"><b>4</b>.安全可靠</span></dd>
+                <dd class="border_ts"><span class="fleft"><b>5</b>.灵活扩容</span><span class="fright"><b>6</b>.超强功能</span></dd>
+                <dd class="border_ts"><span class="fleft"><b>7</b>.专业服务</span><span class="fright"><b>8</b>.100倍赔偿</span></dd>
+              </dl>
+            </div>
+            <div class="nav_sub3" style="height:480px;">
+              <div class="three_pa">
+                <dl class="nav_con">
+                  <dt><a href="/services/cloudhost/dingwei.asp" target="_blank">云服务器常见问题</a></dt>
+                  <dd><a href="/faq/list.asp?unid=856" target="_blank">云服务器购买其他常见问题</a></dd>
+                  <dd><a href="/services/cloudhost/vs.asp" target="_blank">云服务器与VPS传统主机的区别</a></dd>
+                  <dd><a href="/services/cloudhost/why.asp" target="_blank">为什么选择西部数码云服务器？</a></dd>
+                  <dd><a href="/faq/list.asp?unid=857" target="_blank">如何选择合适的云服务器？</a></dd>
+                  <dd><a href="/faq/list.asp?unid=854" target="_blank">云服务器购买流程</a></dd>
+                  <dd><a href="/services/cloudhost/pk.asp" target="_blank">如何辨别真假云服务器？</a></dd>
+                </dl>
+              </div>
+              <dl class="nav_con_other2">
+                <dd><a href="/services/cloudhost/" ><img src="/flash/images/top_cloudhost_pic.gif" alt="云服务器特惠 满3000省500" class="imgborder" /></a></dd>
+                <dd><a href="/services/cloudhost/" ><img src="/flash/images/top_vps_pic.gif" alt="云服务器买2年送半年、买5年送2年！多买更优惠！" class="imgborder" /></a></dd>
+              </dl>
+            </div>
+            <div style="clear:both;"></div>
+          </div>
+        </div>
+        <div class="main_menu_new_ico" style="margin-top:-50px;"><img src="/newimages/default/top_new_ico3.gif" alt="火" width="23" height="19" /> </div>
+      </li>
+      <li><a href="/services/vpsserver/" class="h_color">VPS主机</a><p class="h_color">VPS Server</p>
+        <div class="sec_sub nav_width3">
+          <div class="nav_shadow">
+            <div class="nav_sub1" style="height:280px;">
+              <dl class="nav_con">
+                <dt><a href="/services/vpsserver/" rel="nofollow">VPS服务器</a></dt>
+                <dd><a href="/services/vpsserver/" class="fleft" rel="nofollow">VPS主机购买</a><a href="/manager/server/" target="_blank" class="fright" rel="nofollow">提交工单</a></dd>
+                <dd><a href="/manager/server/" class="fleft" rel="nofollow">我的VPS主机</a> <a href="http://www.myhostadmin.net/" class="fright"   target="_blank" rel="nofollow">独立控制面板</a></dd>
+              </dl>
+              
+              <dl class="nav_con_other">
+                <dt><a href="/services/cloudhost/oem.asp">加盟合作</a><span class="f12 font-weight">(诚邀合作 共赢财富)</span></dt>
+                <dd>独家推出全新OEM分销体系<br />
+                  极具杀伤力的价格，超大利润</dd>
+              </dl>
+              <dl class="nav_con_other" style="padding:6px 0 0 0;">
+                <dd ><img src="/flash/images/vps_ys.gif" alt="VPS主机优势" class="imgborder" /></dd>
+              </dl>
+            </div>
+            <div class="nav_sub3" style="height:280px;">
+              <div class="three_pa">
+                <dl class="nav_con">
+                  <dt><a href="/services/VPSServer/vpsfaq.asp" target="_blank">VPS主机常见问题</a></dt>
+                  <dd><a href="/services/vpsserver/?tip=faq" >什么是VPS主机？</a></dd>
+                  <dd><a href="/services/vpsserver/?tip=faq" >如何快速搭建网站环境？</a></dd>
+                  <dd><a href="/services/vpsserver/?tip=faq" >VPS主机预装了哪些软件？</a></dd>
+                  <dd><a href="/services/vpsserver/?tip=faq" >网站数据丢失了，还能恢复吗？</a></dd>
+                  <dd><a href="/services/vpsserver/?tip=faq" >主机购买成功后怎样进行备案？</a></dd>
+                </dl>
+              </div>
+              <dl class="nav_con_other2">
+                <dd><a href="/services/vpsserver/" ><img src="/flash/images/top_vps_pic.gif" alt="VPS主机买2年送半年、买5年送2年！多买更优惠！" class="imgborder" /></a></dd>
+              </dl>
+            </div>
+            <div style="clear:both;"></div>
+          </div>
+        </div>
+      </li>
+      <li><a href="/services/server/" class="h_color">主机租用</a><p class="h_color">Server</p>
+        <div class="sec_sub nav_width5">
+          <div class="nav_shadow">
+            <div class="nav_sub1" style="height:330px;">
+              <dl class="nav_con">
+                <dt><a href="/services/server/">服务器租用</a></dt>
+              </dl>
+              <dl class="nav_con_other">
+                <dt><a href="/services/trusteehost/default.asp">主机托管</a></dt>
+              </dl>
+              <dl class="nav_con_other">
+                <dt>海外主机租用</dt>
+                <dd><a href="/services/server/other.asp" >美国主机租用</a></dd>
+                <dd><a href="/services/server/tianwan.asp" >台湾主机租用</a></dd>
+                <dd><a href="/services/server/hongkong.asp" >香港主机租用</a></dd>
+              </dl>
+              <dl class="nav_con_other">
+                <dt>其他服务</dt>
+                <dd><a href="/services/trusteehost/Bandwidth.asp">机柜租用</a></dd>
+                <dd><a href="/services/server/serverdiy.asp">自定制主机(DIY)</a></dd>                
+                <dd> <a href="/services/cdn/">CDN加速器</a></dd>
+              </dl>
+            </div>
+            <div class="nav_sub3" style="height:330px;">
+              <div class="three_pa">
+                <dl class="nav_con">
+                  <dt>服务标准</dt>
+                  <dd>365天全天候运营服务</dd>
+                  <dd>网络联通率在99.9％以上</dd>
+                  <dd>7X24小时维护与技术支持</dd>
+                  <dd>国家甲级机房，超级数据港</dd>
+                </dl>
+              </div>
+              <dl class="nav_con_other2">
+                <dd><a href="/services/server/ShowServerInfo.asp?ServerID=15" target="_blank"><img src="/flash/images/top_server_pic.gif" alt="商务三型服务器 推荐" class="imgborder" /></a></dd>
+              </dl>
+            </div>
+            <div style="clear:both;"></div>
+          </div>
+        </div>
+      </li>
+      <li><a href="/services/sites/" class="h_color">成品网站</a><p class="h_color">AutoSite</p>
+        <div class="sec_sub nav_width6">
+          <div class="nav_shadow">
+            <div class="nav_sub1 width">
+              <dl class="nav_con">
+                <dd><a href="/services/sites">企业、行业网站</a></dd>
+                <dd><a href="/services/webhosting/StoreHost.asp">网上商店、商城</a></dd>
+                <dd><a href="/services/sites/help.asp">成品网站帮助文档</a></dd>
+                <dd><a href="/faq/list.asp?unid=865">常见购买问题咨询</a></dd>
+              </dl>
+            </div>
+            <div class="nav_sub3">
+              <dl style=" padding-right:10px;">
+                <dd><a href="/services/sites/" ><img src="/flash/images/autosite_nav.jpg" alt="成品网站特惠价680元"  style="margin-left:10px;" /></a></dd>
+              </dl>
+            </div>
+            <div style="clear:both;"></div>
+          </div>
+        </div>
+      </li>
+      <li><a href="/services/mail/" class="h_color">企业邮局</a><p class="h_color">Mail</p>
+        <div class="sec_sub nav_width6  nav_width7">
+          <div class="nav_shadow">
+            <div class="nav_sub1 width4">
+              <dl class="nav_con">
+                <dd><a href="/services/mail/">自定义邮局</a></dd>
+                <dd><a href="/services/mail/">按套餐购买</a></dd>
+                <dd><a href="/services/mail/tedian.asp">企业邮局特点</a></dd>
+              </dl>
+            </div>
+            <div class="nav_sub3">
+              <dl style=" padding-right:5px;">
+                <dd><a href="/services/mail/" ><img src="/flash/images/mail_nav.gif" alt="企业邮局全新升级" class="imgborder" style="margin-left:5px;" /></a></dd>
+              </dl>
+            </div>
+            <div style="clear:both;"></div>
+          </div>
+        </div>
+      </li>
+ 
+      <li><a href="/agent/" class="h_color">代理专区</a><p class="h_color">Agent</p>
+        <div class="sec_sub">
+          <div class="nav_shadow">
+            <div class="nav_sub1 width3">
+              <dl class="nav_con">
+                <dd><a href="/agent/agentmoshi.asp">代理模式</a></dd>
+                <dd><a href="/agent/level.asp">代理级别</a></dd>
+                <dd><a href="/agent/bargain.asp">代理合同</a></dd>
+                <dd><a href="/Sys/" >平台介绍</a></dd>
+                <dd><a href="/agent/agentfaq.asp">加盟必读</a></dd>
+                <dd><a href="/agent/liuchen.asp">如何申请</a></dd>
+              </dl>
+            </div>
+            <div style="clear:both;"></div>
+          </div>
+        </div>
+      </li>
+      <li><a href="/customercenter/" class="h_color">帮助中心</a><p class="h_color">Help</p>
+        <div class="sec_sub">
+          <div class="nav_shadow">
+            <div class="nav_sub1 width3">
+              <dl class="nav_con">
+                <dd><a href="/faq/" >常见问题</a></dd>
+                <dd><a href="/customercenter/subquestion.asp" rel="nofollow">提交工单</a></dd>
+                <dd><a href="/customercenter/allquestion.asp?module=search&qtype=myall" rel="nofollow">跟踪提问</a></dd>
+                <dd><a href="/aboutus/contact.asp" >联系我们</a></dd>
+                <dd><a href="/customercenter/howpay.asp" rel="nofollow">付款方式</a></dd>
+                <dd><a href="/payend.asp" rel="nofollow">汇款确认</a></dd>
+                <dd><a href="/customercenter/renew.asp" rel="nofollow">续租服务</a></dd>
+                <dd><a href="/customercenter/down.asp" rel="nofollow">常用软件</a></dd>
+                <dd><a href="/customercenter/file.asp" rel="nofollow">相关文档</a></dd>
+                <dd><a href="/club/" rel="nofollow">域名论坛</a></dd>
+                <dd><a href="/zx/" >站长资讯</a></dd>
+                <dd><a href="/cms/">站长新闻</a></dd>
+                <dd><a href="http://beian.west.cn" target="_blank">网站备案</a></dd>
+              </dl>
+            </div>
+            <div style="clear:both;"></div>
+          </div>
+        </div>
+      </li>
+	  <li><a href="https://www.dai.top" class="h_color" target="_blank">玉米贷</a><p class="h_color">Dai.top</p>
+      <div style="margin-top:-44px;margin-left:52px" class="main_menu_new_ico"><img src="/newimages/default/topxin.gif" alt="新" height="18" width="24"> </div>
+      </li>
+    </ul>
+  </DIV>
+</DIV>
+<script language=javascript >
+	
+function init_menu(){
+	var pageUrl=document.URL.toLowerCase();
+	if (pageUrl.indexOf("/services/domain/auction")>=0)
+		dftMenu=2;
+	else if (pageUrl.indexOf("/webhosting")>=0)
+		dftMenu=3;
+	else if (pageUrl.indexOf("/services/sites/")>=0)
+		dftMenu=7;
+	else if (pageUrl.indexOf("/diysite")>=0)
+		dftMenu=3;
+	else if (pageUrl.indexOf("/server")>=0)
+		dftMenu=6;
+	else if (pageUrl.indexOf("/cloudhost")>=0)
+		dftMenu=4;
+	else if (pageUrl.indexOf("/vpsserver")>=0)
+		dftMenu=5;
+	else if (pageUrl.indexOf("/domain")>=0)
+		dftMenu=1;
+	else if (pageUrl.indexOf("/mail")>=0)
+		dftMenu=8;
+	else if (pageUrl.indexOf("/agent")>=0)
+		dftMenu=9;
+	else if (pageUrl.indexOf("/application")>=0)
+		dftMenu=9;
+	else if (pageUrl.indexOf("/customercenter")>=0 || pageUrl.indexOf("/faq")>=0)
+		dftMenu=10;
+	else
+		dftMenu=0;
+
+	var menus=document.getElementById("menunew_top_list").getElementsByTagName("li");
+	for(i=0;i<menus.length;i++)
+		{
+			menus[i].className="";
+			menus[i].getElementsByTagName("a")[0].className="h_color"
+			menus[i].getElementsByTagName("p")[0].className="h_color"
+		}
+	   menus[dftMenu].className="act_menunew";
+	   menus[dftMenu].getElementsByTagName("a")[0].className="h_color pcolor"
+	   menus[dftMenu].getElementsByTagName("p")[0].className="h_color pcolor"
+
+		//我的订单 产品管理/续费下拉
+$(".li_list").hover(function(){			
+		var _this = $(this);                   
+    trigger = setTimeout(function(){
+		_this.children(".top_list").addClass('top_listhover');
+        _this.children(".order_list_link").slideDown(100);	
+    },200);  		
+	}, function(){
+		clearTimeout(trigger); 	
+		$(".top_list").removeClass('top_listhover');			
+		$(this).children(".order_list_link").slideUp(100);
+	});
+
+//管理中心快捷 弹出层
+$("#lblManager").hover(function(){
+		$(".manager_kj").show();
+	},function(){
+		$(".manager_kj").hide();
+		})
+
+//导航菜单弹出层
+$("#menunew_top_list li").hover(function(){	
+		$("#menunew_top_list li").removeClass('act_menunew');		
+		$(".h_color").removeClass('pcolor');				
+		$(this).addClass('act_menunew');
+		$(this).find(".h_color").addClass("pcolor");
+		var _this = $(this);                    // 把$(this)对象赋给一个变量
+    trigger = setTimeout(function(){
+        _this.children(".sec_sub").show();// jQuery的setTimeout中不能直接使用$(this)
+    },200);  
+		//$(this).children(".sec_sub").show(100);	
+	}, function(){
+		$("#menunew_top_list li").removeClass('act_menunew');		
+		$(".h_color").removeClass('pcolor');	
+		 clearTimeout(trigger);      // 清除上面的延迟触发的事件
+		$(".sec_sub").hide();
+		
+	});
+ }
+
+
+
+init_menu();
+
+</script>
+
+  <div id="FlashDomain">
+    <!--轮播banner-->
+	<script language="javascript" src="/jscripts/scroll_for_left.js"></script>
+        
+    <div id="Flash">
+    <div id="swfObj">
+      <div id="rightdivimg" style="width:667px; height:214px;"> 
+ 	        <a href="/active/duli/" title="独立IP虚拟主机 仅需+98元"><img src="/flash/images/duli.jpg?rand=duliip201604061" alt="独立IP虚拟主机 仅需+98元"  /></a>        
+  	 <!-- <a href="/web/static/vip" title=".VIP域名  5月18日全球开放抢注  38元起"><img src="/flash/images/2016/vipyd.jpg" alt=".VIP域名  5月18日全球开放抢注  38元起"  /></a>   -->   
+      <a href="/active/cc/" title=".CC域名100万大补贴提振米市信心！" ><img src="/flash/images/2016/cc100wan.jpg" alt=".CC域名100万大补贴提振米市信心！"  /></a> 
+      <a href="/domains/club.asp" title=".club 6元优惠"><img src="/flash/images/2016/club6yuan2.jpg" alt=".club 6元优惠"  /></a>            
+       <a href="https://www.dai.top/" title="玉米贷【dai.top】100元起投，年化收益高达余额宝4倍以上" target="_blank"><img src="/flash/images/2016/dai2.jpg" alt="玉米贷【dai.top】100元起投，年化收益高达余额宝4倍以上"  /></a>
+       <a href="/domains/cn.asp" title=".CN促销 低至16元"><img src="/flash/images/2016/cn16.jpg?rand=cn16" alt=".CN促销 低至16元"  /></a> 
+<!--       <a href="/domains/xyz.asp" title=".xyz 4元促销"><img src="/flash/images/xyz2016.jpg?rand=xyz20164" alt=".xyz 4元促销"  /></a>-->
+ <a href="/services/domain/top.asp" title="top域名4元促销"><img src="/flash/images/top_667x214.jpg?rand=ostp" alt="top域名4元促销"  /></a>
+ <a href="/services/CloudHost/upgrade.asp" title="云主机功能升级"><img src="/flash/images/newcloudgn2.jpg" alt="云主机功能升级"  /></a>
+<a href="/services/webhosting/v5.asp" title="1G云虚拟主机 188元/年"><img src="/flash/images/v5host.jpg" alt="1G云虚拟主机 188元/年"  /></a>
+        <div id="ico2"></div>
+        </div>
+        </div>
+    </div>
+    
+	<script type="text/javascript">
+	$(function(){
+		$(document).iFadeSlide({field:'#rightdivimg>a>img',ico:'#ico2',interval:10000});	
+	})
+	</script>
+<!--轮播banner end-->
+    <div id="DomainSearch">
+      <ul	id="domain_box" style="width:200px">
+        <li class="tab_left_on" onMouseOver="switchTab(this)")><span class="round_on">&nbsp;</span>热销域名</li>
+        <li class="tab_right_off" onMouseOver="switchTab(this)"><span class="round_off">&nbsp;</span>新顶级域</li>
+      </ul>
+      <div id="domain_box_1">
+        <form action="/main/whois.asp" method="post" name="frmsearchInt" id="frmsearchInt" onSubmit="return submitchecken(this);">
+          <div id="searchDiv">
+            <div id="searchinput">
+              <input name="searchedDomainName"  value="英文域名查询" onClick="javascript:if(this.value=='英文域名查询'){this.value='';}" type="text" class="inputbox" size="15" />
+			  <input type="hidden" name="du" value="*eiB8Ig==" />
+            </div>
+            <div id="SearchButton">
+              <input name="imageField2" type="image" src="/newimages/Domains/shortButton_SearchDomain.gif" width="54" height="24" border="0" />
+            </div>
+          </div>
+          <div id="DomainSuffix">
+
+
+<ul>
+    <!--三个后缀一行-->
+    <li class="mainbox"><input type="checkbox"  checked value=".top" name="suffix" /><a href="/services/domain/top.asp"  target="_blank">.top <i class="ico_hot"></i> </a></li>
+    <li class="mainbox"> <input name="suffix" type="checkbox" value=".wang" checked /><a href="/services/domain/wang.asp"  target="_blank">.wang </a></li>
+    <li class="mainbox"> <input type="checkbox" value=".xyz" name="suffix" checked /><a href="/domains/xyz.asp"  target="_blank">.xyz <i class="ico_hot"></i></a></li>    
+    <!--三个后缀一行 end-->
+    
+    <!--三个后缀一行-->    
+    <li class="mainbox"> <input type="checkbox" value=".club" name="suffix" checked /><a href="/domains/club.asp"  target="_blank">.club <i class="ico_hot"></i></a></li>
+    <li class="mainbox"><input type="checkbox" checked value=".com" name="suffix" /><a href="/domains/com.asp"  target="_blank">.com </a></li>    
+	<li class="mainbox"> <input type="checkbox" value=".cc" name="suffix" checked /><a href="/domains/cc.asp"  target="_blank">.cc <i class="ico_cu"></i> </a></li>	
+
+    <!--三个后缀一行 end-->
+    
+    <!--三个后缀一行-->
+    <li class="mainbox"> <input type="checkbox" value=".cn" name="suffix" checked /><a href="/domains/cn.asp"  target="_blank">.cn<i class="ico_cu"></i> </a></li>
+    <li class="mainbox"> <input type="checkbox" value=".win" name="suffix" checked /><a href="/domains/win.asp"  target="_blank">.win <i class="ico_cu"></i></a></li>
+    <li class="mainbox"> <input type="checkbox" value=".net" name="suffix" checked />  <a href="/domains/net.asp"  target="_blank">.net</a></li>    
+    <!--三个后缀一行 end-->
+    
+    <!--三个后缀一行--> 
+    <li class="mainbox"> <input type="checkbox" value=".com.cn" name="suffix" checked /><a href="/domains/cn.asp"  target="_blank">.com.cn   </a></li>
+    <li class="mainbox"> <input name="suffix" type="checkbox" value=".red"  checked /><a href="/domains/red.asp"  target="_blank">.red</a></li>
+	    <li class="mainbox"> <input type="checkbox" value=".hk" name="suffix" checked /> <a href="/domains/hk.asp"  target="_blank">.hk <i class="ico_hot"></i></a></li>
+
+    <!--三个后缀一行 end-->		    
+</ul>
+<input type="hidden" value=".site" name="suffix" checked />
+            <ul> <input  value=".tech" name="suffix"  type="hidden" /></ul>
+          </div>
+          <div id="DomainMore"><a href="/services/domain/">更多域名</a></div>
+        </form>
+        <div id="DomainTXTAdv" class="qiang_ico"><a href="/services/webhosting/twhost.asp">西部数码港台主机火爆销售中即买即用... 
+          </a></div>
+      </div>
+      <div id="domain_box_2" style="display:none;">
+
+        <form name="form1" method="post" action="/main/whois.asp" onSubmit="return submitchecken(this);">
+          <div id="searchDivCN">
+            <div id="searchinputCN">
+              <input name="searchedDomainName"  value="新顶级域查询" onClick="javascript:if(this.value=='新顶级域查询'){this.value='';}" type="text" class="inputbox" size="15" />
+			  <input type="hidden" name="du" value="*eiB8Ig==" />
+            </div>
+            <div id="SearchButtonCN">
+              <input name="imageField2" type="image" src="/newimages/Domains/shortButton_SearchDomain.gif" width="54" height="24" border="0" />
+            </div>
+          </div>
+          <div id="DomainSuffixCN">
+
+<ul>
+	<!--三个后缀一行--> 
+    <li class="mainbox" ><input type="checkbox" value=".top" name="suffix" checked/><a href="/services/domain/top.asp"  target="_blank">.top</a></li>
+    <li class="mainbox"><input type="checkbox" value=".wang" name="suffix" checked /><a href="/services/domain/wang.asp"  target="_blank">.wang</a></li>
+    <li class="mainbox"><input type="checkbox" value=".win" name="suffix" checked /><a href="/domains/win.asp"  target="_blank">.win</a></li>
+    <!--三个后缀一行 end--> 
+    
+    <!--三个后缀一行--> 
+    <li class="mainbox" ><input type="checkbox" value=".xyz" name="suffix" checked /><a href="/domains/xyz.asp"  target="_blank">.xyz</a></li>
+    <li class="mainbox" ><input type="checkbox" value=".bid" name="suffix" checked /><a href="/domains/bid.asp"  target="_blank">.bid</a></li>
+    <li class="mainbox" > <input name="suffix" type="checkbox" value=".ren" checked /><a href="/domains/ren.asp"  target="_blank">.ren</a></li>
+    <!--三个后缀一行 end--> 
+
+    <!--三个后缀一行--> 
+    <li class="mainbox"><input type="checkbox" value=".site" name="suffix" checked /><a href="/domains/site.asp"  target="_blank">.site</a></li>
+    <li class="mainbox"><input type="checkbox" value=".red" name="suffix" checked /><a href="/domains/red.asp"  target="_blank">.red</a></li>
+    <li class="mainbox"><input type="checkbox" value=".date" name="suffix" checked /><a href="/domains/date.asp"  target="_blank">.date</a></li>
+    <!--三个后缀一行 end--> 
+</ul>
+          </div>
+           <div id="CnDomainTXTAdv"><a href="/active/newdomain/" target="_blank"><img src="/newimages/default/newdomain_atv.jpg" width="235" height="60" alt="全球新通用顶级域名注册商保有量排行榜No.1"/></a></div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div id="MainPart">
+    <div id="LeftPart">
+      <div id="LeftNews">
+        <ul id="news_box">
+          <li class="tab_left_on" onMouseOver="switchTab(this);news_jumpurl='/news/';"><span class="round_on">&nbsp;</span>新闻中心</li>
+          <li class="tab_right_off" onMouseOver="switchTab(this);news_jumpurl='/aboutus/media.asp';"><span class="round_off">&nbsp;</span>媒体关注</li>
+        </ul>
+        <div id="news_more"><a href="javascript:location.href=location.protocol+'//'+location.hostname+news_jumpurl"><img src="/newimages/default/more.gif" width="30" height="5" alt="更多"/></a></div>
+        <div class="blueline"><img src="/newimages/spacer.gif"  alt="线"/></div>
+        <div class="newlist" id="news_box_1">
+          <ul id="rightlist">
+            <li><a href="/news/list.asp?newsid=651" title=" .top精品溢价域名将于5月5日开放注册！" >05-04&nbsp;&nbsp;&nbsp; .top精品溢价域名将于5月5日..</a></li><li><a href="/news/list.asp?newsid=650" title="五一域名主机优惠合集：最低仅需6元！" >04-28&nbsp;&nbsp;&nbsp;五一域名主机优惠合集：最低仅..</a></li><li><a href="/news/list.asp?newsid=649" title="西部数码免费转入不止是4声母，更不仅仅有COM/CC！" >04-15&nbsp;&nbsp;&nbsp;西部数码免费转入不止是4声母..</a></li><li><a href="/news/list.asp?newsid=648" title=".vip域名注册局来访西部数码" >04-14&nbsp;&nbsp;&nbsp;.vip域名注册局来访西部数码</a></li><li><a href="/news/list.asp?newsid=647" title="第三届用户精品域名专场拍卖会预告！" >04-08&nbsp;&nbsp;&nbsp;第三届用户精品域名专场拍卖会..</a></li><li><a href="/news/list.asp?newsid=646" title=".wang域名注册、续费限时促销公告！" >04-06&nbsp;&nbsp;&nbsp;.wang域名注册、续费限时促销..</a></li>
+          </ul>
+        </div>
+        <div class="newlist" id="news_box_2" style="display:none">
+          <ul id="rightlist">
+            <li><a href="http://www.admin5.com/article/20160422/659475.shtml" title="知识普及：.vip域名百科大全" target="_blank" >04-22&nbsp;&nbsp;&nbsp;知识普及：.vip域名百科大全</a></li><li><a href="http://www.chinaz.com/news/2016/0414/522044.shtml" title=".vip域名注册局来访西部数码" target="_blank" >04-18&nbsp;&nbsp;&nbsp;.vip域名注册局来访西部数码</a></li><li><a href="http://www.admin5.com/article/20160322/653259.shtml" title="西部数码.CC域名100万大补贴提振米市信心！" target="_blank" >03-22&nbsp;&nbsp;&nbsp;西部数码.CC域名100万大补贴提..</a></li><li><a href="http://www.chinaz.com/news/2016/0317/513496.shtml" title="西部数码.xyz拍卖会引全球资金强势关注！歪国仁说：我们也要出价！" target="_blank" >03-17&nbsp;&nbsp;&nbsp;西部数码.xyz拍卖会引全球资金..</a></li><li><a href="http://www.west.cn/zx/3266.html" title="世界域名大会-乌镇峰会 ：一场世界性的域名盛会" target="_blank" >03-11&nbsp;&nbsp;&nbsp;世界域名大会-乌镇峰会 ：一场..</a></li><li><a href="http://www.chinaz.com/news/2016/0309/510699.shtml" title="为什么苹果和谷歌要保护“.八卦”域名？" target="_blank" >03-09&nbsp;&nbsp;&nbsp;为什么苹果和谷歌要保护“.八..</a></li>
+          </ul>
+        </div>
+      </div>
+      
+
+     <!--拍卖竞价列表-->
+<div class="index_pm" style="margin:7px 0 7px 0;">
+<div class="index_pm_top">正在竞拍域名列表<a href="/services/paimai/" target="_blank">更多>></a></div>
+<div class="index_pm_con">
+<div class="index_pm_list">
+        <table class="index_pm_table" border="0" cellpadding="0" cellspacing="0" align="center" width="100%">
+         <tr class="tr_bg">
+            <th>域名</th>
+            <th>剩余时间</th>
+            <th>当前价格</th>
+          </tr>
+          <tr><td><a href="/services/paimai/show.asp?pid=12667381" target="_blank">74dj.com</a><td>05时08分</td><td>320元</td></tr><tr><td><a href="/services/paimai/show.asp?pid=12740327" target="_blank">foroch.com</a><td>01天04时</td><td>170元</td></tr><tr><td><a href="/services/paimai/show.asp?pid=12740495" target="_blank">80dj.com</a><td>01天04时</td><td>160元</td></tr><tr><td><a href="/services/paimai/show.asp?pid=12668709" target="_blank">2105.org</a><td>04时50分</td><td>150元</td></tr><tr><td><a href="/services/paimai/show.asp?pid=12740423" target="_blank">keji.hk</a><td>01天04时</td><td>138元</td></tr><tr><td><a href="/services/paimai/show.asp?pid=12668708" target="_blank">1705.org</a><td>05时20分</td><td>120元</td></tr><tr><td><a href="/services/paimai/show.asp?pid=12668747" target="_blank">epdb.cn</a><td>07时36分</td><td>110元</td></tr><tr><td><a href="/services/paimai/show.asp?pid=12667383" target="_blank">autd999.com</a><td>04时19分</td><td>110元</td></tr><tr><td><a href="/services/paimai/show.asp?pid=12811590" target="_blank">wnxwdx.com</a><td>02天04时</td><td>110元</td></tr><tr><td><a href="/services/paimai/show.asp?pid=12667353" target="_blank">stdfzx.com</a><td>05时25分</td><td>100元</td></tr>
+		</table>
+           <!--<a href="/active/pm/top/" style="margin-top:5px;display:inline-block"><img src="/flash/allimg/top263.gif" alt=".top用户专场拍卖 正在报名" /></a>-->
+      </div>
+
+</div>
+<div class="index_pm_bottom"><img src="/newimages/default/pm_bottom.gif"  alt="底部"/></div>
+</div>
+<!--拍卖竞价列表 end-->
+
+<div id="LeftService">
+        <ul id="service_box">
+          <li class="tab_left_on" onMouseOver="switchTab(this)"><span class="round_on">&nbsp;</span>客服中心</li>
+          <li class="tab_right_off" onMouseOver="switchTab(this)"><span class="round_off">&nbsp;</span>客户评价</li>
+        </ul>
+        <div id="service_box_1" style="width:265px;height:160px;padding: 0px 10px;"><a href="/customercenter/" title="西部数码客服中心"><img src=/newimages/default/service_pe.jpg border=0 style="float:left;margin-left:5px;"  alt="客服中心" /></a> 
+          <ul id="servicelist">
+            <li><a href="/customercenter/subquestion.asp">提交工单</a></li>
+            <li><a href="/customercenter/allquestion.asp?module=search&qtype=myall">查看回复</a></li>
+            <li><a href="http://beian.west.cn" target="_blank">网站备案</a></li>
+            <li><a href="/payend.asp">汇款确认</a></li>
+            <li><a href="/faq/">常见问题</a></li>
+            <li><a href="/services/webhosting/SpeedTest.asp">速度测试</a></li>
+            <li><a href="http://www.myhostadmin.net" target="_blank"  rel="nofollow">独立面板</a></li>
+            <li><a href="/customercenter/file.asp">相关文档</a></li>
+            <li><a href="/Active/2008313/jianyinew.asp">投诉建议</a></li>
+            <li><a href="/Customercenter/talkbox.asp">提交评价</a></li>
+          </ul>
+			<img src="/newimages/default/Service_400.gif" width="264" height="34"  alt="400-6118-263" style="margin-left:5px;margin-top:1px;"/> 
+		</div>
+		<script type="text/javascript" src="/jquery/plugin/marquee.js"></script>
+        <div id="service_box_2" style="width:265px;height:160px;padding:0px 10px;">
+			<script type="text/javascript" src="/customercenter/talkbox.asp?j=3"></script>
+			<div id="Spek"><a href="/Customercenter/talkbox.asp"><img src="/newimages/default/Spek_a.gif"  alt="更多评价" border=0 />&nbsp;&nbsp;&nbsp;&nbsp;<img src="/newimages/default/Spek_b.gif" border=0  alt="发表评价"/></a></div>
+        </div>
+      </div>
+      
+    </div>
+    <div id="PartRight">
+      <div id="WebHost">
+        <div class="webhostTitle">
+         <div class="hot_title"><img src="/newimages/default/2012index/tuijian.gif" width="84" height="24" alt="热销推荐" title="热销推荐" /></div>
+           <ul id="vhost_box" class="hot_webhosting">
+         
+            <li class="tab_left_on" onMouseOver="switchTab(this);news_jumpurl='/services/webhosting/';"><span class="round_on">&nbsp;</span>热销虚拟主机</li>
+            <li class="tab_center_off" onMouseOver="switchTab(this);news_jumpurl='/services/webhosting/';"><span class="round_off">&nbsp;</span>推荐虚拟主机</li>
+            <li class="tab_center_off" onMouseOver="switchTab(this);news_jumpurl='/services/cloudhost/';"><span class="round_off">&nbsp;</span>云服务器</li>
+            <li class="tab_right_off" onMouseOver="switchTab(this);news_jumpurl='/active/20110401/';"><span class="round_off">&nbsp;</span>近期优惠</li>
+          
+          </ul>
+          <div class="hot_more"><a href="javascript:location.href=location.protocol+'//'+location.hostname+news_jumpurl">查看更多</a></div>
+        </div>
+        <div id="vhost_box_1" >
+          <ul>
+            
+            
+            
+            <li >
+              <div class="newhostTitle"><img src="/newimages/default/2012index/icon1.gif"  alt="港台入门型" class="hosticon" /><div class="newhright"><div class="newhost">港台入门型</div><div><span class="price">288</span> 元/年</div></div></div>
+              <div class="newhostContent">
+              <img src="/newimages/default/2012index/beian.gif" alt="免备案" width="49" height="48" class="beian" />
+              <div class="newcs">
+             300MB 虚拟主机空间  
+              </div>
+               <div class="newcs">
+             高速、稳定、方便
+              </div>
+               <div class="newcs">
+             即买即用方便快捷 
+              </div>
+                <div class="newcs"> 支持独立IP地址：+98元</div>
+                 </div>
+              <div class="hostbutton"><a href="/services/webhosting/twhost.asp">查看详情</a></div>
+            </li>
+           <li class="newline"> <img src="/newimages/default/2012index/line.jpg" alt="线" /></li>
+            
+            <li >
+              <div class="newhostTitle"><img src="/newimages/default/2012index/icon2.gif"  class="hosticon" alt="双线普及型" /><div class="newhright"><div class="newhost">双线普及型</div><div><span class="price">298</span> 元/年</div></div></div>
+              <div class="newhostContent">
+              
+              <div class="newcs">
+             300MB 虚拟主机空间
+              </div>
+                <div class="newcs"> 基于云计算，安全、稳定！</div>
+               <div class="newcs">
+            电信、网通一样快！
+              </div>
+               <div class="newcs">
+            更高.更快.更强.更省
+              </div>
+                 </div>
+              <div class="hostbutton"><a href="/services/webhosting/twolinevhost.asp">查看详情</a></div>
+            </li>
+            <li class="newline"> <img src="/newimages/default/2012index/line.jpg" class="newline" alt="线"/></li>
+            
+            <li >
+              <div class="newhostTitle"><img src="/newimages/default/2012index/w5icon.gif"  class="hosticon" alt="云峰W5型主机"/><div class="newhright"><div class="newhost">云峰W5型主机</div><div><span class="price">188</span> 元/年&nbsp;&nbsp;</div></div></div>
+              <div class="newhostContent">
+             
+              <div class="newcs">
+             1G网站空间
+              </div>
+               <div class="newcs">
+             送500M 5用户邮局
+              </div>
+               <div class="newcs">
+            100M Mysql/50M MSsql
+              </div>
+               <div class="newcs">
+            网络流量：18GB/月
+              </div>
+                 </div>
+              <div class="hostbutton"><a href="/services/webhosting/v5.asp">查看详情</a></div>
+            </li>
+            
+          </ul>
+        </div>
+        <div id="vhost_box_2">
+          <ul>
+          <li >
+              <div class="newhostTitle"><img src="/newimages/default/2012index/saleicon.gif"  class="hosticon" alt="sale特价"/><div class="newhright"><div class="newhost">1G空间<span style="font-size:11px; font-weight:normal;">(本周特价)</span></div><div>特价<span class="price">240</span>元/年</div></div></div>
+              <div class="newhostContent">
+              
+              <div class="newcs">
+             1G 虚拟主机空间 
+              </div>
+               <div class="newcs">
+             稳定性好、流量高 
+              </div>
+               <div class="newcs">
+           多线路可选，畅通无阻 
+              </div>
+               <div class="newcs">
+             超强控制面板，方便灵活
+              </div>
+                 </div>
+              <div class="hostbutton"><a href="/services/webhosting/linux_host.asp">查看详情</a></div>
+            </li>
+            
+           <li class="newline"> <img src="/newimages/default/2012index/line.jpg" alt="线" /></li>
+ 
+            <li >
+              <div class="newhostTitle"><img src="newimages/default/2012index/dxicon.gif" alt="多线企业型" class="hosticon" /><div class="newhright"><div class="newhost" style="position:relative;">多线企业型 <img src="/newimages/Domains/sales1002.gif" alt="省100" class="saleimg" /> <script>tipsdiv("在购物车中输入优惠码2016sheng100可立省100元！",300,25)</script></div><div><span class="price">399</span> 元/年</div></div></div>
+              <div class="newhostContent">
+              
+              <div class="newcs">
+            500M网站空间
+              </div>
+               <div class="newcs">
+             送100M Mssql+Mysql
+              </div>
+               <div class="newcs">
+            送500M 5用户邮局
+              </div>
+               <div class="newcs">
+            网络流量：100GB/月
+              </div>
+                 </div>
+              <div class="hostbutton"><a href="/services/webhosting/morelinevhost.asp">查看详情</a></div>
+            </li>
+            <li class="newline"> <img src="/newimages/default/2012index/line.jpg" class="newline" alt="线" /></li>
+             <li >
+              <div class="newhostTitle"><img src="newimages/default/2012index/dxicon2.gif" alt="多线门户型" class="hosticon" /><div class="newhright"><div class="newhost" style="position:relative;">多线门户型 <img src="/newimages/Domains/sales1002.gif" alt="省100" class="saleimg"/>
+           
+              
+                <script>tipsdiv("在购物车中输入优惠码2016sheng100可立省100元！",300,25)</script>
+              </div><div><span class="price">699</span> 元/年</div></div></div>
+              <div class="newhostContent">
+              
+              <div class="newcs">
+             1.5G网站空间
+              </div>
+               <div class="newcs">
+             送1G Mssq+Mysql
+              </div>
+               <div class="newcs">
+            支持3个子站点
+              </div>
+               <div class="newcs">
+            网络流量：120GB/月
+              </div>
+                 </div>
+              <div class="hostbutton"><a href="/services/webhosting/morelinevhost.asp">查看详情</a></div>
+            </li>
+            
+          </ul>
+        </div>
+        <div id="vhost_box_3">
+          <ul>
+            
+            
+            
+            <li >
+              <div class="newhostTitle"><img src="newimages/default/2012index/icon7.gif" alt="特价弹性云服务器" class="hosticon" /><div class="newhright"><div class="newhost"><a href="/services/cloudhost/?type=tejia">特价弹性云服务器</a></div><div><span class="price">48</span> 元/月</div></div></div>
+              <div class="newhostContent">
+          
+              <div class="newcs">
+             CPU：IntelXeon 1核
+              </div>
+               <div class="newcs">
+            内存：512M
+              </div>
+               <div class="newcs">
+            硬盘：50G（分布式集群云存储）
+              </div>
+               <div class="newcs">
+            机房：电信线路&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;带宽：1M
+              </div>
+                 </div>
+              <div class="hostbutton"><a  onclick="javascript:location.href='/services/cloudhost/?type=tejia'">查看详情</a></div>
+            </li>
+           <li class="newline"> <img src="/newimages/default/2012index/line.jpg "alt="线" /></li>
+            
+            <li >
+              <div class="newhostTitle"><img src="newimages/default/2012index/icon8.gif" alt="标准型弹性云服务器"  class="hosticon" /><div class="newhright">
+                  <div class="newhost"><a href="/services/cloudhost/?type=biaozhun">标准型弹性云服务器</a></div>
+                  <div><span class="price">162</span> 元/月</div>
+                </div></div>
+              <div class="newhostContent">
+              
+                <div class="newcs">
+             CPU：IntelXeon 2核
+              </div>
+               <div class="newcs">
+            内存：2G
+              </div>
+               <div class="newcs">
+            硬盘：80G（分布式集群云存储）
+              </div>
+               <div class="newcs">
+            机房：智能多线&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;带宽：3M
+              </div>
+                 </div>
+              <div class="hostbutton"><a  onclick="javascript:location.href='/services/cloudhost/?type=biaozhun'">查看详情</a></div>
+            </li>
+            <li class="newline"> <img src="/newimages/default/2012index/line.jpg" class="newline" alt="线"/></li>
+             <li >
+              <div class="newhostTitle"><img src="newimages/default/2012index/icon9.gif" alt="商务型弹性云服务器" class="hosticon" /><div class="newhright"><div class="newhost"><a href="/services/cloudhost/?type=shangwu">商务型弹性云服务器</a></div><div><span class="price">276</span> 元/月</div></div></div>
+              <div class="newhostContent">
+              
+             <div class="newcs">
+             CPU：IntelXeon 4核
+              </div>
+               <div class="newcs">
+            内存：4G
+              </div>
+               <div class="newcs">
+            硬盘：100G（分布式集群云存储）
+              </div>
+               <div class="newcs">
+            机房：智能多线&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;带宽：4M
+              </div>
+                 </div>
+              <div class="hostbutton"><a  onclick="javascript:location.href='/services/cloudhost/?type=shangwu'">查看详情</a></div>
+            </li>
+            
+          </ul>
+        </div>
+        <div id="vhost_box_4">
+            <div class="yhhost_out">
+         <div class="yhlist"><div class="yhhostbg"><big class="host_wid"><strong class="hosttitle">Linux虚拟主机</strong>：本周特惠！1G空间，原价340元，使用优惠码立省<span class="price">100</span>元</big><a href="/services/webhosting/" class="host_buybtn">查看详情</a></div></div>
+         <div class="yhlist margin_list"><div class="yhhostbg"><big class="host_wid"><strong class="hosttitle">建站超值套餐</strong>：企业网站+手机建站+域名+虚拟主机+邮箱，全套只要<span class="price">680</span>元</big><a href="/services/sites/" class="host_buybtn">马上抢购</a></div></div>
+         </div>
+         
+         <div class="yhpic_out">
+         <div class="yhpic"><a href="/active/ymh/"><img src="/flash/allimg/new_ymh.gif" alt="域名惠 多个域名后缀特价促销 仅需2元" /></a></div>
+         <div class="yhpic yh_pa"><a href="/services/webhosting/"><img src="/newimages/default/2012index/new_yh2.jpg" alt="虚拟主机 买2年送1年，买5年送5年" /></a></div>
+         </div>
+        </div>
+      </div>
+      
+     
+
+      
+      <div id="ServerVPS">
+        <div class="newTitle_Top">
+          
+      <span class="newtopinfo">领先的互联网服务提供商</span>      <span class="newtopinfo">超过90万用户的共同选择</span>   <span class="newtopinfo">14年品牌服务经验</span>   <span>主机性价比超高</span>  
+        </div>
+        
+        <div class="newprolist">
+     
+        <div class="polist1 " >       
+        <a href="/services/domain/" class="polistlink">域名注册</a>
+        <div class="prout">
+        <!--<div class="pro_explain1">ICANN/CNNIC双认证</div>-->
+        <div class="pro_explain1">ICANN认证</div>
+        <div class="pro_explain1">6组DNS负载快速稳定</div>
+        <div class="pro_explain1">超90万用户的共同选择</div>
+        <div class="pro_explain1 jiage">仅需<span class="pro_price1 fourpri"></span><span class="pro_price1hover hoverpri"></span><span class="juli">元</span></div></div>
+        </div>
+        
+        <div class="polist2 ">  
+        <a href="/services/webhosting/" class="polistlink">虚拟主机</a>        
+        <div class="prout">
+        <div class="pro_explain2">超强的主机控制面板</div>
+        <div class="pro_explain2">优质的7x24小时服务</div>
+        <div class="pro_explain2">14年经验 品牌保障</div>
+        <div class="pro_explain2 jiage2">仅需<span class="pro_price2 fourpri"></span><span class="pro_price2hover hoverpri"></span><span class="juli2">元</span></div></div>
+        </div>
+        
+        
+        <div class="polist3 " >   
+        <a href="/services/cloudhost/" class="polistlink">云服务器</a>    
+        <div class="prout">
+        <div class="pro_explain4">真正的分布式云架构</div>
+        <div class="pro_explain4">更安全 更稳定 更快IO</div>
+        <div class="pro_explain4">超强控制面板 易于使用</div>
+        <div class="pro_explain4 jiage2">&nbsp;<span class="pro_price3 fourpri"></span><span class="pro_price3hover hoverpri"></span><span class="juli2">元起</span></div></div>
+        </div>
+        
+        
+        <div class="polist4 ">    
+        <a href="/services/sites/" class="polistlink">成品网站</a>      
+        <div class="prout">
+              <div class="pro_explain3">600多套网站随您选</div>
+              <div class="pro_explain3">不懂技术也能用</div>
+              <div class="pro_explain3">当天可上线 送手机站</div>
+        <div class="pro_explain3 jiage2">仅需<span class="pro_price4 fourpri"></span><span class="pro_price4hover hoverpri"></span>&nbsp;<span class="juli3">元</span></div></div>
+        </div>
+        
+        
+        
+        
+        </div>
+        
+        <div id="explain1"  class="newinfo dis">
+        <div class="left_exp">域名注册</div>
+        <div class="right_ad" ><div class="ad_first">14年老品牌，全国三强注册服务商，CNNIC&ICANN顶级认证注册商，超高性价比，<span class="price">2</span>元起</div><div class="ad_second">国际领先技术服务:3分钟快速解析;全球DNS负载均衡,超级稳定；一次购买多年还可享受更多优惠！</div></div>
+        
+        </div>
+        
+        <div id="explain2"   class="newinfo">
+        <div class="left_exp">虚拟主机</div>
+        <div class="right_ad"><div class="ad_first"><a href="/city/">中国</a>虚拟主机领导品牌！14年专注于虚拟主机业务，一步一个脚印引领行业发展！</div><div class="ad_second">港台机房，免备案，集群架构，全新升级，比传统香港主机稳定10倍，更快、更稳定、更安全，<span class="price">188</span>元起</div></div>
+        
+        </div>
+        <div  id="explain4"  class="newinfo">
+        <div class="left_exp">成品网站</div>
+        <div class="right_ad"><div class="ad_first">找人建网站，太贵？太慢？半小时拥有自己的网站,不懂技术也能用！</div><div class="ad_second">600多套网站随您选，当天可上线，送域名、送手机网站。</div></div>
+        
+        </div>
+        <div id="explain3"   class="newinfo">
+        <div class="left_exp ebs">弹性云主机</div>
+        <div class="right_ad"><div class="ad_first"><a href="/services/cloudhost/">云服务器</a>行业三强，性价比超高！IO更快、价格更低、服务更优、更易使用</div><div class="ad_second">真正的云计算架构(KVM+Hadoop)，国内屈指可数。采用分布式存储，每个云主机的数据保留4份</div></div>
+        
+        </div>
+      </div>
+
+      
+      
+
+      <div id="ActiveAdv">
+        <div id="Active">
+          <div class="activTitle" style="width:220px">近期活动&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="/active/20110401/" target="_blank"><img src="/newimages/default/more.gif" alt="近期活动" /></a><!--<a href="/news/?act=hd"><img src="/newimages/default/more.gif" alt="更多"/></a>--></div>
+          <div class="blueline"><img src="/newimages/spacer.gif" alt="线"/></div>
+          <div class="picActive">
+            <ul>
+              <li>
+                <div class="pic"><img src="/newimages/default/free100.gif" alt="免费赠送100元" width="44" height="31" /></div>
+                <div class="text">
+                  <H6><a href="/active/freetc/" target="_blank">新会员注册，免费赠送100元</a></H6>
+                  COM域名<span class="price">55</span>元，CN域名<span class="price">29</span>元</div>
+              </li>
+              <li>
+                <div class="pic"><img src="/newimages/default/picActive_b.jpg" alt="渠道商免费转入" width="44" height="31" /></div>
+                <div class="text">
+                  <H6><a href="/active/agent2012new/">渠道商免费转入</a></H6>
+                  只需提供在其他服务商消费情况，即可免费升为我司代理</div>
+              </li>
+            </ul>
+          </div>
+          <div class="Activelist"> 
+            <ul>
+              <li><a href="/services/webhosting/" target="_blank">虚拟主机进入G时代，1G仅需188元!</a></li>
+              <li><a href="/active/jd/" target="_blank">京东购物卡免费送！高达5000元</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="Move_PIC_info"> 
+          <div class="Move_PIC_info_left" onMouseDown="ISL_GoDown()" onMouseUp="ISL_StopDown()" onMouseOut="ISL_StopDown()"><img src="/newimages/default/Move_PIC_info_left.gif" width="16" height="242"  alt="左"/></div>
+          <div class="Move_PIC_info_main" id="ISL_Cont">
+            <div class="ScrCont">
+              <div id="pic_List1">
+                <!-- 图片列表 begin -->
+                
+              <div class="pic"><a href="/active/netcom/?link=Verisign"><img src="/flash/allimg/move_verisign2016.jpg" width="174" height="222" alt="Verisign（威瑞信）— 一个.com，无数种可能。" /></a></div>
+              <div class="pic"><a href="/services/webhosting/v5.asp"><img src="/newimages/default/move_webhosting.jpg" width="174" height="222" alt="云峰v5主机 188元/年" /></a></div>
+              <div class="pic"><a href="/services/domain/liyou.asp" target="_blank"><img src="/newimages/default/move_zr.jpg" width="174" height="222" alt="域名转入西部数码 四大理由"/></a></div>
+              <div class="pic"><a href="/services/cloudhost/" target="_blank"><img src="/newimages/default/move_cloudhost.jpg" width="174" height="222" alt="云服务器"/></a></div>
+                
+              </div>
+              <div id="pic_List2"></div>
+            </div>
+          </div>
+          <div class="Move_PIC_info_right" onMouseDown="ISL_GoUp()" onMouseUp="ISL_StopUp()" onMouseOut="ISL_StopUp()"><img src="/newimages/default/Move_PIC_info_right.jpg" alt="右" width="16" height="242" /></div>
+        </div>
+        <script language="javascript" type="text/javascript" src="/jscripts/j-ery-pic.js"></script>
+      </div>
+      <!--end of server-->
+    </div>
+  </div>
+<script language="javascript">
+	$("#assess").marquee({
+			auto: true,
+			interval: 2000,
+			showNum: 8,
+			stepLen: 2,
+			type: 'vertical'
+	});
+	$("#service_box_2").hide();
+</script>
+
+<div style="clear:both"></div>
+
+<style>
+.ylink { overflow:hidden; zoom:1;line-height: 30px; background:#f9f9f9; border:1px solid #e8e8e8; border-width:1px 1px 0 1px;height: 35px;padding-top: 6px;}
+.ylink  strong,.ylink a{ float:left;}
+.ylink img{ border:1px solid #ddd; padding:1px;}
+.DownBlueLine{margin: 0px auto auto;}
+</style>
+<div class="ylink" ><strong >友情链接：</strong> 
+<ul><li><a href="http://www.aihuaju.com/" target="_blank"><img src="/flash/allimg/link/aihuaju.gif" alt="花店" /></a> <a href="http://www.4c.cn/" target="_blank"><img src="/flash/allimg/link/4c.gif" alt="第四城" /></a>  <a href="http://www.idcps.com/" target="_blank"><img src="/flash/allimg/link/idcps.gif" alt="idc评述" /></a>  <a href="http://www.domain.cn/" target="_blank"><img src="/flash/allimg/link/domaincn.gif" alt="域名城" /></a>  <a href="http://chaxun.la/" target="_blank"><img src="/flash/allimg/link/chaxun.gif" alt="查询啦" /></a>  <a href="https://www.dai.top/" target="_blank"><img src="/flash/allimg/link/daitop.gif" alt="玉米贷" /></a> </li></ul>
+</div>
+
+
+  <div class="DownBlueLine" ><img src="/newimages/spacer.gif" alt="line"/></div>
+  <div class="DowndustLine"><img src="/newimages/spacer.gif" alt="line"/></div>
+  <div class="DownContBox" style="padding:8px 0;">
+    
+  <div id="BottomLink" style="height: 28px;"> 
+    <ul>
+      <li><a href="/">返回首页</a></li>
+      <li><a href="/aboutus/" rel="nofollow">关于我们</a></li>
+      <li><a href="/aboutus/contact.asp" rel="nofollow">联系我们</a></li>
+      <li><a href="/customercenter/howpay.asp" rel="nofollow">付款方式</a></li>
+      <li><a href="/aboutus/joinus.asp">人才招聘</a></li>
+      <li><a href="/info/" target="_blank">资讯中心</a></li>
+      <li><a href="http://www.addlink.cn/" target="_blank"  rel="nofollow">友情链接</a></li>
+      <li><a href="/zx/">站长资讯</a></li>
+      <li><a href="/customercenter/subquestion.asp" rel="nofollow">提交工单</a></li>
+      <li><a href="/Active/2008313/jianyinew.asp" rel="nofollow">投诉建议</a></li>
+      <li><a href="http://beian.west.cn" target="_blank"  rel="nofollow">网站备案</a></li>
+      <li><a href="/cms/" target="_blank" rel="nofollow">站长新闻</a></li>
+    </ul>
+    </div>
+    <div id="BottomContRight">
+      <div id="idclogos">
+      
+      <div class="bottom_icos"  style="width: 270px;"> <a href="/aboutus/jump.asp?url=http://www.internic.net/registrars/registrar-1556.html" title="icann" target="_blank" rel="nofollow"><img src="/newimages/default/icann_ico.jpg" width="29" height="29" border="0" alt="icann"/></a> 
+        <!--<a href="http://www.cnnic.net.cn/" target="_blank"><img src="/newimages/default/xyd_logo.gif" alt="CNNIC四星级注册服务机构证书" width="29" height="29" border="0" /></a>-->
+        
+        <a href="/images/yyzz.jpg" target="_blank" rel="nofollow" title="营业执照"><img src="/newimages/default/biaoshi-1.gif" alt="营业执照" width="29" height="29" border="0" /></a> 
+        
+        <a href="/zx/" rel="nofollow" target="_blank" title="站长资讯"><img src="/newimages/default/ico_wj.gif" alt="网上警察" width="29" height="29" border="0" /></a> 
+        
+        <a href="/dialog_1.htm" rel="nofollow" target="_blank" title="联系在线客服"><img src="/newimages/kfmune/53kfindex.gif" alt="联系在线客服" width="29" height="29" border="0" /></a> 
+        
+        <a href="tencent://message/?uin=800019263&amp;Site=west263.com&amp;Menu=yes" rel="nofollow" target="_blank" title="西部数码企业QQ"><img src="/newimages/qq_online.jpg" alt="西部数码企业QQ" width="29" height="29" border="0" /></a><a href="/customercenter/subquestion.asp" rel="nofollow" title="提交工单"><img src="/newimages/qus.jpg" width="29" height="29" alt="提交工单" /></a><a href="/club/"><img src="/newimages/fzp.jpg" border="0" /></a> 
+		
+            		 		<a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=51010602000010" title="川公网安备 51010602000010号"><img src="/newimages/beianicon.jpg" alt="川公网安备 51010602000010号"/></a>                         
+			
+      </div>
+      
+            </div>
+          
+      <div id="idclogos">
+	<a href="/icp.asp" rel="nofollow" target="_blank">《中华人民共和国增值电信业务经营许可证》编号：川B1.B2-20080058号</a><br />
+		 		 
+      </div>
+      
+    </div>
+
+    
+  <div id="BottomCont"> 
+    <ul>
+    	
+      <li>官方<a href='/city/default.asp' >网址</a> :west.cn west263.com      </li>
+      
+      <li>Copyright &copy; 2002~2016&nbsp;
+      
+      西部数码&nbsp;版权所有
+      
+      </li>
+      <li>电话总机：<span class='B'>028-86263960</span> (20线)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      </li>
+      <li>400电话：<span class="B">400-6118-263</span>
+	  
+	  </li>
+    </ul>
+    </div>
+   
+  </div>
+
+
+<script language="javascript">
+if(typeof(jQuery)=="undefined") document.write("<sc" + "ript lang" + "uage=\"java" + "script\" src=\"/jquery/jquery.js\"></scr" + "ipt>");
+</script>
+<script type="text/javascript" language="javascript" src="/jscripts/kf/kfmenunew.js?tt=20150521a"></script>
+
+<script type="text/javascript" src="/services/paimai/s_elite.asp?js2"></script>
+
+
+	<script type="text/javascript" src="/config/kf53.asp"></script>
+
+
+<!-- west263.com Baidu tongji analytics -->
+
+ 
+
+ <div style=" display:none;"> 
+<!--<script type="text/javascript">
+document.write(unescape("%3Cscript src='/jscripts/baidu.js%d0e33fc3fbfc66c95d9fdcc4c93a8288' type='text/javascript'%3E%3C/script%3E"));
+//var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+//document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F7e4ba0e24ce5a4faf1f389d00c63b7a6' type='text/javascript'%3E%3C/script%3E"));
+</script>-->
+
+<!--已转为本地，去掉了离线宝和商桥-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  //hm.src = "//hm.baidu.com/hm.js?d0e33fc3fbfc66c95d9fdcc4c93a8288";
+ hm.src = "/jscripts/baidutj/hm.js";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+</div>
+
+
+
+
+
+
+<!-- 来路统计 -->
+<script type="text/javascript" src="/jscripts/ads_tongji.js"></script>
+
+<div style="display:inline;">
+ <!--google再营销，打不开，暂时关闭。  
+<img height="1" width="1" style="border-style:none;" alt="" src="//googleads.g.doubleclick.net/pagead/viewthroughconversion/1045757556/?value=0&amp;guid=ON&amp;script=0"/> --> 
+</div>
+
+
+ <!--360统计代码-->    
+<script type="text/javascript">
+var _mvq = _mvq || [];
+_mvq.push(['$setAccount', 'm-142341-0']);
+
+_mvq.push(['$logConversion']);
+(function() {
+    var mvl = document.createElement('script');
+    mvl.type = 'text/javascript'; mvl.async = true;
+    mvl.src = ('https:' == document.location.protocol ? 'https://static-ssl.mediav.com/mvl.js' : 'http://static.mediav.com/mvl.js');
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(mvl, s); 
+})();
+</script>
+<!--以上是流量统计(到达转化)代码，后续转化代码需要配合流量统计代码一同使用-->   
+
+ <!--360统计代码结束-->    
+
+
+<br />
+</div>
+
+</body>
+</html>

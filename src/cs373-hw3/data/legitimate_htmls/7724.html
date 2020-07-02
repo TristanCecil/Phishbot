@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:og="http://ogp.me/ns#" xmlns:fb="https://www.facebook.com/2008/fbml">
+<head>
+<meta charset="UTF-8" />
+<meta property="fb:app_id" content="1686133924942854"/>
+<meta property="og:type" content="website" />
+<title>MyTravelMap ::</title>
+
+<script type="text/javascript">
+/*<![CDATA[*/
+
+var countries = [];
+var countriesIsoCodeCountryMap = [];
+var autocompleteCountryStateIdArray = [];
+
+/*]]>*/
+</script>
+<script>
+/*<![CDATA[*/
+!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+/*]]>*/
+</script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/jquery-ui.min.js"></script>
+<script type="text/javascript" src="//connect.facebook.net/en_US/all.js"></script>
+<script type="text/javascript" src="./wicket/resource/org.apache.wicket.ajax.AbstractDefaultAjaxBehavior/res/js/wicket-event-jquery-ver-020BE045E526B183E5917907FDB0ED81.js"></script>
+<meta property="fb:app_id" content="1686133924942854" />
+<script type="text/javascript" src="./wicket/resource/org.apache.wicket.ajax.AbstractDefaultAjaxBehavior/res/js/wicket-ajax-jquery-ver-ACE4FD464EC7CE98773BDE1E8AACBC43.js"></script>
+<script type="text/javascript" id="wicket-ajax-base-url">
+/*<![CDATA[*/
+Wicket.Ajax.baseUrl="?0";
+/*]]>*/
+</script>
+<script type="text/javascript" >
+/*<![CDATA[*/
+FB.Event.subscribe('auth.statusChange', function(response) { var callback = './;jsessionid=328809FA571E7A1E85696988392E8E64?0-1.IBehaviorListener.0-fbLoginButton'; try{ callback += '&status='+Wicket.Form.encode(response.status);}catch(e){};try{ callback += '&authResponse.userID='+Wicket.Form.encode(response.authResponse.userID);}catch(e){};try{ callback += '&authResponse.signedRequest='+Wicket.Form.encode(response.authResponse.signedRequest);}catch(e){};try{ callback += '&authResponse.expiresIn='+Wicket.Form.encode(response.authResponse.expiresIn);}catch(e){};try{ callback += '&authResponse.accessToken='+Wicket.Form.encode(response.authResponse.accessToken);}catch(e){};Wicket.Ajax.get({'u':callback+'&response='+Wicket.Form.encode(response)});});
+/*]]>*/
+</script>
+<script type="text/javascript" >
+/*<![CDATA[*/
+function gaTracker(id) {$.getScript('//www.google-analytics.com/analytics.js');window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;ga('create', id, 'auto');ga('send', 'pageview');}function gaTrack(path, title) {ga('set', { page: path, title: title });ga('send', 'pageview');}
+/*]]>*/
+</script>
+<link rel="stylesheet" type="text/css" href="/stylesheets/jquery-ui.min.css" />
+<script type="text/javascript" id="dialogBtns">
+/*<![CDATA[*/
+var dialogBtnBorn = 'I was born there';var dialogBtnLived = 'I have lived there';var dialogBtnVisited = 'I have visited it';var dialogBtnRemoveCountry = 'Remove country from my map!';
+/*]]>*/
+</script>
+<script type="text/javascript" async="async" src="/js/data/countries_en.js?2"></script>
+<script type="text/javascript" >
+/*<![CDATA[*/
+Wicket.Event.add(window, "domready", function(event) { 
+FB.init({appId  : '1686133924942854',status : true,cookie : true,xfbml  : true});;
+jQuery('#id1').dialog({ "buttons": [ {'id': 'btn01', 'text': 'Ok', 'click': function() { Wicket.Ajax.ajax({"u":"./;jsessionid=328809FA571E7A1E85696988392E8E64?0-1.IBehaviorListener.0-wipeOutDialog","c":"id1"}); }}, {'id': 'btn02', 'text': 'Cancel', 'click': function() { Wicket.Ajax.ajax({"u":"./;jsessionid=328809FA571E7A1E85696988392E8E64?0-1.IBehaviorListener.1-wipeOutDialog","c":"id1"}); }} ], "resizable": false, "autoOpen": false, "width": 450, "title": "Delete all my data from MyTravelMap", "modal": true });;
+jQuery('#id2').dialog({ "buttons": [ {'id': 'btn00', 'text': 'Ok', 'click': function() { Wicket.Ajax.ajax({"u":"./;jsessionid=328809FA571E7A1E85696988392E8E64?0-1.IBehaviorListener.0-nonExistingCountryDialog","c":"id2"}); }} ], "resizable": false, "autoOpen": false, "width": 450, "title": "Hi there!", "modal": true });;
+Wicket.Ajax.ajax({"u":"./;jsessionid=328809FA571E7A1E85696988392E8E64?0-1.IBehaviorListener.0-form-x","m":"POST","c":"x","e":"change"});;
+gaTracker('UA-69071594-1');;
+Wicket.Event.publish(Wicket.Event.Topic.AJAX_HANDLERS_BOUND);
+;});
+/*]]>*/
+</script>
+
+<style type="text/css">
+/*<![CDATA[*/
+
+html, body, div {
+margin: 0px;
+padding: 0px;
+}
+#worldMap {
+display: block;
+min-height: 570px;
+margin: 0 auto;
+min-width: 1020px;
+width: 80%;
+}
+#worldMapContainer {
+margin-top: 3em;
+width: 100%;
+}
+#continents {
+margin: 0px auto 0px auto;
+min-width: 1020px;
+width: 90%;
+}
+table#continents {
+border-collapse: collapse;
+}
+table#continents thead td {
+border: solid 1px silver;
+text-align: center;
+width: 20%;
+}
+#continents tbody td {
+vertical-align: top;
+}
+h2.continent {
+-webkit-columns: 20% 5;
+-moz-columns: 20% 5;
+columns: 20% 5;
+-webkit-column-gap: 0;
+-moz-column-gap: 0;
+column-gap: 0;
+}
+ul.countries {
+list-style-type: none;
+padding: 0;
+position: relative;
+}
+ul.countries li {
+font-size: 1.1em;
+line-height: 1.5em;
+}
+.country span {
+font-size: 0.9em;
+}
+.flag {
+bottom: -6px;
+margin-left: 1em;
+margin-right: 0.5em;
+position: relative;
+}
+#topBar {
+background-color: #505050;
+color: white;
+font-size: 1.2em;
+opacity: 0.75;
+padding: 0.35em 0;
+position: fixed;
+text-align: center;
+top: 0px;
+width: 100%;
+z-index: 100;
+}
+#localeSwitch {
+right: 10px;
+position: fixed;
+top: 40px;
+z-index: 1000;
+}
+#fbLoginButton {
+left: 10px;
+position: fixed;
+top: 40px;
+z-index: 1000;
+}
+#fbShareButton {
+left: 10px;
+position: fixed;
+top: 110px;
+z-index: 100;
+}
+#twitterShareButton {
+left: 10px;
+position: fixed;
+top: 140px;
+z-index: 100;
+}
+#wipeOutLink {
+color: silver;
+font-size: 0.9em;
+left: 10px;
+position: fixed;
+text-decoration: none;
+top: 180px;
+z-index: 100;
+}
+#selectCountryBox {
+background-color: silver;
+border-radius: 10px;
+left: 5%;
+position: absolute;
+top: 500px;
+width: 320px;
+z-index: 100;
+}
+#autocomplete {
+display: block;
+font-size: 1.1em;
+margin: 7px auto;
+padding: 2px 0.5em;
+width: 270px;
+}
+ul.ui-menu {
+list-style:none;
+padding: 0px;
+margin:0;
+}
+li.ui-menu-item {
+padding: 0px;
+margin:0;
+width: 260px;
+}
+div[aria-describedby=infoDialog].ui-dialog .ui-dialog-buttonpane button {
+width: 100%;
+}
+.mouseOver {
+opacity: 0.5;
+}
+#footer {
+color: silver;
+margin: 30px 0 10px 0;
+text-align: center;
+}
+a.footerItem {
+color: silver;
+font-style: italic;
+text-decoration: none;
+}
+.dialogLabel {
+font-size: 0.8em;
+font-style: italic;
+text-align: right;
+}
+td.countryName {
+font-size: 1.5em;
+font-weight: bold;
+vertical-align: bottom;
+}
+td.stateName {
+font-size: 1.2em;
+font-weight: bold;
+}
+
+/*]]>*/
+</style>
+<script type="text/javascript">
+/*<![CDATA[*/
+
+function leavePageHandler() {
+if ($("#fbShareButton").css('display') === 'none') {
+return "Please, make sure you have logged in with your Facebook account to keep your travel map. Otherwise, all changes will be lost when leaving this page!";
+}
+}
+function setCountries(svgAllCountries) { countries = svgAllCountries; }
+function setTooltip() {
+for (var i = 0; i < countries.length; i++) {
+var element = $(countries[i]);
+var isoCode = element.attr('id').split('_');
+var country = countriesIsoCodeCountryMap[isoCode[0]];
+if (country === undefined) {
+continue;
+}
+var countryName = country.cn;
+var stateName = (isoCode.length > 1) ? ', ' + countriesIsoCodeCountryMap[element.attr('id')].cn : '';
+element.html('<title>' + countryName + stateName + '</title>');
+}
+}
+function findCountryByIsoCode(isoCode) { var result = $.grep(countries, function(e){ return e.id == isoCode; }); return result; }
+function initMouseEvents() {
+for (var i = 0; i < countries.length; i++) {
+// mouse movement
+var element = $(countries[i]);
+$(element).hover(
+function(event) { // add class
+$(this).attr("class", function(index, classNames) {
+return classNames + " mouseOver";
+});
+},
+function() { // removeClass
+$(this).attr("class", function(index, classNames) {
+return classNames.replace("mouseOver", "");
+});
+}
+);
+element.click(function(event) { // mouse click
+// sendToServer(event.target.id);
+openInfoDialog(event.target.id);
+});
+}
+}
+function initAutocompleteCountryStateIdArray() {
+for (var isoCode in countriesIsoCodeCountryMap) {
+if ("AU" === isoCode || "CA" === isoCode || "US" === isoCode || "BR" === isoCode || "CN" === isoCode || "IN" === isoCode || "RU" === isoCode || "GB" === isoCode || "GL" === isoCode) {
+continue;
+}
+if ("BQ" === isoCode) { // special case
+continue;
+}
+var countryName = countriesIsoCodeCountryMap[isoCode.substring(0, 2)].cn;
+var stateName = (isoCode.indexOf("_") == -1) ? '' : countriesIsoCodeCountryMap[isoCode].cn;
+var obj = new Object();
+obj.id = isoCode;
+obj.country = countryName;
+if (isoCode.indexOf("_") != -1) {
+obj.state = stateName;
+}
+obj.strippedCountryName = (countriesIsoCodeCountryMap[isoCode.substring(0, 2)].hasOwnProperty("cns")) ? countriesIsoCodeCountryMap[isoCode.substring(0, 2)].cns.toLowerCase() : countriesIsoCodeCountryMap[isoCode.substring(0, 2)].cn.toLowerCase();
+obj.strippedStateName = (countriesIsoCodeCountryMap[isoCode].hasOwnProperty("cns")) ? countriesIsoCodeCountryMap[isoCode].cns.toLowerCase() : countriesIsoCodeCountryMap[isoCode].cn.toLowerCase();
+autocompleteCountryStateIdArray.push(obj);
+}
+}
+function initAutocomplete() {
+$("#autocomplete").autocomplete({
+source: function(request, response) {
+var term = request.term.trim().toLowerCase();
+var selectedCountries = [];
+for (var i = 0; i < autocompleteCountryStateIdArray.length; i++) {
+var c = autocompleteCountryStateIdArray[i];
+var label = (c.hasOwnProperty("state")) ? c.state + ", " + c.country : c.country;
+var value = (c.hasOwnProperty("state")) ? c.state : c.country;
+var countryStartsWithTerm = c.strippedCountryName.lastIndexOf(term, 0) === 0;
+var stateStartsWithTerm = c.hasOwnProperty("state") && c.strippedStateName.lastIndexOf(term, 0) === 0;
+if (countryStartsWithTerm || stateStartsWithTerm) {
+selectedCountries.push({"label": label, "value": value, "id": c.id});
+}
+}
+selectedCountries.sort(SortByName);
+response(selectedCountries);
+},
+select: function(event, ui) {
+openInfoDialog(ui.item.id);
+return false;
+}
+}).data("ui-autocomplete")._renderItem = function(ul, item) {
+var selectedIsoCode = item.id.substring(0, 2).toLowerCase();
+if ("bq" == selectedIsoCode) {
+selectedIsoCode = item.id.toLowerCase();
+}
+return $("<li>").append("<img class='flag' src='images/flags_iso/24/" + selectedIsoCode + ".png' />" + item.label).appendTo(ul);
+};
+}
+function SortByName(a, b) {
+var aName = a.value.toLowerCase();
+var bName = b.value.toLowerCase();
+return ((aName < bName) ? -1 : (aName > bName) ? 1 : 0);
+}
+function openInfoDialog(selectedIsoCode) {
+var countryIsoCode = selectedIsoCode.substring(0, 2);
+var stateIsoCode = selectedIsoCode;
+var isTopLevelCountry = countryIsoCode === stateIsoCode;
+var c = countriesIsoCodeCountryMap[countryIsoCode];
+var s = countriesIsoCodeCountryMap[stateIsoCode];
+var d = $("#infoDialog");
+d.css("display", "block");
+if ("BQ" == countryIsoCode) {
+$(".flag", d).attr("src", "/images/flags_iso/48/" + selectedIsoCode.toLowerCase() + ".png");
+} else {
+$(".flag", d).attr("src", "/images/flags_iso/48/" + countryIsoCode.toLowerCase() + ".png");
+}
+$(".countryName", d).text(c.cn);
+$(".stateName", d).text((!isTopLevelCountry) ? s.cn : "");
+$(".capitalCityName", d).text(s.cc);
+$(".population", d).text(s.p);
+$(".area", d).text(s.a);
+$(".areaPct", d).text(s.apct);
+var countryDomElement = $(countries[selectedIsoCode]);
+var classes = countryDomElement.attr("class");
+var isBorn = classes !== undefined && classes.indexOf("born") >= 0;
+var isLived = classes !== undefined && classes.indexOf("lived") >= 0;
+var isVisited = classes !== undefined && classes.indexOf("visited") >= 0;
+if (isBorn || isLived || isVisited) {
+$('div[aria-describedby=infoDialog].ui-dialog .ui-dialog-buttonpane button:last').css('display', 'block');
+} else {
+$('div[aria-describedby=infoDialog].ui-dialog .ui-dialog-buttonpane button:last').css('display', 'none');
+}
+d.data("selectedCountry", selectedIsoCode);
+d.dialog("open");
+}
+function removeFlagImg() {
+$("#infoDialog .flag").attr("src", "/images/1px.png");
+}
+function initWhenWorldMapLoaded(){
+var countries = this.contentDocument.getElementsByTagName("path");
+setCountries(countries);
+setTooltip();
+initMouseEvents();
+initAutocompleteCountryStateIdArray();
+initAutocomplete();
+}
+// Twitter integration
+function updateTwitterValues(share_url, title) {
+$("#twitterShareButton").html("<a href='https://twitter.com/share' class='twitter-share-button' data-url='" + share_url + "' data-text='" + title + "' data-count='none'>Tweet</a>");
+twttr.widgets.load();
+}
+$(function() {
+var worldMapElement = document.getElementById("worldMap");
+if (worldMapElement.addEventListener) {
+worldMapElement.addEventListener('load',initWhenWorldMapLoaded,false);
+} else {
+worldMapElement.attachEvent('load', initWhenWorldMapLoaded); // fucking IE using some non-stnadard shit
+}
+$("#autocomplete").focus();
+$("#infoDialog").dialog({
+autoOpen: false,
+buttons: [
+{
+text: dialogBtnBorn,
+click: function() {
+var isoCode = $(this).data("selectedCountry");
+$(countries[isoCode]).attr("class", "born");
+$("#x").val("BORN," + isoCode);
+$("#x").change();
+$("#autocomplete").val("");
+$(this).dialog("close");
+removeFlagImg();
+}
+}, {
+text: dialogBtnLived,
+click: function() {
+var isoCode = $(this).data("selectedCountry");
+$(countries[isoCode]).attr("class", "lived");
+$("#x").val("LIVED," + isoCode);
+$("#x").change();
+$("#autocomplete").val("");
+$(this).dialog("close");
+removeFlagImg();
+}
+}, {
+text: dialogBtnVisited,
+click: function() {
+var isoCode = $(this).data("selectedCountry");
+$(countries[isoCode]).attr("class", "visited");
+$("#x").val("VISITED," + isoCode);
+$("#x").change();
+$("#autocomplete").val("");
+$(this).dialog("close");
+removeFlagImg();
+}
+}, {
+text: dialogBtnRemoveCountry,
+click: function() {
+var isoCode = $(this).data("selectedCountry");
+$(countries[isoCode]).attr("class", "");
+$("#x").val("REMOVE," + isoCode);
+$("#x").change();
+$("#autocomplete").val("");
+$(this).dialog("close");
+removeFlagImg();
+}
+}
+],
+close: function(event, ui) {
+$("#autocomplete").val("");
+removeFlagImg();
+},
+modal: true,
+width: 450
+});
+});
+$(window).load(function(){
+});
+
+/*]]>*/
+</script>
+</head>
+<body onbeforeunload="return leavePageHandler()">
+<div id="fb-root"></div>
+<div id="topBar">Welcome to My Travel Map. Create your very own map and share it with your friends.</div>
+<div id="fbLoginButton" class="fb-login-button" data-show-faces="true" data-max-rows="1" data-perms="user_about_me" data-size="small"></div>
+<div id="fbShareButton" style="display:none"></div>
+<div id="twitterShareButton" style="display:none"></div>
+<span>
+<span id="id1" style="display: none;">
+<div style="padding: 4px;" class="ui-state-error ui-corner-all">
+<span style="display: inline-block; margin-right: 0.1em; vertical-align: middle;" class="ui-icon ui-icon-alert">
+</span>
+<span style="vertical-align: middle;" id="id3">Are you sure you want to delete ALL your data from our system? This is an irreversible action! By clicking on OK all your data will be lost!</span>
+</div>
+</span>
+<a id="wipeOutLink" style="display:none"></a>
+</span>
+<select id="localeSwitch" onchange="window.location.href=&#039;./;jsessionid=328809FA571E7A1E85696988392E8E64?0-1.IOnChangeListener-localeSwitch&amp;localeSwitch=&#039; + this.options[this.selectedIndex].value;" name="localeSwitch">
+<option value="cs">Česky</option>
+<option selected="selected" value="en">English</option>
+</select>
+<div id="worldMapContainer">
+<object id="worldMap" type="image/svg+xml" data="images/world.svg?3">
+Your browser doesn't support SVG
+</object>
+</div>
+<table id="continents">
+<thead>
+<tr>
+<td>
+<h2 class="continent">Africa</h2>
+
+</td><td>
+<h2 class="continent">America</h2>
+
+</td><td>
+<h2 class="continent">Asia</h2>
+
+</td><td>
+<h2 class="continent">Europe</h2>
+
+</td><td>
+<h2 class="continent">Oceania &amp; Antarctica</h2>
+
+</td>
+
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<ul class="countries" id="id4">
+
+
+</ul>
+</td>
+<td>
+<ul class="countries" id="id5">
+
+
+</ul>
+</td>
+<td>
+<ul class="countries" id="id6">
+
+
+</ul>
+</td>
+<td>
+<ul class="countries" id="id7">
+
+
+</ul>
+</td>
+<td>
+<ul class="countries" id="id8">
+
+
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div id="footer">
+<a href="./privacy;jsessionid=328809FA571E7A1E85696988392E8E64" class="footerItem" onclick="var w = window.open(href, &#039;popuppagemap&#039;, &#039;scrollbars=no,location=no,menuBar=no,resizable=no,status=no,toolbar=no,width=500,height=500&#039;); try {if (w.blur) w.focus();}catch(ignore){}; return false;">Privacy policy</a>
+|
+<a href="/cdn-cgi/l/email-protection#e28f9b96908394878e8f8392cc8b8c848da2858f838b8ecc818d8f" class="footerItem">Contact us: <span class="__cf_email__" data-cfemail="1c7165686e7d6a7970717d6c3275727a735c7b717d7570327f7371">[email&#160;protected]</span><script data-cfhash='f9e31' type="text/javascript">/* <![CDATA[ */!function(t,e,r,n,c,a,p){try{t=document.currentScript||function(){for(t=document.getElementsByTagName('script'),e=t.length;e--;)if(t[e].getAttribute('data-cfhash'))return t[e]}();if(t&&(c=t.previousSibling)){p=t.parentNode;if(a=c.getAttribute('data-cfemail')){for(e='',r='0x'+a.substr(0,2)|0,n=2;a.length-n;n+=2)e+='%'+('0'+('0x'+a.substr(n,2)^r).toString(16)).slice(-2);p.replaceChild(document.createTextNode(decodeURIComponent(e)),c)}p.removeChild(t)}}catch(u){}}()/* ]]> */</script></a>
+|
+<i>Credits:</i>
+<a href="http://www.icondrawer.com" target="_blank" class="footerItem">IconDrawer</a>
+
+</div>
+<div id="infoDialog" style="display: none;" title="Have you been to this country?">
+<table style="position: relative; width: 100%;">
+<tr>
+<td><img class="flag" src="/images/1px.png" style="vertical-align: bottom; width: 48px;" /></td>
+<td class="countryName">[Czech Republic]</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td class="stateName">[Ustecky kraj]</td>
+</tr>
+<tr>
+<td class="dialogLabel">Capital city:</td>
+<td class="dialogData capitalCityName">[Prague]</td>
+</tr>
+<tr>
+<td class="dialogLabel">Population:</td>
+<td class="dialogData population">[10 000 000]</td>
+</tr>
+<tr>
+<td class="dialogLabel">Area:</td>
+<td class="dialogData"><span class="area">[74000]</span> km<span style="font-size: 0.7em; vertical-align: super;">2</span> (<span class="areaPct">[0.05]</span>% of the world)</td>
+</tr>
+</table>
+</div>
+<div id="id2" style="display: none;">
+<div style="padding: 4px;" class="">
+<span style="display: inline-block; margin-right: 0.1em; vertical-align: middle;" class="">
+</span>
+<span style="vertical-align: middle;" id="id9">We have recently updated the world map and divided Australia, Brazil, Canada, China, Great Britain, Greenland, India, Russia and United States on their states level. Since you have previously selected some of those countries, we had to remove them from your travel map. As such, please update your travel map accordingly by selecting the respective states you have either visited, lived or were born in. This is just one time action and we are very sorry for any inconvenience caused. Thank you for your understanding.</span>
+</div>
+</div>
+<div id="selectCountryBox">
+<form id="ida" method="post" action="./;jsessionid=328809FA571E7A1E85696988392E8E64?0-1.IFormSubmitListener-form"><div style="width:0px;height:0px;position:absolute;left:-100px;top:-100px;overflow:hidden"><input type="hidden" name="ida_hf_0" id="ida_hf_0" /></div>
+<input id="autocomplete" type="text" placeholder="Type country name"/>
+<input id="x" type="hidden" value="" name="x"/>
+</form>
+</div>
+<script type="text/javascript">/* <![CDATA[ */(function(d,s,a,i,j,r,l,m,t){try{l=d.getElementsByTagName('a');t=d.createElement('textarea');for(i=0;l.length-i;i++){try{a=l[i].href;s=a.indexOf('/cdn-cgi/l/email-protection');m=a.length;if(a&&s>-1&&m>28){j=28+s;s='';if(j<m){r='0x'+a.substr(j,2)|0;for(j+=2;j<m&&a.charAt(j)!='X';j+=2)s+='%'+('0'+('0x'+a.substr(j,2)^r).toString(16)).slice(-2);j++;s=decodeURIComponent(s)+a.substr(j,m-j)}t.innerHTML=s.replace(/</g,'&lt;').replace(/>/g,'&gt;');l[i].href='mailto:'+t.value}}catch(e){}}}catch(e){}})(document);/* ]]> */</script></body>
+</html>

@@ -1,0 +1,975 @@
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head><meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<meta name="baidu_union_verify" content="982aec8d803b5b220c67da14f2b2aca3">
+<meta name="verify-v1" content="VDwGK1QtSIkk4/oO5uog/Fb9pi8OSiJ6/NkNPzVANJo=" />
+<title>Zorpia - The People Meeting Network</title>
+<meta name="description" content="Zorpia is a social network for meeting new people with friends.
+Whether it's activity buddies, platonic friendships, dates, life partner or even business networking, Zorpia will help you find, match up, and meet the right people.">
+<meta name="keywords" content="meet people, networking, friends, communicate, meet online, online community, communication, sharing photos, finding friends, classifieds, personals, online, social networking, meet new people, make friends, play games, guys, girls, flirt, flirting, dati">
+<meta property="fb:admins" content="1902182" />
+<link rel="shortcut icon" href="http://ec.static.zpcdn.com/z3favicon.ico" type="image/x-icon" />
+<script src="http://ec.static.zpcdn.com/js/jquery/jquery-1.7.1.min.js" type="text/javascript"></script>
+<script src="http://ec.static.zpcdn.com/js/jquery/validate/jquery.validate.js" type="text/javascript"></script>
+<!--<script src="http://ec.static.zpcdn.com/js/jquery/validate/zorpia.common.js" type="text/javascript"></script>-->
+<script src="http://ec.static.zpcdn.com/js/search/search.jquery.js" type="text/javascript"></script>
+<script src="http://ec.static.zpcdn.com/js/jquery/jquery.bxslider2.0.1.min.js" type="text/javascript"></script><script type="text/javascript">
+function open_lang_box() {
+    document.getElementById('sel_lang_box').style.display = 'block';
+	document.getElementById('my_sel_link').style.textDecoration = 'underline';
+};
+function close_lang_box() {
+    document.getElementById('sel_lang_box').style.display = 'none';
+	document.getElementById('my_sel_link').style.textDecoration = 'none';
+};
+</script>
+<script type="text/javascript">
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-148877-1']);
+_gaq.push(['_setDomainName', 'none']);
+_gaq.push(['_setAllowLinker', true]);
+_gaq.push(['_trackPageview']);
+(function() {
+var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';
+var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+<script>
+jQuery(document).ready(function($) {
+jQuery.validator.addMethod("string", function(value, element) {
+return  !(/\d{5}|<|>|\\|\/|#|@|\+|\s|\./.test(value)) && /[^0-9 \r\t\n\f]/.test(value);
+}, "Invalid String.");
+// fix default to validate once onblur
+jQuery.validator.setDefaults( {
+//debug:true,
+onfocusout: function(element) {
+if ( !this.checkable(element) ) {
+this.element(element);
+}
+},
+onkeyup: function(element) {
+if ( element.name in this.submitted || element == this.lastElement ) {
+if (element.type != 'textarea') {
+this.element(element);
+}
+var tip_box = $('#tip_' + element.id);
+if (tip_box && tip_box.text()) {
+tip_box.hide();
+//element.removeClass("intError");
+}
+}
+},
+nsubmit:true,
+highlight: function(element, errorClass) {
+	//alert(element.id);
+	$(element).addClass("intError");
+},
+unhighlight: function(element, errorClass) {
+	$(element).removeClass("intError");
+},
+errorLabelContainer: $("#errorInfo"),
+
+submitHandler:function(form){
+form.submit();
+}
+} );
+
+function merger(a,b) {
+for( i in a ) {
+for( j in b ) {
+if (i==j) {
+for( k in b[j] ) {
+a[i][k] = b[j][k];
+}
+} else {
+if (! a[j]) {
+a[j] = b[j];
+}
+}
+}
+}
+}
+// get all input validate stuff
+var rules = {};
+var messages2 = {};
+$('*[validate]').each(function(i) {
+var validate = $(this).attr('validate');
+var name = $(this).attr('name');
+rules[name] = {};
+// split with space
+var rules_array = validate.split("##");
+if ( rules_array.length < 2 ) {
+rules_array = validate.split("#");
+}
+
+var part_num = 0;
+while (part_num < rules_array.length) {
+var lastPart = rules_array[part_num];
+part_num += 1;
+//check if that's a JSON
+if (lastPart.match('{')) {
+var rule;
+eval("rule = " + lastPart + ";");
+for (i in rule) {
+if (i == 'message' || i == 'custom_message') {
+messages2[name] = {};
+for (j in rule[i]) {
+messages2[name][j] = rule[i][j];
+}
+} else {
+rules[name][i] = rule[i];
+}
+}
+} else {
+rules[name][lastPart] = true;
+}
+}
+} );
+// get custom messages
+if (typeof(form_id) == 'undefined') {
+form_id = 'signupForm';
+}
+var messages = {
+	first_name:{
+		required:'First Name is Required.',
+		maxlength:$.validator.format("First Name requires no more than {0} characters."),
+		string:'Invalid First Name.'
+	},
+	last_name:{
+		required:'Last Name is Required.',
+		maxlength:$.validator.format("Last Name requires no more than {0} characters."),
+		string:'Invalid Last Name.'
+	},
+	email:{
+		required:'Email is Required.',
+		email:'Invalid email address.',
+		maxlength:$.validator.format("Email requires no more than {0} characters.")
+	},
+	password:{
+		required:'Password is Required.',
+		minlength:"Password requires at least 6 characters.",
+	},
+	country:{
+		required:'Country is Required.'
+	},
+	city:{
+		required:'City is Required.'
+	},
+	YYYY:{
+		required:'Birthday (year) is Required.'
+	},
+	MM:{
+		required:'Birthday (month) is Required.'
+	},
+	DD:{
+		required:'Birthday (day) is Required.'
+	},
+	captcha:{
+		required:'Verify Code is Required.',
+		digits:'Verify code you entered was incorrect.'
+	}
+};
+if (typeof(messages) != 'undefined') {
+merger(messages2, messages);
+}
+
+var validate_params = {
+rules: rules,
+messages: messages,
+errorClass: 'error_Info',
+errorElement: 'div'
+};
+if (typeof(errorPlacement) != 'undefined') {
+validate_params["errorPlacement"] = errorPlacement;
+}
+if (typeof(submitHandler) != 'undefined') {
+validate_params["submitHandler"] = submitHandler;
+}
+// validate myForm form on keyup and submit
+var validator = $("#" + form_id).validate( validate_params );
+});
+</script>
+<!-- select date control-->
+<script>
+function judge_days(){
+	//days for select
+	$("#day>option[value='29']").hide();
+	$("#day>option[value='30']").hide();
+	$("#day>option[value='31']").hide();
+	if (parseInt($('#month').val()) == 2) {
+		if ((parseInt($('#year').val()) % 4 == 0) && (parseInt($('#year').val()) % 100 != 0)) {
+			$("#day>option[value='29']").show();
+			if ($("#day").val() > 29){
+				$("#day").val('');
+			}
+		} else {
+			$("#day>option[value='29']").hide();
+			if ($("#day").val() >= 29){
+				$("#day").val('');
+			}
+		}
+	} else {
+		$("#day>option[value='29']").show();
+		var cur_month = $('#month').val();
+		if (cur_month == 1 || cur_month == 3 || cur_month == 5 || cur_month == 7 || cur_month == 8 || cur_month == 10 || cur_month == 12) {
+			$("#day>option[value='30']").show();
+			$("#day>option[value='31']").show();
+		} else {
+			$("#day>option[value='30']").show();
+			if ($("#day").val() > 30){
+				$("#day").val('');
+			}
+		}
+	}
+}
+</script>
+<script>
+
+
+	function refresh_captcha(img_id) {
+	var img_ins = document.getElementById(img_id);
+	// get a different num every time, use Date()
+	var d = new Date();
+	var pars = d.getMilliseconds();
+	img_ins.src = '/captcha?when=' + pars;
+	return true;
+	}
+
+	/* language */
+	var domain_setting = 'en';
+	var region_en2 = {
+	'AU':'Australia',
+	'CA':'Canada',
+	'IE':'Ireland',
+	'NZ':'New Zealand',
+	'ZA':'South Africa',
+	'UK':'United Kingdom',
+	'US':'United States'
+	};
+	function sel_lang(region){
+	if(region == domain_setting) return;
+	var cur_url = window.location.href;
+	var new_url;
+	var real_domain_setting;
+	if (domain_setting == 'en2'){
+	domain_setting = 'en';
+	real_domain_setting = 'en2';
+	}
+	if(region_en2[region]){
+	new_url=cur_url.replace("http://"+domain_setting+".","http://en.");
+	if(new_url == cur_url && !real_domain_setting){
+	new_url = new_url.replace("http://","");
+	new_url = new_url.replace(/^www\./,"");
+	new_url = "http://en." + new_url;
+	}
+	}else if(region =='en'){
+	new_url=cur_url.replace("http://"+domain_setting+".zorpia.com","http://www.zorpia.com");
+	if(new_url == cur_url){
+	new_url=new_url.replace("http://"+domain_setting+".","http://");
+	new_url=new_url.replace(".zorpia.cn",".zorpia.com");
+	}
+	}else if(region =='cn'){
+	new_url=cur_url.replace("http://"+domain_setting+".zorpia.com","http://www.zorpia.cn");
+	if(new_url == cur_url){
+	new_url=new_url.replace("http://"+domain_setting+".","http://");
+	new_url=new_url.replace(".zorpia.com",".zorpia.cn");
+	}
+	}else{
+	new_url=cur_url.replace("http://"+domain_setting+".","http://"+region+".");
+	if(new_url == cur_url){
+	new_url = new_url.replace("http://","");
+	new_url = new_url.replace(/^www\./,"");
+	new_url = "http://" + region + "." + new_url;
+	}
+	}
+	if(region == 'cn'){
+	new_url = new_url.replace("zorpia.com","zorpia.cn");
+	}else{
+	new_url = new_url.replace("zorpia.cn","zorpia.com");
+	}
+	if(new_url.indexOf('?')>-1){
+	var start = new_url.indexOf('site_switch');
+	if(start == -1){
+	new_url = new_url + '&site_switch=' + region;
+	}else{
+	new_url = new_url.substr(0 ,start);
+	new_url = new_url + 'site_switch=' + region;
+	}
+	}else{
+	new_url = new_url + '?site_switch=' + region;
+	}
+	if(real_domain_setting){
+	domain_setting = real_domain_setting ;
+	}
+	//alert(new_url);
+	window.location.href=new_url;
+	}
+
+</script>
+<style type="text/css" charset="utf-8">
+
+*{ margin:0; padding:0;}
+ul {list-style:none;}
+img {border:0;vertical-align:middle;}
+input,select{outline-style:none;}
+a{ text-decoration:none; outline-style:none;}
+a:hover{ text-decoration:underline;outline-style:none;}
+body{ text-align:left; font-family:Arial, Helvetica, sans-serif; background:#fff;}
+/*******************
+header begin
+**********************/
+.header,.header #logo a,.headerForm  .LinkFacebook,.headerForm  .LinkYahoo,.headerForm  .LinkGoogle,.headerForm  .LinkOutlook,.formBoxHeader a.linkJoin{ background-image:url(http://img.zpcdn.com/zorpia3/frontpage/bgFront.png); background-repeat:no-repeat;}
+.header{ background-position:0 -74px; background-repeat:repeat-x; background-color:#97ce3f; height:70px; width:100%;}
+.headerInner{ width:1007px; margin:0 auto; position:relative;}
+.header #logo{ position:absolute; left:0; top:12px; width:241px; height:74px;}
+.header #logo a{ background-position:0 0; display:block; text-indent:-9999px; outline-style:none;width:241px; height:74px;}
+.header a,.header a:hover{color:#fff;}
+.headerForm{ position:absolute; right:1px; top:18px; float:right; color:#fff; font-size:14px; }
+.headerForm .intText{ font-family:Arial, Helvetica, sans-serif; font-size:14px; height:16px; line-height:16px; border:#80b629 1px solid; -moz-box-shadow: 2px  2px 2px #d8d8d8 inset,0  1px 0 #c6e496;-webkit-box-shadow: 2px 2px 2px #d8d8d8 inset,0  1px 0 #c6e496;box-shadow:2px 2px 2px #d8d8d8 inset,0  1px 0 #c6e496; width:167px; padding:6px 2px 6px 9px;vertical-align:middle; margin:0 0 0 5px;}
+.headerForm .intBtn{ border:#8d8d8d 1px solid;-moz-box-shadow:0 0 2px #FFFFFF inset,0  1px 0 #8abd3a; -webkit-box-shadow: 0 0 2px #FFFFFF inset,0  1px 0 #8abd3a; box-shadow:0 0 2px #FFFFFF inset,0  1px 0 #8abd3a; width:57px; height:30px; font-family:Arial, Helvetica, sans-serif; color:#333333; font-size:14px; vertical-align:middle; cursor:pointer; text-shadow: 0 1px 0 #fff;
+ background-color: #e5e5e5; background-image: -webkit-gradient(linear, left top, left bottom, from( #fff), to( #cfcfcf)); background-image: -webkit-linear-gradient( #fff, #cfcfcf); background-image:    -moz-linear-gradient( #fff, #cfcfcf); background-image: -ms-linear-gradient( #fff, #cfcfcf); background-image: -o-linear-gradient( #fff, #cfcfcf); background-image: linear-gradient( #fff, #cfcfcf); margin:0 2px 0 5px;}
+.headerForm  .LinkFacebook,.headerForm  .LinkYahoo,.headerForm  .LinkGoogle,.headerForm  .LinkOutlook{ display:inline-block; text-indent:-9999px; outline-style:none; margin:0 0 0 8px; width:33px; height:32px; vertical-align:middle;}
+.headerForm  .LinkFacebook{ background-position:0 -144px;}
+.headerForm  .LinkYahoo{ background-position:-41px -144px;}
+.headerForm  .LinkGoogle{ background-position:-82px -144px;}
+.headerForm  .LinkOutlook{background-position:-124px -144px;}
+.heaerFormBot{font-size:10px; -webkit-text-size-adjust:none;  padding:0 0 0 5px; line-height:19px;}
+.heaerFormBot input{ vertical-align:middle;}
+.heaerFormBot label{ width:186px; float:left;}
+/*********************
+content begin
+*********************/
+.content{ width:1013px; margin:0 auto; padding:43px 0 10px;  overflow:hidden; }
+.contentLeft{ float:left; padding:47px 0 0; width:604px;}
+.contentRight{position:relative; float:right; width:368px; border:#ccc 1px solid;-webkit-border-radius: 7px; -moz-border-radius:7px; border-radius:7px; -moz-box-shadow: 0px 0px 4px #ccc,0px 0px 2px #fff inset; -webkit-box-shadow: 0px 0px 4px #ccc,0px 0px 2px #fff inset; box-shadow:0px 0px 4px #ccc,0px 0px 2px #fff inset; background:#f2f2f2; margin:0 3px 0 0;}
+.contentLeft p{ font-size:36px; line-height:38px; color:#666; padding:22px 0 0 15px; letter-spacing:-0.5px;}
+.contentLeft p span{ color:#97ce3f;}
+.appAndroid{display:block;width:205px; height: 63px; float: left; margin-right:5px; background: url(http://img.zpcdn.com/index/Z3V6/picFrontLeft3.png) 0 0 no-repeat; text-indent: -9999px;}
+.appiOS{display:block;width:205px; height: 63px; float: left; margin-right:5px; background: url(http://img.zpcdn.com/index/Z3V6/picFrontLeft3.png) 0 -64px no-repeat; text-indent: -9999px;}
+.formBox{ width:100%;}
+.formBoxHeader{ border-bottom:#ccc 1px solid; padding:17px 0 19px; width:100%; overflow:hidden; }
+.formBoxHeader h1{ color:#72b30b; text-shadow:0 1px 0 #fff; font-weight:normal; text-align:center; font-size:24px; padding:0 0 18px;}
+.formBoxHeader a.linkJoin{ text-indent:-9999px; outline-style:none; background-position:0 -176px; width:215px; height:30px; float:right; margin:0 23px 0 0;}
+.formBoxContent{ border-top:#fff 1px solid; padding:17px 29px 16px 20px; width:319px; font-size:14px; }
+.errorInfo{ background:#fcc; border:#f66 1px solid; color:#c33; padding:6px 9px; margin:0 0 20px; font-size:14px; line-height:16px;}
+.formBoxContent ul{ width:331px; margin-right:-12px; overflow:hidden;}
+.formBoxContent li{ float:left; margin:0 0 6px;}
+.formBoxContent li label{ float:left; width:116px; padding:0 5px 0 0; text-shadow:0 1px 0 #fff;  text-align:right; color:#a6a6a6; font-size:14px; line-height:30px;}
+.formBoxContent input{ vertical-align:middle;font-family:Arial, Helvetica, sans-serif; font-size:14px; color:#000;}
+.formBoxContent select{font-family:Arial, Helvetica, sans-serif; font-size:14px; vertical-align:middle; color:#000; margin:0 0 10px;}
+.formBoxContent .intText { border:#999 1px solid;-moz-box-shadow: 0  1px 0 #fff;-webkit-box-shadow:  0  1px 0 #fff;box-shadow: 0  1px 0 #fff; padding:6px 0 6px 5px; width:191px; background:#fff;  line-height:16px; height:16px;}
+.formBoxContent .intError{ border-color:#f66;}
+.formBoxContent .selectBox{ float:left; padding:7px 0 6px;}
+.formBoxContent .selectBox select[disabled],select:disabled{color:#a6a6a6;}
+.formBoxContent .intTwoWords{ width:55px; margin:0 3px 0 0;  padding:5px 0; color:#000;}
+.formBoxContent .intFourWords{ width:80px; color:#000;  padding:5px 0; margin:0 3px 0 0;}
+.formBoxContent .radioBox{ width:56px; text-align:right; display:inline-block; padding:6px 0 0;}
+.formBoxContent small{ display:block; padding:0 0 0 121px; font-size:10px; -webkit-text-size-adjust:none;  color:#666; line-height:1em;}
+.formBoxContent  a,.formBoxContent  a:hover{ color:#46c;}
+button.cupid-green{ background-color: #77ab15; background-image: -webkit-gradient(linear, left top, left bottom, from( #95cc3d), to( #679a02)); background-image: -webkit-linear-gradient( #95cc3d, #679a02); background-image:    -moz-linear-gradient( #95cc3d, #679a02); background-image: -ms-linear-gradient( #95cc3d, #679a02); background-image: -o-linear-gradient( #95cc3d, #679a02); background-image: linear-gradient( #95cc3d, #679a02); border:#477100 1px solid;  -moz-border-radius:7px; border-radius:7px; box-shadow: 0 0  1px 1px #b9eb63 inset; color: #FFFFFF; font: 24px/1 Arial, Helvetica, sans-serif; padding: 11px 0 12px; height:51px; font-weight:bold; padding:0 0 3px 0; text-align: center; width: 210px; margin:28px -12px 0px 0 ; cursor:pointer; text-shadow:0 -1px 0 #7a7d75;}
+.formBoxContent .location{ float:left; width:190px; padding:7px 0 0 5px;}
+.c46c{color:#4466CC !important;}
+.c666{color:#999 !important;}
+.clearfix:after{content:"";display:block;height:0;clear:both;visibility:hidden}
+.clearfix{display:inline-block}
+.clearfix{display:block}
+.pos_relative{position:relative}
+/*******************
+footer begin
+***************************/
+.footer_3_1{background:#e8e8e8; position: relative; z-index: 10; font-size:11px; }
+.footer_bottom_3_1{width:970px;margin:0 auto 0;   padding:10px;font-family:Arial, Helvetica, sans-serif}
+.footer_3_1 .footerCol{float:left;width:30%;}
+  .footer_3_1 .footerCol li.exSites{height: 22px; line-height: 22px;}
+    .footer_3_1 .footerCol li.exSites a{display: block;}
+    .footer_3_1 .footerCol li.exSites a.fbIcon{ background: url(http://img.zpcdn.com/z3/footericonsV2.png) 0 3px no-repeat; padding-left: 20px;}
+    .footer_3_1 .footerCol li.exSites a.twIcon{ background: url(http://img.zpcdn.com/z3/footericonsV2.png) 0 -34px no-repeat; padding-left: 20px;}
+    .footer_3_1 .footerCol li.exSites a.ptIcon{ background: url(http://img.zpcdn.com/z3/footericonsV2.png) 0 -70px no-repeat; padding-left: 20px;}
+    .footer_3_1 .footerCol li.exSites a.adIcon{ background: url(http://img.zpcdn.com/z3/footericonsV2.png) 0 -104px no-repeat; padding-left: 20px;}
+    .footer_3_1 .footerCol li.exSites a.tbIcon{ background: url(http://img.zpcdn.com/z3/footericonsV2.png) 0 -140px no-repeat; padding-left: 20px;}
+	.footer_3_1 .footerCol li.exSites a.googleIcon{ background: url(http://img.zpcdn.com/z3/footericonsV2.png) 0 -304px no-repeat; padding-left: 20px;}
+    .footer_3_1 .footerCol li.exSites span{display: block; color: #999;}
+.footerCol a,.footerCol a:hover{ color:#46c;}
+.langPopUp{position:absolute; left:-2px; top:20px;   }
+ .langPopUp ul{border:#f9f9f9 1px solid;  background:#fff;-moz-box-shadow:-1px 1px 8px #aaa; -webkit-box-shadow: -1px 1px 8px #aaa;box-shadow:-1px 1px 8px #aaa;-moz-border-radius:6px; -webkit-border-radius:6px; border-radius:6px; overflow:hidden; font-size:11px;}
+ .langPopUp li a{ display:block;padding:4px 0 4px 16px; width:60px; color:#333;}
+ .langPopUp li a:hover{ color:#fff; text-decoration:none; background:#97ce3f;}
+ .langPopUpArrow{ background:url("http://img.zpcdn.com/header/Z3HeaderBg8.png") 0 -565px no-repeat; width:10px; height:7px; position:absolute; top:-6px; left:18px; z-index:2;}
+
+
+.orgLink { text-align:center; font-size:12px;}
+.orgLink a{ display:inline-block; border:1px solid #D2D2D2; border-radius:5px; height:48px; width:135px; font-size:12px; color:#2D2D2D; margin:10px; background:#fff; overflow:hidden;}
+.orgLink span{ display:inline-block; margin-top:3px;}
+.orgLink img{ vertical-align:middle; float:left;}
+/* z31 footer  end */
+
+.rwd_slide_container{width:604px;height:540px; background: #fff;position:relative;overflow:hidden;}
+.slogan{font-size: 28px;color:#669900;padding:0px 20px;}
+.slogan span{font-size:16px;color:#777;position:relative;}
+#iphone5, #note3, #macbook,#zqr{position:absolute;}
+#iphone5{top:150px;left:-150px;opacity:0;}
+#note3{top:130px;left:0px;opacity:0;}
+#macbook{top:180px;left:520px;opacity:0;}
+#rwd_slogan{position:absolute;top:450px;opacity:0;}
+#zqr{opacity:0;}
+/*z3 footer begin (author:rube)*/
+.footer{clear:both;  text-align:center; width:100%; background:#e2e2e2;  padding:0 0 20px 0;margin:20px auto 0;font-family:Arial, Helvetica, sans-serif;}
+.footer_bottom {font-size: 11px; padding:12px 0 8px 0; margin-top:20px !important;margin-top:30px; display:inline; position:relative;}
+.footer_bottom span{padding:0 5px;}
+.footer_copyright{color: #999999; font-size: 11px; line-height: 20px; padding:3px 0 0 5px;}
+
+#sel_lang_box {  position:absolute; left:30px; top:-130px; z-index:1000; width:180px; height:130px; margin:0; padding:0; background:#fff; border:#999 solid 2px; overflow:hidden; display:none; text-align:left; }
+#sel_lang_box .lang { width:155px; margin:0px; padding:15px 8px 8px 8px; *padding:19px 8px 8px 8px; list-style:none; color:#666; float:left; overflow:hidden }
+#sel_lang_box .lang a { font-weight:bold }
+#sel_lang_box .lang li { padding-left:20px; margin-top:5px; position:relative; float:left; width:140px; line-height: 15px; }
+.footer_icons,#my_sel_link  .icon_global,#sel_lang_box .close { background-image:url(http://img.zpcdn.com/header/Z3HeaderBg6.png); background-repeat:no-repeat }
+#sel_lang_box .lang li b { position:absolute; left:0; top:0; float:left; width:13px; height:12px }
+.icon_global { background-position:-119px -4px }
+#my_sel_link  .icon_global { display:inline-block; height: 12px;  width:13px;background-position: -121px -4px ; }
+.icon_china { background-position:-99px -3px}
+.icon_china_hk { background-position:-63px -15px }
+#sel_lang_box .close {background-position: -142px -4px ; height:22px; width:20px; position:absolute; top:5px; right:2px; z-index:1000 }
+#my_sel_link {position:relative; display:inline-block;}
+#my_sel_link .footer_icons {  width:13px; height:12px }
+</style>
+</head>
+<body>
+
+<div id="fb-root"></div>
+<script>
+	/* facebook */    window.fbAsyncInit = function() {
+      FB.init({
+        appId      : '122161107822104', // App ID
+        channelUrl : '//www.zorpia.com/channel.html', // Channel File
+        status     : true,
+        cookie     : true,
+        xfbml      : true,
+        oauth      : true,
+        version    : 'v2.3'
+      });
+    };
+    (function(d){
+       var js, id = 'facebook-jssdk'; if (d.getElementById(id)) {return;}
+       js = d.createElement('script'); js.id = id; js.async = true;
+       js.src = "//connect.facebook.net/en_US/sdk.js";
+       d.getElementsByTagName('head')[0].appendChild(js);
+     }(document));	jQuery(document).ready(function() {
+		jQuery('#slider1').bxSlider({
+			wrapper_class: 'contentLeft',
+			auto: true,
+			pager: false,
+			next_text: '',
+			next_image: '',
+			prev_text: '',
+			prev_image: '',
+			pause: 5500
+		});
+	});
+</script>
+
+<!--search box begin added by carrie-->
+<script type="application/ld+json">
+{
+   "@context": "http://schema.org",
+   "@type": "WebSite",
+   "url": "http://www.zorpia.com/",
+   "potentialAction": {
+     "@type": "SearchAction",
+     "target": "http://www.zorpia.com/searchbox?q={zorpians}",
+     "query-input": "required name=zorpians"
+   }
+}
+</script>
+<!--search box end added by carrie-->
+
+<!--header begin-->
+<div class="header">
+	<div class="headerInner">
+	<h1 id="logo"><a href="http://www.zorpia.com?from_flag=z3fpv6" title="The people meeting network">Zorpia</a></h1>
+		<div class="headerForm">
+		<form  id="login" name="login" action="/login" method="post">
+			<div class="heaerFormTop">
+				<input type='hidden' name='captcha' value='1234' />
+
+				<input type='hidden' name='from_flag' value='z3fpv6'/>
+				<input name="username" class="intText" placeholder="Email or Username" type="text" />
+				<input name="password" class="intText" placeholder="Password" id="intPW" type="password" />
+				<input class="intBtn" value="Sign in" type="submit" /> - Or -<a class="LinkFacebook" onclick="FB.login(function(response) { if (response.authResponse) { window.location = 'http://www.zorpia.com/fbconnect?token=' + response.authResponse.accessToken + '&expires=' + response.authResponse.expiresIn; } }, {scope:'email,user_likes,user_friends,user_photos,user_birthday,user_about_me,public_profile'} );return false;" href="javascript:void(0)">facebook</a><a class="LinkYahoo" href="http://www.zorpia.com/oauth/yahoo" onClick="window.open(this.href, 'auth', 'width=600,height=400'); return false;">yahoo</a><a class="LinkGoogle" href="http://www.zorpia.com/oauth/google" onClick="window.open('http://www.zorpia.com/oauth/google', 'auth', 'width=600,height=600'); return false;">google</a><a class="LinkOutlook" href="http://www.zorpia.com/oauth/live" onClick="window.open(this.href, 'auth', 'width=600,height=400'); return false;">outlook</a>			</div>
+			<div class="heaerFormBot"><label><input type="checkbox" name="permanent" checked />Remember me</label><a href="http://www.zorpia.com/user/forget_password?from_flag=z3fpv6">Forgot password?</a></div>
+		</form>
+		</div>
+	</div>
+</div>
+<!--header end-->
+<!--content begin-->
+<div class="content">
+		<!-- $('#slider1').bxSlider will autoly create <div class="contentLeft"> -->
+    		<div id="slider1">
+    			<div style="width: 604px; float: left; list-style: none; margin-right: 0px;">
+	               <div class="rwd_slide_container">
+	                    <img src="http://img.zpcdn.com/index/Z3V6/macbook_small.png" id="macbook" style="opacity: 1; left: 220px; top: 110px; display:none">
+	                    <img src="http://img.zpcdn.com/index/Z3V6/iphone_small.png" id="iphone5" style="opacity: 1; left: -40px; top: 80px; display:none">
+	                    <img src="http://img.zpcdn.com/index/Z3V6/note_3_small.png" id="note3" style="opacity: 1; left: 130px; top: 60px; display:none">
+	                    <p class="slogan" id="rwd_slogan" style="opacity: 1; left: 0px; top: 380px; display:none">  Meet more people, on any device<br> <span style="opacity: 1; left: 0px; top: 0px;">Zorpia works with any browser on your mobile, tablet or desktop!</span> </p>
+	              </div>
+	           </div>
+				<div style="width: 604px;">
+					<a title="signup" href="http://www.zorpia.com/signup"><img src="http://img.zpcdn.com/zorpia3/frontpage/picFrontLeft.jpg" height="305" width="604" alt="signup"></a>
+					<p>The people meeting network<br>of <span>38,372,229 and counting!</span></p>
+				</div>
+			</div>
+    <div class="contentRight">
+        <div class="formBox">
+            <form id="signupForm" name="Register" action="/signup" method="post" class="form_style">
+			<input type='hidden' name='zorpia_details' value='1' />			<input type='hidden' name='signup_with_zorpia' value='1' />			<input type='hidden' name='zone_id' value='' />
+             <div class="formBoxHeader">
+                 <h1>Join now to meet new people!</h1>                 <a class="linkJoin" onclick="FB.login(function(response) { if (response.authResponse) { window.location = 'http://www.zorpia.com/fbconnect?token=' + response.authResponse.accessToken + '&expires=' + response.authResponse.expiresIn; } }, {scope:'email,user_likes,user_friends,user_photos,user_birthday,user_about_me,public_profile'} );return false;" href="javascript:void(0)">Join Zorpia With One Click</a>             </div>
+             <div class="formBoxContent">
+                <div class="errorInfo" id="errorInfo" style="display:none"></div>
+                <ul>
+                    <li><label>First Name</label><input class="intText" name="first_name" id="first_name" validate="required#string" maxlength="16" type="text" /></li>
+                    <li><label>Last Name</label><input class="intText" name="last_name" id="last_name" validate="required#string" maxlength="16" type="text" /></li>
+                    <li><label>Email</label><input name="email" id="email" class="intText" validate="required#email" maxlength="64"  type="text" /></li>
+                    <li><label>Zorpia Password</label><input class="intText" name="password" id="password" validate="required#{'minlength':6}" type="password" maxlength="16" /></li>                    <li><label>I am</label><span class="radioBox"><input checked="checked" validate="required" name="gender" type="radio" value="male"> <img src="http://img.zpcdn.com/zorpia3/frontpage/iconMan.png"></span><span class="radioBox"><input validate="required" name="gender" type="radio" value="female"> <img src="http://img.zpcdn.com/zorpia3/frontpage/iconWoman.png"></span></li>
+                    <li><label>Birthday</label>
+						<select class="intTwoWords" onchange="judge_days()" name="MM" id="month" style="width:88px; margin-right:1px;" validate="required">
+                           <option selected="selected" value="">Month</option>							<option value="01">January</option>							<option value="02">February</option>							<option value="03">March</option>							<option value="04">April</option>							<option value="05">May</option>							<option value="06">June</option>							<option value="07">July</option>							<option value="08">August</option>							<option value="09">September</option>							<option value="10">October</option>							<option value="11">November</option>							<option value="12">December</option>                        </select>
+                        <select class="intTwoWords" onchange="judge_days()" name="DD" id="day" style="width:52px; margin-right:1px;" validate="required">
+                           <option selected="selected" value="">Day</option>						   <option value="01">01</option>						   <option value="02">02</option>						   <option value="03">03</option>						   <option value="04">04</option>						   <option value="05">05</option>						   <option value="06">06</option>						   <option value="07">07</option>						   <option value="08">08</option>						   <option value="09">09</option>						   <option value="10">10</option>						   <option value="11">11</option>						   <option value="12">12</option>						   <option value="13">13</option>						   <option value="14">14</option>						   <option value="15">15</option>						   <option value="16">16</option>						   <option value="17">17</option>						   <option value="18">18</option>						   <option value="19">19</option>						   <option value="20">20</option>						   <option value="21">21</option>						   <option value="22">22</option>						   <option value="23">23</option>						   <option value="24">24</option>						   <option value="25">25</option>						   <option value="26">26</option>						   <option value="27">27</option>						   <option value="28">28</option>						   <option value="29">29</option>						   <option value="30">30</option>						   <option value="31">31</option>                        </select>
+                        <select class="intFourWords" onchange="judge_days()" name="YYYY" id="year" style="width:58px; margin-right:0;" validate="required">
+                           <option selected="selected" value="">Year</option>							<option value="1996">1996</option>							<option value="1995">1995</option>							<option value="1994">1994</option>							<option value="1993">1993</option>							<option value="1992">1992</option>							<option value="1991">1991</option>							<option value="1990">1990</option>							<option value="1989">1989</option>							<option value="1988">1988</option>							<option value="1987">1987</option>							<option value="1986">1986</option>							<option value="1985">1985</option>							<option value="1984">1984</option>							<option value="1983">1983</option>							<option value="1982">1982</option>							<option value="1981">1981</option>							<option value="1980">1980</option>							<option value="1979">1979</option>							<option value="1978">1978</option>							<option value="1977">1977</option>							<option value="1976">1976</option>							<option value="1975">1975</option>							<option value="1974">1974</option>							<option value="1973">1973</option>							<option value="1972">1972</option>							<option value="1971">1971</option>							<option value="1970">1970</option>							<option value="1969">1969</option>							<option value="1968">1968</option>							<option value="1967">1967</option>							<option value="1966">1966</option>							<option value="1965">1965</option>							<option value="1964">1964</option>							<option value="1963">1963</option>							<option value="1962">1962</option>							<option value="1961">1961</option>							<option value="1960">1960</option>							<option value="1959">1959</option>							<option value="1958">1958</option>							<option value="1957">1957</option>							<option value="1956">1956</option>							<option value="1955">1955</option>							<option value="1954">1954</option>							<option value="1953">1953</option>							<option value="1952">1952</option>							<option value="1951">1951</option>							<option value="1950">1950</option>							<option value="1949">1949</option>							<option value="1948">1948</option>							<option value="1947">1947</option>							<option value="1946">1946</option>							<option value="1945">1945</option>							<option value="1944">1944</option>							<option value="1943">1943</option>							<option value="1942">1942</option>							<option value="1941">1941</option>							<option value="1940">1940</option>							<option value="1939">1939</option>							<option value="1938">1938</option>							<option value="1937">1937</option>							<option value="1936">1936</option>							<option value="1935">1935</option>							<option value="1934">1934</option>							<option value="1933">1933</option>							<option value="1932">1932</option>							<option value="1931">1931</option>							<option value="1930">1930</option>							<option value="1929">1929</option>							<option value="1928">1928</option>							<option value="1927">1927</option>							<option value="1926">1926</option>							<option value="1925">1925</option>							<option value="1924">1924</option>							<option value="1923">1923</option>							<option value="1922">1922</option>							<option value="1921">1921</option>							<option value="1920">1920</option>							<option value="1919">1919</option>							<option value="1918">1918</option>							<option value="1917">1917</option>							<option value="1916">1916</option>							<option value="1915">1915</option>							<option value="1914">1914</option>							<option value="1913">1913</option>							<option value="1912">1912</option>							<option value="1911">1911</option>							<option value="1910">1910</option>							<option value="1909">1909</option>							<option value="1908">1908</option>							<option value="1907">1907</option>							<option value="1906">1906</option>							<option value="1905">1905</option>							<option value="1904">1904</option>							<option value="1903">1903</option>							<option value="1902">1902</option>							<option value="1901">1901</option>							<option value="1900">1900</option>                        </select>
+                    </li>
+					<li><label>Verify Code</label>
+						<input class="intText" type="text" validate="required#digits" name="captcha" id="captcha" style="width:120px;" />
+						<img id="captcha_img" class="vert_alig" src="/captcha?when=&random="/>
+						<img class="signup_code_cursor" style="vertical-align:middle;margin-left:5px; cursor:pointer;" onclick="javascript:refresh_captcha('captcha_img')" alt="Can't read? Change one" src="http://img.zpcdn.com/zorpia2/common/icon_refresh.gif">
+					</li>
+                    <li><label>&nbsp;</label> <button onfocus="this.blur()" type="submit" class="cupid-green">Continue</button> </li>
+                </ul>
+                <small>By clicking 'Continue', you confirm that you are over 16, and agree to the
+    <a href="http://www.zorpia.com/terms">Terms of Service</a>
+    ,
+    <a href="http://www.zorpia.com/legal">Legal Notice</a>
+    and
+    <a href="http://www.zorpia.com/privacy">Privacy Policy</a>
+    .</small>
+             </div>
+             </form>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+			//
+			$(document).ready(function(){
+				//alert("test");
+				function dynanimate($object, $delay, $speed, $startX, $startY, $endX, $endY){
+					$object.show().stop().css({
+						"opacity":"0",
+						"left":$startX+"px",
+						"top":$startY+"px"
+					});
+					$object.delay($delay).animate({
+						opacity:1,
+						left:$endX,
+						top:$endY
+					},$speed);
+				};
+				var $note3 = $("#note3");
+				var $iphone5 = $("#iphone5");
+				var $macbook = $("#macbook");
+				$(window).load(function(){
+					dynanimate($note3,300,500,0,30,130,30);
+					dynanimate($iphone5,500,500,-150,50,-40,50);
+					dynanimate($macbook,800,700,520,80,220,80);
+					dynanimate($("#rwd_slogan"),1000,500,0,400,0,350);
+					dynanimate($("#rwd_slogan span"),1300,400,0,30,0,0);
+				});
+			});
+		</script>
+<!--content end-->
+<div id="footer-ads" >	<p><br /></p>
+	<div align="center">	<script type="text/javascript">
+	  GA_googleFillSlot("Zorpia_Bottom_728x90");
+	</script>	</div>
+</div><!-- main content end footer5 -->
+<div class="popupBg" id="popupBg1" style="display: none; height: 1010px;"></div><script type="text/javascript" src="http://ec.static.zpcdn.com/js/popupBox3.js"></script>
+<script type="text/javascript" id="creditScript" src="http://ec.static.zpcdn.com/js/payment/credit_2.8.js?sandbox=0"></script>
+
+<form name="pending_payment" method="post" action="">
+<input type="hidden" name="pending_object_type" id="pending_object_type" value="">
+<input type="hidden" name="pending_ojbect_id" id="pending_object_id" value="">
+<input type="hidden" name="buyer_user_id" id="user_id" value="">
+<input type="hidden" name="buyer_username" id="username" value="">
+<input type="hidden" name="price" id="price" value="">
+<input type="hidden" name="object_owner_id" id="object_owner_id" value="">
+<input type="hidden" name="friend_id" id="friend_id" value="">
+<input type="hidden" name="not_show_again">
+<input type="hidden" name="custom" id="custom" value="">
+<input type="hidden" name="pending_note" id="pending_note" value="">
+<input type="hidden" name="mirror" id="mirror" value="">
+<input type="hidden" name="country" id="country" value="">
+<input type="hidden" name="successful_url" id="successful_url" value="http://zorpia.com/">
+</form>
+
+<div class="popupBg" id="popupBg_pl" style="display:none; "></div>
+<div id="popupWrap_pl" class="popupWrap" style="display:none; ">
+	<div class="popup3" style="width:650px; top:10px;">
+		<div class="popTop"><p class="rt"></p><p class="lt"></p><p class="cen"></p></div>
+		<div class="pop_conWrap">
+			<a href="javascript:void(null);" onclick="showPopupBox('popupWrap_pl', 'popupBg_pl');" class="pop_close"></a>
+			<div class="popup_content">
+				<form id="myForm" action="" method="post" class="form_style">
+
+					<h1>Confirm Your Purchase</h1>
+					<h4></h4>
+				</form>
+				<table class="table_1">
+					  <tr>
+						<th class="align_left">Transaction Details</th>
+						<th style="width:70px;" class="align_left">Price</th>
+
+					  </tr>
+					  <tr class="backdrop">
+						<td style="line-height:22px; padding:0 5px;"><b>Coins I have:</b></td>
+						<td id='pop_user_balance' style="line-height:22px; padding:0 5px;"></td>
+					  </tr>
+					  <tr class="backdrop2">
+						<td style="padding:10px 5px;">
+							<div class="user_2_100">
+
+								<div class="user_2_100_img">
+								   <div class="mid_pic100">
+									<img alt=""  id='pop_img_src'/>
+								   </div>
+								</div>
+								<div class="user_2_100_info">									<span class="user_name">
+										<b id='pop_item_title'></b>
+									</span>
+									<span class="c_888 text_info" id='pop_item_desc' style="line-height:normal;word-break:normal\9;"></span>								</div>
+							</div>
+						</td>
+						<td style="vertical-align:top; padding-top:8px;" id='pop_item_price'></td>
+					  </tr>					  <tr style=" background:#FFF9D4;">
+
+					  	<td style="line-height:22px; padding:0 5px;"><b>Coins Needed:</b></td>
+						<td style="line-height:22px; padding:0 5px;"><b id='pop_coin_need'></b></td>
+					  </tr>
+				</table>
+				<br/>
+				<form id="confirmForm" action="" method="post" class="form_style">
+
+<div id="append_input"></div>
+					<h1>Buy Zorpia Coins</h1>
+					<h4></h4>
+					<ul>
+						<h2 class="dl_tips">Step 1: Choose a Zorpia Gold Coin pack</h2>
+						<li>
+							<input type="radio" class="input_check"  id="month_3" value="5" name="pack"><label class="withCheckbox" for="label_2"><span id="1k">500</span> Gold Coins <span class="c_888">(<span id="1kP">$5.00</span> USD)</span></label>
+						</li>
+						<li>
+
+							<input type="radio" class="input_check"  id="month_6" value="10" name="pack"><label class="withCheckbox" for="label_2"><span id="3k">1000</span> Gold Coins <span class="c_888">(<span id="3kP">$10.00</span> USD)</span></label>
+						</li>
+						<li>
+							<input type="radio" class="input_check"  id="month_12" value="27" name="pack" checked><label class="withCheckbox" for="label_2"><span id="8k">3000</span> Gold Coins <span class="c_888">(<span id="8kP">$27.00</span> USD)</span></label>
+						</li>
+					</ul>
+					<ul>
+
+						<h2 class="dl_tips">Step 2: How would you like to pay?</h2>
+						<li>
+							<input type="radio" class="input_check" id="label_3" name="paymenths" value='1' checked onclick="javascript:method_change_lite();"><label class="withCheckbox" for="label_3">Credit Card / Paypal</label>
+						</li>
+					</ul>
+
+				</form>
+				<div class="clearfix" style="border-top:1px solid #BCD2E7; padding-top:10px;">
+					<div class="float_right">
+						<a class="Z31BTOrange" style="color:#fff; text-decoration:none; padding:0 10px;  border-radius:0;" href="#" onclick="javascript:post_pending_payment();">Confirm</a><span id="loading" name="loading"></span>
+					</div>
+				</div>
+			</div>
+
+		</div>
+		<div class="popBottom"><p class="rb"></p><p class="lb"></p><p class="cen"></p></div>
+	</div>
+</div><script type="text/javascript">
+    var user_headpp={};
+    user_headpp[''] ="";
+    var image_preload = new Image();
+    image_preload.src = user_headpp[''];
+   
+</script>
+<form class="form_style" method="post" action="" id="form_popup2" name="form_popup2">
+<input type="hidden" name="user_id" value=""/>
+</form>
+        <!-- START: popup box -->
+        <script type="text/javascript" src="http://ec.static.zpcdn.com/js/popupBox3.js"></script>
+<div class="popupBg" id="popupBgR2" style="display:none; "></div>
+<div id="popupWrapR2" class="popupWrap" style="display:none; ">
+	<div class="popup3" style="width:650px;top:190px;">
+		<div class="popTop"><p class="rt"></p><p class="lt"></p><p class="cen"></p></div>
+		<div class="pop_conWrap">
+			<a href="javascript:void(null);" onclick="showPopupBox('popupWrapR2', 'popupBgR2');" class="pop_close" id='pop_close2'></a>
+			<div class="popup_content">
+				<form id="myForm" action="" method="post" class="form_style">
+
+					<h1>Confirm Your Purchase</h1>
+					<h4></h4>
+				</form>
+				<table class="table_1">
+					  <tr>
+						<th class="align_left">Transaction Details</th>
+						<th style="width:70px;" class="align_left">Price</th>
+
+					  </tr>
+					  <tr class="backdrop">
+						<td><b>Coins I have:</b></td>
+						<td id='ppdst_user_balance'></td>
+					  </tr>
+					  <tr class="backdrop2">
+						<td style="padding:10px 5px;">
+							<div class="user_2_100">
+
+								<div class="user_2_100_img">
+								   <div class="mid_pic100">
+									<img alt="Featured Zorpian Slot"  id='user_head_img2'/>
+								   </div>
+								</div>
+								<div class="user_2_100_info">
+									<span class="user_name">
+										<b>Featured Zorpian Slot</b>
+
+									</span>
+									<span class="c_888 text_info"  id='ppdst_item_desc' style="line-height:normal;word-break:normal\9;">Promote yourself at a prominent position on My Zorpia and Search Results. You will get more homepage views and friends! </span>
+								</div>
+							</div>
+						</td>
+						<td style="vertical-align:top; padding-top:8px;" id='ppdst_item_price'>500</td>
+					  </tr>
+				</table>
+				<br/>
+
+				<div class="clearfix" style="border-top:1px solid #BCD2E7; padding-top:10px;">
+                    <p style="margin-top: 10px;" class="float_left" onclick="document.popup_buy.not_show_again.checked = !document.popup_buy.not_show_again.checked"><input type="checkbox" style="vertical-align:middle;"  name="not_show_again" value='1' id='no_show_a'/> <label for="no_show_a">Do not show me this message again</label></p>
+                    <div class="float_right">
+                         <a class="Z31BTOrange" style="color:#fff; text-decoration:none; padding:0 10px;" <a href="#" onclick="javascript:buy_pp();">>Confirm</a> 
+                    </div>
+				</div>
+			</div>
+
+		</div>
+		<div class="popBottom"><p class="rb"></p><p class="lb"></p><p class="cen"></p></div>
+	</div>
+</div>
+       <!-- END: popup box -->
+
+<script type="text/javascript">
+var price_dlr_st = 0;
+var flag_name_1 = 'no_popup_buy_delivery_status';
+window[flag_name_1] = 0;
+var dlr_st_no_popup = 0;
+
+function no_pop_up(check_sta) {
+    dlr_st_no_popup = check_sta ;
+    var no_popup = 0;
+    if (check_sta){
+        no_popup = 1;
+    } 
+    jQuery.ajax({
+        type: "get",
+        url: "/whoviewedme/no_popup",
+        data: {"no_popup":no_popup},
+        cache: false,
+        success: function(data, textStatus){
+        },
+        error: function(){
+            alert(ZORPIA_JS_LANG.ENCOUTER_SOME_ERROR);
+        }
+    });
+
+};
+
+function buy_pp() {
+    document.getElementById('pop_close2').onclick();
+    var user_id = document.form_popup2.user_id.value;
+    buy_delivery_status2(user_id);
+};
+
+
+function popup_buy_delivery_status2(user_id) {
+    user_id |= cur_user_id;
+    if (!user_id){
+        alert('you need login first!');
+        return;
+    }
+jQuery.get("/click_put_me_here");
+    document.form_popup2.user_id.value=user_id;
+	jQuery('#user_head_img2')[0].src = user_headpp[user_id].replace('tns','ths');
+    jQuery('#ppdst_user_balance').html(jQuery('#box_credit_balance').html());
+	jQuery('#ppdst_item_desc').html("Promote yourself at a prominent position on My Zorpia and Search Results. You will get more homepage views and friends! ");
+    if(dlr_st_no_popup || window[flag_name_1] || parseInt( jQuery('#box_credit_balance').html(), 10) < 500)
+        buy_delivery_status2(user_id);
+    else 
+        setTimeout("showPopupBox('popupWrapR2', 'popupBgR2')",500);
+}
+
+function buy_delivery_status2(user_id) {
+//     window.location="/search/=&pre_url=http%3A%2F%2Fzorpia.com%2F";
+//     return;
+    var dlr_box = jQuery('#user' + user_id);    var url = '/search/buy_pp';
+    var pars = {"user_id":user_id, "is_ajax":1,'country_id':'', 'pre_url': "http%3A%2F%2Fzorpia.com%2F"};
+    jQuery.get(url, pars,
+    function(data) {
+        //alert(data);
+        if (data){
+            var msg ;
+            switch(data) {
+                case 'OK':
+                    showPopupBox('buy_pp_ok', 'buy_pp_ok_Bg');
+                    break;                
+                case 'BAD_REQUEST':
+                    msg = ZORPIA_JS_LANG.BAD_REQUEST;
+                    break;
+                case 'OBJECT_NOT_EXIST':
+                    msg = ZORPIA_JS_LANG.OBJECT_NOT_EXIST;
+                    break;
+                case 'BOUGHT_BEFORE':
+                    msg = 'Sorry, but you have bought it before.';
+                    break;
+                case 'NO_ENOUGH_CREDIT':
+					var credit_balance = parseInt( jQuery('#box_credit_balance').html(), 10);
+					document.pending_payment.pending_object_type.value = 'pp';
+					document.pending_payment.pending_ojbect_id.value=user_id;
+					document.pending_payment.buyer_user_id.value = '';
+					document.pending_payment.buyer_username.value = '';
+					document.pending_payment.price.value = '500';
+					document.pending_payment.object_owner_id.value = '';
+					jQuery('#pop_item_title').html('Featured Zorpian Slot');
+					jQuery('#pop_user_balance').html(jQuery('#box_credit_balance').html());
+					jQuery('#pop_item_price').html(500);
+					jQuery('#pop_coin_need').html(credit_balance > 500 ? 500 : 500 - credit_balance);
+					document.getElementById('pop_img_src').src=user_headpp[user_id].replace('tns','ths');
+					jQuery('#pop_item_desc').html("Promote yourself at a prominent position on My Zorpia and Search Results. You will get more homepage views and friends! ");
+					showPopupBox('popupWrap_pl', 'popupBg_pl');
+                    return;
+                    break;
+                case 'SERVER_ERROR':
+                    msg = ZORPIA_JS_LANG.ENCOUTER_SOME_ERROR;
+                    break;
+             }
+             
+            if(msg) {
+                alert(msg);
+                return;
+            }
+			window.location.reload(true);
+			
+        }
+    }
+    );
+
+}
+</script>
+
+<div class="popupBg" id="buy_pp_ok_Bg" style="display: none; "></div>
+<div id="buy_pp_ok" class="popupWrap" style="display: none; ">
+	<div class="popup3" style="width:425px;">
+		<div class="popTop"><p class="rt"></p><p class="lt"></p><p class="cen"></p></div>
+		<div class="pop_conWrap"> 
+			<div class="popup_content" style="padding:20px 18px;">
+				<p style="background:url(http://img.zpcdn.com/iconRight.png) 0 9px no-repeat; line-height:28px; padding:0 0 0 50px; font-size:15px;"> Congratulations!<br>You will be a featured Zorpian in a few minutes.</p> 
+                <div class="clearfix" style=" padding-top:10px;">
+					<div class="float_right">  <a class="Z31BTGray" style="width:70px;" onclick="showPopupBox('buy_pp_ok', 'buy_pp_ok_Bg')" href="javascript:void(null);">OK</a> </div>
+				</div>
+			</div>
+		</div>
+		<div class="popBottom"><p class="rb"></p><p class="lb"></p><p class="cen"></p></div>
+	</div>
+</div>
+
+<div class="footer_3_1 "  >	<div class="footer_bottom_3_1 clearfix"> 
+         <ul class="footerCon">
+          <li class="footerCol">
+            <ul>
+              <li class="pos_relative" style="line-height:22px;">
+<div class="pos_relative" style="display:inline-block;"> <a onclick="jQuery('.langPopUp').toggle();" href="javascript:void(0);"> English</a>  
+                   <div class="langPopUp" style="display:none;">
+                       <div class="langPopUpArrow"></div>
+                       <ul>
+                          <li class="f_12px"><a href="javascript:sel_lang('en')">English</a></li>
+          <li><a href="javascript:sel_lang('hk')">繁體中文</a></li>
+          <li><a href="javascript:sel_lang('cn')">简体中文</a></li>
+                       </ul>
+                   </div>            
+                </div>
+				
+              </li>
+              <li class="exSites"><a href="http://www.zorpia.com/help">Help</a></li>
+              <li class="exSites"><a href="http://blog.zorpia.com">Zorpia Blog</a></li>
+              <li class="exSites"><a href="http://www.zorpia.com/about">About Us</a></li>
+			  <li class="exSites"><a href="http://www.zorpia.com/contacts">Contact Us</a></li>
+            </ul>
+          </li>
+          <li class="footerCol">
+            <ul>
+			  <li class="exSites"><a href="http://www.zorpia.com/privacy">Privacy</a></li>
+              <li class="exSites"><a href="http://www.zorpia.com/legal">Legal Notice</a></li>
+              <li class="exSites"><a href="http://www.zorpia.com/terms">Terms of Service</a></li>
+              <li class="exSites"><a href="http://www.zorpia.com/press">Press</a></li>
+              <li class="exSites"><a href="http://www.zorpia.com/career">Jobs</a></li>
+              <li class="exSites"><a href="mailto:marketing@zorpia.com">Advertise on Zorpia</a></li>
+            </ul>
+          </li>
+          <li class="footerCol">
+            <ul>
+              <li class="exSites"><span>Follow us:</span></li>
+              <li class="exSites"><a class="fbIcon" href="https://www.facebook.com/Zorpia" target="_blank">Zorpia on Facebook</a></li>
+              <li class="exSites"><a class="twIcon" href="https://twitter.com/zorpiaofficial" target="_blank">Zorpia on Twitter</a></li>
+              <li class="exSites"><a class="googleIcon" href="https://plus.google.com/+zorpia" rel="publisher"  target="_blank">Zorpia on Google+</a></li>
+              <li class="exSites"><a class="ptIcon" href="http://www.pinterest.com/zorpia" target="_blank">Zorpia on Pinterest</a></li>
+              <li class="exSites"><a class="tbIcon" href="http://zorpia.tumblr.com" target="_blank">Zorpia on Tumblr</a></li>
+            </ul>
+          </li>
+          <li style="width:10%;" class="footerCol">
+            <ul>
+              <li class="exSites"><span>Use Zorpia on:</span></li>
+              <li class="exSites"><a class="fbIcon" href="https://apps.facebook.com/zorpiacom/" target="_blank">Facebook</a></li>
+              <li class="exSites"><a class="adIcon" href="https://play.google.com/store/apps/details?id=com.zorpia.zorpia" target="_blank">Android</a></li>
+            </ul>
+          </li>
+         </ul>
+	</div>	<div id="loadtimes" style="display:none">This page took 0.175035 seconds to load.</div>
+
+
+
+
+
+
+<input type='hidden' name=en_country_set value="">
+<input type='hidden' name=zorpia_region3_flag value="">
+<input type='hidden' name=user_ip_country value="my">
+<input type='hidden' name=user_real_region value="">
+<input type='hidden' name=zorpia_region2_flag value="">
+<input type='hidden' name=domain_setting value="en">
+<input type='hidden' name=user_main_view value="en">
+<input type='hidden' name=user_country value="">
+
+
+
+
+
+
+
+</div>
+<!--  AND

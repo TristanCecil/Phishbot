@@ -1,0 +1,2886 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>이하넥스</title>
+<meta http-equiv="Content-Type" content="text/html; charset=euc-kr" />
+<meta http-equiv="Cache-Control" content="no-cache" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+<meta name="author" content="" />
+<meta name="keywords" content="이하넥스,해외배송플랫폼서비스,한진,eHanEx" />
+
+<link rel="stylesheet" href="../css/basic.css" type="text/css" />
+<link rel="stylesheet" href="../css/main.css" type="text/css" />
+<link rel="stylesheet" href="../css/popup.css" type="text/css" />
+<link rel="stylesheet" href="../css/address_2013.css" type="text/css" />
+
+<script type="text/javascript" src="../js/jquery.min.js"></script>
+<script type="text/javascript" src="../js/jquery.easing.min.js"></script>
+<script type="text/javascript" src="../js/jquery.tabs.js"></script>
+<script type="text/javascript" src="../js/basic.js"></script>
+<script type="text/javascript" src="../js/modal.js"></script>
+<script type="text/javascript" src="../js/worldClock.js"></script>
+<script type="text/javascript" src="../js/main.js"></script>
+
+<script type="text/javascript" src="../m_js/jssor.js"></script>
+<script type="text/javascript" src="../m_js/jssor.slider.js"></script>
+
+
+<script type="text/javascript">
+$(function() {
+	$(".tB_btn").click(function(){
+		if ($(".tB_img").css("display") == "none") {
+				$(".tB_img").slideDown('fast');
+				$(document).find(".tB_btn").css('background-image',"url('../images/main/btn_close.png')");
+			}else {
+				$(".tB_img").slideUp('fast');
+				$(document).find(".tB_btn").css('background-image',"url('../images/main/btn_open.png')");
+			}
+	});
+});
+
+/*이하넥스 맞춤서비스*/
+$(function(){
+	$(document).ready(function(){
+		$('#motionj_slide_01').motionj_slide_banner1({
+			width : 307, //Banner box width
+			height : 179, // Banner box height
+			speed : 500, // Sliding speed
+			delay : 3000, // Delay time
+			image : '../images/main/', // path of images
+			pause : false // true is stop banner, false is auto moving banner
+		});
+	});
+});
+
+/*이하넥스 제휴사*/
+$(function(){
+	$(document).ready(function(){
+		$('#motionj_slide_02, #motionj_slide_03,#motionj_slide_04').motionj_slide_banner({
+			width : 304, //Banner box width
+			height : 172, // Banner box height
+			speed : 600, // Sliding speed
+			delay : false, // Delay time
+			image : '../images/main/', // path of images
+			pause : false // true is stop banner, false is auto moving banner
+		});
+	});
+});
+
+/*핫딜정보*/
+$(function(){
+	var hotPanel = new jTabSidePanel("#hotPanel");
+	hotPanel.start();
+});
+
+/*해외쇼핑몰 추천상품*/
+$(function(){
+	var mallPanel = new jTabSidePanel("#mallPanel");
+	mallPanel.start();
+});
+
+
+$(function() {
+	$('.main_img .mB_nav').hide();
+	$(".main_img a").mouseover(function(){
+		$('.main_img .mB_nav').show();	
+	});	
+	$(".main_img a").mouseout(function(){
+		$('.main_img .mB_nav').hide();	
+	});
+
+	$('.mB_nav').find('li').click(function(){
+		var target = $(this).find('>a').attr('href').split('#')[1];
+		
+		for(var i = 0; i < $('.mB_nav').find('li').length; i++){
+			$("#imgMainBanner" + i ).hide();
+		}
+		$("#imgMainBanner" + target ).show();
+	});
+	
+	$(".main_img").mouseover(function(){
+		for(var i = 0; i < $('.mB_nav').find('li').length; i++){
+			$("#imgMainBanner" + i ).show();
+		}
+	});
+
+
+});
+
+
+$(document).ready(function(){
+	
+	//배너 스크립트 제어
+	bannerMotion(".mainBannerWrap"); 
+
+	//floatingLayer 
+	$(window).bind('load resize', function(){
+		var w = $(window).width();
+		$('.centerAddress').css({
+			'left': w/2 + 490 + 'px'
+		});
+	});
+
+	//time
+	$('#NewJersey').text(worldClock(-3, "SAmerica"));
+	$('#Delaware').text(worldClock(-3, "SAmerica"));
+	$('#LosAngeles').text(worldClock(-6, "NAmerica"));
+	$('#Seoul').text(worldClock(9, "Seoul"));
+	$('#Tokyo').text(worldClock(9, "Tokyo"));
+	$('#Oregon').text(worldClock(-6, "NAmerica"));
+	$('#Hongkong').text(worldClock(8, "Hongkong"));
+	$('#DE').text(worldClock(2, "DE"));
+	$('#UK').text(worldClock(1, "UK"));
+
+    //물류센터 on/off설정
+	$('dl dd.date').each(function(i){
+		var date = $(this).text().split(' ');
+		var hr = date[2].split(':')[0];
+		var holiday = date[2].split(':')[2];
+		if(hr < 09 || hr >= 18){
+			$(this).parent('dl').siblings('p').children('span').addClass('close'); 
+		}else{
+			if(holiday != 0 && holiday != 6) {
+				$(this).parent('dl').siblings('p').children('span').addClass('open'); 
+		    } else {
+		    	$(this).parent('dl').siblings('p').children('span').addClass('close'); 
+		    }
+		}
+   	});  
+	
+	$('#NewJersey').text(worldClock(-3, "SAmerica").substring(0,worldClock(-3, "SAmerica").length-2));
+	$('#Delaware').text(worldClock(-3, "SAmerica").substring(0,worldClock(-3, "SAmerica").length-2));
+	$('#LosAngeles').text(worldClock(-6, "NAmerica").substring(0,worldClock(-6, "NAmerica").length-2));
+	$('#Seoul').text(worldClock(9, "Seoul").substring(0, worldClock(9, "Seoul").length-2));
+	$('#Tokyo').text(worldClock(9, "Tokyo").substring(0, worldClock(9, "Tokyo").length-2));
+	$('#Oregon').text(worldClock(-6, "NAmerica").substring(0, worldClock(-6, "NAmerica").length-2));
+	$('#Hongkong').text(worldClock(8, "Hongkong").substring(0, worldClock(8, "Hongkong").length-2));
+	$('#DE').text(worldClock(4, "DE").substring(0, worldClock(4, "DE").length-2));
+	$('#UK').text(worldClock(1, "UK").substring(0, worldClock(1, "UK").length-2));
+	
+	//배너랜덤
+	var BannerNo = Math.ceil(Math.random() * 3);
+
+	for(var k=1; k<4; k++){
+		if(k == BannerNo){
+			$(".BANNER" + k).show();
+		}else{
+			$(".BANNER" + k).hide();
+		}
+	}
+	
+	
+});
+
+	//다음 실행을 막음
+	function stopScript(){
+		return;
+	}
+	
+	//새창열기
+	function openNewWin(url){
+		var win = window.open(url,'','width=' + $(document).width() + ",height=" + $(document).height());
+		return;
+	}
+
+	// 쿠키지우기 함수 호출
+	function fnDelCookie(idx){
+		clearcookie('keyContent' + idx);
+	}
+
+	// 해당페이지로 이동
+	function fnGotoUrl(url){
+		location.replace(url);
+		return;
+	}
+	
+	//상품평 내용 조회
+	function readNotice(ArtlSno){
+		document.searchNotice.ArtlSno.value = ArtlSno;
+		document.searchNotice.submit();
+		return;
+	}
+	
+	function checkEnter2()
+	{
+		if (event.keyCode==13)
+		{
+			sendit();
+		}
+	}
+
+	function isNum(theInput)   
+	{
+		for(var i=0; i<theInput.length; i++) 
+		{ 
+			var theChar = theInput.substring(i, i+1);
+		      
+		      	if(theChar < "0" || theChar > "9") 
+		      		return false;
+		}		
+		return true;
+	}
+	
+	function IsEmpty(data) {
+		for (var i=0; i<data.length; i++) {
+	        	if (data.substring(i,i+1) != " ")
+	            	return false;   
+	        }   
+		return true; 
+	}
+	
+	function sendit() {
+		var url = "";
+		
+		if (IsEmpty(document.form1.wbl_num.value) == true) {
+	     		alert("운송장 번호을 입력하십시오.");
+	     		document.form1.wbl_num.focus();
+	     		return;  
+	     	}
+		
+		// 국제 운송장 번호라면, 
+		if ((document.form1.wbl_num.value.substring(0,2)  == "GD") || (document.form1.wbl_num.value.length == 9)) {	    
+			url="http://www.hanjin.co.kr/Delivery_html/inquiry/result_waybill_international.jsp?wbl_num="+document.form1.wbl_num.value;
+		} else if ((document.form1.wbl_num.value.substring(0,2)  == "86") && (document.form1.wbl_num.value.length == 12)) {	    
+			url="http://www.hanjin.co.kr/Delivery_html/inquiry/result_waybill_international.jsp?wbl_num="+document.form1.wbl_num.value;
+		} else {
+	        var thevalue = document.form1.wbl_num.value;
+	
+	        if( isNum(thevalue)==true && ( thevalue.length==9 || thevalue.length==10 || thevalue.length==12 ) ) {
+	           	var toNum  = thevalue.substring(0, thevalue.length-1);
+	           	var namugi = thevalue.substring(thevalue.length-1, thevalue.length);
+	
+	           	if(eval(toNum%7)!=parseInt(namugi))
+	           	{
+	           		alert("잘못된 운송장 번호입니다.\n\n운송장 번호 체계에 맞지않습니다.");
+	           		return;
+	           	}
+	           	url="http://www.hanjin.co.kr/Delivery_html/inquiry/result_waybill.jsp?wbl_num="+document.form1.wbl_num.value;                	
+	       	} else {
+	           	alert("잘못된 운송장 번호입니다.\n\n숫자만 입력하십시오.");
+	           	return;
+	       	}
+		}
+		window.open(url,'_blank');
+	}
+	
+	function sendit1(invc_sno) {
+		
+		// 국제 운송장 번호라면, 
+		if ((invc_sno.substring(0,2)  == "GD") || (invc_sno.length == 9)) {	    
+			url="http://www.hanjin.co.kr/Delivery_html/inquiry/result_waybill_international.jsp?wbl_num="+invc_sno;
+		} else if ((invc_sno.substring(0,2)  == "86") && (invc_sno.length == 12)) {	    
+			url="http://www.hanjin.co.kr/Delivery_html/inquiry/result_waybill_international.jsp?wbl_num="+invc_sno;
+		} else {
+	        var thevalue = invc_sno;
+	
+	        if( isNum(thevalue)==true && ( thevalue.length==9 || thevalue.length==10 || thevalue.length==12 ) ) {
+	           	var toNum  = thevalue.substring(0, thevalue.length-1);
+	           	var namugi = thevalue.substring(thevalue.length-1, thevalue.length);
+	
+	           	if(eval(toNum%7)!=parseInt(namugi))
+	           	{
+	           		alert("잘못된 운송장 번호입니다.\n\n운송장 번호 체계에 맞지않습니다.");
+	           		return;
+	           	}
+	           	url="http://www.hanjin.co.kr/Delivery_html/inquiry/result_waybill.jsp?wbl_num="+invc_sno;                	
+	       	} else {
+	           	alert("잘못된 운송장 번호입니다.\n\n숫자만 입력하십시오.");
+	           	return;
+	       	}
+		}
+	
+		window.open(url,'_blank');
+	}
+
+	function MM_openBrWindow(theURL,winName,features) { //v2.0
+		 if(getCookie("popupChk") != "done"){
+		    window.open(theURL,winName,features);
+		    setCookie("popupChk", "done");
+		 }
+	}
+	
+	function getCookie( name ){
+			var nameOfCookie = name + "="; 
+			var x = 0; 
+			while ( x <= document.cookie.length ) {
+				var y = (x+nameOfCookie.length);
+				if ( document.cookie.substring( x, y ) == nameOfCookie ) { 
+					if ( (endOfCookie=document.cookie.indexOf( ";", y )) == -1 )
+		  				endOfCookie = document.cookie.length; 
+		        	return unescape( document.cookie.substring( y, endOfCookie ) ); 
+		    	} 
+		    	x = document.cookie.indexOf( " ", x ) + 1; 
+		    	if ( x == 0 ) break; 
+		  	} 
+		  	return ""; 
+	}
+	
+	function setCookie(name, value) {
+		document.cookie = name + "=" + escape( value ) + "; path=/";
+	}
+	
+	function insertMAllHistory(mall_cd, mall_url) {
+						
+		$.ajax({
+			type:"POST",
+			url:"./OB_MallHistory_Insert.jsp",
+			data: {'mall_cd': mall_cd, 'mall_url': mall_url},
+			success:function(msg){
+				 	window.open(mall_url, '_blank');				
+				}
+			});			       	
+	}
+	function MM_openBrWindow2(theURL,winName,features) { //v2.0
+		 if(getCookie("popupChk2") != "done"){
+			window.open(theURL,winName,features);
+		}
+	}
+
+</script>
+
+</head>
+<body>
+	<!-- s:accessibility -->
+	<a href="#nav" class="acc">메뉴 바로가기</a>
+	<a href="#container" class="acc">본문으로 바로가기</a>
+	<!-- e:accessibility -->
+	<div class="topBannerWrap" style="background:#ffe9b9">
+		<div class="topBanner">
+			<p class="tB_img">
+				<a href="http://www.ehanex.com/notice/FO_Notice_Detail.jsp?BbsSno=1&ArtlSno=956" target="_blank">
+					<img src="../images/main/banner/160428_vitamin.jpg" alt="" /></a></p>
+			<a href="#" class="tB_btn"><span>닫기</span></a>
+		</div>
+	</div>
+	
+	<div id="wrap">
+		<!-- s:header -->
+		<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ko" lang="ko">
+
+
+
+
+
+
+
+
+
+<script language="javascript">
+	function loginTo(target) {
+	    location.replace("https://www.ehanex.com/login/FO_LoginRM.jsp?targeturl="+escape(target));
+	}
+	
+	function logoutTo(target) {
+		clearAllcookie();
+	    location.replace(target);
+	}
+	
+	function addFavorite(){
+		window.external.AddFavorite('http://www.ehanex.com/platform/OB_Main.jsp','eHanex');
+	}
+	// Delete Cookie
+	function clearcookie(name)
+	{
+	   today   = new Date();
+	   today.setDate(today.getDate() - 1);
+	   document.cookie = name + "=; expires=" + today.toGMTString() + ";";
+	}
+	// All Delete Cookie
+	function clearAllcookie()
+	{
+	   cookie  = document.cookie.split(";");
+	   total   = cookie.length;
+	   for(i=0; i<total; i++) {
+	    
+	       name = cookie[i].substring(0, cookie[i].indexOf("="));
+	       clearcookie(name);
+	   }
+	}
+
+</script>
+<!-- Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-61257300-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+<!-- NSM Site Analyst Log Gathering Script V.70.2012031601 -->
+<script language='javascript'>
+if( typeof HL_GUL == 'undefined' ){
+
+var HL_GUL = 'ngc6.nsm-corp.com';var HL_GPT='80'; var _AIMG = new Image(); var _bn=navigator.appName; var _PR = location.protocol=="https:"?"https://"+HL_GUL:"http://"+HL_GUL+":"+HL_GPT;if( _bn.indexOf("Netscape") > -1 || _bn=="Mozilla"){ setTimeout("_AIMG.src = _PR+'/?cookie';",1); } else{ _AIMG.src = _PR+'/?cookie'; };
+var _JV="AMZ2014031401";//script Version
+var HL_GCD = 'CS1B39600716125'; // gcode
+var _UD='undefined';var _UN='unknown';
+function _IX(s,t){return s.indexOf(t)}
+function _GV(b,a,c,d){ var f = b.split(c);for(var i=0;i<f.length; i++){ if( _IX(f[i],(a+d))==0) return f[i].substring(_IX(f[i],(a+d))+(a.length+d.length),f[i].length); }	return ''; }
+function _XV(b,a,c,d,e){ var f = b.split(c);var g='';for(var i=0;i<f.length; i++){ if( _IX(f[i],(a+d))==0){ try{eval(e+"=f[i].substring(_IX(f[i],(a+d))+(a.length+d.length),f[i].length);");}catch(_e){}; continue;}else{ if(g) g+= '&'; g+= f[i];}; } return g;};
+function _NOB(a){return (a!=_UD&&a>0)?new Object(a):new Object()}
+function _NIM(){return new Image()}
+function _IL(a){return a!=_UD?a.length:0}
+function _ILF(a){ var b = 0; try{eval("b = a.length");}catch(_e){b=0;}; return b; }
+function _VF(a,b){return a!=_UD&&(typeof a==b)?1:0}
+function _LST(a,b){if(_IX(a,b)>0){ a=a.substring(0,_IX(a,b));}; return a;}
+function _CST(a,b){if(_IX(a,b)>0) a=a.substring(_IX(a,b)+_IL(b),_IL(a));return a}
+function _UL(a){a=_LST(a,'#');a=_CST(a,'://');return a}
+function _AA(a){return new Array(a?a:0)}
+function _IDV(a){return (typeof a!=_UD)?1:0}
+if(!_IDV(HL_GUL)) var HL_GUL ='ngc6.nsm-corp.com'; 
+if(!_IDV(HL_GPT)) var HL_GPT ='80';
+_DC = document.cookie ;
+function _AGC(nm) { var cn = nm + "="; var nl = cn.length; var cl = _DC.length; var i = 0; while ( i < cl ) { var j = i + nl; if ( _DC.substring( i, j ) == cn ){ var val = _DC.indexOf(";", j ); if ( val == -1 ) val = _DC.length; return unescape(_DC.substring(j, val)); }; i = _DC.indexOf(" ", i ) + 1; if ( i == 0 ) break; } return ''; }
+function _ASC( nm, val, exp ){var expd = new Date(); if ( exp ){ expd.setTime( expd.getTime() + ( exp * 1000 )); document.cookie = nm+"="+ escape(val) + "; expires="+ expd.toGMTString() +"; path="; }else{ document.cookie = nm + "=" + escape(val);};}
+function SetUID() {     var newid = ''; var d = new Date(); var t = Math.floor(d.getTime()/1000); newid = 'UID-' + t.toString(16).toUpperCase(); for ( var i = 0; i < 16; i++ ){ var n = Math.floor(Math.random() * 16).toString(16).toUpperCase(); newid += n; }       return newid; }
+var _FCV = _AGC("ACEFCID"); if ( !_FCV ) { _FCV = SetUID(); _ASC( "ACEFCID", _FCV , 86400 * 30 * 12 ); _FCV=_AGC("ACEFCID");}
+var _AIO = _NIM(); var _AIU = _NIM();  var _AIW = _NIM();  var _AIX = _NIM();  var _AIB = _NIM();  var __hdki_xit = _NIM();
+var _gX='/?xuid='+HL_GCD+'&sv='+_JV,_gF='/?fuid='+HL_GCD+'&sv='+_JV,_gU='/?uid='+HL_GCD+'&sv='+_JV+"&FCV="+_FCV,_gE='/?euid='+HL_GCD+'&sv='+_JV,_gW='/?wuid='+HL_GCD+'&sv='+_JV,_gO='/?ouid='+HL_GCD+'&sv='+_JV,_gB='/?buid='+HL_GCD+'&sv='+_JV;
+
+var _d=_rf=_end=_fwd=_arg=_xrg=_av=_bv=_rl=_ak=_xrl=_cd=_cu=_bz='',_sv=11,_tz=20,_ja=_sc=_ul=_ua=_UA=_os=_vs=_UN,_je='n',_bR='blockedReferrer';
+if(!_IDV(_CODE)) var _CODE = '' ;
+_tz = Math.floor((new Date()).getTimezoneOffset()/60) + 29 ;if( _tz > 24 ) _tz = _tz - 24 ;
+// Javascript Variables
+if(!_IDV(_amt)) var _amt=0 ;if(!_IDV(_pk)) var _pk='' ;if(!_IDV(_pd)) var _pd='';if(!_IDV(_ct)) var _ct='';
+if(!_IDV(_ll)) var _ll='';if(!_IDV(_ag)) var _ag=0;	if(!_IDV(_id)) var _id='' ;if(!_IDV(_mr)) var _mr = _UN;
+if(!_IDV(_gd)) var _gd=_UN;if(!_IDV(_jn)) var _jn='';if(!_IDV(_jid)) var _jid='';if(!_IDV(_skey)) var _skey='';
+if(!_IDV(_ud1)) var _ud1='';if(!_IDV(_ud2)) var _ud2='';if(!_IDV(_ud3)) var _ud3='';
+if( !_ag ){ _ag = 0 ; }else{ _ag = parseInt(_ag); }
+if( _ag < 0 || _ag > 150 ){ _ag = 0; }
+if( _gd != 'man' && _gd != 'woman' ){ _gd =_UN;};if( _mr != 'married' && _mr != 'single' ){ _mr =_UN;};if( _jn != 'join' && _jn != 'withdraw' ){ _jn ='';};
+if( _ag > 0 || _gd == 'man' || _gd == 'woman'){ _id = 'undefined_member';}
+if( _jid != '' ){ _jid = 'undefined_member'; }
+_je = (navigator.javaEnabled()==true)?'1':'0';_bn=navigator.appName;
+if(_bn.substring(0,9)=="Microsoft") _bn="MSIE";
+_bN=(_bn=="Netscape"),_bI=(_bn=="MSIE"),_bO=(_IX(navigator.userAgent,"Opera")>-1);if(_bO)_bI='';
+_bz=navigator.appName; _pf=navigator.platform; _av=navigator.appVersion; _bv=parseFloat(_av) ;
+if(_bI){_cu=navigator.cpuClass;}else{_cu=navigator.oscpu;};
+if((_bn=="MSIE")&&(parseInt(_bv)==2)) _bv=3.01;_rf=document.referrer;var _prl='';var _frm=false;
+function _WO(a,b,c){window.open(a,b,c)}
+function ACEF_Tracking(a,b,c,d,e,f){ if(!_IDV(b)){var b = 'FLASH';}; if(!_IDV(e)){ var e = '0';};if(!_IDV(c)){ var c = '';};if(!_IDV(d)){ var d = '';}; var a_org=a; b = b.toUpperCase(); var b_org=b;	if(b_org=='FLASH_S'){ b='FLASH'; }; if( typeof CU_rl == 'undefined' ) var CU_rl = _PT(); if(_IDV(HL_GCD)){ var _AF_rl = document.URL; if(a.indexOf('://') < 0  && b_org != 'FLASH_S' ){ var _AT_rl  = ''; if( _AF_rl.indexOf('?') > 0 ){ _AF_rl = _AF_rl.substring(0,_AF_rl.indexOf('?'));}; var spurl = _AF_rl.split('/') ;	for(var ti=0;ti < spurl.length ; ti ++ ){ if( ti == spurl.length-1 ){ break ;}; if( _AT_rl  == '' ){ _AT_rl  = spurl[ti]; }else{ _AT_rl  += '/'+spurl[ti];}; }; var _AU_arg = ''; if( a.indexOf('?') > 0 ){ _AU_arg = a.substring(a.indexOf('?'),a.length); a = a.substring(0,a.indexOf('?')); }; var spurlt = a.split('/') ; if( spurlt.length > 0 ){ a = spurlt[spurlt.length-1];}; a = _AT_rl +'/'+a+_AU_arg;	_AF_rl=document.URL;}; _AF_rl = _AF_rl.substring(_AF_rl.indexOf('//')+2,_AF_rl.length); if( typeof f == 'undefined' ){ var f = a }else{f='http://'+_AF_rl.substring(0,_AF_rl.indexOf('/')+1)+f}; var _AS_rl = CU_rl+'/?xuid='+HL_GCD+'&url='+escape(_AF_rl)+'&xlnk='+escape(f)+'&fdv='+b+'&idx='+e+'&'; var _AF_img = new Image(); _AF_img.src = _AS_rl; if( b_org == 'FLASH' && a_org != '' ){ if(c==''){ window.location.href = a_org; }else{ if(d==''){ window.open(a_org,c);}else{ window.open(a_org,c,d); };};	};} ; }
+function _PT(){return location.protocol=="https:"?"https://"+HL_GUL:"http://"+HL_GUL+":"+HL_GPT}
+function _EL(a,b,c){if(a.addEventListener){a.addEventListener(b,c,false)}else if(a.attachEvent){a.attachEvent("on"+b,c)} }
+function _NA(a){return new Array(a?a:0)}
+function HL_ER(a,b,c,d){_xrg=_PT()+_gW+"&url="+escape(_UL(document.URL))+"&err="+((typeof a=="string")?a:"Unknown")+"&ern="+c+"&bz="+_bz+"&bv="+_vs+"&RID="+Math.random()+"&";
+if(_IX(_bn,"Netscape") > -1 || _bn == "Mozilla"){ setTimeout("_AIW.src=_xrg;",1); } else{ _AIW.src=_xrg; } }
+function HL_PL(a){if(!_IL(a))a=_UL(document.URL);
+_arg = _PT()+_gU;
+if( typeof HL_ERR !=_UD && HL_ERR == 'err'){ _arg = _PT()+_gE;};
+if( _ll.length > 0 ) _arg += "&md=b";
+_AIU.src = _arg+"&url="+escape(a)+"&ref="+escape(_rf)+"&cpu="+_cu+"&bz="+_bz+"&bv="+_vs+"&os="+_os+"&dim="+_d+"&cd="+_cd+"&je="+_je+"&jv="+_sv+"&tz="+_tz+"&ul="+_ul+"&ad_key="+escape(_ak)+"&skey="+escape(_skey)+"&age="+_ag+"&gender="+_gd+"&marry="+_mr+"&join="+_jn+"&member_key="+_id+"&jid="+_jid+"&udf1="+_ud1+"&udf2="+_ud2+"&udf3="+_ud3+"&amt="+_amt+"&frwd="+_fwd+"&pd="+escape(_pd)+"&ct="+escape(_ct)+"&ll="+escape(_ll)+"&RID="+Math.random()+"&";
+setTimeout("",300);
+}
+_EL(window,"error",HL_ER); //window Error
+if( typeof window.screen == 'object'){_sv=12;_d=screen.width+'*'+screen.height;_sc=_bI?screen.colorDepth:screen.pixelDepth;if(_sc==_UD)_sc=_UN;}
+_ro=_NA();if(_ro.toSource||(_bI&&_ro.shift))_sv=13;
+if( top && typeof top == 'object' &&_ILF(top.frames)){eval("try{_rl=top.document.URL;}catch(_e){_rl='';};"); if( _rl != document.URL ) _frm = true;};
+if(_frm){ eval("try{_prl = top.document.URL;}catch(_e){_prl=_bR;};"); if(_prl == '') eval("try{_prl=parent.document.URL;}catch(_e){_prl='';};"); 
+if( _IX(_prl,'#') > 0 ) _prl=_prl.substring(0,_IX(_prl,'#')); 
+_prl=_LST(_prl,'#');
+if( _IX(_rf,'#') > 0 ) _rf=_rf.substring(0,_IX(_rf,'#')); 
+if( _IX(_prl,'/') > 0 && _prl.substring(_prl.length-1,1) == '/' ) _prl =_prl.substring(0,_prl.length-1);
+if( _IX(_rf,'/') > 0 && _rf.substring(_rf.length-1,1) == '/' ) _rf =_rf.substring(0,_rf.length-1);
+if( _rf == '' ) eval("try{_rf=parent.document.URL;}catch(_e){_rf=_bR;}"); 
+if(_rf==_bR||_prl==_bR){ _rf='',_prl='';}; if( _rf == _prl ){ eval("try{_rf=top.document.referrer;}catch(_e){_rf='';}"); 
+if( _rf == ''){ _rf = 'bookmark';};if( _IX(document.cookie,'ACEN_CK='+escape(_rf)) > -1 ){ _rf = _prl;} 
+else{ 
+if(_IX(_prl,'?') > 0){ _ak = _prl.substring(_IX(_prl,'?')+1,_prl.length); _prl = _ak; }
+if( _IX(_prl.toUpperCase(),'OVRAW=') >= 0 ){ _ak = 'src=overture&kw='+_GV(_prl.toUpperCase(),'OVRAW','&','=')+'&OVRAW='+_GV(_prl.toUpperCase(),'OVRAW','&','=')+'&OVKEY='+_GV(_prl.toUpperCase(),'OVKEY','&','=')+'&OVMTC='+_GV(_prl.toUpperCase(),'OVMTC','&','=').toLowerCase() }; 
+if(_IX(_prl,'gclid=') >= 0 ){ _ak='src=adwords'; }; if(_IX(_prl,'DWIT=') >= 0 ){_ak='src=dnet_cb';}; 
+if( _IX(_prl,"rcsite=") >= 0 &&  _IX(_prl,"rctype=") >= 0){ _prl += '&'; _ak = _prl.substring(_IX(_prl,'rcsite='),_prl.indexOf('&',_IX(_prl,'rcsite=')+7))+'-'+_prl.substring(_IX(_prl,'rctype=')+7,_prl.indexOf('&',_IX(_prl,'rctype=')+7))+'&'; };
+if( _GV(_prl,'src','&','=') ) _ak += '&src='+_GV(_prl,'src','&','='); if( _GV(_prl,'kw','&','=') ) _ak += '&kw='+_GV(_prl,'kw','&','='); 
+if( _IX(_prl, 'FWDRL')> 0 ){ _prl = _XV(_prl,'FWDRL','&','=','_rf'); _rf = unescape(_rf); }; if( _IX(_ak,'FWDRL') > 0 ){_ak = _XV(_ak,'FWDRL','&','=','_prl');}; if( typeof FD_ref=='string' && FD_ref != '' ) _rf = FD_ref; _fwd = _GV(_prl,'FWDIDX','&','=');
+document.cookie='ACEN_CK='+escape(_rf)+';path=/;'; 
+}; 
+if(document.URL.indexOf('?')>0 && ( _IX(_ak,'rcsite=') < 0 && _IX(_ak,'NVAR=') < 0 && _IX(_ak,'src=') < 0 && _IX(_ak,'source=') < 0 && _IX(_ak,'DMCOL=') < 0 ) ) _ak =document.URL.substring(document.URL.indexOf('?')+1,document.URL.length); }; 
+}
+else{ 
+_rf=_LST(_rf,'#');_ak=_CST(document.URL,'?');
+if( _IX(_ak,"rcsite=") > 0 &&  _IX(_ak,"rctype=") > 0){
+    _ak += '&';
+    _ak = _ak.substring(_IX(_ak,'rcsite='),_ak.indexOf('&',_IX(_ak,'rcsite=')+7))+'-'+_ak.substring(_IX(_ak,'rctype=')+7,_ak.indexOf('&',_IX(_ak,'rctype=')+7))+'&';
+}
+}
+_rl=document.URL;
+var _trl = _rl.split('?'); if(_trl.length>1){ if( _IX(_trl[1],'FWDRL') > 0 ){ _trl[1] = _XV(_trl[1],'FWDRL','&','=','_rf'); _rf = unescape(_rf); _fwd = _GV(_trl[1],'FWDIDX','&','='); _rl=_trl.join('?'); };  if( _IX(_ak,'FWDRL') > 0 ){ _ak = _XV(_ak,'FWDRL','&','=','_prl');}; }; if( typeof FD_ref=='string' && FD_ref != '' ) _rf = FD_ref;
+if( _rf.indexOf('googlesyndication.com') > 0 ){ 
+var _rf_idx = _rf.indexOf('&url=');  if( _rf_idx > 0 ){ var _rf_t = unescape(_rf.substring(_rf_idx+5,_rf.indexOf('&',_rf_idx+5)));  if( _rf_t.length > 0 ){ _rf = _rf_t ;};  };  };
+_rl = _UL(_rl); _rf = _UL(_rf);
+
+if( typeof _rf_t != 'undefined' && _rf_t != '' ) _rf = _rf_t ;
+if( typeof _ak_t != 'undefined' && _ak_t != '' ) _ak = _ak_t ;
+
+if( typeof _rf==_UD||( _rf == '' )) _rf = 'bookmark' ;_cd=(_bI)?screen.colorDepth:screen.pixelDepth;
+_UA = navigator.userAgent;_ua = navigator.userAgent.toLowerCase();
+if (navigator.language){  _ul = navigator.language.toLowerCase();}else if(navigator.userLanguage){  _ul = navigator.userLanguage.toLowerCase();};
+
+_st = _IX(_UA,'(') + 1;_end = _IX(_UA,')');_str = _UA.substring(_st, _end);_if = _str.split('; ');_cmp = _UN ;
+
+if(_bI){ _cmp = navigator.appName; _str = _if[1].substring(5, _if[1].length); _vs = (parseFloat(_str)).toString();} 
+else if ( (_st = _IX(_ua,"opera")) > 0){ _cmp = "Opera" ;_vs = _ua.substring(_st+6, _ua.indexOf('.',_st+6)); } 
+else if ((_st = _IX(_ua,"firefox")) > 0){_cmp = "Firefox"; _vs = _ua.substring(_st+8, _ua.indexOf('.',_st+8)); } 
+else if ((_st = _IX(_ua,"netscape6")) > 0){ _cmp = "Netscape"; _vs = _ua.substring(_st+10, _ua.length);  
+if ((_st = _IX(_vs,"b")) > 0 ) { _str = _vs.substring(0,_IX(_vs,"b")); _vs = _str ;  };}
+else if ((_st = _IX(_ua,"netscape/7")) > 0){  _cmp = "Netscape";  _vs = _ua.substring(_st+9, _ua.length);  if ((_st = _IX(_vs,"b")) > 0 ){ _str = _vs.substring(0,_IX(_vs,"b")); _vs = _str;};
+}
+else{
+if (_IX(_ua,"gecko") > 0){ if(_IX(_ua,"safari")>0){ _cmp = "Safari";_ut = _ua.split('/');for( var ii=0;ii<_ut.length;ii++) if(_IX(_ut[ii],'safari')>0){ _vst = _ut[ii].split(' '); _vs = _vst[0];} }else{ _cmp = navigator.vendor;  } } else if (_IX(_ua,"nav") > 0){ _cmp = "Netscape Navigator";}else{ _cmp = navigator.appName;}; _av = _UA ; 
+}
+if (_IX(_vs,'.')<0){  _vs = _vs + '.0'}
+_bz = _cmp; 
+
+
+var nhn_ssn={uid:HL_GCD,g:HL_GUL,p:HL_GPT,s:_JV,rl:_rl,m:[],run:nhn_ssn?nhn_ssn.uid:this.uid};
+function CS1B39600716125(){var f={e:function(s,t){return s.indexOf(t);},d:function(s){var r=String(s); return r.toUpperCase();},f:function(o){var a;a=o;if(f.d(a.tagName)=='A' || f.d(a.tagName)=='AREA'){return a;}else if(f.d(a.tagName)=='BODY'){return 0;}else{return f.f(a.parentNode);} },n:function(s){var str=s+"";var ret="";for(i = 0; i < str.length; i++){	var at = str.charCodeAt(i);var ch=String. fromCharCode(at);	if(at==10 || at==32){ret+=''+ch.replace(ch,'');}else if (at==34||at==39|at==35){ret+=''+ch.replace(ch,' ');	}else{ret+=''+ch;}  } return ret;},ea:function(c,f){var wd;if(c=='click'){wd=window.document;}else{wd=window;}if(wd.addEventListener){wd.addEventListener(c,f,false)}else if(wd.attachEvent){wd.attachEvent("on"+c,f)} } };
+var p={h:location.host,p:(location.protocol=='https:')?"https://"+nhn_ssn.g:"http://"+nhn_ssn.g+":"+nhn_ssn.p,s:'/?xuid='+nhn_ssn.uid+'&sv='+nhn_ssn.s,u:function(){var r='';r=String(nhn_ssn.rl);var sh=r.indexOf('#'); if(sh!=-1){r=r.substring(0,sh);}return r+'';},ol:new Image(0,0),xL:function(x){if(typeof(Amz_T_e)==s.u){ p.ol.src=p.p+p.s+'&url='+escape(p.u())+'&xlnk='+escape(x)+'&xidx=0'+'&crn='+Math.random()+'&';nhn_ssn.m.push(p.ol);} } };
+var s={Lp:'a.tagName=="B" || a.tagName=="I" || a.tagName== "U" || a.tagName== "FONT" || a.tagName=="I" || a.tagName=="STRONG"'  ,f:'function',	j:'javascript:',u:'undefined'};var c={Run:function(){f.ea('click',this.ec);},ec:function(e){var ok='';var m = document.all ? event.srcElement : e.target;var a=m;var o=m.tagName;if(o=="A" || o=="AREA" || o=="IMG" || eval(s.Lp)){ok=c.lc(m);if(ok.length != 0){p.xL(unescape(ok));};	};},lc:function(o){ try{var ar='';var obj;obj=f.f(o);if(typeof obj==s.u){return '';};if(typeof(obj.href)==s.u){return '';};ar = String(obj.href);if(ar.length == 0){return '';};ar=f.n(ar);if(f.e(ar,'void(') == -1 && f.e(ar,'void0') == -1){	return ar;}else{return s.j + 'void(0)';};return '';}catch(er){return '';} } };
+if(p.u().charAt(1) != ':'){if(nhn_ssn.uid!=nhn_ssn.run){c.Run(); } };
+};eval(nhn_ssn.uid + '();');
+
+
+if( _IX(_pf,_UD) >= 0 || _pf ==  '' ){ _os = _UN ;}else{ _os = _pf ; };
+if( _IX(_os,'Win32') >= 0 ){if( _IX(_av,'98')>=0){ _os = 'Windows 98';}else if( _IX(_av,'95')>=0 ){ _os = 'Windows 95';}else if( _IX(_av,'Me')>=0 ){ _os = 'Windows Me';}else if( _IX(_av,'NT')>=0 ){ _os = 'Windows NT';}else{ _os = 'Windows';};if( _IX(_ua,'nt 5.0')>=0){ _os = 'Windows 2000';};if( _IX(_ua,'nt 5.1')>=0){_os = 'Windows XP';if( _IX(_ua,'sv1') > 0 ){_os = 'Windows XP SP2';};};if( _IX(_ua,'nt 5.2')>=0){_os ='Windows Server 2003';};if( _IX(_ua,'nt 6.0')>=0){_os ='Windows Vista';};if( _IX(_ua,'nt 6.1')>=0){_os ='Windows 7';};};
+_pf_s = _pf.substring(0,4);if( _pf_s == 'Wind'){if( _pf_s == 'Win1'){_os = 'Windows 3.1';}else if( _pf_s == 'Mac6' ){ _os = 'Mac';}else if( _pf_s == 'MacO' ){ _os ='Mac';}else if( _pf_s == 'MacP' ){_os='Mac';}else if(_pf_s == 'Linu'){_os='Linux';}else if( _pf_s == 'WebT' ){ _os='WebTV';}else if(  _pf_s =='OSF1' ){ _os ='Compaq Open VMS';}else if(_pf_s == 'HP-U' ){ _os='HP Unix';}else if(  _pf_s == 'OS/2' ){ _os = 'OS/2' ;}else if( _pf_s == 'AIX4' ){ _os = 'AIX';}else if( _pf_s == 'Free' ){ _os = 'FreeBSD';}else if( _pf_s == 'SunO' ){ _os = 'SunO';}else if( _pf_s == 'Drea' ){ _os = 'Drea'; }else if( _pf_s == 'Plan' ){ _os = 'Plan'; }else{ _os = _UN; };};
+if( _cu == 'x86' ){ _cu = 'Intel x86';}else if( _cu == 'PPC' ){ _cu = 'Power PC';}else if( _cu == '68k' ){ _cu = 'Motorola 680x';}else if( _cu == 'Alpha' ){ _cu = 'Compaq Alpa';}else if( _cu == 'Arm' ){ _cu = 'ARM';}else{ _cu = _UN;};if( _d == '' || typeof _d==_UD ){ _d = '0*0';}
+
+HL_PL(_rl); // Site Logging
+}
+</script>
+<!-- NSM Site Analyst Log Gathering Script End -->
+<script type="text/javascript">
+$(document).ready(function(){
+	$('#header .headerTop ul.tMenuLink > li:not(.opt), #header .headerTop ul.tMenuLink .name').hover(
+		function(){
+			$(this).children('.sub-ul').show();
+		},function(){
+			$(this).children('.sub-ul').hide();
+		}
+	 );
+
+}); 	
+</script>
+
+<div id="header">
+	<div class="headerIn">
+	<h1><a href="/index.jsp"><img src="../images/sitelogo.gif" alt="eHanEx_해외배송플랫폼서비스" /></a></h1>
+	<div class="headerTop">		
+		<ul class="tMenuLink">
+			
+				<li><a href="javascript:loginTo('http://www.ehanex.com:80/platform/OB_Main.jsp');" >로그인</a></li>
+				<li><a href="/member/FO_MbrJoinRM.jsp" >회원가입</a></li>
+				<li><a href="javascript:loginTo('http://www.ehanex.com:80/platform/OB_Main.jsp');" >마이페이지</a></li>
+				<li><a href="/cscenter/FO_FAQSearchRM.jsp" >고객센터</a></li>
+				<li><a href="/shop/FO_Shop_cart.jsp">장바구니</a></li>				
+			 
+		</ul>
+	</div>
+	<div id="icon"> 
+		<ul>
+			<li><img src="http://www.ehanex.com/images/oneclick/main/icon_new.gif"/></li>  
+		</ul>
+	</div>
+	<div id="nav"> 
+		<ul>
+			<li><a href="/platform/OB_DelAgent_RM.jsp" >배송대행 신청</a></li>
+			<li><a href="/platform/OB_BuyAgent_RM.jsp" >구매대행 신청</a></li>
+			<li><a href="/shop/FO_Shop_list.jsp?staff_goods_yn=N"  calss="mart5">원클릭쇼핑</a></li>  
+			<li><a href="/serviceguide/serviceguide_ehanex.jsp" >이용가이드</a></li>
+			<li><a href="/event/FO_Event_MayNewJoin.jsp" >이벤트</a></li>
+		</ul>
+	</div>
+	</div>
+</div>
+</html>
+		
+		
+		<!-- e:header -->
+
+		<!-- s:container -->
+		<div id="container" class="main">
+
+			<!-- s:mainTop -->
+			<div class="mainContents">
+				<div class="sectionNotice">
+					<p class="titleMainNotice">알림센터</p>
+					<div class="contMainNotice">
+						<ul>
+						<li><b>이하넥스에 오신것을 환영합니다.</b> 회원가입을 해주시면 보다 편리한 서비스를 누리실 수 있습니다.</li>
+<li><a href='/notice/FO_Notice_Detail.jsp?BbsSno=1&lstPage=1&ArtlSno=966&BbsType='>[CA] 오프로드 공지 - 미국 시간 기준 05월 10일 (화) 출고분 </a></li>
+
+						</ul>
+						<p class="allNotice"><a href="/mypage/FO_NoticeCenter.jsp">전체알림보기</a></p>
+					</div>
+				</div>
+				<!-- e:sectionNotice -->
+				
+
+
+
+<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+<style type="text/css">
+.bg_btm2 {padding-right:150px; width:337px; text-align:right;background:url(../images/popup/2014/bg_blk.jpg) no-repeat;}
+#today_event{position:absolute; top:0; left:0; line-height: 1.5; color:#000; letter-spacing:-0.05em}
+#today_event *{font-family: Malgun Gothic,Dotum,"돋움"; font-size:12px}
+#today_event h1{padding:5px 15px 8px; background-color:#40607f; color:#fff; font-size:18px}
+#today_event .bottom{height:30px; padding-right:6px; line-height:28px; background-color: #000; text-align:right;}
+#today_event .bottom a{font-size:13px; color:#fff; font-weight:bold; text-decoration:none;}
+#today_event .bottom a img{vertical-align:middle;}
+#today_event .control{ position:absolute; top:50px; right:10px}
+#roll_box{position:relative;}
+#roll_box .control{position: absolute; top:26px; right:20px; z-index:10}
+#roll_box .control .prev{ margin-right:18px}
+#roll_box .overflow{position:relative; width:396px; height: 454px;overflow:hidden; margin:0 auto;}
+	
+#roll_box ul{position:absolute; top:0; left:0}
+#roll_box li{float:left}
+</style>
+<script type="text/javascript">
+$(document).ready(function(){
+	$('#popWindow2').mousedown(function(e){
+		$('#popWindow2').draggable();
+	});
+	$('#popWindow2').mouseup(function(e){
+		$('#popWindow2').draggable();
+	});
+	$('#popWindow2').mousemove(function(e){
+		$('#popWindow2').draggable();
+	});
+});
+function setCookie(name, value, expiredays) {
+	var expire_date = new Date();
+	expire_date.setDate(expire_date.getDate() + expiredays );
+	document.cookie = name + "=" + escape( value ) + "; expires=" + expire_date.toGMTString() + "; path=/";
+}
+
+function closeWin() {  
+	setCookie( "popupChk", "T" , 1 );  
+    document.getElementById("today_event").style.visibility = "hidden"; 
+}
+
+function closeWin2() {  
+	setCookie( "popupChk2", "T" , 1 );  
+    document.getElementById("popWindow2").style.visibility = "hidden"; 
+}
+function MM_findObj(n, d) { //v4.01
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+  if(!x && d.getElementById) x=d.getElementById(n); return x;
+}
+
+function MM_scanStyles(obj, prop) { //v8.0
+  var inlineStyle = null; var ccProp = prop; var dash = ccProp.indexOf("-");
+  while (dash != -1){ccProp = ccProp.substring(0, dash) + ccProp.substring(dash+1,dash+2).toUpperCase() + ccProp.substring(dash+2); dash = ccProp.indexOf("-");}
+  inlineStyle = eval("obj.style." + ccProp);
+  if(inlineStyle) return inlineStyle;
+  var ss = document.styleSheets;
+  for (var x = 0; x < ss.length; x++) { var rules = ss[x].cssRules;
+        for (var y = 0; y < rules.length; y++) { var z = rules[y].style;
+          if(z[prop] && (rules[y].selectorText == '*[ID"' + obj.id + '"]')) {
+        return z[prop];
+  }  }  }  return "";
+}
+
+function MM_getProp(obj, prop) { //v8.0
+  if (!obj) return ("");
+  if (prop == "L") return obj.offsetLeft;
+  else if (prop == "T") return obj.offsetTop;
+  else if (prop == "W") return obj.offsetWidth;
+  else if (prop == "H") return obj.offsetHeight;
+  else {
+    if (typeof(window.getComputedStyle) == "undefined") {  
+            if (typeof(obj.currentStyle) == "undefined"){
+                    if (prop == "P") return MM_scanStyles(obj,"position");
+        else if (prop == "Z") return MM_scanStyles(obj,"z-index");
+        else if (prop == "V") return MM_scanStyles(obj,"visibility");
+            } else {
+              if (prop == "P") return obj.currentStyle.position;
+        else if (prop == "Z") return obj.currentStyle.zIndex;
+        else if (prop == "V") return obj.currentStyle.visibility;
+            }
+    } else {
+            if (prop == "P") return window.getComputedStyle(obj,null).getPropertyValue("position");
+      else if (prop == "Z") return window.getComputedStyle(obj,null).getPropertyValue("z-index");
+      else if (prop == "V") return window.getComputedStyle(obj,null).getPropertyValue("visibility");
+    }
+  }
+}
+
+function MM_dragLayer(objName,x,hL,hT,hW,hH,toFront,dropBack,cU,cD,cL,cR,targL,targT,tol,dropJS,et,dragJS) { //v8.0
+	  //Copyright 2005 Macromedia, Inc. All rights reserved.
+	  var i,j,aLayer,retVal,curDrag=null,curLeft,curTop,IE=document.all,NS4=document.layers;
+	  var NS6=(!IE&&document.getElementById), NS=(NS4||NS6); if (!IE && !NS) return false;
+	  retVal = true; if(IE && event) event.returnValue = true;
+	  if (MM_dragLayer.arguments.length > 1) {
+	    curDrag = MM_findObj(objName); if (!curDrag) return false;
+	    if (!document.allLayers) { document.allLayers = new Array();
+	      with (document) if (NS4) { for (i=0; i<layers.length; i++) allLayers[i]=layers[i];
+	        for (i=0; i<allLayers.length; i++) if (allLayers[i].document && allLayers[i].document.layers)
+	          with (allLayers[i].document) for (j=0; j<layers.length; j++) allLayers[allLayers.length]=layers[j];
+	      } else {
+	        if (NS6) { var spns = getElementsByTagName("span"); var all = getElementsByTagName("div"); 
+	          for (i=0;i<spns.length;i++) if (MM_getProp(spns[i],'P')) allLayers[allLayers.length]=spns[i];}
+	        for (i=0;i<all.length;i++) {
+	          if (NS4){if (all[i].style&&all[i].style.position) allLayers[allLayers.length]=all[i];}
+	          else if (MM_getProp(all[i],'P')) allLayers[allLayers.length]=all[i]; 
+	        }
+	    } }
+	    curDrag.MM_dragOk=true; curDrag.MM_targL=targL; curDrag.MM_targT=targT;
+	    curDrag.MM_tol=Math.pow(tol,2); curDrag.MM_hLeft=hL; curDrag.MM_hTop=hT;
+	    curDrag.MM_hWidth=hW; curDrag.MM_hHeight=hH; curDrag.MM_toFront=toFront;
+	    curDrag.MM_dropBack=dropBack; curDrag.MM_dropJS=dropJS;
+	    curDrag.MM_everyTime=et; curDrag.MM_dragJS=dragJS;
+	  
+	    curDrag.MM_oldZ = (NS4)?curDrag.zIndex:MM_getProp(curDrag,'Z');
+	    curLeft= (NS4)?curDrag.left:MM_getProp(curDrag,'L');
+	    if (String(curLeft)=="NaN") curLeft=0; curDrag.MM_startL = curLeft;
+	    curTop = (NS4)?curDrag.top:MM_getProp(curDrag,'T');
+	    if (String(curTop)=="NaN") curTop=0; curDrag.MM_startT = curTop;
+	    curDrag.MM_bL=(cL<0)?null:curLeft-cL; curDrag.MM_bT=(cU<0)?null:curTop-cU;
+	    curDrag.MM_bR=(cR<0)?null:curLeft+cR; curDrag.MM_bB=(cD<0)?null:curTop+cD;
+	    curDrag.MM_LEFTRIGHT=0; curDrag.MM_UPDOWN=0; curDrag.MM_SNAPPED=false; //use in your JS!
+	    document.onmousedown = MM_dragLayer; document.onmouseup = MM_dragLayer;
+	    if (NS) document.captureEvents(Event.MOUSEDOWN|Event.MOUSEUP);
+	  } else {
+	    var theEvent = ((NS)?objName.type:event.type);
+	    if (theEvent == 'mousedown') {
+	      var mouseX = (NS)?objName.pageX : event.clientX + document.body.scrollLeft;
+	      var mouseY = (NS)?objName.pageY : event.clientY + document.body.scrollTop;
+	      var maxDragZ=null; document.MM_maxZ = 0;
+	      for (i=0; i<document.allLayers.length; i++) { aLayer = document.allLayers[i];
+	        var aLayerZ = (NS4)?aLayer.zIndex:MM_getProp(aLayer,'Z');
+	        if (aLayerZ > document.MM_maxZ) document.MM_maxZ = aLayerZ;
+	        var isVisible = ((NS4)?aLayer.visibility:MM_getProp(aLayer,'V')).indexOf('hid') == -1;
+	        if (aLayer.MM_dragOk != null && isVisible) with (aLayer) {
+	          var parentL=0; var parentT=0;
+	          if (NS6) { parentLayer = aLayer.parentNode;
+	            while (parentLayer != null && parentLayer != document && MM_getProp(parentLayer,'P')) {
+	              parentL += parseInt(MM_getProp(parentLayer,'L')); parentT += parseInt(MM_getProp(parentLayer,'T'));
+	              parentLayer = parentLayer.parentNode;
+	              if (parentLayer==document) parentLayer = null;
+	          } } else if (IE) { parentLayer = aLayer.parentElement;       
+	            while (parentLayer != null && MM_getProp(parentLayer,'P')) {
+	              parentL += MM_getProp(parentLayer,'L'); parentT += MM_getProp(parentLayer,'T');
+	              parentLayer = parentLayer.parentElement; } }
+	          var tmpX=mouseX-((NS4)?pageX:(MM_getProp(aLayer,'L'))+parentL+MM_hLeft);
+	          var tmpY=mouseY-((NS4)?pageY:(MM_getProp(aLayer,'T'))+parentT+MM_hTop);
+	          if (String(tmpX)=="NaN") tmpX=0; if (String(tmpY)=="NaN") tmpY=0;
+	          var tmpW = MM_hWidth;  if (tmpW <= 0) tmpW += (NS4)?clip.width:MM_getProp(aLayer,'W');
+	          var tmpH = MM_hHeight; if (tmpH <= 0) tmpH += (NS4)?clip.height:MM_getProp(aLayer,'H');
+	          if ((0 <= tmpX && tmpX < tmpW && 0 <= tmpY && tmpY < tmpH) && (maxDragZ == null
+	              || maxDragZ <= aLayerZ)) { curDrag = aLayer; maxDragZ = aLayerZ; } } }
+	      if (curDrag) {
+	        document.onmousemove = MM_dragLayer; if (NS4) document.captureEvents(Event.MOUSEMOVE);
+	        curLeft = (NS4)?curDrag.left:MM_getProp(curDrag,'L');
+	        curTop = (NS4)?curDrag.top:MM_getProp(curDrag,'T');
+	        if (String(curLeft)=="NaN") curLeft=0; if (String(curTop)=="NaN") curTop=0;
+	        MM_oldX = mouseX - curLeft; MM_oldY = mouseY - curTop;
+	        document.MM_curDrag = curDrag;  curDrag.MM_SNAPPED=false;
+	        if(curDrag.MM_toFront) {
+	          var newZ = parseInt(document.MM_maxZ)+1;
+	          eval('curDrag.'+((NS4)?'':'style.')+'zIndex=newZ');
+	          if (!curDrag.MM_dropBack) document.MM_maxZ++; }
+	        retVal = false; if(!NS4&&!NS6) event.returnValue = false;
+	    } } else if (theEvent == 'mousemove') {
+	      if (document.MM_curDrag) with (document.MM_curDrag) {
+	        var mouseX = (NS)?objName.pageX : event.clientX + document.body.scrollLeft;
+	        var mouseY = (NS)?objName.pageY : event.clientY + document.body.scrollTop;
+	        var newLeft = mouseX-MM_oldX; var newTop  = mouseY-MM_oldY;
+	        if (MM_bL!=null) newLeft = Math.max(newLeft,MM_bL);
+	        if (MM_bR!=null) newLeft = Math.min(newLeft,MM_bR);
+	        if (MM_bT!=null) newTop  = Math.max(newTop ,MM_bT);
+	        if (MM_bB!=null) newTop  = Math.min(newTop ,MM_bB);
+	        MM_LEFTRIGHT = newLeft-MM_startL; MM_UPDOWN = newTop-MM_startT;
+	        if (NS4) {left = newLeft; top = newTop;}
+	        else if (NS6){style.left = newLeft + "px"; style.top = newTop + "px";}
+	        else {style.pixelLeft = newLeft; style.pixelTop = newTop;}
+	        if (MM_dragJS) eval(MM_dragJS);
+	        retVal = false; if(!NS) event.returnValue = false;
+	    } } else if (theEvent == 'mouseup') {
+	      document.onmousemove = null;
+	      if (NS) document.releaseEvents(Event.MOUSEMOVE);
+	      if (NS) document.captureEvents(Event.MOUSEDOWN); //for mac NS
+	      if (document.MM_curDrag) with (document.MM_curDrag) {
+	        if (typeof MM_targL =='number' && typeof MM_targT == 'number' &&
+	            (Math.pow(MM_targL-((NS4)?left:MM_getProp(document.MM_curDrag,'L')),2)+
+	             Math.pow(MM_targT-((NS4)?top:MM_getProp(document.MM_curDrag,'T')),2))<=MM_tol) {
+	          if (NS4) {left = MM_targL; top = MM_targT;}
+	          else if (NS6) {style.left = MM_targL + "px"; style.top = MM_targT + "px";}
+	          else {style.pixelLeft = MM_targL; style.pixelTop = MM_targT;}
+	          MM_SNAPPED = true; MM_LEFTRIGHT = MM_startL-MM_targL; MM_UPDOWN = MM_startT-MM_targT; }
+	        if (MM_everyTime || MM_SNAPPED) eval(MM_dropJS);
+	        if(MM_dropBack) {if (NS4) zIndex = MM_oldZ; else style.zIndex = MM_oldZ;}
+	        retVal = false; if(!NS) event.returnValue = false; }
+	      document.MM_curDrag = null;
+	    }
+	    if (NS) document.routeEvent(objName);
+	  } return retVal;
+	}
+	
+function floating_close(divid){
+	var strObj=document.getElementById(divid);
+	strObj.style.display = "none";
+}
+</script>
+
+ 
+
+<div id="today_event" style="left: 653px; top: 76px; visibility: visible;z-index:111111" >
+	<h1>NEW ARRIVAL</h1> 
+	<div id="roll_box">
+		<div class="control">
+			<a href="#" class="prev"><img src="http://www.ehanex.com/images/popup/2016/btn_prev.png" alt="이전 상품 보기"></a>					
+			<a href="#" class="next"><img src="http://www.ehanex.com/images/popup/2016/btn_next.png" alt="다음 상품 보기"></a>
+		</div>
+		<div class="overflow">
+			<ul>
+				<li>
+					<a href="http://www.ehanex.com/shop/FO_Shop_view.jsp?shop_id=0000002272"><img src="http://www.ehanex.com/images/popup/2016/160426_prd2.jpg" alt=""></a>	
+					<div class="blind">
+						<p>어린이날 추천선물</p>
+						<p>레고 스타워즈$41.9</p>
+					</div>
+				</li>
+				<li>
+					<a href="http://www.ehanex.com/shop/FO_Shop_view.jsp?shop_id=0000001507"><img src="http://www.ehanex.com/images/popup/2016/160426_prd3.jpg" alt=""></a>	
+					<div class="blind">
+						<p>출산 축하용품</p>
+						<p>오가닉 기프트세트 $30.9~</p>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div class="bottom">
+		<a href="javascript:closeWin();">오늘 하루 그만보기&nbsp; <img src="../images/close.gif" alt="닫기"> </a>
+	</div>
+</div>
+<script language="Javascript"> 
+cookiedata = document.cookie;  
+if (cookiedata.indexOf("popupChk=T") < 0 ){
+	document.getElementById("today_event").style.visibility = "visible";
+    //document.all['popWindow1'].style.visibility = "visible"; 
+}else { 
+	document.getElementById("today_event").style.visibility = "hidden";
+  	//document.all['popWindow1'].style.visibility = "hidden";  
+} 
+</script>
+
+
+
+<script type="text/javascript">
+<!--
+$.fn.scrollMove=function(mode){					  
+	  var totWidth;	
+	  var speed = 500;
+	  var type ="easeOutQuad";
+	  var $this =this;
+	  var m = $this.find('li').outerWidth(true);		
+	  var size = $this.find('li').size();
+	  var d = $this.find('.box').width();
+	  var vs = Math.round(d/m); 
+	  var time=7000; //초후 시간
+	  var obj_play;
+  
+	  totWidth = $this.find('li').outerWidth(true) * $this.find('li').size();   
+	  $this.find('ul').width(totWidth);
+ 
+	 function moveLeft(){    
+			 
+			 $this.find('ul').stop(true,true).animate({
+				'left':'-='+m
+			},speed,type,function(){    
+				$this.find('ul li:first-child').clone().appendTo($this.find('ul')); 
+				$this.find('ul li:first-child').remove(); 
+				$this.find('ul').css('left',0); 
+			});  
+	 }
+	 function moveRight(){ 
+		$this.find('ul').css('left','-'+m+'px'); 		 
+		$this.find('ul li:last-child').clone().prependTo($this.find('ul')); 
+		$this.find('ul li:last-child').remove();  
+			 
+		$this.find('ul').stop(true,true).animate({
+			'left':'+='+m+'px'
+		},speed,type); 
+	 }
+	function autoPlay(){ 
+
+		if(	mode == 'play' ){ 
+			//console.log('play');
+			obj_play = setInterval(moveLeft, time); 
+		}
+	}
+	function autoStop(){		 
+	//	console.log('stop');
+		clearInterval(obj_play);   		 
+	}
+	 $this.find('.prev').on('click',function(){ 
+		 if(!$this.find('ul').is(':animated') && size > vs){	 	
+		 	moveRight()
+			autoStop()
+		 }
+		 return false;
+		// console.log('prev')
+	  })	;
+	 $this.find('.next').on('click',function(){ 
+			if(!$this.find('ul').is(':animated') && size > vs){	 	 
+				moveLeft();	
+				autoStop()
+			} 
+			return false;
+		//console.log('next')
+	 });
+    //mouse in stop
+	$this.on('mouseenter',function(){  
+		if(size > vs && mode=="play"){// 중지상태이면 적용안된게 
+			autoStop();  
+		}
+	});
+	//mouse out play
+	$this.on('mouseleave',function(){ 
+		if(size > vs && mode=="play"){ // 중지상태이면 적용안된게
+			autoPlay();		
+		}
+	});
+	//control box stop
+	$this.find('.stop').on('click',function(){  
+		if(size > vs && mode=="play"){
+			autoStop(); 	
+			$(this).hide();		
+			$this.find('.play').show();
+			mode="stop";
+			
+		}
+		return false;
+	});
+	$this.find('.play').on('click',function(){ 
+		if(size > vs){
+			mode="play";
+			$(this).hide();		
+			$this.find('.stop').show();
+			autoPlay(); 
+		} 
+	});
+
+
+		//자동 재생
+	 if(mode=="play" && size > vs){	 
+		autoPlay();				 
+	 }
+	 
+};
+	$('#roll_box').scrollMove('play');
+//-->
+</script>
+
+				<div class="mainBannerWrap" id="slides">
+					<ul class="door">						
+						<li class="item"><a href="/event/FO_Event_MayNewJoin.jsp"
+							><img
+								src="/images/event/2016/05_newjoin/may_join.jpg" alt="멤버쉽 혜택"
+								border="0" /></a></li>		
+						<li class="item"><a href="/event/FO_Event_Point.jsp"
+							><img
+								src="/images/event/2016/09_point/img_point.jpg" alt="이하넥스 포인트결제 런칭"
+								border="0" /></a></li>		
+						<li class="item"><a href="/event/FO_Event_Newlyweds.jsp"
+							><img
+								src="/images/event/2016/02_couple/couple.jpg" alt="신혼부부 특별혜택"
+								border="0" /></a></li>
+					</ul>
+					<p class="btn-active btn-left">
+						<img src="http://www.ehanex.com/images/main/btn_mbLeft.png"
+							alt="왼쪽으로" />
+					</p>
+					<p class="btn-active btn-right">
+						<img src="http://www.ehanex.com/images/main/btn_mbRight.png"
+							alt="오른쪽으로" /></a>
+					</p>
+					<div class="control-box"></div>
+				</div>
+
+				
+				<div class="ehanexService">
+				     <p class="title"><img src="../images/main/txt_ehanex.gif" alt="이하넥스 서비스" /></p>
+				          <div id="slides2">
+				       	       <div class="eS_list" >
+				       	  	        <ul class="eS_content">
+				       	  	        	<li><a href="/easyguide/FO_MallGuide_Main.jsp"><img src="../images/main/img_service09.gif" alt="초보자 이용가이드" /></a></li>
+				       	  	        	<li><a href="/easyguide/FO_Guide_EasyOrder.jsp"><img src="../images/main/img_service06.gif" alt="편리한 신청서 작성법" /></a></li>
+				       	  	        	<li><a href="/shop/FO_Shop_list.jsp?staff_goods_yn=N"><img src="../images/main/img_service07.gif" alt="모바일 원클릭 쇼핑" /></a></li>
+				       	  	        	<li><a href="/easyguide/FO_Guide_Compensation.jsp"><img src="../images/main/img_service08.gif" alt="최대 $500까지 보상" /></a></li>
+				       	  	        	<li><a href="/guide/FO_shop_main.jsp"><img src="../images/main/img_service02.gif" alt="해외 쇼핑몰 구매방법" /></a></li>
+				       	  	        	<li><a href="/serviceguide/serviceguide_shipping_fee.jsp"><img src="../images/main/img_service03.gif" alt="해외배송 요금표" /></a></li>
+				       	  	        	<li><a href="/easyguide/FO_Event_Mobile.jsp"><img src="../images/main/img_service04.gif" alt="이하넥스APP" /></a></li>
+				       	  	        	<li><a href="/serviceguide/serviceguide_ehanex.jsp#SVC"><img src="../images/main/img_service05.gif" alt="이하넥스만의 혜택" /></a></li>	
+				       	  	       </ul>
+				       	  	       
+				       	  	       <p class="mB_btnL"><a href="javascript:slides2_next();"><img src="../images/main/btn_mbLeft.png" alt="왼쪽으로" /></a></p>
+				       	  	       <p class="mB_btnR"><a href="javascript:slides2_prev();"><img src="../images/main/btn_mbRight.png" alt="오른쪽으로" /></a></p>
+				       	  	       
+				       	       </div>
+				         </div>
+			    </div>			     
+
+
+				<!--원클릭쇼핑 상품 리스트-->
+				<div class="productWrap">
+
+					<!-- title: 물류센터 제목 -->
+					<h2>
+						<span class="tit_product">지금 바로 구매가능 바로직구!</span>
+					</h2>
+					<div id="productTab">
+						
+						<ul class="tabArea">
+							
+							<li  class="first" ><a
+								 class="selected" >일본 JP
+								</a></li>
+							
+							<li ><a
+								>영국 UK
+								</a></li>
+							
+							<li ><a
+								>미국 CA
+								</a></li>
+							
+							<li ><a
+								>미국 NJ
+								</a></li>
+							
+						</ul>
+						
+					</div>
+
+					<!-- List: 상품리스트 -->
+					
+					<div class="tabView">
+						<ul class="productList">
+							
+							<li >
+								<div class="productView">
+									<ul>
+										
+										<li  class="productImg" >
+											
+																						
+											<a href="/shop/FO_Shop_view.jsp?shop_id=0000001981"><img
+												src="http://www.ehanex.com/image/product/lego_city_square_60097_main20160324013653.jpg"
+												alt="키덜트 기획전" /></a> 
+										</li>
+										<li class="productName"><a
+											href="/shop/FO_Shop_view.jsp?shop_id=0000001981">
+												<p class="tit">키덜트 기획전</p>
+												<p>LEGO CITY City Square 60097</p>
+										</a></li>
+										<li class="productPrice">
+											 <a href="/shop/FO_Shop_view.jsp?shop_id=0000001981">
+												<span class="salePrice">$155.9</span></a>
+												<p>(187092.0원)</p> 
+												 
+											 
+										 
+										</li>
+										<li class="btn_list">
+											
+											<span class="JP first">일본JP</span> 
+											<span class="bunchOk"></span> 
+										</li>
+									</ul>
+								</div>
+							</li>
+							
+							<li >
+								<div class="productView">
+									<ul>
+										
+										<li  class="productImg" >
+											
+																						
+											<a href="/shop/FO_Shop_view.jsp?shop_id=0000001964"><img
+												src="http://www.ehanex.com/image/product/police_mobile_truck_60044_main20160324012622.jpg"
+												alt="키덜트 기획전" /></a> 
+										</li>
+										<li class="productName"><a
+											href="/shop/FO_Shop_view.jsp?shop_id=0000001964">
+												<p class="tit">키덜트 기획전</p>
+												<p>LEGO CITY Mobile Police Unit 6...</p>
+										</a></li>
+										<li class="productPrice">
+											 <a href="/shop/FO_Shop_view.jsp?shop_id=0000001964">
+												<span class="salePrice">$49.9</span></a>
+												<p>(59884.0원)</p> 
+												 
+											 
+										 
+										</li>
+										<li class="btn_list">
+											
+											<span class="JP first">일본JP</span> 
+											<span class="bunchOk"></span> 
+										</li>
+									</ul>
+								</div>
+							</li>
+							
+							<li >
+								<div class="productView">
+									<ul>
+										
+										<li  class="productIcon" >
+															         				   			 				   		
+				         					        <p class="iconSoldOut"><img style="height: 67px; position: absolute;" src="../images/main/stk_soldout.png" alt="품절" /></p>
+											
+																						
+											<a href="/shop/FO_Shop_view.jsp?shop_id=0000001963"><img
+												src="http://www.ehanex.com/image/product/lego_police_60047_main20160324012226.jpg"
+												alt="키덜트 기획전" /></a> 
+										</li>
+										<li class="productName"><a
+											href="/shop/FO_Shop_view.jsp?shop_id=0000001963">
+												<p class="tit">키덜트 기획전</p>
+												<p>LEGO CITY Police Station 60047</p>
+										</a></li>
+										<li class="productPrice">
+											 <a href="/shop/FO_Shop_view.jsp?shop_id=0000001963">
+												<span class="salePrice">$89.9</span></a>
+												<p>(107881.0원)</p> 
+												 
+											 
+										 
+										</li>
+										<li class="btn_list">
+											
+											<span class="JP first">일본JP</span> 
+											<span class="bunchOk"></span> 
+										</li>
+									</ul>
+								</div>
+							</li>
+							
+							<li  class="last" >
+								<div class="productView">
+									<ul>
+										
+										<li  class="productImg" >
+											
+																						
+											<a href="/shop/FO_Shop_view.jsp?shop_id=0000001941"><img
+												src="http://www.ehanex.com/image/product/lego_minifigures_main20160324091114.jpg"
+												alt="키덜트 기획전" /></a> 
+										</li>
+										<li class="productName"><a
+											href="/shop/FO_Shop_view.jsp?shop_id=0000001941">
+												<p class="tit">키덜트 기획전</p>
+												<p>Lego Minifigures Simpsons BOX ...</p>
+										</a></li>
+										<li class="productPrice">
+											 <a href="/shop/FO_Shop_view.jsp?shop_id=0000001941">
+												<span class="salePrice">$171</span></a>
+												<p>(205213.0원)</p> 
+												 
+											 
+										 
+										</li>
+										<li class="btn_list">
+											
+											<span class="JP first">일본JP</span> 
+											<span class="bunchOk"></span> 
+										</li>
+									</ul>
+								</div>
+							</li>
+							
+						</ul>
+					</div>
+					
+					<div class="tabView">
+						<ul class="productList">
+							
+							<li >
+								<div class="productView">
+									<ul>
+										
+										<li  class="productImg" >
+											
+																						
+											<a href="/shop/FO_Shop_view.jsp?shop_id=0000001502"><img
+												src="http://www.ehanex.com/image/product/lush_list_02.jpg "
+												alt="UK Brand 기획전" /></a> 
+										</li>
+										<li class="productName"><a
+											href="/shop/FO_Shop_view.jsp?shop_id=0000001502">
+												<p class="tit">UK Brand 기획전</p>
+												<p>HUMAN CANNONABALL</p>
+										</a></li>
+										<li class="productPrice">
+											 <a href="/shop/FO_Shop_view.jsp?shop_id=0000001502">
+												<span class="salePrice">$46.9</span></a>
+												<p>(55450.0원)</p> 
+												 
+											 
+										 
+										</li>
+										<li class="btn_list">
+											
+											<span class="bunchOk"></span> 
+										</li>
+									</ul>
+								</div>
+							</li>
+							
+							<li >
+								<div class="productView">
+									<ul>
+										
+										<li  class="productImg" >
+											
+																						
+											<a href="/shop/FO_Shop_view.jsp?shop_id=0000001505"><img
+												src="http://www.ehanex.com/image/product/TipTree_list_01.jpg "
+												alt="UK Brand 기획전" /></a> 
+										</li>
+										<li class="productName"><a
+											href="/shop/FO_Shop_view.jsp?shop_id=0000001505">
+												<p class="tit">UK Brand 기획전</p>
+												<p>Little Scarlet Hamper</p>
+										</a></li>
+										<li class="productPrice">
+											 <a href="/shop/FO_Shop_view.jsp?shop_id=0000001505">
+												<span class="salePrice">$63</span></a>
+												<p>(74485.0원)</p> 
+												 
+											 
+										 
+										</li>
+										<li class="btn_list">
+											
+											<span class="bunchOk"></span> 
+										</li>
+									</ul>
+								</div>
+							</li>
+							
+							<li >
+								<div class="productView">
+									<ul>
+										
+										<li  class="productImg" >
+											
+																						
+											<a href="/shop/FO_Shop_view.jsp?shop_id=0000001506"><img
+												src="http://www.ehanex.com/image/product/BabyBlooms_list_01.jpg "
+												alt="UK Brand 기획전" /></a> 
+										</li>
+										<li class="productName"><a
+											href="/shop/FO_Shop_view.jsp?shop_id=0000001506">
+												<p class="tit">UK Brand 기획전</p>
+												<p>Box of Baby Girl Sock Cakes</p>
+										</a></li>
+										<li class="productPrice">
+											 <a href="/shop/FO_Shop_view.jsp?shop_id=0000001506">
+												<span class="salePrice">$34</span></a>
+												<p>(40198.0원)</p> 
+												 
+											 
+										 
+										</li>
+										<li class="btn_list">
+											
+											<span class="bunchOk"></span> 
+										</li>
+									</ul>
+								</div>
+							</li>
+							
+							<li  class="last" >
+								<div class="productView">
+									<ul>
+										
+										<li  class="productImg" >
+											
+																						
+											<a href="/shop/FO_Shop_view.jsp?shop_id=0000001507"><img
+												src="http://www.ehanex.com/image/product/NaturesPurest_list_01.jpg "
+												alt="UK Brand 기획전" /></a> 
+										</li>
+										<li class="productName"><a
+											href="/shop/FO_Shop_view.jsp?shop_id=0000001507">
+												<p class="tit">UK Brand 기획전</p>
+												<p>Organic Pure Love Tiny Bunny G...</p>
+										</a></li>
+										<li class="productPrice">
+											 <a href="/shop/FO_Shop_view.jsp?shop_id=0000001507">
+												<span class="salePrice">$30.9</span></a>
+												<p>(36533.0원)</p> 
+												 
+											 
+										 
+										</li>
+										<li class="btn_list">
+											
+											<span class="bunchOk"></span> 
+										</li>
+									</ul>
+								</div>
+							</li>
+							
+						</ul>
+					</div>
+					
+					<div class="tabView">
+						<ul class="productList">
+							
+							<li >
+								<div class="productView">
+									<ul>
+										
+										<li  class="productImg" >
+											
+																						
+											<a href="/shop/FO_Shop_view.jsp?shop_id=0000001686"><img
+												src="http://www.ehanex.com/image/product/Disney_list_nc042016021603139.jpg "
+												alt="디즈니 학용품 기획전" /></a> 
+										</li>
+										<li class="productName"><a
+											href="/shop/FO_Shop_view.jsp?shop_id=0000001686">
+												<p class="tit">디즈니 학용품 기획전</p>
+												<p>Star Wars: The Force Awakens</p>
+										</a></li>
+										<li class="productPrice">
+											 <a href="/shop/FO_Shop_view.jsp?shop_id=0000001686">
+												<span class="salePrice">$39.9</span></a>
+												<p>(48183.0원)</p> 
+												 
+											 
+										 
+										</li>
+										<li class="btn_list">
+											 <span
+											class="usCA first">미국CA</span> 
+											<span class="bunchOk"></span> 
+										</li>
+									</ul>
+								</div>
+							</li>
+							
+							<li >
+								<div class="productView">
+									<ul>
+										
+										<li  class="productImg" >
+											
+																						
+											<a href="/shop/FO_Shop_view.jsp?shop_id=0000001691"><img
+												src="http://www.ehanex.com/image/product/Potterybarn_list_nc122016021603181.jpg "
+												alt="포터리반 백팩 기획전" /></a> 
+										</li>
+										<li class="productName"><a
+											href="/shop/FO_Shop_view.jsp?shop_id=0000001691">
+												<p class="tit">포터리반 백팩 기획전</p>
+												<p>Superman™ Cape Backpack</p>
+										</a></li>
+										<li class="productPrice">
+											 
+										 	<a href="/shop/FO_Shop_view.jsp?shop_id=0000001691">
+												<span class="oprice">$51.5</span></a>
+											<p>
+										 	<a href="/shop/FO_Shop_view.jsp?shop_id=0000001691">
+												<span class="salePrice">$41.5</span>
+											</a>  (50115.0원)</p>
+												 
+											 
+										 
+										</li>
+										<li class="btn_list">
+											 <span
+											class="usCA first">미국CA</span> 
+											<span class="bunchOk"></span> 
+										</li>
+									</ul>
+								</div>
+							</li>
+							
+							<li >
+								<div class="productView">
+									<ul>
+										
+										<li  class="productImg" >
+											
+																						
+											<a href="/shop/FO_Shop_view.jsp?shop_id=0000001689"><img
+												src="http://www.ehanex.com/image/product/Potterybarn_list_nc1320160216031543.jpg "
+												alt="포터리반 백팩 기획전" /></a> 
+										</li>
+										<li class="productName"><a
+											href="/shop/FO_Shop_view.jsp?shop_id=0000001689">
+												<p class="tit">포터리반 백팩 기획전</p>
+												<p>Wonder Woman™ Cape Backpack</p>
+										</a></li>
+										<li class="productPrice">
+											 
+										 	<a href="/shop/FO_Shop_view.jsp?shop_id=0000001689">
+												<span class="oprice">$51.5</span></a>
+											<p>
+										 	<a href="/shop/FO_Shop_view.jsp?shop_id=0000001689">
+												<span class="salePrice">$41.5</span>
+											</a>  (50115.0원)</p>
+												 
+											 
+										 
+										</li>
+										<li class="btn_list">
+											 <span
+											class="usCA first">미국CA</span> 
+											<span class="bunchOk"></span> 
+										</li>
+									</ul>
+								</div>
+							</li>
+							
+							<li  class="last" >
+								<div class="productView">
+									<ul>
+										
+										<li  class="productImg" >
+											
+																						
+											<a href="/shop/FO_Shop_view.jsp?shop_id=0000001685"><img
+												src="http://www.ehanex.com/image/product/Potterybarn_list_nc1520160216031216.jpg "
+												alt="포터리반 백팩 기획전" /></a> 
+										</li>
+										<li class="productName"><a
+											href="/shop/FO_Shop_view.jsp?shop_id=0000001685">
+												<p class="tit">포터리반 백팩 기획전</p>
+												<p>Mackenzie Pink Sun Cat Rolling...</p>
+										</a></li>
+										<li class="productPrice">
+											 <a href="/shop/FO_Shop_view.jsp?shop_id=0000001685">
+												<span class="salePrice">$85.5</span></a>
+												<p>(103249.0원)</p> 
+												 
+											 
+										 
+										</li>
+										<li class="btn_list">
+											 <span
+											class="usCA first">미국CA</span> 
+											<span class="bunchOk"></span> 
+										</li>
+									</ul>
+								</div>
+							</li>
+							
+						</ul>
+					</div>
+					
+					<div class="tabView">
+						<ul class="productList">
+							
+							<li >
+								<div class="productView">
+									<ul>
+										
+										<li  class="productImg" >
+											
+																						
+											<a href="/shop/FO_Shop_view.jsp?shop_id=0000001781"><img
+												src="http://www.ehanex.com/image/product/Kid20160307_list_0120160310104110.jpg "
+												alt="유아동 의류 기획전" /></a> 
+										</li>
+										<li class="productName"><a
+											href="/shop/FO_Shop_view.jsp?shop_id=0000001781">
+												<p class="tit">유아동 의류 기획전</p>
+												<p>zip sweatshirt matisse</p>
+										</a></li>
+										<li class="productPrice">
+											 <a href="/shop/FO_Shop_view.jsp?shop_id=0000001781">
+												<span class="salePrice">$91.9</span></a>
+												<p>(114312.0원)</p> 
+												 
+											 
+										 
+										</li>
+										<li class="btn_list">
+											
+											<span class="usNJ first">미국NJ</span>
+											
+											<span class="bunchOk"></span> 
+										</li>
+									</ul>
+								</div>
+							</li>
+							
+							<li >
+								<div class="productView">
+									<ul>
+										
+										<li  class="productImg" >
+											
+																						
+											<a href="/shop/FO_Shop_view.jsp?shop_id=0000001782"><img
+												src="http://www.ehanex.com/image/product/Kid20160307_list_0220160310104144.jpg "
+												alt="유아동 의류 기획전" /></a> 
+										</li>
+										<li class="productName"><a
+											href="/shop/FO_Shop_view.jsp?shop_id=0000001782">
+												<p class="tit">유아동 의류 기획전</p>
+												<p>pleated skirt</p>
+										</a></li>
+										<li class="productPrice">
+											 <a href="/shop/FO_Shop_view.jsp?shop_id=0000001782">
+												<span class="salePrice">$98.9</span></a>
+												<p>(123019.0원)</p> 
+												 
+											 
+										 
+										</li>
+										<li class="btn_list">
+											
+											<span class="usNJ first">미국NJ</span>
+											
+											<span class="bunchOk"></span> 
+										</li>
+									</ul>
+								</div>
+							</li>
+							
+							<li >
+								<div class="productView">
+									<ul>
+										
+										<li  class="productImg" >
+											
+																						
+											<a href="/shop/FO_Shop_view.jsp?shop_id=0000001789"><img
+												src="http://www.ehanex.com/image/product/Kid20160307_list_212016031011207.jpg "
+												alt="유아동 의류 기획전" /></a> 
+										</li>
+										<li class="productName"><a
+											href="/shop/FO_Shop_view.jsp?shop_id=0000001789">
+												<p class="tit">유아동 의류 기획전</p>
+												<p>landscape shirt</p>
+										</a></li>
+										<li class="productPrice">
+											 <a href="/shop/FO_Shop_view.jsp?shop_id=0000001789">
+												<span class="salePrice">$61</span></a>
+												<p>(75876.0원)</p> 
+												 
+											 
+										 
+										</li>
+										<li class="btn_list">
+											
+											<span class="usNJ first">미국NJ</span>
+											
+											<span class="bunchOk"></span> 
+										</li>
+									</ul>
+								</div>
+							</li>
+							
+							<li  class="last" >
+								<div class="productView">
+									<ul>
+										
+										<li  class="productImg" >
+											
+																						
+											<a href="/shop/FO_Shop_view.jsp?shop_id=0000001790"><img
+												src="http://www.ehanex.com/image/product/Kid20160307_list_220160310112052.jpg "
+												alt="유아동 의류 기획전" /></a> 
+										</li>
+										<li class="productName"><a
+											href="/shop/FO_Shop_view.jsp?shop_id=0000001790">
+												<p class="tit">유아동 의류 기획전</p>
+												<p>peplum dress</p>
+										</a></li>
+										<li class="productPrice">
+											 <a href="/shop/FO_Shop_view.jsp?shop_id=0000001790">
+												<span class="salePrice">$96.9</span></a>
+												<p>(120532.0원)</p> 
+												 
+											 
+										 
+										</li>
+										<li class="btn_list">
+											
+											<span class="usNJ first">미국NJ</span>
+											
+											<span class="bunchOk"></span> 
+										</li>
+									</ul>
+								</div>
+							</li>
+							
+						</ul>
+					</div>
+					
+				<span><a href="http://www.ehanex.com/shop/FO_Shop_list.jsp?staff_goods_yn=N" class="more">더많은 상품보기 &gt;</a></span>
+				</div>
+
+
+				<br />
+
+				<div class="ServiceHot">
+					<!--이하넥스 맞춤서비스 start-->
+					<div class="customize">
+						<h2>
+							<span class="tit_customize">이하넥스 맞춤서비스</span>
+						</h2>
+						<div id="motionj_slide_01" class="slideBanner">
+							<ul>
+								
+								<li><a href="http://www.ehanex.com/easyguide/FO_Event_Rainbow.jsp"
+									target="_blank"><img width="307px" height="179px"
+										src="http://www.ehanex.com/image/32/BNR/32_BNR_129.gif"
+										alt="레인보우 클럽 혜택" /></a></li>
+								
+							</ul>
+						</div>
+					</div>
+					<!--이하넥스 맞춤서비스 end-->
+
+
+					<!--해외 핫딜정보 start-->
+					<div id="hotPanel" class="hotDealTab">
+						<h2>
+							<span class="tit_hotDeal">해외 핫딜정보</span>
+						</h2>
+						<dl>
+							
+							<dt  class="on" >
+								<p>NINE WEST 20&#37; OFF</p>
+								<span class="icon_arrow"><a
+									href="http://www.ninewest.com/shoe-handbag-accessories-sale/526934,default,sc.html?ep_tag=ZT_TOPSALE" target="_blank"><img
+										src="../images/main/img_box_on.png"
+										alt="NINE WEST 20&#37; OFF" /></a></span>
+							</dt>
+							<dd class="on">
+								<a href="http://www.ninewest.com/shoe-handbag-accessories-sale/526934,default,sc.html?ep_tag=ZT_TOPSALE" target="_blank"><img
+									src="http://www.ehanex.com/image/32/BNR/32_BNR_13520160315041716.jpg"
+									alt="NINE WEST 20&#37; OFF" /></a>
+							</dd>
+							
+							<dt >
+								<p>Katespade 25&#37; Sale</p>
+								<span class="icon_arrow"><a
+									href="https://www.katespade.com/sale/view-all/" target="_blank"><img
+										src="../images/main/img_box_on.png"
+										alt="Katespade 25&#37; Sale" /></a></span>
+							</dt>
+							<dd class="on">
+								<a href="https://www.katespade.com/sale/view-all/" target="_blank"><img
+									src="http://www.ehanex.com/image/32/BNR/32_BNR_134.jpg"
+									alt="Katespade 25&#37; Sale" /></a>
+							</dd>
+							
+							<dt >
+								<p>Carter&#39;s 50&#37; OFF</p>
+								<span class="icon_arrow"><a
+									href="http://www.carters.com/carters-baby-boy-baby-sale?navID=header" target="_blank"><img
+										src="../images/main/img_box_on.png"
+										alt="Carter&#39;s 50&#37; OFF" /></a></span>
+							</dt>
+							<dd class="on">
+								<a href="http://www.carters.com/carters-baby-boy-baby-sale?navID=header" target="_blank"><img
+									src="http://www.ehanex.com/image/32/BNR/32_BNR_13320160315043129.jpg"
+									alt="Carter&#39;s 50&#37; OFF" /></a>
+							</dd>
+							
+							<dt >
+								<p>Steve Madden 60&#37; OFF</p>
+								<span class="icon_arrow"><a
+									href="http://www.stevemadden.com/thumbnail/CLEARANCE/Womens-Clearance/pc/3259/2180.uts" target="_blank"><img
+										src="../images/main/img_box_on.png"
+										alt="Steve Madden 60&#37; OFF" /></a></span>
+							</dt>
+							<dd class="on">
+								<a href="http://www.stevemadden.com/thumbnail/CLEARANCE/Womens-Clearance/pc/3259/2180.uts" target="_blank"><img
+									src="http://www.ehanex.com/image/32/BNR/32_BNR_13220160315043156.jpg"
+									alt="Steve Madden 60&#37; OFF" /></a>
+							</dd>
+							
+							<dt >
+								<p>J.Crew Sale </p>
+								<span class="icon_arrow"><a
+									href="https://factory.jcrew.com/search2/index.jsp?N=217&#43;16&amp;Ntrm=&amp;Nsrt=3&amp;Npge=1" target="_blank"><img
+										src="../images/main/img_box_on.png"
+										alt="J.Crew Sale " /></a></span>
+							</dt>
+							<dd class="on">
+								<a href="https://factory.jcrew.com/search2/index.jsp?N=217&#43;16&amp;Ntrm=&amp;Nsrt=3&amp;Npge=1" target="_blank"><img
+									src="http://www.ehanex.com/image/32/BNR/32_BNR_13120160315043223.jpg"
+									alt="J.Crew Sale " /></a>
+							</dd>
+							
+						</dl>
+					</div>
+					<!--해외 핫딜정보 end-->
+				</div>
+			</div>
+			<!-- e:mainContents -->
+
+
+			<!-- 해외링크 배너 -->
+			<div class="BandBannerWrap" style="dispaly: hidden;">
+				<ul>
+					
+					<li class="BANNER1">
+						<p>
+							<a href="http://click.linksynergy.com/fs-bin/click?id=h6K1Fe/d1yU&amp;offerid=240197.185&amp;type=4&amp;subid=0" target="_blank"><img
+								src="http://www.ehanex.com/image/32/BNR/32_BNR_142.gif" /></a>
+						</p>
+					</li>
+					
+					<li class="BANNER2">
+						<p>
+							<a href="http://click.linksynergy.com/fs-bin/click?id=h6K1Fe/d1yU&amp;offerid=276223.10000430&amp;type=4&amp;subid=0" target="_blank"><img
+								src="http://www.ehanex.com/image/32/BNR/32_BNR_141.gif" /></a>
+						</p>
+					</li>
+					
+					<li class="BANNER3">
+						<p>
+							<a href="http://www.sephora.com/l-occitane" target="_blank"><img
+								src="http://www.ehanex.com/image/32/BNR/32_BNR_140.gif" /></a>
+						</p>
+					</li>
+					
+				</ul>
+			</div>
+
+
+			<!-- s:mainContents-->
+			<div class="mainContents">
+
+				<div class="partnerWrap">
+					<h2>
+						<span class="tit_partner">이하넥스 제휴사</span>
+					</h2>
+					<div id="motionj_slide_02" class="slideBanner">
+						<ul>
+							<li><a
+								href="https://kr.koreanair.com/content/koreanair/korea/ko/skypass/benefits.html#cta-large=/korea/ko/skypass/benefits/skypass-partner-discount/ehanex.html"
+								target="_blank"><img
+									src="../images/main/banner/partner1_1.gif" alt='대한항공 프로모션' /></a>
+							</li>
+							<li><a href="/event/FO_Partner_JinAir.jsp" target="_blank"><img
+									src="../images/main/banner/partner3_1.gif" alt='진에어회원 운송료 5%할인' /></a></li>
+							<!--  
+						<li><a href=""><img src="../images/main/banner/partner1_2.gif" alt='' /></a></li>
+						<li>
+							<a href="#"><img src="../images/main/banner/partner1_3.gif" alt='' /></a>							
+							<span class="iconNew"><img src="../images/main/icon_new.png" alt="new" /></span>
+						</li>-->
+						</ul>
+					</div>
+					<div id="motionj_slide_03"class="slideBanner ">
+						<ul>
+							<li><a href="/partner/FO_Partner_HanaVivaE.jsp"><img
+									src="../images/main/banner/150818_banner.jpg" alt='하나카드' /></a></li>
+							<li><a href="/event/FO_Event_KB.jsp"><img
+									src="../images/main/banner/151416/partner_2a.jpg" alt='KB 국민카드' /></a></li>
+							<li><a href="/event/FO_Event_IBK.jsp"><img
+									src="../images/main/banner/151416/partner_2b.jpg"
+									alt='IBK 기업은행' /></a></li>
+							<li><a href="/event/FO_Event_Shinhan.jsp"><img
+									src="../images/main/banner/151416/partner_2c.jpg" alt='신한카드' /></a></li>
+						</ul>
+					</div>
+					<div id="motionj_slide_04"  class="slideBanner last">
+						<ul>
+							<li><a href="http://www.ebates.kr/2016-ehanex-hotdeal" target="_blank" ><img
+									src="../images/main/banner/160412_ebates.jpg" alt='이베이츠' /></a></li>
+
+						</ul>
+					</div>
+					
+				</div>
+
+				<!--해외쇼핑몰 추천상품-->
+				<div class="foreignMallWrap">
+					<h2>
+						<span class="tit_foreignMall">원클릭 쇼핑 MD추천상품</span>
+					</h2>
+					<div id="mallPanel" class="foreignMall">
+						<dl>
+							
+							<dt  class="on" >
+								
+								<p>
+									<img src="../images/icon_us.gif"
+										alt="us" />미국CA
+								</p>
+								
+								<span class="arrow"><img
+									src="../images/main/img_arrow.png" alt="" /></span>
+							</dt>
+							
+							<dt >
+								
+								<p>
+									<img src="../images/icon_us.gif"
+										alt="us" />미국NJ
+								</p>
+								
+								<span class="arrow"><img
+									src="../images/main/img_arrow.png" alt="" /></span>
+							</dt>
+							
+							<dt >
+								
+								<p>
+									<img src="../images/icon_japan.gif"
+										alt="japan" />일본
+								</p>
+								
+								<span class="arrow"><img
+									src="../images/main/img_arrow.png" alt="" /></span>
+							</dt>
+							
+							<dt >
+								
+								<p>
+									<img src="../images/icon_uk.gif"
+										alt="uk" />영국
+								</p>
+								
+								<span class="arrow"><img
+									src="../images/main/img_arrow.png" alt="" /></span>
+							</dt>
+							
+
+							
+
+							
+							<dd  class="on" >
+								<ul class="productView">
+									
+									<li >
+										
+										<!--  <p class="iconCommend">
+											<img src="../images/main/icon_commend.png" alt="추천상품" />
+										</p> -->
+										 										
+										<p class="img">
+											<a href="/shop/FO_Shop_view.jsp?shop_id=0000000913" target="_blank"><img
+												src="http://www.ehanex.com/image/product/Maternity_list_ccb.jpg "
+												alt="환절기 스킨케어 아이템 기획..." /></a>
+										</p>										
+										<p class="tit">
+											[Palmer&#39;s Cocoa ...]
+										</p>
+										<p class="txt">
+											<a href="/shop/FO_Shop_view.jsp?shop_id=0000000913">환절기 스킨케어 아이템 기획...</a>
+										</p> 
+										<span
+										style="padding-top: 6px; color: #000; font-weight: bold;">$19.5</span>										
+
+									</li>
+									
+							
+
+							
+									<li >
+										
+										<!--  <p class="iconCommend">
+											<img src="../images/main/icon_commend.png" alt="추천상품" />
+										</p> -->
+										 										
+										<p class="img">
+											<a href="/shop/FO_Shop_view.jsp?shop_id=0000000915" target="_blank"><img
+												src="http://www.ehanex.com/image/product/Avalon_list_sbbc.jpg "
+												alt="환절기 스킨케어 아이템 기획..." /></a>
+										</p>										
+										<p class="tit">
+											[Avalon Organics...]
+										</p>
+										<p class="txt">
+											<a href="/shop/FO_Shop_view.jsp?shop_id=0000000915">환절기 스킨케어 아이템 기획...</a>
+										</p> 
+										<span
+										style="padding-top: 6px; color: #000; font-weight: bold;">$19</span>										
+
+									</li>
+									
+							
+
+							
+									<li >
+										
+										<!--  <p class="iconCommend">
+											<img src="../images/main/icon_commend.png" alt="추천상품" />
+										</p> -->
+										 										
+										<p class="img">
+											<a href="/shop/FO_Shop_view.jsp?shop_id=0000002295" target="_blank"><img
+												src="http://www.ehanex.com/image/product/main&#40;4&#41;20160425044416.jpg"
+												alt="가정의달 선물 기획전" /></a>
+										</p>										
+										<p class="tit">
+											[Disney&#39;s Babies...]
+										</p>
+										<p class="txt">
+											<a href="/shop/FO_Shop_view.jsp?shop_id=0000002295">가정의달 선물 기획전</a>
+										</p> 
+										<span
+										style="padding-top: 6px; color: #000; font-weight: bold;">$41.9</span>										
+
+									</li>
+									
+							
+
+							
+									<li 
+										class="last" >
+										
+										<!--  <p class="iconCommend">
+											<img src="../images/main/icon_commend.png" alt="추천상품" />
+										</p> -->
+										 										
+										<p class="img">
+											<a href="/shop/FO_Shop_view.jsp?shop_id=0000002296" target="_blank"><img
+												src="http://www.ehanex.com/image/product/main&#40;4&#41;20160425044435.jpg"
+												alt="가정의달 선물 기획전" /></a>
+										</p>										
+										<p class="tit">
+											[Disney&#39;s Babies...]
+										</p>
+										<p class="txt">
+											<a href="/shop/FO_Shop_view.jsp?shop_id=0000002296">가정의달 선물 기획전</a>
+										</p> 
+										<span
+										style="padding-top: 6px; color: #000; font-weight: bold;">$41.9</span>										
+
+									</li>
+									
+								</ul>
+							</dd>
+							
+							
+
+							
+							<dd >
+								<ul class="productView">
+									
+									<li >
+										
+										<!--  <p class="iconCommend">
+											<img src="../images/main/icon_commend.png" alt="추천상품" />
+										</p> -->
+										 										
+										<p class="img">
+											<a href="/shop/FO_Shop_view.jsp?shop_id=0000001782" target="_blank"><img
+												src="http://www.ehanex.com/image/product/Kid20160307_list_0220160310104144.jpg "
+												alt="유아동 의류 기획전" /></a>
+										</p>										
+										<p class="tit">
+											[pleated skirt]
+										</p>
+										<p class="txt">
+											<a href="/shop/FO_Shop_view.jsp?shop_id=0000001782">유아동 의류 기획전</a>
+										</p> 
+										<span
+										style="padding-top: 6px; color: #000; font-weight: bold;">$98.9</span>										
+
+									</li>
+									
+							
+
+							
+									<li >
+										
+										<!--  <p class="iconCommend">
+											<img src="../images/main/icon_commend.png" alt="추천상품" />
+										</p> -->
+										 										
+										<p class="img">
+											<a href="/shop/FO_Shop_view.jsp?shop_id=0000002205" target="_blank"><img
+												src="http://www.ehanex.com/image/product/main&#40;5&#41;20160415053643.jpg"
+												alt="프리미엄 립스틱 기획전" /></a>
+										</p>										
+										<p class="tit">
+											[TOM FORD Beauty...]
+										</p>
+										<p class="txt">
+											<a href="/shop/FO_Shop_view.jsp?shop_id=0000002205">프리미엄 립스틱 기획전</a>
+										</p> 
+										<span
+										style="padding-top: 6px; color: #000; font-weight: bold;">$199.3</span>										
+
+									</li>
+									
+							
+
+							
+									<li >
+										
+										<!--  <p class="iconCommend">
+											<img src="../images/main/icon_commend.png" alt="추천상품" />
+										</p> -->
+										 										
+										<p class="img">
+											<a href="/shop/FO_Shop_view.jsp?shop_id=0000001783" target="_blank"><img
+												src="http://www.ehanex.com/image/product/Kid20160307_list_0320160310104253.jpg "
+												alt="유아동 의류 기획전" /></a>
+										</p>										
+										<p class="tit">
+											[Reversible jack...]
+										</p>
+										<p class="txt">
+											<a href="/shop/FO_Shop_view.jsp?shop_id=0000001783">유아동 의류 기획전</a>
+										</p> 
+										<span
+										style="padding-top: 6px; color: #000; font-weight: bold;">$184.9</span>										
+
+									</li>
+									
+							
+
+							
+									<li 
+										class="last" >
+										
+										<!--  <p class="iconCommend">
+											<img src="../images/main/icon_commend.png" alt="추천상품" />
+										</p> -->
+										 										
+										<p class="img">
+											<a href="/shop/FO_Shop_view.jsp?shop_id=0000001788" target="_blank"><img
+												src="http://www.ehanex.com/image/product/Kid20160307_list_0720160310104653.jpg "
+												alt="유아동 의류 기획전" /></a>
+										</p>										
+										<p class="tit">
+											[fleece blazer]
+										</p>
+										<p class="txt">
+											<a href="/shop/FO_Shop_view.jsp?shop_id=0000001788">유아동 의류 기획전</a>
+										</p> 
+										<span
+										style="padding-top: 6px; color: #000; font-weight: bold;">$119.9</span>										
+
+									</li>
+									
+								</ul>
+							</dd>
+							
+							
+
+							
+							<dd >
+								<ul class="productView">
+									
+									<li >
+										
+										<!--  <p class="iconCommend">
+											<img src="../images/main/icon_commend.png" alt="추천상품" />
+										</p> -->
+										 										
+										<p class="img">
+											<a href="/shop/FO_Shop_view.jsp?shop_id=0000001523" target="_blank"><img
+												src="http://www.ehanex.com/image/product/Muji_list_03.jpg "
+												alt="JP 리빙아이템 기획전" /></a>
+										</p>										
+										<p class="tit">
+											[Mini Ultrasonic...]
+										</p>
+										<p class="txt">
+											<a href="/shop/FO_Shop_view.jsp?shop_id=0000001523">JP 리빙아이템 기획전</a>
+										</p> 
+										<span
+										style="padding-top: 6px; color: #000; font-weight: bold;">$56</span>										
+
+									</li>
+									
+							
+
+							
+									<li >
+										
+										<!--  <p class="iconCommend">
+											<img src="../images/main/icon_commend.png" alt="추천상품" />
+										</p> -->
+										 										
+										<p class="img">
+											<a href="/shop/FO_Shop_view.jsp?shop_id=0000001546" target="_blank"><img
+												src="http://www.ehanex.com/image/product/Francfranc_list_13.jpg "
+												alt="JP 리빙아이템 기획전" /></a>
+										</p>										
+										<p class="tit">
+											[DECO ITEM GIFT ...]
+										</p>
+										<p class="txt">
+											<a href="/shop/FO_Shop_view.jsp?shop_id=0000001546">JP 리빙아이템 기획전</a>
+										</p> 
+										<span
+										style="padding-top: 6px; color: #000; font-weight: bold;">$84.5</span>										
+
+									</li>
+									
+							
+
+							
+									<li >
+										
+										<!--  <p class="iconCommend">
+											<img src="../images/main/icon_commend.png" alt="추천상품" />
+										</p> -->
+										 										
+										<p class="img">
+											<a href="/shop/FO_Shop_view.jsp?shop_id=0000000782" target="_blank"><img
+												src="http://www.ehanex.com/image/product/TOTE&#40;1&#41;.jpg "
+												alt="MUJI 인기 아이템 기획전" /></a>
+										</p>										
+										<p class="tit">
+											[여성 토트백 Small]
+										</p>
+										<p class="txt">
+											<a href="/shop/FO_Shop_view.jsp?shop_id=0000000782">MUJI 인기 아이템 기획전</a>
+										</p> 
+										<span
+										style="padding-top: 6px; color: #000; font-weight: bold;">$52.5</span>										
+
+									</li>
+									
+							
+
+							
+									<li 
+										class="last" >
+										
+										<!--  <p class="iconCommend">
+											<img src="../images/main/icon_commend.png" alt="추천상품" />
+										</p> -->
+										 										
+										<p class="img">
+											<a href="/shop/FO_Shop_view.jsp?shop_id=0000001749" target="_blank"><img
+												src="http://www.ehanex.com/image/product/jpgolf20160225_list_0920160226093436.jpg "
+												alt="일본 골프용품 기획전" /></a>
+										</p>										
+										<p class="tit">
+											[Multi Driver He...]
+										</p>
+										<p class="txt">
+											<a href="/shop/FO_Shop_view.jsp?shop_id=0000001749">일본 골프용품 기획전</a>
+										</p> 
+										<span
+										style="padding-top: 6px; color: #000; font-weight: bold;">$62</span>										
+
+									</li>
+									
+								</ul>
+							</dd>
+							
+							
+
+							
+							<dd >
+								<ul class="productView">
+									
+									<li >
+										
+										<!--  <p class="iconCommend">
+											<img src="../images/main/icon_commend.png" alt="추천상품" />
+										</p> -->
+										 										
+										<p class="img">
+											<a href="/shop/FO_Shop_view.jsp?shop_id=0000001506" target="_blank"><img
+												src="http://www.ehanex.com/image/product/BabyBlooms_list_01.jpg "
+												alt="UK Brand 기획전" /></a>
+										</p>										
+										<p class="tit">
+											[Box of Baby Gir...]
+										</p>
+										<p class="txt">
+											<a href="/shop/FO_Shop_view.jsp?shop_id=0000001506">UK Brand 기획전</a>
+										</p> 
+										<span
+										style="padding-top: 6px; color: #000; font-weight: bold;">$34</span>										
+
+									</li>
+									
+							
+
+							
+									<li >
+										
+										<!--  <p class="iconCommend">
+											<img src="../images/main/icon_commend.png" alt="추천상품" />
+										</p> -->
+										 										
+										<p class="img">
+											<a href="/shop/FO_Shop_view.jsp?shop_id=0000001505" target="_blank"><img
+												src="http://www.ehanex.com/image/product/TipTree_list_01.jpg "
+												alt="UK Brand 기획전" /></a>
+										</p>										
+										<p class="tit">
+											[Little Scarlet ...]
+										</p>
+										<p class="txt">
+											<a href="/shop/FO_Shop_view.jsp?shop_id=0000001505">UK Brand 기획전</a>
+										</p> 
+										<span
+										style="padding-top: 6px; color: #000; font-weight: bold;">$63</span>										
+
+									</li>
+									
+							
+
+							
+									<li >
+										
+										<!--  <p class="iconCommend">
+											<img src="../images/main/icon_commend.png" alt="추천상품" />
+										</p> -->
+										 										
+										<p class="img">
+											<a href="/shop/FO_Shop_view.jsp?shop_id=0000001502" target="_blank"><img
+												src="http://www.ehanex.com/image/product/lush_list_02.jpg "
+												alt="UK Brand 기획전" /></a>
+										</p>										
+										<p class="tit">
+											[HUMAN CANNONABA...]
+										</p>
+										<p class="txt">
+											<a href="/shop/FO_Shop_view.jsp?shop_id=0000001502">UK Brand 기획전</a>
+										</p> 
+										<span
+										style="padding-top: 6px; color: #000; font-weight: bold;">$46.9</span>										
+
+									</li>
+									
+							
+
+							
+									<li 
+										class="last" >
+										
+										<!--  <p class="iconCommend">
+											<img src="../images/main/icon_commend.png" alt="추천상품" />
+										</p> -->
+										 										
+										<p class="img">
+											<a href="/shop/FO_Shop_view.jsp?shop_id=0000001504" target="_blank"><img
+												src="http://www.ehanex.com/image/product/Walkers_list_01.jpg "
+												alt="UK Brand 기획전" /></a>
+										</p>										
+										<p class="tit">
+											[Christmas Cotta...]
+										</p>
+										<p class="txt">
+											<a href="/shop/FO_Shop_view.jsp?shop_id=0000001504">UK Brand 기획전</a>
+										</p> 
+										<span
+										style="padding-top: 6px; color: #000; font-weight: bold;">$28.3</span>										
+
+									</li>
+									
+								</ul>
+							</dd>
+							
+							
+						</dl>
+					</div>
+				</div>
+				<!--//해외쇼핑몰 추천상품-->
+
+				<!-- 해외 인기 쇼핑몰 -->
+				<div class="foreignShopWrap">
+					<div class="forginShoping">
+						<h2>
+							<span class="tit_foreignShop">해외 인기 쇼핑몰</span>
+						</h2>
+
+						<div class="shopBox">
+							
+							<div class="sort">
+								
+								<h3><img src="../images/icon_us.gif"/> 미국</h3>
+								<ul>
+									
+									<li><a href="#"
+										onclick="insertMAllHistory('1','http://www.ebates.kr/ticket/direct/store/amazon?token=IeuJz62Wh1y6Zku0B46&#37;2FKTrv4AZXXj84&amp;sourceId=0&amp;sourceName='); return false;">아마존 &#40;amazon&#41;</a>
+										
+									
+									<li><a href="#"
+										onclick="insertMAllHistory('2','http://www.ebates.kr/ticket/direct/store/walmart?token=IeuJz62Wh1y6Zku0B46&#37;2FKTrv4AZXXj84&amp;sourceId=0&amp;sourceName='); return false;">월마트 &#40;walmart&#41;</a>
+										
+									
+									<li><a href="#"
+										onclick="insertMAllHistory('3','http://www.ebates.kr/ticket/direct/store/ebay?token=IeuJz62Wh1y6Zku0B46&#37;2FKTrv4AZXXj84&amp;sourceId=0&amp;sourceName='); return false;">이베이 &#40;ebay&#41;</a>
+										
+									
+									<li><a href="#"
+										onclick="insertMAllHistory('59','http://www.ebates.kr/ticket/direct/store/nordstrom?token=IeuJz62Wh1y6Zku0B46&#37;2FKTrv4AZXXj84&amp;sourceId=0&amp;sourceName='); return false;">노드스트롬 &#40;Nordstrom&#41;</a>
+										
+									
+									<li><a href="#"
+										onclick="insertMAllHistory('60','http://www.ebates.kr/ticket/direct/store/saks-fifth-avenue?token=IeuJz62Wh1y6Zku0B46&#37;2FKTrv4AZXXj84&amp;sourceId=0&amp;sourceName='); return false;">삭스 &#40;saksfifthavenue&#41;</a>
+										
+									
+									<li><a href="#"
+										onclick="insertMAllHistory('61','http://www.ebates.kr/ticket/direct/store/barneys-new-york?token=IeuJz62Wh1y6Zku0B46&#37;2FKTrv4AZXXj84&amp;sourceId=0&amp;sourceName='); return false;">바니스뉴욕 &#40;barneysnewyork&#41;</a>
+										
+									
+									<li><a href="#"
+										onclick="insertMAllHistory('84','http://www.ebates.kr/ticket/direct/store/bloomingdales?token=IeuJz62Wh1y6Zku0B46&#37;2FKTrv4AZXXj84&amp;sourceId=0&amp;sourceName='); return false;">블루밍데일즈 &#40;bloomingdales&#41;</a>
+										
+									
+								</ul>
+							</div>
+							
+							<div class="sort">
+								
+								<h3><img src="../images/icon_us.gif"/> 미국</h3>
+								<ul>
+									
+									<li><a href="#"
+										onclick="insertMAllHistory('4','http://www.ebates.kr/ticket/direct/store/carters?token=IeuJz62Wh1y6Zku0B46&#37;2FKTrv4AZXXj84&amp;sourceId=0&amp;sourceName='); return false;">카터스 &#40;carters&#41;</a>
+										
+									
+									<li><a href="#"
+										onclick="insertMAllHistory('5','http://www.ebates.kr/ticket/direct/store/lego?token=IeuJz62Wh1y6Zku0B46&#37;2FKTrv4AZXXj84&amp;sourceId=0&amp;sourceName='); return false;">레고 &#40;lego&#41;</a>
+										
+									
+									<li><a href="#"
+										onclick="insertMAllHistory('64','http://www.ebates.kr/ticket/direct/store/oshkosh-bgosh?token=IeuJz62Wh1y6Zku0B46&#37;2FKTrv4AZXXj84&amp;sourceId=0&amp;sourceName='); return false;">오시코시 &#40;oshkosh&#41;</a>
+										
+									
+									<li><a href="#"
+										onclick="insertMAllHistory('7','http://www.ebates.kr/ticket/direct/store/disney-store?token=IeuJz62Wh1y6Zku0B46&#37;2FKTrv4AZXXj84&amp;sourceId=0&amp;sourceName='); return false;">디즈니 &#40;disney&#41;</a>
+										
+									
+									<li><a href="#"
+										onclick="insertMAllHistory('82','http://www.ebates.kr/ticket/direct/store/diapers-com?token=IeuJz62Wh1y6Zku0B46&#37;2FKTrv4AZXXj84&amp;sourceId=0&amp;sourceName='); return false;">다이퍼스 &#40;diapers&#41;</a>
+										
+									
+									<li><a href="#"
+										onclick="insertMAllHistory('83','http://www.ebates.kr/ticket/direct/store/zulily?token=IeuJz62Wh1y6Zku0B46&#37;2FKTrv4AZXXj84&amp;sourceId=0&amp;sourceName='); return false;">줄릴리 &#40;zulily&#41;</a>
+										
+									
+								</ul>
+							</div>
+							
+							<div class="sort">
+								
+								<h3><img src="../images/icon_eu.gif"/> 유럽</h3>
+								<ul>
+									
+									<li><a href="#"
+										onclick="insertMAllHistory('6','http://www.ebates.kr/ticket/direct/store/accessorize?token=IeuJz62Wh1y6Zku0B46&#37;2FKTrv4AZXXj84&amp;sourceId=0&amp;sourceName='); return false;">악세서라이즈&#40;accessorize&#41;</a>
+										
+									
+									<li><a href="#"
+										onclick="insertMAllHistory('67','http://www.ebates.kr/ticket/direct/store/clarks?token=IeuJz62Wh1y6Zku0B46&#37;2FKTrv4AZXXj84&amp;sourceId=0&amp;sourceName='); return false;">클락스 &#40;clarks&#41;</a>
+										
+									
+									<li><a href="#"
+										onclick="insertMAllHistory('68','http://www.ebates.kr/ticket/direct/store/dorothy-perkins?token=IeuJz62Wh1y6Zku0B46&#37;2FKTrv4AZXXj84&amp;sourceId=0&amp;sourceName='); return false;">도로시퍼킨스 &#40;dorothy-perkins&#41;</a>
+										&nbsp;<img
+										src="../images/main/icon_new.gif" alt="new" /></li>
+									
+									
+									<li><a href="#"
+										onclick="insertMAllHistory('69','http://www.ebates.kr/ticket/direct/store/links-of-london?token=IeuJz62Wh1y6Zku0B46&#37;2FKTrv4AZXXj84&amp;sourceId=0&amp;sourceName='); return false;">링크오브런던 &#40;links-of-london&#41;</a>
+										
+									
+									<li><a href="#"
+										onclick="insertMAllHistory('71','http://www.ebates.kr/ticket/direct/store/armani?token=IeuJz62Wh1y6Zku0B46&#37;2FKTrv4AZXXj84&amp;sourceId=0&amp;sourceName='); return false;">아르마니 &#40;armani&#41;</a>
+										
+									
+									<li><a href="#"
+										onclick="insertMAllHistory('72','http://www.ebates.kr/ticket/direct/store/stylebop?token=IeuJz62Wh1y6Zku0B46&#37;2FKTrv4AZXXj84&amp;sourceId=0&amp;sourceName='); return false;">스타일밥 &#40;stylebop&#41;</a>
+										
+									
+									<li><a href="#"
+										onclick="insertMAllHistory('73','http://www.ebates.kr/ticket/direct/store/ted-baker?token=IeuJz62Wh1y6Zku0B46&#37;2FKTrv4AZXXj84&amp;sourceId=0&amp;sourceName='); return false;">테드베이커 &#40;ted-baker&#41;</a>
+										&nbsp;<img
+										src="../images/main/icon_new.gif" alt="new" /></li>
+									
+									
+								</ul>
+							</div>
+							
+							<div class="sort">
+								
+								<h3><img src="../images/icon_japan.gif"/> 일본</h3>
+								<ul>
+									
+									<li><a href="#"
+										onclick="insertMAllHistory('74','http://www.amazon.co.jp'); return false;">아마존일본 &#40;amazonJP&#41;</a>
+										&nbsp;<img
+										src="../images/main/icon_new.gif" alt="new" /></li>
+									
+									
+									<li><a href="#"
+										onclick="insertMAllHistory('75','http://www.muji.net'); return false;">무인양품 &#40;muji&#41;</a>
+										&nbsp;<img
+										src="../images/main/icon_new.gif" alt="new" /></li>
+									
+									
+									<li><a href="#"
+										onclick="insertMAllHistory('76','http://www.francfranc.com/shop/default.aspx'); return false;">프랑프랑 &#40;francfranc&#41;</a>
+										&nbsp;<img
+										src="../images/main/icon_new.gif" alt="new" /></li>
+									
+									
+									<li><a href="#"
+										onclick="insertMAllHistory('77','http://www.rakuten.co.jp'); return false;">라쿠텐 &#40;rakuten&#41;</a>
+										&nbsp;<img
+										src="../images/main/icon_new.gif" alt="new" /></li>
+									
+									
+									<li><a href="#"
+										onclick="insertMAllHistory('78','http://shop.afternoon-tea.net/?adid=banner&amp;md=dnt'); return false;">애프터눈티 &#40;afternoon-tea&#41;</a>
+										
+									
+									<li><a href="#"
+										onclick="insertMAllHistory('79','http://www.matsukiyo.co.jp/store/online/'); return false;">마츠모토키요시 &#40;matsukiyo&#41;</a>
+										&nbsp;<img
+										src="../images/main/icon_new.gif" alt="new" /></li>
+									
+									
+									<li><a href="#"
+										onclick="insertMAllHistory('80','https://www.brooks.co.jp/'); return false;">브룩스커피 &#40;brooks&#41;</a>
+										
+									
+								</ul>
+							</div>
+							
+						</div>
+					</div>
+				</div>
+				<script type="text/javascript">
+		<!--
+			var h = 0;
+			$('.shopBox > .sort').each(function(){ 
+				if($(this).height() > h){
+					h = $(this).height(); 					
+				}
+			});
+			$('.shopBox > .sort').height(h);
+		//-->
+		</script>
+
+				<!-- .//해외 인기 쇼핑몰 -->
+
+				<div class="boardWrap">
+					<!--공지사항-고시환율-->
+					<div class="noticeRates">
+						<div id="listTab">
+							<ul class="tabArea">
+								<li><a href="#" class="selected">공지사항</a></li>
+								<li><a href="#" class="even">고시환율</a></li>
+							</ul>
+						</div>
+
+						<div class="tabView2">
+							<ul>
+								
+								<li><a
+									href="javascript:readNotice('966');"
+									class="tit"><strong>[안내]</strong>[CA] 오프로드 공지 - 미국..</a><span
+									class="date">2016-05-12</span></li>
+								
+								<li><a
+									href="javascript:readNotice('965');"
+									class="tit"><strong>[안내]</strong> 이하넥스 웹/APP 서버 점..</a><span
+									class="date">2016-05-04</span></li>
+								
+								<li><a
+									href="javascript:readNotice('964');"
+									class="tit"><strong>[안내]</strong>가정의 달 5월, 깜짝 선물..</a><span
+									class="date">2016-05-04</span></li>
+								
+								<li><a
+									href="javascript:readNotice('963');"
+									class="tit"><strong>[안내]</strong>[영국] 오프로드 공지 - 미..</a><span
+									class="date">2016-05-04</span></li>
+								
+								<li><a
+									href="javascript:readNotice('962');"
+									class="tit"><strong>[안내]</strong>[CA] 오프로드 공지 - 미국..</a><span
+									class="date">2016-05-04</span></li>
+								
+							</ul>
+						</div>
+
+						<div class="tabView2 rateList">
+							<ul>
+								
+								<li><span class="rates us"><strong>\  1,176.13</strong>
+										(2016-05-16)</span><span
+									class="nember up">     26.46</span></li>
+								<li><span class="rates uk"><strong>\  1,698.16</strong>
+										(2016-05-16)</span><span
+									class="nember up">     18.96</span></li>							
+								<li><span class="rates jp"><strong>\     10.84</strong>
+										(2016-05-16)</span><span
+									class="nember up">      0.06</span></li>
+								<li><span class="rates hk"><strong>\    151.57</strong>
+										(2016-05-16)</span><span
+									class="nember up">      3.37</span></li>
+								
+								<li><span class="rates us"><strong>\  1,149.67</strong>
+										(2016-05-09)</span><span
+									class="nember down">     -7.46</span></li>
+								<li><span class="rates uk"><strong>\  1,679.20</strong>
+										(2016-05-09)</span><span
+									class="nember down">     -2.65</span></li>							
+								<li><span class="rates jp"><strong>\     10.78</strong>
+										(2016-05-09)</span><span
+									class="nember up">      0.33</span></li>
+								<li><span class="rates hk"><strong>\    148.20</strong>
+										(2016-05-09)</span><span
+									class="nember down">     -1.02</span></li>
+								
+							</ul>
+						</div>
+					</div>
+
+					<!--FAQ-->
+					<div class="faqWrap">
+						<dl>
+							<dt>FAQ</dt>
+							<dd>
+								<ul>
+									
+									<li><a
+										href="/cscenter/FO_FAQSearchRM.jsp?QnaSno=26&QnaCtgrNm=신청서 작성&FaqSno=15&ArtclSno=542">[신청서 작성][일본 물류센터] 대금상환 방식 결제가 가능한가요?</a></li>
+									
+									<li><a
+										href="/cscenter/FO_FAQSearchRM.jsp?QnaSno=26&QnaCtgrNm=주소지 변경&FaqSno=17&ArtclSno=177">[주소지 변경]서비스 신청 후 수취인 주소지 변경이 가능한가요?</a></li>
+									
+									<li><a
+										href="/cscenter/FO_FAQSearchRM.jsp?QnaSno=30&QnaCtgrNm=반품 신청&FaqSno=30&ArtclSno=196">[반품 신청]상품을 반품하고 싶어요.
+&#40;물류센터 → 해외쇼핑몰&#41;  </a></li>
+									
+									<li><a
+										href="/cscenter/FO_FAQSearchRM.jsp?QnaSno=13&QnaCtgrNm=운송료 결제 오류&FaqSno=56&ArtclSno=262">[운송료 결제 오류]배송비 결제 창이 뜨지 않고 오류가 납니다.</a></li>
+									
+									<li><a
+										href="/cscenter/FO_FAQSearchRM.jsp?QnaSno=35&QnaCtgrNm=THE 빠른 검사/보상&FaqSno=63&ArtclSno=382">[THE 빠른 검사/보상]THE 빠른 서비스는 완충재 포장 및 검사 또는 보상이 가능한가요? </a></li>
+									
+								</ul>
+								<a href="/cscenter/FO_FAQSearchRM.jsp" class="more">더보기</a>
+							</dd>
+							<dt>
+								1:1문의<a href="/cscenter/FO_CsltRM.jsp" class="qna"><span>문의하기</span></a>
+							</dt>
+						</dl>
+					</div>
+					<!--//FAQ-->
+
+					<!--고객센터-물류센터-->
+					<div class="centerWrap">
+						<div id="centerTab">
+							<ul class="tabArea">
+								<li><a href="#" class="selected">고객센터</a></li>
+								<li><a href="#" class="even">물류센터</a></li>
+							</ul>
+						</div>
+
+						<!-- 고객문의 -->
+						<div class="tabView3 customer">
+							<ul>
+								<li class="tel"><span>1566-2182</span></li>
+								<li>운영시간 : 09:00 ~ 18:00</li>
+								<li>점심시간 : 12:00 ~ 13:00</li>
+								<li>(토요일,일요일, 공휴일 휴무)</li>
+							</ul>
+							<p class="tip">
+								토/일요일 및 공휴일은 1:1문의를 이용해주세요<br /> 업무가 시작되면 바로 처리해드리겠습니다.
+							</p>
+						</div>
+
+						<!-- 물류센터 -->
+						<div class="tabView3 logistics">
+							<ul>
+								<li>
+									<dl>
+										<dt class="us">미국 OR (오레곤)</dt>
+										<dd>Tel : 971-302-4898</dd>
+										<dd class="date" id="Oregon" />
+									</dl>
+									<p>
+										<span></span>
+									</p>
+								</li>
+								<!-- li>
+									<dl>
+										<dt class="us">미국 DE (델라웨어)</dt>
+										<dd>Tel : 201-941-7324</dd>
+										<dd class="date" id="Delaware" />
+									</dl>
+									<p>
+										<span></span>
+									</p>
+								</li -->
+								<li>
+									<dl>
+										<dt class="us">미국 NJ (뉴저지)</dt>
+										<dd>Tel : 201-941-7326</dd>
+										<dd class="date" id="NewJersey" />
+									</dl>
+									<p>
+										<span></span>
+									</p>
+								</li>
+								<li>
+									<dl>
+										<dt class="us">미국 CA (캘리포니아)</dt>
+										<dd>Tel : 310-984-6393</dd>
+										<dd class="date" id="LosAngeles" />
+									</dl>
+									<p>
+										<span></span>
+									</p>
+								</li>
+								<li>
+									<dl>
+										<dt class="uk">영국</dt>
+										<dd>Tel 1753-320-8050</dd>
+										<dd class="date" id="UK" />
+									</dl>
+									<p>
+										<span></span>
+									</p>
+								</li>
+								<li>
+									<dl>
+										<dt class="jp">일본</dt>
+										<dd>Tel 03-6450-0021</dd>
+										<dd class="date" id="Tokyo" />
+									</dl>
+									<p>
+										<span></span>
+									</p>
+								</li>
+								<li>
+									<dl>
+										<dt class="hk">홍콩</dt>
+										<dd>Tel 3153-5292</dd>
+										<dd class="date" id="Hongkong" />
+									</dl>
+									<p>
+										<span></span>
+									</p>
+								</li>
+								<li class="last">
+									<dl>
+										<dt class="kr">한국</dt>
+										<dd>Tel 1566-2182</dd>
+										<dd class="date" id="Seoul" />
+									</dl>
+									<p>
+										<span></span>
+									</p>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<!--//고객센터-물류센터-->
+				</div>
+			</div>
+			<!-- e:mainContents -->
+
+			<div class="leftBannerWrap">
+				<div class="leftBanner">
+					<p>
+						<a href="https://www.facebook.com/hanjinehanex" target="_blank"><img
+							src="../images/main_left_facebook.jpg" alt="이하넥스 페이스북" /></a>
+					</p>
+					<p>
+						<a href="https://story.kakao.com/ch/ehanex" target="_blank"><img
+							src="../images/main_left_kakao.jpg" alt="이하넥스 카카오 스토리" /></a>
+					</p>
+					<p>
+						<a href="/serviceguide/serviceguide_calTaxFee.jsp" target="_blank"><img
+							src="../images/left_calculator.jpg" alt="관부가세계산기" /></a>
+					</p>
+					<p>
+						<a href="/easyguide/FO_MallGuide_Main.jsp" target="_blank"><img
+							src="../images/left_guide.jpg" alt="알기쉬운이용가이드" /></a>
+					</p>
+				</div>
+			</div>
+
+			
+
+
+
+
+<!-- s:floating menu -->
+<div class="floatLayer centerAddress sub">
+	<h5><img src="../images/h5_floatLayer.gif" alt="나의 주소정보"/></h5>
+	<div class="centerListArea">
+		<ul>
+		     <li>  
+				<p class="nation us">미국 OR
+				
+				<a href="javascript:fnCheckLogin();" title="미국Oregon 전체주소 바로가기">[보기] </a>
+				
+				</p>
+			</li>
+			<li>
+				<p class="nation us">미국 CA
+				<!--<p>1111 E Watson Center RD Suite </p>-->
+				
+				<a href="javascript:fnCheckLogin();" title="미국California 전체주소 바로가기">[보기] </a>
+				
+				</p>
+			</li>
+			<li>  
+				<p class="nation us">미국 NJ
+				<!-- <p>65 RAILROAD AVE UNIT4, HANJIN </p>-->
+				
+				<a href="javascript:fnCheckLogin();" title="미국NewJersey 전체주소 바로가기">[보기] </a>
+				
+				</p>
+			</li>
+			<!-- li>
+				<p class="nation de">독일
+				
+				<a href="javascript:fnCheckLogin();" title="독일 전체주소 바로가기">[보기] </a>
+				
+				</p>  
+			</li -->
+			<li>
+				<p class="nation uk">영국
+				
+				<a href="javascript:fnCheckLogin();" title="영국 전체주소 바로가기">[보기] </a>
+				
+				</p>  
+			</li>
+			<li>
+				<p class="nation ja">일본
+				
+				<a href="javascript:fnCheckLogin();" title="일본 전체주소 바로가기">[보기] </a>
+				
+				</p>  
+			</li>
+			<li>
+				<p class="nation hk">홍콩
+				
+				<a href="javascript:fnCheckLogin();" title="홍콩 전체주소 바로가기">[보기] </a>
+				
+				</p>
+			</li>
+			<li>  
+				<p class="nation kor">한국
+				<!--<p>서울시 강서구 하늘길 246 </p>-->
+				
+				<a href="javascript:fnCheckLogin();" title="서울 전체주소 바로가기">[보기] </a>
+				
+				</p>
+			</li>
+		</ul>
+	</div>
+	<div class="floatBtnArea">
+		<a href="/platform/OB_DelAgent_RM.jsp"><img src="../images/btn_floatBtn1.gif" alt="배송 대행 신청"/></a><a href="/platform/OB_BuyAgent_RM.jsp"><img src="../images/btn_floatBtn2.gif" alt="구매 대행 신청"/></a>
+	</div>
+</div>
+<!-- e:floating menu -->
+
+		</div>
+		<!-- e:container-->
+
+		<form name="searchNotice" method="post"
+			action="/notice/FO_Notice_Detail.jsp">
+			<input type="hidden" name="BbsSno" value="1" /> <input type="hidden"
+				name="ArtlSno" value="" /> <input type="hidden" name="searchType"
+				id="searchType" value="" />
+		</form>
+
+		<!-- s:footer -->
+		
+<div id="footer">
+<div class="footerIn">
+	<div class="linkSite">
+	
+		<ul class="fMenuLink">
+			<li><a href="http://www.hanjin.co.kr/" target="_blank">회사소개</a></li>
+			<li><a href="/company/FO_company_sign_ehanex.jsp" >이용약관</a></li>
+			<li><a href="http://www.hanjin.co.kr/pr_html/privacy/privacy.jsp" >개인정보취급(처리)방침</a></li>
+			<li><a href="/cscenter/FO_Cooperation.jsp" >파트너제휴</a></li>
+			<li><a href="/company/FO_webaccessibility.jsp" >웹접근성안내</a></li>
+			<li class="last"><a href="/mypage/FO_MbrInfoRM.jsp" >이메일무단수집거부</a></li>
+		</ul>
+		
+		<div class="familySiteArea">
+		
+			<div class="selectLink marr10">
+				<span class="ctrl"></span>
+				<div class="myValue">한진 관계사</div>
+				<ul class="aList">
+					<li><a href="http://kr.koreanair.com" target="_blank">대한항공</a></li>
+					<li><a href="http://www.hanjin.com" target="_blank">한진해운</a></li>
+					<li><a href="http://www.kas.co.kr/" target="_blank">한국공항</a></li>
+					<li><a href="http://www.kaltour.com/" target="_blank">한진관광</a></li>
+					<li><a href="http://www.topas.net/" target="_blank">TOPAS</a></li>
+					<li><a href="https://www.hist.co.kr/" target="_blank">한진정보통신</a></li>
+					<li><a href="http://www.cyberskyshop.com/" target="_blank">싸이버스카이샵</a></li>
+					<li><a href="http://www.cybersky.co.kr" target="_blank">싸이버스카이</a></li>
+					<li><a href="https://www.hanjinmall.com/shopping/shop/NewIndex.jsp" target="_blank">한진몰</a></li>
+				</ul>
+			</div>
+			
+			<div class="selectLink">
+				<span class="ctrl"></span>
+				<div class="myValue">Family Site</div>
+				<ul class="aList">
+					<li><a href="http://www.hanjin.co.kr" target="_blank">(주)한진</a></li>
+					<li><a href="http://gls.hanjin.co.kr" target="_blank">한진물류</a></li>
+					<li><a href="http://hanex.hanjin.co.kr" target="_blank">한진택배</a></li>
+					<li><a href="http://rentacar.hanjin.co.kr" target="_blank">한진렌터카</a></li>
+				</ul>
+			</div>
+			
+		</div>
+	</div><!-- e:linkSite -->
+
+	<span class="footerLogo"></span>
+	<address>
+			<p>주소 : 서울시 중구 남대문로 63 (주)한진 | 사업자등록번호 201-81-02823 | 대표이사 사장 서용원</p>
+			<p>통신판매신고 중구 제00399호 | 개인정보관리책임자 이화니 | 전화 : 1566-2182(이용요금 유료) | 팩스 : 02-771-1202 | 문의 :  <a href="mailto:ehanex@hanjin.co.kr" target="_blank" title="문의 담당자 이메일 주소 새창열림">ehanex@hanjin.co.kr</a></p>
+			<p class="addNotice">
+			이하넥스는 해당국가의 관세법등 관련규정을 준수하고, 불법물건을 취급하지 않으며, 분할배송 및 가격허위신고 등 고객의 불법사항 요청에는 협조하지 않습니다. 또한 배송지 해당국가의 관세규정에 따른 통관여부에 대해서는 보증하지 않으니 서비스 이용 시 유념하시기 바랍니다. 
+			<br />이하넥스는 고객님의 안전거래를 위해 현금등으로 5만원이상 결제시 이하넥스에서 가입한 LG U+의 구매안전서비스를 이용하실 수 있습니다.
+			</p>
+			<a href="https://pgweb.uplus.co.kr/pg/wmp/mertadmin/jsp/mertservice/s_escrowYn.jsp?mertid=cns_hanjinmall2" target="_blank" title="서비스 가입사실 확인하기 새창열림" class="popUpLgU btnFooter">서비스 가입 사실 확인하기  > </a>
+			<p class="mart5"><strong>Copyright(C) 2010 HANJIN All Rights Reserved.</strong></p>
+	</address>
+</div>
+</div>
+		<!-- e:footer-->
+
+	</div>
+
+</body>
+</html>

@@ -1,0 +1,543 @@
+﻿<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+
+<title>HENTAKU :: AV배우 커뮤니티(순위/신인/품번/검색)</title>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+<meta name="google-site-verification" content="FEOxCLi1KpSeQaIAWjjMJqXF8d3eJKtvpKZykBPSuqA" />
+<meta name="author" content="HENTAKU"> 
+<meta name="writer" content="HENTAKU"> 
+<meta name="copyright" content="&copy;HENTAKU">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+
+<script type="text/javascript" src="http://wcs.naver.net/wcslog.js"></script> <script type="text/javascript"> if(!wcs_add) var wcs_add = {}; wcs_add["wa"] = "12e7a621d9dd860"; wcs_do(); </script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
+
+<link rel="alternate" type="application/rss+xml" title="[##_title_##]" href="http://hentaku.tistory.com/rss" />
+<link rel="stylesheet" media="screen" type="text/css" href="/css/main.css?v=3.6" />
+<link rel="shortcut icon" href="http://www.hentaku.net/hentaku.ico">
+<script type="text/javascript" src="./images/base.js"></script>
+
+<!-- Add jQuery library -->
+<script type="text/javascript" src="http://hentaku.net/lib/jquery-1.10.1.min.js"></script>
+
+<!-- Add mousewheel plugin (this is optional) -->
+<script type="text/javascript" src="http://hentaku.net/lib/jquery.mousewheel-3.0.6.pack.js"></script>
+
+<!-- Add fancyBox main JS and CSS files -->
+<script type="text/javascript" src="http://hentaku.net/source/jquery.fancybox.js?v=2.1.5"></script>
+<link rel="stylesheet" type="text/css" href="http://hentaku.net/source/jquery.fancybox.css?v=2.1.5" media="screen" />
+
+<!-- Add Button helper (this is optional) -->
+<link rel="stylesheet" type="text/css" href="http://hentaku.net/source/helpers/jquery.fancybox-buttons.css?v=1.0.5" />
+<script type="text/javascript" src="http://hentaku.net/source/helpers/jquery.fancybox-buttons.js?v=1.0.5"></script>
+
+<!-- Add Thumbnail helper (this is optional) -->
+<link rel="stylesheet" type="text/css" href="http://hentaku.net/source/helpers/jquery.fancybox-thumbs.css?v=1.0.7" />
+<script type="text/javascript" src="http://hentaku.net/source/helpers/jquery.fancybox-thumbs.js?v=1.0.7"></script>
+
+<!-- Add Media helper (this is optional) -->
+<script type="text/javascript" src="http://hentaku.net/source/helpers/jquery.fancybox-media.js?v=1.0.6"></script>
+
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		/*
+		 *  Simple image gallery. Uses default settings
+		 */
+
+		$('.fancybox').fancybox();
+
+		/*
+		 *  Different effects
+		 */
+
+		// Change title type, overlay closing speed
+		$(".fancybox-effects-a").fancybox({
+			helpers: {
+				title : {
+					type : 'outside'
+				},
+				overlay : {
+					speedOut : 0
+				}
+			}
+		});
+
+		// Disable opening and closing animations, change title type
+		$(".fancybox-effects-b").fancybox({
+			openEffect  : 'none',
+			closeEffect	: 'none',
+
+			helpers : {
+				title : {
+					type : 'over'
+				}
+			}
+		});
+
+		// Set custom style, close if clicked, change title type and overlay color
+		$(".fancybox-effects-c").fancybox({
+			wrapCSS    : 'fancybox-custom',
+			closeClick : true,
+
+			openEffect : 'none',
+
+			helpers : {
+				title : {
+					type : 'inside'
+				},
+				overlay : {
+					css : {
+						'background' : 'rgba(238,238,238,0.85)'
+					}
+				}
+			}
+		});
+
+		// Remove padding, set opening and closing animations, close if clicked and disable overlay
+		$(".fancybox-effects-d").fancybox({
+			padding: 0,
+
+			openEffect : 'elastic',
+			openSpeed  : 150,
+
+			closeEffect : 'elastic',
+			closeSpeed  : 150,
+
+			closeClick : true,
+
+			helpers : {
+				overlay : null
+			}
+		});
+
+		/*
+		 *  Button helper. Disable animations, hide close button, change title type and content
+		 */
+
+		$('.fancybox-buttons').fancybox({
+			openEffect  : 'none',
+			closeEffect : 'none',
+
+			prevEffect : 'none',
+			nextEffect : 'none',
+
+			closeBtn  : false,
+
+			helpers : {
+				title : {
+					type : 'inside'
+				},
+				buttons	: {}
+			},
+
+			afterLoad : function() {
+				this.title = 'Image ' + (this.index + 1) + ' of ' + this.group.length + (this.title ? ' - ' + this.title : '');
+			}
+		});
+
+
+		/*
+		 *  Thumbnail helper. Disable animations, hide close button, arrows and slide to next gallery item if clicked
+		 */
+
+		$('.fancybox-thumbs').fancybox({
+			prevEffect : 'none',
+			nextEffect : 'none',
+
+			closeBtn  : false,
+			arrows    : false,
+			nextClick : true,
+
+			helpers : {
+				thumbs : {
+					width  : 50,
+					height : 50
+				}
+			}
+		});
+
+		/*
+		 *  Media helper. Group items, disable animations, hide arrows, enable media and button helpers.
+		*/
+		$('.fancybox-media')
+			.attr('rel', 'media-gallery')
+			.fancybox({
+				openEffect : 'none',
+				closeEffect : 'none',
+				prevEffect : 'none',
+				nextEffect : 'none',
+
+				arrows : false,
+				helpers : {
+					media : {},
+					buttons : {}
+				}
+			});
+
+		/*
+		 *  Open manually
+		 */
+
+		$("#fancybox-manual-a").click(function() {
+			$.fancybox.open('1_b.jpg');
+		});
+
+		$("#fancybox-manual-b").click(function() {
+			$.fancybox.open({
+				href : 'iframe.html',
+				type : 'iframe',
+				padding : 5
+			});
+		});
+
+		$("#fancybox-manual-c").click(function() {
+			$.fancybox.open([
+				{
+					href : '1_b.jpg',
+					title : 'My title'
+				}, {
+					href : '2_b.jpg',
+					title : '2nd title'
+				}, {
+					href : '3_b.jpg'
+				}
+			], {
+				helpers : {
+					thumbs : {
+						width: 75,
+						height: 50
+					}
+				}
+			});
+		});
+
+
+	});
+</script>
+
+
+</head>
+<body>
+<s_t3>
+	<div id="wrap">
+		<div id="container">
+		
+			<div id="header">
+
+
+
+<!-- banner Google Ads START -->
+<div id="leftmenu3"> 
+<a href="http://www.netfile.co.kr/banner/ad_banner.jsp?keyid=hentaku" target="_blank"><img src="http://www.netfile.co.kr/img2/etc/166x260_01.gif" border="0"></a>
+</div>
+
+<div id="leftmenu2">
+<center>실시간 검색목록</center>
+
+<div class="sort_realtime">
+<a href="/star/스즈키코하루" target="_parent"><img src=http://3.bp.blogspot.com/-vux9F9TMqr8/VjhhpfrkLmI/AAAAAAAADZU/iGrAOSTNZok/s1600/BbVQI8n.jpg width="88" height="88" alt="스즈키코하루"></a><br/>
+<span class="star_name">스즈키코하루</span>
+</div>
+
+<div class="sort_realtime">
+<a href="/star/사쿠라유라" target="_parent"><img src=http://2.bp.blogspot.com/-hgmq7mgbYBU/Vjhi7_kt5PI/AAAAAAAADsQ/IDtRMdrIATo/s1600/8ilQB9W.jpg width="88" height="88" alt="사쿠라유라"></a><br/>
+<span class="star_name">사쿠라유라</span>
+</div>
+
+<div class="sort_realtime">
+<a href="/star/마츠시마마아사" target="_parent"><img src=http://4.bp.blogspot.com/-bSc6pp0JoU8/VjhgyVvG6KI/AAAAAAAADPA/Bup2spNiMRk/s1600/d6yMr53.jpg width="88" height="88" alt="마츠시마마아사"></a><br/>
+<span class="star_name">마츠시마마아사</span>
+</div>
+</div>
+<!-- banner Google Ads END -->
+
+<div id="caption" onclick="javascript:location.href='http://hentaku.net';" style="cursor:pointer;">
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-64118610-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+<div id="title_txt">
+	<span class="t1">HENTAKU.NET</span><br/>
+<div class="t2">
+긴급공지(클릭하여 확인)<br/>
+도메인변경 https://hentaku.net</br>
+<span class="t3">Last Update 2016.07.29</span>
+</div>
+</div>
+
+
+<div id="ad">
+
+<iframe scrolling="no" src="http://smart.linkprice.com/criteo/show.php?affiliate_id=A100511747&w=728&h=90" width="728" height="90" border="0" marginwidth="0" marginheight="0" leftmargin="0" topmargin="0" frameborder="0"></iframe>
+</div>
+
+
+</div>
+
+
+	
+
+<div id="navigation">
+
+<ul id="menus">
+<li><a href="/" title="Home" class="home">메인화면</a></li>
+<li><a href="/poombun.php" target="_blank"><span>품번검색기</span></a></li>
+<li><a href="/starsearch.php" target="_blank"><span>배우검색기</span></a></li>
+<li><a href="/keyword/">실시간 검색목록</a></li>
+<li><a href="/vote/index.html">최근평가</a></li>
+<li><a href="/like/index.html"><span>추천품번</span></a></li>
+<li><a href="/list.php" target="_blank"><span>배우목록</span></a></li>
+<li><a href="/rank/index.html"><span>AV순위</span></a></li>
+<li><a href="/newface/index.html"><span>AV신인</span></a></li>
+<li><a href="http://www.toptoy.co.kr/?PID=dark77" target="_blank"><span style="color:red; font-weight:bold; font-size:10pt; ">AV쇼핑몰</span></a></li>
+</ul>
+
+<div id="searchbox">
+
+<s_search>
+
+<form action="/search/" method="post">
+<input type="text" id="search_str" name="search_str" onkeypress="if (event.keyCode == 13) { [##_search_onclick_submit_##] }" class="textfield"/>
+
+<input value="" id="searchsubmit" type="button" onclick="[##_search_onclick_submit_##]" class="button">
+</form>
+
+</s_search>
+
+</div>
+</div>
+
+				<div class="fixed"></div>
+			</div><!--header fin-->
+			
+			<div id="content">
+				<div id="main">
+		
+<div style="padding:10px;font-size:12pt;line-height:40px;">
+
+https://hentaku.net <- 차단우회 URL 반드시 기억하세요 : ) <br/><br/>
+
+현재 장르 및 시리즈물 정리 중이며 8월 초쯤엔 좀 더 사용하기에 편하도록 업데이트 예정입니다. <br/><br/>
+
+지속적인 관심 부탁드리며 이용하시는데 불편 없도록 최선을 다하겠습니다. <br/><br/><br/>
+
+HENTAKU.NET 운영자 올림<br/><br/>
+
+****************************************************************************************<br/>
+현재(16.07.29 AM12:54) 호스팅 업체 DDOS 공격으로 접속이 원할하지 않습니다. <br/>
+불편드려 죄송합니다.<br/>
+업체에서 신속하게 대응중입니다.<br/>
+
+****************************************************************************************<br/><br/>
+
+</div>
+
+
+						
+							<s_article_rep>
+								<div class="post">
+
+
+
+<style>
+@charset "utf-8";
+
+.avstar_warp{
+width:330px;
+float:left;
+border:1px solid #cccccc;
+margin: 5px 5px 5px 5px;
+padding: 5px 5px 5px 5px; 
+height:100px;
+}
+
+.avstar_info{
+padding: 10px 10px 10px 10px;
+}
+
+.avstar_info_a{
+padding: 0px 10px 10px 10px;
+float:left;
+width:70px;
+line-height:18px;
+font-size:13px;
+}
+
+.avstar_info_b{
+padding: 0px 0px 0px 10px;
+float:left;
+width:210px;
+line-height:17px;
+font-size:13px;
+}
+
+.avrank{
+width:30px;
+height:20px;
+position:relative;
+color:#ffffff;
+text-align:center;
+z-index:2;
+top:-100px;
+left:0px;
+background-color:#000000;
+}
+
+.imgshow{
+width:100px;
+height:100px;
+position:relative;
+z-index:1;
+top:0px;
+left:0px;
+background-color:#000000;
+}
+
+.avstar_photo{
+float:left;
+background-color:#eeeeee;
+width:100px;
+height:100px;
+}
+
+</style>
+
+
+
+
+    							
+									
+				                   	<div class="article">
+										
+
+										<div class="fixed"></div>
+									</div>
+
+
+								</div><!-- entry -->
+							</s_article_rep>
+						
+
+							
+				</div><!-- main fin-->
+				<div id="sidebar">
+				
+
+					<s_sidebar>
+					<!--Sidebar-->			
+
+						
+						<s_sidebar_element>
+
+						<!-- 글 분류-->
+
+<!-- 리얼센스 플로팅 광고 시작 -->
+<script>
+    var real_sh_top=0; /*TOP 위치, 상단에서부터의 거리, 숫자로 조절*/
+    var real_sh_left=0; /*좌(+) 우(-)위치, 가운데를 중심으로 숫자로 조절*/
+</script>
+<style>
+#real_pop_bnr_floating{
+position:fixed; 
+left: 50%;
+margin-left:-180px;
+top: 367px; 
+_position:expression('absolute'); 
+_left: expression(offsetParent.scrollLeft+50+'%'); 
+_top: expression(offsetParent.scrollTop+148+'px'); 
+z-index:10;
+}
+</style>
+
+<a href="http://www.toptoy.co.kr/?PID=dark77" target="_blank"><img src="/ad/img/20160419_toptoy_1.jpg"></a>
+
+
+							<div class="widget">
+
+								<div class="side_box"><a href="/deepsearch/" style="color:white">조건검색(베타) <- 클릭</a></div>
+
+
+
+							</div>
+						</s_sidebar_element>
+				
+						<s_sidebar_element>
+						<!-- 글 보관함-->
+							<div class="widget" style="height:168px; margin-bottom:-3px;">
+								<div class="side_box"><a href="/recent/" style="color:white">최근 등록 배우 <- 클릭</a></div><br/>
+	
+
+
+
+
+
+								</h3>
+									<ul>
+									<s_archive_rep>
+										<li>
+
+										</li>
+									</s_archive_rep>
+									</ul>
+							</div>
+						</s_sidebar_element>
+
+
+
+
+<s_sidebar_element>
+<!-- 링크 -->
+<a href="http://ondisk.co.kr/event/ad/event.php?cid=hentaku"><img src="/ad/img/ondisk.jpg"></a>
+
+<div class="widget">
+<div class="side_box">LINK</div>
+<ul>
+<s_link_rep>
+<li>
+<a href="http://graviainterview.tistory.com/" onclick="window.open(this.href); return false">그라비아인터뷰</a>
+</li>
+</s_link_rep>
+</ul>
+</div>
+<div style="padding:20px; text-align:center;">
+
+
+<!-- Histats.com  START (html only)-->
+<a href="/viewstats/?SID=3534983&f=2" alt="php hit counter" target="_blank" ><div id="histatsC"><img border="0" src="http://s4is.histats.com/stats/i/3534983.gif?3534983&103"></div></a>
+<!-- Histats.com  END  -->
+
+</div>
+</s_sidebar_element>
+</s_sidebar>
+
+
+				</div><!--sidebar fin-->
+				<div class="fixed"></div>
+			</div><!-- content fin-->
+			
+			<div id="footer">
+			<a id="gotop" href="#" onclick="MGJS.goTop();return false;">Top</a>
+
+<a href="http://www.tistory.com" id="powered" target=_blank>[##_tattertools_name_##]  [##_tattertools_version_##]</a>
+<div id="copyright">HENTAKU.NET의 모든자료는 인터넷 수집자료이며 삭제요청 등 문의사항은 <a class="__cf_email__" href="/cdn-cgi/l/email-protection" data-cfemail="5c343932283d37296a651c3b313d3530723f3331b7fdc0">[email&#160;protected]</a><script data-cfhash='f9e31' type="text/javascript">/* <![CDATA[ */!function(t,e,r,n,c,a,p){try{t=document.currentScript||function(){for(t=document.getElementsByTagName('script'),e=t.length;e--;)if(t[e].getAttribute('data-cfhash'))return t[e]}();if(t&&(c=t.previousSibling)){p=t.parentNode;if(a=c.getAttribute('data-cfemail')){for(e='',r='0x'+a.substr(0,2)|0,n=2;a.length-n;n+=2)e+='%'+('0'+('0x'+a.substr(n,2)^r).toString(16)).slice(-2);p.replaceChild(document.createTextNode(decodeURIComponent(e)),c)}p.removeChild(t)}}catch(u){}}()/* ]]> */</script> 보내주시기 바랍니다.</div>
+<div id="themeinfo">
+Theme by <a href="http://www.neoease.com/" target=_blank>NeoEase</a>. Designed by <a href="http://www.tyzen.net" target=_blank>TYZEN.NET</a>. </div>			</div><!--footer fin-->
+			
+		</div><!-- container fin -->
+		
+	</div><!-- wrap fin -->
+</s_t3>
+</body>
+</html>

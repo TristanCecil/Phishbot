@@ -1,0 +1,584 @@
+<!--
+<%@ Page Language="C#" %>
+<%
+if (Request.Cookies["iws-language"] != null)
+{
+	string language = Request.Cookies["iws-language"].Value;
+	string universe = Request.QueryString["universe"];
+
+	if (language == "nl" || language == "fr")
+	{
+		if (universe == null)
+		{
+			if (Request.Cookies["iws-universe"] != null)
+			{
+				universe = Request.Cookies["iws-universe"].Value;
+			}
+		}
+
+		if (universe == null)
+		{
+			universe = "retail";
+		}
+
+		string universePath, framework;
+		switch (universe){
+			case "info":
+			case "retail":
+				universePath = "retail";
+				framework = "fw";
+				break;
+			case "privatebanking":
+				universePath = "privatebanking";
+				framework = "fw";
+				break;
+			case "business":
+			case "professional":
+				universePath = "professional";
+				framework = "fw";
+				break;
+			default:
+				universePath = universe;
+				framework = "iwscommon";
+				break;
+		}
+
+		Response.Redirect("/" + universePath + "/" + language + "/index.aspx", true);
+	}
+}
+%>-->
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="nl" lang="nl">
+	<head>
+		<meta http-equiv="x-frame-options" content="deny">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta http-equiv="Pragma" content="no-cache" />
+        <meta http-equiv="Cache-control" content="no-cache, no-store" />
+        <meta http-equiv="Expires" content="0" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+        <meta name="description" content="Welkom bij Belfius Bank, (jonge) particulier, ondernemer, of openbare of socialprofitinstelling! Welk project u ook hebt, bij ons vindt u de financiële oplossing. Bienvenue chez Belfius Banque où (jeunes) particuliers, entrepreneurs, institutions publiques ou sociales  trouveront une solution financière à leurs  projets.">
+		<meta name="viewport" content="width=device-width, initial-scale=1"/>
+		<meta name="format-detection" content="telephone=no" />
+		
+		<title>Belfius Bank</title>
+		
+		<link rel="shortcut icon" type="image/x-icon" href="images/belfius.ico" />
+		
+		<style>
+        @font-face {
+            font-family: Belfius Alternative;
+            src: url('fonts/belfiusalternative_regular.eot');
+            src: url('fonts/belfiusalternative_regular.eot?#iefix') format('embedded-opentype'), url('fonts/belfiusalternative_regular.otf') format('opentype'), url('fonts/belfiusalternative_regular.woff') format('woff'), url('fonts/belfiusalternative_regular.ttf') format('truetype'), url('fonts/belfiusalternative_regular.svg') format('svg');
+        }
+        @font-face {
+            font-family: Belfius Alternative Black;
+            src: url('fonts/belfiusalternative-black.eot');
+            src: url('fonts/belfiusalternative-black.eot?#iefix') format('embedded-opentype'), url('fonts/belfiusalternative-black.otf') format('opentype'), url('fonts/belfiusalternative-black.woff') format('woff'), url('fonts/belfiusalternative-black.ttf') format('truetype'), url('fonts/belfiusalternative-black.svg') format('svg');
+        }
+        @font-face {
+            font-family: 'Belfius Icons';
+            src: url('fonts/belfius_iconfont.eot');
+            src: url('fonts/belfius_iconfont.eot?#iefix') format('embedded-opentype'), url('fonts/belfius_iconfont.woff') format('woff'), url('fonts/belfius_iconfont.ttf') format('truetype'), url('fonts/belfius_iconfont.svg#iconfont') format('svg');
+            font-weight: normal;
+            font-style: normal;
+        }
+    	</style>
+
+		<style>
+			body.gew7-universe-specified *[data-universe] {
+				display: none;
+			}
+
+			body.gew7-retail *[data-universe="retail"],
+			body.gew7-professional *[data-universe="professional"],
+			body.gew7-privatebanking *[data-universe="privatebanking"],
+			body.gew7-publicsocial *[data-universe="publicsocial"],
+			body.gew7-financial *[data-universe="financial"],
+			body.gew7-corporate *[data-universe="corporate"]{
+				display: inline;
+			}
+		</style>
+		
+		<link rel="stylesheet" type="text/css" href="/common/nl/fw/lib/css/iws_min.css?param=20160406115620"  />
+
+		
+		<script type="text/javascript" src="/common/nl/fw/lib/js/iws_min.js?param=20160406115620"></script>
+
+
+        <script type="text/javascript">
+			<!--//--><![CDATA[//><!--
+
+            if(window.location.href.indexOf("tst-www.belfius") >= 0)
+            {
+                NTPT_IMGSRC = "http://tst-tag.belfius.be/tag/ntpagetag.gif";
+                NTPT_HTTPSIMGSRC = "https://tst-tag.belfius.be/tag/ntpagetag.gif"
+            } else if(window.location.href.indexOf("gtu-www.belfius") >= 0)
+            {
+                NTPT_IMGSRC = "http://gtu-tag.belfius.be/tag/ntpagetag.gif";
+                NTPT_HTTPSIMGSRC = "https://gtu-tag.belfius.be/tag/ntpagetag.gif"
+            } else if(window.location.href.indexOf("uat-www.belfius") >= 0)
+            {
+                NTPT_IMGSRC = "http://uat-tag.belfius.be/tag/ntpagetag.gif";
+                NTPT_HTTPSIMGSRC = "https://uat-tag.belfius.be/tag/ntpagetag.gif"
+            } else if(window.location.href.indexOf("www.belfius") >= 0)
+            {
+                NTPT_IMGSRC = "http://tag.belfius.be/tag/ntpagetag.gif";
+                NTPT_HTTPSIMGSRC = "https://tag.belfius.be/tag/ntpagetag.gif"
+            } else
+            {
+                NTPT_IMGSRC = "";
+                NTPT_HTTPSIMGSRC = ""
+            }  
+			
+			var GY = YUI().use('*', function(Y){   
+              
+	            function getParam ( name ){
+					var universe = null;
+    	            name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+        	        var regexS = "[\\?&]"+name+"=([^&#]*)";
+            	    var regex = new RegExp( regexS );
+                	var results = regex.exec( window.location.href );
+	                var universe_param;
+    	            if( results == null )
+        	        	universe_param = "";
+            	    else
+                		universe_param = results[1].substring(1);
+                
+	                switch (universe_param) {
+	                case "info":
+	                case "business":
+    	            case "retail":
+        	        case "professional":
+            	    case "publicsocial":
+                	case "corporate":
+	                case "financial":
+    	            case "privatebanking":
+        	            universe = universe_param;
+            	        break;
+                	default :
+ 	                   universe = Y.Cookie.get("iws-universe");
+    	            }                
+        	        return universe;
+            	}
+
+				var __ua = navigator.userAgent;
+				var __isAndroidPhone = function (){return !!(Y.UA.android && (/mobile/i).test(__ua))};
+				var __isIphone = function (){return !!(Y.UA.iphone || Y.UA.ipod)};
+				var __isAndroidTablet = function (){return !!(Y.UA.android && !((/mobile/i).test(__ua)))};
+				var __isIpad = function (){return !!(Y.UA.ipad)};
+				var __isWindowsMobile = function(){ return !!((/windows phone/i).test(__ua) || (/iemobile/i).test(__ua) )};
+				var __domReady = false;
+				
+				if (__isWindowsMobile()){
+					__isIphone = function(){return false};
+					__isIpad = function(){return false};
+					__isAndroidTablet = function(){return false};
+					__isAndroidPhone = function(){return false};
+				}
+
+				Y.launch = function(langCode, lang, universe, mobile) {	
+					
+					var date = new Date(); date.setDate(date.getDate() + 365);
+					lang = lang.toLowerCase();
+
+					if (mobile){
+						Y.Cookie.set("dxLanguage", langCode, {expires: date, path : "/", domain: '.belfius.be'});
+					}
+					else {
+						Y.Cookie.set("iws-universe", "retail", {expires: date, path : "/"});
+						Y.Cookie.set("iws-language-code", langCode, {expires: date, path : "/"});
+						Y.Cookie.set("iws-language", lang, {expires: date, path : "/"});						
+					}
+					
+					if(universe == null) return;
+                    var universePath,framework;
+					
+					switch (universe){
+						case "info":
+						case "retail":
+							universePath = "retail";
+							framework = "fw";
+							break;
+
+                        case "privatebanking":
+                            universePath = "privatebanking";
+                            framework = "fw";
+                            break;
+
+						case "business":
+						case "professional":
+							universePath = "professional";
+							framework = "fw";
+							break;
+
+						default:
+							universePath = universe;
+							framework = "iwscommon";
+					}
+
+                    Y.Cookie.set("iws-universe", universe, {expires: date, path : "/"});
+					location.href = "/" + universePath + "/" + lang + "/index.aspx";
+				};
+				
+				Y.toggleMenuLevel1 = function(aLang){
+					if (!__domReady) return;
+					Y.one('#lang-' + aLang + '-1').toggleClass("open");
+					Y.one('#lang-' + aLang + '-2').removeClass("open");
+					Y.one('#lang-' + aLang + '-1-ul').toggleClass("mobile_hidden");
+					Y.one('#lang-' + aLang + '-2-ul').addClass('mobile_hidden');
+					Y.all('.app_popup_app.PWB').addClass("hidden");
+					
+					var container = '.container_header, .block_language > div:not(.block_language_' + aLang + ')';
+					Y.all(container).toggleClass("mobile_hidden");
+					
+					Y.all('#language_spacer_' + aLang).toggleClass("mobile_show");
+			
+					Y.all('.app_popup_' + aLang ).toggleClass("hidden");
+					Y.all('.app_popup_' + aLang + ' img[data-src]').each(function(aNode){
+						aNode.setAttribute('src', 'lib/css/img/' + aNode.getAttribute('data-src'));
+						aNode.removeAttribute('data-src')
+					})
+				};
+				
+				Y.toggleMenuLevel2 = function(aLang){
+					if (!__domReady) return;
+					Y.one('#lang-' + aLang + '-2').toggleClass("open");
+					Y.one('#lang-' + aLang + '-2-ul').toggleClass("mobile_hidden");
+					Y.all('.app_popup_app.PWB').toggleClass("hidden");
+				};
+
+                var langCode = Y.Cookie.get("iws-language-code");
+
+				if (langCode == '1') Y.launch(langCode, 'FR', getParam('universe'));
+				else if (langCode == '2') Y.launch(langCode, 'NL', getParam('universe'));
+				else {
+					Y.on('domready', function() {
+						if (!__isAndroidPhone()) Y.all('.app_popup_androidphone').remove();
+						if (!__isAndroidTablet()) Y.all('.app_popup_androidtablet').remove();
+						if (!__isIphone()) Y.all('.app_popup_iphone').remove();
+						if (!__isIpad()) Y.all('.app_popup_ipad').remove();
+						if (!__isWindowsMobile()) Y.all('.app_popup_windows').remove();
+
+						Y.all('.app_popup_app').on('click',function(aEvent){
+							var aLink = aEvent.currentTarget.getAttribute('data-src');
+							if (!__isIphone())
+								{
+									window.location.href = aLink;
+									return;
+								}
+
+							setTimeout((function(aLink) {
+								  window.location.href = aLink;
+							}).bind(this,aLink), 25);
+
+							window.location.href = aEvent.currentTarget.getAttribute('data-ios');
+						});
+
+						Y.all('.close').on('click',function(aEvent){
+							aEvent.currentTarget.ancestor().remove();
+							Y.all('#language_spacer_' + aEvent.currentTarget.getAttribute('data-lang')).remove();
+						});
+
+						var universe = getParam('universe');
+						if (universe) {
+							if (universe === "info") {
+								universe = "retail";
+							}
+							else if (universe === "business") {
+								universe = "professional";
+							}
+							Y.one('body').addClass('gew7-universe-specified gew7-' + universe);
+						}
+
+						/*
+						var ch,cl,ln,rurl,str;
+                        var _base16="0A12B34C56D78E9F";
+                        Y.all('[data-seo]').each(function(aNode){
+                        	rurl = "";
+                        	str = aNode.getAttribute('data-seo');
+        					for(var j=0;j<str.length;j+=2){
+        						ch=_base16.indexOf(str.charAt(j));
+        						cl=_base16.indexOf(str.charAt(j+1));
+        						rurl+=String.fromCharCode((ch*16)+cl);
+        					}
+        					aNode._node.href=rurl;
+                        });
+                        */
+
+                        __domReady = true
+					});
+				}
+			});
+			
+		//--><!]]>
+		</script>
+
+        <script type="text/javascript" src="lib/unica/ntpagetag.js"></script>
+
+	</head>
+	
+	<body id="language_page">
+        <div class="container">
+            <div class="container_header" id="logo-belfius"></div>
+            <div class="container_header_spacer"></div>
+            <div class="block_language">
+                <div class="block_language_NL">
+                  <div class="block_language_wrapper">
+                    <h1 onclick="GY.toggleMenuLevel1('NL'); return false;">NL</h1>
+                    <h2 onclick="GY.toggleMenuLevel1('NL'); return false;">Welkom bij Belfius<br>Bank en Verzekeringen</h2>                   
+                    <p id="lang-NL-1" onclick="GY.toggleMenuLevel1('NL'); return false;" class="toggle-level-1 hidden mobile_show"></p>
+                    <ul id="lang-NL-1-ul" class="mobile_hidden">
+                        <li class="firstofblock"><a data-universe="retail" href="/retail/nl/index.aspx" onclick="GY.launch(2, 'nl', 'retail'); return false;">Particulieren</a></li>
+                        <li><a data-universe="professional" href="/professional/nl/index.aspx" onclick="GY.launch(2, 'nl', 'professional'); return false;">Zelfstandigen en kmo's</a></li>
+                        <li><a data-universe="x" href="/retail/nl/producten/betalen/zichtrekeningen/belfius-pulse-start/index.aspx?extc=puls&extch=el&extsit=langpage&extfor=menu&extseg=nb&dummy=x" >Klant worden (Belfius Pulse Start)</a></li>
+                        <li><a data-universe="x" href="https://m.belfius.be" onclick="GY.launch(2, 'NL',null,true);">m.belfius.be</a></li>
+                        <li class="toggle-level-2 hidden mobile_show" id="lang-NL-2"><a data-universe="x" href="#" onclick="GY.toggleMenuLevel2('NL'); return false;">Andere sites van Belfius</a></li>
+                    </ul>
+					<ul id="lang-NL-2-ul" class="mobile_hidden block_language_level_2">
+                        <li><a data-universe="x" href="http://www.belfiusjong.be/" target="_blank">Scholieren en studenten</a></li>
+                        <li><a data-universe="privatebanking" href="/privatebanking/nl/index.aspx" title="Vermogen vanaf 0,5 miljoen euro" onclick="GY.launch(2, 'NL', 'privatebanking'); return false;">Private Banking</a></li>
+                        <li class="firstofblock"><a data-universe="corporate" href="/corporate/nl/index.aspx" title="Middelgrote en grote ondernemingen" onclick="GY.launch(2, 'NL', 'corporate'); return false;">Corporate</a></li>
+                        <li><a data-universe="publicsocial" href="/publicsocial/nl/index.aspx" onclick="GY.launch(2, 'NL', 'publicsocial'); return false;">Publieke en socialprofitinstellingen</a></li>
+                        <li class="firstofblock"><a data-universe="x" href="https://www.belfius.com/nl/sollicitant/index.aspx" onclick="GY.launch(2, 'NL');">Jobzoekers</a></li>
+                        <li><a data-universe="x" href="https://www.belfius.com/nl/journalist/index.aspx" onclick="GY.launch(2, 'NL');">Journalisten</a></li>
+                        <li><a data-universe="x" href="https://www.belfius.com/en/index.aspx" target="_blank">Financial Communication </a></li>
+                        <li><a data-universe="x" href="https://www.belfius.com/nl/index.aspx" target="_blank">Over Belfius als bedrijf</a></li>
+                    </ul>
+                    <div id="language_spacer_NL" class="language_spacer hidden"></div>
+                    </div>
+                </div>
+                <div class="block_language_FR">
+                  <div class="block_language_wrapper">
+                    <h1 onclick="GY.toggleMenuLevel1('FR'); return false;">FR</h1>
+                    <h2 onclick="GY.toggleMenuLevel1('FR'); return false;">Bienvenue chez Belfius<br>Banque et Assurances</h2>
+                    <p id="lang-FR-1" onclick="GY.toggleMenuLevel1('FR'); return false;" class="toggle-level-1 hidden mobile_show"></p>
+                    <ul id="lang-FR-1-ul" class="mobile_hidden">
+                        <li class="firstofblock"><a data-universe="retail" href="/retail/fr/index.aspx" onclick="GY.launch(1, 'fr', 'retail'); return false;">Particuliers</a></li>
+                        <li><a data-universe="professional" href="/professional/fr/index.aspx" onclick="GY.launch(1, 'fr', 'professional'); return false;">Indépendants et PME</a></li>
+                        <li><a data-universe="x" href="/retail/fr/produits/paiement/compte-bancaire/belfius-pulse-start/index.aspx?extc=puls&extch=el&extsit=langpage&extfor=menu&extseg=nb&dummy=x">Devenir client (Belfius Pulse Start)</a></li>
+                        <li><a data-universe="x" href="https://m.belfius.be" onclick="GY.launch(1, 'FR', null, true);">m.belfius.be</a></li>
+                        <li class="toggle-level-2 hidden mobile_show" id="lang-FR-2"><a data-universe="x" href="#" onclick="GY.toggleMenuLevel2('FR'); return false;">Autre sites de Belfius</a></li>
+                    </ul>
+					<ul id="lang-FR-2-ul" class="mobile_hidden block_language_level_2">
+                        <li><a data-universe="x" href="http://www.belfiusjeunes.be/" target="_blank">Etudiants</a></li>
+                        <li><a data-universe="privatebanking" href="/privatebanking/fr/index.aspx" title="Patrimoine supérieur à 500 000 euros" onclick="GY.launch(1, 'FR', 'privatebanking'); return false;">Private banking</a></li>
+                        <li class="firstofblock"><a data-universe="corporate" href="/corporate/fr/index.aspx" title="Moyennes et grandes entreprises" onclick="GY.launch(1, 'FR', 'corporate'); return false;">Corporate</a></li>
+                        <li><a data-universe="publicsocial" href="/publicsocial/fr/index.aspx" onclick="GY.launch(1, 'FR', 'publicsocial'); return false;">Institutions publiques et sociales</a></li>
+                        <li class="firstofblock"><a data-universe="x" href="https://www.belfius.com/fr/candidat/index.aspx" onclick="GY.launch(1, 'FR');">Demandeurs d'emploi</a></li>
+                        <li><a data-universe="x" onclick="GY.launch(1, 'FR');" href="https://www.belfius.com/fr/jounaliste/index.aspx">Journalistes</a></li>
+                        <li><a data-universe="x" href="https://www.belfius.com/en/index.aspx" target="_blank">Financial Communication </a></li>
+                        <li><a data-universe="x" href="https://www.belfius.com/fr/index.aspx" target="_blank">Belfius en tant qu'entreprise</a></li>
+                    </ul>   
+                    <div id="language_spacer_FR" class="language_spacer hidden"></div>
+                   </div>
+                </div>
+                
+                <table id="language_banner" class="mobile_hidden">
+                 <tr>
+			      <td class="banner_link">
+			    	<a onclick="GY.launch(2, 'NL');" href="/retail/nl/producten/betalen/zichtrekeningen/belfius-pulse-start/index.aspx?extc=puls&extch=el&extsit=langpage&extfor=banner&extseg=nb&dummy=x">
+			    		Belfius Pulse Start,<br/>een <span class="belfius_red">gratis zichtrekening</span> en meer!
+			    	</a>
+			      </td>
+			      <td id="language_banner_image"><img src="https://www.belfius.be/common/NL/it/banner/pulseStart.png" width="200" height="160" alt="Belfius Pulse Start" /></td>
+			      <td class="banner_link">
+			    	<a onclick="GY.launch(1, 'FR');" href="/retail/fr/produits/paiement/compte-bancaire/belfius-pulse-start/index.aspx?extc=puls&extch=el&extsit=langpage&extfor=banner&extseg=nb&dummy=x">
+			    		Belfius Pulse Start,<br/>un <span class="belfius_red">compte à vue gratuit</span> et plus encore!
+			    	</a>
+			      </td>
+			     </tr>
+			    </table>
+            </div>
+        </div>
+
+		<div class="hidden mobile_show">
+
+      <div class="app_popup hidden app_popup_NL app_popup_windows">
+        	<div data-lang='NL' class="close"></div>
+        	<div class="app_popup_title">Kent U onze apps?</div>
+        	<div class="app_popup_container">
+        	 <table>
+        	  <tr>
+        	    <td>
+        		<div class="app_popup_app" data-src="https://www.belfius.be/redirect?key=nl-bdm-wp-update">
+        		   <img alt="New Belfius Direct Mobile" data-src="windows_app.png" src="lib/css/img/loader-large.gif">
+        		   <p class="app_popup_app_name">New Belfius Direct Mobile</p>
+        		   <p class="app_popup_app_description"></p>
+        		</div>
+        	  </td>
+        	  </tr>
+        	 </table>
+        	</div>        		
+        </div>
+        	
+        <div class="app_popup hidden app_popup_FR app_popup_windows">  
+        	<div data-lang='FR' class="close"></div>
+        	<div class="app_popup_title">Connaissez-vous nos apps?</div>
+        	<div class="app_popup_container">
+        	 <table>
+        	  <tr>
+        	    <td>
+        		<div class="app_popup_app" data-src="https://www.belfius.be/redirect?key=fr-bdm-wp-update">
+        		   <img alt="New Belfius Direct Mobile" data-src="windows_app.png" src="lib/css/img/loader-large.gif">
+        		   <p class="app_popup_app_name">New Belfius Direct Mobile</p>
+        		   <p class="app_popup_app_description"></p>
+        		</div>
+        	  </td>
+        	  </tr>
+        	 </table>        		
+        	</div>        		  	
+        </div>
+        
+
+        <div class="app_popup hidden app_popup_NL app_popup_androidphone">
+        	<div data-lang='NL' class="close"></div>
+        	<div class="app_popup_title">Kent U onze apps?</div>
+        	<div class="app_popup_container">
+        	 <table>
+        	  <tr>
+        	    <td>
+        		<div class="app_popup_app" data-src="https://play.google.com/store/apps/details?id=be.belfius.directmobile.android">
+        		   <img alt="New Belfius Direct Mobile" data-src="iphone_new_belfius_direct.jpg" src="lib/css/img/loader-large.gif">
+        		   <p class="app_popup_app_name">New Belfius Direct Mobile</p>
+        		   <p class="app_popup_app_description"></p>
+        		</div>
+        	  </td>
+        	  <td>
+        		<div class="app_popup_app hidden PWB" data-src="https://play.google.com/store/apps/details?id=be.belfius.bw.android.mobile">
+        		   <img alt="BelfiusWeb Mobile" data-src="android_belfiusweb.png" src="lib/css/img/loader-large.gif">
+        		   <p class="app_popup_app_name">BelfiusWeb<br/>Mobile</p>
+        		   <p class="app_popup_app_description"></p>
+        		</div>
+        	   </td>
+        	  </tr>
+        	 </table>
+        	</div>        		
+        </div>
+        	
+        <div class="app_popup hidden app_popup_FR app_popup_androidphone">  
+        	<div data-lang='FR' class="close"></div>
+        	<div class="app_popup_title">Connaissez-vous nos apps?</div>
+        	<div class="app_popup_container">
+        	 <table>
+        	  <tr>
+        	    <td>
+        		<div class="app_popup_app" data-src="https://play.google.com/store/apps/details?id=be.belfius.directmobile.android">
+        		   <img alt="New Belfius Direct Mobile" data-src="iphone_new_belfius_direct.jpg" src="lib/css/img/loader-large.gif">
+        		   <p class="app_popup_app_name">New Belfius Direct Mobile</p>
+        		   <p class="app_popup_app_description"></p>
+        		</div>
+        	  </td>
+        	  <td>
+        		<div class="app_popup_app hidden PWB" data-src="https://play.google.com/store/apps/details?id=be.belfius.bw.android.mobile">
+        		   <img alt="BelfiusWeb Mobile" data-src="android_belfiusweb.png" src="lib/css/img/loader-large.gif">
+        		   <p class="app_popup_app_name">BelfiusWeb<br/>Mobile</p>
+        		   <p class="app_popup_app_description"></p>
+        		</div>
+        	   </td>
+        	  </tr>
+        	 </table>        		
+        	</div>        		  	
+        </div>
+
+        <div class="app_popup hidden app_popup_NL app_popup_iphone">
+        	<div data-lang='NL' class="close"></div>
+        	<div class="app_popup_title">Kent U onze apps?</div>
+        	<div class="app_popup_container">
+        	 <table>
+        	  <tr>
+        	   <td>
+        		<div class="app_popup_app" data-ios="bdm://" data-src="https://itunes.apple.com/be/app/new-belfius-direct-mobile/id572835707">
+        		   <img alt="New Belfius Direct Mobile" data-src="iphone_new_belfius_direct.jpg" src="lib/css/img/loader-large.gif">
+        		   <p class="app_popup_app_name">New Belfius Direct Mobile</p>
+        		   <p class="app_popup_app_description"></p>
+        		</div>
+        	   </td>
+        	   <td>
+        		<div class="app_popup_app hidden PWB" data-ios="bwm://" data-src="https://itunes.apple.com/be/app/belfiusweb-mobile/id735115850">
+        		   <img alt="BelfiusWeb Mobile" data-src="iphone_belfiusweb.jpg" src="lib/css/img/loader-large.gif">
+        		   <p class="app_popup_app_name">BelfiusWeb<br/>Mobile</p>
+        		   <p class="app_popup_app_description"></p>
+        		</div>
+        	   </td>
+        	  </tr>
+        	 </table>
+        	</div>        		
+        </div>
+        	
+        <div class="app_popup hidden app_popup_FR app_popup_iphone">
+        	<div data-lang='FR' class="close"></div>
+        	<div class="app_popup_title">Connaissez-vous nos apps?</div>
+        	<div class="app_popup_container">
+        	 <table>
+        	  <tr>
+        	   <td>
+        		<div class="app_popup_app" data-ios="bdm://"  data-src="https://itunes.apple.com/be/app/new-belfius-direct-mobile/id572835707">
+        		   <img alt="New Belfius Direct Mobile" data-src="iphone_new_belfius_direct.jpg" src="lib/css/img/loader-large.gif">
+        		   <p class="app_popup_app_name">New Belfius Direct Mobile</p>
+        		   <p class="app_popup_app_description"></p>
+        		</div>
+        	   </td>
+        	   <td>
+        		<div class="app_popup_app hidden PWB" data-ios="bwm://" data-src="https://itunes.apple.com/be/app/belfiusweb-mobile/id735115850">
+        		   <img alt="BelfiusWeb Mobile" data-src="iphone_belfiusweb.jpg" src="lib/css/img/loader-large.gif">
+        		   <p class="app_popup_app_name">BelfiusWeb<br/>Mobile</p>
+        		   <p class="app_popup_app_description"></p>
+        		</div>
+        	   </td>
+        	  </tr>
+        	 </table>
+        	</div>        		
+        </div>
+
+        <div class="app_popup hidden app_popup_NL app_popup_ipad">
+        	<div data-lang='NL' class="close"></div>
+        	<div class="app_popup_title">Kent U onze apps?</div>
+        	<div class="app_popup_container">
+        	 <table>
+        	  <tr>
+        	   <td>
+        		<div class="app_popup_app" data-ios="bdt://" data-src="https://itunes.apple.com/be/app/belfius-direct-tablet/id641560219">
+        		   <img alt="Belfius Direct Tablet" data-src="iphone_belfius_direct_tablet.jpg" src="lib/css/img/loader-large.gif">
+        		   <p class="app_popup_app_name">Belfius Direct Tablet</p>
+        		   <p class="app_popup_app_description"></p>
+        		</div>
+        	   </td>
+        	  </tr>
+        	 </table>
+        	</div>        		
+        </div>
+        	
+        <div class="app_popup hidden app_popup_FR app_popup_ipad">
+        	<div data-lang='FR' class="close"></div>
+        	<div class="app_popup_title">Connaissez-vous nos apps?</div>
+        	<div class="app_popup_container">
+        	 <table>
+        	  <tr>
+        	   <td>
+          		<div class="app_popup_app" data-ios="bdt://"  data-src="https://itunes.apple.com/be/app/belfius-direct-tablet/id641560219">
+        		   <img alt="Belfius Direct Tablet" data-src="iphone_belfius_direct_tablet.jpg" src="lib/css/img/loader-large.gif">
+        		   <p class="app_popup_app_name">Belfius Direct Tablet</p>
+        		   <p class="app_popup_app_description"></p>
+        		</div>
+        	   </td>
+        	  </tr>
+        	 </table>
+        	</div>        		
+        </div>        
+        
+        </div>
+        
+
+  		<noscript>
+			<div class="message-container" style="float:left; width:45%">
+				<h1>Foutmelding 'JavaScript'</h1>
+				Om optimaal gebruik te maken van de toepassingen op deze site, moet u JavaScript op uw computer activeren. (Javascript)
+			</div>
+			<div class="message-container" style="float:left; width:45%">
+				<h1>Erreur JavaScript</h1>
+				Pour pouvoir utiliser les applications de ce site de manière optimale, vous devez activer JavaScript sur votre ordinateur.(Javascript)
+			</div>
+		</noscript>
+	</body>
+</html>

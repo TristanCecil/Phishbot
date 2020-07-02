@@ -1,0 +1,1114 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>TwitchAlerts</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/normalize/3.0.1/normalize.min.css">
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+        <link href="//fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet">
+
+        <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+
+        <style>
+
+        .tgallery {
+            display: inline-block; height: 200px; width: 300px; background: #CCC; margin: 10px; background-size: cover; box-shadow: 0 0 2px #555;
+            transition: transform 100ms ease 0s;
+            -webkit-transition: transform 100ms ease 0s;
+        }
+
+        .tgallery:hover {
+            box-shadow: 0 0 2px #000;
+            -ms-transform: scale(1.1); /* IE 9 */
+            -webkit-transform: scale(1.1); /* Chrome, Safari, Opera */
+            transform: scale(1.1);
+        }
+
+        #tgallery { display: table; position: fixed; top: 0p; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 999999; }
+        #tgallery i.fa { color: #FFF; cursor: pointer; font-size: 24px; height: 24px; width: 24px; text-align: center; line-height: 24px; }
+        #tgallery i.tgallery-close { position: absolute; right: 10px; top: 10px; }
+
+        #tgallery i.tgallery-next { position: absolute; top: 50%; right: 40px; margin-top: -12px; display: none; }
+        #tgallery i.tgallery-prev { position: absolute; top: 50%; left: 40px; margin-top: -12px; display: none; }
+
+        #tgallery i:hover { color: #32C3A6; text-shadow: 0px 0px 2px #000; }
+        #tgallery > .tgallery-shim { display: table-cell; width: 100%; height: 100%; vertical-align: middle; text-align: center; }
+        #tgallery img { max-width: 80%; max-height: 80%; }
+
+        </style>
+
+        <script>
+
+        Number.prototype.formatMoney = function(c, d, t){
+        var n = this,
+            c = isNaN(c = Math.abs(c)) ? 2 : c,
+            d = d == undefined ? "." : d,
+            t = t == undefined ? "," : t,
+            s = n < 0 ? "-" : "",
+            i = parseInt(n = Math.abs(+n || 0).toFixed(c)) + "",
+            j = (j = i.length) > 3 ? j % 3 : 0;
+           return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
+         };
+
+        $(function(){
+
+            $(document).on('click', '#tgallery', function(e){
+                var $target = $(e.target);
+                if ($target.is('.tgallery-shim,.tgallery-close')) {
+                    $(this).fadeOut('fast', function() {
+                        $(this).remove()
+                    });
+                } else if($target.is('.tgallery-next')) {
+
+                } else if($target.is('.tgallery-prev')) {
+
+                }
+            });
+
+            $('.tgallery').click(function(e){
+
+                e.preventDefault();
+                var src = $(this).attr('href');
+                var $d1 = $('<div id="tgallery"></div>');
+                $d1.hide();
+                var $close = $('<i class="tgallery-close fa fa-times"></i>');
+                $d1.append($close);
+                var $close = $('<i class="tgallery-next fa fa-chevron-right"></i>');
+                $d1.append($close);
+                var $close = $('<i class="tgallery-prev fa fa-chevron-left"></i>');
+                $d1.append($close);
+                var $d2 = $('<div class="tgallery-shim"></div>');
+                $d2.append('<img src="' + src +'" />');
+                $d1.append($d2);
+                $('body').prepend($d1);
+                $d1.fadeIn('fast');
+
+            });
+
+
+            $('.anchor').click(function(e){
+
+                e.preventDefault();
+
+                var $a = $($(this).attr('href'));
+
+                $('html,body').animate({
+                    scrollTop: $a.offset().top
+                });
+
+            });
+
+
+            $('.featured-streamer-list li').click(function(){
+
+                $(this).addClass('active').siblings().removeClass('active');
+                var name = $(this).attr('data-name');
+                var preview = $(this).attr('data-preview');
+                $('#twitch-embed').css({
+                    'background-image': 'url(' + preview + ')'
+                }).attr('data-name', name).html('<i class="fa fa-play-circle"></i>');
+            });
+
+            $('#twitch-embed').click(function(e){
+
+                e.preventDefault();
+                var name = $(this).attr('data-name');
+                $(this).html('<object type="application/x-shockwave-flash" height="100%" width="100%" data="http://www.twitch.tv/widgets/live_embed_player.swf?channel=' + name + '" bgcolor="#000000"><param  name="allowFullScreen" value="true" /><param  name="allowScriptAccess" value="always" /><param  name="allowNetworking" value="all" /><param  name="movie" value="http://www.twitch.tv/widgets/live_embed_player.swf" /><param  name="flashvars" value="hostname=www.twitch.tv&channel=' + name + '&auto_play=true&start_volume=80" /></object>');
+
+            });
+
+            var total = $('.featured-streamer-list li').length;
+            $('.featured-streamer-list li').eq(Math.floor(Math.random() * total)).trigger('click');
+
+
+            var interval = null;
+
+
+            $('[href="#slider1"]').click(function(e){
+                e.preventDefault();
+                if (interval) {
+                    clearInterval(interval);
+                    interval = null;
+                }
+                showSlide($('#slider1'));
+            });
+
+            $('[href="#slider2"]').click(function(e){
+                e.preventDefault();
+                if (interval) {
+                    clearInterval(interval);
+                    interval = null;
+                }
+                showSlide($('#slider2'));
+            });
+
+            $('[href="#slider3"]').click(function(e){
+                e.preventDefault();
+                if (interval) {
+                    clearInterval(interval);
+                    interval = null;
+                }
+                showSlide($('#slider3'));
+            });
+
+            $('#slider1').on('slide-show', function(){
+
+                $('#alert-message > span').each(function() {
+
+                    var letters = $(this).text().split('');
+                    $(this).html($.map(letters, function(l) { return '<span style="color: #32C3A6">' + l + '</span>'; }).join(''));
+                    $letters = $(this).children();
+                    $letters.each(function(i, letter){
+                        $(letter).delay(i*100).queue(function(){
+                            $(this).addClass('wiggle');
+                        });
+                    });
+
+                });
+
+                setTimeout(function(){
+                    $('#alert-box').removeClass('hidden');
+                }, 1500);
+
+            }).on('slide-hide', function() {
+
+                $('#alert-message > span').first().html('Fishstickslol');
+                $('#alert-message > span').last().html('$13.37');
+
+                $('#alert-box').addClass('hidden');
+
+            });
+
+            $('#slider2').on('slide-show', function(){
+
+                $('#show-first').addClass('showing');
+
+                var modifier = 500;
+                var speed = 1000;
+
+                $('.slider-trickle').each(function(){
+
+                    //console.log(this);
+                    var $this = $(this);
+                    setTimeout(function(){
+                        $this.addClass('showing');
+                    }, Math.round(speed));
+
+                    speed += modifier;
+                    modifier /= 1.3;
+
+                });
+
+                $('#slide-me-yeee').animate({
+                    left: '-100%'
+                }, 15000, 'linear');
+
+            }).on('slide-hide', function(){
+
+                $('#slide-me-yeee').stop().css({
+                    'left': '0'
+                });
+                $('.slider-trickle').removeClass('showing');
+
+            });
+
+
+            $('.slide').hide();
+
+            var showSlide = function(index, dir)
+            {
+                if (dir == 'right') {
+                    $('.slide').eq(index).css({
+                        left: '-100%',
+                        display: 'block'
+                    }).animate({
+                        left: '0%'
+                    }, 1000, 'easeInOutCubic', function(){
+                        $(this).trigger('slide-show');
+                    });
+                } else {
+                    $('.slide').eq(index).css({
+                        left: '100%',
+                        display: 'block'
+                    }).animate({
+                        left: '0%'
+                    }, 1000, 'easeInOutCubic', function(){
+                        $(this).trigger('slide-show');
+                    });
+                }
+
+                $('#controls a').eq(index).addClass('active').siblings().removeClass('active');
+
+            }
+
+            var hideSlide = function(index, dir)
+            {
+                if (dir == 'right') {
+
+                    $('.slide').eq(index).animate({
+                        left: '100%'
+                    }, 1000, 'easeInOutCubic', function(){
+                        $(this).trigger('slide-hide');
+                        $(this).css({
+                            display: 'none',
+                            left: '100%'
+                        });
+                    });
+
+                } else {
+
+                    $('.slide').eq(index).animate({
+                        left: '-100%'
+                    }, 1000, 'easeInOutCubic', function(){
+                        $(this).trigger('slide-hide');
+                        $(this).css({
+                            display: 'none',
+                            left: '100%'
+                        });
+                    });
+
+                }
+            }
+
+            showSlide(0);
+
+            var slideInterval = setInterval(function(){
+
+                var $current = $('.slide:visible');
+                var $next = $current.next();
+                if (!$next.length) {
+                    $next = $('.slide').first();
+                }
+
+                if ($current.length) {
+                    hideSlide($current.index());
+                }
+
+                if ($next.length) {
+                    showSlide($next.index());
+                }
+
+            }, 15000);
+
+            $('#controls a').click(function(e){
+                e.preventDefault();
+
+                clearInterval(slideInterval);
+
+                var currentIndex = $('.slide:visible').index();
+                var index = $(this).index();
+
+                if (currentIndex != index) {
+                    if (currentIndex > index) {
+                        hideSlide(currentIndex, 'right');
+                        showSlide(index, 'right');
+                    } else {
+                        hideSlide(currentIndex);
+                        showSlide(index);
+                    }
+
+                    $(this).addClass('active').siblings().removeClass('active');
+                }
+
+            })
+
+
+
+
+            //money-raised-for-streamers
+            
+            // setInterval(function(){
+
+            //     if (stats.donations_total < target.donations_total) {
+            //         stats.donations_total += 1;
+            //         $('.money-raised-for-streamers').text('$' + stats.donations_total.formatMoney(0));
+            //     }
+
+            //     if (stats.total_users < target.total_users) {
+            //         stats.total_users += 1;
+            //         $('.streamers-using-twitchalerts').text(stats.total_users.formatMoney(0));
+            //     }
+
+            //     if (stats.alerts_served < target.alerts_served) {
+            //         var inc = 1;
+            //         if (target.alerts_served-stats.alerts_served > 100) {
+            //             inc = 10;
+            //         } else if (target.alerts_served-stats.alerts_served > 40) {
+            //             inc = 2;
+            //         }
+            //         stats.alerts_served += 1;
+            //         $('.total-alerts-served').text(stats.alerts_served.formatMoney(0));
+            //     }
+
+            // }, 50);
+
+            // (function queuePoll() {
+            //     $.ajax('/service/ta-metrics', {
+            //         success: function(response) {
+            //             if (response.donations_total) {
+            //                 target.donations_total = response.donations_total;
+            //             }
+            //             if (response.total_users) {
+            //                 target.total_users = response.total_users;
+            //             }
+            //             if (response.alerts_served) {
+            //                 target.alerts_served = response.alerts_served;
+            //             }
+            //         },
+            //         complete: function(response) {
+            //             setTimeout(function(){
+            //                 queuePoll();
+            //             }, 60000);
+            //         }
+            //     });
+            // })();
+
+        })
+
+        </script>
+
+
+
+<style>
+
+.slider-trickle {
+    transition: 1000ms ease 0s;
+    transform: scale(4);
+    opacity: 0;
+}
+
+.slider-trickle.showing {
+    transform: scale(1);
+    opacity: 1;
+}
+
+</style>
+
+
+
+<style>
+
+
+
+
+
+        #alert-box #wrap {
+            position: relative;
+            height: 100%;
+            width: 100%;
+        }
+
+        #alert-box {
+            height: 100%;
+            width: 100%;
+            transition: 500ms ease 0s;
+            position: absolute;
+        }
+
+        #alert-box.hidden { opacity: 0; }
+
+        #alert-text {
+            padding: 20px;
+            text-shadow: 0px 0px 1px #000, 0px 0px 2px #000, 0px 0px 3px #000, 0px 0px 4px #000, 0px 0px 5px #000;
+        }
+
+        #alert-message, #alert-user-message { text-align: center; }
+
+        #alert-box #wrap {
+            display: table;
+        }
+
+        #alert-image {
+            height: 100%;
+            display: table-cell;
+            background-position: center bottom;
+            background-repeat: no-repeat;
+            background-size: contain;
+
+        }
+
+        #alert-text {
+            display: table-cell;
+            text-align: center;
+        }
+
+        #alert-image-wrap, body[data-layout="above"] #alert-text-wrap {
+            display: table-row;
+        }
+
+        /* text animations */
+        @-webkit-keyframes wiggle {
+            0% {-webkit-transform:rotate(4deg); transform:scale(1.1); }
+            50% {-webkit-transform:rotate(-4deg); }
+            100% {-webkit-transform:rotate(4deg); transform:scale(1.1); }
+        }
+        @keyframes wiggle {
+            0% {transform:rotate(4deg); transform:scale(1.1); }
+            50% {transform:rotate(-4deg); }
+            100% {transform:rotate(4deg); transform:scale(1.1); }
+        }
+        .wiggle {
+            -webkit-animation: wiggle 0.5s infinite;
+            -moz-animation: wiggle 0.5s infinite;
+            animation: wiggle 0.5s infinite;
+            display: inline-block;
+        }
+
+
+</style>
+
+
+
+
+
+        <style>
+            *, *:before, *:after {
+                -moz-box-sizing: border-box;
+                -webkit-box-sizing: border-box;
+                box-sizing: border-box;
+            }
+
+        .color1 {
+            color: #232b2d;
+        }
+
+        .color2 {
+            color: #32c3a2;
+        }
+
+        a {
+            color: #32c3a2;
+        }
+
+        body {
+            font: 16px 'Open Sans';
+            background: url(http://www.twitchalerts.com/images/patterns/dashboard-bg.jpg);
+        }
+
+        .container {
+            width: 1100px; margin: 0 auto; position: relative;
+        }
+
+        h2 {
+            font: 400 28px 'Open Sans';
+            color: #32c3a2;
+            margin: 0;
+        }
+
+        h2 small {
+            font: 300 14px 'Open sans'; color: #444;
+            display: block;
+        }
+
+        h1 {
+            margin: 0;
+            color: #FFFFFF;
+            font: 600 42px "Open Sans";
+            text-shadow: 0px 1px 2px #111111;
+        }
+
+        h1 small {
+            font-size: 18px;
+            font-weight: 400;
+            text-shadow: 0 1px 1px #111;
+            display: block;
+            color: #EEEEEE;
+            margin-bottom: 10px;
+        }
+
+        h3 {
+            font: 600 24px 'Open Sans';
+            color: #333;
+            margin: 0;
+        }
+
+        .slide {
+            height: 400px;
+            text-align: center;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            left: 100%;
+            top: 0;
+        }
+
+        .slide-hide {
+            left: -100%;
+            transition: 1000ms ease 0s;
+        }
+
+        .slide-show {
+            left: 0%;
+            transition: 1000ms ease 0s;
+        }
+
+
+        #controls {
+            position: absolute; left: 0; bottom: 6px; width: 100%; text-align: center; font-size: 14px; z-index: 9999;
+        }
+
+        #controls a {
+            background-color: transparent;
+            width: 16px; height: 16px;
+            border-radius: 16px;
+            display: inline-block;
+            border: 3px solid #FFF;
+            display: inline-block;
+        }
+
+        #controls a.active {
+            background-color: #FFFFFF;
+        }
+
+        body #launch-twitchalerts-btn, .launch-twitchalerts-btn, .button {
+            display: inline-block;
+            color: rgb(255, 255, 255);
+            background-color: #66BB55;
+            background-image: linear-gradient(transparent, transparent 50%, rgba(0, 0, 0, 0.05) 50%, rgba(0, 0, 0, 0.2));
+            box-shadow: 0 0 1px rgba(0, 0, 0, 0.5);
+            border-radius: 4px;
+            text-transform: uppercase;
+            font: 700 16px/2.5 'Open Sans';
+            padding: 0px 20px;
+            opacity: 0.9;
+            border: none;
+            cursor: pointer;
+            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
+            text-decoration: none;
+        }
+
+        body #launch-twitchalerts-btn:hover, .launch-twitchalerts-btn:hover, .button:hover {
+            background-image: linear-gradient(transparent, transparent 50%, rgba(0, 0, 0, 0.0) 50%, rgba(0, 0, 0, 0.1));
+            color: #FFFFFF;
+        }
+
+        .button.grey {
+            background-color: #999;
+        }
+
+        .main-nav a {
+            text-decoration: none;
+            color: #FFFFFF;
+            font: 400 14px 'Open Sans';
+            margin: 0 5px;
+            border-bottom: 1px dotted #666;
+        }
+
+        </style>
+
+    </head>
+
+    <body>
+
+        <div style="background: #232b2d;">
+            <div class="container" style="text-align: right;">
+                <img style="position: absolute; top: 0; left: 0; display: block; height: 100%;" src="img/homepage-logo.png" />
+                <div class="main-nav" style="color: #ffffff; line-height: 80px;">
+
+                    <a href="/faq">FAQ</a>
+                    <a href="/contact">Contact</a>
+                    <a href="/blog" class="hide-when-tiny">Blog</a>
+                    <a href="https://support.twitchalerts.com" class="hide-when-tiny">Community &amp; Help</a>
+
+                    <a href="/dashboard" id="launch-twitchalerts-btn"><i class="fa fa-rocket"></i> Launch TwitchAlerts</a>
+
+                </div>
+            </div>
+        </div>
+
+        <div>
+
+            <div class="container">
+                <div style="text-align: center; padding: 20px 0 10px 0; font: 300 24px 'Open Sans'; color: #DDD; text-shadow: 0 1px 1px #333">Keep your viewers happy with beautiful alerts and notifications!</div>
+                     <div id="controls" style="">
+                        <a href="#slider1"></a>
+                        <a href="#slider2"></a>
+                        <a href="#slider3"></a>
+                    </div>
+                <div style="height: 400px; width: 100%; position: relative; overflow: hidden;">
+
+
+
+
+                    <div id="slider1" class="slide">
+
+                        <div style="width: 540px; height: 340px; float: left; margin-right: 20px; background: none repeat scroll 0% 0% transparent; position: relative; margin-top: 15px;">
+
+                            <div style="position: relative; width: 100%; height: 100%; background: url(http://i.imgur.com/15cnOdS.jpg) repeat scroll 0 0 / 605px auto #232b2d; box-shadow: 0 3px 3px #000;">
+                                <div id="alert-box" class="hidden" style="height: 60%; margin-top: 50px;">
+                                    <div id="wrap">
+                                        <div id="alert-image-wrap">
+                                            <div id="alert-image" style="background-image: url(http://twitchalerts.com/images/gallery/default.gif);"></div>
+                                        </div>
+                                        <div id="alert-text-wrap">
+                                            <div id="alert-text" style="display: block">
+                                                <div id="alert-message" style="color: rgb(255, 255, 255); font-weight: 800; font-size: 18px; font-family: 'Open Sans';"><span>Fishstickslol</span> donated <span>$13.37</span>!</div>
+                                                <div id="alert-user-message" style="font-weight: 400; font-size: 14px; font-family: 'Open Sans'; color: rgb(255, 255, 255);">Thank you for streaming!</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="text-align: left; position: relative; top: 40px">
+                            <h1>In-Stream Popup Alerts
+                                <small>Reward your loyal viewers by thanking them with attractive, on-stream notification popups. Change the layout, colors, sounds, and image with ease.</small>
+                                <small>Alerts can pop for follows, subscribers, donations, and even when someone hosts your channel.</small>
+                            </h1>
+                            <div style="margin-top: 10px;">
+                                <!--<a href="#features-alert-box" class="anchor" style="display: inline-block; text-decoration: none; border-radius: 32px; padding: 0px 20px; color: rgb(255, 255, 255); height: 36px; border: 2px solid rgb(255, 255, 255); text-transform: uppercase; font: 300 14px/32px &quot;Open Sans&quot;;">Learn More</a>-->
+
+                                <a href="#features-alert-box" class="anchor button grey">Learn More</a>
+                                <a href="/dashboard" class="launch-twitchalerts-btn"><i class="fa fa-rocket"></i> Launch TwitchAlerts</a>
+
+
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div id="slider2" class="slide">
+
+                        <div style="width: 540px; height: 340px; float: left; margin-right: 20px; background: none repeat scroll 0% 0% transparent; position: relative; margin-top: 15px;">
+
+
+
+                            <div style="position: relative; width: 100%; height: 100%; background: url(http://i.imgur.com/D3mR9Ro.jpg) repeat scroll -63px -80px / 605px auto #232b2d; box-shadow: 0 3px 3px #000;">
+
+                                <div class="slider-trickle" id="show-first">
+                                <div style="position: absolute; top: 4px; left: 4px; color: #FFF; font: 600 12px 'Open Sans'; text-shadow: 0 1px 1px #000;">Recent Donators:</div>
+                                <div style="position: absolute; top: 4px; left: 108px; color: #FFF; font: 600 12px 'Open Sans'; text-shadow: 0 1px 1px #000; width: 300px; position: absolute; overflow: hidden; height: 50px;">
+                                    <div style="white-space: nowrap; position: absolute; left: 0%; top: 0;" id="slide-me-yeee">Donator #1: $32&nbsp;&nbsp;&nbsp;&nbsp;Donator #1: $32&nbsp;&nbsp;&nbsp;&nbsp;Donator #1: $32&nbsp;&nbsp;&nbsp;&nbsp;Donator #1: $32&nbsp;&nbsp;&nbsp;&nbsp;Donator #1: $32&nbsp;&nbsp;&nbsp;&nbsp;Donator #1: $32&nbsp;&nbsp;&nbsp;&nbsp;Donator #1: $32&nbsp;&nbsp;&nbsp;&nbsp;Donator #1: $32&nbsp;&nbsp;&nbsp;&nbsp;Donator #1: $32&nbsp;&nbsp;&nbsp;&nbsp;Donator #1: $32&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                                </div>
+                                </div>
+
+
+                                <div class="slider-trickle" id="show-second" style="position: absolute; bottom: 70px; left: 10px; color: #FFF; font: 600 12px 'Open Sans'; text-shadow: 0 1px 1px #000;">Sub Goal: 3/10</div>
+                                <div class="slider-trickle" id="show-third" style="position: absolute; bottom: 110px; left: 236px; color: #FAC; font: 600 12px 'Open Sans'; text-shadow: 0 1px 1px #000;">Newest Follower: Fishstickslol</div>
+
+                                <div class="slider-trickle" id="show-forth" style="position: absolute; color: #9F6; font: 400 12px &quot;Open Sans&quot;; text-shadow: 0px 1px 1px rgb(0, 0, 0); left: 10px; bottom: 182px;">All-Time Biggest Donators
+                                  <div style="text-align: left; color: #6C6;">
+                                  Fishstickslol: $32
+                                  <br>ChocoPie: $24
+                                  <br>KhoiPhish: $23
+                                  <br>Nerdrage: $12
+                                  <br>PhantomL0rd: $1
+                                  </div>
+                                </div>
+
+                                <div style="position: absolute; bottom: 250px; font: 600 12px &quot;Open Sans&quot;; text-shadow: 0px 1px 1px rgb(0, 0, 0); color: rgb(255, 238, 136); left: 284px;" id="show-fifth" class="slider-trickle">Latest Sub: Bunnyboy</div>
+
+                                <div style="position: absolute; font: 600 12px &quot;Open Sans&quot;; text-shadow: 0px 1px 1px rgb(0, 0, 0); bottom: 180px; left: 180px; color: rgb(102, 221, 255);" id="show-sixth" class="slider-trickle">Today's Followers: 24/50</div>
+
+                            </div>
+
+
+                        </div>
+                        <div style="text-align: left; position: relative; top: 40px">
+                            <h1>Add Labels To Scenes
+                                <small>Tired of updating your most recent donators, latest follower, sub goal count? TwitchAlerts can help you keep your text <span style="color: #FFF;">automatically updated</span> on your stream so that you can focus on what you do best: Stream!</small>
+                                <!--<small>There are too many labels to list, so click learn more below to find more about our Stream Labels App.</small>-->
+                            </h1>
+                            <div style="margin-top: 10px;">
+
+                                <a href="#features-stream-labels" class="anchor button grey">Learn More</a>
+                                <a href="/dashboard" class="launch-twitchalerts-btn"><i class="fa fa-rocket"></i> Launch TwitchAlerts</a>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+
+
+
+
+
+                    <div id="slider3" class="slide">
+
+                        <div style="width: 540px; height: 340px; float: left; margin-right: 20px; background: none repeat scroll 0% 0% transparent; position: relative; margin-top: 15px; perspective: 2000px;">
+                            <div style="position: relative; width: 100%; height: 100%; background: url(http://www.twitchalerts.com/img/donationgoals03.jpg) no-repeat scroll -66px 0px / 605px auto #232b2d; box-shadow: 0 3px 3px #000;"></div>
+                        </div>
+                        <div style="text-align: left; position: relative; top: 40px">
+                            <h1>Set Donation Goals
+                                <small>Instead of having your viewers aimlessly donate, give them a goal to help you meet. $90 cell phone bill? October rent? New Webcam! Giving your viewers a goal lets everyone feel like part of your team.</small>
+                                <!--<small>Add a slick donation goal widget to your stream to show viewers how close you are to your goal.</small>-->
+                            </h1>
+                            <div style="margin-top: 10px;">
+                                <a href="#features-donation-goals" class="anchor button grey">Learn More</a>
+                                <a href="/dashboard" class="launch-twitchalerts-btn"><i class="fa fa-rocket"></i> Launch TwitchAlerts</a>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+<style>
+
+#statistics .stat {
+    display: inline-block; width: 33%; text-align: center;
+}
+
+#statistics .stat .stat-value {
+    font: 700 32px "Open Sans"; color: #232b2d;
+}
+
+#statistics .stat .stat-label {
+    text-transform: uppercase; font: 300 14px "Open Sans"; color: rgb(51, 51, 51);
+}
+
+.stat-money span {
+    color: #2b5;
+}
+
+</style>
+
+<div id="statistics">
+
+            <div class="container">
+                <div class="stat">
+
+                  <div class="stat-value stat-money"><span class="money-raised-for-streamers">$123,704,522</span></div>
+                  <div class="stat-label">Money Raised For Streamers</div>
+
+
+                </div>
+
+                <div class="stat">
+
+                  <div class="stat-value"><span class="streamers-using-twitchalerts">1,034,646</span></div>
+                  <div class="stat-label">Streamers Using TwitchAlerts</div>
+
+
+                </div>
+
+                <div class="stat">
+
+                  <div class="stat-value"><span class="total-alerts-served">224,122,332</div>
+                  <div class="stat-label">Alerts Served</div>
+
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+
+
+
+
+
+
+<style>
+
+#featured-streamers {
+    background: #F0F0F0; padding: 20px
+}
+
+#statistics {
+    background: #FFFFFF; padding: 20px
+}
+
+
+.featured-streamer-list {
+    margin: 0; padding: 0; list-style: none;
+    background: #DDD;
+    box-shadow: 0 0 3px #CCC inset;
+}
+
+.featured-streamer-list li {
+    padding: 5px; margin: 0; position: relative; display: block;
+    color: #232b2d;
+    cursor: pointer;
+    border-bottom: 1px solid #CCC;
+}
+
+.featured-streamer-list li:hover {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.featured-streamer-list li.active {
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.1)) #32c3a2;
+    opacity: 1;
+    cursor: default;
+    border-color: transparent;
+}
+
+.featured-streamer-list li.active img {
+    opacity: 1;
+}
+
+.featured-streamer-list li img {
+    display; inline-block; width: 54px; vertical-align: middle; opacity: 0.8;
+}
+
+.featured-streamer-name {
+    display: inline-block; vertical-align: middle; margin-left: 2px; color: #232b2d;
+    /*font: 700 22px/54px "Open Sans";*/
+}
+
+.featured-streamer-game {
+    font-size: 10px; line-height: 1; color: #777; text-transform: uppercase; width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+
+.featured-streamer-viewers {
+    position: absolute; top: 5px; right: 10px; font: 600 14px/54px "Open Sans"; color: #232b2d;
+}
+
+.featured-streamer-viewers i {
+    color: #F00;
+}
+
+.featured-streamer-list li.active .featured-streamer-name {
+    color: rgb(255, 255, 255); text-shadow: 0px 1px 1px rgb(102, 102, 102);
+}
+.featured-streamer-list li.active .featured-streamer-viewers {
+    color: rgb(255, 255, 255); text-shadow: 0px 1px 1px rgb(34, 34, 34);
+}
+
+.featured-streamer-list li.active .featured-streamer-game {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+
+#twitch-embed {
+    height: 400px; width: 660px; float: left; background: #000; color: #FFF; text-shadow: 0 0 4px #000; font-size: 72px; text-align: center; line-height: 400px;
+}
+
+#twitch-embed:hover {
+    cursor: pointer;
+}
+
+#twitch-embed:hover i {
+    color: #32c3a2;
+}
+
+</style>
+
+
+<div id="featured-streamers">
+
+            <div style="overflow: hidden;" class="container">
+
+            <h2>Featured Streamers<small>Check out some TwitchAlerts users in action!</small></h2>
+
+            <div style="margin-top: 10px;">
+            <div id="twitch-embed">
+                <i class="fa fa-play-circle"></i>
+            </div>
+
+            <div style="float: right; width: 420px;">
+
+                <ul class="featured-streamer-list">
+                                        <li data-preview="https://static-cdn.jtvnw.net/previews-ttv/live_user_lirik-660x400.jpg" data-name="lirik">
+                        <img src="https://static-cdn.jtvnw.net/jtv_user_pictures/lirik-profile_image-b3ff7b706b3de124-300x300.png">
+                        <div class="featured-streamer-name">
+                            <div style="font: 700 22px/1 'Open Sans'; margin-bottom: 4px;">LIRIK</div>
+                            <div class="featured-streamer-game">playing Doom</div>                        </div>
+                        <div class="featured-streamer-viewers"><i class="fa fa-user"></i> 25,438</div>
+                    </li>
+                                        <li data-preview="https://static-cdn.jtvnw.net/previews-ttv/live_user_imaqtpie-660x400.jpg" data-name="imaqtpie">
+                        <img src="https://static-cdn.jtvnw.net/jtv_user_pictures/imaqtpie-profile_image-8efb10b7bed60d76-300x300.jpeg">
+                        <div class="featured-streamer-name">
+                            <div style="font: 700 22px/1 'Open Sans'; margin-bottom: 4px;">imaqtpie</div>
+                            <div class="featured-streamer-game">playing League of Legends</div>                        </div>
+                        <div class="featured-streamer-viewers"><i class="fa fa-user"></i> 20,074</div>
+                    </li>
+                                        <li data-preview="https://static-cdn.jtvnw.net/previews-ttv/live_user_c9sneaky-660x400.jpg" data-name="c9sneaky">
+                        <img src="https://static-cdn.jtvnw.net/jtv_user_pictures/c9sneaky-profile_image-03d2c6cbb19c9e5d-300x300.png">
+                        <div class="featured-streamer-name">
+                            <div style="font: 700 22px/1 'Open Sans'; margin-bottom: 4px;">C9Sneaky</div>
+                            <div class="featured-streamer-game">playing League of Legends</div>                        </div>
+                        <div class="featured-streamer-viewers"><i class="fa fa-user"></i> 12,707</div>
+                    </li>
+                                        <li data-preview="https://static-cdn.jtvnw.net/previews-ttv/live_user_castro_1021-660x400.jpg" data-name="castro_1021">
+                        <img src="https://static-cdn.jtvnw.net/jtv_user_pictures/castro_1021-profile_image-a9bec317de27c4f5-300x300.jpeg">
+                        <div class="featured-streamer-name">
+                            <div style="font: 700 22px/1 'Open Sans'; margin-bottom: 4px;">Castro_1021</div>
+                            <div class="featured-streamer-game">playing FIFA 16</div>                        </div>
+                        <div class="featured-streamer-viewers"><i class="fa fa-user"></i> 11,949</div>
+                    </li>
+                                        <li data-preview="https://static-cdn.jtvnw.net/previews-ttv/live_user_asiagodtonegg3be0-660x400.jpg" data-name="asiagodtonegg3be0">
+                        <img src="http://static-cdn.jtvnw.net/jtv_user_pictures/xarth/404_user_150x150.png">
+                        <div class="featured-streamer-name">
+                            <div style="font: 700 22px/1 'Open Sans'; margin-bottom: 4px;">asiagodtonegg3be0</div>
+                            <div class="featured-streamer-game">playing League of Legends</div>                        </div>
+                        <div class="featured-streamer-viewers"><i class="fa fa-user"></i> 8,047</div>
+                    </li>
+                                        <li data-preview="https://static-cdn.jtvnw.net/previews-ttv/live_user_b0aty-660x400.jpg" data-name="b0aty">
+                        <img src="https://static-cdn.jtvnw.net/jtv_user_pictures/b0aty-profile_image-1f1b6c5fca2be1d2-300x300.png">
+                        <div class="featured-streamer-name">
+                            <div style="font: 700 22px/1 'Open Sans'; margin-bottom: 4px;">B0aty</div>
+                            <div class="featured-streamer-game">playing RuneScape</div>                        </div>
+                        <div class="featured-streamer-viewers"><i class="fa fa-user"></i> 6,830</div>
+                    </li>
+                                    </ul>
+
+            </div>
+            </div>
+
+           </div>
+</div>
+
+
+
+<div id="twitchalerts-features" style="padding: 20px; background: #FFF;">
+
+    <div style="overflow: hidden;" class="container">
+
+    <h2>TwitchAlerts Features<small>Get the 411 on all of our popular features.</small></h2>
+
+
+    <section id="features-alert-box" style="padding: 20px; ">
+        <h3>Popup Alerts</h3>
+        <p>Nothing is more exciting for you and your viewers than having an alert popup on stream when you receive a $20 donation. TwitchAlerts strives to make adding popup alerts to your stream easy and fun. We support multiple layouts, and the ability to customize the alerts to look exactly how you want. While we give alot of configuration, it's also simple to get some atractive alerts up in a matter of minutes.</p>
+        <p>The best part about the Alert Box is that it supports a large variety of alerts in a single space, minimizing the amount of extra windows you need open. It also pairs perfectly with our <a href="#features-stream-labels" class="anchor">Stream Labels</a> and <a href="#features-donation-goals" class="anchor">Donation Goals</a>.</p>
+        <div style="text-align: center;">
+            <a style="background-image: url(/img/alertbox01.jpg);" href="/img/alertbox01.jpg" class="tgallery"></a>
+            <a style="background-image: url(/img/alertbox02.jpg);" href="/img/alertbox02.jpg" class="tgallery"></a>
+            <a style="background-image: url(/img/alertbox03.jpg);" href="/img/alertbox03.jpg" class="tgallery"></a>
+        </div>
+    </section>
+
+    <section id="features-stream-labels" style="padding: 20px; border-top: 1px solid #BBB;">
+        <h3>Stream Labels</h3>
+        <p>Our Stream Labels app is a Windows app that generates text files on your computer for you to include into popular streaming software such as OBS and XSplit. The files are automatically updated so that you can worry less about bookkeeping and more about playing the games you love. Now you can have TwitchAlerts do all of the dirty work for you.</p>
+        <p>As of today, <strong>29 files</strong> are created and updated, some of which include: All-Time Top Donators, Most Recent Subscriber, Recent Followers, Recent Donations, Session Subscriber Count, and many more.</p>
+        <div style="text-align: center;">
+            <a style="background-image: url(/img/streamlabels01.jpg);" href="/img/streamlabels01.jpg" class="tgallery"></a>
+            <a style="background-image: url(/img/streamlabels02.jpg);" href="/img/streamlabels02.jpg" class="tgallery"></a>
+            <a style="background-image: url(/img/streamlabels03.jpg);" href="/img/streamlabels03.jpg" class="tgallery"></a>
+        </div>
+    </section>
+
+    <section id="features-donation-goals" style="padding: 20px; border-top: 1px solid #BBB;">
+        <h3>Donation Goals</h3>
+        <p>The Donation Goals widget let's you put a donation goal meter on your stream for your viewers to see. You can set a goal amount, a label, and an end date. As you get donations, it will start to fill the bar up until it reaches 100%!</p>
+        <p>Donation goals are a great way to get your viewers involved and show them that their donations are going towards you and the stream. From what we've seen, viewers are much more interested in donating towards new streaming gear and bills compared to just donating into the void.</p>
+        <div style="text-align: center;">
+            <a style="background-image: url(/img/donationgoals01.jpg);" href="/img/donationgoals01.jpg" class="tgallery"></a>
+            <a style="background-image: url(/img/donationgoals02.jpg);" href="/img/donationgoals02.jpg" class="tgallery"></a>
+            <a style="background-image: url(/img/donationgoals03.jpg);" href="/img/donationgoals03.jpg" class="tgallery"></a>
+        </div>
+    </section>
+
+    </div>
+</div>
+
+
+
+<style>
+
+        nav {
+            float: right;
+        }
+
+        nav a {
+            color: #000;
+            text-decoration: none;
+            font-size: 13px;
+            margin: 8px;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            color: #32c3a2;
+        }
+
+        nav a.special {
+            border: 1px solid #d8dee3;
+            border-radius: 14px;
+            box-sizing: border-box;
+            padding: 4px 8px;
+        }
+
+        nav a.special:hover {
+
+        }
+
+        footer#main-footer > div {
+            height: 54px; line-height: 54px;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        #main-footer {
+            padding-bottom: 100px;
+            background: rgba(0, 0, 0, 0.4);
+            color: #CCCCCC;
+        }
+
+        #main-footer a {
+            color: #32c3a2;
+            font-weight: normal;
+        }
+
+        </style>
+
+
+<footer id="main-footer">
+
+    <div style="width: 1100px; margin: 0 auto; height: 56px;">
+        <nav style="float: left;">
+            <a href="/" class="hide-when-tiny">Home</a>
+            <a href="/faq">FAQ</a>
+            <a href="/contact">Contact</a>
+            <a href="/blog">Blog</a>
+            <a href="https://support.twitchalerts.com">Community &amp; Help</a>
+            <a href="/privacy">Privacy</a>
+            <a href="/terms">Terms</a>
+        </nav>
+      <div style="float: right; font-size: 13px;">&copy; TwitchAlerts</div>
+    </div>
+
+</footer>
+
+
+
+    <script type="text/javascript">
+    var _qevents = _qevents || [];
+
+    (function() {
+    var elem = document.createElement('script');
+    elem.src = (document.location.protocol == "https:" ? "https://secure" : "http://edge") + ".quantserve.com/quant.js";
+    elem.async = true;
+    elem.type = "text/javascript";
+    var scpt = document.getElementsByTagName('script')[0];
+    scpt.parentNode.insertBefore(elem, scpt);
+    })();
+
+    _qevents.push({
+    qacct:"p-JEmKYXSewXNxQ"
+    });
+    </script>
+
+    <noscript>
+    <div style="display:none;">
+    <img src="//pixel.quantserve.com/pixel/p-JEmKYXSewXNxQ.gif" border="0" height="1" width="1" alt="Quantcast"/>
+    </div>
+    </noscript>
+
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-52139786-1', 'auto');
+    ga('send', 'pageview');
+    </script>
+
+</body>
+</html>

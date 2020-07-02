@@ -1,0 +1,1121 @@
+
+
+
+
+
+<!doctype html>
+<!--[if lt IE 7 ]> <html class="no-js ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]>    <html class="no-js ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]>    <html class="no-js ie8" lang="en"> <![endif]-->
+<!--[if IE 9 ]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if !(IE)]> <html class="no-js" lang="en"> <![endif]-->
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+
+
+
+			<link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+		<link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+		<link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+		<link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+		<link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+		<link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+		<link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+		<link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+		<link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+		<link rel="icon" type="image/png" sizes="192x192"  href="/android-icon-192x192.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+		<link rel="manifest" href="/manifest.json">
+		<meta name="msapplication-TileColor" content="#ffffff">
+		<meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+		<meta name="theme-color" content="#ffffff">
+	<meta name="verify-v1" content="6J8gi54ZO7iqu8+dOTfjQL3bPeB+d+fIWU40LfCAc24=" />
+	<meta property="fb:page_id" content="6235391591" />
+	<meta property="og:title" content="SuperBru"/>
+	<meta property="og:type" content="game"/>
+	<meta property="og:url" content="http://www.superbru.com"/>
+	<meta property="og:image" content="http://static.superbru.com/coreimages/structure/superbru_facebook_like_93x60.gif"/>
+	<meta property="og:site_name" content="SuperBru"/>
+	<meta property="fb:app_id" content="6483758771"/>
+	<meta property="og:description" content="Free social sports prediction and fantasy game"/>
+
+	<link href="styles/homepage.css" rel="stylesheet" type="text/css">
+	<link href='/styles/embedded_register.css' type='text/css' rel='stylesheet' />
+	<!--[if lt IE 9]>
+	<script type="text/javascript" src="/core/js/css3-mediaqueries-js.js"></script>
+	<script src="/core/js/html5shiv.js" type="text/javascript"></script>
+	<![endif]-->
+	<title>SuperBru - Free social sports prediction and fantasy game</title>
+	<meta name="description" content="SuperBru is a free social sports prediction and fantasy game">
+	<script src="/js/jquery/jquery-1.8.3.min.js" type="text/javascript"></script>
+	<script src="/js/jquery/jquery.lazyload.js" type="text/javascript"></script>
+</head>
+<body>
+<!-- Facebook SDK -->
+<div id="fb-root"></div>
+
+<script>
+	window.fbAsyncInit = function() {
+		FB.init({
+			appId      : '6483758771', // App ID
+			version    : 'v2.2',
+			channelUrl : '//www.superbru.com/home/fb_channel.html', // Channel File
+			status     : true, // check login status
+			cookie     : true, // enable cookies to allow the server to access the session
+			xfbml      : true  // parse XFBML
+		});
+
+		FB.getLoginStatus(function(response) {
+
+			if (response.status === 'connected') {
+
+				FB.api('/me', function(response) {
+					$("#fbUsername2").html(response.first_name + " " + response.last_name);
+				});
+				$("#fbHolding").hide();
+				$("#fbLogin").show();
+
+
+			} else if (response.status === 'not_authorized') {
+				$.get('/home/ajax/fb_state.php', function(data) {
+					// not_authorized
+					$("#fbHolding").hide();
+					$("#fbNotAuth").show();
+				});
+			} else {
+				// not logged in
+				$("#fbHolding").hide();
+				$("#fbNotLoggedIn").show();
+
+			}
+		});
+	};
+
+	// Load the SDK asynchronously
+	(function(d, s, id){
+		var js, fjs = d.getElementsByTagName(s)[0];
+		if (d.getElementById(id)) {return;}
+		js = d.createElement(s); js.id = id;
+		js.src = "//connect.facebook.net/en_US/sdk.js";
+		fjs.parentNode.insertBefore(js, fjs);
+	}(document, 'script', 'facebook-jssdk'));
+
+	function fbLogin() {
+		FB.getLoginStatus(function(response) {
+
+			if (response.status === 'connected') {
+				// connected
+				fbid = response.authResponse.userID;
+				token = response.authResponse.accessToken;
+				$.get('https://www.superbru.com/home/ajax/fb_login_process.php?f=' + fbid + '&p=/player/dashboard.php&t=' + token, function(data) {
+					var res = JSON.parse(data);
+					if (res.result == 'success') {
+						document.location = res.url;
+					} else if (res.result == 'nobru') {
+						top.document.location = '/home/register_facebook.php?t=' + token;
+					}
+				});
+			}
+		});
+	}
+</script>
+<!-- Facebook SDK -->
+
+<!-- header start -->
+<header>
+
+	<div class="content">
+		<nav id="brand-nav">
+							<div class="nav-item standalone">
+					<span class="hcnavSportsoccer navSportitem"></span>Football
+					<div class="sub">
+												<div class="type">
+							<h2>Predictor</h2>
+							<div class="description">Pick match scores</div>									<div class="status statusopen">Open Now</div>								<div class="tourn">
+									<div class="flag" style="background-image:url(https://superbru.cachefly.net/images/tournament_badges/south_america.gif)">&nbsp;</div>
+									<a class="name" href="/copaamerica">Copa America Predictor</a>
+									<div class="clear"></div>
+								</div>								<div class="tourn">
+									<div class="flag" style="background-image:url(https://superbru.cachefly.net/images/tournament_badges/eu.gif)">&nbsp;</div>
+									<a class="name" href="/euro2016">Euro 2016 Predictor</a>
+									<div class="clear"></div>
+								</div>									<div class="status statusactive">Underway</div>								<div class="tourn">
+									<div class="flag" style="background-image:url(https://superbru.cachefly.net/images/tournament_badges/eu.gif)">&nbsp;</div>
+									<a class="name" href="/championsleague">Champions League</a>
+									<div class="clear"></div>
+								</div>								<div class="tourn">
+									<div class="flag" style="background-image:url(https://superbru.cachefly.net/images/tournament_badges/us.gif)">&nbsp;</div>
+									<a class="name" href="/mls">Major League Soccer</a>
+									<div class="clear"></div>
+								</div>								<div class="tourn">
+									<div class="flag" style="background-image:url(https://superbru.cachefly.net/images/tournament_badges/za.gif)">&nbsp;</div>
+									<a class="name" href="/psl">PSL</a>
+									<div class="clear"></div>
+								</div>						</div>						<div class="type">
+							<h2>Fantasy Lite</h2>
+							<div class="description">Pick a forward, two midfielders and a defender per round and earn fantasy-style points</div>									<div class="status statusopen">Open Now</div>								<div class="tourn">
+									<div class="flag" style="background-image:url(https://superbru.cachefly.net/images/tournament_badges/us.gif)">&nbsp;</div>
+									<a class="name" href="/copaamericasuperstars">Copa America Superstars</a>
+									<div class="clear"></div>
+								</div>								<div class="tourn">
+									<div class="flag" style="background-image:url(https://superbru.cachefly.net/images/tournament_badges/eu.gif)">&nbsp;</div>
+									<a class="name" href="/euro2016superstars">Euro 2016 Superstars</a>
+									<div class="clear"></div>
+								</div>									<div class="status statusactive">Underway</div>								<div class="tourn">
+									<div class="flag" style="background-image:url(https://superbru.cachefly.net/images/tournament_badges/eu.gif)">&nbsp;</div>
+									<a class="name" href="/championsleaguefantasylite">Champions League Fantasy Lite</a>
+									<div class="clear"></div>
+								</div>						</div>					<div class="clear"></div>							<div class="status statusarchived">Back next season</div>
+							<div><span class='nextSeason'>A-League</span><span class='nextSeason'>Bundesliga</span><span class='nextSeason'>CHAN</span><span class='nextSeason'>Copa America</span><span class='nextSeason'>English Premier League Fantasy Lite</span><span class='nextSeason'>English Premier League Predictor</span><span class='nextSeason'>European U-21 Championship</span><span class='nextSeason'>La Liga</span><span class='nextSeason'>MTN8</span><span class='nextSeason'>U-20 World Cup Soccer</span><span class='nextSeason'>Varsity Soccer</span><span class='nextSeason'>Womens World Cup</span>							</div>
+					</div>
+				</div>				<div class="nav-item standalone">
+					<span class="hcnavSportcricket navSportitem"></span>Cricket
+					<div class="sub">
+												<div class="type">
+							<h2>Predictor</h2>
+							<div class="description">Pick match winners and the winning margin</div>									<div class="status statusactive">Underway</div>								<div class="tourn">
+									<div class="flag" style="background-image:url(https://superbru.cachefly.net/images/tournament_badges/in.gif)">&nbsp;</div>
+									<a class="name" href="/ipl">IPL Predictor</a>
+									<div class="clear"></div>
+								</div>								<div class="tourn">
+									<div class="flag" style="background-image:url(https://superbru.cachefly.net/images/tournament_badges/en.gif)">&nbsp;</div>
+									<a class="name" href="/t20blast">NatWest T20 Blast</a>
+									<div class="clear"></div>
+								</div>						</div>						<div class="type">
+							<h2>Fantasy Lite</h2>
+							<div class="description">Pick 2 batsmen and 2 bowlers per round and earn fantasy-style points</div>									<div class="status statusactive">Underway</div>								<div class="tourn">
+									<div class="flag" style="background-image:url(https://superbru.cachefly.net/images/tournament_badges/in.gif)">&nbsp;</div>
+									<a class="name" href="/iplsuperstars">IPL Superstars</a>
+									<div class="clear"></div>
+								</div>						</div>					<div class="clear"></div>							<div class="status statusarchived">Back next season</div>
+							<div><span class='nextSeason'>Ashes Cricket Fantasy Lite</span><span class='nextSeason'>Big Bash T20</span><span class='nextSeason'>Georgie Pie Super Smash</span><span class='nextSeason'>Protea ODI Fantasy Lite</span><span class='nextSeason'>Ram Slam T20</span><span class='nextSeason'>Test Cricket Fantasy Lite</span><span class='nextSeason'>World T20</span><span class='nextSeason'>World T20 Superstars</span>							</div>
+					</div>
+				</div>				<div class="nav-item standalone">
+					<span class="hcnavSport12 navSportitem"></span>Tennis
+					<div class="sub">
+												<div class="type">
+							<h2>Fantasy Lite</h2>
+							<div class="description">Pick 2 men and 2 women per round and score fantasy-style points</div>									<div class="status statusactive">Underway</div>								<div class="tourn">
+									<div class="flag" style="background-image:url(https://superbru.cachefly.net/images/tournament_badges/fr.gif)">&nbsp;</div>
+									<a class="name" href="/frenchopen">French Open</a>
+									<div class="clear"></div>
+								</div>						</div>					<div class="clear"></div>							<div class="status statusarchived">Back next season</div>
+							<div><span class='nextSeason'>Australian Open</span><span class='nextSeason'>French Open</span><span class='nextSeason'>French Open Lean Test</span><span class='nextSeason'>US Open</span><span class='nextSeason'>Wimbledon</span>							</div>
+					</div>
+				</div>				<div class="nav-item standalone">
+					<span class="hcnavSport15 navSportitem"></span>Cycling
+					<div class="sub">
+												<div class="type">
+							<h2>Fantasy Lite</h2>
+							<div class="description">Pick 4 cyclists per round and earn fantasy-style points</div>									<div class="status statusactive">Underway</div>								<div class="tourn">
+									<div class="flag" style="background-image:url(https://superbru.cachefly.net/images/tournament_badges/it.gif)">&nbsp;</div>
+									<a class="name" href="/giroditalia">Giro d'Italia</a>
+									<div class="clear"></div>
+								</div>						</div>					<div class="clear"></div>							<div class="status statusarchived">Back next season</div>
+							<div><span class='nextSeason'>Tour de France</span><span class='nextSeason'>Vuelta a España</span>							</div>
+					</div>
+				</div>				<div class="nav-item standalone">
+					<span class="hcnavSportmotorsport navSportitem"></span>Motor
+					<div class="sub">
+												<div class="type">
+							<h2>Predictor</h2>
+							<div class="description">Pick pole, the top ten finishers and the fastest lap</div>									<div class="status statusactive">Underway</div>								<div class="tourn">
+									<div class="flag" style="background-image:url(https://superbru.cachefly.net/images/tournament_badges/world.gif)">&nbsp;</div>
+									<a class="name" href="/f1">F1</a>
+									<div class="clear"></div>
+								</div>								<div class="tourn">
+									<div class="flag" style="background-image:url(https://superbru.cachefly.net/images/tournament_badges/world.gif)">&nbsp;</div>
+									<a class="name" href="/motogp">MotoGP</a>
+									<div class="clear"></div>
+								</div>						</div>					<div class="clear"></div>
+					</div>
+				</div>				<div class="nav-item standalone">
+					<span class="hcnavSportrugby navSportitem"></span>Rugby
+					<div class="sub">
+												<div class="type">
+							<h2>Predictor</h2>
+							<div class="description">Pick match winners and the winning margin</div>									<div class="status statusopen">Open Now</div>								<div class="tourn">
+									<div class="flag" style="background-image:url(https://superbru.cachefly.net/images/tournament_badges/world.gif)">&nbsp;</div>
+									<a class="name" href="/juneinternationals">June Internationals</a>
+									<div class="clear"></div>
+								</div>								<div class="tourn">
+									<div class="flag" style="background-image:url(https://superbru.cachefly.net/images/tournament_badges/world.gif)">&nbsp;</div>
+									<a class="name" href="/u20championshiprugby">U20 Championship Rugby</a>
+									<div class="clear"></div>
+								</div>									<div class="status statusactive">Underway</div>								<div class="tourn">
+									<div class="flag" style="background-image:url(https://superbru.cachefly.net/images/tournament_badges/en.gif)">&nbsp;</div>
+									<a class="name" href="/avivapremiership">Aviva Premiership</a>
+									<div class="clear"></div>
+								</div>								<div class="tourn">
+									<div class="flag" style="background-image:url(https://superbru.cachefly.net/images/tournament_badges/za.gif)">&nbsp;</div>
+									<a class="name" href="/curriecupqualificationseries">Currie Cup Qualification Series</a>
+									<div class="clear"></div>
+								</div>								<div class="tourn">
+									<div class="flag" style="background-image:url(https://superbru.cachefly.net/images/tournament_badges/en.gif)">&nbsp;</div>
+									<a class="name" href="/rfu">Greene King IPA Championship</a>
+									<div class="clear"></div>
+								</div>								<div class="tourn">
+									<div class="flag" style="background-image:url(https://superbru.cachefly.net/images/tournament_badges/us.gif)">&nbsp;</div>
+									<a class="name" href="/prorugby">PRO Rugby</a>
+									<div class="clear"></div>
+								</div>								<div class="tourn">
+									<div class="flag" style="background-image:url(https://superbru.cachefly.net/images/tournament_badges/eu.gif)">&nbsp;</div>
+									<a class="name" href="/pro12">PRO12</a>
+									<div class="clear"></div>
+								</div>								<div class="tourn">
+									<div class="flag" style="background-image:url(https://superbru.cachefly.net/images/tournament_badges/sanzar.gif)">&nbsp;</div>
+									<a class="name" href="/superrugby">Super Rugby Predictor</a>
+									<div class="clear"></div>
+								</div>								<div class="tourn">
+									<div class="flag" style="background-image:url(https://superbru.cachefly.net/images/tournament_badges/fr.gif)">&nbsp;</div>
+									<a class="name" href="/top14">Top 14</a>
+									<div class="clear"></div>
+								</div>								<div class="tourn">
+									<div class="flag" style="background-image:url(https://superbru.cachefly.net/images/tournament_badges/world.gif)">&nbsp;</div>
+									<a class="name" href="/worldsevens">World Sevens</a>
+									<div class="clear"></div>
+								</div>						</div>						<div class="type">
+							<h2>Fantasy</h2>
+							<div class="description">Assemble a squad of 23 players, then pick a starting XV for each round</div>									<div class="status statusactive">Underway</div>								<div class="tourn">
+									<div class="flag" style="background-image:url(https://superbru.cachefly.net/images/tournament_badges/sanzar.gif)">&nbsp;</div>
+									<a class="name" href="/superrugbyfantasy">Super Rugby Fantasy</a>
+									<div class="clear"></div>
+								</div>						</div>						<div class="type">
+							<h2>Fantasy Lite</h2>
+							<div class="description">Pick two forwards, two backs and a kicker per round and earn fantasy-style points</div>									<div class="status statusactive">Underway</div>								<div class="tourn">
+									<div class="flag" style="background-image:url(https://superbru.cachefly.net/images/tournament_badges/sanzar.gif)">&nbsp;</div>
+									<a class="name" href="/superrugbysuperstars">Super Rugby Superstars</a>
+									<div class="clear"></div>
+								</div>						</div>					<div class="clear"></div>							<div class="status statusarchived">Back next season</div>
+							<div><span class='nextSeason'>Americas Rugby Championship</span><span class='nextSeason'>August Internationals</span><span class='nextSeason'>Australian National Rugby Championship</span><span class='nextSeason'>BETA Cape Town Sevens</span><span class='nextSeason'>Currie Cup</span><span class='nextSeason'>Dubai Sevens</span><span class='nextSeason'>European Rugby Challenge Cup</span><span class='nextSeason'>European Rugby Champions Cup</span><span class='nextSeason'>European Rugby Champions Cup Fantasy Lite</span><span class='nextSeason'>ITM Cup</span><span class='nextSeason'>Pacific Nations Cup</span><span class='nextSeason'>Six Nations Fantasy</span><span class='nextSeason'>Six Nations Predictor</span><span class='nextSeason'>Six Nations Superstars</span><span class='nextSeason'>Super4</span><span class='nextSeason'>Test Sevens</span><span class='nextSeason'>The Rugby Championship Fantasy</span><span class='nextSeason'>The Rugby Championship Fantasy Lite</span><span class='nextSeason'>The Rugby Championship Predictor</span><span class='nextSeason'>U20 Championship Rugby</span><span class='nextSeason'>Varsity Cup</span><span class='nextSeason'>World Cup Fantasy</span><span class='nextSeason'>World Cup Fantasy Lite</span><span class='nextSeason'>World Cup Predictor</span>							</div>
+					</div>
+				</div>				<div class="nav-item standalone">
+					<span class="hcnavSportleague navSportitem"></span>League
+					<div class="sub">
+												<div class="type">
+							<h2>Predictor</h2>
+							<div class="description">Pick match winners and the winning margin</div>									<div class="status statusopen">Open Now</div>								<div class="tourn">
+									<div class="flag" style="background-image:url(https://superbru.cachefly.net/images/tournament_badges/au.gif)">&nbsp;</div>
+									<a class="name" href="/stateoforigin">State of Origin</a>
+									<div class="clear"></div>
+								</div>									<div class="status statusactive">Underway</div>								<div class="tourn">
+									<div class="flag" style="background-image:url(https://superbru.cachefly.net/images/tournament_badges/au.gif)">&nbsp;</div>
+									<a class="name" href="/nrl">NRL</a>
+									<div class="clear"></div>
+								</div>								<div class="tourn">
+									<div class="flag" style="background-image:url(https://superbru.cachefly.net/images/tournament_badges/en.gif)">&nbsp;</div>
+									<a class="name" href="/superleague">Super League</a>
+									<div class="clear"></div>
+								</div>						</div>					<div class="clear"></div>							<div class="status statusarchived">Back next season</div>
+							<div><span class='nextSeason'>State of Origin</span>							</div>
+					</div>
+				</div>				<div class="nav-item standalone">
+					<span class="hcnavSport6 navSportitem"></span>AFL
+					<div class="sub">
+												<div class="type">
+							<h2>Predictor</h2>
+							<div class="description">Pick match winners and the winning margin</div>									<div class="status statusactive">Underway</div>								<div class="tourn">
+									<div class="flag" style="background-image:url(https://superbru.cachefly.net/images/tournament_badges/au.gif)">&nbsp;</div>
+									<a class="name" href="/afl">AFL</a>
+									<div class="clear"></div>
+								</div>						</div>					<div class="clear"></div>
+					</div>
+				</div>				<div class="nav-item standalone">
+					<span class="hcnavSport7 navSportitem"></span>NFL
+					<div class="sub">
+												<div class="type">
+							<h2>Predictor</h2>
+							<div class="description">Pick match winners and the winning margin</div>						</div>					<div class="clear"></div>							<div class="status statusarchived">Back next season</div>
+							<div><span class='nextSeason'>NFL</span>							</div>
+					</div>
+				</div>
+			<div class="nav-right">
+
+				<div class="nav-item" onclick="startSignUp()">
+					<div class="nav-right-button">Sign Up</div>
+				</div>
+
+			</div>
+			<div class="clear"></div>
+
+		</nav>
+	</div>
+</header>
+<!-- header finish -->
+
+<div class="clear"></div>
+
+<!-- content start -->
+<section id="intro" class="module spread-intro-block">
+
+	<!--<div class="shadow-bar"></div>-->
+
+	<div class="content">
+		<h1 class="logo">
+			<a href="/"><img alt="SuperBru" src="https://superbru.cachefly.net/home/images/homepage/superbru_logo.png" alt="SuperBru"></a>
+		</h1>
+
+		<div class="login">
+			<ul class="login-tabs">
+				<li id="tab-superbru"><img src="https://superbru.cachefly.net/home/images/homepage/login_logo_superbru.png" alt="SuperBru"></li>
+				<li id="tab-facebook"><img src="https://superbru.cachefly.net/home/images/homepage/login_logo_facebook.png" alt="Facebook"></li>
+				<!--<li id="tab-twitter"><img src="https://superbru.cachefly.net/home/images/homepage/login_logo_twitter.png" alt="Twitter"></li>-->
+				
+				<div class="clear"></div>
+			</ul>
+
+			<div class="login-error">Error</div>
+			<div class="login-status" id="login-status"><div class="text">Logging in...</div></div>
+
+			<!-- login superbru start -->
+			<div id="login-superbru" class="login-block">
+				<form onsubmit="return loginSb()" method="post">
+					<div class="login col-half">
+						<p>Email</p>
+						<input type="email" title="Email address" id="email" name="email" maxlength="75">
+					</div>
+					<div class="login col-half right">
+						<p>Password</p>
+						<input type="password" id="password" name="password" maxlength="35">
+					</div>
+					<input class="red" type="submit" value="Log in">
+					<div class="clear"></div>
+					<label>Remember me<input type="checkbox" id="remember" name="remember" /></label>
+					<p class="right"><a href="/home/forgotten.php">Forgotten your password?</a></p>
+					<div class="clear"></div>
+				</form>
+			</div>
+			<!-- login superbru finish -->
+
+			<!-- login dstv start -->
+			<div id="login-facebook" class="login-block">
+						<div id='fbHolding'>
+			<img src='https://superbru.cachefly.net/coreimages/structure/loading_tiny.gif' />
+			<div class='marginTopSmallMed'>Loading Facebook login...</div>
+		</div>
+
+		<div id='fbNotLoggedIn' style='display:none'>
+
+
+
+			<div class='icon'><img src='https://superbru.cachefly.net/coreimages/structure/fb32.gif' /></div>
+			<div class='welcomeh2'><h2>Hi, Facebook user!</h2></div>
+			<div class='fbLoginButton'>
+			<a href='https://www.facebook.com/v2.2/dialog/oauth?client_id=6483758771&response_type=code&scope=email&redirect_uri=https://www.superbru.com/home/ajax/fb_login_process_nosdk.php' class='button'>Log in with Facebook</a>
+			</div>
+			<div class='clear'></div>
+		</div>
+
+		<div id='fbLogin' style='display:none'>
+			<div class='icon'><img src='https://superbru.cachefly.net/coreimages/structure/fb32.gif' /></div>
+			<div class='welcomeh2'><h2>Hi, <span id='fbUsername2'>Facebook user</span></h2></div>
+			<div class='fbLoginButton'>
+			<a href='javascript:void(0)' onclick='fbLogin()' class='button'>Log in with Facebook</a>
+			</div>
+			<div class='clear'></div>
+		</div>
+
+		<div id='fbNotAuth' style='display:none'>
+
+			<div class='icon'><img src='https://superbru.cachefly.net/coreimages/structure/fb32.gif' /></div>
+			<div class='welcomeh2'>
+				<h2>Hi, <span id='fbUsername2'>Facebook user</span></h2>
+				<div>You're logged into Facebook, but you have not yet given permission for SuperBru to access your basic Facebook data. Click 'Next' to proceed.</div>
+
+				<div class='fbLoginButton' style='margin:20px 0 0 0'>
+					<a href='https://www.facebook.com/v2.2/dialog/oauth?client_id=6483758771&redirect_uri=https://www.superbru.com/home/ajax/fb_login_process_nosdk.php&response_type=code&scope=email'  class='button'>Next</a>
+				</div>
+			</div>
+
+			<div class='clear'></div>
+
+		</div>
+
+		<div id='fbLoading' style='display:none;width:300px;' class='modalNav'><div class='header'><div class='title'>Logging in with Facebook</div><a href='javascript:void(0)' class='close closer' onclick='$("#fbLoading").overlay().close()'>Close</a><div class='clear'></div></div><div class='content' style='padding:15px;color:#3965a4'><div class='left marginRightSmallMed'><img src='https://superbru.cachefly.net/coreimages/structure/fb32.gif' /></div><div class='left marginTopSmall'><h2>Hi, <span id='fbUsername'>Facebook user</span></h2></div><div class='clear'></div>We're logging you into SuperBru with Facebook...<div class='loadingGraphicMed'>&nbsp;</div></div></div>			</div>
+
+			<!-- login dstv start -->
+			<div id="login-dstv" class="login-block">
+				<form onsubmit="return loginDstv()" method="post">
+					<p>Log in using your DStv Connect details</p>
+					<div class="login col-half">
+						<p>Email</p>
+						<input type="email" title="Email address" id="email_dstv" name="email_dstv" maxlength="75">
+					</div>
+					<div class="login col-half right">
+						<p>Password</p>
+						<input type="password" id="password_dstv" name="password_dstv" maxlength="30">
+					</div>
+					<input class="dstv" type="submit" value="Log in">
+					<div class="clear"></div>
+					<label>Remember me<input type="checkbox" id="remember_dstv" name="remember_dstv" /></label>
+					<p class="right"><a href="https://connect.dstv.com/4.0.863/en-ZA/ForgotPassword" target="_blank">Forgotten your password? Reset it at DStv.com</a></p>
+					<div class="clear"></div>
+				</form>
+			</div>
+			<!-- login dstv finish -->
+
+			<div class="clear"></div>
+		</div>
+
+		<div class="clear"></div>
+
+		<div class="divide"></div>
+
+		<div id="reg-mask" class="reg-mask"></div>
+		<div class="embedded-reg">
+			<div class="top">
+				<div class="titles">
+					<h1>Sign Up</h1>
+					<h3>SuperBru is free, secure and fun</h3>
+				</div>
+				<div class="close" id="reg-close">X</div>
+				<div class="clear"></div>
+			</div>
+			<div id="embeddedReg"></div>
+		</div>
+
+				<div class="col-half">
+			<!--<div class="heading-large"></div>-->
+			<div class="heading-mediumlarge"><span class="num">1,071,977</span><span class="sportsfans">sports fans play SuperBru</span></div>
+			<div class="heading-thin">That's more than the population of South Island, New Zealand!</div>
+			<div class="heading-tiny">(Take that, South Island)</div>
+
+<!--<div class="fb-page" data-href="https://www.facebook.com/superbru" data-small-header="true" data-adapt-container-width="true" data-hide-cover="true" data-show-facepile="false" data-show-posts="false"><div class="fb-xfbml-parse-ignore"><blockquote cite="https://www.facebook.com/superbru"><a href="https://www.facebook.com/superbru">SuperBru</a></blockquote></div></div>-->
+
+
+
+		</div>
+		<div class="col-half right">
+
+
+						<script>
+			/*	$(function() {
+					$("#rwcevent").click(function() {
+						
+						$("#rwcpromo").animate({"margin-left": "-=397"}, 200, function() {
+							$("#rwcgames").slideDown(250);
+							$("#rwcevent").addClass("event-bubble-clicked");
+						});
+					});
+				});
+				*/
+			</script>
+			<style>
+				a.rwcbutton, a.promobutton {
+					display:inline-block;
+					padding:5px 10px 5px 10px;
+					color:#fff;
+					background-color:#16A085;
+					border-radius:5px;
+					-moz-border-radius:5px;
+					-webkit-border-radius:5px;
+					font-size:0.85em;
+				}
+				/* div.promoGame {
+					float:left;margin-right:20px;width:150px;
+				}
+				@media only screen and (min-width: 1025px) {
+				 	div.promoGame {
+						float:left;margin-right:15px;border-right:1px solid #7F8C8D;padding:0 15px 0 0;width:150px;
+					}
+				}
+				*/
+				div.promoGameLast {
+					margin-right:0;
+					padding-right:0;
+					margin-top:15px;
+					border-right:0;
+				}
+				@media only screen and (min-width: 1025px) {
+					div.promoGameLast {
+						margin-top:0;
+					}
+				}
+				a.rwcbuttonBlue {
+					background-color:#3498DB;
+				}
+				a.rwcbuttonOrange {
+					background-color:#E67E22;
+				}
+				a.rwcbuttonGreen {
+					background-color:#16A085;
+				}
+				.eurotitle {
+					margin:0 auto;
+					color:#1b2026;
+				}
+				.promo-bubble {
+					background:#ECF0F1;
+					padding:15px;
+					-webkit-border-radius: 5px ;-moz-border-radius:5px ;border-radius: 5px;
+				}
+				.eurogames {
+					color:#1b2026;
+					margin:15px 0 0 0;
+				}
+				.eurogames .promoGame {
+					width:50%;
+					float:left;
+					display:block;
+					color:#1b2026;
+					text-align:center;
+					padding:0 20px 0 20px;
+				}
+				.eurogames .promoGame div {
+					color:#1b2026;
+				}
+				.eurogames .promoGame a.title {
+					color:#C0392B;
+					font-weight:300;margin:0 0 10px 0;font-size:1.2em;
+					display:inline-block;
+				}
+			</style>
+			<div class="promo-bubble" id="">
+				<div class="textCenter">
+					<div class="eurotitle">
+						<div style="display:inline-block;margin:0 7px 10px 0;"><img src="https://superbru.cachefly.net/teams/images/generic/logo_large/46.png" width="30" /></div>
+						<div style="display:inline-block;margin:0 5px 10px 0;"><img src="https://superbru.cachefly.net/teams/images/generic/logo_large/47.png" width="30" /></div>
+						<div style="display:inline-block;margin:0 5px 10px 0;"><img src="https://superbru.cachefly.net/teams/images/generic/logo_large/48.png" width="30" /></div>
+						<div style="font-size:1.5em;display:inline-block;margin:3px 15px 3px 15px">Euro Football</div>
+						<div style="display:inline-block;margin:0 5px 10px 0;"><img src="https://superbru.cachefly.net/teams/images/generic/logo_large/52.png" width="30" /></div>
+						<div style="display:inline-block;margin:0 5px 10px 0;"><img src="https://superbru.cachefly.net/teams/images/generic/logo_large/62.png" width="30" /></div>
+						<div style="display:inline-block;margin:0 5px 10px 0;"><img src="https://superbru.cachefly.net/teams/images/generic/logo_large/2501.png" width="30" /></div>
+					</div>
+				</div>
+				<div class="eurogames" style="">
+					<div class="promoGame">
+						<a href="/euro2016/" class="title">Match Predictor</a>
+						<div style="font-size:0.85em;margin:0 0 10px 0">Pick scores for each game. Earn points for accuracy</div>
+						<a href="javascript:void(0)" class="rwcbutton " onclick="startSignUp(371)">Sign Up</a>
+					</div>
+					
+					<div class="promoGame">
+						<a href="/euro2016superstars/" class="title">Fantasy Superstars</a>
+						<div style="font-size:0.85em;margin:0 0 10px 0">Pick 5 players per round: quick, fun fantasy</div> 
+						
+						<a href="/euro2016superstars/superstars_demo.php" class="rwcbutton rwcbuttonBlue">Try Demo</a>
+						<a href="javascript:void(0)" class="rwcbutton rwcbuttonOrange" onclick="startSignUp(372)">Sign Up</a>
+						
+					</div>
+					<div class="clear"></div>
+				</div>
+			<!--
+				<div style="float:left;margin-right:-100%">
+					<div>
+						<div style="display:inline-block;margin:0 7px 10px 0;"><img src="https://superbru.cachefly.net/teams/images/generic/logo_large/46.png" width="40" /></div>
+						<div style="display:inline-block;margin:0 7px 10px 0;"><img src="https://superbru.cachefly.net/teams/images/generic/logo_large/47.png" width="40" /></div>
+						<div style="display:inline-block;margin:0 7px 10px 0;"><img src="https://superbru.cachefly.net/teams/images/generic/logo_large/48.png" width="40" /></div>
+					</div>
+					<div style="display:inline-block;margin:0 7px 10px 0;"><img src="https://superbru.cachefly.net/teams/images/generic/logo_large/52.png" width="40" /></div>
+					<div style="display:inline-block;margin:0 7px 10px 0;"><img src="https://superbru.cachefly.net/teams/images/generic/logo_large/62.png" width="40" /></div>
+					<div style="display:inline-block;margin:0 7px 10px 0;"><img src="https://superbru.cachefly.net/teams/images/generic/logo_large/2501.png" width="40" /></div>
+				</div> 
+				<div style="float:left;overflow:hidden;width:100%;margin-left:170px;display:block">
+					<div id="rwcpromo" style="float:left;display:none">
+						<div class="heading-small">Euro Football</div>
+						<p>Play our Predictor and Fantasy games!</p>
+						<p>First match: France v Romania, 10 June</p>
+					</div>
+					<div id="rwcgames" style="float:left;display:block">
+						<div class="promoGame">
+							<div style="font-weight:300;margin:0 0 5px 0;font-size:1.1em">Predictor</div>
+							<div style="font-size:0.85em;margin:0 0 10px 0">Pick match scores.</div>
+							<a href="javascript:void(0)" class="rwcbutton " onclick="startSignUp(371)">Sign Up</a>
+						</div>
+						
+						<div class="promoGame promoGameLast">
+							<div style="font-weight:300;margin:0 0 5px 0;font-size:1.1em">Fantasy Superstars</div>
+							<div style="font-size:0.85em;margin:0 0 10px 0">Pick 5 players per round: quick fantasy</div> 
+							
+							<div class="rwcbutton rwcbuttonBlue" onclick="startDemo(372)">Try Demo</div>
+							<a href="javascript:void(0)" class="rwcbutton rwcbuttonOrange" onclick="startSignUp(372)">Sign Up</a>
+							
+							
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+				</div>
+				<div class="clear"></div>
+				-->
+			</div>
+			
+
+		</div>
+		<div class="clear"></div>
+		<img class="arrow-down" src="https://superbru.cachefly.net/home/images/homepage/arrow_down.png" alt="">
+	</div>
+</section>
+
+<section id="facebook" style="background-color:#ECF0F1;padding:15px 0 15px 0;text-align: center">
+
+	<div class="fb-like" data-colorscheme="light" data-href="http://www.facebook.com/superbru" data-layout="standard" data-action="like" data-show-faces="true" data-share="false" data-width="950"></div>
+
+</section>
+
+<section id="game-play" class="module spread-three-col">
+	<div class="content">
+		<div class="heading-medium">Gameplay</div>
+		<div class="col-third">
+			<img class="lazy" data-original="https://superbru.cachefly.net/home/images/homepage/icon_game_predictor.png" alt="Predictor">
+			<div class="col-content">
+				<div class="heading-medium red">Predictor</div>
+				<div class="heading-thin">Our famous tipping game</div>
+				<p>Predict the winning team and margin of victory. Over 50 tournaments covered every year across 6 sports: rugby union, football, cricket, rugby league, American football and Aussie Rules.</p>
+			</div>
+		</div>
+		<div class="col-third">
+			<img class="lazy" data-original="https://superbru.cachefly.net/home/images/homepage/icon_game_fantasy.png" alt="Fantasy">
+			<div class="col-content">
+				<div class="heading-medium blue">Fantasy</div>
+				<div class="heading-thin">Full-featured fantasy</div>
+				<p>Select a squad of real world players, then pick a starting team for each round. Manage your squad carefully with limited transfers and team limits. Major rugby union tournaments covered.</p>
+			</div>
+		</div>
+		<div class="col-third last">
+			<img class="lazy" data-original="https://superbru.cachefly.net/home/images/homepage/icon_game_fantasy_lite.png" alt="Fantasy Lite">
+			<div class="col-content last">
+				<div class="heading-medium green">Superstars</div>
+				<div class="heading-thin">Innovative quick fantasy</div>
+				<p>Pick a handful of players in key positions each round. No squads, transfers or team limitations to worry about. Major team ball sports covered as well as golf, tennis, cycling and motorsport.</p>
+			</div>
+		</div>
+		<div class="clear"></div>
+	</div>
+</section>
+
+<section id="office-champion" class="module spread-one-col">
+	<div class="content">
+		<div class="col-half col-half-thin-top">
+			<div class="heading-medium">Be the office champion!</div>
+
+
+			<ul>
+				<li>Set up your own league</li>
+				<li>Join a friend's game</li>
+				<li>Play in prize pools</li>
+				<li>Compete on the Malaysia leaderboard</li>
+				<li>Take on thousands of sports fans worldwide</li>
+			</ul>
+			<div class="heading-thin">SuperBru is <span class="bold">absolutely free!</span></div>
+		</div>
+	</div>
+</section>
+
+
+<section id="app-block" class="module spread-two-col">
+	<div class="content">
+		<div class="col-half">
+			<div class="heading-medium">Download the app</div>
+			<div class="heading-thin">Live scores and results on the move</div>
+
+			<div style="margin-top:40px">
+				<a href="https://play.google.com/store/apps/details?id=properties.superbru&hl=en_GB" style="display:block;float:left;margin-right:20px"><img height="56"  class="lazy" data-original="https://superbru.cachefly.net/home/images/homepage/badge_google_play.png" alt="Google play"></a>
+				<a href="https://itunes.apple.com/gb/app/superbru/id613066215?mt=8" style="display:block;float:left"><img height="56"  class="lazy" data-original="https://superbru.cachefly.net/home/images/homepage/badge_app_store.png" alt="App store"></a>
+				<div class="clear"></div>
+				<!--<img class="last" src="https://superbru.cachefly.net/home/images/homepage/badge_ios_android.png" alt="iOS Android">-->
+			</div>
+			<div class="col-half sub2">
+				<!--<img src="https://superbru.cachefly.net/home/images/homepage/module_app.png" alt="Devices">-->
+			</div>
+			<div class="clear"></div>
+		</div>
+		<div class="col-half col-half-thin-top">
+
+			<div class="appdemo">
+				<div class="slideHolder">
+					<div class="slide" id="slide1"><img class="lazy" data-original="https://superbru.cachefly.net/home/images/homepage/appdemo2.jpg" width="1115" height="396" /></div>
+				</div>
+			</div>
+			<script>
+				var currSlide = 0;
+				var maxSlides = 5;
+				function slideshow() {
+					currSlide++;
+					if (currSlide > maxSlides) { currSlide = 1; }
+					//$(".appdemo .slideHolder .slide").css("left", ((-1*(currSlide-1)) * 223)+ "px");
+
+					$(".appdemo .slideHolder .slide").animate({
+						left: ((-1*(currSlide-1)) * 223)+ "px"
+					}, 300);
+
+					var x = window.setTimeout(slideshow, 3000);
+				}
+				$(function() {
+					slideshow();
+				});
+			</script>
+		</div>
+		<div class="clear"></div>
+	</div>
+</section>
+
+
+<div class="signup-bar">
+	<div class="mid">
+		<div class="free">SuperBru is free, secure and fun</div>
+		<a href="javascript:void(0)" class="button" onclick="startSignUp(0,0)">Sign up now</a>
+		<div class="clear"></div>
+	</div>
+</div>
+<!-- content finish -->
+
+<!-- footer start -->
+<footer>
+	<div class="content">
+		<div class="col-third first">
+			<div class="edition">
+				<p>Edition: Asia</p>
+				<a class="btn grey small" href="/home/edition.php">Change edition</a>
+				<div class="clear"></div>
+			</div>
+
+			<div class="clear"></div>
+			<ul>
+										<li><a href="//www.superbru.com/superrugby">Super Rugby Predictor</a></li>						<li><a href="//www.superbru.com/epl">English Premier League Predictor</a></li>						<li><a href="//www.superbru.com/superrugbyfantasy">Super Rugby Fantasy</a></li>						<li><a href="//www.superbru.com/championsleague">Champions League</a></li>						<li><a href="//www.superbru.com/curriecupqualificationseries">Currie Cup Qualification Series</a></li>						<li><a href="//www.superbru.com/euro2016">Euro 2016 Predictor</a></li>						<li><a href="//www.superbru.com/f1">F1</a></li>				<div class="clear"></div>
+			</ul>
+			<div class="clear"></div>
+		</div>
+
+		<div class="col-third second">
+			<ul class="social-media">
+				<li><img  class="lazy" data-original="https://superbru.cachefly.net/home/images/homepage/icon_facebook.png" alt="Facebook"><a href="http://www.facebook.com/SuperBru" target="_blank" alt="">facebook.com/superbru</a></li>
+				<li><img  class="lazy" data-original="https://superbru.cachefly.net/home/images/homepage/icon_twitter.png" alt="Twitter"><a href="http://twitter.com/superbru" target="_blank" alt="">@superbru</a></li>
+				<!--<li><img src="https://superbru.cachefly.net/home/images/homepage/icon_tumblr.png" alt="Tumblr"><a href="http://thegeneral.superbru.com/" target="_blank" alt="">The General's Blog</a></li>-->
+			</ul>
+			<div class="clear"></div>
+		</div>
+
+		<div class="col-third last">
+			<ul>
+				<li><a href="/news/index.php">SuperBru News</a></li>
+				<li><a href="/home/help.php">Help Centre</a></li>
+				<li><a href="/home/app.php">Mobile App</a></li>
+				<li><a href="/home/terms.php">Terms of Use</a></li>
+				<li><a href="/home/about.php">About Us</a></li>
+				<li><a href="/home/cookies.php">Cookies</a></li>
+				<li><a href="/home/advertise.php">Advertise</a></li>
+				<li><a href="/home/unsubscribe.php">Unsubscribe</a></li>
+				<div class="clear"></div>
+			</ul>
+			<div class="clear"></div>
+		</div>
+
+		<div class="badges">
+			<a href="https://play.google.com/store/apps/details?id=properties.superbru&hl=en_GB" target
+			="_blank"><img class="badge lazy" data-original="https://superbru.cachefly.net/home/images/homepage/badge_google_play.png" alt="Google play"></a>
+			<a href="https://itunes.apple.com/gb/app/superbru/id613066215?mt=8" target="_blank"><img class="badge right lazy" data-original="https://superbru.cachefly.net/home/images/homepage/badge_app_store.png" alt="App store"></a>
+		</div>
+
+	</div>
+
+	<div class="clear"></div>
+
+	<div class="base">
+		<div class="content">
+			<p>SuperBru&reg; and the SuperBru Logo are registered trademarks of SportEngage Ltd.<br>
+				Copyright &copy; 2006 - 2016 SportEngage Ltd. Please see our <a href="/home/copyright.php">full copyright notice</a>.
+
+				<br><a href="http://www.superbru.com/nrl">NRL Tipping 2016</a>
+			</p>
+			<p class="right"><a href="http://www.sportengage.com">Presented by SportEngage</a></p>
+			<div class="clear"></div>
+		</div>
+	</div>
+
+</footer>
+<!-- footer finish -->
+
+<!-- load js -->
+
+<script>
+
+function showLoginError(m,t) {
+	$('#login-status').hide();
+
+	$('#login-'+t).show();
+
+	$(".login-error").html(m).slideDown(200);
+}
+function showLoginSuccess(m) {
+	$('#login-status').hide();
+	$('.login-error').addClass('login-success');
+	$(".login-error").html(m).slideDown(200);
+}
+function hideLoginError() {
+	$(".login-error").fadeOut(150);
+}
+function loginSb() {
+	var e = $.trim($("#email").val());
+	var p = $.trim($("#password").val());
+	var r = 0;
+	if (document.getElementById('remember').checked) {
+		r = 1;
+	}
+	return login('superbru',e,p,r);
+}
+function loginDstv() {
+	var e = $.trim($("#email_dstv").val());
+	var p = $.trim($("#password_dstv").val());
+	var r = 0;
+	if (document.getElementById('remember_dstv').checked) {
+		r = 1;
+	}
+	return login('dstv',e,p,r);
+}
+function login(t,e,p,r) {
+
+	if (!navigator.cookieEnabled) {
+		showLoginError('Cookies are not enabled in your browser. SuperBru cannot work without cookies, so please enable them, then try to log in again.',t);
+		return false;
+	}
+	if (e == '') {
+		showLoginError('Please enter your email address.',t);
+		return false;
+	}
+	if (!isValidEmail(e)) {
+		showLoginError('Your email address is not valid. It should take the format yourname@yourdomain.com.',t);
+		return false;
+	}
+	if (p == '') {
+		showLoginError('Please enter your password.',t);
+		return false;
+	}
+
+	processLogin(e,p,t,r);
+	return false;
+}
+function randomString(len, charSet) {
+	charSet = charSet || 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+	var randomString = '';
+	for (var i = 0; i < len; i++) {
+		var randomPoz = Math.floor(Math.random() * charSet.length);
+		randomString += charSet.substring(randomPoz,randomPoz+1);
+	}
+	return randomString;
+}
+function processLogin(e,p,t,r) {
+	$('#login-'+t).fadeOut(200);
+	$('#login-status').show();
+	$(".login-error").hide();
+	loadSpin("login-status","#ffffff");
+	$.ajax({
+		type: 'POST',
+		url: '/home/ajax/login.php?r=' + randomString(20),
+		timeout:25000,
+		cache: false,
+		dataType: 'json',
+		data: { 'e': e, 'p': p, 't': t, 'r': r }
+	})
+		.done(function(res, xhr ) {
+	//		console.log(res);
+			if (res.result == 'success') {
+
+				showLoginSuccess(res.message);
+				document.location = '/player/dashboard.php?login=1';
+
+			} else {
+
+				if (res.result == 'unauthorised' && t == 'dstv') {
+					document.location = '/dstv/register_dstv.php?c=' + res.connect_id;
+				} else {
+					showLoginError(res.message, t);
+				}
+			}
+		})
+		.fail(function(res, xhr) {
+		//	console.log(res);
+			var x = '';
+			if (res.status == 500) {
+				x = "Sorry, a server error occurred. Please try again or <a href='/home/contact.php'>contact us</a> if this problem persists.";
+			} else if (res.status == 503) {
+				x = "We could not log you in at this time because our servers are really busy. Please try <a href='/home/login_form.php'>this login page instead</a> or <a href='/home/contact.php'>contact us</a> if this problem persists.";
+			} else if (res.status == 0) {
+				x = "We could not log you in as your connection to us failed, or there was an error in your browser. Please try <a href='/home/login_form.php'>this login page instead</a>, or <a href='/home/contact.php'>contact us</a> if this problem persists.";
+			}
+
+			showLoginError(x,t);
+		})
+		.always(function(res, xhr) {
+			$('#login-'+t).fadeIn(200);
+		});
+}
+
+function closeRegister() {
+	$(".embedded-reg").fadeOut(100);
+	$(".signup-bar").fadeIn(200);
+	$("#reg-mask").fadeOut(200);
+}
+
+function hideSport() {
+	$(".sportoverlay").hide();
+	$("#reg-mask").hide().css("backgroundColor","#000");
+}
+
+function startSignUp(t,fb) {
+	window.scrollTo(0,0);
+	$(".signup-bar").fadeOut();
+	$("#reg-mask").css("width", $( document ).width() + "px").css("height", $( document ).height() + "px").fadeIn(500).click(function() {
+		closeRegister();
+	});
+
+	$("#loginForm").hide();
+	$(".appspace .about").hide();
+	//	recordRegEvent(0,0,0,'clicked sign up','','');
+	$(".signup").hide();
+	var l = ($(document ).width() - $(".embedded-reg").width())/2;
+	$("#embeddedReg").html("<div class='moment'>One moment please...</div>");
+	//$(".panelReg1").slideDown();
+	$(".embedded-reg").css("left",l + "px").fadeIn(200);
+	$.ajax({
+		type: 'POST',
+		url: '/home/ajax/embed_register.php',
+		timeout:5000,
+		cache: false,
+		dataType: 'html',
+		data: {
+			's': 1,
+			'c': 0,
+			't': t,
+			'p': 0,
+			'div': 'embeddedReg',
+			'ab': 'X'
+		}
+	})
+		.done(function(res, xhr ) {
+			$("#embeddedReg").html(res);
+			$("#embeddedReg .panelReg1").slideDown(200);
+			if (fb == 1) {
+				goFacebook(true);
+			} else {
+				goDebut();
+			}
+
+		})
+		.fail(function(res, xhr) {
+
+			$("#embeddedReg").html( "<h2>Oops</h2>Sorry, something went wrong while trying to open your registration form. Please <a href='javascript:void(0)' onclick='startSignup(0,0)'>try again</a>.");
+		});
+}
+
+$(document).ready(function() {
+
+	// Makes the whole div clickable by finding the a href within
+	$(function () {
+		$( window ).resize(function() {
+			$("#reg-mask").css("width", $( document ).width() + "px").css("height", $( document ).height() + "px");
+			var l = ($(document ).width() - $(".embedded-reg").width())/2;
+			$(".embedded-reg").css("left",l + "px");
+		});
+		$("[class^='event-bubble']").click(function(){
+			var url = $(this).find("a").attr("href");
+			if(typeof url != 'undefined') {
+				var newwindow = $(this).find("a").attr("target");
+				if (newwindow == "_blank") {
+					window.open(url);
+				} else {
+					window.location=url;
+				}
+			}
+			return false;
+		});
+
+		$(".tourn").click(function(){
+			var url = $(this).find("a").attr("href");
+
+			if(typeof url != 'undefined') {
+				var newwindow = $(this).find("a").attr("target");
+				if (newwindow == "_blank") {
+					window.open(url);
+				} else {
+					window.location=url;
+				}
+			}
+			return false;
+		});
+
+		$("img.lazy").lazyload({
+			threshold : 200,
+			effect: 'fadeIn'
+		});
+
+		$("input[type=email], input[type=password]").focus(function() {
+			hideLoginError();
+		});
+
+			});
+
+	// Switch tabs and login screens
+	function tabSwitcher() {
+		$(".login-block").hide();
+		$("ul.login-tabs li").removeClass("on");
+	}
+
+	$("#tab-dstv").click(function () {
+		tabSwitcher();
+		$("ul.login-tabs li#tab-dstv").addClass("on");
+		$("#login-dstv").show();
+	});
+
+	$("#tab-superbru").click(function () {
+		tabSwitcher();
+		$("ul.login-tabs li#tab-superbru").addClass("on");
+		$("#login-superbru").show();
+	});
+
+	$("#tab-facebook").click(function () {
+		tabSwitcher();
+		$("ul.login-tabs li#tab-facebook").addClass("on");
+		$("#login-facebook").show();
+	});
+
+	$("#reg-close").click(function() {
+		closeRegister();
+	});
+
+				$(".nav-item").hover(
+				function() {
+					$(this).children(".sub").css("left", (-1 * $(this).offset().left) + $("#brand-nav").offset().left + "px").css("width", $("#brand-nav").width() + "px").fadeIn(150);
+					//$('.signup-bar').fadeOut(200);
+				},
+				function () {
+					$(this).children(".sub").fadeOut(75);
+					//$('.signup-bar').fadeIn(200);
+				}
+			);});
+
+// Load superbru login and tab
+$(window).load(function() {
+					$("#tab-superbru").addClass("on");
+				$("#login-superbru").show();
+});
+</script>
+<script src="/core/js/ready4.js" type="text/javascript"></script>
+
+<style>
+	#powerTip {
+		display:none;
+	}
+</style>
+
+<script type="text/javascript">
+
+	var _gaq = _gaq || [];
+	_gaq.push(['_setAccount', 'UA-331792-1']); // master
+	_gaq.push(['_trackPageview']);
+
+	
+
+	(function() {
+		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	})();
+
+</script>
+</body>
+</html>

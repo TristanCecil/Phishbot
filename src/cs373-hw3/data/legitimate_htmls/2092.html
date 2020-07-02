@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>TwitCasting - Stream Live Video on Twitter and Facebook </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+
+  <link href="/img/icon72@2x.png" rel="apple-touch-icon" type="image/png">
+  <link rel="stylesheet" href="/css/bs3/bootstrap.min.css" type="text/css" media="all">
+  <link rel="stylesheet" type="text/css" media="all" href="/css/mainstyle-us.css">
+  <link href='http://fonts.googleapis.com/css?family=Lato:400,400italic' rel='stylesheet' type='text/css'>
+  <style type="text/css">
+    .lp_top {
+      align-items: center;
+      width: 100%;
+      box-sizing: border-box;
+      background-size: auto;
+      margin-top:100px;
+    }
+    video#bgvid {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: -10;
+    height: auto;
+    opacity: .9;
+    margin-top: -50px;
+   -webkit-filter: brightness(.7);
+    filter: brightness(.7);
+    }
+    .lp_logo {
+      width: 180px;
+      height: 181px;
+      -webkit-border-radius: 15px;
+      -moz-border-radius: 15px;
+      border-radius: 15px;
+      border: none;
+      background-image: url("/img/go/icon_live_iphone_2048.png");
+      background-repeat: no-repeat;
+      background-size: contain;
+      margin: auto;
+      font-size: 0;
+      line-height: 0;
+    }
+    .lp_logo.view {
+      background-image: url("/img/go/icon_viewer_iphone_2048.png");
+    }
+    .lp_top .title1 {
+      font-size:36px;
+      font-family:Lato;
+      line-height:50px;
+      color:#ffffff;
+      margin-top:28px;
+    }
+    .lp_top .title2 {
+      font-size:18px;
+      font-family:Lato;
+      line-height:150%;
+      color:#ffffff;
+    }
+    .downloads li {
+      display: inline-block;
+    }
+    .download {
+      display: inline-block;
+      width: 151px;
+      height: 45px;
+      font-size: 0;
+      line-height: 0;
+    }
+    .ios {
+      background-image: url('/img/go/ios.svg');
+      background-repeat: no-repeat;
+      background-size: contain;
+      margin-right: 20px;
+    }
+    .android {
+      width: 129px;
+      background-image: url('/img/go/android.png');
+      background-repeat: no-repeat;
+    }
+    .lp_top .to_site {
+      background-color:rgb(51, 129, 255);
+      color:#ffffff;
+      margin-top:30px;
+      padding:10px 15px;
+      font-size:17px;
+    }
+    .lp_article {
+      position:relative;
+      width:960px;
+      height:788px;
+      margin:auto;
+    }
+    #chartdiv {
+      width   : 100%;
+      height    : 500px;
+      font-size : 11px;
+    }
+    .lp_article .lp_title1 {
+      width:433px;
+      height:auto;
+      position:absolute;
+      top:76px;
+      left:476px;
+    }
+    .lp_title_words {
+      font-size:42px;
+      font-family:Lato;
+      line-height:59px;
+      color:#fff;
+    }
+    .lp_paragraph_words {
+      font-size:18px;
+      line-height:140%;
+      font-family:Lato;
+      font-weight:normal;
+    }
+    .lp_article .lp_paragraph1 {
+      width:413px;
+      height:auto;
+      position:absolute;
+      top:300px;
+      left:477px;
+    }
+    .lp_article .lp_content1 {
+      position:absolute;
+      width: 444px;
+      height: 670px;
+      top: 32px;
+      left: 82px;
+    }
+    .lp_article .lp_content1_img {
+      width:327px;
+      height:670px;
+    }
+    .lp_article .lp_content2 {
+      width:327px;
+      height:670px;
+      position:absolute;
+      top:107px;
+      left:550px;
+    }
+    .lp_article .lp_content2_img {
+      width:327px;
+      height:670px;
+    }
+    .lp_article .lp_title2 {
+      width:438px;
+      height:auto;
+      position:absolute;
+      top:245px;
+      left:92px;
+    }
+    .lp_article .lp_paragraph2 {
+      width:394px;
+      height:auto;
+      position:absolute;
+      top:456px;
+      left:93px;
+    }
+    .lp_article .lp_title3 {
+      width:433px;
+      height:auto;
+      position:absolute;
+      top:166px;
+      left:476px;
+    }
+    .lp_article .lp_paragraph3 {
+      width:413px;
+      height:auto;
+      position:absolute;
+      top:379px;
+      left:477px;
+    }
+    .lp_article .lp_content3 {
+      position:absolute;
+      width: 327px;
+      height: 670px;
+      top: 22px;
+      left: 82px;
+    }
+    .lp_article .lp_content3_img {
+      width:327px;
+      height:670px;
+    }
+    .lp_article .lp_content4 {
+      width:327px;
+      height:670px;
+      position:absolute;
+      top:67px;
+      left:550px;
+    }
+    .lp_article .lp_title4 {
+      width:438px;
+      height:auto;
+      position:absolute;
+      top:245px;
+      left:92px;
+    }
+    .lp_article .lp_paragraph4 {
+      width:394px;
+      height:auto;
+      position:absolute;
+      top:456px;
+      left:93px;
+    }
+    .lp_container_bottom {
+      position:relative;
+      width:960px;
+      height:380px;
+      margin:auto;
+    }
+
+    .lp_container_bottom .to_site {
+        height:64px;
+        width:200px;
+        background-color:rgb(51, 129, 255);
+        color:#ffffff;
+        font-size: 19px;
+        font-weight: bold;
+        margin-top:25px;
+    }
+        .modal-open {
+      margin-right:0 !important;
+    }
+  </style>
+
+    <meta name="apple-itunes-app" content="app-id=352756035">
+    <link rel="alternate" href="android-app://com.sidefeed.TCLive">
+
+    <meta name="twitter:card" content="app">
+    <meta name="twitter:description" content="TwitCasting - Stream Live Video on Twitter and Facebook ">
+    <meta name="twitter:creator" content="@twitcastinglive">
+    <meta name="twitter:image" content="https://ssl.twitcasting.tv/img/logo_ogp.png">
+    <meta name="twitter:image:src" content="https://ssl.twitcasting.tv/img/logo_ogp.png">
+    <meta name="twitter:app:name:iphone" content="TwitCasting">
+    <meta name="twitter:app:name:ipad" content="TwitCasting">
+    <meta name="twitter:app:name:googleplay" content="TwitCasting">
+    <meta name="twitter:app:id:iphone" content="id365235835">
+    <meta name="twitter:app:id:ipad" content="id365235835">
+    <meta name="twitter:app:id:googleplay" content="com.sidefeed.TCViewer">
+    <meta property="og:image" content="https://ssl.twitcasting.tv/img/logo_ogp.png">
+    <meta property="og:description" content="TwitCasting - Stream Live Video on Twitter and Facebook ">
+
+    <meta name="description" content="Social video live streaming for iOS, Android &amp; the web -The best live streaming experience for broadcasters and viewers who want to communicate, share and connect.">
+</head>
+<body>
+<div style="min-width:995px;">
+
+  <div style="position:relative;">
+    <div style="padding:5px;">
+      <a href="/?desktop=1" onclick="ga('usTracker.send', 'event', 'lp', 'gotosite', 'firstview_logo_pc');"><img src="/img/logo_header_large.png" style="float:left;width:224px;height:50px;margin-left:10px;z-index:10px;"></a>
+      <div style="float:right; margin:5px 25px 0 0;">
+      <!--<a href="" style="margin:3px 8px 0 8px;color:#fff;font-size:17px;text-decoration:none;" >Login</a>-->
+      <!--<a href="" style="margin:3px 8px 0 8px;line-height:100%;color:#fff;font-size:17px; background-color: transparent;border: 1px solid;" class="btn">Login</a>-->
+      <button type="button" style="margin:3px 8px 0 8px;line-height:100%;color:#fff;font-size:17px; background-color: transparent;border: 1px solid;" class="btn" data-toggle="modal" data-target="#lp_appdl">DOWNLOAD APPS</button>
+      </div>
+    </div>
+
+        <div class="modal fade" id="lp_appdl" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4>Get App Now!</h4>
+        </div>
+          <div class="modal-body">
+             <h3 style="color:#0073ff;"><strong>TwitCasting Live</strong> - Broadcast Video and Radio!</h3>
+             <img src="/img/go/icon_live_iphone_2048.png" style="width:48px;height:48px;float:left;margin:5px 20px 0 0;">
+              <ul class="downloads">
+                <li><a class="download ios" href="https://itunes.apple.com/app/apple-store/id352756035?pt=124956&ct=lp_firstview_modal&mt=8" onclick="ga('usTracker.send', 'event', 'lp', 'dl_link', 'ios_live_firstview');">Download on the App Store</a></li>
+                <li><a class="download android" href="https://play.google.com/store/apps/details?id=com.sidefeed.TCLive&referrer=utm_source%3Dlp_newapp_top" onclick="ga('usTracker.send', 'event', 'lp', 'dl_link', 'android_live_firstview');">Get it on Google Play</a></li>
+              </ul>
+              <br>
+              <h3 style="color:#00cd05;"><strong>TwitCasting Viewer</strong> - Interact with Broadcasters!</h3>
+              <img src="/img/go/icon_viewer_iphone_2048.png" style="width:48px;height:48px;float:left;margin:5px 20px 0 0;">
+              <ul class="downloads">
+                <li><a class="download ios" href="https://itunes.apple.com/app/apple-store/id365235835?pt=124956&ct=lp_firstview_modal&mt=8" onclick="ga('usTracker.send', 'event', 'lp', 'dl_link', 'ios_view_firstview');">Download on the App Store</a></li>
+                <li><a class="download android" href="https://play.google.com/store/apps/details?id=com.sidefeed.TCViewer&referrer=utm_source%3Dlp_newapp_top_viewer" onclick="ga('usTracker.send', 'event', 'lp', 'dl_link', 'android_view_firstview');">Get it on Google Play</a></li>
+              </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div style="overflow:hidden;height:560px;width:100%;">
+      <video autoplay loop muted id="bgvid" poster="/img/go/newapp_v2.jpg">
+        <source src="/img/go/newapp_v.mp4" type="video/mp4">
+        <source src="/img/go/newapp_v.webm" type="video/webm">
+        <source src="/img/go/newapp_v.ogv" type="video/ogg">
+        <img src="/img/go/newapp_v2.jpg">
+      </video>
+    </div>
+
+    <div class="lp_top" style="margin-top:-470px;margin-bottom:50px;">
+      <div style="text-align:center;">
+        <p class="title1">Stream Live Video anytime, anywhere</p>
+        <p class="title2">Your gateway to real-time video conversations<br>Chat, share and connect</p>
+        <a href="/?desktop=1" class="btn to_site" onclick="ga('usTracker.send', 'event', 'lp', 'gotosite', 'firstview_pc');">Watch Now</a>
+      </div>
+    </div>
+
+  </div>
+
+
+<div style="background-color:rgb(51, 129, 255);color:#fff;">
+  <div class="lp_article" style="height:658px;">
+    <div class="lp_title1">
+      <span class="lp_title_words">Broadcast together with your friends on &quot;Collabo&quot; mode!</span>
+    </div>
+    <div class="lp_paragraph1">
+      <span class="lp_paragraph_words">Multiple viewers (up to 5) can join a broadcaster in a single live stream using “Collabo” mode.</span><br>
+      <div style="margin-top:50px;">
+       <h4><strong>TwitCasting Live</strong> - Broadcast Video and Radio!</h4>
+       <img src="/img/go/icon_live_iphone_2048.png" style="width:48px;height:48px;float:left;margin:5px 20px 0 0;">
+        <ul class="downloads">
+          <li><a class="download ios" href="https://itunes.apple.com/app/apple-store/id352756035?pt=124956&ct=lp_middle&mt=8" onclick="ga('usTracker.send', 'event', 'lp', 'dl_link', 'ios_live_middle');">Download on the App Store</a></li>
+          <li><a class="download android" href="https://play.google.com/store/apps/details?id=com.sidefeed.TCLive&referrer=utm_source%3Dlp_newapp_top" onclick="ga('usTracker.send', 'event', 'lp', 'dl_link', 'android_live_middle');">Get it on Google Play</a></li>
+        </ul>
+        <br>
+        <h4 style=""><strong>TwitCasting Viewer</strong> - Interact with Broadcasters!</h4>
+        <img src="/img/go/icon_viewer_iphone_2048.png" style="width:48px;height:48px;float:left;margin:5px 20px 0 0;">
+        <ul class="downloads">
+          <li><a class="download ios" href="https://itunes.apple.com/app/apple-store/id365235835?pt=124956&ct=lp_middle&mt=8" onclick="ga('usTracker.send', 'event', 'lp', 'dl_link', 'ios_view_middle');">Download on the App Store</a></li>
+          <li><a class="download android" href="https://play.google.com/store/apps/details?id=com.sidefeed.TCViewer&referrer=utm_source%3Dlp_newapp_top_viewer" onclick="ga('usTracker.send', 'event', 'lp', 'dl_link', 'android_view_middle');">Get it on Google Play</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="lp_content1">
+      <img src="/img/go/iphone6_live_collabo3.png" class="lp_content1_img">
+    </div>
+  </div>
+
+  <div class="lp_article" style="height:688px;">
+    <div class="lp_content2">
+    <div id="chartdiv"></div>
+    <span>*Row is MB</span>
+    </div>
+    <div class="lp_title2">
+      <span class="lp_title_words">Optimized for data consumption, requiring very little data</span>
+    </div>
+    <div class="lp_paragraph2">
+      <span class="lp_paragraph_words">TwitCasting also offers more efficient data usage – only half of what is used by other popular live streaming apps.</span>
+    </div>
+  </div>
+
+
+  <div class="lp_article">
+    <div class="lp_title3">
+      <span class="lp_title_words">Reliable broadcasting in low bandwidth environments</span>
+    </div>
+    <div class="lp_paragraph3">
+      <span class="lp_paragraph_words">Custom encoding enables the app to dynamically adjust to network strength and broadcast even in low bandwidth environments (as low as 88 kbps), where other live streaming apps require 500 kbps or more.</span>
+    </div>
+    <div class="lp_content3">
+      <img src="/img/sample_viewer_iphone_1_en.png" class="lp_content3_img">
+    </div>
+  </div>
+
+  <div class="lp_container_bottom">
+    <p class="lp_title_words" style="text-align:center;">Available now</p>
+    <div class="" style="text-align:center;margin:0 auto;">
+      <div style="">
+       <h3><strong>TwitCasting Live</strong> - Broadcast Video and Radio!</h3>
+        <ul class="downloads">
+          <li><a class="download ios" href="https://itunes.apple.com/app/apple-store/id352756035?pt=124956&ct=lp_bottom&mt=8" onclick="ga('usTracker.send', 'event', 'lp', 'dl_link', 'ios_live_bottom');">Download on the App Store</a></li>
+          <li><a class="download android" href="https://play.google.com/store/apps/details?id=com.sidefeed.TCLive&referrer=utm_source%3Dlp_newapp_top" onclick="ga('usTracker.send', 'event', 'lp', 'dl_link', 'android_live_bottom');">Get it on Google Play</a></li>
+        </ul>
+        <br>
+        <h3 style=""><strong>TwitCasting Viewer</strong> - Interact with Broadcasters!</h3>
+        <ul class="downloads">
+          <li><a class="download ios" href="https://itunes.apple.com/app/apple-store/id365235835?pt=124956&ct=lp_bottom&mt=8" onclick="ga('usTracker.send', 'event', 'lp', 'dl_link', 'ios_view_bottom');">Download on the App Store</a></li>
+          <li><a class="download android" href="https://play.google.com/store/apps/details?id=com.sidefeed.TCViewer&referrer=utm_source%3Dlp_newapp_top_viewer" onclick="ga('usTracker.send', 'event', 'lp', 'dl_link', 'android_view_bottom');">Get it on Google Play</a></li>
+        </ul>
+      </div>
+      <a href="/?desktop=1"><button class="btn to_site btn-primary" style="background-color:#fff;color:rgb(51, 129, 255);" onclick="ga('usTracker.send', 'event', 'lp', 'gotosite', 'bottom_pc');">Enter Site</button></a>
+    </div>
+  </div>
+
+</div>
+
+<div style="background-color:#f0f5fa;color: #838d97;text-align:center;width:100%;padding:20px;">
+  <p>
+  <span><a href="/indexprivacy.php">Privacy Policy</a> | <a href="/indexlicense.php">Terms of Service</a> | <a href="/indexsupport.php">Support </a> | <a href="/indexattribution.php">Attribution</a> | <a href="/indexapi.php">Developer API</a> </span><br>
+  <div style="margin-top:1px;">Copyright (c) 2009-2016 <a href="http://moi.st/">Moi Corp.</a></div><br>
+  <div style="margin-top:3px;">
+    <a href="https://twitter.com/twitcastinglive" target="_blank"><img class="icon32" height="32px" src="/img/icon_social_.png"></a>
+    <a href="https://www.facebook.com/twitcastinglive" target="_blank"><img src="http://twitcasting.tv/img/icon_social_f.png" class="icon32" height="32px"></a>
+    <a href="http://twitcasting.tv/twitcastinglive/spotlight" target="_blank"><img src="http://twitcasting.tv/img/icon_social_c.png" class="icon32" height="32px"></a>
+    <a href="http://twitcastinglive.tumblr.com/" target="_blank"><img src="http://twitcasting.tv/img/icon_social_t.png" class="icon32" height="32px"></a>
+    <a href="https://instagram.com/twitcastinglive/" target="_blank"><img src="http://twitcasting.tv/img/icon_social_i.png" class="icon32" height="32px"></a>
+  </div>
+</div>
+
+
+</div>
+<script type="text/javascript" src="/js/go/amcharts.js"></script>
+<script type="text/javascript" src="/js/go/serial.js"></script>
+<script type="text/javascript" src="js/go/light.js"></script>
+<script type="text/javascript" src="/js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="/js/bs3/bootstrap.min.js"></script>
+
+<script type="text/javascript">
+var chart = AmCharts.makeChart( "chartdiv", {
+  "type": "serial",
+  "theme": "light",
+  "dataProvider": [ {
+    "country": "Other Apps",
+    "visits": 190
+  }, {
+    "country": "TwitCasting",
+    "visits": 100
+  }, ],
+  "valueAxes": [ {
+    "gridColor": "#FFFFFF",
+    "gridAlpha": 0.2,
+    "dashLength": 0
+  } ],
+  "gridAboveGraphs": true,
+  "startDuration": 1,
+  "graphs": [ {
+    "balloonText": "[[category]]: <b>[[value]]</b>",
+    "fillAlphas": 0.8,
+    "lineAlpha": 0.2,
+    "type": "column",
+    "valueField": "visits"
+  } ],
+  "chartCursor": {
+    "categoryBalloonEnabled": false,
+    "cursorAlpha": 0,
+    "zoomable": false
+  },
+  "categoryField": "country",
+  "categoryAxis": {
+    "gridPosition": "start",
+    "gridAlpha": 0,
+    "tickPosition": "start",
+    "tickLength": 20
+  },
+  "export": {
+    "enabled": true
+  }
+
+} );
+
+var time_offset = (new Date()).getTimezoneOffset();
+document.cookie = "time_offset=" + time_offset + ";path=/;domain=.twitcasting.tv";
+
+// google analytics このページはUS側として数字送る
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-51336-19', 'auto', {'name': 'usTracker'});
+ga('usTracker.send', 'pageview');
+
+</script>
+</body>
+</html>

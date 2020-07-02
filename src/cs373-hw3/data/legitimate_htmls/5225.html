@@ -1,0 +1,2674 @@
+
+<!--  判断城市有无的城市代码，便于添加红包 -->
+
+<!doctype html>
+<html>
+<head>
+<title>搜房家族</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<link rel="stylesheet" href="http://js.soufunimg.com/homepage/new/family/css/css2014.css">
+<script>
+	(function(){
+		//id1是tab的开头,id2是content的开头,index是当前的位置,count是总的tab个数,classname没选中tab的样式
+		///交换样式
+		var $ = function(id) {
+			return document.getElementById(id);
+		};
+	
+		window.show_menuc = function(id1, id2, index, count, classcurrent, classname) {
+			for (var i = 0; i < count; i++) {
+				$(id2.toString() + i).style.display = "none";
+				$(id1.toString() + i).className = classname;
+			}
+			$(id2.toString() + index).style.display = "block";
+			$(id1.toString() + index).className = classcurrent;
+		}	
+	})();
+
+
+</script>
+<script language="javascript">
+//表格鼠标感应换色 
+function senfe(o,a,b,c,d){
+ var t=document.getElementById(o).getElementsByTagName("tr");
+ for(var i=0;i<t.length;i++){
+  t[i].style.backgroundColor=(t[i].sectionRowIndex%2==0)?b:a;
+  t[i].onclick=function(){
+   if(this.x!="1"){
+    this.x="1";
+    this.style.backgroundColor=d;
+   }else{
+    this.x="0";
+    this.style.backgroundColor=(this.sectionRowIndex%2==0)?b:a;
+   }
+  }
+  t[i].onmouseover=function(){
+   if(this.x!="1")this.style.backgroundColor=c;
+  }
+  t[i].onmouseout=function(){
+   if(this.x!="1")this.style.backgroundColor=(this.sectionRowIndex%2==0)?b:a;
+  }
+ }
+}
+</script>
+<!--<script language="javascript" type="text/javascript" src="http://js.soufunimg.com/homepage/new/family/css/allcitys20110124.js?v=2015"></script>-->
+<script language="javascript" type="text/javascript" src="http://js.soufunimg.com/homepage/new/family/css/citys_2.js?v=2015"></script>
+
+
+<script type="text/javascript">
+ var _dctc=_dctc || {};
+ _dctc._account=_dctc._account || ['UA-24140496-1'];
+ _dctc.isNorth = _dctc.isNorth || 'Y';
+ _dctc.bid = '1';
+ (function() {
+    var script = document.createElement('script'); script.type ='text/javascript'; script.async = true;
+    script.src = 'http://js.soufunimg.com/count/load.min.js';
+    var s = document.getElementsByTagName('script')[0];
+s.parentNode.insertBefore(script, s);
+  })();
+</script>
+<script language = JavaScript> 
+
+var lii=5, ci=1;var targetcity="";
+function startRequest(key,e){
+
+	e = e || window.event; 
+	var keycode = e.which ? e.which : e.keyCode;
+	if (keycode==38 || keycode==40 || keycode==13) return;
+	if(key==""){
+		g("citys").innerHTML = "<ul><li class=\"tips\">输入中文/拼音或↑↓键选择</li></ul>";
+		g("citys").style.display = "none";
+		return;
+	}
+	lii=0;
+	var temp = "";
+	for (var c in cityJson){
+		if(cityJson[c].spell.indexOf(key)>-1 || cityJson[c].name.indexOf(key)>-1){
+			lii++;
+			if(lii==1){
+				temp += '<li id="li_'+lii+'" onclick="dd(\''+cityJson[c].name+'\',\''+cityJson[c].url+'\')" class="ac_over" onmouseover="this.className=\'ac_over\'" onmouseout="this.className=\'\'"><span class="pinying">'+cityJson[c].spell.replace(key,'<font color=\"red\">'+key+'</font>')+'</span><a style="display:none" id="ca_'+lii+'" href="'+cityJson[c].url+'">'+cityJson[c].name+'</a>'+cityJson[c].name.replace(key,'<font color=\"red\">'+key+'</font>')+'</li>';			
+				targetcity = cityJson[c].url;
+			}else{
+				temp += '<li id="li_'+lii+'" onclick="dd(\''+cityJson[c].name+'\',\''+cityJson[c].url+'\')" onmouseover="this.className=\'ac_over\'" onmouseout="this.className=\'\'"><span class="pinying">'+cityJson[c].spell.replace(key,'<font color=\"red\">'+key+'</font>')+'</span><a style="display:none" id="ca_'+lii+'" href="'+cityJson[c].url+'">'+cityJson[c].name+'</a>'+cityJson[c].name.replace(key,'<font color=\"red\">'+key+'</font>')+'</li>';
+			}
+		}
+	}
+	if(temp!=""){
+		g("citys").innerHTML = "<ul><li class=\"tips\">输入中文/拼音或↑↓键选择</li>"+temp+"</ul>";g("citys").style.display = "";g("nocity").style.display = "none";
+	}else{
+		g("citys").style.display = "none";g("nocity").style.display = "";targetcity="";
+		
+		//document.getElementById("spellcity").value="暂无此城市";
+	}
+	return;
+}
+function dd(cname,url){g("citys").style.display = "none";g("spellcity").value = cname;targetcity=url;window.open(url);}
+
+function controlHideOrBlock(){
+	
+	var text=document.getElementById("hide1").text;
+	if(text=="展开"){
+		document.getElementById("table1").style.display = 'block';
+		document.getElementById("hide1").className="stop";
+		document.getElementById("hide1").innerHTML='收起';
+	}
+	else{
+		document.getElementById("table1").style.display = 'none';
+		document.getElementById("hide1").className="open";
+		document.getElementById("hide1").innerHTML='展开';
+	}  
+}
+
+function controlHideOrBlock2(){
+	var text=document.getElementById("hide2").text;
+	if(text=="展开"){
+		document.getElementById("table2").style.display = 'block';
+		document.getElementById("hide2").className="stop";
+		document.getElementById("hide2").innerHTML='收起';
+	}else{
+		document.getElementById("table2").style.display = 'none';
+		document.getElementById("hide2").className="open";
+		document.getElementById("hide2").innerHTML='展开';
+	}  
+}
+document.onkeydown = function(e){
+	   if(!e){
+	    e = window.event;
+	   }
+	   if((e.keyCode || e.which) == 13){
+		   if(targetcity!='') window.open(targetcity);
+	   }
+}
+</script>
+</head>
+
+<!-- 新导航0903 start -->
+
+<!-- 房天下统一版头 begin -->
+<script type="text/javascript"
+	src="http://img.soufun.com/house/detail_new/js/Root.Xml.js"></script>
+<!-- <link href="http://js.soufunimg.com/zbs/newhouse/css/sfpc_base.css" type="text/css" rel="stylesheet"> -->
+<!-- 登录弹出框样式 -->
+<link href="http://js.soufunimg.com/newhouse/style/minav_2014.css"
+	type="text/css" rel="stylesheet">
+<script
+	src="http://img.soufun.com/news/image/newscenter/jquery/jquery-1.11.2.min.js"></script>
+<style>
+.zx_list li a {
+	font-family: '\5FAE\8F6F\96C5\9ED1';
+}
+
+.zx_search {
+	float: left;
+}
+
+.box_input .sear_btn {
+	background: #df0303;
+}
+
+.nhlogin_btn {
+	background: #f85858;
+}
+
+.nhlogin_btn:hover {
+	background: #e64141;
+}
+
+.newhouse_login_form li .nhlogin_ipt {
+	height: auto;
+}
+</style>
+
+<script language="javascript">
+	var ajaxHost = "";
+	var regservice = "newhouse";
+	var reghost = "newhouse.soufun.com";
+</script>
+
+<body>
+
+<!-- 新导航0903 begin -->
+<link href="https://jsimg.fang.com/navigation/style/navigation20141112.css" rel="stylesheet" type="text/css" />
+<!-- 新导航0903 begin -->
+<div class="newnav20141104">
+	<div class="newnav20141104nr">
+		<div class="s1"><a href="http://www.fang.com/"><img src="http://js.soufunimg.com/navigation/images/navlogo.gif"></a></div>
+		<div class="s2" onmouseover="this.className='s2 on2014'" onmouseout="this.className='s2'" id="dsy_H01_01">
+				<div class="s4Box"><a href="#">北京<img src="http://js.soufunimg.com/navigation/images/navicon.gif"></a></div>
+				<div class="city20141104">
+                  <!--city_list_start-->
+                <!--tab_header_start-->
+				<div class="city20141104hd">
+					<div class="city1">热门城市</div>
+					<div class="city2">ABCDFGH</div>
+					<div class="city2">JKLMNQST</div>
+					<div class="city2">WXYZ</div>
+                    <!--more_tab-->
+			    </div>
+            	<!--tab_header_end-->
+				<div class="city20141104nr" id="cityi010">
+                <a target="_self" href="http://www.fang.com/">全国</a>
+<a target="_self" href="http://bj.fang.com/">北京</a>
+<a target="_self" href="http://sh.fang.com/">上海</a>
+<a target="_self" href="http://gz.fang.com/">广州</a>
+<a target="_self" href="http://sz.fang.com/">深圳</a>
+<a target="_self" href="http://cd.fang.com/">成都</a>
+<a target="_self" href="http://cq.fang.com/">重庆</a>
+<a target="_self" href="http://tj.fang.com/">天津</a>
+<a target="_self" href="http://wuhan.fang.com/">武汉</a>
+<a target="_self" href="http://hz.fang.com/">杭州</a>
+<a target="_self" href="http://nanjing.fang.com/">南京</a>
+<a target="_self" href="http://suzhou.fang.com/">苏州</a>
+<a target="_self" href="http://qd.fang.com/">青岛</a>
+<a target="_self" href="http://cs.fang.com/">长沙</a>
+<a target="_self" href="http://xian.fang.com/">西安</a>
+<a target="_self" href="http://sy.fang.com/">沈阳</a>
+<a target="_self" href="http://changchun.fang.com/">长春</a>
+<a target="_self" href="http://cz.fang.com/">常州</a>
+<a target="_self" href="http://dl.fang.com/">大连</a>
+<a target="_self" href="http://dg.fang.com/">东莞</a>
+<a target="_self" href="http://hn.fang.com/">海南</a>
+<a target="_self" href="http://jn.fang.com/">济南</a>
+<a target="_self" href="http://sanya.fang.com/">三亚</a>
+<a target="_self" href="http://sjz.fang.com/">石家庄</a>
+<a target="_self" href="http://wuxi.fang.com/">无锡</a>
+<a target="_self" href="http://zz.fang.com/">郑州</a>
+<a target="_self" href="http://nb.fang.com/">宁波</a>
+<a target="_self" href="http://nn.fang.com/">南宁</a>
+<a target="_self" href="http://km.fang.com/">昆明</a>
+<a target="_self" href="http://hf.fang.com/">合肥</a>
+<!--tab1_content_end-->
+                </div>
+				<div class="city20141104nr" id="cityi011" style="display:none">
+                <a target="_self" href="http://anshan.fang.com/">鞍山</a>
+<a target="_self" href="http://bj.fang.com/">北京</a>
+<a target="_self" href="http://bd.fang.com/">保定</a>
+<a target="_self" href="http://bt.fang.com/">包头</a>
+<a target="_self" href="http://bengbu.fang.com/">蚌埠</a>
+<a target="_self" href="http://bh.fang.com/buy">北海</a>
+<a target="_self" href="http://changchun.fang.com/">长春</a>
+<a target="_self" href="http://cd.fang.com/">成都</a>
+<a target="_self" href="http://cq.fang.com/">重庆</a>
+<a target="_self" href="http://cs.fang.com/">长沙</a>
+<a target="_self" href="http://cz.fang.com/">常州</a>
+<a target="_self" href="http://dl.fang.com/">大连</a>
+<a target="_self" href="http://dg.fang.com/">东莞</a>
+<a target="_self" href="http://daqing.fang.com/">大庆</a>
+<a target="_self" href="http://fs.fang.com/">佛山</a>
+
+<a target="_self" href="http://fz.fang.com/">福州</a>
+<a target="_self" href="http://gz.fang.com/">广州</a>
+<a target="_self" href="http://ganzhou.fang.com/">赣州</a>
+<a target="_self" href="http://gy.fang.com/">贵阳</a>
+<a target="_self" href="http://guilin.fang.com/">桂林</a>
+<a target="_self" href="http://hz.fang.com/">杭州</a>
+<a target="_self" href="http://hs.fang.com/">衡水</a>
+<a target="_self" href="http://nm.fang.com/">呼和浩特</a>
+<a target="_self" href="http://hrb.fang.com/">哈尔滨</a>
+<a target="_self" href="http://hd.fang.com/">邯郸</a>
+<a target="_self" href="http://huaian.fang.com/">淮安</a>
+<a target="_self" href="http://huzhou.fang.com/">湖州</a>
+<a target="_self" href="http://hf.fang.com/">合肥</a>
+<a target="_self" href="http://huizhou.fang.com/">惠州</a>
+<a target="_self" href="http://hengyang.fang.com/">衡阳</a>
+<a target="_self" href="http://hn.fang.com/">海南</a>
+<!--tab2_content_end-->
+                </div>
+                <div class="city20141104nr" id="cityi012" style="display:none">
+                <a target="_self" href="http://jn.fang.com/">济南</a>
+<a target="_self" href="http://jining.fang.com/">济宁</a>
+<a target="_self" href="http://jl.fang.com/">吉林</a>
+<a target="_self" href="http://jy.fang.com/">江阴</a>
+<a target="_self" href="http://jx.fang.com/">嘉兴</a>
+<a target="_self" href="http://jm.fang.com/">江门</a>
+<a target="_self" href="http://jiujiang.fang.com/">九江</a>
+<a target="_self" href="http://ks.fang.com/">昆山</a>
+<a target="_self" href="http://km.fang.com/">昆明</a>
+<a target="_self" href="http://lc.fang.com/">聊城</a>
+<a target="_self" href="http://lf.fang.com/">廊坊</a>
+<a target="_self" href="http://linyi.fang.com/">临沂</a>
+<a target="_self" href="http://ly.fang.com/">洛阳</a>
+<a target="_self" href="http://lyg.fang.com/">连云港</a>
+<a target="_self" href="http://lz.fang.com/">兰州</a>
+<a target="_self" href="http://liuzhou.fang.com/">柳州</a>
+<a target="_self" href="http://leshan.fang.com/">乐山</a>
+<a target="_self" href="http://mas.fang.com/">马鞍山</a>
+<a target="_self" href="http://nanjing.fang.com/">南京</a>
+<a target="_self" href="http://nb.fang.com/">宁波</a>
+<a target="_self" href="http://nt.fang.com/">南通</a>
+<a target="_self" href="http://nc.fang.com/">南昌</a>
+<a target="_self" href="http://nn.fang.com/">南宁</a>
+<a target="_self" href="http://qd.fang.com/">青岛</a>
+<a target="_self" href="http://qhd.fang.com/">秦皇岛</a>
+<a target="_self" href="http://qz.fang.com/">泉州</a>
+<a target="_self" href="http://sy.fang.com/">沈阳</a>
+<a target="_self" href="http://sjz.fang.com/">石家庄</a>
+<a target="_self" href="http://sh.fang.com/">上海</a>
+<a target="_self" href="http://sz.fang.com/">深圳</a>
+<a target="_self" href="http://suzhou.fang.com/">苏州</a>
+<a target="_self" href="http://sx.fang.com/">绍兴</a>
+<a target="_self" href="http://st.fang.com/">汕头</a>
+<a target="_self" href="http://sanya.fang.com/">三亚</a>
+<a target="_self" href="http://sq.fang.com/">宿迁</a>
+<a target="_self" href="http://tj.fang.com/">天津</a>
+<a target="_self" href="http://ts.fang.com/">唐山</a>
+<a target="_self" href="http://taiyuan.fang.com/">太原</a>
+<a target="_self" href="http://taizhou.fang.com/">泰州</a>
+<!--tab3_content_end-->
+                </div>
+                <div class="city20141104nr" id="cityi013" style="display:none">
+                <a target="_self" href="http://wuhan.fang.com/">武汉</a>
+<a target="_self" href="http://wuxi.fang.com/">无锡</a>
+<a target="_self" href="http://wf.fang.com/">潍坊</a>
+<a target="_self" href="http://weihai.fang.com/">威海</a>
+<a target="_self" href="http://wuhu.fang.com/">芜湖</a>
+<a target="_self" href="http://xj.fang.com/">乌鲁木齐</a>
+<a target="_self" href="http://xian.fang.com/">西安</a>
+<a target="_self" href="http://xz.fang.com/">徐州</a>
+<a target="_self" href="http://xm.fang.com/">厦门</a>
+<a target="_self" href="http://xiangyang.fang.com/">襄阳</a>
+<a target="_self" href="http://xn.fang.com/">西宁</a>
+<a target="_self" href="http://xt.fang.com/">湘潭</a>
+<a target="_self" href="http://yt.fang.com/">烟台</a>
+<a target="_self" href="http://yz.fang.com/">扬州</a>
+<a target="_self" href="http://yancheng.fang.com/">盐城</a>
+<a target="_self" href="http://yc.fang.com/">宜昌</a>
+<a target="_self" href="http://yinchuan.fang.com/">银川</a>
+<a target="_self" href="http://yueyang.fang.com/">岳阳</a>
+<a target="_self" href="http://zz.fang.com/">郑州</a>
+<a target="_self" href="http://zb.fang.com/">淄博</a>
+<a target="_self" href="http://zhenjiang.fang.com/">镇江</a>
+<a target="_self" href="http://zhoushan.fang.com/">舟山</a>
+<a target="_self" href="http://zhangzhou.fang.com/">漳州</a>
+<a target="_self" href="http://zh.fang.com/">珠海</a>
+<a target="_self" href="http://zs.fang.com/">中山</a>
+<a target="_self" href="http://zhuzhou.fang.com/">株洲</a>
+<!--tab4_content_end-->
+                </div>
+																
+																
+					<!--more_tab_content-->
+                <!--city_list_end-->
+				</div>
+			
+		</div>	
+			<div class="s5" track-id="www1" style="background-image:none" id="dsy_H01_02">
+        	<div class="s4Box"><a href="http://www.fang.com" target="_self">首页</a></div>
+           
+        </div>
+		<div class="s5" track-id="newhouse" id="dsy_H01_03">
+        	<div class="s4Box"><a href="http://newhouse.fang.com/house/s/" target="_self">新房</a></div>
+            <div class="listBox">
+            	<ul>
+                   <li><a style="color:#f00;" target="_self" href="http://newhouse.fang.com/house/s/d21/">学区房</a></li>
+                   <li><a style="color:#f00;" target="_self" href="http://newhouse.fang.com/trade/">特价房</a></li>
+                   <li><a target="_self" href="http://newhouse.fang.com/house/saledate/%b1%be%d4%c2.htm">本月开盘</a></li>
+                    <li><a target="_self" href="http://newhouse.fang.com/house/asp/trans/buynewhouse/default.htm">热门楼盘</a></li>
+                    <li><a target="_self" href="http://newhouse.fang.com/house/s/b31/">打折楼盘</a></li>
+                    <li><a target="_self" href="http://newhouse.fang.com/house/daogou.htm">楼盘导购</a></li>
+					<li><a target="_self" href="http://v.fang.com/">楼盘视频</a></li>
+					<li><a target="_self" href="http://zhishi.fang.com/xf/">购房知识</a></li>
+					<li><a target="_self" href="http://newhouse.fang.com/house/kanfangtuan.htm">看房团</a></li>
+					<li style="margin-bottom:8px"><a href="http://newhouse.fang.com/entrust/" target="_self"><div class="butstyle20141104">帮你找房</div></a></li>
+                </ul>
+            </div>
+        </div>
+		<div class="s6" track-id="esf" id="dsy_H01_04">
+        	<div class="s4Box">	<a href="http://esf.fang.com/" target="_self">二手房</a></div>
+            <div class="listBox">
+            	<ul>
+                  <li><a target="_self" href="http://esf.fang.com/house/">出售房源</a></li>
+                    <li><a target="_self" href="http://esf.fang.com/house/a21/">佣金0.5%</a></li>
+                    <li><a target="_self" href="http://esf.fang.com/housing/">找小区</a></li>
+                    <li><a target="_self" href="http://esf.fang.com/agenthome/">找经纪人</a></li>
+                    <li><a target="_self" href="http://esf.fang.com/villa/">找别墅</a></li>
+                    <li><a target="_self" href="http://zhishi.fang.com/esf/">购房知识</a></li>
+                    <li><a target="_self" href="http://esf.fang.com/newsecond/news/">二手房导购</a></li>
+					<li style="margin-bottom:8px"><a href="http://esf.fang.com/newsecond/NonameSale/checkinhouse.aspx" target="_self"><div class="butstyle20141104">我要卖房</div></a></li>
+                </ul>
+            </div>
+        </div>	
+		<div class="s5" track-id="zu" id="dsy_H01_05">
+        	<div class="s4Box"><a href="http://zu.fang.com/" target="_self">租房</a></div>
+            <div class="listBox">
+            	<ul>
+                  	<li><a href="http://zu.fang.com/house/a27/" target="_self">免中介费房源</a></li>
+                   <li><a href="http://zu.fang.com/house/a21/" target="_self">个人房源</a></li>
+                    <li><a href="http://zu.fang.com/house/n31/" target="_self">整租房源</a></li>
+                    <li><a href="http://zu.fang.com/hezu/" target="_self">合租房源</a></li>
+					 <li><a href="http://zu.fang.com/villa/" target="_self" rel="nofollow">别墅房源</a></li>
+						<li><a href="http://www.youtx.com/beijing/" target="_self">短租日租</a></li>
+					 <li><a href="http://zu.fang.com/qiuzu/" target="_self" rel="nofollow">求租</a></li>
+                   <li style="margin-bottom:8px"><a href="http://zu.fang.com/rent/rent_info/Rent_Input_Front.aspx" target="_self" rel="nofollow"><div class="butstyle20141104">免费发布出租</div></a></li>
+                </ul>
+            </div>
+        </div>
+		<div class="s6" track-id="fangjia" style="background-image:none" id="dsy_H01_06">
+        	<div class="s4Box"><a href="http://fangjia.fang.com/" target="_self">查房价</a> </div>
+            
+        </div>	
+		<div class="s7" track-id="home" id="dsy_H01_07">
+        	<div class="s4Box"><a href="http://home.fang.com/" target="_self">装修家居</a></div>
+            <div class="listBox">
+            	<ul>
+                  <li><a href="http://home.fang.com/gj/">精装666元/㎡</a></li>
+                  <li><a href="http://home.fang.com/album/bj/">装修效果图</a></li>
+                  <li><a href="http://zhishi.fang.com/jiaju/">装修攻略</a></li>
+                  <li><a href="http://home.fang.com/news/">家居资讯</a></li>
+                  <li style="margin-bottom:8px"><a href="http://home.fang.com/woyaozhuangxiu/" target="_self"><div class="butstyle20141104">帮你装修</div></a></li>
+                </ul>
+            </div>
+        </div>
+			<div class="s6" track-id="office" id="dsy_H01_08">
+        	<div class="s4Box"><a href="http://office.fang.com/" target="_self">写字楼</a></div>
+            <div class="listBox">
+            	<ul>
+                     <li><a href="http://office.fang.com/zu/house/" target="_self">写字楼出租</a></li>
+                    <li><a href="http://office.fang.com/shou/house/" target="_self">写字楼出售</a></li>
+                    <li><a href="http://newhouse.fang.com/house/s/list/a75/" target="_self">写字楼新盘</a></li>
+                </ul>
+            </div>
+        </div>					
+				<div class="s5" track-id="shop" id="dsy_H01_09">
+        	<div class="s4Box"><a href="http://shop.fang.com/" target="_self">商铺</a></div>
+            <div class="listBox">
+            	<ul>
+                    <li><a href="http://shop.fang.com/zu/house/" target="_self">商铺出租</a></li>
+                    <li><a href="http://shop.fang.com/shou/house/" target="_self">商铺出售</a></li>
+                    <li><a href="http://newhouse.fang.com/house/s/list/a72/" target="_self">商铺新盘</a></li>
+                </ul>
+            </div>
+        </div>
+						<div class="s7" track-id="8" id="dsy_H01_10">
+        	<div class="s4Box"><a href="http://dai.txdai.com/" target="_self">金融贷款</a></div>
+            <div class="listBox">
+            	<ul> 
+                	<li><a href="http://dai.txdai.com/LoanAssess/LoanAssess.html" target="_self">新房首付贷</a></li>
+                	<li><a href="http://dai.txdai.com/diya/QuickEntry/Index.html?dataFrom=17" target="_self">二手房首付贷</a></li>
+                	<li><a href="http://dai.txdai.com/esf/Apply/Index.html" target="_self">二手房按揭贷款</a></li>
+                    <li><a href="http://www.txdai.com/" target="_self">投资理财</a></li>
+					<li><a href="http://txdai.com/zhongchou/NewHouseList/Index.html" target="_self">房产众筹</a></li>
+                    <li><a href="http://newhouse.fang.com/house/tools.htm" target="_self">贷款计算器</a></li>
+                </ul>
+            </div>
+        </div>
+		<div class="s5" track-id="fdc" id="dsy_H01_11">
+        	<div class="s4Box"><a href="http://fdc.fang.com/" target="_self">产业</a></div>
+            <div class="listBox">
+            	<ul>
+					<li><a href="http://land.fang.com/">土地</a></li>
+                   <li><a href="http://fdc.fang.com/data/">地产数据</a></li>
+                    <li><a href="http://fdc.fang.com/wenku/">文库报告</a></li>
+                    <li><a href="http://fdc.fang.com/index/BaiChengIndex.html">百城价格指数</a></li>
+                    <li><a href="http://fdc.fang.com/top10/">房企研究</a></li>
+                    <li><a href="http://fdc.fang.com/hr/">地产招聘</a></li>
+                  
+                </ul>
+            </div>
+        </div>
+										<div class="s7" track-id="world" id="dsy_H01_12">
+        	<div class="s4Box"><a href="http://world.fang.com/" target="_self">海外房产</a></div>
+            <div class="listBox">
+            	<ul>
+                 <li><a href="http://us.fang.com/" target="_self">美国房产</a></li>
+                    <li><a href="http://au.fang.com/" target="_self">澳大利亚房产</a></li>
+					<li><a href="http://canada.fang.com/" target="_self">加拿大房产</a></li>
+                    <li><a href="http://japan.fang.com/" target="_self">日本房产</a></li>
+                    <li><a href="http://uk.fang.com/" target="_self">英国房产</a></li>
+					<li><a href="http://www.hkproperty.com/" target="_blank">香港房产</a></li>
+                </ul>
+            </div>
+        </div>
+		<div class="s7" track-id="bbs" id="dsy_H01_13">
+        	<div class="s4Box">	<a href="http://bbs.fang.com/" target="_self">业主论坛</a></div>
+            <div class="listBox">
+            	<ul>
+                  <li><a href="http://bbs.fang.com/index.php?_c=Managerindex&amp;_m=EliteList" target="_self">精华帖</a></li>
+                  <li><a href="http://bbs.fang.com/board/buyer/" target="_self">购房圈</a></li>
+                  <li><a href="http://bbs.fang.com/asp/index/busiActivityMore.aspx" target="_self">业主活动</a></li>
+                  <li><a href="http://home.fang.com/bbs/board/bjzxlt/" target="_self">装修论坛</a></li>
+                </ul>
+            </div>
+        </div>
+		<div class="s7" track-id="news" id="dsy_H01_14">
+        <div class="s4Box"><a href="http://news.fang.com/" target="_self">房产快讯</a></div>
+            <div class="listBox">
+            	<ul>
+                   	<li><a href="http://news.fang.com/gdxw.html">最新快讯</a></li>
+                    <li><a href="http://news.fang.com/gqzt.html">高清组图</a></li>
+                    <li><a href="http://news.fang.com/rdzt.html">热点专题</a></li>
+                    <li><a href="http://news.fang.com/more/32/1.html">市场</a></li>
+					<li><a href="http://news.fang.com/more/35/1.html">政策</a></li>
+					<li><a href="http://news.fang.com/more/332/1.html">公司</a></li>
+					<li><a href="http://news.fang.com/more/330/1.html">金融</a></li>
+					<li><a href="http://news.fang.com/more/331/1.html">土地</a></li>
+                </ul>
+            </div>
+        </div>
+	<div id="topHeadLogin" style="display: none;"><div id="newsy_D01_19" class="s4a" onmouseover="this.className='s4a on'" onmouseout="this.className='s4a'" style="background-image:none"><div class="s4Box"><a rel="nofollow" href="http://www.fang.com/space/Index.aspx" id="sfHeadLogout">退出</a></div></div><div class="sline21041104"></div><div id="newsy_D01_18" class="s4" onmouseover="this.className='s4 on'" onmouseout="this.className='s4'" style="background-image:none"><div class="s4Box" style="width:90px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;float:left;text-align:right;"><a rel="nofollow" href="http://my.fang.com/" target="_self" id="sfHeadUsername"></a></div></div></div><div id="topHeadNotLogin" style="display: block;"><div id="newsy_D01_17" class="s4a" onmouseover="this.className='s4a on'" onmouseout="this.className='s4a'" style="background-image:none"><div class="s4Box"><a rel="nofollow" href="http://passport.fang.com/register.aspx?service=newhouse&amp;host=newhouse.soufun.com&amp;backurl=http%3A%2F%2Fnewhouse.tj.fang.com%2F" target="_blank" id="sfHeadRegister"> 注册</a></div></div><div class="sline21041104"></div><div id="newsy_D01_16" class="s4a" onmouseover="this.className='s4a on'" onmouseout="this.className='s4a'" style="background-image:none"><div class="s4Box"><a rel="nofollow" href="javascript:void(0)" onclick="showid('showlogindiv');jQuery('#layer').css('z-index', '10002');jQuery('#showlogindiv').css('z-index', '10005');">登录<hr> | </hr></a></div></div></div><div class="clear"></div>
+	</div>
+</div>
+<script src="//jsimg.fang.com/navigation/newnav20141111.js"></script>
+<!-- 新导航0903 end  -->
+
+		
+<!--newhouse login begin-->
+<div id="showlogindiv"
+	class="newhouse_login tf userdefinedbox jqmWindow jqmID4"
+	style="z-index: 3000; display: none;">
+	<a class="newhouse_login_close" onclick="hideid('showlogindiv')"
+		title="关闭"><span></span></a>
+	<p class="newhouse_login_tit">登录房天下账户</p>
+	<!-- 2015.11.6 登陆修改 -->
+	<!-- <form id="login" method="post" action="http://fang.com/house/web/user_login.php" name="login">
+		<input type="hidden" name="backurl" id="shHeadBackurl" value="" />
+		<ul class="newhouse_login_form">
+			<li><em class="nhlogin_nm"></em> 
+				<input type="text" value="手机号/邮箱/用户名"
+				onblur="if(!this.value){this.value=this.defaultValue;this.style.color='#aaa'}"
+				onfocus="if(this.value==this.defaultValue){this.value='';this.select();this.style.color='#666'}"
+				class="nhlogin_ipt fl" name="username" id="strusername"/>
+			</li>
+			<li><em class="nhlogin_pw fl"></em> 
+				<input name="" type="text" value="请输入密码" class="nhlogin_ipt fl" id="nhlogin_tx" /> 
+				<input type="password" value="" class="nhlogin_ipt fl" name="password" id="strpassword" style="display: none;"
+					onfocus="if(this.value==this.defaultValue){this.value='';this.select();this.style.color='#666'}"/>
+			</li>
+		</ul>
+	</form> -->
+	<form id="login" method="post" action="#" name="login">
+		<!-- <input type="hidden" name="backurl" id="shHeadBackurl" value="" /> -->
+		<input type="hidden" name="Service" value="newhouse-news-web"
+			id="Service" /> <input type="hidden" name="Callback" value="test"
+			id="Callback" />
+		<ul class="newhouse_login_form">
+			<li><em class="nhlogin_nm"></em> <input type="text"
+				value="手机号/邮箱/用户名"
+				onblur="if(!this.value){this.value=this.defaultValue;this.style.color='#aaa'}"
+				onfocus="if(this.value==this.defaultValue){this.value='';this.select();this.style.color='#666'}"
+				class="nhlogin_ipt fl" name="username" id="strusername" /></li>
+			<li><em class="nhlogin_pw fl"></em> <input name="" type="text"
+				value="请输入密码" class="nhlogin_ipt fl" id="nhlogin_tx" /> <input
+				type="password" value="" class="nhlogin_ipt fl" name="password"
+				id="strpassword" style="display: none;"
+				onfocus="if(this.value==this.defaultValue){this.value='';this.select();this.style.color='#666'}" />
+				<script type="text/javascript">
+					var tx = document.getElementById("nhlogin_tx"), pwd = document
+							.getElementById("strpassword");
+					tx.onfocus = function() {
+						if (this.value != "请输入密码")
+							return;
+						this.style.display = "none";
+						pwd.style.display = "";
+						pwd.value = "";
+						pwd.focus();
+					}
+					pwd.onblur = function() {
+						if (this.value != "")
+							return;
+						this.style.display = "none";
+						tx.style.display = "";
+						tx.value = "请输入密码";
+					}
+				</script></li>
+		</ul>
+	</form>
+	<div class="nhlogin_auto">
+		<a class="forget_link" target="_blank"
+			href="http://passport.fang.com/getpass.aspx">忘记密码？</a>
+	</div>
+	<div class="nhlogin_btnbox">
+		<!-- <input type="button" value="立即登录" class="nhlogin_btn tf"
+			onclick="jQuery('#login').submit();"> -->
+			<input type="button" value="立即登录" class="nhlogin_btn tf" id="btnLogin"/>
+	</div>
+	<div class="nhlogin_auto rg">
+		没有房天下通行证？ <a class="inp_link" target="_blank" id="sfHeadRegister2"
+			href="http://passport.fang.com/register.aspx">马上注册一个></a>
+	</div>
+</div>
+<!--newhouse login end-->
+<!---以下是js部分-->
+<script type="text/javascript">
+	$(function() {
+		var cityStr = "bj";
+		if (cityStr != null && cityStr != '') {
+			var myFangUrl = 'http://my.fang.com/?city=' + cityStr;
+			$('#sfHeadUsername').attr('href', myFangUrl);
+		} else {
+			$('#sfHeadUsername').attr('href', 'http://my.fang.com/');
+		}
+	});
+</script>
+<script type="text/javascript">
+	$(function() {
+		$("#btnLogin")
+				.click(
+						function() {
+							//获取token
+							$
+									.ajax({
+										async:false,
+										type : "get",
+										url : "/getToken.do",
+										data : {},
+										success : function(result) {
+											var info = result.split("|");
+											var code = info[0];
+											var msg = info[1];
+											
+											if (code == -1) {
+												alert("获取token失败！");
+												return;
+											} else {
+												//放cookie
+												//alert(code);
+												//alert(msg);
+												document.cookie = "token= "
+														+ msg;
+												var data = "";
+												var uid = $("#strusername")
+														.val();
+												var password = $("#strpassword")
+														.val();
+												var service = $("#Service")
+														.val();
+												var ip = "";
+												//var Ip=$("#Ip").val();
+												var cors = new XMLHttpRequest();
+												if ('withCredentials' in cors) {
+													$.ajax({
+																type : "get",
+																dataType: "jsonp",
+																url : "https://passport.fang.com/login.api",
+																data : {
+																	"Uid" : escape(uid),
+																	"Pwd" : escape(password),
+																	"Service" : escape(service),
+																	"Ip" : escape(ip)
+																},
+																xhrFields : {
+																	withCredentials : true
+																},
+																crossDomain : true,
+																success : function(
+																		json) {
+																	if (json.Message == "Error") {
+																		alert(json.Tip);
+																		return;
+																	}
+																	document.cookie = "new_loginname="
+																			+ json.UserName;
+																	document.cookie = "new_loginid="
+																			+ json.UserID;
+																	window.location
+																			.reload();
+																	//alert(json.UserName + '---' + json.UserID + '---' + json.Message + '---' + json.Tip + '---' + json.UrlReferrer+'---'+json.Ip);
+																}
+															});
+												} else if (typeof XDomainRequest != "undefined") {
+													$
+															.ajax({
+																type : "get",
+																url : "https://passport.fang.com/login.api",
+																data : {
+																	"Uid" : escape(uid),
+																	"Pwd" : escape(password),
+																	"Service" : escape(service),
+																	"Ip" : escape(ip)
+																},
+																xhrFields : {
+																	withCredentials : true
+																},
+																crossDomain : true,
+																success : function(
+																		json) {
+																	if (json.Message == "Error") {
+																		alert(json.Tip);
+																		return;
+																	}
+																	document.cookie = "new_loginname="
+																			+ json.UserName;
+																	document.cookie = "new_loginid="
+																			+ json.UserID;
+																	window.location
+																			.reload();
+																	//alert(json.UserName + '---' + json.UserID + '---' + json.Message + '---' + json.Tip + '---' + json.UrlReferrer + '---' + json.Ip);
+																}
+															});
+												} else {
+													$
+															.ajax({
+																type : "get",
+																url : "https://passport.fang.com/login.api",
+																dataType : "jsonp",
+																jsonp : "callback",
+																data : {
+																	"Uid" : escape(uid),
+																	"Pwd" : escape(password),
+																	"Service" : escape(service),
+																	"Ip" : escape(IP)
+																},
+																xhrFields : {
+																	withCredentials : true
+																},
+																crossDomain : true,
+																success : function(
+																		json) {
+																	if (json.Message == "Error") {
+																		alert(json.Tip);
+																		return;
+																	}
+																	document.cookie = "new_loginname="
+																			+ json.UserName;
+																	document.cookie = "new_loginid="
+																			+ json.UserID;
+																	window.location
+																			.reload();
+																	// alert(json.UserName + '---' + json.UserID + '---' + json.Message + '---' + json.Tip + '---' + json.UrlReferrer + '---' + json.Ip);
+																}
+															});
+												}
+											}
+										}
+									});
+						});
+	})
+</script>
+<script type="text/javascript">
+	function loadScript(B, D) {
+		var A = document.createElement("script"), C = document.documentElement.firstChild;
+		A.type = "text/javascript";
+		if (A.readyState) {
+			A.onreadystatechange = function() {
+				if (A.readyState == "loaded" || A.readyState == "complete") {
+					A.onreadystatechange = null;
+					D()
+				}
+			}
+		} else {
+			A.onload = function() {
+				D()
+			}
+		}
+		A.src = B;
+		C.insertBefore(A, C.firstChild)
+	};
+</script>
+<script type="text/javascript">
+	var city = "北京";
+	var $s_ = function(id) {
+		return document.getElementById(id);
+	}
+	var myXmlHttpRequest;
+	//创建ajax引擎                              
+	function getXmlHttpObject() {
+		var xmlHttpRequest;
+		//不同的浏览器获取对象xmlhttprequest 对象方法不一样
+		if (window.ActiveXObject) {
+			xmlHttpRequest = new ActiveXObject("Microsoft.XMLHTTP");
+		} else {
+			xmlHttpRequest = new XMLHttpRequest();
+		}
+		return xmlHttpRequest;
+	}
+	function doSearchSubmitBJ(t) {
+		var nowKeywValue = $s_("searchinput_" + t).value;
+		$s_("searchinput_" + t).value = nowKeywValue;
+		if (nowKeywValue != "请输入关键字（楼盘名/地名/开发商等）" && nowKeywValue != '') {
+			myXmlHttpRequest = getXmlHttpObject();
+			if (myXmlHttpRequest) {
+				//创建ajax引擎成功
+				var url = "/house/ajaxrequest/search_keyword_submit.php";
+				var data = 'city=' + city + "&keyword=" + nowKeywValue;
+				myXmlHttpRequest.open("post", url, false);
+				myXmlHttpRequest.setRequestHeader("Content-Type",
+						"application/x-www-form-urlencoded;charset=utf-8");
+				myXmlHttpRequest.onreadystatechange = function chuli() {
+					//接收数据json 
+					if (myXmlHttpRequest.readyState == 4) {
+						if (myXmlHttpRequest.status == 200) {
+							var result = myXmlHttpRequest.responseText;
+							var arr = result.split("^");
+							if (arr[0] == 100) {
+								window.open(arr[1]);
+								return false;
+							} else {
+								$s_('strNamekeyword_' + t).value = nowKeywValue;
+								$s_("form_newhouse_" + t).submit();
+							}
+						}
+					}
+				}
+				myXmlHttpRequest.send(data);
+				return false;
+			}
+		} else {
+			$s_('strNamekeyword_' + t).value = '';
+			$s_("form_newhouse_" + t).submit();
+		}
+		return true;
+	}
+</script>
+<script language="vbscript"> 
+Function URLDecode(input) 
+Dim str,code,a(3),b(1) 
+str="" 
+code=input 
+code=Replace(code,"+"," ") 
+Const hexstr = "0123456789ABCDEF" 
+While len(code)>0 
+If InStr(code,"%")>0 Then 
+str = str & Mid(code,1,InStr(code,"%")-1) 
+code = Mid(code,InStr(code,"%")) 
+a(0) = UCase(Mid(code,2,1)) 
+a(1) = UCase(Mid(code,3,1)) 
+If a(1)<>"" And InStr(hexstr,a(0))>0 And InStr(hexstr,a(1))>0 Then 
+b(0) = Eval("&H" & a(0) & a(1)) 
+If b(0)>127 And Mid(code,4,1)="%" And len(code)>=6 Then 
+a(2) = UCase(Mid(code,5,1)) 
+a(3) = UCase(Mid(code,6,1)) 
+If a(3)<>"" And InStr(hexstr,a(2))>0 And InStr(hexstr,a(3))>0 Then 
+b(1) = Eval("&H" & a(2) & a(3)) 
+str = str & chr(b(0)*256+b(1)) 
+code = Mid(code,7) 
+Else 
+str = str & "%" 
+code = Mid(code,2) 
+End If 
+Else 
+str = str & chr(b(0)) 
+code = Mid(code,4) 
+End If 
+Else 
+str = str & "%" 
+code = Mid(code,2) 
+End If 
+Else 
+str = str & code 
+code = "" 
+End If 
+Wend 
+URLDecode = str 
+End Function 
+</script>
+<script language="javascript">
+	function decodeURI(code) {
+		return URLDecode(code);
+	}
+</script>
+<script language="javascript">
+	function jsonToarray(dat) {
+		return eval('(' + dat + ')')
+	}
+	var backurl = urlencode(location.href);
+
+	function doHeadloginuser() {
+		var user_data = this.responseText;//获取cookie
+		if (user_data) {
+			var obj = jsonToarray(user_data);
+			if (obj.uname && obj.uid) {
+				document.getElementById('sfHeadUsername').innerHTML = obj.uname;
+				document.getElementById('sfHeadLogout').href = "http://passport.fang.com/logout.aspx?backurl="
+						+ backurl;
+				var tdate = new Date();
+				tdate.setHours(tdate.getHours() + 80);
+			}
+		}
+	}
+
+	function getCookie(name) {
+ 		document.domain = 'fang.com';
+		var start = document.cookie.indexOf(name + "=");
+		var len = start + name.length + 1;
+		if ((!start) && (name != document.cookie.substring(0, name.length)))
+			return null;
+		if (start == -1)
+			return null;
+		var end = document.cookie.indexOf(";", len);
+		if (end == -1)
+			end = document.cookie.length;
+		return document.cookie.substring(len, end);
+	}
+	var cookie_passport = getCookie('passport');
+	var cookie_new_loginid = getCookie('new_loginid');
+	var cookie_new_loginname = getCookie('new_loginname');
+	var cookie_new_sfut = getCookie('sfut');
+
+	var isLogin = false;
+	var showLoginName = "";
+	var showLoginId = "";
+	var ppUsername = cookie_passport ? getParamValueByPassport(cookie_passport,
+			"username") : "";
+	var ppUserid = cookie_passport ? getParamValueByPassport(cookie_passport,
+			"userid") : "";
+
+	if (cookie_new_loginid && cookie_new_loginname && cookie_new_sfut) {
+		showLoginName = cookie_new_loginname;
+		showLoginId = cookie_new_loginid;
+		//isLogin = true;
+		jQuery
+				.ajax({
+					type : 'get',
+					dataType : 'jsonp',
+					url : "http://zhuanti.news.fang.com/ajax.do",//改成新的jsp-----ajax_new.jsp
+					data : {},
+					complete : function() {
+					},
+					error : function() {
+					},
+					success : function(msgRes) {
+						var result = msgRes.feed.index;
+						if (result == 100) {
+							isLogin = true;
+							if (isLogin) {
+								showLoginName = msgRes.feed.username; //返回的username
+								showLoginId = msgRes.feed.userid; //返回的userid
+								document.getElementById('topHeadNotLogin').style.display = "none";
+								document.getElementById('topHeadLogin').style.display = "block";
+								document.getElementById('sfHeadLogout').href = "http://passport.fang.com/logout.aspx?backurl="
+										+ backurl;//设置logout
+								var nameStrTemp = showLoginName;
+								//document.getElementById('sfHeadUsername').innerHTML =  decodeURI(nameStrTemp);
+								document.getElementById('sfHeadUsername').innerHTML = nameStrTemp;
+							} else {
+								document.getElementById('topHeadNotLogin').style.display = "block";
+								document.getElementById('topHeadLogin').style.display = "none";
+							}
+						}
+					}
+				});
+	} else if (ppUsername && ppUserid) {
+		showLoginName = ppUsername;
+		showLoginId = ppUserid;
+		//isLogin = true;
+		$
+				.ajax({
+					type : 'get',
+					dataType : 'jsonp',
+					url : "http://zhuanti.news.fang.com/ajax.do",//改成新的jsp-----ajax_new.jsp
+					data : {},
+					complete : function() {
+					},
+					error : function() {
+					},
+					success : function(msgRes) {
+						var result = msgRes.feed.index;
+						if (result == 100) {
+							isLogin = true;
+							if (isLogin) {
+								showLoginName = msgRes.feed.username; //返回的username
+								showLoginId = msgRes.feed.userid; //返回的userid
+								document.getElementById('topHeadNotLogin').style.display = "none";
+								document.getElementById('topHeadLogin').style.display = "block";
+								document.getElementById('sfHeadLogout').href = "http://passport.fang.com/logout.aspx?backurl="
+										+ backurl;//设置logout
+								var nameStrTemp = showLoginName;
+								//document.getElementById('sfHeadUsername').innerHTML =  decodeURI(nameStrTemp);
+								document.getElementById('sfHeadUsername').innerHTML = nameStrTemp;
+							} else {
+								document.getElementById('topHeadNotLogin').style.display = "block";
+								document.getElementById('topHeadLogin').style.display = "none";
+							}
+						}
+					}
+
+				});
+	}
+	if (isLogin) {
+		document.getElementById('topHeadNotLogin').style.display = "none";
+		document.getElementById('topHeadLogin').style.display = "block";
+		document.getElementById('sfHeadLogout').href = "http://passport.fang.com/logout.aspx?backurl="
+				+ backurl;//设置logout
+
+		var nameStrTemp = showLoginName;
+
+		//document.getElementById('sfHeadUsername').innerHTML =  decodeURI(nameStrTemp);
+		document.getElementById('sfHeadUsername').innerHTML = nameStrTemp;
+
+		Xml.Request("http://www.fang.com/house/esf/getusernewhouse.php", null,
+				doHeadloginuser);
+	} else {
+		document.getElementById('topHeadNotLogin').style.display = "block";
+		document.getElementById('topHeadLogin').style.display = "none";
+		/// document.getElementById('shHeadBackurl').value = backurl;
+	}
+	function getParamValueByPassport(passport, paramKey) {
+		var passportArr = passport.split("&");
+		for (var i = 0; i < passportArr.length; i++) {
+			if (passportArr[i].indexOf(paramKey + "=") != -1) {
+				return passportArr[i].replace(paramKey + "=", "");
+			}
+		}
+	}
+	function urlencode(str) {
+		str = (str + '').toString();
+		return encodeURIComponent(str).replace(/!/g, '%21')
+				.replace(/'/g, '%27').replace(/\(/g, '%28').replace(/\)/g,
+						'%29').replace(/\*/g, '%2A').replace(/%20/g, '+');
+	}
+</script>
+
+<script type="text/javascript">
+	jQuery(function() {
+		var tx = jQuery("#nhlogin_tx");
+		var pwd = jQuery("#strpassword");
+		tx.focus(function() {
+			if (this.value != "请输入密码")
+				return;
+			tx.css("display", "none");
+			pwd.css("display", "block");
+			pwd.val("");
+			pwd.focus();
+		});
+		pwd.blur(function() {
+			if (this.value != "")
+				return;
+			pwd.css("display", "none");
+			tx.css("display", "block");
+			tx.val("请输入密码");
+		});
+	});
+	function showlogindiv() {
+		document.getElementById('showlogindiv').style.display = "block";
+	}
+	function hiddenlogindiv() {
+		document.getElementById('showlogindiv').style.display = "none";
+	}
+	/* function searchSubmit(){
+	 jQuery("#searchForm").submit();
+	 //document.getElementById('searchForm').submit();
+	 } */
+	function showid(idname) {
+		var isIE = (document.all) ? true : false;
+		var isIE6 = isIE
+				&& ([ /MSIE (\d)\.0/i.exec(navigator.userAgent) ][0][1] == 6);
+		var newbox = document.getElementById(idname);
+		newbox.style.zIndex = "9999";
+		newbox.style.display = "block"
+		newbox.style.position = !isIE6 ? "fixed" : "absolute";
+		newbox.style.top = newbox.style.left = "50%";
+		newbox.style.marginTop = -newbox.offsetHeight / 2 + "px";
+		newbox.style.marginLeft = -newbox.offsetWidth / 2 + "px";
+		var layer = document.createElement("div");
+		layer.id = "layer";
+		layer.style.width = layer.style.height = "100%";
+		layer.style.position = !isIE6 ? "fixed" : "absolute";
+		layer.style.top = layer.style.left = 0;
+		layer.style.backgroundColor = "#000";
+		layer.style.zIndex = "9998";
+		layer.style.opacity = "0.6";
+		document.body.appendChild(layer);
+		function layer_iestyle() {
+			layer.style.width = Math.max(document.documentElement.scrollWidth,
+					document.documentElement.clientWidth)
+					+ "px";
+			layer.style.height = Math.max(
+					document.documentElement.scrollHeight,
+					document.documentElement.clientHeight)
+					+ "px";
+		}
+		function newbox_iestyle() {
+			newbox.style.marginTop = document.documentElement.scrollTop
+					- newbox.offsetHeight / 2 + "px";
+			newbox.style.marginLeft = document.documentElement.scrollLeft
+					- newbox.offsetWidth / 2 + "px";
+		}
+		if (isIE) {
+			layer.style.filter = "alpha(opacity=60)";
+		}
+		if (isIE6) {
+			layer_iestyle()
+			newbox_iestyle();
+			window.attachEvent("onscroll", function() {
+				newbox_iestyle();
+			})
+			window.attachEvent("onresize", layer_iestyle)
+		}
+		layer.onclick = function() {
+			newbox.style.display = "none";
+			document.body.removeChild(layer);
+		}
+	}
+	function hideid(idname) {
+		var newbox = document.getElementById(idname);
+		var layer = document.getElementById('layer');
+		newbox.style.display = "none";
+		document.body.removeChild(layer);
+	}
+</script>
+
+
+
+
+<div class="wrap clearfix">
+<div class="bbanner">
+
+ <!-- 家族招商新广告 -->
+<SCRIPT LANGUAGE="JavaScript1.1" SRC="http://show3.fang.com/afp/door/;ap=7FFBB615_1AE9_F25F_4BF3_8E2D83CF0162;ct=js;pu=p28ed0b92e3713250001;/?" charset="utf-8">
+</SCRIPT>
+<NOSCRIPT>
+<IFRAME SRC=" http://show3.fang.com/afp/door/;ap=7FFBB615_1AE9_F25F_4BF3_8E2D83CF0162;ct=if;pu=p28ed0b92e3713250001;/?" NAME="adFrame_7FFBB615_1AE9_F25F_4BF3_8E2D83CF0162" WIDTH="1000" HEIGHT="198" FRAMEBORDER="no" BORDER="0" MARGINWIDTH="0" MARGINHEIGHT="0" SCROLLING="no">
+</IFRAME>
+</NOSCRIPT>
+<!-- 家族招商新广告/End --> 
+
+</div>	
+
+<div class="cityrk">
+	<span class="c666">热门城市入口</span><span class="cur"><a href="#">进入北京站</a></span><span>
+		<a href="http://www1.fang.com" target="_blank" id="sffamily_B02_01">全国</a> 
+		<a href="http://bj.fang.com/" target="_blank" id="sffamily_B02_02">北京</a> 
+		<a href="http://sh.fang.com/" target="_blank" id="sffamily_B02_03">上海</a> 
+		<a href="http://gz.fang.com/" target="_blank" id="sffamily_B02_04">广州</a> 
+		<a href="http://sz.fang.com/" target="_blank" id="sffamily_B02_05">深圳</a> 
+		<a href="http://cd.fang.com/" target="_blank" id="sffamily_B02_06">成都</a> 
+		<a href="http://cq.fang.com/" target="_blank" id="sffamily_B02_07">重庆</a> 
+		<a href="http://tj.fang.com/" target="_blank" id="sffamily_B02_08">天津</a> 
+		<a href="http://wuhan.fang.com/" target="_blank" id="sffamily_B02_09">武汉</a> 
+		<a href="http://hz.fang.com/" target="_blank" id="sffamily_B02_10">杭州</a> 
+		<a href="http://nanjing.fang.com/" target="_blank" id="sffamily_B02_11">南京</a> 
+		<a href="http://suzhou.fang.com/" target="_blank" id="sffamily_B02_12">苏州</a> 
+		<a href="http://dg.fang.com/" target="_blank" id="sffamily_B02_13">东莞</a> 
+		<a href="http://sy.fang.com/" target="_blank" id="sffamily_B02_14">沈阳</a> 
+		<a href="http://dl.fang.com/" target="_blank" id="sffamily_B02_15">大连</a> 
+		<a href="http://jn.fang.com/" target="_blank" id="sffamily_B02_16">济南</a> 
+		<a href="http://hn.fang.com/" target="_blank" id="sffamily_B02_17">海南</a> 
+		<a href="http://sanya.fang.com/" target="_blank" id="sffamily_B02_18">三亚</a> 
+		<a href="http://us.fang.com/" target="_blank" id="sffamily_B02_19">美国</a> 
+		<a href="http://world.fang.com/" target="_blank" id="sffamily_B02_20">海外</a>
+		<a href="http://www.hkproperty.com/" target="_blank" id="sffamily_B02_21">香港</a>
+	</span>
+</div>
+<div class="citysearch">
+	<span><input type="text" id="spellcity" type="text" onkeyup="startRequest(this.value,event)" onfocus="if(this.value=='直接输入城市名/拼音') this.value='';" onblur="if(this.value=='') this.value='直接输入城市名/拼音';" autocomplete="off" class="input" value="直接输入城市名/拼音"/>
+	<a href="#" onclick="if(targetcity!='') window.open(targetcity);" ><img src="http://js.soufunimg.com/homepage/new/family/css/images/but01.png" /></a>
+	</span><span class="c666 f14">（已开通606个城市）</span>
+</div>
+<div class="content">
+	<div class="contit">
+    	<div class="s1" onMouseOver="show_menuc('t01','ti01',0,2,'s1','s2')" id="t010">按拼音首字母选择</div>
+        <div class="s2" onMouseOver="show_menuc('t01','ti01',1,2,'s1','s2')" id="t011">按省份选择</div>
+    </div>
+	<div class="conbox" id="ti010">
+   	  <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table11">
+  <tr>
+    <td width="38" valign="top" class="font01">A</td>
+    <td width="952" valign="top">	<a href="http://anshan.fang.com/" target="_blank">鞍山</a> 
+					<a href="http://anyang.fang.com/" target="_blank">安阳</a> 
+					<a href="http://anqing.fang.com/" target="_blank">安庆</a> 
+					<a href="http://ankang.fang.com/" target="_blank">安康</a> 
+					<a href="http://abazhou.fang.com/" target="_blank">阿坝州</a> 
+					<a href="http://anshun.fang.com/" target="_blank">安顺</a> 
+					<a href="http://au.fang.com/" target="_blank">澳大利亚</a> 
+					<a href="http://macau.fang.com/" target="_blank">澳门</a> 
+					<a href="http://akesu.fang.com/" target="_blank">阿克苏</a> 
+					<a href="http://alaer.fang.com/" target="_blank">阿拉尔</a>
+					<a href="http://ali.fang.com/" target="_blank">阿里</a>
+					<a href="http://aba.fang.com/" target="_blank">阿坝</a>
+					<a href="http://alsm.fang.com/" target="_blank">阿拉善盟</a>
+					<a href="http://anda.fang.com/" target="_blank">安达</a>
+					<a href="http://anning.fang.com/" target="_blank">安宁</a>
+					<a href="http://anqiu.fang.com/" target="_blank">安丘</a></td>
+  </tr>
+  <tr>
+    <td valign="top" class="font01">B</td>
+    <td valign="top">
+					<a href="http://bj.fang.com/" target="_blank" class="red">北京</a>
+					<a href="http://bt.fang.com/" target="_blank">包头</a> 
+					<a href="http://bd.fang.com/" target="_blank">保定</a> 
+					<a href="http://bh.fang.com/" target="_blank">北海</a> 
+					<a href="http://baoji.fang.com/" target="_blank">宝鸡</a> 
+					<a href="http://binzhou.fang.com/" target="_blank">滨州</a> 
+					<a href="http://bengbu.fang.com/" target="_blank">蚌埠</a> 
+					<a href="http://benxi.fang.com/" target="_blank">本溪</a> 
+					<a href="http://baicheng.fang.com/" target="_blank">白城</a> 
+					<a href="http://bozhou.fang.com/" target="_blank">亳州</a> 
+					<a href="http://baoshan.fang.com/" target="_blank">保山</a> 
+					<a href="http://bazhong.fang.com/" target="_blank">巴中</a> 
+					<a href="http://baishan.fang.com/" target="_blank">白山</a> 
+					<a href="http://baiyin.fang.com/" target="_blank">白银</a> 
+					<a href="http://baise.fang.com/" target="_blank">百色</a> 
+					<a href="http://bijie.fang.com/" target="_blank">毕节</a>
+					<a href="http://byne.fang.com/" target="_blank">巴彦淖尔</a>
+                    <a href="http://boston.fang.com/" target="_blank">波士顿</a>
+					<a href="http://bazhou.fang.com/" target="_blank">巴州</a>
+					<a href="http://betl.fang.com/" target="_blank">博尔塔拉</a>
+					<a href="http://bulgaria.fang.com/" target="_blank">保加利亚</a>
+					<a href="http://binxian.fang.com/" target="_blank">宾县</a>
+					<a href="http://baoying.fang.com/" target="_blank">宝应</a>
+					<a href="http://bayan.fang.com/" target="_blank">巴彦</a>
+					<a href="http://gxby.fang.com/" target="_blank">宾阳</a>
+					<a href="http://cqbishan.fang.com" target="_blank">璧山</a>
+					<a href="http://boluo.fang.com" target="_blank">博罗</a>
+		  <a href="http://hbbz.fang.com" target="_blank">霸州</a>
+		  <a href="#" class="open" onclick="controlHideOrBlock();" id="hide1">展开</a></td>
+  </tr>
+</table>
+		<table width="100%" border="0" cellspacing="0" cellpadding="0" class="table11" style="display:none;" id="table1">
+  <tr>
+    <td width="38" valign="top" class="font01">C</td>
+    <td width="952" valign="top">			<a href="http://cq.fang.com/" target="_blank" class="red">重庆</a> 
+					<a href="http://cd.fang.com/" target="_blank" class="red">成都</a>
+					<a href="http://cs.fang.com/" target="_blank" class="red">长沙</a>
+					<a href="http://changchun.fang.com/" target="_blank" class="red">长春</a>
+					<a href="http://cz.fang.com/" target="_blank" class="red">常州</a>
+					<a href="http://changshu.fang.com/" target="_blank">常熟</a> 
+					<a href="http://chenzhou.fang.com/" target="_blank">郴州</a> 
+					<a href="http://chengde.fang.com/" target="_blank">承德</a> 
+					<a href="http://changzhi.fang.com/" target="_blank">长治</a> 
+					<a href="http://chuxiong.fang.com/" target="_blank">楚雄</a> 
+					<a href="http://chaoyang.fang.com/" target="_blank">朝阳</a> 
+					<a href="http://chaohu.fang.com/" target="_blank">巢湖</a> 
+					<a href="http://chizhou.fang.com/" target="_blank">池州</a> 
+					<a href="http://chifeng.fang.com/" target="_blank">赤峰</a> 
+					<a href="http://chuzhou.fang.com/" target="_blank">滁州</a> 
+					<a href="http://cangzhou.fang.com/" target="_blank">沧州</a> 
+					<a href="http://chaozhou.fang.com/" target="_blank">潮州</a> 
+					<a href="http://cqchangshou.fang.com/" target="_blank">长寿</a>
+                    <a href="http://changle.fang.com/" target="_blank">长乐</a>
+					<a href="http://chongzuo.fang.com/" target="_blank">崇左</a> 
+					<a href="http://changde.fang.com/" target="_blank">常德</a> 
+					<a href="http://changxing.fang.com/" target="_blank">长兴</a>
+					<a href="http://esf.changji.fang.com/" target="_blank">昌吉</a>       
+					<a href="http://changdu.fang.com/" target="_blank">昌都</a>
+					<a href="http://cixi.fang.com/" target="_blank">慈溪</a> 
+					<a href="http://changge.fang.com/" target="_blank">长葛</a>
+					<a href="http://changyi.fang.com/" target="_blank">昌邑</a>
+					<a href="http://chunan.fang.com/" target="_blank">淳安</a>
+					<a href="http://ahcf.fang.com/" target="_blank">长丰</a>
+					<a href="http://sdcl.fang.com/" target="_blank">昌乐</a>
+					<a href="http://chongzhou.fang.com/" target="_blank">崇州</a>
+					<a href="http://changli.fang.com/" target="_blank">昌黎</a></td>
+  </tr>
+  <tr>
+    <td valign="top" class="font01">D</td>
+    <td valign="top"><a href="http://dl.fang.com/" target="_blank" class="red">大连</a> 
+					<a href="http://dg.fang.com/" target="_blank" class="red">东莞</a>
+					<a href="http://germany.fang.com/" target="_blank">德国</a> 
+					<a href="http://dy.fang.com/" target="_blank">东营</a> 
+					<a href="http://dz.fang.com/" target="_blank">德州</a> 
+					<a href="http://daqing.fang.com/" target="_blank">大庆</a> 
+					<a href="http://dandong.fang.com/" target="_blank">丹东</a> 
+					<a href="http://datong.fang.com/" target="_blank">大同</a> 
+					<a href="http://dali.fang.com/" target="_blank">大理</a> 
+					<a href="http://dehong.fang.com/" target="_blank">德宏</a> 
+					<a href="http://dazhou.fang.com/" target="_blank">达州</a> 
+					<a href="http://deyang.fang.com/" target="_blank">德阳</a>
+					<a href="http://deqing.fang.com/" target="_blank">德清</a>
+					<a href="http://dingxi.fang.com/" target="_blank">定西</a>
+					<a href="http://diqing.fang.com/" target="_blank">迪庆</a>
+					<a href="http://dxal.fang.com/" target="_blank">大兴安岭</a>
+					<a href="http://dongtai.fang.com/" target="_blank">东台</a>
+					<a href="http://donggang.fang.com/" target="_blank">东港</a>
+                    <a href="http://dangtu.fang.com/" target="_blank" class="red">当涂</a> 
+					<a href="http://dangyang.fang.com/" target="_blank" class="red">当阳</a>
+					<a href="http://dengfeng.fang.com/" target="_blank">登封</a> 
+					<a href="http://dehui.fang.com/" target="_blank">德惠</a>
+					<a href="http://dingzhou.fang.com/" target="_blank">定州</a>
+					<a href="http://dayi.fang.com/" target="_blank">大邑</a>
+					<a href="http://cqdazu.fang.com" target="_blank">大足</a>
+					<a href="http://cqdianjiang.fang.com" target="_blank">垫江</a>
+					<a href="http://dongfang.fang.com" target="_blank">东方</a>
+					<a href="http://dujiangyan.fang.com" target="_blank">都江堰</a>
+					<a href="http://danzhou.fang.com" target="_blank">儋州</a></td>
+  </tr>
+  <tr>
+    <td valign="top" class="font01">E</td>
+    <td valign="top"><a href="http://erds.fang.com/" target="_blank">鄂尔多斯</a> 
+					<a href="http://enshi.fang.com/" target="_blank">恩施</a> 
+					<a href="http://ezhou.fang.com/" target="_blank">鄂州</a>
+					<a href="http://enping.fang.com/" target="_blank">恩平</a></td>
+  </tr>
+  <tr>
+    <td valign="top" class="font01">F</td>
+    <td valign="top"><a href="http://fs.fang.com/" target="_blank" class="red">佛山</a> 
+					<a href="http://fq.fang.com/" target="_blank"  >福清</a>
+					<a href="http://fz.fang.com/" target="_blank" class="red">福州</a>
+					<a href="http://fushun.fang.com/" target="_blank">抚顺</a> 
+					<a href="http://fuyang.fang.com/" target="_blank">阜阳</a> 
+					<a href="http://fuxin.fang.com/" target="_blank">阜新</a> 
+					<a href="http://jxfuzhou.fang.com/" target="_blank">抚州</a> 
+					<a href="http://fangchenggang.fang.com/" target="_blank">防城港</a>
+					<a href="http://cqfengdu.fang.com/" target="_blank">丰都</a>     
+					<a href="http://fuling.fang.com/" target="_blank">涪陵</a>
+					<a href="http://feicheng.fang.com/" target="_blank">肥城</a>
+					<a href="http://zjfy.fang.com/" target="_blank">富阳</a>
+					<a href="http://fenghua.fang.com/" target="_blank">奉化</a>
+					<a href="http://fengcheng.fang.com/" target="_blank">凤城</a>
+					<a href="http://feixi.fang.com/" target="_blank">肥西</a>
+					<a href="http://feidong.fang.com/" target="_blank">肥东</a>
+					<a href="http://jsfx.fang.com/" target="_blank">丰县</a>
+					<a href="http://faku.fang.com/" target="_blank">法库</a>
+                    <a href="http://cqfengjie.fang.com" target="_blank">奉节</a></td>
+  </tr>
+  <tr>
+    <td valign="top" class="font01">G</td>
+    <td valign="top"><a href="http://gz.fang.com/" target="_blank" class="red">广州</a> 
+					<a href="http://gy.fang.com/" target="_blank" class="red">贵阳</a>
+					<a href="http://guilin.fang.com/" target="_blank">桂林</a> 
+					<a href="http://ganzhou.fang.com/" target="_blank">赣州</a> 
+					<a href="http://guigang.fang.com/" target="_blank">贵港</a> 
+					<a href="http://guyuan.fang.com/" target="_blank">固原</a> 
+					<a href="http://guangan.fang.com/" target="_blank">广安</a> 
+					<a href="http://guangyuan.fang.com/" target="_blank">广元</a>
+					<a href="http://bj.fang.com/" target="_blank">固安</a>
+					<a href="http://ganzi.fang.com/" target="_blank">甘孜</a>
+					<a href="http://guoluo.fang.com/" target="_blank">果洛</a>
+					<a href="http://gannan.fang.com/" target="_blank">甘南</a>
+					<a href="http://gaomi.fang.com/" target="_blank">高密</a>
+					<a href="http://gongyi.fang.com/" target="_blank">巩义</a>
+					<a href="http://gaoyou.fang.com/" target="_blank">高邮</a>
+					<a href="http://guangrao.fang.com/" target="_blank">广饶</a>
+					<a href="http://gaobeidian.fang.com/" target="_blank">高碑店</a>
+					<a href="http://guzhen.fang.com/" target="_blank">固镇</a></td>
+  </tr>
+  <tr>
+    <td valign="top" class="font01">H</td>
+    <td valign="top"><a href="http://world.fang.com/" target="_blank" class="red">海外</a> 
+					<a href="http://hz.fang.com/" target="_blank" class="red">杭州</a> 
+					<a href="http://hrb.fang.com/" target="_blank" class="red">哈尔滨</a> 
+					<a href="http://hn.fang.com/" target="_blank" class="red">海南</a>
+					<a href="http://hn.fang.com/" target="_blank" class="red">海口</a> 
+					<a href="http://hf.fang.com/" target="_blank" class="red">合肥</a> 
+					<a href="http://nm.fang.com/" target="_blank" class="red">呼和浩特</a>
+					<a href="http://hd.fang.com/" target="_blank">邯郸</a> 
+					<a href="http://huizhou.fang.com/" target="_blank">惠州</a> 
+					<a href="http://huaian.fang.com/" target="_blank">淮安</a> 
+					<a href="http://heze.fang.com/" target="_blank">菏泽</a> 
+					<a href="http://huzhou.fang.com/" target="_blank">湖州</a> 
+					<a href="http://hs.fang.com/" target="_blank">衡水</a> 
+					<a href="http://hengyang.fang.com/" target="_blank">衡阳</a> 
+					<a href="http://hanzhong.fang.com/" target="_blank">汉中</a> 
+					<a href="http://huangshi.fang.com/" target="_blank">黄石</a> 
+					<a href="http://huaihua.fang.com/" target="_blank">怀化</a>
+                    <a href="http://haimen.fang.com/" target="_blank">海门</a>
+					<a href="http://huoqiu.fang.com/" target="_blank">霍邱</a>
+					<a href="http://huian.fang.com/" target="_blank">惠安</a>
+					<a href="http://huanggang.fang.com/" target="_blank">黄冈</a> 
+					<a href="http://hechi.fang.com/" target="_blank">河池</a> 
+					<a href="http://honghe.fang.com/" target="_blank">红河</a> 
+					<a href="http://hegang.fang.com/" target="_blank">鹤岗</a> 
+					<a href="http://hebi.fang.com/" target="_blank">鹤壁</a> 
+					<a href="http://huainan.fang.com/" target="_blank">淮南</a> 
+					<a href="http://huaibei.fang.com/" target="_blank">淮北</a> 
+					<a href="http://huangshan.fang.com/" target="_blank">黄山</a> 
+					<a href="http://huludao.fang.com/" target="_blank">葫芦岛</a> 
+					<a href="http://heyuan.fang.com/" target="_blank">河源</a> 
+					<a href="http://hezhou.fang.com/" target="_blank">贺州</a> 
+					<a href="http://heihe.fang.com/" target="_blank">黑河</a>
+					<a href="http://hechuan.fang.com" target="_blank">合川</a>
+					<a href="http://huangnan.fang.com/" target="_blank">黄南</a>
+					<a href="http://haixi.fang.com/" target="_blank">海西</a>
+                    <a href="http://haidong.fang.com/" target="_blank">海东</a>
+					<a href="http://haibei.fang.com/" target="_blank">海北</a>
+					<a href="http://hlbe.fang.com/" target="_blank">呼伦贝尔</a>
+					<a href="http://hailaer.fang.com/" target="_blank">海拉尔</a>
+					<a href="http://hami.fang.com/" target="_blank">哈密</a>
+					<a href="http://hetian.fang.com/" target="_blank">和田</a>
+					<a href="http://haining.fang.com/" target="_blank">海宁</a>
+					<a href="http://haian.fang.com/" target="_blank">海安</a>
+					<a href="http://huidong.fang.com/" target="_blank">惠东</a>
+					<a href="http://huxian.fang.com/" target="_blank">户县</a>
+					<a href="http://hengxian.fang.com/" target="_blank">横县</a>
+					<a href="http://huaiyuan.fang.com/" target="_blank">怀远</a>
+					<a href="http://heshan.fang.com/" target="_blank">鹤山</a>
+					<a href="http://haiyang.fang.com/" target="_blank">海阳</a>
+					<a href="http://hailin.fang.com/" target="_blank">海林</a></td>
+  </tr>
+  <tr>
+    <td valign="top" class="font01">J</td>
+    <td valign="top"><a href="http://jn.fang.com/" target="_blank" class="red">济南</a>
+					<a href="http://jl.fang.com/" target="_blank">吉林</a> 
+					<a href="http://jx.fang.com/" target="_blank">嘉兴</a> 
+					<a href="http://jh.fang.com/" target="_blank">金华</a> 
+					<a href="http://jc.fang.com/" target="_blank">晋城</a> 
+					<a href="http://jy.fang.com/" target="_blank">江阴</a> 
+					<a href="http://jm.fang.com/" target="_blank">江门</a> 
+					<a href="http://jiujiang.fang.com/" target="_blank">九江</a> 
+					<a href="http://jining.fang.com/" target="_blank">济宁</a> 
+					<a href="http://jieyang.fang.com/" target="_blank">揭阳</a> 
+					<a href="http://jiaozuo.fang.com/" target="_blank">焦作</a> 
+					<a href="http://jingzhou.fang.com/" target="_blank">荆州</a> 
+					<a href="http://jiamusi.fang.com/" target="_blank">佳木斯</a> 
+					<a href="http://jixi.fang.com/" target="_blank">鸡西</a> 
+					<a href="http://jian.fang.com/" target="_blank">吉安</a> 
+					<a href="http://jinchang.fang.com/" target="_blank">金昌</a> 
+					<a href="http://jinzhong.fang.com/" target="_blank">晋中</a> 
+					<a href="http://jiangdu.fang.com/" target="_blank">江都</a>
+                    <a href="http://jiaonan.fang.com/" target="_blank">胶南</a>
+					<a href="http://jingjiang.fang.com/" target="_blank">靖江</a>
+					<a href="http://jinzhou.fang.com/" target="_blank">锦州</a> 
+					<a href="http://jingdezhen.fang.com/" target="_blank">景德镇</a> 
+					<a href="http://jingmen.fang.com/" target="_blank">荆门</a> 
+					<a href="http://jiayuguan.fang.com/" target="_blank">嘉峪关</a> 
+					<a href="http://jiuquan.fang.com/" target="_blank">酒泉</a> 
+					<a href="http://cqjiangjin.fang.com/" target="_blank">江津</a>
+					<a href="http://sf.fang.com/" target="_blank">旧金山</a>
+					<a href="http://jiyuan.fang.com/" target="_blank">济源</a>
+					<a href="http://jintan.fang.com/" target="_blank">金坛</a>
+					<a href="http://jimo.fang.com/" target="_blank">即墨</a>
+					<a href="http://jiande.fang.com/" target="_blank">建德</a>
+					<a href="http://jinxian.fang.com/" target="_blank">进贤</a>
+					<a href="http://jr.fang.com/" target="_blank">句容</a>
+					<a href="http://scjt.fang.com/" target="_blank">金堂</a>
+					<a href="http://sdjy.fang.com/" target="_blank">济阳</a>
+                    <a href="http://hbjz.fang.com/" target="_blank">晋州</a>
+					<a href="http://jianyang.fang.com/" target="_blank">简阳</a></td>
+  </tr>
+  <tr>
+    <td valign="top" class="font01">K</td>
+    <td valign="top"><a href="http://km.fang.com/" target="_blank" class="red">昆明</a> 
+					<a href="http://ks.fang.com/" target="_blank" class="red">昆山</a>
+					<a href="http://kelamayi.fang.com/" target="_blank">克拉玛依</a> 
+					<a href="http://kashi.fang.com/" target="_blank">喀什</a> 
+					<a href="http://kaifeng.fang.com/" target="_blank">开封</a>
+					<a href="http://kzls.fang.com/" target="_blank">克孜勒苏</a>
+					<a href="http://kaiping.fang.com/" target="_blank">开平</a>
+					<a href="http://kaili.fang.com/" target="_blank">凯里</a>
+					<a href="http://kangping.fang.com/" target="_blank">康平</a>
+					<a href="http://kaiyang.fang.com/" target="_blank">开阳</a>
+					<a href="http://cqkaixian.fang.com" target="_blank">开县</a></td>
+  </tr>
+  <tr>
+    <td valign="top" class="font01">L</td>
+    <td valign="top"><a href="http://lz.fang.com/" target="_blank" class="red">兰州</a>
+					<a href="http://ls.fang.com/" target="_blank">丽水</a> 
+					<a href="http://lyg.fang.com/" target="_blank">连云港</a> 
+					<a href="http://ly.fang.com/" target="_blank">洛阳</a> 
+					<a href="http://liuzhou.fang.com/" target="_blank">柳州</a> 
+					<a href="http://lf.fang.com/" target="_blank">廊坊</a> 
+					<a href="http://lc.fang.com/" target="_blank">聊城</a> 
+					<a href="http://linyi.fang.com/" target="_blank">临沂</a> 
+					<a href="http://leshan.fang.com/" target="_blank">乐山</a> 
+					<a href="http://lvliang.fang.com/" target="_blank">吕梁</a> 
+					<a href="http://liaoyang.fang.com/" target="_blank">辽阳</a> 
+					<a href="http://liaoyuan.fang.com/" target="_blank">辽源</a> 
+					<a href="http://linfen.fang.com/" target="_blank">临汾</a> 
+					<a href="http://longyan.fang.com/" target="_blank">龙岩</a> 
+					<a href="http://luohe.fang.com/" target="_blank">漯河</a> 
+					<a href="http://luzhou.fang.com/" target="_blank">泸州</a>
+					<a href="http://longhai.fang.com/" target="_blank">龙海</a>
+					<a href="http://longkou.fang.com/" target="_blank">龙口</a>
+                    <a href="http://laizhou.fang.com/" target="_blank">莱州</a>
+					<a href="http://lijiang.fang.com/" target="_blank">丽江</a> 
+					<a href="http://luan.fang.com/" target="_blank">六安</a> 
+					<a href="http://laiwu.fang.com/" target="_blank">莱芜</a> 
+					<a href="http://lincang.fang.com/" target="_blank">临沧</a> 
+					<a href="http://liangshan.fang.com/" target="_blank">凉山</a> 
+					<a href="http://longnan.fang.com/" target="_blank">陇南</a> 
+					<a href="http://laibin.fang.com/" target="_blank">来宾</a> 
+					<a href="http://liupanshui.fang.com/" target="_blank">六盘水</a> 
+					<a href="http://loudi.fang.com/" target="_blank">娄底</a>
+					<a href="http://la.fang.com/" target="_blank">洛杉矶</a>
+					<a href="http://lasa.fang.com/" target="_blank">拉萨</a>
+					<a href="http://linxia.fang.com/" target="_blank">临夏</a>
+					<a href="http://linzhi.fang.com/" target="_blank">林芝</a>
+					<a href="http://sxly.fang.com/" target="_blank">临猗</a>
+					<a href="http://linhai.fang.com/" target="_blank">临海</a>
+					<a href="http://liyang.fang.com/" target="_blank">溧阳</a>
+					<a href="http://laixi.fang.com/" target="_blank">莱西</a>
+                    <a href="http://linan.fang.com/" target="_blank">临安</a>
+					<a href="http://lianjiang.fang.com/" target="_blank">连江</a>
+					<a href="http://linan.fang.com/" target="_blank">临朐</a>
+					<a href="http://lujiang.fang.com/" target="_blank">庐江</a>
+					<a href="http://laiyang.fang.com/" target="_blank">莱阳</a>
+					<a href="http://lantian.fang.com/" target="_blank">蓝田</a>
+					<a href="http://liaozhong.fang.com/" target="_blank">辽中</a>
+					<a href="http://liuyang.fang.com/" target="_blank">浏阳</a>
+					<a href="http://luanxian.fang.com/" target="_blank">滦县</a>
+					<a href="http://luannan.fang.com/" target="_blank">滦南</a>
+					<a href="http://luoning.fang.com/" target="_blank">洛宁</a>
+					<a href="http://hblt.fang.com/" target="_blank">乐亭</a>
+					<a href="http://gdlm.fang.com/" target="_blank">龙门</a>
+					<a href="http://cqliangping.fang.com/" target="_blank">梁平</a>
+					<a href="http://linqing.fang.com/" target="_blank">临清</a>
+					<a href="http://liling.fang.com/" target="_blank">醴陵</a></td>
+  </tr>
+  <tr>
+    <td valign="top" class="font01">M</td>
+    <td valign="top"><a href="http://malaysia.fang.com/" target="_blank">马来西亚</a>  <a href="http://mianyang.fang.com/" target="_blank">绵阳</a> 
+					<a href="http://mas.fang.com/" target="_blank">马鞍山</a> 
+					<a href="http://maoming.fang.com/" target="_blank">茂名</a> 
+					<a href="http://mudanjiang.fang.com/" target="_blank">牡丹江</a> 
+					<a href="http://meizhou.fang.com/" target="_blank">梅州</a> 
+					<a href="http://meishan.fang.com/" target="_blank">眉山</a>
+					<a href="http://us.fang.com/" target="_blank">美国</a>
+					<a href="http://mengjin.fang.com/" target="_blank">孟津</a></td>
+  </tr>
+  <tr>
+    <td valign="top" class="font01">N</td>
+    <td valign="top"><a href="http://nanjing.fang.com/" target="_blank" class="red">南京</a> 
+					<a href="http://nc.fang.com/" target="_blank" class="red">南昌</a> 
+					<a href="http://nn.fang.com/" target="_blank" class="red">南宁</a> 
+					<a href="http://nb.fang.com/" target="_blank" class="red">宁波</a>
+					<a href="http://nt.fang.com/" target="_blank">南通</a> 
+					<a href="http://nanyang.fang.com/" target="_blank">南阳</a> 
+					<a href="http://neijiang.fang.com/" target="_blank">内江</a> 
+					<a href="http://nanchong.fang.com/" target="_blank">南充</a> 
+					<a href="http://ningde.fang.com/" target="_blank">宁德</a> 
+					<a href="http://nanping.fang.com/" target="_blank">南平</a>
+					<a href="http://cqnanchuan.fang.com/" target="_blank">南川</a>
+					<a href="http://ny.fang.com/" target="_blank">纽约</a>
+					<a href="http://nujiang.fang.com/" target="_blank">怒江</a>
+					<a href="http://naqu.fang.com/" target="_blank">那曲</a>
+					<a href="http://ninghai.fang.com/" target="_blank">宁海</a>
+					<a href="http://nanan.fang.com/" target="_blank">南安</a>
+					<a href="http://nongan.fang.com/" target="_blank">农安</a>
+					<a href="http://ningxiang.fang.com/" target="_blank">宁乡</a></td>
+  </tr>
+  <tr>
+    <td valign="top" class="font01">P</td>
+    <td valign="top"><a href="http://pingdingshan.fang.com/" target="_blank">平顶山</a> 
+					<a href="http://panjin.fang.com/" target="_blank">盘锦</a> 
+					<a href="http://pingxiang.fang.com/" target="_blank">萍乡</a> 
+					<a href="http://pingliang.fang.com/" target="_blank">平凉</a> 
+					<a href="http://puyang.fang.com/" target="_blank">濮阳</a> 
+					<a href="http://panzhihua.fang.com/" target="_blank">攀枝花</a> 
+					<a href="http://putian.fang.com/" target="_blank">莆田</a> 
+					<a href="http://puer.fang.com/" target="_blank">普洱</a>
+					<a href="http://pingtan.fang.com/" target="_blank">平潭</a>
+					<a href="http://portugal.fang.com/" target="_blank">葡萄牙</a>
+					<a href="http://pizhou.fang.com/" target="_blank">邳州</a>
+					<a href="http://pingdu.fang.com/" target="_blank">平度</a>
+					<a href="http://pulandian.fang.com/" target="_blank">普兰店</a>
+					<a href="http://pinghu.fang.com/" target="_blank">平湖</a>
+					<a href="http://penglai.fang.com/" target="_blank">蓬莱</a>
+					<a href="http://peixian.fang.com/" target="_blank">沛县</a>
+					<a href="http://pengzhou.fang.com/" target="_blank">彭州</a>
+                   	<a href="http://sdpy.fang.com/" target="_blank">平阴</a>
+					<a href="http://hbps.fang.com/" target="_blank">平山</a></td>
+  </tr>
+  <tr>
+    <td valign="top" class="font01">Q</td>
+    <td valign="top"><a href="http://qd.fang.com/" target="_blank" class="red">青岛</a>
+					<a href="http://qhd.fang.com/" target="_blank">秦皇岛</a> 
+					<a href="http://qz.fang.com/" target="_blank">泉州</a> 
+					<a href="http://qiqihaer.fang.com/" target="_blank">齐齐哈尔</a> 
+					<a href="http://quzhou.fang.com/" target="_blank">衢州</a> 
+					<a href="http://qingyuan.fang.com/" target="_blank">清远</a> 
+					<a href="http://qinzhou.fang.com/" target="_blank">钦州</a> 
+					<a href="http://qujing.fang.com/" target="_blank">曲靖</a> 
+					<a href="http://qiandongnan.fang.com/" target="_blank">黔东南</a> 
+					<a href="http://qingyang.fang.com/" target="_blank">庆阳</a> 
+					<a href="http://qiannan.fang.com/" target="_blank">黔南</a> 
+					<a href="http://qianxinan.fang.com/" target="_blank">黔西南</a> 
+					<a href="http://qianjiang.fang.com/" target="_blank">黔江</a> 
+					<a href="http://qitaihe.fang.com/" target="_blank">七台河</a>
+					<a href=" http://qijiang.fang.com" target="_blank">綦江</a>
+					<a href=" http://qj.fang.com" target="_blank">潜江</a>
+					<a href="http://qidong.fang.com/" target="_blank">启东</a>
+                    <a href="http://qianan.fang.com/" target="_blank">迁安</a>
+					<a href="http://qingzhou.fang.com/" target="_blank">青州</a>
+					<a href="http://qionglai.fang.com/" target="_blank">邛崃</a>
+					<a href="http://hbql.fang.com/" target="_blank">青龙</a>
+					<a href="http://qianxi.fang.com/" target="_blank">迁西</a>
+					<a href="http://qingxu.fang.com/" target="_blank">清徐</a>
+					<a href="http://qixia.fang.com/" target="_blank">栖霞</a>
+					<a href="http://qingzhen.fang.com/" target="_blank">清镇</a></td>
+  </tr>
+  <tr>
+    <td valign="top" class="font01">R</td>
+    <td valign="top"><a href="http://rz.fang.com/" target="_blank">日照</a> 
+					<a href="http://japan.fang.com/" target="_blank">日本</a>
+					<a href="http://rikaze.fang.com/" target="_blank">日喀则</a>
+					<a href="http://ruzhou.fang.com/" target="_blank">汝州</a>
+					<a href="http://ruian.fang.com/" target="_blank">瑞安</a>
+					<a href="http://rugao.fang.com/" target="_blank">如皋</a>
+					<a href="http://ruijin.fang.com/" target="_blank">瑞金</a>
+					<a href="http://rudong.fang.com/" target="_blank">如东</a>
+					<a href="http://ruyang.fang.com/" target="_blank">汝阳</a>
+					<a href="http://cqrongchang.fang.com" target="_blank">荣昌</a></td>
+  </tr>
+  <tr>
+    <td valign="top" class="font01">S</td>
+    <td valign="top"><a href="http://sh.fang.com/" target="_blank" class="red">上海</a> 
+					<a href="http://sz.fang.com/" target="_blank" class="red">深圳</a> 
+					<a href="http://suzhou.fang.com/" target="_blank" class="red">苏州</a> 
+					<a href="http://sy.fang.com/" target="_blank" class="red">沈阳</a> 
+					<a href="http://sjz.fang.com/" target="_blank" class="red">石家庄</a> 
+					<a href="http://sanya.fang.com/" target="_blank" class="red">三亚</a>
+					<a href="http://sx.fang.com/" target="_blank">绍兴</a> 
+					<a href="http://st.fang.com/" target="_blank">汕头</a> 
+					<a href="http://shunde.fang.com/" target="_blank">顺德</a> 
+					<a href="http://sq.fang.com/" target="_blank">宿迁</a> 
+					<a href="http://ahsuzhou.fang.com/" target="_blank">宿州</a> 
+					<a href="http://shiyan.fang.com/" target="_blank">十堰</a> 
+					<a href="http://sanming.fang.com/" target="_blank">三明</a> 
+					<a href="http://shaoguan.fang.com/" target="_blank">韶关</a> 
+					<a href="http://shangqiu.fang.com/" target="_blank">商丘</a> 
+					<a href="http://suihua.fang.com/" target="_blank">绥化</a> 
+					<a href="http://shennongjia.fang.com/" target="_blank">神农架</a>        
+					<a href="http://sansha.fang.com/" target="_blank">三沙</a>
+                    <a href="http://shangyu.fang.com/" target="_blank">上虞</a>
+					<a href="http://shaoyang.fang.com/" target="_blank">邵阳</a> 
+					<a href="http://songyuan.fang.com/" target="_blank">松原</a> 
+					<a href="http://sanmenxia.fang.com/" target="_blank">三门峡</a> 
+					<a href="http://shanwei.fang.com/" target="_blank">汕尾</a> 
+					<a href="http://suizhou.fang.com/" target="_blank">随州</a> 
+					<a href="http://suining.fang.com/" target="_blank">遂宁</a> 
+					<a href="http://shangluo.fang.com/" target="_blank">商洛</a> 
+					<a href="http://shuozhou.fang.com/" target="_blank">朔州</a> 
+					<a href="http://shizuishan.fang.com/" target="_blank">石嘴山</a> 
+					<a href="http://shangrao.fang.com/" target="_blank">上饶</a> 
+					<a href="http://siping.fang.com/" target="_blank">四平</a> 
+					<a href="http://shuangyashan.fang.com/" target="_blank">双鸭山</a>
+					<a href="http://cyprus.fang.com/" target="_blank">塞浦路斯</a>
+					<a href="http://shuyang.fang.com/" target="_blank">沭阳</a>
+					<a href="http://esf.shihezi.fang.com/" target="_blank">石河子</a>
+					<a href="http://shannan.fang.com/" target="_blank">山南</a>
+                    <a href="http://sg.fang.com/" target="_blank">寿光</a>
+					<a href="http://shishi.fang.com/" target="_blank">石狮</a>
+					<a href="http://jssn.fang.com/" target="_blank">睢宁</a>
+					<a href="http://sdsh.fang.com/" target="_blank">商河</a>
+					<a href="http://songxian.fang.com/" target="_blank">嵩县</a>
+					<a href="http://shangzhi.fang.com/" target="_blank">尚志</a>
+					<a href="http://cqshizhu.fang.com" target="_blank">石柱</a>
+				</td>
+  </tr>
+  <tr>
+    <td valign="top" class="font01">T</td>
+    <td valign="top"><a href="http://tj.fang.com/" target="_blank" class="red">天津</a> 
+					<a href="http://taiyuan.fang.com/" target="_blank" class="red">太原</a> 
+					<a href="http://ts.fang.com/" target="_blank" class="red">唐山</a>
+					<a href="http://tz.fang.com/" target="_blank">台州</a> 
+					<a href="http://taizhou.fang.com/" target="_blank">泰州</a> 
+					<a href="http://tc.fang.com/" target="_blank">太仓</a> 
+					<a href="http://taian.fang.com/" target="_blank">泰安</a> 
+					<a href="http://tieling.fang.com/" target="_blank">铁岭</a> 
+					<a href="http://tianshui.fang.com/" target="_blank">天水</a> 
+					<a href="http://tongchuan.fang.com/" target="_blank">铜川</a> 
+					<a href="http://tonghua.fang.com/" target="_blank">通化</a> 
+					<a href="http://tl.fang.com/" target="_blank">通辽</a> 
+					<a href="http://tongling.fang.com/" target="_blank">铜陵</a> 
+					<a href="http://tongren.fang.com/" target="_blank">铜仁</a> 
+					<a href="http://www.twproperty.com.tw/" target="_blank">台湾</a>
+					<a href="http://tulufan.fang.com/" target="_blank">吐鲁番</a>
+					<a href="http://tmsk.fang.com/" target="_blank">图木舒克</a>
+                    <a href="http://tianmen.fang.com/" target="_blank">天门</a>
+					<a href="http://cqtongliang.fang.com/" target="_blank">铜梁</a>
+					<a href="http://taixing.fang.com/" target="_blank">泰兴</a>
+					<a href="http://tengzhou.fang.com/" target="_blank">滕州</a>
+					<a href="http://tongcheng.fang.com/" target="_blank">桐城</a>
+					<a href="http://tongxiang.fang.com/" target="_blank">桐乡</a>
+					<a href="http://zjtl.fang.com/" target="_blank">桐庐</a>
+					<a href="http://taishan.fang.com/" target="_blank">台山</a>
+					<a href="http://cqtongnan.fang.com" target="_blank">潼南</a></td>
+  </tr>
+  <tr>
+    <td valign="top" class="font01">W</td>
+    <td valign="top"><a href="http://wuhan.fang.com/" target="_blank" class="red">武汉</a> 
+					<a href="http://wuxi.fang.com/" target="_blank" class="red">无锡</a>
+					<a href="http://weihai.fang.com/" target="_blank">威海</a> 
+					<a href="http://wf.fang.com/" target="_blank">潍坊</a> 
+					<a href="http://wz.fang.com/" target="_blank">温州</a> 
+					<a href="http://wj.fang.com/" target="_blank">吴江</a> 
+					<a href="http://wlcb.fang.com/" target="_blank">乌兰察布</a> 
+					<a href="http://xj.fang.com/" target="_blank">乌鲁木齐</a> 
+					<a href="http://wuhu.fang.com/" target="_blank">芜湖</a> 
+					<a href="http://wuzhou.fang.com/" target="_blank">梧州</a> 
+					<a href="http://weinan.fang.com/" target="_blank">渭南</a> 
+					<a href="http://wenshan.fang.com/" target="_blank">文山</a> 
+					<a href="http://wuzhong.fang.com/" target="_blank">吴忠</a> 
+					<a href="http://wuwei.fang.com/" target="_blank">武威</a>
+					<a href=" http://wanzhou.fang.com" target="_blank">万州</a>
+					<a href="http://wuhai.fang.com/" target="_blank">乌海</a>
+					<a href="http://wujiaqu.fang.com/" target="_blank">五家渠</a>
+                    <a href="http://wuzhishan.fang.com/" target="_blank">五指山</a>
+					<a href="http://wenling.fang.com/" target="_blank">温岭</a>
+					<a href="http://wafangdian.fang.com/" target="_blank">瓦房店</a>
+					<a href="http://wushan.fang.com/" target="_blank">巫山</a>
+					<a href="http://hbwj.fang.com/" target="_blank">无极</a>
+					<a href="http://wuchang.fang.com/" target="_blank">五常</a>
+					<a href="http://cqwulong.fang.com/" target="_blank">武隆</a>
+					<a href="http://wenan.fang.com/" target="_blank">文安</a>
+					<a href="http://wuhe.fang.com/" target="_blank">五河</a>
+					<a href="http://wanning.fang.com/" target="_blank">万宁</a>
+					<a href="http://wuan.fang.com/" target="_blank">万宁</a></td>
+  </tr>
+  <tr>
+    <td valign="top" class="font01">X</td>
+    <td valign="top"><a href="http://xian.fang.com/" target="_blank" class="red">西安</a>
+					<a href="http://www.hkproperty.com/" target="_blank" class="red">香港</a>
+					<a href="http://seattle.fang.com/" target="_blank" class="red">西雅图</a>
+					<a href="http://spain.fang.com/" target="_blank">西班牙</a> 
+					<a href="http://greece.fang.com/" target="_blank">希腊</a> 
+					<a href="http://sydney.fang.com/ " target="_blank">悉尼</a> 
+					<a href="http://xn.fang.com/" target="_blank">西宁</a> 
+					<a href="http://xm.fang.com/" target="_blank">厦门</a> 
+					<a href="http://xz.fang.com/" target="_blank">徐州</a> 
+					<a href="http://xt.fang.com/" target="_blank">湘潭</a> 
+					<a href="http://xx.fang.com/" target="_blank">新乡</a> 
+					<a href="http://xiangyang.fang.com/" target="_blank">襄阳</a> 
+					<a href="http://xingtai.fang.com/" target="_blank">邢台</a> 
+					<a href="http://xiaogan.fang.com/" target="_blank">孝感</a> 
+					<a href="http://xuchang.fang.com/" target="_blank">许昌</a> 
+					<a href="http://xinzhou.fang.com/" target="_blank">忻州</a> 
+					<a href="http://xuancheng.fang.com/" target="_blank">宣城</a>
+					<a href="http://xinyi.fang.com/" target="_blank">新沂</a>
+                    <a href="http://xishuangbanna.fang.com/" target="_blank">西双版纳</a> 
+					<a href="http://xianyang.fang.com/" target="_blank">咸阳</a> 
+					<a href="http://xinyang.fang.com/" target="_blank">信阳</a> 
+					<a href="http://xinyu.fang.com/" target="_blank">新余</a> 
+					<a href="http://xiangxi.fang.com/" target="_blank">湘西</a> 
+					<a href="http://xianning.fang.com/" target="_blank">咸宁</a>  
+					<a href="http://bj.fang.com/" target="_blank">香河</a>
+					<a href="http://xiantao.fang.com/" target="_blank">仙桃</a>
+					<a href="http://xlglm.fang.com/" target="_blank">锡林郭勒盟</a>
+					<a href="http://xam.fang.com/" target="_blank">兴安盟</a>
+					<a href="http://xinghua.fang.com/" target="_blank">兴化</a>
+					<a href="http://xintai.fang.com/" target="_blank">新泰</a>
+					<a href="http://xinzheng.fang.com/" target="_blank">新郑</a>
+					<a href="http://zjxs.fang.com/" target="_blank">象山</a>
+					<a href="http://xingyang.fang.com/" target="_blank">荥阳</a>
+					<a href="http://xinjian.fang.com/" target="_blank">新建</a>
+                    <a href="http://xinji.fang.com/" target="_blank">辛集</a>
+					<a href="http://xinmi.fang.com/" target="_blank">新密</a>
+					<a href="http://hnxa.fang.com/" target="_blank">新安</a>
+					<a href="http://xinmin.fang.com/" target="_blank">新民</a>
+					<a href="http://xiuwen.fang.com/" target="_blank">修文</a>
+					<a href="http://xinle.fang.com/" target="_blank">新乐</a>
+					<a href="http://youxian.fang.com/" target="_blank">攸县</a>
+					<a href="http://xiangxiang.fang.com/" target="_blank">湘乡</a>
+					<a href="http://xinjin.fang.com/" target="_blank">新津</a></td>
+  </tr>
+  <tr>
+    <td valign="top" class="font01">Y</td>
+    <td valign="top"><a href="http://yt.fang.com/" target="_blank">烟台</a> 
+					<a href="http://yz.fang.com/" target="_blank">扬州</a> 
+					<a href="http://yc.fang.com/" target="_blank">宜昌</a> 
+					<a href="http://yinchuan.fang.com/" target="_blank">银川</a> 
+					<a href="http://yl.fang.com/" target="_blank">玉林</a> 
+					<a href="http://yk.fang.com/" target="_blank">营口</a> 
+					<a href="http://yanan.fang.com/" target="_blank">延安</a> 
+					<a href="http://yancheng.fang.com/" target="_blank">盐城</a> 
+					<a href="http://yueyang.fang.com/" target="_blank">岳阳</a> 
+					<a href="http://yanbian.fang.com/" target="_blank">延边</a> 
+					<a href="http://yingtan.fang.com/" target="_blank">鹰潭</a> 
+					<a href="http://yuxi.fang.com/" target="_blank">玉溪</a> 
+					<a href="http://yichun.fang.com/" target="_blank">宜春</a> 
+					<a href="http://sxyulin.fang.com/" target="_blank">榆林</a> 
+					<a href="http://yibin.fang.com/" target="_blank">宜宾</a> 
+					<a href="http://yongzhou.fang.com/" target="_blank">永州</a> 
+					<a href="http://yili.fang.com/" target="_blank">伊犁</a>
+                    <a href="http://yangjiang.fang.com/" target="_blank">阳江</a> 
+					<a href="http://yangquan.fang.com/" target="_blank">阳泉</a> 
+					<a href="http://yaan.fang.com/" target="_blank">雅安</a> 
+					<a href="http://yiyang.fang.com/" target="_blank">益阳</a> 
+					<a href="http://yunfu.fang.com/" target="_blank">云浮</a> 
+					<a href="http://hljyichun.fang.com/" target="_blank">伊春</a> 
+					<a href="http://yuncheng.fang.com/" target="_blank">运城</a>
+					<a href="http://yongchuan.fang.com" target="_blank">永川</a>
+					<a href="http://bj.fang.com/" target="_blank">燕郊</a>
+					<a href="http://yixing.fang.com/" target="_blank">宜兴</a>
+					<a href="http://yushu.fang.com/" target="_blank">玉树</a>
+					<a href="http://yiwu.fang.com/" target="_blank">义乌</a>
+					<a href="http://yueqing.fang.com/" target="_blank">乐清</a>
+					<a href="http://yanling.fang.com/" target="_blank">鄢陵</a>
+					<a href="http://yangchun.fang.com/" target="_blank">阳春</a>
+					<a href="http://hnyz.fang.com/" target="_blank">禹州</a>
+					<a href="http://yuyao.fang.com/" target="_blank">余姚</a>
+					<a href="http://yongkang.fang.com/" target="_blank">永康</a>
+                    <a href="http://yizheng.fang.com/" target="_blank">仪征</a>
+					<a href="http://yuhuan.fang.com/" target="_blank">玉环</a>
+					<a href="http://yichuan.fang.com/" target="_blank">伊川</a>
+					<a href="http://yanshi.fang.com/" target="_blank">偃师</a>
+					<a href="http://yidu.fang.com/" target="_blank">宜都</a>
+					<a href="http://yongdeng.fang.com/" target="_blank">永登</a>
+					<a href="http://yuzhong.fang.com/" target="_blank">榆中</a>
+					<a href="http://yongchun.fang.com/" target="_blank">永春</a>
+					<a href="http://hnyy.fang.com/" target="_blank">宜阳</a>
+					<a href="http://yutian.fang.com/" target="_blank">玉田</a>
+					<a href="http://jlys.fang.com/" target="_blank">榆树</a>
+					<a href="http://yilan.fang.com/" target="_blank">依兰</a>
+					<a href="http://cqyunyang.fang.com" target="_blank">云阳</a>
+					<a href="http://hbys.fang.com" target="_blank">元氏</a>
+					<a href="http://ynyl.fang.com" target="_blank">宜良</a></td>
+  </tr>
+  <tr>
+    <td valign="top" class="font01">Z</td>
+    <td valign="top"><a href="http://zj.fang.com/" target="_blank">湛江</a> 
+					<a href="http://zhenjiang.fang.com/" target="_blank">镇江</a> 
+					<a href="http://zz.fang.com/" target="_blank">郑州</a> 
+					<a href="http://zs.fang.com/" target="_blank">中山</a> 
+					<a href="http://zhuzhou.fang.com/" target="_blank">株洲</a> 
+					<a href="http://zh.fang.com/" target="_blank">珠海</a> 
+					<a href="http://zb.fang.com/" target="_blank">淄博</a> 
+					<a href="http://zhoushan.fang.com/" target="_blank">舟山</a> 
+					<a href="http://zjg.fang.com/" target="_blank">张家港</a> 
+					<a href="http://zhangjiakou.fang.com/" target="_blank">张家口</a> 
+					<a href="http://zhangzhou.fang.com/" target="_blank">漳州</a> 
+					<a href="http://zhaoqing.fang.com/" target="_blank">肇庆</a> 
+					<a href="http://zaozhuang.fang.com/" target="_blank">枣庄</a> 
+					<a href="http://zhoukou.fang.com/" target="_blank">周口</a> 
+					<a href="http://zhumadian.fang.com/" target="_blank">驻马店</a> 
+					<a href="http://zigong.fang.com/" target="_blank">自贡</a>
+					<a href="http://zhangjiajie.fang.com/" target="_blank">张家界</a>
+                    <a href="http://ziyang.fang.com/" target="_blank">资阳</a> 
+					<a href="http://zunyi.fang.com/" target="_blank">遵义</a> 
+					<a href="http://zhaotong.fang.com/" target="_blank">昭通</a> 
+					<a href="http://zhongwei.fang.com/" target="_blank">中卫</a> 
+					<a href="http://zhangye.fang.com/" target="_blank">张掖</a>
+					<a href="http://bj.fang.com/" target="_blank">涿州</a>
+					<a href="http://chicago.fang.com/" target="_blank">芝加哥</a>
+					<a href="http://zhangqiu.fang.com/" target="_blank">章丘</a>
+					<a href="http://zhucheng.fang.com/" target="_blank">诸城</a>
+					<a href="http://zy.fang.com/" target="_blank">招远</a>
+					<a href="http://zhuji.fang.com/" target="_blank">诸暨</a>
+					<a href="http://zoucheng.fang.com/" target="_blank">邹城</a>
+					<a href="http://zouping.fang.com/" target="_blank">邹平</a>
+					<a href="http://zunhua.fang.com/" target="_blank">遵化</a>
+					<a href="http://zhaodong.fang.com/" target="_blank">肇东</a>
+					<a href="http://zhongmou.fang.com/" target="_blank">中牟</a>
+					<a href="http://lnzh.fang.com/" target="_blank">庄河</a>
+					<a href="http://zhijiang.fang.com/" target="_blank">枝江</a>
+                    <a href="http://hbzx.fang.com/" target="_blank">赵县</a>
+					<a href="http://zhouzhi.fang.com/" target="_blank">周至</a>
+					<a href="http://cqzhongxian.fang.com/" target="_blank">忠县</a>
+					<a href="http://zhaozhou.fang.com/" target="_blank">肇州</a>
+					<a href="http://zhaoyuan.fang.com/" target="_blank">肇源</a></td>
+  </tr>
+
+      </table>
+    </div>
+	<div class="conbox" id="ti011" style="display:none">
+   	  <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table11">
+  <tr>
+    <td width="38" valign="top" class="font01">&nbsp;</td>
+    <td width="47" valign="top"><strong>直辖市</strong></td>
+    <td width="905" valign="top"><a href="http://bj.fang.com/" target="_blank" class="red">北京</a> 
+					<a href="http://sh.fang.com/" target="_blank" class="red">上海</a> 
+					<a href="http://tj.fang.com/" target="_blank" class="red">天津</a> 
+					<a href="http://cq.fang.com/" target="_blank" class="red">重庆</a></td>
+  </tr>
+  <tr>
+    <td valign="top" class="font01">A</td>
+    <td valign="top"><strong>安徽</strong></td>
+    <td valign="top"><a href="http://hf.fang.com/" target="_blank" class="red">合肥</a>
+					<a href="http://wuhu.fang.com/" target="_blank">芜湖</a> 
+					<a href="http://huainan.fang.com/" target="_blank">淮南</a> 
+					<a href="http://bengbu.fang.com/" target="_blank">蚌埠</a> 
+					<a href="http://fuyang.fang.com/" target="_blank">阜阳</a> 
+					<a href="http://anqing.fang.com/" target="_blank">安庆</a> 
+					<a href="http://chaohu.fang.com/" target="_blank">巢湖</a> 
+					<a href="http://chuzhou.fang.com/" target="_blank">滁州</a> 
+					<a href="http://luan.fang.com/" target="_blank">六安</a> 
+					<a href="http://tongling.fang.com/" target="_blank">铜陵</a> 
+					<a href="http://huaibei.fang.com/" target="_blank">淮北</a> 
+					<a href="http://xuancheng.fang.com/" target="_blank">宣城</a> 
+					<a href="http://huangshan.fang.com/" target="_blank">黄山</a> 
+					<a href="http://ahsuzhou.fang.com/" target="_blank">宿州</a> 
+					<a href="http://bozhou.fang.com/" target="_blank">亳州</a> 
+					<a href="http://mas.fang.com/" target="_blank">马鞍山</a> 
+					<a href="http://chizhou.fang.com/" target="_blank">池州</a>
+                    <a href="http://tongcheng.fang.com/" target="_blank">桐城</a>
+					<a href="http://huoqiu.fang.com/" target="_blank">霍邱</a>
+					<a href="http://feixi.fang.com/" target="_blank">肥西</a>
+					<a href="http://lujiang.fang.com/" target="_blank">庐江</a>
+					<a href="http://feidong.fang.com/" target="_blank">肥东</a>
+					<a href="http://dangtu.fang.com/" target="_blank">当涂</a>
+					<a href="http://ahcf.fang.com/" target="_blank">长丰</a>
+					<a href="http://huaiyuan.fang.com/" target="_blank">怀远</a>
+					<a href="http://wuhe.fang.com/" target="_blank">五河</a>
+			<a href="http://guzhen.fang.com/" target="_blank">固镇</a>
+			<a href="#" class="open" onclick="controlHideOrBlock2();" id="hide2">展开</a>
+	</td>
+  </tr>
+      </table>
+      <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table11" style="display:none;" id="table2">
+  
+  <tr>
+    <td width="38" valign="top" class="font01">C</td>
+    <td width="47" valign="top"><strong>重庆</strong></td>
+    <td width="905" valign="top"><a href="http://cq.fang.com/" target="_blank" class="red">重庆</a>
+					<a href=" http://wanzhou.fang.com" target="_blank">万州</a>
+					<a href="http://fuling.fang.com/" target="_blank">涪陵</a>
+					<a href=" http://qijiang.fang.com" target="_blank">綦江</a>
+					<a href=" http://qianjiang.fang.com" target="_blank">黔江</a>
+					<a href="http://hechuan.fang.com" target="_blank">合川</a>
+					<a href="http://cqfengdu.fang.com/" target="_blank">丰都</a>
+					<a href="http://cqjiangjin.fang.com/" target="_blank">江津</a>
+					<a href="http://cqtongliang.fang.com/" target="_blank">铜梁</a>
+					<a href="http://cqchangshou.fang.com/" target="_blank">长寿</a>
+					<a href="http://cqnanchuan.fang.com/" target="_blank">南川</a>
+					<a href="http://yongchuan.fang.com" target="_blank">永川</a>
+					<a href="http://wushan.fang.com" target="_blank">巫山</a>
+					<a href="http://cqdazu.fang.com" target="_blank">大足</a>
+					<a href="http://cqbishan.fang.com" target="_blank">璧山</a>
+					<a href="http://cqtongnan.fang.com" target="_blank">潼南</a>
+					<a href="http://cqrongchang.fang.com" target="_blank">荣昌</a>
+                    <a href="http://cqliangping.fang.com" target="_blank">梁平</a>
+					<a href="http://cqdianjiang.fang.com" target="_blank">垫江</a>
+					<a href="http://cqwulong.fang.com" target="_blank">武隆</a>
+					<a href="http://cqzhongxian.fang.com" target="_blank">忠县</a>
+					<a href="http://cqkaixian.fang.com" target="_blank">开县</a>
+					<a href="http://cqyunyang.fang.com" target="_blank">云阳</a>
+					<a href="http://cqfengjie.fang.com" target="_blank">奉节</a>
+					<a href="http://cqshizhu.fang.com" target="_blank">石柱</a></td>
+  </tr>
+  <tr>
+    <td valign="top" class="font01">F</td>
+    <td valign="top"><strong>福建</strong></td>
+    <td valign="top"><a href="http://fz.fang.com/" target="_blank" class="red">福州</a> 
+					<a href="http://xm.fang.com/" target="_blank" class="red">厦门</a>
+					<a href="http://qz.fang.com/" target="_blank">泉州</a> 
+					<a href="http://putian.fang.com/" target="_blank">莆田</a> 
+					<a href="http://zhangzhou.fang.com/" target="_blank">漳州</a> 
+					<a href="http://longyan.fang.com/" target="_blank">龙岩</a> 
+					<a href="http://sanming.fang.com/" target="_blank">三明</a> 
+					<a href="http://nanping.fang.com/" target="_blank">南平</a> 
+					<a href="http://ningde.fang.com/" target="_blank">宁德</a>
+					<a href="http://pingtan.fang.com/" target="_blank">平潭</a>
+					<a href="http://fq.fang.com/" target="_blank">福清</a>
+					<a href="http://nanan.fang.com/" target="_blank">南安</a>
+					<a href="http://longhai.fang.com/" target="_blank">龙海</a>
+					<a href="http://huian.fang.com/" target="_blank">惠安</a>
+					<a href="http://changle.fang.com/" target="_blank">长乐</a>
+					<a href="http://shishi.fang.com/" target="_blank">石狮</a>
+					<a href="http://fjax.fang.com/" target="_blank">安溪</a>
+                    <a href="http://lianjiang.fang.com/" target="_blank">连江</a>
+					<a href="http://yongchun.fang.com/" target="_blank">永春</a></td>
+  </tr>
+  <tr>
+    <td valign="top" class="font01">G</td>
+    <td valign="top"><strong>广东</strong></td>
+    <td valign="top"><a href="http://gz.fang.com/" target="_blank" class="red">广州</a> 
+					<a href="http://sz.fang.com/" target="_blank" class="red">深圳</a> 
+					<a href="http://dg.fang.com/" target="_blank" class="red">东莞</a>
+					<a href="http://zh.fang.com/" target="_blank">珠海</a> 
+					<a href="http://zs.fang.com/" target="_blank">中山</a> 
+					<a href="http://fs.fang.com/" target="_blank">佛山</a> 
+					<a href="http://huizhou.fang.com/" target="_blank">惠州</a> 
+					<a href="http://jm.fang.com/" target="_blank">江门</a> 
+					<a href="http://st.fang.com/" target="_blank">汕头</a> 
+					<a href="http://qingyuan.fang.com/" target="_blank">清远</a> 
+					<a href="http://zhaoqing.fang.com/" target="_blank">肇庆</a> 
+					<a href="http://yangjiang.fang.com/" target="_blank">阳江</a> 
+					<a href="http://maoming.fang.com/" target="_blank">茂名</a> 
+					<a href="http://zj.fang.com/" target="_blank">湛江</a> 
+					<a href="http://meizhou.fang.com/" target="_blank">梅州</a> 
+					<a href="http://jieyang.fang.com/" target="_blank">揭阳</a> 
+					<a href="http://heyuan.fang.com/" target="_blank">河源</a>
+                    <a href="http://shanwei.fang.com/" target="_blank">汕尾</a>
+					<a href="http://yangchun.fang.com/" target="_blank">阳春</a> 
+					<a href="http://kaiping.fang.com/" target="_blank">开平</a>
+					<a href="http://yunfu.fang.com/" target="_blank">云浮</a> 
+					<a href="http://chaozhou.fang.com/" target="_blank">潮州</a> 
+					<a href="http://shaoguan.fang.com/" target="_blank">韶关</a> 
+					<a href="http://shunde.fang.com/" target="_blank">顺德</a>
+					<a href="http://taishan.fang.com/" target="_blank">台山</a>
+					<a href="http://enping.fang.com/" target="_blank">恩平</a>
+					<a href="http://huidong.fang.com/" target="_blank">惠东</a>
+					<a href="http://gdlm.fang.com/" target="_blank">龙门</a>
+					<a href="http://boluo.fang.com/" target="_blank">博罗</a>
+					<a href="http://heshan.fang.com/" target="_blank">鹤山</a></td>
+  </tr>
+  <tr>
+    <td valign="top" class="font01">&nbsp;</td>
+    <td valign="top"><strong>广西</strong></td>
+    <td valign="top"><a href="http://nn.fang.com/" target="_blank" class="red">南宁</a>
+					<a href="http://liuzhou.fang.com/" target="_blank">柳州</a> 
+					<a href="http://guilin.fang.com/" target="_blank">桂林</a> 
+					<a href="http://yl.fang.com/" target="_blank">玉林</a> 
+					<a href="http://guigang.fang.com/" target="_blank">贵港</a> 
+					<a href="http://bh.fang.com/" target="_blank">北海</a> 
+					<a href="http://hechi.fang.com/" target="_blank">河池</a> 
+					<a href="http://baise.fang.com/" target="_blank">百色</a> 
+					<a href="http://wuzhou.fang.com/" target="_blank">梧州</a> 
+					<a href="http://hezhou.fang.com/" target="_blank">贺州</a> 
+					<a href="http://qinzhou.fang.com/" target="_blank">钦州</a> 
+					<a href="http://fangchenggang.fang.com/" target="_blank">防城港</a> 
+					<a href="http://laibin.fang.com/" target="_blank">来宾</a> 
+					<a href="http://chongzuo.fang.com/" target="_blank">崇左</a>
+					<a href="http://hengxian.fang.com/" target="_blank">横县</a>
+					<a href="http://gxby.fang.com/" target="_blank">宾阳</a></td>
+  </tr>
+  <tr>
+    <td valign="top" class="font01">&nbsp;</td>
+    <td valign="top"><strong>贵州</strong></td>
+    <td valign="top"><a href="http://gy.fang.com/" target="_blank" class="red">贵阳</a>
+					<a href="http://zunyi.fang.com/" target="_blank">遵义</a> 
+					<a href="http://qiandongnan.fang.com/" target="_blank">黔东南</a> 
+					<a href="http://anshun.fang.com/" target="_blank">安顺</a> 
+					<a href="http://qiannan.fang.com/" target="_blank">黔南</a> 
+					<a href="http://bijie.fang.com/" target="_blank">毕节</a> 
+					<a href="http://tongren.fang.com/" target="_blank">铜仁</a> 
+					<a href="http://liupanshui.fang.com/" target="_blank">六盘水</a> 
+					<a href="http://qianxinan.fang.com/" target="_blank">黔西南</a>
+					<a href="http://kaili.fang.com/" target="_blank">凯里</a>
+					<a href="http://kaiyang.fang.com/" target="_blank">开阳</a>
+					<a href="http://xiuwen.fang.com/" target="_blank">修文</a>
+					<a href="http://qingzhen.fang.com/" target="_blank">清镇</a></td>
+  </tr>
+  <tr>
+    <td valign="top" class="font01">&nbsp;</td>
+    <td valign="top"><strong>甘肃</strong></td>
+    <td valign="top"><a href="http://lz.fang.com/" target="_blank" class="red">兰州</a>
+					<a href="http://zhangye.fang.com/" target="_blank">张掖</a> 
+					<a href="http://tianshui.fang.com/" target="_blank">天水</a> 
+					<a href="http://qingyang.fang.com/" target="_blank">庆阳</a> 
+					<a href="http://pingliang.fang.com/" target="_blank">平凉</a> 
+					<a href="http://jiuquan.fang.com/" target="_blank">酒泉</a> 
+					<a href="http://baiyin.fang.com/" target="_blank">白银</a> 
+					<a href="http://wuwei.fang.com/" target="_blank">武威</a> 
+					<a href="http://jinchang.fang.com/" target="_blank">金昌</a> 
+					<a href="http://longnan.fang.com/" target="_blank">陇南</a> 
+					<a href="http://jiayuguan.fang.com/" target="_blank">嘉峪关</a> 
+					<a href="http://dingxi.fang.com/" target="_blank">定西</a>
+					<a href="http://gannan.fang.com/" target="_blank">甘南</a>
+					<a href="http://linxia.fang.com/" target="_blank">临夏</a>
+					<a href="http://yongdeng.fang.com/" target="_blank">永登</a>
+					<a href="http://yuzhong.fang.com/" target="_blank">榆中</a></td>
+  </tr>
+  <tr>
+    <td valign="top" class="font01">H</td>
+    <td valign="top"><strong>海南</strong></td>
+    <td valign="top"><a href="http://hn.fang.com/" target="_blank" class="red">海南</a> 
+					<a href="http://hn.fang.com/" target="_blank" class="red">海口</a> 
+					<a href="http://sanya.fang.com/" target="_blank" class="red">三亚</a>
+					<a href="http://sansha.fang.com/" target="_blank">三沙</a>
+					<a href="http://wuzhishan.fang.com/" target="_blank">五指山</a>
+					<a href="http://dongfang.fang.com/" target="_blank">东方</a>
+					<a href="http://danzhou.fang.com/" target="_blank">儋州</a>
+					<a href="http://wanning.fang.com/" target="_blank">万宁</a></td>
+  </tr>
+  <tr>
+    <td valign="top" class="font01">&nbsp;</td>
+    <td valign="top"><strong>河南</strong></td>
+    <td valign="top"><a href="http://zz.fang.com/" target="_blank" class="red">郑州</a>
+					<a href="http://ly.fang.com/" target="_blank">洛阳</a> 
+					<a href="http://jiaozuo.fang.com/" target="_blank">焦作</a> 
+					<a href="http://pingdingshan.fang.com/" target="_blank">平顶山</a> 
+					<a href="http://zhumadian.fang.com/" target="_blank">驻马店</a> 
+					<a href="http://xx.fang.com/" target="_blank">新乡</a> 
+					<a href="http://nanyang.fang.com/" target="_blank">南阳</a> 
+					<a href="http://xinyang.fang.com/" target="_blank">信阳</a> 
+					<a href="http://kaifeng.fang.com/" target="_blank">开封</a> 
+					<a href="http://luohe.fang.com/" target="_blank">漯河</a> 
+					<a href="http://anyang.fang.com/" target="_blank">安阳</a> 
+					<a href="http://shangqiu.fang.com/" target="_blank">商丘</a> 
+					<a href="http://zhoukou.fang.com/" target="_blank">周口</a> 
+					<a href="http://xuchang.fang.com/" target="_blank">许昌</a> 
+					<a href="http://puyang.fang.com/" target="_blank">濮阳</a> 
+					<a href="http://sanmenxia.fang.com/" target="_blank">三门峡</a> 
+					<a href="http://hebi.fang.com/" target="_blank">鹤壁</a>
+                    <a href="http://ruzhou.fang.com/" target="_blank">汝州</a>
+					<a href="http://jiyuan.fang.com/" target="_blank">济源</a>
+					<a href="http://yanling.fang.com/" target="_blank">鄢陵</a>
+					<a href="http://hnyz.fang.com/" target="_blank">禹州</a>
+					<a href="http://changge.fang.com/" target="_blank">长葛</a>
+					<a href="http://gongyi.fang.com/" target="_blank">巩义</a>
+					<a href="http://xinzheng.fang.com/" target="_blank">新郑</a>
+					<a href="http://xingyang.fang.com/" target="_blank">荥阳</a>
+					<a href="http://yichuan.fang.com/" target="_blank">伊川</a>
+					<a href="http://yanshi.fang.com/" target="_blank">偃师</a>
+					<a href="http://zhongmou.fang.com/" target="_blank">中牟</a>
+					<a href="http://dengfeng.fang.com/" target="_blank">登封</a>
+					<a href="http://hnxa.fang.com/" target="_blank">新安</a>
+					<a href="http://hnyy.fang.com/" target="_blank">宜阳</a>
+					<a href="http://xinmi.fang.com/" target="_blank">新密</a>
+					<a href="http://songxian.fang.com/" target="_blank">嵩县</a>
+					<a href="http://luoning.fang.com/" target="_blank">洛宁</a>
+                    <a href="http://mengjin.fang.com/" target="_blank">孟津</a>
+		  <a href="http://ruyang.fang.com/" target="_blank">汝阳</a></td>
+  </tr>
+  <tr>
+    <td valign="top" class="font01">&nbsp;</td>
+    <td valign="top"><strong>黑龙江</strong></td>
+    <td valign="top"><a href="http://hrb.fang.com/" target="_blank" class="red">哈尔滨</a>
+					<a href="http://daqing.fang.com/" target="_blank">大庆</a> 
+					<a href="http://qiqihaer.fang.com/" target="_blank">齐齐哈尔</a> 
+					<a href="http://jiamusi.fang.com/" target="_blank">佳木斯</a> 
+					<a href="http://jixi.fang.com/" target="_blank">鸡西</a> 
+					<a href="http://shuangyashan.fang.com/" target="_blank">双鸭山</a> 
+					<a href="http://hegang.fang.com/" target="_blank">鹤岗</a> 
+					<a href="http://mudanjiang.fang.com/" target="_blank">牡丹江</a> 
+					<a href="http://suihua.fang.com/" target="_blank">绥化</a> 
+					<a href="http://qitaihe.fang.com/" target="_blank">七台河</a> 
+					<a href="http://hljyichun.fang.com/" target="_blank">伊春</a> 
+					<a href="http://heihe.fang.com/" target="_blank">黑河</a>
+					<a href="http://dxal.fang.com/" target="_blank">大兴安岭</a>
+					<a href="http://zhaodong.fang.com/" target="_blank">肇东</a>
+					<a href="http://binxian.fang.com/" target="_blank">宾县</a>
+                    <a href="http://anda.fang.com/" target="_blank">安达</a>
+					<a href="http://wuchang.fang.com/" target="_blank">五常</a>
+					<a href="http://shangzhi.fang.com/" target="_blank">尚志</a>
+					<a href="http://bayan.fang.com/" target="_blank">巴彦</a>
+					<a href="http://yilan.fang.com/" target="_blank">依兰</a>
+					<a href="http://zhaozhou.fang.com/" target="_blank">肇州</a>
+					<a href="http://hbys.fang.com/" target="_blank">肇源</a>
+					<a href="http://hailin.fang.com/" target="_blank">海林</a></td>
+  </tr>
+  <tr>
+    <td valign="top" class="font01">&nbsp;</td>
+    <td valign="top"><strong>湖北</strong></td>
+    <td valign="top"><a href="http://wuhan.fang.com/" target="_blank" class="red">武汉</a>
+					<a href="http://yc.fang.com/" target="_blank">宜昌</a> 
+					<a href="http://xiangyang.fang.com/" target="_blank">襄阳</a> 
+					<a href="http://jingzhou.fang.com/" target="_blank">荆州</a> 
+					<a href="http://shiyan.fang.com/" target="_blank">十堰</a> 
+					<a href="http://huanggang.fang.com/" target="_blank">黄冈</a> 
+					<a href="http://jingmen.fang.com/" target="_blank">荆门</a> 
+					<a href="http://suizhou.fang.com/" target="_blank">随州</a> 
+					<a href="http://enshi.fang.com/" target="_blank">恩施</a> 
+					<a href="http://xiaogan.fang.com/" target="_blank">孝感</a> 
+					<a href="http://huangshi.fang.com/" target="_blank">黄石</a> 
+					<a href="http://ezhou.fang.com/" target="_blank">鄂州</a> 
+					<a href="http://xianning.fang.com/" target="_blank">咸宁</a>
+					<a href="http://xiantao.fang.com/" target="_blank">仙桃</a>
+					<a href="http://shennongjia.fang.com/" target="_blank">神农架</a>
+					<a href="http://tianmen.fang.com/" target="_blank">天门</a>
+					<a href="http://qj.fang.com/" target="_blank">潜江</a>
+				<a href="http://dangyang.fang.com/" target="_blank">当阳</a>
+					<a href="http://yidu.fang.com/" target="_blank">宜都</a>
+					<a href="http://zhijiang.fang.com/" target="_blank">枝江</a></td>
+  </tr>
+  <tr>
+    <td valign="top" class="font01">&nbsp;</td>
+    <td valign="top"><strong>湖南</strong></td>
+    <td valign="top"><a href="http://cs.fang.com/" target="_blank" class="red">长沙</a>
+					<a href="http://zhuzhou.fang.com/" target="_blank">株洲</a> 
+					<a href="http://hengyang.fang.com/" target="_blank">衡阳</a> 
+					<a href="http://yueyang.fang.com/" target="_blank">岳阳</a> 
+					<a href="http://xt.fang.com/" target="_blank">湘潭</a> 
+					<a href="http://changde.fang.com/" target="_blank">常德</a> 
+					<a href="http://yiyang.fang.com/" target="_blank">益阳</a> 
+					<a href="http://yongzhou.fang.com/" target="_blank">永州</a> 
+					<a href="http://loudi.fang.com/" target="_blank">娄底</a> 
+					<a href="http://shaoyang.fang.com/" target="_blank">邵阳</a> 
+					<a href="http://huaihua.fang.com/" target="_blank">怀化</a> 
+					<a href="http://chenzhou.fang.com/" target="_blank">郴州</a> 
+					<a href="http://xiangxi.fang.com/" target="_blank">湘西</a> 
+					<a href="http://zhangjiajie.fang.com/" target="_blank">张家界</a>
+					<a href="http://liuyang.fang.com/" target="_blank">浏阳</a>
+					<a href="http://ningxiang.fang.com/" target="_blank">宁乡</a>
+					<a href="http://liling.fang.com/" target="_blank">醴陵</a>
+                    <a href="youxian.fang.com" target="_blank">攸县</a>
+					<a href="xiangxiang.fang.com" target="_blank">湘乡</a></td>
+  </tr>
+  <tr>
+    <td valign="top" class="font01">&nbsp;</td>
+    <td valign="top"><strong>河北</strong></td>
+    <td valign="top"><a href="http://sjz.fang.com/" target="_blank" class="red">石家庄</a> 
+					<a href="http://ts.fang.com/" target="_blank" class="red">唐山</a>
+					<a href="http://bd.fang.com/" target="_blank">保定</a> 
+					<a href="http://cangzhou.fang.com/" target="_blank">沧州</a> 
+					<a href="http://lf.fang.com/" target="_blank">廊坊</a> 
+					<a href="http://xingtai.fang.com/" target="_blank">邢台</a> 
+					<a href="http://hd.fang.com/" target="_blank">邯郸</a> 
+					<a href="http://qhd.fang.com/" target="_blank">秦皇岛</a> 
+					<a href="http://hs.fang.com/" target="_blank">衡水</a> 
+					<a href="http://zhangjiakou.fang.com/" target="_blank">张家口</a> 
+					<a href="http://chengde.fang.com/" target="_blank">承德</a>
+					<a href="http://bj.fang.com/" target="_blank">固安</a>
+					<a href="http://bj.fang.com/" target="_blank">燕郊</a> 
+					<a href="http://bj.fang.com/" target="_blank">香河</a> 
+					<a href="http://bj.fang.com/" target="_blank">涿州</a>
+					<a href="http://zunhua.fang.com/" target="_blank">遵化</a>
+					<a href="http://qianan.fang.com/" target="_blank">迁安</a>
+                    <a href="http://dingzhou.fang.com/" target="_blank">定州</a>
+					<a href="http://xinji.fang.com/" target="_blank">辛集</a>
+					<a href="http://luanxian.fang.com/" target="_blank">滦县</a>
+					<a href="http://yutian.fang.com/" target="_blank">玉田</a>
+					<a href="http://hbjz.fang.com/" target="_blank">晋州</a>
+					<a href="http://luannan.fang.com/" target="_blank">滦南</a>
+					<a href="http://gaobeidian.fang.com/" target="_blank">高碑店</a>
+					<a href="http://hbzx.fang.com/" target="_blank">赵县</a>
+					<a href="http://hbwj.fang.com/" target="_blank">无极</a>
+					<a href="http://hbql.fang.com/" target="_blank">青龙</a>
+					<a href="http://hblt.fang.com/" target="_blank">乐亭</a>
+					<a href="http://qianxi.fang.com/" target="_blank">迁西</a>
+					<a href="http://wenan.fang.com/" target="_blank">文安</a>
+					<a href="http://xinle.fang.com/" target="_blank">新乐</a>
+					<a href="http://hbys.fang.com/" target="_blank">元氏</a>
+					<a href="http://hbbz.fang.com/" target="_blank">霸州</a>
+					<a href="http://changli.fang.com/" target="_blank">昌黎</a>
+                    <a href="http://hbps.fang.com/" target="_blank">平山</a>
+					<a href="http://wuan.fang.com/" target="_blank">武安</a></td>
+  </tr>
+  <tr>
+    <td valign="top" class="font01">J</td>
+    <td valign="top"><strong>江苏</strong></td>
+    <td valign="top"><a href="http://nanjing.fang.com/" target="_blank" class="red">南京</a> 
+					<a href="http://suzhou.fang.com/" target="_blank" class="red">苏州</a> 
+					<a href="http://wuxi.fang.com/" target="_blank" class="red">无锡</a>
+					<a href="http://xz.fang.com/" target="_blank">徐州</a> 
+					<a href="http://cz.fang.com/" target="_blank">常州</a> 
+					<a href="http://huaian.fang.com/" target="_blank">淮安</a> 
+					<a href="http://yz.fang.com/" target="_blank">扬州</a> 
+					<a href="http://nt.fang.com/" target="_blank">南通</a> 
+					<a href="http://yancheng.fang.com/" target="_blank">盐城</a> 
+					<a href="http://lyg.fang.com/" target="_blank">连云港</a> 
+					<a href="http://sq.fang.com/" target="_blank">宿迁</a> 
+					<a href="http://taizhou.fang.com/" target="_blank">泰州</a> 
+					<a href="http://zhenjiang.fang.com/" target="_blank">镇江</a> 
+					<a href="http://changshu.fang.com/" target="_blank">常熟</a> 
+					<a href="http://zjg.fang.com/" target="_blank">张家港</a> 
+					<a href="http://ks.fang.com/" target="_blank">昆山</a> 
+					<a href="http://wj.fang.com/" target="_blank">吴江</a>
+                    <a href="http://pizhou.fang.com/" target="_blank">邳州</a>
+					<a href="http://qidong.fang.com/" target="_blank">启东</a>
+					<a href="http://liyang.fang.com/" target="_blank">溧阳</a>
+					<a href="http://dongtai.fang.com/" target="_blank">东台</a>
+					<a href="http://taixing.fang.com/" target="_blank">泰兴</a>
+					<a href="http://xinghua.fang.com/" target="_blank">兴化</a>
+					<a href="http://haimen.fang.com/" target="_blank">海门</a>
+					<a href="http://rugao.fang.com/" target="_blank">如皋</a>
+					<a href="http://jiangdu.fang.com/" target="_blank">江都</a>
+					<a href="http://xinyi.fang.com/" target="_blank">新沂</a>
+					<a href="http://gaoyou.fang.com/" target="_blank">高邮</a>
+					<a href="http://jingjiang.fang.com/" target="_blank">靖江</a>
+					<a href="http://tc.fang.com/" target="_blank">太仓</a>
+					<a href="http://jy.fang.com/" target="_blank">江阴</a>
+					<a href="http://yixing.fang.com/" target="_blank">宜兴</a>
+					<a href="http://shuyang.fang.com/" target="_blank">沭阳</a>
+					<a href="http://haian.fang.com/" target="_blank">海安</a>
+                    <a href="http://rudong.fang.com/" target="_blank">如东</a>
+					<a href="http://yizheng.fang.com/" target="_blank">仪征</a>
+					<a href="http://jintan.fang.com/" target="_blank">金坛</a>
+					<a href="http://jssn.fang.com/" target="_blank">睢宁</a>
+					<a href="http://jsfx.fang.com/" target="_blank">丰县</a>
+					<a href="http://peixian.fang.com/" target="_blank">沛县</a>
+					<a href="http://jr.fang.com/" target="_blank">句容</a>
+					<a href="http://baoying.fang.com/" target="_blank">宝应</a></td>
+  </tr>
+  <tr>
+    <td valign="top" class="font01">&nbsp;</td>
+    <td valign="top"><strong>江西</strong></td>
+    <td valign="top"><a href="http://nc.fang.com/" target="_blank" class="red">南昌</a>
+					<a href="http://ganzhou.fang.com/" target="_blank">赣州</a> 
+					<a href="http://jiujiang.fang.com/" target="_blank">九江</a> 
+					<a href="http://jian.fang.com/" target="_blank">吉安</a> 
+					<a href="http://shangrao.fang.com/" target="_blank">上饶</a> 
+					<a href="http://pingxiang.fang.com/" target="_blank">萍乡</a> 
+					<a href="http://yingtan.fang.com/" target="_blank">鹰潭</a> 
+					<a href="http://yichun.fang.com/" target="_blank">宜春</a> 
+					<a href="http://jingdezhen.fang.com/" target="_blank">景德镇</a> 
+					<a href="http://jxfuzhou.fang.com/" target="_blank">抚州</a> 
+					<a href="http://xinyu.fang.com/" target="_blank">新余</a>
+					<a href="http://ruijin.fang.com/" target="_blank">瑞金</a>
+					<a href="http://jinxian.fang.com/" target="_blank">进贤</a>
+					<a href="http://xinjian.fang.com/" target="_blank">新建</a></td>
+  </tr>
+  <tr>
+    <td valign="top" class="font01">&nbsp;</td>
+    <td valign="top"><strong>吉林</strong></td>
+    <td valign="top"><a href="http://changchun.fang.com/" target="_blank" class="red">长春</a>
+					<a href="http://jl.fang.com/" target="_blank">吉林</a> 
+					<a href="http://siping.fang.com/" target="_blank">四平</a> 
+					<a href="http://baishan.fang.com/" target="_blank">白山</a> 
+					<a href="http://baicheng.fang.com/" target="_blank">白城</a> 
+					<a href="http://yanbian.fang.com/" target="_blank">延边</a> 
+					<a href="http://tonghua.fang.com/" target="_blank">通化</a> 
+					<a href="http://songyuan.fang.com/" target="_blank">松原</a> 
+					<a href="http://liaoyuan.fang.com/" target="_blank">辽源</a> 
+					<a href="http://nongan.fang.com/" target="_blank">农安</a>
+					<a href="http://dehui.fang.com/" target="_blank">德惠</a>
+					<a href="http://jlys.fang.com/" target="_blank">榆树</a> </td>
+  </tr>
+  <tr>
+    <td valign="top" class="font01">L</td>
+    <td valign="top"><strong>辽宁</strong></td>
+    <td valign="top"><a href="http://sy.fang.com/" target="_blank" class="red">沈阳</a>
+					<a href="http://dl.fang.com/" target="_blank">大连</a> 
+					<a href="http://fushun.fang.com/" target="_blank">抚顺</a> 
+					<a href="http://jinzhou.fang.com/" target="_blank">锦州</a> 
+					<a href="http://anshan.fang.com/" target="_blank">鞍山</a> 
+					<a href="http://huludao.fang.com/" target="_blank">葫芦岛</a> 
+					<a href="http://fuxin.fang.com/" target="_blank">阜新</a> 
+					<a href="http://yk.fang.com/" target="_blank">营口</a> 
+					<a href="http://benxi.fang.com/" target="_blank">本溪</a> 
+					<a href="http://chaoyang.fang.com/" target="_blank">朝阳</a> 
+					<a href="http://tieling.fang.com/" target="_blank">铁岭</a> 
+					<a href="http://liaoyang.fang.com/" target="_blank">辽阳</a> 
+					<a href="http://panjin.fang.com/" target="_blank">盘锦</a> 
+					<a href="http://dandong.fang.com/" target="_blank">丹东</a>
+					<a href="http://pulandian.fang.com/" target="_blank">普兰店</a>
+                    <a href="http://wafangdian.fang.com/" target="_blank" >瓦房店</a>
+					<a href="http://donggang.fang.com/" target="_blank">东港</a> 
+					<a href="http://fengcheng.fang.com/" target="_blank">凤城</a>
+					<a href="http://lnzh.fang.com/" target="_blank">庄河</a>
+					<a href="http://xinmin.fang.com/" target="_blank">新民</a>
+					<a href="http://liaozhong.fang.com/" target="_blank">辽中</a> 
+					<a href="http://faku.fang.com/" target="_blank">法库</a>
+					<a href="http://kangping.fang.com/" target="_blank">康平</a></td>
+  </tr>
+  <tr>
+    <td valign="top" class="font01">N</td>
+    <td valign="top"><strong>宁夏</strong></td>
+    <td valign="top"><a href="http://yinchuan.fang.com/" target="_blank" class="red">银川</a>
+					<a href="http://shizuishan.fang.com/" target="_blank">石嘴山</a> 
+					<a href="http://guyuan.fang.com/" target="_blank">固原</a> 
+					<a href="http://wuzhong.fang.com/" target="_blank">吴忠</a> 
+					<a href="http://zhongwei.fang.com/" target="_blank">中卫</a></td>
+  </tr>
+  <tr>
+    <td valign="top" class="font01">&nbsp;</td>
+    <td valign="top"><strong>内蒙古</strong></td>
+    <td valign="top"><a href="http://nm.fang.com/" target="_blank" class="red">呼和浩特</a>
+					<a href="http://bt.fang.com/" target="_blank">包头</a> 
+					<a href="http://chifeng.fang.com/" target="_blank">赤峰</a> 
+					<a href="http://erds.fang.com/" target="_blank">鄂尔多斯</a> 
+					<a href="http://tl.fang.com/" target="_blank">通辽</a> 
+					<a href="http://wlcb.fang.com/" target="_blank">乌兰察布</a> 
+					<a href="http://byne.fang.com/" target="_blank">巴彦淖尔</a>
+					<a href="http://alsm.fang.com/" target="_blank">阿拉善盟</a>
+					<a href="http://hailaer.fang.com/" target="_blank">海拉尔</a>
+					<a href="http://hlbe.fang.com/" target="_blank">呼伦贝尔</a>
+					<a href="http://wuhai.fang.com/" target="_blank">乌海</a>
+					<a href="http://xlglm.fang.com/" target="_blank">锡林郭勒盟</a>
+					<a href="http://xam.fang.com/" target="_blank">兴安盟</a></td>
+  </tr>
+  <tr>
+    <td valign="top" class="font01">Q</td>
+    <td valign="top"><strong>青海</strong></td>
+    <td valign="top"><a href="http://xn.fang.com/" target="_blank">西宁</a>
+					<a href="http://guoluo.fang.com/" target="_blank">果洛</a>
+					<a href="http://huangnan.fang.com/" target="_blank">黄南</a>
+					<a href="http://haixi.fang.com/" target="_blank">海西</a>
+					<a href="http://haidong.fang.com/" target="_blank">海东</a>
+					<a href="http://haibei.fang.com/" target="_blank">海北</a>
+					<a href="http://yushu.fang.com/" target="_blank">玉树</a></td>
+  </tr>
+  <tr>
+    <td valign="top" class="font01">S</td>
+    <td valign="top"><strong>山东</strong></td>
+    <td valign="top"><a href="http://jn.fang.com/" target="_blank" class="red">济南</a> 
+					<a href="http://qd.fang.com/" target="_blank" class="red">青岛</a>
+					<a href="http://zb.fang.com/" target="_blank">淄博</a> 
+					<a href="http://wf.fang.com/" target="_blank">潍坊</a> 
+					<a href="http://yt.fang.com/" target="_blank">烟台</a> 
+					<a href="http://weihai.fang.com/" target="_blank">威海</a> 
+					<a href="http://linyi.fang.com/" target="_blank">临沂</a> 
+					<a href="http://jining.fang.com/" target="_blank">济宁</a> 
+					<a href="http://binzhou.fang.com/" target="_blank">滨州</a> 
+					<a href="http://dz.fang.com/" target="_blank">德州</a> 
+					<a href="http://dy.fang.com/" target="_blank">东营</a> 
+					<a href="http://zaozhuang.fang.com/" target="_blank">枣庄</a> 
+					<a href="http://lc.fang.com/" target="_blank">聊城</a> 
+					<a href="http://taian.fang.com/" target="_blank">泰安</a> 
+					<a href="http://rz.fang.com/" target="_blank">日照</a> 
+					<a href="http://heze.fang.com/" target="_blank">菏泽</a>
+					<a href="http://laiwu.fang.com/" target="_blank">莱芜</a>
+                    <a href="http://zhangqiu.fang.com/" target="_blank">章丘</a>
+					<a href="http://zhucheng.fang.com/" target="_blank">诸城</a>
+					<a href="http://zy.fang.com/" target="_blank">招远</a>
+					<a href="http://gaomi.fang.com/" target="_blank">高密</a>
+					<a href="http://sg.fang.com/" target="_blank">寿光</a>
+					<a href="http://zoucheng.fang.com/" target="_blank">邹城</a>
+					<a href="http://tengzhou.fang.com/" target="_blank">滕州</a>
+					<a href="http://pingdu.fang.com/" target="_blank">平度</a>
+					<a href="http://xintai.fang.com/" target="_blank">新泰</a>
+					<a href="http://feicheng.fang.com/" target="_blank">肥城</a>
+					<a href="http://laizhou.fang.com/" target="_blank">莱州</a>
+					<a href="http://zouping.fang.com/" target="_blank">邹平</a>
+					<a href="http://jiaonan.fang.com/" target="_blank">胶南</a>
+					<a href="http://longkou.fang.com/" target="_blank">龙口</a>
+					<a href="http://jimo.fang.com/" target="_blank">即墨</a>
+					<a href="http://laixi.fang.com/" target="_blank">莱西</a>
+					<a href="http://changyi.fang.com/" target="_blank">昌邑</a>
+                    <a href="http://guangrao.fang.com/" target="_blank">广饶</a>
+					<a href="http://penglai.fang.com/" target="_blank">蓬莱</a>
+					<a href="http://anqiu.fang.com/" target="_blank">安丘</a>
+					<a href="http://qingzhou.fang.com/" target="_blank">青州</a>
+					<a href="http://linqu.fang.com/" target="_blank">临朐</a>
+					<a href="http://sdjy.fang.com/" target="_blank">济阳</a>
+					<a href="http://sdsh.fang.com/" target="_blank">商河</a>
+					<a href="http://sdcl.fang.com/" target="_blank">昌乐</a>
+					<a href="http://laiyang.fang.com/" target="_blank">莱阳</a>
+					<a href="http://sdpy.fang.com/" target="_blank">平阴</a>
+					<a href="http://linqing.fang.com/" target="_blank">临清</a>
+					<a href="http://qixia.fang.com/" target="_blank">栖霞</a>
+					<a href="http://haiyang.fang.com/" target="_blank">海阳</a></td>
+  </tr>
+  <tr>
+    <td valign="top" class="font01">&nbsp;</td>
+    <td valign="top"><strong>山西</strong></td>
+    <td valign="top"><a href="http://taiyuan.fang.com/" target="_blank" class="red">太原</a>
+					<a href="http://changzhi.fang.com/" target="_blank">长治</a> 
+					<a href="http://yuncheng.fang.com/" target="_blank">运城</a> 
+					<a href="http://linfen.fang.com/" target="_blank">临汾</a> 
+					<a href="http://jinzhong.fang.com/" target="_blank">晋中</a> 
+					<a href="http://datong.fang.com/" target="_blank">大同</a> 
+					<a href="http://xinzhou.fang.com/" target="_blank">忻州</a> 
+					<a href="http://lvliang.fang.com/" target="_blank">吕梁</a> 
+					<a href="http://shuozhou.fang.com/" target="_blank">朔州</a> 
+					<a href="http://yangquan.fang.com/" target="_blank">阳泉</a> 
+					<a href="http://jc.fang.com/" target="_blank">晋城</a>
+					<a href="http://sxly.fang.com/" target="_blank">临猗</a>
+					<a href="http://qingxu.fang.com/" target="_blank">清徐</a></td>
+  </tr>
+  <tr>
+    <td valign="top" class="font01">&nbsp;</td>
+    <td valign="top"><strong>陕西</strong></td>
+    <td valign="top"><a href="http://xian.fang.com/" target="_blank" class="red">西安</a>
+					<a href="http://baoji.fang.com/" target="_blank">宝鸡</a> 
+					<a href="http://xianyang.fang.com/" target="_blank">咸阳</a> 
+					<a href="http://weinan.fang.com/" target="_blank">渭南</a> 
+					<a href="http://hanzhong.fang.com/" target="_blank">汉中</a> 
+					<a href="http://ankang.fang.com/" target="_blank">安康</a> 
+					<a href="http://sxyulin.fang.com/" target="_blank">榆林</a> 
+					<a href="http://yanan.fang.com/" target="_blank">延安</a> 
+					<a href="http://tongchuan.fang.com/" target="_blank">铜川</a> 
+					<a href="http://shangluo.fang.com/" target="_blank">商洛</a>
+					<a href="http://lantian.fang.com/" target="_blank">蓝田</a>
+					<a href="http://huxian.fang.com/" target="_blank">户县</a>
+					<a href="http://zhouzhi.fang.com/" target="_blank">周至</a></td>
+  </tr>
+  <tr>
+    <td valign="top" class="font01">&nbsp;</td>
+    <td valign="top"><strong>四川</strong></td>
+    <td valign="top"><a href="http://cd.fang.com/" target="_blank" class="red">成都</a>
+					<a href="http://mianyang.fang.com/" target="_blank">绵阳</a> 
+					<a href="http://luzhou.fang.com/" target="_blank">泸州</a> 
+					<a href="http://nanchong.fang.com/" target="_blank">南充</a> 
+					<a href="http://deyang.fang.com/" target="_blank">德阳</a> 
+					<a href="http://leshan.fang.com/" target="_blank">乐山</a> 
+					<a href="http://dazhou.fang.com/" target="_blank">达州</a> 
+					<a href="http://guangan.fang.com/" target="_blank">广安</a> 
+					<a href="http://panzhihua.fang.com/" target="_blank">攀枝花</a> 
+					<a href="http://suining.fang.com/" target="_blank">遂宁</a> 
+					<a href="http://zigong.fang.com/" target="_blank">自贡</a> 
+					<a href="http://neijiang.fang.com/" target="_blank">内江</a> 
+					<a href="http://guangyuan.fang.com/" target="_blank">广元</a> 
+					<a href="http://bazhong.fang.com/" target="_blank">巴中</a> 
+					<a href="http://yibin.fang.com/" target="_blank">宜宾</a> 
+					<a href="http://meishan.fang.com/" target="_blank">眉山</a> 
+					<a href="http://ziyang.fang.com/" target="_blank">资阳</a> 
+                    <a href="http://yaan.fang.com/" target="_blank">雅安</a> 
+					<a href="http://liangshan.fang.com/" target="_blank">凉山</a>
+					<a href="http://abazhou.fang.com/" target="_blank">阿坝州</a>
+					<a href="http://ganzi.fang.com/" target="_blank">甘孜</a>
+					<a href="http://pengzhou.fang.com/" target="_blank">彭州</a>
+					<a href="http://scjt.fang.com/" target="_blank">金堂</a>
+					<a href="http://qionglai.fang.com/" target="_blank">邛崃</a>
+					<a href="http://jianyang.fang.com/" target="_blank">简阳</a>
+					<a href="http://chongzhou.fang.com/" target="_blank">崇州</a>
+					<a href="http://dayi.fang.com/" target="_blank">大邑</a>
+					<a href="http://dujiangyan.fang.com/" target="_blank">都江堰</a>
+					<a href="http://xinjin.fang.com/" target="_blank">新津</a></td>
+  </tr>
+  <tr>
+    <td valign="top" class="font01">X</td>
+    <td valign="top"><strong>新疆</strong></td>
+    <td valign="top"><a href="http://xj.fang.com/" target="_blank">乌鲁木齐</a> 
+					<a href="http://kelamayi.fang.com/" target="_blank">克拉玛依</a> 
+					<a href="http://kashi.fang.com/" target="_blank">喀什</a> 
+					<a href="http://bazhou.fang.com/" target="_blank">巴州</a> 
+					<a href="http://yili.fang.com/" target="_blank">伊犁</a> 
+					<a href="http://akesu.fang.com/" target="_blank">阿克苏</a> 
+					<a href="http://alaer.fang.com/" target="_blank">阿拉尔</a>
+					<a href="http://betl.fang.com/" target="_blank">博尔塔拉</a>
+					<a href="http://esf.changji.fang.com/" target="_blank">昌吉</a>
+					<a href="http://hami.fang.com/" target="_blank">哈密</a>
+					<a href="http://hetian.fang.com/" target="_blank">和田</a>
+					<a href="http://kzls.fang.com/" target="_blank">克孜勒苏</a>
+					<a href="http://shihezi.fang.com/" target="_blank">石河子</a>
+					<a href="http://tulufan.fang.com/" target="_blank">吐鲁番</a>
+                    <a href="http://tmsk.fang.com/" target="_blank">图木舒克</a>
+					<a href="http://wujiaqu.fang.com/" target="_blank">五家渠</a></td>
+  </tr>
+  <tr>
+    <td valign="top" class="font01">&nbsp;</td>
+    <td valign="top"><strong>西藏</strong></td>
+    <td valign="top"><a href="http://ali.fang.com/" target="_blank">阿里</a> 
+					<a href="http://changdu.fang.com/" target="_blank">昌都</a>
+					<a href="http://lasa.fang.com/" target="_blank">拉萨</a>
+					<a href="http://linzhi.fang.com/" target="_blank">林芝</a>
+					<a href="http://naqu.fang.com/" target="_blank">那曲</a>
+					<a href="http://rikaze.fang.com/" target="_blank">日喀则</a>
+					<a href="http://shannan.fang.com/" target="_blank">山南</a></td>
+  </tr>
+  <tr>
+    <td valign="top" class="font01">Y</td>
+    <td valign="top"><strong>云南</strong></td>
+    <td valign="top"><a href="http://km.fang.com/" target="_blank" class="red">昆明</a>
+					<a href="http://honghe.fang.com/" target="_blank">红河</a> 
+					<a href="http://wenshan.fang.com/" target="_blank">文山</a> 
+					<a href="http://qujing.fang.com/" target="_blank">曲靖</a> 
+					<a href="http://yuxi.fang.com/" target="_blank">玉溪</a> 
+					<a href="http://lijiang.fang.com/" target="_blank">丽江</a> 
+					<a href="http://dali.fang.com/" target="_blank">大理</a> 
+					<a href="http://chuxiong.fang.com/" target="_blank">楚雄</a> 
+					<a href="http://baoshan.fang.com/" target="_blank">保山</a> 
+					<a href="http://zhaotong.fang.com/" target="_blank">昭通</a> 
+					<a href="http://dehong.fang.com/" target="_blank">德宏</a> 
+					<a href="http://lincang.fang.com/" target="_blank">临沧</a> 
+					<a href="http://xishuangbanna.fang.com/" target="_blank">西双版纳</a> 
+					<a href="http://puer.fang.com/" target="_blank">普洱</a>
+					<a href="http://diqing.fang.com/" target="_blank">迪庆</a>
+					<a href="http://nujiang.fang.com/" target="_blank">怒江</a>
+					<a href="http://anning.fang.com/" target="_blank">安宁</a>
+                    <a href="ynyl.fang.com" target="_blank">宜良</a> </td>
+  </tr>
+  <tr>
+    <td valign="top" class="font01">Z</td>
+    <td valign="top"><strong>浙江</strong></td>
+    <td valign="top"><a href="http://hz.fang.com/" target="_blank">杭州</a> 
+					<a href="http://nb.fang.com/" target="_blank" class="red">宁波</a>
+					<a href="http://jx.fang.com/" target="_blank">嘉兴</a> 
+					<a href="http://wz.fang.com/" target="_blank">温州</a> 
+					<a href="http://jh.fang.com/" target="_blank">金华</a> 
+					<a href="http://tz.fang.com/" target="_blank">台州</a> 
+					<a href="http://sx.fang.com/" target="_blank">绍兴</a> 
+					<a href="http://huzhou.fang.com/" target="_blank">湖州</a> 
+					<a href="http://quzhou.fang.com/" target="_blank">衢州</a> 
+					<a href="http://ls.fang.com/" target="_blank">丽水</a> 
+					<a href="http://zhoushan.fang.com/" target="_blank">舟山</a>
+					<a href="http://changxing.fang.com/" target="_blank">长兴</a>
+					<a href="http://deqing.fang.com/" target="_blank">德清</a>
+					<a href="http://ruian.fang.com/" target="_blank">瑞安</a>
+					<a href="http://yiwu.fang.com/" target="_blank">义乌</a>
+					<a href="http://cixi.fang.com/" target="_blank">慈溪</a>
+					<a href="http://yueqing.fang.com/" target="_blank">乐清</a>
+                    <a href="http://haining.fang.com/" target="_blank">海宁</a>
+					<a href="http://wenling.fang.com/" target="_blank">温岭</a>
+					<a href="http://zhuji.fang.com/" target="_blank">诸暨</a>
+					<a href="http://linhai.fang.com/" target="_blank">临海</a>
+					<a href="http://yuyao.fang.com/" target="_blank">余姚</a>
+					<a href="http://tongxiang.fang.com/" target="_blank">桐乡</a>
+					<a href="http://shangyu.fang.com/" target="_blank">上虞</a>
+					<a href="http://yongkang.fang.com/" target="_blank">永康</a>
+					<a href="http://pinghu.fang.com/" target="_blank">平湖</a>
+					<a href="http://zjfy.fang.com/" target="_blank">富阳</a>
+					<a href="http://ninghai.fang.com/" target="_blank">宁海</a>
+					<a href="http://fenghua.fang.com/" target="_blank">奉化</a>
+					<a href="http://linan.fang.com/" target="_blank">临安</a>
+					<a href="http://jiande.fang.com/" target="_blank">建德</a>
+					<a href="http://zjtl.fang.com/" target="_blank">桐庐</a>
+					<a href="http://zjxs.fang.com/" target="_blank">象山</a>
+					<a href="http://yuhuan.fang.com/" target="_blank">玉环</a>
+                    <a href="http://chunan.fang.com/" target="_blank">淳安</a></td>
+  </tr>
+  <tr>
+    <td valign="top" class="font01">&nbsp;</td>
+    <td valign="top"><strong>其它</strong></td>
+    <td valign="top"><a href="http://world.fang.com/" target="_blank" class="red">海外</a> 
+					<a href="http://us.fang.com/" target="_blank" class="red">美国</a> 
+					<a href="http://au.fang.com/" target="_blank" class="red">澳大利亚</a>  
+					<a href="http://canada.fang.com/" target="_blank" class="red">加拿大</a> 
+					<a href="http://macau.fang.com/" target="_blank" class="red">澳门</a> 
+					<a href="http://ny.fang.com/" target="_blank" class="red">纽约</a> 
+					<a href="http://la.fang.com/" target="_blank" class="red">洛杉矶</a> 
+					<a href="http://sf.fang.com/" target="_blank" class="red">旧金山</a> 
+					<a href="http://seattle.fang.com/" target="_blank" class="red">西雅图</a>
+					<a href="http://boston.fang.com/" target="_blank" class="red">波士顿</a> 
+					<a href="http://chicago.fang.com/" target="_blank" class="red">芝加哥</a> 
+					<a href="http://www.hkproperty.com/" target="_blank" class="red">香港</a> 
+					<a href="http://www.twproperty.com.tw/" target="_blank">台湾</a>  
+					<a href="http://japan.fang.com/" target="_blank">日本</a> 
+					<a href="http://germany.fang.com/" target="_blank">德国</a> </td>
+  </tr>
+      </table>
+	</div>
+
+</div>
+
+</div>
+
+<!--20120411搜房网统一版尾begin-->
+<div class="sfunfooter20120411">
+	<div class="verdana">
+   	  <a href="http://www.fang.com/aboutus/index.asp" target="_blank">关于我们</a>‖
+		<a href="http://www.fang.com/hezuo_file/house/index.html" target="_blank">网站合作</a>‖
+       <a href="http://www.fang.com/aboutus/contactus.html" target="_blank">联系我们</a>‖
+        <a href="http://www.fang.com/zhaopin" target="_blank">招聘信息</a>‖
+      <span onmouseover="this.className='footershaixa activexiala'" onmouseout="this.className='footershaixa'" style="width:80px"><a href="http://www.fang.com/SoufunFamily.htm" >房天下家族</a>‖<div class="footershaixb">
+              <table width="100%" border="0" cellspacing="0" cellpadding="0" >
+			  <tr>
+				<td width="16"><strong style="color:#c00;">B</strong></td>
+				<td width="80" ><a href="http://bj.fang.com/" target="_blank">北京房地产</a></td>
+				<td width="16"><strong style="color:#c00;">D</strong></td>
+				<td width="80"><a href="http://dg.fang.com/" target="_blank">东莞房地产</a></td>
+				<td width="16">&nbsp;</td>
+				<td width="80"><a href="http://hn.fang.com/" target="_blank">海南房地产</a></td>
+				<td width="16">&nbsp;</td>
+				<td width="100"><a href="http://nn.fang.com/" target="_blank">南宁房地产</a></td>
+				<td width="16">&nbsp;</td>
+				<td width="80"><a href="http://sy.fang.com/" target="_blank">沈阳房地产</a></td>
+			  </tr>
+			  <tr>
+				<td><strong style="color:#c00;">C</strong></td>
+				<td><a href="http://cd.fang.com/" target="_blank">成都房地产</a></td>
+				<td>&nbsp;</td>
+				<td><a href="http://dl.fang.com/" target="_blank">大连房地产</a></td>
+				<td>&nbsp;</td>
+				<td><a href="http://hf.fang.com" target="_blank">合肥房地产</a></td>
+				<td><strong style="color:#c00;">Q</strong></td>
+				<td><a href="http://qd.fang.com/" target="_blank">青岛房地产</a></td>
+				<td><strong style="color:#c00;">T</strong></td>
+				<td><a href="http://tj.fang.com/" target="_blank">天津房地产</a></td>
+			  </tr>
+			  <tr>
+				<td>&nbsp;</td>
+				<td><a href="http://cq.fang.com/" target="_blank">重庆房地产</a></td>
+				<td><strong style="color:#c00;">F</strong></td>
+				<td><a href="http://fz.fang.com/" target="_blank">福州房地产</a></td>
+				<td><strong style="color:#c00;">J</strong></td>
+				<td><a href="http://jn.fang.com/" target="_blank">济南房地产</a></td>
+				<td><strong style="color:#c00;">S</strong></td>
+				<td><a href="http://sh.fang.com/" target="_blank">上海房地产</a></td>
+				<td><strong style="color:#c00;">W</strong></td>
+				<td><a href="http://wuhan.fang.com/" target="_blank">武汉房地产</a></td>
+			  </tr>
+			  <tr>
+				<td>&nbsp;</td>
+				<td><a href="http://cs.fang.com/" target="_blank">长沙房地产</a></td>
+				<td><strong style="color:#c00;">G</strong></td>
+				<td><a href="http://gz.fang.com/" target="_blank">广州房地产</a></td>
+				<td><strong style="color:#c00;">N</strong></td>
+				<td><a href="http://nanjing.fang.com/" target="_blank">南京房地产</a></td>
+				<td>&nbsp;</td>
+				<td><a href="http://sz.fang.com/" target="_blank">深圳房地产</a></td>
+				<td>&nbsp;</td>
+				<td><a href="http://wuxi.fang.com/" target="_blank">无锡房地产</a></td>
+			  </tr>
+			  <tr>
+				<td>&nbsp;</td>
+				<td><a href="http://changchun.fang.com/" target="_blank">长春房地产</a></td>
+				<td>&nbsp;</td>
+				<td><a href="http://gy.fang.com" target="_blank">贵阳房地产</a></td>
+				<td>&nbsp;</td>
+				<td><a href="http://nc.fang.com/" target="_blank">南昌房地产</a></td>
+				<td>&nbsp;</td>
+				<td><a href="http://suzhou.fang.com/" target="_blank">苏州房地产</a></td>
+				<td><strong style="color:#c00;">X</strong></td>
+				<td><a href="http://xian.fang.com/" target="_blank">西安房地产</a></td>
+			  </tr>
+			  <tr>
+				<td>&nbsp;</td>
+				<td><a href="http://cz.fang.com/" target="_blank">常州房地产</a></td>
+				<td><strong style="color:#c00;">H</strong></td>
+				<td><a href="http://hz.fang.com/" target="_blank">杭州房地产</a></td>
+				<td>&nbsp;</td>
+				<td><a href="http://nb.fang.com/" target="_blank">宁波房地产</a></td>
+				<td>&nbsp;</td>
+				<td><a href="http://sjz.fang.com/" target="_blank">石家庄房地产</a></td>
+
+				<td><strong style="color:#c00;">Z</strong></td>
+				<td><a href="http://zz.fang.com/" target="_blank">郑州房地产</a></td>
+			  </tr>
+			  
+			</table>
+			<div style="text-align:right;padding:0px;" ><a href="http://www.fang.com/SoufunFamily.htm" target="_blank">进入房天下家族&gt;&gt;</a></div>
+      </div></span>
+        <a href="http://www.fang.com/sitemap/sitemap.html" target="_blank">网站地图</a>‖
+        <a href="http://www.fang.com/service/feedback/LeaveMess.aspx/" target="_blank">意见反馈</a>‖
+        <a href="http://wap.fang.com/xc/mobile.html" target="_blank">手机房天下</a>‖
+        <a href="http://open.fang.com" target="_blank">开放平台</a>‖
+      <a href="http://www.fang.com/aboutus/copyright.html" target="_blank">服务声明</a>
+    </div>
+
+	<div class="verdana">Copyright &copy; <script language="javascript">
+            var dt = new Date();
+            y = dt.getFullYear(); //获取年(四位)
+            document.write(y)</script> Shang Hai Jing Rong Xin Xi Ke Ji You Xian Gong Si</div>
+	<div class="song" style="line-height:23px;position:relative;z-index:1">上海旌荣信息科技有限公司 版权所有<!-- <a target="_blank" href="http://www.hd315.gov.cn/beian/view.asp?bianhao=0102000110800002"><img style="border:0pt none;position:absolute;right:249px;top:-18px;" src="http://img2.soufun.com/homepage/images/beian_min.gif"/></a> --></div>
+	<div class="song">客服电话：<em>4008508888</em> 违法信息举报邮箱：<a href="mailto:jubao@soufun.com" ><em>jubao@soufun.com</em></a></div>
+	
+</div>
+<script language="javascript" type="text/javascript" src="http://support.fang.com/resource/script/QianTai/support.dialogbox.js"></script>
+<!--20120411搜房网统一版尾end-->
+
+</body>
+</html>

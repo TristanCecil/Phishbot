@@ -1,0 +1,1036 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=shift_jis" />
+<title>駅探｜乗り換え案内・時刻表</title>
+<meta name="Keywords" content="駅探,乗り換え案内,終電案内,時刻表,運行状況,運行情報,交通情報,地図,バス,路線図,JR,新幹線,地下鉄,ekitan,えきたん" />
+<meta name="Description" content="駅探（えきたん）は乗り換え案内サービスです。電車・バス・飛行機の時刻表を掲載。また、運行情報、路線図、駅の構内図や出口案内などの情報も充実。PC、携帯、スマートフォンで、あなたのお出かけをナビゲートします。" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<meta name="robots" content="NOODP">
+
+<!-- [ ピン留めサイト ] -->
+<meta name="application-name" content="駅探" />
+<meta name="msapplication-tooltip" content="乗り換え案内（路線検索）を行うサービスです。" />
+<meta name="msapplication-navbutton-color" content="#0068B5" />
+<meta name="msapplication-task" content="name=乗り換え案内;action-uri=http://transit.ekitan.com/;icon-uri=/cmn/globalimg/favicon.ico" />
+<meta name="msapplication-task" content="name=時刻表;action-uri=http://timetable.ekitan.com/train/;icon-uri=/cmn/globalimg/favicon.ico" />
+<meta name="msapplication-task" content="name=バス時刻表;action-uri=http://bus.ekitan.com/;icon-uri=/cmn/globalimg/favicon.ico" />
+<meta name="msapplication-task" content="name=運行情報;action-uri=http://ekitan.com/tinfo/;icon-uri=/cmn/globalimg/favicon.ico" />
+<meta name="msapplication-task" content="name=路線図;action-uri=http://ekitan.com/rosenzu/;icon-uri=/cmn/globalimg/favicon.ico" />
+<link rel="shortcut icon" href="/cmn/globalimg/favicon.ico" type="image/x-icon" />
+<!-- /[ ピン留めサイト ] -->
+
+<link rel="canonical" href="http://ekitan.com/" />
+<link rel="alternate" href="http://ekitan.com/rss/ekitan.xml" type="application/rss+xml" title="駅探の新着情報" />
+
+<link rel="stylesheet" href="/cmn/css/ekitan_20140701.css?_1125" type="text/css" media="all" />
+<link rel="stylesheet" href="/cmn/css/top/index_top.css" type="text/css" media="all" />
+<link rel="stylesheet" href="/cmn/css/pr/pr_top_001.css?0_2" type="text/css" media="all" />
+<link rel="stylesheet" href="/cmn/css/top/ekitan_suggest.css" type="text/css" media="screen,tv" />
+<link rel="stylesheet" href="/cmn/css/unkou/sub_unkou.css" type="text/css" />
+<link rel="stylesheet" href="/cmn/css/grayout.css" type="text/css" />
+
+<!-- [ javascript ] -->
+<script src="/share/adtext/adtext.js" type="text/javascript"></script>
+<script src="/js/norikae_frm.js" name="norikae_frm" type="text/javascript"></script>
+<script src="/js/region.js" name="regionjs" type="text/javascript"></script>
+<script src="/share/uuc.js" type="text/javascript"></script>
+<script src="/cmn/js/jquery.1.2.6.js" type="text/javascript"></script>
+<script src="/cmn/js/hover.js" type="text/javascript"></script>
+<script src="/cmn/js/jquery.bgiframe.js" type="text/javascript"></script>
+<script src="/cmn/js/ekitan.js" type="text/javascript"></script>
+<script src="/js/ekitan.search.top.js?2_1_1" type="text/javascript" charset="Shift-JIS"></script>
+<script src="/cmn/js/ekitan.search.norikae.js" type="text/javascript"></script>
+<script src="/cmn/js/ekitan.grayout.js" type="text/javascript" charset="shift_jis"></script>
+<script src="/cmn/js/ekitan.html.subskeleton.js" type="text/javascript" charset="shift_jis"></script>
+<script src="/diainfo/js/jquery.js" type="text/javascript" charset="shift_jis"></script>
+<script src="/diainfo/js/unkou_info_ini.js?20130904" type="text/javascript" charset="shift_jis"></script>
+<script src="/diainfo/js/unkou_info.js?20130904" type="text/javascript" charset="shift_jis"></script>
+<script src="/cmn/js/ekitan.rireki.js" type="text/javascript"></script>
+<script src="/cmn/js/ekitan.log.js" type="text/javascript"></script>
+
+<!-- DFP用js -->
+<script type="text/javascript">
+var googletag = googletag || {};
+googletag.cmd = googletag.cmd || [];
+(function() {
+var gads = document.createElement('script');
+gads.async = true;
+gads.type = 'text/javascript';
+var useSSL = 'https:' == document.location.protocol;
+gads.src = (useSSL ? 'https:' : 'http:') + 
+'//www.googletagservices.com/tag/js/gpt.js';
+var node = document.getElementsByTagName('script')[0];
+node.parentNode.insertBefore(gads, node);
+})();
+</script>
+
+<script type="text/javascript">
+googletag.cmd.push(function() {
+googletag.defineSlot('/4413930/Top_PH_right', [200, 200], 'div-gpt-ad-1437619516805-0').addService(googletag.pubads());
+googletag.defineSlot('/4413930/Top_PH_left', [200, 200], 'div-gpt-ad-1437619516805-1').addService(googletag.pubads());
+googletag.defineSlot('/4413930/premium_header_left_DFP', [[200, 150], [200, 200]], 'div-gpt-ad-1407806105092-0').addService(googletag.pubads());
+googletag.defineSlot('/4413930/premium_header_right_DFP', [[200, 150], [200, 200]], 'div-gpt-ad-1407806105092-1').addService(googletag.pubads());
+googletag.defineSlot('/4413930/ekitan_top_2nd_DFP', [[300, 250], [300, 600]], 'div-gpt-ad-1407742393031-0').addService(googletag.pubads());
+googletag.defineSlot('/4413930/ekitan_top_3rd_DFP', [[300, 250], [300, 600]], 'div-gpt-ad-1407742393031-1').addService(googletag.pubads());
+googletag.defineSlot('/4413930/ekitan_top_special_DFP', [470, 200], 'div-gpt-ad-1414655099633-0').addService(googletag.pubads()).setCollapseEmptyDiv(true);
+googletag.defineSlot('/4413930/ekitan_top_4th_housebanner_DFP', [300, 60], 'div-gpt-ad-1414655254784-0').addService(googletag.pubads());
+googletag.defineSlot('/4413930/toptext_left_DFP', [315, 17], 'div-gpt-ad-1415864777500-0').addService(googletag.pubads());
+googletag.defineSlot('/4413930/toptext_middle_DFP', [315, 17], 'div-gpt-ad-1415864777500-1').addService(googletag.pubads());
+googletag.defineSlot('/4413930/toptext_right_DFP', [315, 17], 'div-gpt-ad-1415864777500-2').addService(googletag.pubads());
+googletag.defineSlot('/4413930/ekitan_top_1st_DFP', [300, 250], 'div-gpt-ad-1424833994518-0').addService(googletag.pubads());
+googletag.pubads().enableSingleRequest();
+googletag.enableServices();
+});
+</script>
+<!-- /DFP用js -->
+
+<!-- /[ javascript ] -->
+
+</head>
+<body onload="document.Norikae.SFNAME.focus();">
+<!-- [ globalheader ] -->
+<div id="globalheader">
+<div id="header_top">
+<div id="header_top_inner" class="clearfix">
+<h1>乗り換え案内、時刻表</h1>
+<ul id="siteinfo"><li> </li></ul>
+</div>
+</div>
+<div id="header_content" class="clearfix">
+<div id="logo"><a accesskey="1" href="http://ekitan.com/" onclick="javascript:trackSwitch ('/click/top_header_logo');"><img src="/cmn/globalimg/ekitan_logo.png" alt="駅探 えきたん" title="駅探 えきたん" /></a></div>
+<div id="header_content_box">
+<div id="header_info"><ul class="clearfix">
+<li><span>お知らせ</span><a href="http://ekitan.com/info/disaster/" onclick="javascript:trackSwitch ('/click/header_info');">平成28年熊本地震の影響・関連情報</a></li>
+</ul></div>
+<div id="header_caption">乗り換え案内、時刻表、運行情報などを提供しています。</div>
+</div>
+</div>
+</div>
+<!-- /[ globalheader ] -->
+
+
+<!-- [ globalsearch ] -->
+<div id="globalsearch"><a name="anchor_globalsearch" id="anchor_globalsearch"></a>
+<div id="globalsearch_inner" class="clearfix">
+<!-- [ searcharea ] -->
+<div id="searcharea" class="ekimod">
+
+<!-- [ globalnav ] -->
+<div id="globalnav">
+<ul id="globalnav_list">
+<li id="nav_travel"><a href="http://travel.ekitan.com/?kiseki=7b56l2Ub" onclick="javascript:trackSwitch ('/click/globaltab_travel');">国内旅行</a></li> 
+<li id="nav_norikae"><a href="http://transit.ekitan.com/" onclick="javascript:trackSwitch ('/click/globaltab_transit');">乗り換え案内</a>
+<ul class="globalnav_second_list" style="display:none;">
+<li><a href="http://transit.ekitan.com/syuden/" onclick="javascript:trackSwitch ('/click/globaltab_lasttrain');">終電・始発案内</a></li>
+</ul>
+</li>
+<li id="nav_train"><a href="http://timetable.ekitan.com/train/" onclick="javascript:trackSwitch ('/click/globaltab_timetable_train');">電車時刻表</a></li>
+<li id="nav_shinkansen"><a href="http://timetable.ekitan.com/shinkansen/" onclick="javascript:trackSwitch ('/click/globaltab_timetable_shinkansen');">新幹線時刻表</a></li>
+<li id="nav_air"><a href="http://timetable.ekitan.com/air/" onclick="javascript:trackSwitch ('/click/globaltab_timetable_air');">飛行機時刻表</a></li>
+
+
+<li id="nav_bus"><a class="dropdown_list" href="http://bus.ekitan.com/" onclick="javascript:trackSwitch ('/click/globaltab_bus');">バス時刻表</a>
+<ul class="globalnav_second_list" style="display:none;">
+<li><a href="http://bus.ekitan.com/rosen/" onclick="javascript:trackSwitch ('/click/globaltab_bus_rosen');">路線バス時刻表</a></li>
+<li><a href="http://bus.ekitan.com/high/" onclick="javascript:trackSwitch ('/click/globaltab_bus_high');">高速バス時刻表</a></li>
+<li><a href="http://bus.ekitan.com/kuko/" onclick="javascript:trackSwitch ('/click/globaltab_bus_airport');">空港バス時刻表</a></li>
+<li><a href="http://bus.ekitan.com/skbus/" onclick="javascript:trackSwitch ('/click/globaltab_bus_midnight');">深夜急行バス時刻表</a></li>
+<li><a href="http://bus.ekitan.com/noriba/" onclick="javascript:trackSwitch ('/click/globaltab_bus_terminal');">バスのりば</a></li>
+</ul>
+</li>
+<li id="nav_tinfo"><a href="http://ekitan.com/tinfo/" onclick="javascript:trackSwitch ('/click/globaltab_tinfo');">運行情報</a></li>
+</ul>
+</div>
+<!-- [ /globalnav ] -->
+
+
+<div class="ekimod_content clearfix">
+
+<!-- [ pr banner ] -->
+<div class="banner_pre_l">
+<!-- /4413930/Top_PH_left -->
+<div id='div-gpt-ad-1437619516805-1' style='height:200px; width:200px;'>
+<script type='text/javascript'>
+googletag.cmd.push(function() { googletag.display('div-gpt-ad-1437619516805-1'); });
+</script>
+</div>
+</div> 
+<div class="banner_pre_r">
+<!-- /4413930/Top_PH_right -->
+<div id='div-gpt-ad-1437619516805-0' style='height:200px; width:200px;'>
+<script type='text/javascript'>
+googletag.cmd.push(function() { googletag.display('div-gpt-ad-1437619516805-0'); });
+</script>
+</div>
+
+</div>
+<!-- /[ pr banner ] -->
+
+<!-- [ searchbox ] -->
+<div id="search_norikae" class="searchbox">
+<form style="margin: 0px;" target="_parent" name="Norikae" id="NorikaeSearchForm" action="http://transit.ekitan.com/norikae/NorikaeSearch" method="get">
+
+<!-- [ searchbox 基本項目 ] -->
+<div id="basicitem">
+<table summary="乗り換え案内 検索項目">
+<tr class="norikae_search">
+<th><div id="txt1">乗車駅</div>
+<input type="text" accesskey="2" maxlength="25" name="SFNAME" id="sfname" class="formbox" tabindex="1" autocomplete="off" value="" />
+<input type="hidden" id="init_sfname" value="" />
+<input type="hidden" id="sfcode" name="SFCODE" class="formbox" value="" />
+</th>
+<th><img src="/cmn/globalimg/btn_replace.gif" alt="乗車駅と下車駅を入れ替える" class="btn_replace" title="乗車駅と下車駅を入れ替える" /></th>
+<th><div id="txt1">下車駅</div>
+<input type="text" accesskey="3" maxlength="25" name="STNAME" id="stname" class="formbox" tabindex="2" autocomplete=off value="" />
+<input type="hidden" id="init_stname" value="" />
+<input type="hidden" id="stcode" name="STCODE" class="formbox" value="" />
+</th>
+<th><div id="txt1">経由駅</div>
+<input type="text" accesskey="4" maxlength="25" name="SV1NAME" id="sv1name" class="formbox" tabindex="3" autocomplete=off value="" />
+<input type="hidden" id="init_sv1name" value="" />
+<input type="hidden" id="sv1code" name="SV1CODE" class="formbox" value="" />
+</th>
+</tr>
+<tr class="search_history">
+<td><span class="station_history" id="station_history_sf"><a href="javascript:void(0)" tabindex="4" onclick="javascript:trackSwitch ('/click/top_search_history_from');"><img src="/cmn/globalimg/btn_history.gif" alt="履歴" /></a></span>
+</td>
+<td>&nbsp;</td>
+<td><span class="station_history" id="station_history_st"><a href="javascript:void(0)" tabindex="5" onclick="javascript:trackSwitch ('/click/top_search_history_to');"><img src="/cmn/globalimg/btn_history.gif" alt="履歴" /></a></span>
+</td>
+<td><span class="station_history" id="station_history_sv1"><a href="javascript:void(0)" tabindex="6" onclick="javascript:trackSwitch ('/click/top_search_history_via');"><img src="/cmn/globalimg/btn_history.gif" alt="履歴" /></a></span>
+</td>
+</tr>
+<tr class="time_search">
+<td colspan="4">
+<select id="select_month" name="MONTH" tabindex="10">
+<option value="201605">2016年05</option>
+<option value="201606">2016年06</option>
+</select>
+<label for="select_month">月</label>
+<select id="select_day" tabindex="11" name="DAY">
+<option value="01" >1</option>
+<option value="02" >2</option>
+<option value="03" >3</option>
+<option value="04" >4</option>
+<option value="05" >5</option>
+<option value="06" >6</option>
+<option value="07" >7</option>
+<option value="08" >8</option>
+<option value="09" >9</option>
+<option value="10" >10</option>
+<option value="11" >11</option>
+<option value="12" >12</option>
+<option value="13" >13</option>
+<option value="14" >14</option>
+<option value="15" >15</option>
+<option value="16" >16</option>
+<option value="17" >17</option>
+<option value="18" selected="selected" >18</option>
+<option value="19" >19</option>
+<option value="20" >20</option>
+<option value="21" >21</option>
+<option value="22" >22</option>
+<option value="23" >23</option>
+<option value="24" >24</option>
+<option value="25" >25</option>
+<option value="26" >26</option>
+<option value="27" >27</option>
+<option value="28" >28</option>
+<option value="29" >29</option>
+<option value="30" >30</option>
+<option value="31" >31</option>
+</select>
+<label for="select_day">日</label>
+
+<select id="select_hour" name="HOUR" tabindex="12">
+<option value="00" >0</option>
+<option value="01" >1</option>
+<option value="02" >2</option>
+<option value="03" >3</option>
+<option value="04" >4</option>
+<option value="05" >5</option>
+<option value="06" >6</option>
+<option value="07" >7</option>
+<option value="08" >8</option>
+<option value="09" >9</option>
+<option value="10" >10</option>
+<option value="11" >11</option>
+<option value="12" >12</option>
+<option value="13" >13</option>
+<option value="14" >14</option>
+<option value="15" >15</option>
+<option value="16" >16</option>
+<option value="17" >17</option>
+<option value="18" >18</option>
+<option value="19" >19</option>
+<option value="20" >20</option>
+<option value="21" >21</option>
+<option value="22" selected="selected" >22</option>
+<option value="23" >23</option>
+</select>
+<label for="select_hour">時</label>
+<select id="select_min" name="MIN" tabindex="13" >
+<option value="00" >0</option>
+<option value="01" >1</option>
+<option value="02" >2</option>
+<option value="03" >3</option>
+<option value="04" >4</option>
+<option value="05" >5</option>
+<option value="06" >6</option>
+<option value="07" >7</option>
+<option value="08" >8</option>
+<option value="09" >9</option>
+<option value="10" >10</option>
+<option value="11" >11</option>
+<option value="12" >12</option>
+<option value="13" >13</option>
+<option value="14" >14</option>
+<option value="15" >15</option>
+<option value="16" >16</option>
+<option value="17" >17</option>
+<option value="18" >18</option>
+<option value="19" >19</option>
+<option value="20" >20</option>
+<option value="21" >21</option>
+<option value="22" >22</option>
+<option value="23" >23</option>
+<option value="24" >24</option>
+<option value="25" >25</option>
+<option value="26" >26</option>
+<option value="27" >27</option>
+<option value="28" >28</option>
+<option value="29" >29</option>
+<option value="30" selected="selected" >30</option>
+<option value="31" >31</option>
+<option value="32" >32</option>
+<option value="33" >33</option>
+<option value="34" >34</option>
+<option value="35" >35</option>
+<option value="36" >36</option>
+<option value="37" >37</option>
+<option value="38" >38</option>
+<option value="39" >39</option>
+<option value="40" >40</option>
+<option value="41" >41</option>
+<option value="42" >42</option>
+<option value="43" >43</option>
+<option value="44" >44</option>
+<option value="45" >45</option>
+<option value="46" >46</option>
+<option value="47" >47</option>
+<option value="48" >48</option>
+<option value="49" >49</option>
+<option value="50" >50</option>
+<option value="51" >51</option>
+<option value="52" >52</option>
+<option value="53" >53</option>
+<option value="54" >54</option>
+<option value="55" >55</option>
+<option value="56" >56</option>
+<option value="57" >57</option>
+<option value="58" >58</option>
+<option value="59" >59</option>
+</select>
+<label for="select_min">分</label>
+
+<input type="radio" value="0" name="SR" id="r1" checked="checked" tabindex="14" accesskey="6" />
+<label for="r1">出発</label>
+<input type="radio" value="1" name="SR" id="r2" tabindex="15" accesskey="7" />
+<label for="r2">到着</label>
+</td>
+</tr>
+</table>
+</div>
+<!-- /searchbox 基本項目 -->
+<!-- searchbox 詳細項目 -->
+<!-- /searchbox 詳細項目 -->
+<!-- searchbtn -->
+<div id="searchbtn">
+<table summary="乗り換え案内 検索メニュー">
+<tr>
+<td></td>
+<td><input name="btn_search" type="image" class="btn_search" accesskey="9" src="/cmn/globalimg/btn_search.gif" alt="検索" tabindex="16" /></td>
+<td></td>
+</tr>
+</table>
+</div>
+</form>
+<!-- /searchbtn -->
+</div>
+<!-- /searchbox -->
+</div>
+</div>
+<!-- /[ searcharea ] -->
+</div>
+</div>
+<!-- /[ globalsearch ] -->
+
+<!-- [ globalbody ] -->
+<div id="globalbody"><a name="anchor_globalbody" id="anchor_globalbody"></a>
+<div id="globalbody_inner" class="clearfix">
+
+
+<!-- [ top text ] -->
+<div id="pr_space">
+<table>
+<tr>
+<td>
+<!-- toptext_left_DFP -->
+<div id='div-gpt-ad-1415864777500-0' style='width:315px; height:17px;'>
+<script type='text/javascript'>
+googletag.cmd.push(function() { googletag.display('div-gpt-ad-1415864777500-0'); });
+</script>
+</div>
+</td>
+<td>
+<!-- toptext_middle_DFP -->
+<div id='div-gpt-ad-1415864777500-1' style='width:315px; height:17px;'>
+<script type='text/javascript'>
+googletag.cmd.push(function() { googletag.display('div-gpt-ad-1415864777500-1'); });
+</script>
+</div>
+</td>
+<td>
+<!-- toptext_right_DFP -->
+<div id='div-gpt-ad-1415864777500-2' style='width:315px; height:17px;'>
+<script type='text/javascript'>
+googletag.cmd.push(function() { googletag.display('div-gpt-ad-1415864777500-2'); });
+</script>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<!-- /[ top text ] -->
+
+
+<div id="minwidth">
+<div id="minwidth_inner">
+
+<!-- [ topcontent ] -->
+<div id="topcontent">
+<div id="topcontent_inner">
+
+<!-- [ beta ] -->
+<div id="beta"><a name="anchor_beta" id="anchor_beta"></a>
+<div id="beta_inner" class="clearfix">
+
+<!-- [ mainlayout ] -->
+<div id="mainlayout">
+
+<!-- [ unkou ]  -->
+<div id="uif_top">
+<script type="text/javascript">
+unkou_info_disp();
+</script>
+</div>
+<!-- /[ unkou ] -->
+
+<!-- [ ad ]  -->
+<div class="ekimod">
+<!-- ekitan_top_special_DFP -->
+<div id='div-gpt-ad-1414655099633-0' style='width:470px; height:200px;'>
+<script type='text/javascript'>
+googletag.cmd.push(function() { googletag.display('div-gpt-ad-1414655099633-0'); });
+</script>
+</div>
+</div>
+<!-- /[ ad ] -->
+
+<!-- [ エリア ] -->
+<div class="maincontent_t ekimod">
+<div class="travel_title">
+<img src="/cmn/globalimg/t_travel.gif" alt="国内旅行　この時期おすすめのエリアをピックアップ" title="国内旅行" />
+</div>
+
+<!-- [ エリア1 ] -->
+<div class="ekimod_content_second_t clearfix">
+<div class="content_left">
+<a href="http://travel.ekitan.com/hotel-train/list/2590/5429/?kiseki=4TkQcZeU" onclick="javascript:trackSwitch ('/click/top_travel_area_1');" target="_blank"><img src="/cmn/globalimg/area_oosaka.jpg" alt="大阪　ご旅行代金(新幹線＋ホテル)　26,700円～33,800円　※1名1室/1泊食事なし/大人1名　※ホテルオークス新大阪利用時" title="大阪　ご旅行代金(新幹線＋ホテル)" class="left" /></a>
+</div>
+<div class="content_right">
+<a href="http://travel.ekitan.com/hotel-train/list/2590/5198/?kiseki=4TkQcZeU" onclick="javascript:trackSwitch ('/click/top_travel_area_3');" target="_blank"><img src="/cmn/globalimg/area_kyoto.jpg" alt="京都　ご旅行代金(新幹線＋ホテル)　26,300円～35,100円　※1名1室/1泊食事なし/大人1名　※京都リッチホテル利用時" title="京都　ご旅行代金(新幹線＋ホテル)" class="left" /></a>
+</div>
+</div>
+<!-- /[ エリア1 ] -->
+
+<!-- [ エリア2 ] -->
+<div class="ekimod_content_second_t clearfix">
+<div class="content_left">
+<a href="http://travel.ekitan.com/hotel-air/list/9452/9006/?kiseki=4TkQcZeU" onclick="javascript:trackSwitch ('/click/top_travel_area_2');" target="_blank"><img src="/cmn/globalimg/area_okinawa.jpg" alt="沖縄　ご旅行代金(航空券＋ホテル)　40,900円～118,000円　※1名1室/1泊朝食付き/大人1名　※ホテルグランビュー沖縄利用時" title="沖縄　ご旅行代金(航空券＋ホテル)" class="left" /></a>
+</div>
+<div class="content_right">
+<a href="http://travel.ekitan.com/hotel-air/list/9452/8989/?kiseki=4TkQcZeU" onclick="javascript:trackSwitch ('/click/top_travel_area_4');" target="_blank"><img src="/cmn/globalimg/area_nagasaki.jpg" alt="長崎　ご旅行代金(航空券＋ホテル)　40,000円～113,600円　※1名1室/1泊食事なし/大人1名　※長崎オリオンホテル利用時" title="長崎　ご旅行代金(航空券＋ホテル)" class="left" /></a>
+</div>
+</div>
+<!-- /[ エリア2 ] -->
+
+<!-- [ 他のエリアも探す ] -->
+<div class="ekimod_content_menu clearfix">
+<ul class="menu_sublinks">
+<li class="more"><a href="http://travel.ekitan.com/?kiseki=4TkQcZeU" onclick="javascript:trackSwitch ('/click/top_travel_area_other');">他のエリアも探す</a></li>
+</ul>
+</div>
+<!-- /[ 他のエリアも探す ] -->
+
+</div>
+<!-- /[ エリア ] -->
+
+
+
+<!-- [ 新着情報 ] -->
+<div id="cnt_1014a" class="ekimod">
+<div class="ekimod_header">
+<h2>新着情報</h2>
+</div>
+<div class="ekimod_content">
+
+<!-- 更新情報 -->
+<ul class="txt_lists">
+
+
+ 
+
+
+    
+<li class="txt_update"><a rel="bookmark" href="http://timetable.ekitan.com/shinkansen/">【新幹線時刻表】新幹線2016年5月号更新しました</a>
+
+[2016.04.21]
+</li>
+ 
+
+
+
+ 
+
+
+    
+<li class="txt_update"><a rel="bookmark" href="http://timetable.ekitan.com/shinkansen/">【新幹線時刻表】新幹線2016年4月号更新しました</a>
+
+[2016.03.28]
+</li>
+ 
+
+
+</ul>
+  
+<!-- 工事・運休 -->
+<!-- 2016/05/18	22:25 -->
+<ul class="txt_lists">
+<li class="txt_construction"><a href="http://ekitan.com/info/index.shtml#1" rel="bookmark">平成28年熊本地震の影響について</a> [2016.05.18]</li>
+<li class="txt_construction"><a href="http://ekitan.com/info/index.shtml#2" rel="bookmark">伊勢志摩サミットによる交通機関への影響</a> [2016.05.17]</li>
+</ul>
+<!-- お知らせ -->
+<ul class="txt_lists">
+
+<li class="txt_information">
+
+<a rel="bookmark" href="http://ekitan.com/info/#info02">長期運休区間の運行情報について</a>
+
+[2015.07.08]
+</li>
+
+</ul>
+  
+
+<!-- menus -->
+<div class="menus">
+<ul class="menu_links">
+<li class="dia"><a href="http://ekitan.com/diagram/">ダイヤ改正履歴</a></li>
+</ul>
+<ul class="menu_sublinks">
+<li class="more"><a href="http://ekitan.com/news/">一覧を見る</a></li>
+</ul>
+</div>
+<!-- /menus -->
+
+</div>
+</div>
+<!-- /[ 新着情報 ] -->
+
+
+<!-- [ プレスリリース ] -->
+<div id="whatsnew" class="ekimod">
+<div class="ekimod_header">
+<h2>プレスリリース</h2>
+</div>
+<div class="ekimod_content">
+
+<!-- PRESS -->
+<ul class="txt_lists">
+
+<li class="txt_press">
+<a rel="bookmark" href="http://ekitan.co.jp/news/2016/02/08-1.html" onclick="javascript:trackSwitch ('/click/top_pressrelease');" target="_blank">訪日外国人向け新サービスに関するJTBパブリッシングとの基本合意書の締結について</a>
+[2016.02.08]
+</li>
+
+<li class="txt_press">
+<a rel="bookmark" href="http://ekitan.co.jp/news/2015/08/7-1.html" onclick="javascript:trackSwitch ('/click/top_pressrelease');" target="_blank">インバウンドビジネスプラットフォーム構築に向けた海外提携第一弾 ～韓国交通情報の最大手ARO In Techと駅探が業務提携～</a>
+[2015.08.07]
+</li>
+
+</ul>
+
+<!-- menus -->
+<div class="menus">
+<ul class="menu_sublinks">
+<li class="more"><a href="http://ekitan.co.jp/news/press/index.shtml" onclick="javascript:trackSwitch ('/click/top_pressrelease_all');" target="_blank">一覧を見る</a>&nbsp;</li>
+</ul>
+</div>
+<!-- /menus -->
+
+</div>
+</div>
+<!-- /[ プレスリリース ] -->
+
+
+<!-- [ 沿線だより ] -->
+<div id="cnt_1007b" class="ekimod">
+<div class="ekimod_header">
+<h2>沿線だより</h2>
+</div>
+<div class="ekimod_content">
+<div class="ensen_news_list">
+<script src="http://blog.ekitan.com/ensen/js/ensen_news_list.js" type="text/javascript" charset="UTF-8"></script>
+<script type="text/javascript">
+<!--//
+ensenHtml();
+//-->
+</script>
+</div>
+<ul class="menu_sublists">
+<li class="more"><a href="http://blog.ekitan.com/ensen/" target="_blank" title="沿線だより">詳細を見る</a></li>
+</ul>
+</div>
+</div>
+<!-- /[ 沿線だより ] -->
+
+
+</div>
+<!-- // -->
+</div>
+</div>
+<!-- [ /beta ] -->
+
+
+<!-- [ 左カラム ] -->
+<div id="gamma"><a name="anchor_gamma" id="anchor_gamma"></a>
+<div id="gamma_inner" class="clearfix">
+
+<!-- [ topmenus ] -->
+<div class="ekimod" id="cnt_1001a">
+<div class="ekimod_header">
+<h2>メニュー</h2>
+</div>
+<div class="ekimod_content">
+<ul class="menu_lists">
+<li class="travel"><a href="http://travel.ekitan.com/?kiseki=7b56l2Ub" onclick="javascript:trackSwitch ('/click/top_lmenu_travel');" target="_blank">国内旅行</a></li>
+<li class="norikae"><a href="http://transit.ekitan.com/index.shtml" onclick="javascript:trackSwitch ('/click/top_lmenu_transit');" target="_blank">乗り換え案内</a></li>
+<li class="syuuhatsu"><a href="http://transit.ekitan.com/syuden/index.shtml" onclick="javascript:trackSwitch ('/click/top_lmenu_syuden');" target="_blank">終電・始発案内</a></li>
+<li class="jikokuhyou"><a href="http://timetable.ekitan.com/" onclick="javascript:trackSwitch ('/click/top_lmenu_timetable');" target="_blank">時刻表</a>
+<ul>
+<li class="sub"><a href="http://timetable.ekitan.com/train/index.shtml" onclick="javascript:trackSwitch ('/click/top_lmenu_train');" target="_blank">電車の時刻表</a></li>
+<li class="sub"><a href="http://timetable.ekitan.com/shinkansen/index.shtml" onclick="javascript:trackSwitch ('/click/top_lmenu_shinkansen');" target="_blank">新幹線の時刻表</a></li>
+<li class="sub"><a href="http://timetable.ekitan.com/air/index.shtml" onclick="javascript:trackSwitch ('/click/top_lmenu_air');" target="_blank">飛行機の時刻表</a></li>
+</ul>
+</li>
+<li class="busjyouhou"><a href="http://bus.ekitan.com/index.shtml" onclick="javascript:trackSwitch ('/click/top_lmenu_bus');" target="_blank">バス時刻表</a>
+<ul>
+<li class="sub"><a href="http://bus.ekitan.com/rosen/index.shtml" onclick="javascript:trackSwitch ('/click/top_lmenu_bus_rosen');" target="_blank">路線バス</a></li>
+<li class="sub"><a href="http://bus.ekitan.com/high/index.shtml" onclick="javascript:trackSwitch ('/click/top_lmenu_bus_high');" target="_blank">高速バス</a></li>
+<li class="sub"><a href="http://bus.ekitan.com/kuko/index.shtml" onclick="javascript:trackSwitch ('/click/top_lmenu_bus_kuko');" target="_blank">空港バス</a></li>
+<li class="sub"><a href="http://bus.ekitan.com/skbus/index.shtml" onclick="javascript:trackSwitch ('/click/top_lmenu_bus_midnight');" target="_blank">深夜急行バス</a></li>
+<li class="sub"><a href="http://bus.ekitan.com/noriba/index.shtml" onclick="javascript:trackSwitch ('/click/top_lmenu_bus_noriba');" target="_blank">バスのりば</a></li>
+</ul>
+</li>
+<li class="unkouzyouhou"><a href="http://ekitan.com/tinfo/index.shtml" onclick="javascript:trackSwitch ('/click/top_lmenu_tinfo');" target="_blank">運行情報</a></li>
+<li class="rosenzu"><a href="http://ekitan.com/rosenzu/index.shtml" onclick="javascript:trackSwitch ('/click/top_lmenu_rosenzu');" target="_blank">路線図</a></li>
+<li class="station"><a href="http://ekitan.com/station/index.shtml" onclick="javascript:trackSwitch ('/click/top_lmenu_station');" target="_blank">駅情報</a>
+<ul>
+<li class="sub"><a href="http://ekitan.com/station/map/index.shtml" onclick="javascript:trackSwitch ('/click/top_lmenu_station_map');" target="_blank">構内図</a></li>
+<li class="sub"><a href="http://ekitan.com/station/exit/index.shtml" onclick="javascript:trackSwitch ('/click/top_lmenu_station_exit');" target="_blank">出口情報</a></li>
+</ul>
+</li>
+<li class="surrounding"><span class="nolink">周辺情報</span>
+<ul>
+<li class="sub"><a href="http://ekitan.com/eknv/index.shtml" onclick="javascript:trackSwitch ('/click/top_lmenu_spotnavi');" target="_blank">スポットナビ</a></li>
+<li class="sub"><a href="http://cmap.ekitan.com/mamo/cgm/users/emap/find.jsp" onclick="javascript:trackSwitch ('/click/top_lmenu_map');" target="_blank">駅周辺の地図</a></li>
+</ul>
+</li>
+<li class="odekake"><a href="http://ekitan.com/sp/index.shtml" onclick="javascript:trackSwitch ('/click/top_lmenu_sp');" target="_blank">特集・記事</a>
+</li>
+</ul>
+</div>
+</div>
+<!-- [/ topmenus ] -->
+
+<!-- [ specialmenus ] -->
+<div id="specialmenus">
+
+<!-- [ スマートフォン ] -->
+<div class="ekimod" id="cnt_1002a">
+<div class="ekimod_header">
+<h2>スマートフォン</h2>
+</div>
+<div class="ekimod_content">
+<ul class="menu_lists">
+<li>パソコンだけでなく、スマートフォンからも駅探をご利用いただけます。<br />
+<span class="banner">
+<a class="smartphone_menu clearfix" href="http://transfer.ekitan.com/?utm_source=pc&utm_medium=txt1_top_menu&utm_campaign=transfer" onclick="javascript:trackSwitch ('/click/top_lmenu_smartphone_img');" target="_blank"><img src="/cmn/banners/smartphone_menu.jpg" alt="パソコンだけでなく、スマートフォンからも駅探をご利用いただけます。" title="パソコンだけでなく、スマートフォンからも駅探をご利用いただけます。" /></a>
+</span>
+<ul>
+<li class="sub"><a href="http://transfer.ekitan.com/?utm_source=pc&utm_medium=txt1_top_menu&utm_campaign=transfer" onclick="javascript:trackSwitch ('/click/top_lmenu_smartphone');" target="_blank">詳しくはこちら</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<!-- /[ スマートフォン ] -->
+
+<!-- [ 駅探バリューDays ] -->
+<div class="ekimod" id="cnt_1002b">
+<div class="ekimod_header">
+<h2>駅探バリューDays</h2>
+</div>
+<div class="ekimod_content">
+<ul class="menu_lists">
+<li>映画・遊園地・ホテルが最大75%OFF！会員制の優待割引サービス！<br />
+<ul class="value_days"><li class="sub"><a href="http://value.ekitan.com/?kiseki=tk1rYF7h" onclick="javascript:trackSwitch ('/click/top_lmenu_value');" target="_blank">詳しくはこちら</a></li></ul>
+</li>
+</ul>
+</div>
+</div>
+<!-- /[ 駅探バリューDays ] -->
+
+<!-- [ 法人向けサービス ] -->
+<div class="ekimod" id="cnt_1010a">
+<div class="ekimod_header">
+<h2>法人向けサービス</h2>
+</div>
+<div class="ekimod_content">
+<ul class="menu_lists">
+<li>駅探の機能を御社のサイトやシステムでご利用いただけます。<br />
+<ul class="co_service">
+<li class="sub"><a href="http://go.ekitan.com/info/srv_norikae.shtml?utm_source=pc&utm_medium=menu&utm_campaign=transit" target="_blank">乗り換え案内ASP</a></li>
+<li class="sub"><a href="http://go.ekitan.com/info/srv_workflow.shtml?utm_source=pc&utm_medium=menu&utm_campaign=workflow" target="_blank">旅費/交通費精算ASP</a></li>
+<li class="sub"><a href="http://go.ekitan.com/info/srv_nhun.shtml?utm_source=pc&utm_medium=menu&utm_campaign=nminute" target="_blank">N分以内検索</a></li>
+<li class="sub"><a href="http://go.ekitan.com/info/srv_ekimei.shtml?utm_source=pc&utm_medium=menu&utm_campaign=data_station" target="_blank">駅データ</a></li>
+<li class="sub"><a href="http://go.ekitan.com/info/srv_otherdata.shtml?utm_source=pc&utm_medium=menu&utm_campaign=data_exit" target="_blank">駅出口データほか</a></li>
+<li class="sub"><a href="http://go.ekitan.com/info/srv_multilingual.shtml?utm_source=pc&utm_medium=menu&utm_campaign=multil" target="_blank">多言語サービス</a></li>
+<li class="sub"><a href="http://go.ekitan.com/info/srv_diainfo.shtml?utm_source=pc&utm_medium=menu&utm_campaign=status" target="_blank">運行情報サービス</a></li>
+<li class="sub"><a href="http://go.ekitan.com/info/menu_trial.shtml?utm_source=pc&utm_medium=menu&utm_campaign=freetrial" target="_blank">無料お試し（API）</a></li>
+</ul>
+</li>
+</ul>
+<ul class="menu_sublists">
+<li class="more"><a href="http://go.ekitan.com/info/index.shtml?utm_source=pc&utm_medium=menu&utm_campaign=top" target="_blank">詳細を見る</a></li>
+</ul>
+</div>
+</div>
+<!-- /[ 法人向けサービス ] -->
+
+<!-- [ 駅探エクスプレス ] -->
+<div class="ekimod" id="cnt_1008a">
+<div class="ekimod_header">
+<h2>駅探エクスプレス</h2>
+</div>
+<div class="ekimod_content">
+<ul class="menu_lists">
+<li>乗り換え案内ソフトの決定版！<br />
+<ul class="express">
+<li class="sub"><a href="http://express.ekitan.com/express/index.shtml" onclick="javascript:trackSwitch ('/click/top_express_detail');" target="_blank">製品詳細</a></li>
+<li class="sub"><a href="http://express.ekitan.com/express/download.shtml?oem=" onclick="javascript:trackSwitch ('/click/top_express_download');" target="_blank">ダウンロード(お試し版)</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<!-- /[ 駅探エクスプレス ] -->
+
+<!-- [ 広告掲載のご案内 ] -->
+<div class="ekimod" id="cnt_1006a">
+<div class="ekimod_content clearfix">
+<ul class="menu_lists">
+<li class="sub"><a href="http://ekitan.com/ad/index.shtml">広告掲載のご案内</a></li>
+</ul>
+</div>
+</div>
+<!-- /[ 広告掲載のご案内 ] -->
+
+</div>
+<!-- [/ specialmenus ] -->
+</div>
+</div>
+<!-- [/ 左カラム ] -->
+
+
+</div>
+</div>
+<!-- [/ topcontent ] -->
+
+<!-- [ delta ] -->
+<div id="delta"><a name="anchor_delta" id="anchor_delta"></a>
+<div id="delta_inner" class="clearfix">
+<!-- [ adareatop ] -->
+<div id="pr_top_0001" class="adareatop">
+<!-- [ pr_top_0001 ] -->
+<!-- [ DFP ] -->
+<div id="msd_2001a" class="banner">
+<!-- ekitan_top_1st_DFP -->
+<div id='div-gpt-ad-1424833994518-0' style='width:300px; height:250px;'>
+<script type='text/javascript'>
+googletag.cmd.push(function() { googletag.display('div-gpt-ad-1424833994518-0'); });
+</script>
+</div>
+</div>
+<!-- [/ DFP ] -->
+
+<!-- [ PR枠 ] -->
+<div class="pr_areastop ekimod">
+<div class="ekimod_content">
+<div class="pr_boxs">
+<p class="pr_areas_img"><a href="http://travel.ekitan.com/select/hotel-train/shinkansen/?kiseki=4TkQcZeU" onclick="javascript:trackSwitch ('/click/top_rcolumn_travel1_img');" target="_blank"><img title="出張にもおすすめ！新幹線セットプラン" alt="出張にもおすすめ！新幹線セットプラン" src="/cmn/banners/bnr_top_pr01.gif" /></a></p>
+<dl class="pr_areas_main">
+<dt><a href="http://travel.ekitan.com/select/hotel-train/shinkansen/?kiseki=4TkQcZeU" onclick="javascript:trackSwitch ('/click/top_rcolumn_travel1');" target="_blank">出張にもおすすめ！ <br />
+新幹線セットプラン</a></dt>
+<dd>新幹線とホテルを別々に予約するよりも断然お得！</dd>
+</dl>
+</div>
+
+<div class="pr_boxs">
+<p class="pr_areas_img"><a href="http://travel.ekitan.com/hotel-pack/list/?anfm=04&anto=08&max_price=30000&kiseki=4TkQcZeU" onclick="javascript:trackSwitch ('/click/top_rcolumn_travel2_img');" target="_blank"><img title="3万円以内で行ける！大阪・京都の旅" alt="3万円以内で行ける！大阪・京都の旅" src="/cmn/banners/bnr_top_pr05.gif" /></a></p>
+<dl class="pr_areas_main">
+<dt><a href="http://travel.ekitan.com/hotel-pack/list/?anfm=04&anto=08&max_price=30000&kiseki=4TkQcZeU" onclick="javascript:trackSwitch ('/click/top_rcolumn_travel2');" target="_blank">3万円以内で行ける！<br />大阪・京都の旅</a></dt>
+<dd>往復の交通費＋ホテル1泊がついてこの価格！<span class="small">※年末年始等一部期間は除く</span></dd>
+</dl>
+</div>
+
+<div class="pr_boxs">
+<p class="pr_areas_img"><a href="https://play.google.com/store/apps/details?id=com.ekitan.android" onclick="javascript:trackSwitch ('/click/top_rcolumn_androidapp_img');" target="_blank"><img title="駅探 乗換案内" alt="駅探 乗換案内" src="/cmn/banners/bnr_top_pr04.gif" /></a></p>
+<dl class="pr_areas_main">
+<dt>駅探 乗換案内</dt>
+<dd>全国の乗換案内・時刻表・運行情報をご案内するアプリです。</dd>
+<dd><a href="https://play.google.com/store/apps/details?id=com.ekitan.android" onclick="javascript:trackSwitch ('/click/top_rcolumn_androidapp');" target="_blank">Google Play</a> | <a href="https://itunes.apple.com/jp/app/yi-tan-cheng-huan-nei-ri-ben/id524306589?mt=8" onclick="javascript:trackSwitch ('/click/top_rcolumn_iosapp');" target="_blank">AppStore</a>｜<a href="http://mb.ekitan.com/info/iphone/" onclick="javascript:trackSwitch ('/click/top_rcolumn_appinfo');" target="_blank">詳細</a></dd>
+</dl>
+</div>
+
+<div class="pr_boxs">
+<p class="pr_areas_img"><a href="https://itunes.apple.com/jp/app/apple-store/id318697570?pt=13971&ct=pc_top_right_text&mt=8" onclick="javascript:trackSwitch ('/click/top_rcolumn_iosair_img');" target="_blank"><img title="駅探 国内線時刻表" alt="駅探 国内線時刻表" src="/cmn/banners/bnr_top_pr02.gif" /></a></p>
+<dl class="pr_areas_main">
+<dt>駅探 国内線時刻表</dt>
+<dd>国内線のダイヤをアプリでチェック！空席照会／予約もできます。</dd>
+<dd><a href="https://itunes.apple.com/jp/app/apple-store/id318697570?pt=13971&ct=pc_top_right_text&mt=8" onclick="javascript:trackSwitch ('/click/top_rcolumn_iosair');" target="_blank">AppStore</a></dd>
+
+</dl>
+</div>
+</div>
+</div>
+<!-- /[ PR枠 ] -->
+
+<!-- [ livedoor news ] -->
+<div id="oth_2001b" class="ekimod">
+<link rel="stylesheet" type="text/css" href="http://news.livedoor.com/css/ekitan/ekitan.css" />
+<script src="http://news.livedoor.com/js/ekitan/jquery.min.js" type="text/javascript"></script>
+<script src="http://news.livedoor.com/generate_js/ekitan/default.js" type="text/javascript" charset="UTF-8"></script>
+<noscript><div id="ld-topics"><p>ニューストピックスをご覧になる場合は<br />JavaScriptを有効にしてください。<br />
+<a href="http://rd.livedoor.com/r/ekitan/?http://news.livedoor.com/">livedoor ニュース</a></p></div></noscript>
+</div>
+<!-- /[ livedoor news ] -->
+
+<!-- [ DFP ] -->
+<div class="banner">
+<!-- ekitan_top_2nd_DFP -->
+<div id='div-gpt-ad-1407742393031-0'>
+<script type='text/javascript'>
+googletag.cmd.push(function() { googletag.display('div-gpt-ad-1407742393031-0'); });
+</script>
+</div>
+</div>
+<!-- /[ DFP ] -->
+
+<!-- [ DFP ] -->
+<div class="banner">
+<!-- ekitan_top_3rd_DFP -->
+<div id='div-gpt-ad-1407742393031-1'>
+<script type='text/javascript'>
+googletag.cmd.push(function() { googletag.display('div-gpt-ad-1407742393031-1'); });
+</script>
+</div>
+</div>
+<!-- /[ DFP ] -->
+
+<!-- [ お天気情報 ] -->
+<div class="ekimod">
+<div class="ekimod_header">
+<h2>お天気情報</h2>
+</div>
+<div class="ekimod_content">
+<div class="contentsblock">
+<div class="weather">
+
+<!-- お天気情報ここから -->
+【 <a href="gtenki/weeks/4410.html" target="tenki">東京</a> 】　<img src="img/today.gif" width="20" height="10" alt="今日"><a href="/gtenki/weeks/4410.html" target="tenki"><img height="23" width="40" border=0 alt="今日の天気" src='/gtenki/daily/img/w_fn.gif' align="middle"></a>　<img src="img/tomorrow.gif" width="20" height="10" alt="明日"><a href="/gtenki/weeks/4410.html" target="tenki"><img height="23" width="40" border=0 alt="明日の天気" src='/gtenki/daily/img/w_f.gif' align="middle"></a>
+<!-- お天気情報ここまで -->
+
+</div>
+<ul class="menu_sublists">
+<li class="more"><a href="/gtenki/weather_list/" target="_blank">その他の地域</a></li>
+</ul>
+</div>
+</div>
+</div>
+<!-- /[ お天気情報 ] -->
+
+<!-- [ pr banner ] -->
+
+<a href="http://ekitan.com/house/" onclick="javascript:trackSwitch ('/click/top_rcolumn_house');" target="_blank"><img src="/cmn/banners/realestate_rcolumn.png" alt="駅探 住宅・不動産" title="駅探 住宅・不動産" /></a>
+
+<!-- /[ pr banner ] -->
+
+</div>
+<!-- /[ pr_top_0001 ] -->
+<!-- /[ adareatop ] -->
+</div>
+</div>
+<!-- /[ delta ] -->
+
+<!-- [ epsilon ] -->
+<div id="epsilon"><a name="anchor_epsilon" id="anchor_epsilon"></a>
+<div id="epsilon_inner" class="clearfix">
+</div>
+</div>
+<!-- /[ epsilon ] -->
+
+</div>
+</div>
+</div>
+</div>
+<!-- [ epsilon ] -->
+
+<!-- [ footer ] -->
+<!-- [ globalprint ] -->
+<div id="globalprint"><a name="anchor_globalprint" id="anchor_globalprint"></a>
+<div id="globalprint_inner" class="clearfix">
+<div class="copyright">Copyright(C) 駅探</div>
+</div>
+</div>
+<!-- /[ globalprint ] -->
+
+<!-- [ globalfooter ] -->
+<div id="globalfooter"><a name="anchor_globalfooter" id="anchor_globalfooter"></a>
+
+<!-- [ footer_upper ] -->
+<div id="footer_upper" class="ekimod">
+<div id="footer_menus">
+<div class="footer_menus_box">
+<ul>
+<li><a href="http://ekitan.com/">駅探トップ</a></li>
+<li><a href="http://travel.ekitan.com/?kiseki=7b56l2Ub">国内旅行</a></li>
+<li><a href="http://transit.ekitan.com/">乗り換え案内</a>
+<ul class="menu_lists">
+<li><a href="http://transit.ekitan.com/syuden/">終電始発案内</a></li>
+</ul>
+</li>
+<li><a href="http://timetable.ekitan.com/">時刻表</a>
+<ul class="menu_lists">
+<li><a href="http://timetable.ekitan.com/train/">電車時刻表</a></li>
+<li><a href="http://timetable.ekitan.com/shinkansen/">新幹線時刻表</a></li>
+<li><a href="http://timetable.ekitan.com/air/">飛行機時刻表</a></li>
+</ul>
+</li>
+<li><a href="http://bus.ekitan.com/">バス時刻表</a>
+<ul class="menu_lists">
+<li><a href="http://bus.ekitan.com/rosen/">路線バス時刻表</a></li>
+<li><a href="http://bus.ekitan.com/high/">高速バス時刻表</a></li>
+<li><a href="http://bus.ekitan.com/kuko/">空港バス時刻表</a></li>
+<li><a href="http://bus.ekitan.com/skbus/">深夜急行バス時刻表</a></li>
+<li><a href="http://bus.ekitan.com/noriba/">バスのりば</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="footer_menus_box">
+<ul>
+<li><a href="http://ekitan.com/station/">駅情報</a>
+<ul class="menu_lists">
+<li><a href="http://ekitan.com/station/map/">構内図</a></li>
+<li><a href="http://ekitan.com/station/exit/">出口案内</a></li>
+<li><a href="http://cmap.ekitan.com/mamo/cgm/users/emap/find.jsp">駅周辺地図</a></li>
+</ul>
+</li>
+<li><a href="http://ekitan.com/tinfo/">運行情報</a></li>
+<li><a href="http://ekitan.com/rosenzu/">路線図</a></li>
+<li><a href="http://ekitan.com/sp/">特集・記事</a>
+<ul class="menu_lists">
+<li><a href="http://ekitan.com/mamo/sp/park/">遊園地特集</a></li>
+<li><a href="http://ekitan.com/mamo/sp/zoo/">動物園特集</a></li>
+<li><a href="http://ekitan.com/mamo/sp/aqua/">水族館特集</a></li>
+<li><a href="http://ekitan.com/mamo/sp/spa/">日帰り温泉特集</a></li>
+<!--<li><a href="http://ekitan.com/sp/business/routeinn/?utm_source=pc&utm_medium=footer&utm_campaign=status">ビジネスホテル特集</a></li>-->
+<li><a href="http://ekitan.com/smile/special/sell/?utm_source=pc&utm_medium=footer&utm_campaign=freetrial">不動産売却特集</a></li>
+<li><a href="http://ekitan.com/house/">住宅・不動産特集</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="footer_menus_box">
+<ul>
+<li>サポート<br />
+<ul class="menu_lists">
+<li><a href="http://ekitan.com/help/">ヘルプ／FAQ</a></li>
+<li><a href="http://ekitan.com/support/">サポート範囲</a></li>
+<li><a href="http://ekitan.com/help/webmaster.shtml">お問合わせ</a></li>
+<li><a href="http://ekitan.com/sitemap/">サイトマップ</a></li>
+<li><a href="http://ekitan.com/ad/">広告掲載について</a></li>
+</ul>
+</li>
+<li>携帯・スマートフォン<br />
+<ul class="menu_lists">
+<li><a href="http://mb.ekitan.com/">携帯サイト</a></li>
+<li><a href="http://mb.ekitan.com/info/smartphone/">スマートフォンサイト</a></li>
+<li><a href="http://mb.ekitan.com/info/android/">Androidアプリ</a></li>
+<li><a href="http://mb.ekitan.com/info/iphone/">iPhoneアプリ</a></li>
+</ul>
+</li>
+</ul>
+</div>
+
+<div class="footer_menus_box">
+<ul>
+<li class="menu_bottom"><a href="http://go.ekitan.com/info/index.shtml?utm_source=pc&utm_medium=footer&utm_campaign=top">法人向けサービス</a>
+
+<ul class="menu_lists">
+<li><a href="http://go.ekitan.com/info/srv_norikae.shtml?utm_source=pc&utm_medium=footer&utm_campaign=transit">乗り換え案内ASP</a></li>
+<li><a href="http://go.ekitan.com/info/srv_workflow.shtml?utm_source=pc&utm_medium=footer&utm_campaign=workflow">旅費/交通費精算</a></li>
+<li><a href="http://go.ekitan.com/info/srv_nhun.shtml?utm_source=pc&utm_medium=footer&utm_campaign=nminute">N分以内検索</a></li>
+<li><a href="http://go.ekitan.com/info/srv_ekimei.shtml?utm_source=pc&utm_medium=footer&utm_campaign=data_station">駅名データ</a></li>
+<li><a href="http://go.ekitan.com/info/srv_otherdata.shtml?utm_source=pc&utm_medium=footer&utm_campaign=data_exit">駅出口データほか</a></li>
+<li><a href="http://go.ekitan.com/info/srv_multilingual.shtml?utm_source=pc&utm_medium=footer&utm_campaign=multil">多言語サービス</a></li>
+<li><a href="http://go.ekitan.com/info/srv_diainfo.shtml?utm_source=pc&utm_medium=footer&utm_campaign=status">運行情報サービス</a></li>
+<li><a href="http://go.ekitan.com/info/menu_trial.shtml?utm_source=pc&utm_medium=footer&utm_campaign=freetrial">無料お試し（API）</a></li>
+</ul>
+</li>
+</ul>
+</div>
+
+</div>
+</div>
+<!-- /[ footer_upper ] -->
+
+<!-- [ footer_down ] -->
+<div id="footer_down" class="ekimod">
+<div class="copyright"><img alt="Copyright(C) 駅探" src="http://ekitan.com/cmn/globalimg/copyright.gif" /></div>
+<div id="footerextramenus"><a href="http://ekitan.com/help/kiyaku.shtml" onclick="javascript:trackSwitch ('/click/top_footer_terms');" >利用規約</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="http://ekitan.com/help/privacy.shtml" onclick="javascript:trackSwitch ('/click/top_footer_privacypolicy');" >個人情報保護方針</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="http://ekitan.co.jp/corp/" onclick="javascript:trackSwitch ('/click/top_footer_companyinfo');" >会社情報</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="http://ekitan.co.jp/ir/" onclick="javascript:trackSwitch ('/click/top_footer_ir');" >投資家情報</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="http://ekitan.co.jp/news/" onclick="javascript:trackSwitch ('/click/top_footer_pr');" >プレスリリース</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="http://ekitan.co.jp/corp/recruit.html" onclick="javascript:trackSwitch ('/click/top_footer_job');" >採用情報</a></div>
+</div>
+<!-- /[ footer_down ] -->
+
+</div>
+<script type="text/javascript" src="/cmn/js/ekitan.atics.js?1_0_0"></script>
+<!-- /[ globalfooter ] -->
+
+<!-- /[ footer ] -->
+
+</body>
+</html>

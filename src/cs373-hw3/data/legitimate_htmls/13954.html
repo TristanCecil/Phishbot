@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="UTF-8">
+<title>Поиск Фильмов, Сериалов, Видео — BIQLE Видео</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="all" />
+<meta name="description" content="смотреть онлайн бесплатно, фильм онлайн">
+<link href='//fonts.googleapis.com/css?family=Open+Sans:400,300,600&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="/css/common.css?1" />
+<script type="text/javascript" src="/js/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="/js/nprogress.js"></script>
+<script type="text/javascript" src="/js/history.js"></script>
+<script type="text/javascript" src="/js/common.js?2"></script>
+<script type="text/javascript" src="/js/comments.js"></script>
+<script type="text/javascript" src="/js/auth.js"></script>
+<script type="text/javascript" src="/js/share42.js"></script>
+<script type="text/javascript" src="/js/clouds/three.min.js"></script>
+<script type="text/javascript" src="/js/clouds/clouds.js"></script>
+<style type="text/css">
+html {
+  overflow: hidden;
+}
+</style>
+<script type="text/javascript">
+var is_logged = false;
+</script>
+</head>
+<body class="main">
+
+  <div class="main_width">
+    <div class="main_header">
+      <form class="main_search_form" onsubmit="return search(true, true);">
+        <input type="text" id="q" value="" placeholder="Поиск видео...">
+        <button type="submit">Найти</button>
+      </form>
+
+      <div class="clear"></div>
+    </div>
+
+    <div class="main_body">
+     <h1 class="main_logo"> <a href="/" onclick="return true;"><div class="center_logo" alt="BIQLE"></div></a></h1>
+
+      <p style="font-size: 21px;color:#fff;">Поиск видео, сериалов и фильмов в хорошем качестве</p>
+
+      <div class="main_other">
+        <b>Присоединившись к нам Вы получаете:</b>
+        <p>Подборки популярных видео</p>
+        <p>Отсутствие рекламы</p>
+        <p>Видео высокого качества</p>
+        <p>Собственные избранные</p>
+        <p>Возможность комментировать</p>
+        <p>Возможность ставить лайки</p>
+      </div>
+
+      <div class="main_forms">
+        <iframe name="callback_frame" id="callback_frame" frameborder="0" style="display: none;"></iframe>
+
+        <form action="/auth/register" method="POST" class="main_form" id="form_reg" onsubmit="return Auth.formSubmit(this);" target="callback_frame">
+          <input type="hidden" name="callback" value="Auth.onRegister">
+          <div class="form-row"><input type="text" name="login" id="login" placeholder="Ваше имя"/></div>
+          <div class="form-row"><input type="text" name="email" id="email" placeholder="Ваша эл. почта"/></div>
+          <div class="form-row"><input type="password" name="pass" id="pass" placeholder="Ваш пароль"/></div>
+          <div class="form-row" id="error_message" style="display: none;"></div>
+          <div class="form-row">
+            <button>Присоединиться</button>
+            <span>или <a onclick="Auth.SwitchForm('form_auth');">Войти</a></span>
+            <p>Регистрируясь, вы подтверждаете согласие с <a href="/legal/" onclick="return true;">правилами</a>. </p>
+          </div>
+        </form>
+
+        <form action="/auth/login" method="POST" class="main_form" id="form_auth" style="display: none;" onsubmit="return Auth.formSubmit(this);" target="callback_frame">
+          <input type="hidden" name="callback" value="Auth.onLogin">
+          <div class="form-row"><input type="text" name="email" id="email" placeholder="Ваша эл. почта"/></div>
+          <div class="form-row"><input type="password" name="pass" id="pass" placeholder="Ваш пароль"/></div>
+          <div class="form-row" id="error_message" style="display: none;"></div>
+          <div class="form-row">
+            <button class="auth">Авторизоваться</button>
+            <span>или <a onclick="Auth.SwitchForm('form_reg');">Присоединиться</a></span>
+          </div>
+          <div class="form-row">
+            <span><a onclick="Auth.SwitchForm('form_restore');">Забыли пароль?</a></span>
+            <p>Войти используя соц-сети</p><div class="form-row social">
+            <a class="facebook" title="Авторизация через Facebook" onclick="Auth.Facebook();"></a>
+            <a class="vk" title="Авторизация через ВКонтакте" onclick="Auth.VK();"></a>
+            <a class="google" title="Авторизация через Google" onclick="Auth.Google();"></a>
+            <a class="twitter" title="Авторизация через Twitter" onclick="Auth.Twitter();"></a>
+          </div>
+          </div>
+        </form>
+
+        <form action="/auth/restore" method="POST" class="main_form" id="form_restore" style="display: none;" onsubmit="return Auth.formSubmit(this);" target="callback_frame">
+          <input type="hidden" name="callback" value="Auth.onRestore">
+          <div class="form-row"><input type="text" name="email" id="email" placeholder="Ваша эл. почта"/></div>
+          <div class="form-row" id="error_message" style="display: none;"></div>
+          <div class="form-row">
+            <button>Восстановить</button>
+            <span>или <a onclick="Auth.SwitchForm('form_auth');">Войти</a></span>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="main_footer">
+      <a href="/" onclick="return false;">BIQLE</a>
+      <a href="/legal/" onclick="return true;">Соглашение</a>
+      <a href="/holders/" onclick="return true;">DMCA</a>
+      <a href="/contact/" onclick="return true;">Contact us</a>
+    </div>
+  </div>
+
+  <div class="bg_layer"></div>
+
+<script type="text/javascript">
+$('#q').val('').focus();
+Clouds.start();
+</script>
+
+<script type='text/javascript' src='//pl178987.puhtml.com/40/5a/b9/405ab903e502ae2f948f48418ce50fd1.js'></script>
+    <div style="display:none;">
+<!--LiveInternet counter-->
+<script type="text/javascript">
+<!--
+document.write("<a href='http://www.liveinternet.ru/click' " +
+"target=_blank><img src='//counter.yadro.ru/hit?t26.6;r" +
+escape(document.referrer) + ((typeof (screen) == "undefined") ? "" :
+";s" + screen.width + "*" + screen.height + "*" + (screen.colorDepth ?
+screen.colorDepth : screen.pixelDepth)) + ";u" + escape(document.URL) +
+";" + Math.random() +
+"' alt='' title='LiveInternet: показано число посетителей за" +
+" сегодня' " +
+"border='0' width='88' height='15'><\/a>")
+//-->
+</script>
+<!--/LiveInternet-->
+    </div>
+</body>
+</html>

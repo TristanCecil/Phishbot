@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>钢钢网-找货,找钱,找车一站式服务,钢铁电商第四方平台</title>
+    <meta name="keywords" content="钢钢网,ganggang,ggw,上海钢材网,钢材,钢材大户网电商,钢铁,互联网,互联网+,2016,新三板,四方平台,吉象三保,商票贴现,找货,找钱,找车,融资,钢铁电商." />
+    <meta name="description" content="钢钢网是国内挂牌新三板的知名钢铁电商第四方平台，主要为解决钢铁产业链上信息不透明、交易复杂、融资难、物流乱等问题，而提供四方资源、大象钢票、小象快运、四方资讯等“找货、找钱、找车”一体化的综合服务。" />
+    <link rel="icon" href="/images/icon.ico" type="image/x-icon" />
+    <link href="/Content/css?v=09XSyXJxhd0siFVKgZ2FUE5cOXgttx4Hs27DDEMyjGA1" rel="stylesheet"/>
+
+    
+    
+    
+    <script src="/Scripts/jquery-1.8.3.min.js"></script>
+    <script src="/Scripts/pub_js.js"></script>
+
+    <script type="text/javascript" src="http://sso.ggang.cn/Scripts/common_gg.js">
+    </script>
+    <script src="http://sso.ggang.cn/Scripts/AddCookie.js"></script>
+</head>
+<body>
+
+<script type="text/javascript">
+
+    //判断是否第一次
+    var Xs = 0;
+
+    //判断是否休市
+    var isXs = false;
+    function getmaihuoUrl() {
+
+        if (isXs) {
+            return;
+        }
+
+        $.getJSON("/Home/GetUserSign", {}, function (msg) {
+            if (msg == "-1") {
+                $('.wymaihuo_a').attr('href', $("#hdSSoAddress").val() + "SSoOperater/SSoLoginIndex?url=" + window.location.href);
+            }
+            else if (msg == "0") {
+                $('.wymaihuo_a').attr({ 'href': 'http://user.ggang.cn/userinfo/index', 'data-msg': '1' });
+            }
+            else if (msg == "1") {
+                $('.wymaihuo_a').attr('href', 'http://user.ggang.cn/AddPurchaseOrder/Index');
+            }
+            else {
+                $('.wymaihuo_a').attr({ 'data-msg': '2' });
+            }
+            $(".wymaihuo_a").unbind('click').on('click', maihuoClick);
+        }).always(function () {
+            if (!Xs) {
+                Xs++;
+                bs();
+            }
+        });
+    }
+
+
+    function maihuoClick() {
+        var msg = $(this).data('msg');
+        switch (msg) {
+            case 1:
+                alert('请先去填写公司名称');
+                break;
+            case 2:
+                alert('查询失败');
+                break;
+        }
+    }
+    $(function () {
+
+        //切换公司
+        $('.qhTab').mouseover(function () {
+            $('.cMenu').show();
+        }).mouseout(function () {
+            $('.cMenu').hide();
+        })
+        $('.cMenu').mouseout(function () {
+            $(this).hide();
+        }).mouseover(function () {
+            $(this).show();
+        })
+
+        var menu = '';
+
+
+        //绑定企业列表
+        $.ajax({
+            url: "/Home/CompanyList",
+            success: function (msg) {                
+                var code = '';
+                if (msg.length) {
+                    $.each(msg.split(','), function (i, e) {
+                        $('.cMenu').append($('<li  name=' + e.split(':')[1].split('&')[0] + '  id=' + e.split('&')[1] + '>' + e.split(":")[0] + '</li>'));
+                        if (e.split('&')[1] == code) {
+                            $('.moren').html(e.split(':')[0])
+                        }
+                    })
+                }
+
+
+            }
+        })
+        $('.cMenu ').on('click', 'li', function () {
+            var oCode = $(this).attr('id'),
+                 oMenu = $(this).attr('name');
+            $.ajax({
+                url: "/Home/ChangeCompany",
+                data: { companyCode: oCode, menu: oMenu },
+                success: function (msg) {
+                    window.location.href = "/Home/Index";
+                }
+            })
+        })
+
+
+
+        //初次加载 获取href
+        getmaihuoUrl();
+
+        var navUrl = window.location.href.toLowerCase();
+        if (navUrl.indexOf('bidding') > 0) {
+            $('.zbzx').attr("target", "");
+            $('.zbzx').css('color', '#fff436');
+        }
+        else if (navUrl.indexOf('logistics') > 0) {
+            $('.xxky').attr("target", "");
+            $('.xxky').css('color', '#fff436');
+        }
+        else if (navUrl.indexOf('new') > 0) {
+            $('.newlist').attr("target", "");
+            $('.newlist').css('color', '#fff436');
+        }
+        else if (navUrl.indexOf('copyright') > 0) {
+
+        }
+        else {
+            $('.indexcolor').attr("target", "");
+            $('.indexcolor').css('color', '#fff436');
+        }
+
+        $(".login").click(function () {
+
+            window.location = $("#hdSSoAddress").val() + "SSoOperater/SSoLoginIndex?url=" + window.location.href;
+
+            // $("#form1").submit();
+        })
+        $(".reg").click(function () {
+            window.open($("#hdSSoAddress").val() + "RegisterUser/Index?ReturnUrl=" + window.location.href, "_self");
+            //$("#form2").submit();
+        })
+
+        $('.searchbtn').click(function () {
+            var key = "";
+            if ($('.search').val() != '') {
+                var url = window.location.href.split('?')[0];
+
+
+                key = $('.search').val();
+                var data = {
+                    keyword: escape(key),
+                    url: escape(url)
+                }
+                $.ajax({
+                    type: "post",
+                    data: data,
+                    url: "/Home/InsertSearchLog/",
+                    success: function (msg) {
+                    }
+                })
+
+                var win = window.open('about:blank');
+                setTimeout(function () {
+                    win.location.href = 'http://res.ggang.cn/#key=' + escape(key);
+                }, 0)
+            }
+        })
+
+        $("#btnLogOut").click(function () {
+            if ($.flashCookie) {
+                $.flashCookie.set('token', '');
+                // document.cookie = "token=";
+                // window.location = "/LogOut/Index";
+
+            } else {
+                //document.cookie = "token=";
+                // window.location = "/LogOut/Index";
+            }
+
+            // removeCookie("token");
+
+            $.ajax({
+                type: "post",
+                url: "/LogOut/Index",
+                success: function (msg) {
+                    removeCookie("token");
+                    window.location = window.location;
+                }
+            })
+
+            //  window.location = window.location;
+
+        });
+
+        ///我要买货点击事件
+        $('.wymaihuo').parent('span').mouseenter(function () {
+            var quanxian = $('.wymaihuo').attr('name');           
+            $('.comptype').show();
+            if (quanxian == 0) {
+                $('.comptype p').html('企业管理员无此权限')
+            }
+            if (quanxian == 1) {
+                $('.comptype p').html('财务角色无此权限')
+            }
+            if (quanxian == -1) {
+                var url = 'http://user.ggang.cn/' + 'Companyapply/index'
+                $('.comptype p').html('您还不是企业会员，请先<a href=' + url + ' style="color:#da0707">申请企业账号</a>')
+            }            
+        }).mouseleave(function () {
+            $('.comptype').hide();
+        })
+
+    })
+
+    function bs() {
+        $.getJSON("/Home/GetServerTime", function (msg) {            
+            //16点休市
+            var date = new Date(msg);
+            var m = date.getHours();
+            if ((m >= 9) && (m < 19)) {
+                $('.wymaihuo').removeClass('btn_disabled').removeAttr("disabled");
+                isXs = false;
+                getmaihuoUrl();
+            } else {                
+                isXs = true;
+                $('.wymaihuo_a').attr('href', 'javascript:;').unbind('click')
+                $('.wymaihuo').addClass('btn_disabled').attr("disabled", true)
+            }
+        }).always(function () {
+            setTimeout(bs, 60000);
+        });
+    }
+
+    function urlCode(type, name, material, factory) {
+        var win = window.open('about:blank');
+        setTimeout(function () {
+            win.location.href = 'http://res.ggang.cn/#productType=' + escape(type) + '&productName=' + escape(name) + '&material=' + escape(material) + "&mills=" + escape(factory)
+        }, 0)
+    }
+
+    function urlSpotgoods() {
+        var win = window.open('about:blank');
+        setTimeout(function () {
+            win.location.href = 'http://res.ggang.cn/SteelList/Spotgoods';
+        }, 0)
+    }
+
+    function IndexRecommend(i, id) {
+        if (i == 1) {
+            var win = window.open('about:blank');
+            setTimeout(function () {
+                win.location.href = 'http://res.ggang.cn/#productId=' + id;
+            }, 0)
+        }
+        else {
+            var win = window.open('about:blank');
+            setTimeout(function () {
+                win.location.href = 'http://res.ggang.cn/SteelList/Spotgoods#productId=' + id;
+            }, 0)
+        }
+    }
+   
+
+</script>
+<input type="hidden" id="hdSSoAddress" value="http://sso.ggang.cn/" />
+<div class="top">
+    <div class="w1200" style="overflow:inherit">
+        <div class="left">
+
+                    <span> 欢迎访问全国领先的钢铁综合服务平台！</span>
+                    <div>
+                        <span>请</span>
+                        
+                        <input type="button" value="登录" class="login">
+                        
+                    </div>
+                    <div>
+                        <span>或</span>
+                        
+                        <input type="button" value="注册" id="btnTopReg" class="reg left">
+                        
+
+                    </div>
+
+            
+        </div>
+
+        
+
+        <div class="right relative">
+            <a target="_blank" href="http://user.ggang.cn/">我的钢钢网</a>
+
+            <a style="background:none;" target="_blank" href="http://tb.53kf.com/webCompany.php?arg=10107107&style=1">
+                在线咨询
+            </a>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="w" style="clear:both">
+    <div class="w1200" style="position:relative;overflow:inherit;">
+        <a href="http://www.ggang.cn/"><img src="/images/logo.jpg" class="logo" /></a>
+        <div class="t_c">
+            <div>
+                <input type="text" placeholder="请输入品名、规格、材质、钢厂、公司名称、仓库" class="search">
+                <input type="button" class="searchbtn" value="搜索">
+            </div>
+            <div class="hot">
+                热门搜索：
+                <a href='javascript:' onclick='urlCode("建筑钢材", "螺纹钢", "HRB400,HRB400E", "")'>三级螺纹钢</a>
+                <a href='javascript:' onclick='urlCode("热轧板卷", "普卷", "", "")'>普卷</a>
+                <a href='javascript:' onclick='urlCode("热轧板卷", "低合金卷", "", "")'>低合金卷</a>
+                <a href='javascript:' onclick='urlCode("中厚板", "中厚板", "", "")'>中厚板</a>
+                <a href='javascript:' onclick='urlCode("冷轧涂镀", "冷轧卷", "", "")'>冷轧卷</a>
+                <a href='javascript:' onclick='urlCode("冷轧涂镀", "镀锌卷", "", "")'>镀锌卷</a>
+            </div>
+
+        </div>   
+        <span>
+                    <a class="wymaihuo_a" href="javascript:;" target="_blank"></a>
+                    <input type="button" class="wymaihuo left">
+
+        </span>        
+        <div class="right">
+            <div class="rexian">客服服务热线</div>
+            <div class="red">400-850-6000</div>
+        </div>
+    </div>
+</div>
+
+<div class="nav">
+    <div class="w1200">
+        <ul>
+            <li><a target="_blank" href="http://www.ggang.cn/" class="indexcolor">首页</a></li>
+            <li><a target="_blank" href="http://res.ggang.cn/">钢材库</a></li>
+            <li><a target="_blank" href="http://res.ggang.cn/SteelList/Spotgoods">四方现货</a></li>
+            <li><a target="_blank" href="http://news.ggang.cn/">四方资讯</a></li>
+            <li><a target="_blank" href="http://bill.ggang.cn">大象钢票</a></li>
+            <li><a target="_blank" href="/Copyright/Logistics" class="xxky">小象快运</a></li>
+            <li class="last"><a target="_blank" href="/Bidding" class="zbzx">招标中心</a></li>
+        </ul>
+    </div>
+</div>
+<div class="fixed_right">
+    <ul>
+        <li class="ip">
+            <span></span>
+            <div>400-850-6000</div>
+        </li>
+        <li class="kefu">
+
+            
+            <a style="background:none;" href="javascript:void(0)" onclick="javacrispt: window.open('http://wpa.b.qq.com/cgi/wpa.php?ln=1&key=XzkzODE4MTA4MV8zNjczNDVfNDAwODUwNjAwMF8yXw', '_blank', 'height=544, width=644,toolbar=no,scrollbars=no,menubar=no,status=no');">
+                <span></span>
+            </a>
+        </li>
+        <li class="ydd">
+            <span></span>
+            <div><img src="/images/sj_yc.jpg" /></div>
+        </li>
+        <li class="fwh">
+            <a href="#"><span></span></a>
+            <div><a href="#">返回顶部</a></div>
+        </li>
+    </ul>
+</div>
+
+<script>
+    //$(function () {
+    //    $('.nav li').each(function (i, e) {
+    //        if ($(this).find('a').attr("href") != document.location.href) {
+    //            $(this).find('a').attr("target", "_blank")
+    //        }
+    //    })
+    //})
+
+</script>
+    
+<script src="/Scripts/echarts-line.js"></script>
+
+<script src="/Scripts/index.js"></script>
+
+<script type="text/javascript">
+
+
+    $(function () {
+        var newurl = 'http://news.ggang.cn/News/';
+        //吉祥三保  悬停效果
+        //$('.tcc1 span').click(function () {
+        //    $('.tcc1').fadeOut(600);
+        //})
+        //$('.tcc2 span').click(function () {
+        //    $('.tcc2').fadeOut(600);
+        //})
+        //setTimeout(function () {
+        //    $('.tcc1').fadeOut();
+        //}, 3000)
+        //跳转到汇票站链接地址
+        //$('.btn_l input').attr("href", "http://hpz.ggang.cn")
+        //$("btn_l input").removeAttr("onclick").after("href", "http://hpz.ggang.cn")
+
+        /////8大类
+        $.ajax({
+            url: '/IndexType/BindType ',
+            type: 'get',
+            error: function () {
+                // alert('error');
+            },
+            success: function (data) {
+                var json = data;
+
+                var ImgUrl = json.ImageUrl;
+                var GcUrl = json.GcUrl;
+                var arr = $.parseJSON(json.MessageJson);
+
+                $.each(arr, function (i, e) {
+                    $('<li><div><img src="' + ImgUrl + e.img + '" _src="' + ImgUrl + e.imgHover + '"><a target="_blank" href="' + GcUrl + '#productType=' + escape(e.ProductType) + '"><span>' + e.ProductType + '</span></a><em>' + e.WeightSum + '</em></div></li>').appendTo($('.leftH-nav'))
+                    var oB = $('#bb');
+
+                    //品名
+                    var oDiv = $('<div><ul><li><h4>品名</h4></li></ul></div>').appendTo(oB);
+                    var oUl = oDiv.find('ul');
+                    var oLi = $('<li></li>');
+                    $.each(e.Name, function (m, n) {
+                        $('<a target="_blank" href="' + GcUrl + '#productType=' + escape(e.ProductType) + '&amp;material=&amp;standard=&amp;mills=&amp;productName=' + escape(n) + '" title="' + n + '">' + n + '</a>').appendTo(oLi)
+                    });
+                    oLi.appendTo(oUl);
+
+                    //材质
+                    $('<li><h4>材质</h4></li>').appendTo(oUl);
+                    var oLi = $('<li></li>');
+                    $.each(e.Material, function (m, n) {
+                        $('<a target="_blank" href="' + GcUrl + '#productType=' + escape(e.ProductType) + '&amp;material=' + escape(n) + '&amp;standard=&amp;mills=&amp;productName=" title="' + n + '">' + n + '</a>').appendTo(oLi)
+                    });
+                    oLi.appendTo(oUl);
+
+                    //规格
+                    $('<li><h4>规格</h4></li>').appendTo(oUl);
+                    var oLi = $('<li></li>');
+                    $.each(e.Spec, function (m, n) {
+                        $('<a target="_blank" href="' + GcUrl + '#productType=' + escape(e.ProductType) + '&amp;material=&amp;standard=' + escape(n) + '&amp;mills=&amp;productName=" title="' + n + '">' + n + '</a>').appendTo(oLi)
+                    });
+                    oLi.appendTo(oUl);
+
+                    //钢厂
+                    $('<li><h4>钢厂</h4></li>').appendTo(oUl);
+                    var oLi = $('<li></li>');
+                    $.each(e.Factory, function (m, n) {
+                        $('<a target="_blank" href="' + GcUrl + '#productType=' + escape(e.ProductType) + '&amp;material=&amp;standard=&amp;mills=' + escape(n) + '&amp;productName=" title="' + n + '">' + n + '</a>').appendTo(oLi)
+                    });
+                    oLi.appendTo(oUl);
+                });
+
+
+                //左侧菜单
+                $('.left_menu li').each(function (i, e) {
+                    $(this).mouseover(function () {
+                        $(this).addClass('menu_active').siblings().removeClass('menu_active');
+                        $('.left_menu_content div').css("display", "none");
+                        $('.left_menu_content div').eq(i).css("display", "block");
+                        var oImg = $(this).find('img');
+                        var oTemp = oImg.attr('_src');
+                        oImg.attr({ '_src': oImg.attr('src'), 'src': oTemp });
+                    })
+                    $(this).mouseout(function () {
+                        var oImg = $(this).find('img');
+                        var oTemp = oImg.attr('_src');
+                        oImg.attr({ '_src': oImg.attr('src'), 'src': oTemp });
+                    })
+                })
+                $('.left_menus').mouseleave(function () {
+                    $('.left_menu_content div').css("display", "none");
+                    $('.left_menu li').removeClass("menu_active");
+                })
+
+            }
+        });
+
+        ///首页申请商票贷按钮事件
+        $('.sqspd').parent('div').mouseenter(function () {
+            //var billUrl = 'http://bill.ggang.cn/' + 'BusinessBill/AddBillInfo';
+            var userMenu = $("#userMenu").val();
+            if (userMenu == '1') {
+                //window.open(billUrl);
+            }
+            else if (userMenu == '0') {
+                var msg = "企业管理员无此操作权限";
+                $('.spaccountType').html(msg);
+                $('.spaccountType').css("display", "block");
+            }
+            else if (userMenu == '2') {
+                var msg = "业务角色无此权限";
+                $('.spaccountType').html(msg);
+                //$('.accountType').show(100);
+                $('.spaccountType').css("display", "block");
+            }
+            else {
+                var url = 'http://user.ggang.cn/' + 'Companyapply/index'
+                var msg = "您还不是企业会员，请先<br/><a href=" + url + " style='color:#da0707'>  申请企业账号>> </a>";
+                $('.spaccountType').html(msg);
+                $('.spaccountType').css("display", "block");
+            }            
+        }).mouseleave(function () {
+            $('.spaccountType').hide();
+        })
+        $('.sqspd').click(function () {
+            var billUrl = 'http://bill.ggang.cn/' + 'BusinessBill/AddBillInfo';
+            var userMenu = $("#userMenu").val();
+            if (userMenu == '1') {
+                window.open(billUrl);
+            }
+        });
+
+
+        ///首页申请商票贷按钮事件
+        $('.liji').parent('div').mouseenter(function () {
+            var userMenu = $("#userMenu").val();
+            if (userMenu == '1') {
+                //window.open(billUrl);
+            }
+            else if (userMenu == '0') {
+                var msg = "企业管理员无此操作权限";
+                $('.sqaccountType').html(msg);                
+                $('.sqaccountType').css("display", "block");                
+            }
+            else if (userMenu == '2') {
+                var msg = "业务角色无此权限";
+                $('.sqaccountType').html(msg);
+                //$('.accountType').show(100);                
+                $('.sqaccountType').css("display", "block");                
+            }
+            else {
+                var url = 'http://user.ggang.cn/' + 'Companyapply/index'
+                var msg = "您还不是企业会员，请先<br/><a href=" + url + " style='color:#da0707'>  申请企业账号>> </a>";
+                $('.sqaccountType').html(msg);                
+                $('.sqaccountType').css("display", "block");                
+            }
+        }).mouseleave(function () {
+            $('.sqaccountType').hide();
+        })
+
+        $('.liji').click(function () {
+            $('.sqspd').click();
+        });
+ 
+
+        ////钢钢快报
+        $.ajax({
+            url: '/IndexType/BindNews?top=5',
+            type: 'get',
+            error: function () {
+                //alert('error');
+            },
+            success: function (data) {
+                var json = $.parseJSON(data);
+                $.each(data, function (i, e) {
+                    $('.ggkb ul').append($(' <li><a href="' + newurl + 'Newsitem/' + e.Id + '" target="_blank">' + e.Title.substring(0, 19) + '</a></li>'));
+                })
+                for (var i = 0; i < $('.ggkb li').length; i++) {
+                    if (i > 4) {
+                        $('.ggkb li').eq(i).css("display", "none")
+                    }
+                }
+            }
+        });
+    })
+    function openpopup() {
+        $('.tcc1').show();
+        $('.tcc2').show();
+    }
+
+    function getCookie(Name) {
+        var cookieName = encodeURIComponent(Name) + "=",  //注cookie的名和值都是经过URL编码的,所有这里要用函数编码
+            returnvalue = "",
+            cookieStart = document.cookie.indexOf(cookieName),
+            cookieEnd = null;
+        if (cookieStart > -1) {
+            cookieEnd = document.cookie.indexOf(";", cookieStart);
+            if (cookieEnd == -1) {
+                cookieEnd = document.cookie.length;
+            }
+            returnvalue = decodeURIComponent(document.cookie.substring(cookieStart + cookieName.length, cookieEnd));  //对应的解码
+        }
+        return returnvalue;
+    }
+    window.onload = function () {
+        if (getCookie("poppped") == "") {
+            openpopup();
+            document.cookie = "poppped=no;"
+        }
+    }
+
+</script>
+
+<div class="banner_content">
+    <ul class="banner" id="banner1"></ul>
+
+    <ul class="icon" id="icon1"></ul>
+
+    <div class=" banner_menu">
+
+        <div class="left_menus">
+            <div class="left_menu" id="aa">
+                <ul class="leftH-nav"></ul>
+            </div>
+            <div class="left_menu_content" id="bb">
+            </div>
+        </div>
+
+        <div class="right_info">
+            <h4>今天是<span class="year"></span>年<span class="month"></span>月<span class="date"></span>日</h4>
+
+                    <div class="login_info">
+                        <div class="overflow">
+                            <h6 class="left wdl"></h6>
+                            <span>您好，<em>欢迎来到钢钢网！</em></span>
+                        </div>
+                        <div class="buttonbtn overflow">
+                            <form id="form1" action='http://sso.ggang.cn/SSoOperater/SSoLoginIndex?url=http://ggang.cn/' target="_blank" class="left">
+                                <input type="button" value="登录" class="login">
+                            </form>
+                            <i class="left"></i>
+                            <form id="form3" action='http://sso.ggang.cn/RegisterUser/Index?ReturnUrl=http://www.ggang.cn/' target="_blank" class="left">
+                                <input type="button" value="注册" id="btnReg" class="reg left">
+                            </form>
+                        </div>
+                    </div>
+
+
+            <div class="ggkb">
+                <div class="title">
+                    <h6 class="ggkb_title"></h6>
+                    
+                    <a href="../newskuaibao/Index/64" target="_blank">更多></a>
+                </div>
+
+                <ul></ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="w1200 jrgj " id="SteelPrice">
+    <div class=" jrgj_title">
+        <img src="/images/jrgj_title.jpg" />
+    </div>
+
+
+    <div class="w234">
+        <ul class="banner" id="xiantu">
+            <li><div id="h1"></div></li>
+            <li><div id="h2"></div></li>
+            <li><div id="h3"></div></li>
+            <li><div id="h4"></div></li>
+        </ul>
+        <img src="/images/zanwu.png" style="display:none" />
+    </div>
+
+</div>
+
+<div class="w1200 float_1 float ">
+    <div class="title_tb title_tb1">
+        <h2 class="f1"></h2>
+
+        <div class="left">
+            <a href='javascript:' onclick='urlCode("冷轧涂镀", "镀锌卷", "","")'>镀锌卷</a>
+            <a href='javascript:' onclick='urlCode("冷轧涂镀", "冷轧卷", "","")'>冷轧卷</a>
+            <a href='javascript:' onclick='urlCode("中厚板", "中厚板", "","")'>中厚板</a>
+            <a href='javascript:' onclick='urlCode("热轧板卷", "低合金卷", "","")'>低合金卷</a>
+            <a href='javascript:' onclick='urlCode("热轧板卷", "普卷", "","")'>普卷</a>
+            <a href='javascript:' onclick='urlCode("建材类", "螺纹钢", "HRB400,HRB400E", "")'>三级螺纹钢</a>
+        </div>
+        <div class=" rightdiv">
+            <a href="http://res.ggang.cn/" target="_blank" class="more">更多</a>
+            
+            <img src="/images/1F-1.jpg" alt="精品钢材，货真价实" title="精品钢材，货真价实" />
+        </div>
+    </div>
+
+    <div class="border1">
+        <div class="left">
+            <ul>
+                <li><a href='javascript:' onclick='urlCode("", "", "","本钢")'><img src="/images/m_gc_1.png" alt="本钢" title="本钢"></a></li>
+                <li><a href='javascript:' onclick='urlCode("", "", "", "宝钢")'><img src="/images/m_gc_2.png" alt="宝钢" title="宝钢"></a></li>
+                <li><a href='javascript:' onclick='urlCode("", "", "", "鞍钢")'><img src="/images/m_gc_3.png" alt="鞍钢" title="鞍钢"></a></li>
+                <li><a href='javascript:' onclick='urlCode("", "", "","马钢")'><img src="/images/m_gc_4.png" alt="马钢" title="马钢"></a></li>
+                <li><a href='javascript:' onclick='urlCode("", "", "","日照")'><img src="/images/m_gc_5.png" alt="日照" title="日照"></a></li>
+                <li><a href='javascript:' onclick='urlCode("", "", "","安钢")'><img src="/images/m_gc_6.png" alt="安钢" title="安钢"></a></li>
+                <li><a href='javascript:' onclick='urlCode("", "", "","武钢")'><img src="/images/m_gc_7.png" alt="武钢" title="武钢"></a></li>
+                <li><a href='javascript:' onclick='urlCode("", "", "","唐钢")'><img src="/images/m_gc_8.png" alt="唐钢" title="唐钢"></a></li>
+                <li><a href='javascript:' onclick='urlCode("", "", "","首钢")'><img src="/images/m_gc_9.png" alt="首钢" title="首钢"></a></li>
+                <li><a href='javascript:' onclick='urlCode("", "", "","梅钢")'><img src="/images/m_gc_10.png" alt="梅刚" title="梅刚"></a></li>
+            </ul>
+        </div>
+
+        <table class="left ml10">
+            <thead>
+                <tr>
+                    <th>品名</th>
+                    <th> 规格</th>
+                    <th> 材质</th>
+                    <th> 钢厂</th>
+                    <th> 数量（吨）</th>
+                    <th> 价格(元/吨)</th>
+                </tr>
+            </thead>
+            <tbody><tr style="cursor:pointer;" onclick='IndexRecommend(2,27869587)'><td>船板                                                          </td><td>14*2000*8000                                      </td><td>CCSB                                                        </td><td>湘钢             </td><td>131.88</td><td class="red">2660.00</td></tr><tr style="cursor:pointer;" onclick='IndexRecommend(2,27869594)'><td>船板                                                          </td><td>18*2000*10000                                     </td><td>CCSB                                                        </td><td>济钢             </td><td>36.18</td><td class="red">2660.00</td></tr><tr style="cursor:pointer;" onclick='IndexRecommend(2,27869603)'><td>船板                                                          </td><td>8*2000*10000                                      </td><td>CCSAH36                                                     </td><td>南钢             </td><td>37.68</td><td class="red">3400.00</td></tr><tr style="cursor:pointer;" onclick='IndexRecommend(2,27869614)'><td>船板                                                          </td><td>12*2500*10000                                     </td><td>CCSAH36                                                     </td><td>唐钢             </td><td>21.10</td><td class="red">3450.00</td></tr><tr style="cursor:pointer;" onclick='IndexRecommend(2,27869612)'><td>船板                                                          </td><td>50*2500*12000                                     </td><td>CCSAH36                                                     </td><td>济钢             </td><td>8.79</td><td class="red">3650.00</td></tr><tr style="cursor:pointer;" onclick='IndexRecommend(2,27869619)'><td>船板                                                          </td><td>30*2500*10000                                     </td><td>CCSAH36                                                     </td><td>唐钢             </td><td>6.28</td><td class="red">3400.00</td></tr></tbody>
+        </table>
+
+        <div class="right">
+            <h4 class="h48"></h4>
+             <div class="zongziyuan"> <p>总资源：<em>万吨</em></p><span class="red">3552.19</span></div> <div  class="zongziyuan2"><p>总资源：<em>条</em></p><span class="red">69897 </span></div>
+            <input type="button" value="进入四方现货>" style=" cursor:pointer;" class="sifang" onclick="urlSpotgoods()">
+        </div>
+    </div>
+
+</div>
+
+
+<div class="w1200 float_2 float ">
+
+    <div class="title_tb title_tb2">
+        <h2 class="f2"></h2>
+        <div class=" rightdiv">
+            <a href="http://bill.ggang.cn/" target="_blank" class="more">更多</a>
+            
+            <img src="/images/2F_1.jpg" alt="票据贴现，高效便捷" title="票据贴现，高效便捷">
+        </div>
+    </div>
+
+    <div class="border1">
+
+        <div class=" banner_relative">
+            <ul class="banner" id="banner3">
+                <li>  <div class="one_info"><a class='a2'></a><a class='a3'></a> <div>武钢集团国际经济贸易有限公司</div><div class="one_info1"><span><b>期望年化贴现率</b><em>13.00</em><font>%</font></span> <span><b>票面金额</b><i>763.00</i>万元</span> <span><b>剩余天数</b><i>51</i>天</span> <span><b>汇票到期日</b><i>2016.09.25</i></span> <span class="btn_l"><input type="button" value="已有报价" style="cursor:pointer;" onclick="window.open('http://hpz.ggang.cn/');" class="btn"></span></div></div> <div class="one_info"><a class='a2'></a><a class='a3'></a> <div>江苏南通二建集团有限公司</div><div class="one_info1"><span><b>期望年化贴现率</b><em>12.00</em><font>%</font></span> <span><b>票面金额</b><i>20000.00</i>万元</span> <span><b>剩余天数</b><i>90</i>天</span> <span><b>汇票到期日</b><i>2016.11.03</i></span> <span class="btn_l"><input type="button" value="已有报价" style="cursor:pointer;" onclick="window.open('http://hpz.ggang.cn/');" class="btn"></span></div></div> <div class="one_info"><a class='a2'></a><a class='a3'></a> <div>江苏省建工集团有限公司</div><div class="one_info1"><span><b>期望年化贴现率</b><em>14.00</em><font>%</font></span> <span><b>票面金额</b><i>10000.00</i>万元</span> <span><b>剩余天数</b><i>77</i>天</span> <span><b>汇票到期日</b><i>2016.10.21</i></span> <span class="btn_l"><input type="button" value="已有报价" style="cursor:pointer;" onclick="window.open('http://hpz.ggang.cn/');" class="btn"></span></div></div></li>
+                            </ul>
+
+            <ul class="icon">
+
+                            </ul>
+        </div>
+
+
+        <div class="right relative">
+            <h4 class="sq-title"> </h4>
+            <i class="sq_img"></i>
+            <div class="zongziyuan2">
+                <p>总申请：<em>单</em></p>
+                <p><span class="red">1267</span></p>
+            </div>
+            
+            <div style="padding-left:0px;">
+                <input type="button" style="cursor:pointer;" value="立即申请" class="liji">
+                <div class="accountType sqaccountType" style="top:200px;text-align:center;font-size:12px;">
+                    <p></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="w1200 float_3 float ">
+
+    <div class="title_tb title_tb3">
+        <h2 class="f3"></h2>
+        <div class=" rightdiv">
+            <a href="http://www.ggang.cn/logistics.html" target="_blank" class="more">更多</a>
+            
+            <img src="/images/3F-1.jpg" alt="车货配对，安全可靠" title="车货配对，安全可靠">
+        </div>
+    </div>
+    <div class="border1">
+        <div class="m_top">
+            <ul class="ul_th">
+                <li>
+                    <span class="col">路线</span>
+                    <span>货物类型</span>
+                    <span>重量（吨）</span>
+                    <span>委托时间</span>
+                    <span>发货时间</span>
+                    <span>状态</span>
+                </li>
+            </ul>
+            <ul class="ul_td"></ul>
+
+        </div>
+
+
+
+        <div class="right">
+            <h4 class="f_3_right"></h4>
+            <i class="ky_img"></i>
+            <input type="button" value="发布货源" class="fbzy" onclick="window.open('/Copyright/Logistics')">
+        </div>
+    </div>
+</div>
+
+
+
+<div class="w1200 float_4 float ">
+    <div class="title_tb title_tb4">
+        <h2 class="hsifang"></h2>
+
+        <div class=" rightdiv">
+            <a class="more" target="_blank" href="http://news.ggang.cn/">更多</a>
+            
+            <img src="/images/4F-2.jpg" alt="新闻动态，尽在掌握" title="新闻动态，尽在掌握">
+        </div>
+    </div>
+    <div class="border1">
+        <div class="left">
+            <div class="w460  w390">
+                <div class="hydt">
+                    <h4 class="hydt_h4"></h4>
+                    <tbody><div class='toutiao'><a  onclick="window.open('http://news.ggang.cn/News/Newsitem/106656')">8月3日钢钢网上海地区工角槽钢行情报价</a><span> 
+ 钢钢网【www.ggang.cn 】整理报道，8月3日上海地区工角槽钢价格行情平稳，详情如下： ...<a onclick="window.open('http://news.ggang.cn/News/Newsitem/106656')">[详细]</a></span></div><ul><li><a onclick="window.open('http://news.ggang.cn/News/Newsitem/106655')">8月3日钢钢网上海地区H型钢行情报价</a><span>[08-03]</span></li></ul><ul><li><a onclick="window.open('http://news.ggang.cn/News/Newsitem/106654')">8月3日钢钢网上海地区建材行情报价</a><span>[08-03]</span></li></ul><ul><li><a onclick="window.open('http://news.ggang.cn/News/Newsitem/106653')">8月3日钢钢网上海地区热轧卷板行情报价</a><span>[08-03]</span></li></ul><ul><li><a onclick="window.open('http://news.ggang.cn/News/Newsitem/106651')">8月1日中天钢铁出台8月上旬建材调价信息</a><span>[08-02]</span></li></ul>
+                </div>
+
+
+
+                <h4 class="xy"></h4>
+                <div class='toutiao'><a onclick="window.open('http://news.ggang.cn/News/Newsitem/106652')">8月1日申特型钢出台8月上旬建材调价信息</a><span> 
+ 钢钢网【www.ggang.cn】整理报道：8月1日，申特型钢针对建材产品出台8月上旬调价信息，...<a onclick="window.open('http://news.ggang.cn/News/Newsitem/106652')">[详细]</a></span></div><ul><li><a onclick="window.open('http://news.ggang.cn/News/Newsitem/106650')">8月1日永钢出台8月上旬建材调价信息</a><span>[08-02]</span></li></ul><ul><li><a onclick="window.open('http://news.ggang.cn/News/Newsitem/106649')">8月1日涟钢出台8月上旬板材调价信息</a><span>[08-02]</span></li></ul><ul><li><a onclick="window.open('http://news.ggang.cn/News/Newsitem/106648')">8月1日韶钢出台8月上旬建材调价信息</a><span>[08-02]</span></li></ul><ul><li><a onclick="window.open('http://news.ggang.cn/News/Newsitem/106643')">8月1日沙钢出台8月上旬建材调价信息</a><span>[08-01]</span></li></ul>
+            </div>
+        </div>
+
+
+
+        <div class="left">
+            <div class="w460 banner_relative b2">
+
+                <ul class="banner" id="banner2">
+
+                    <li><a onclick="window.open('http://news.ggang.cn/News/Newsitem/106573')")"><img src='http://images.ggang.cn/ImagesForNews/a5bbe67a-b81b-4f14-8fae-21612f8801fb.jpg' title='菲南海仲裁案裁决非法无效 中方不接受不承认' alt='菲南海仲裁案裁决非法无效 中方不接受不承认'></a><span></span><i>菲南海仲裁案裁决非法无效 中方不接受不承认</i></li><li><a onclick="window.open('http://news.ggang.cn/News/Newsitem/106259')")"><img src='http://images.ggang.cn/ImagesForNews/bff10693-95b1-4dd9-aad0-f65eb00df282.jpg' title='中国经济首季迎“开门红”：七项指标支撑经济向好' alt='中国经济首季迎“开门红”：七项指标支撑经济向好'></a><span></span><i>中国经济首季迎“开门红”：七项指标支撑经济向好</i></li><li><a onclick="window.open('http://news.ggang.cn/News/Newsitem/106206')")"><img src='http://images.ggang.cn/ImagesForNews/879fa1ee-3c05-46da-ad1d-a3304d366a9b.jpg' title='发改委：今年破产倒闭企业或增多 一线房价短期将大涨' alt='发改委：今年破产倒闭企业或增多 一线房价短期将大涨'></a><span></span><i>发改委：今年破产倒闭企业或增多 一线房价短期将大涨</i></li>
+                </ul>
+
+                <ul class="icon">
+                    
+                </ul>
+            </div>
+            <div class="w460 hgjj">
+
+                <h4 class="hgjj_titile"></h4>
+                <div class='toutiao'><div class='hgtoutiao'><a onclick="window.open('http://news.ggang.cn/News/Newsitem/106569')"><img class='left imgtoutiao' src='http://images.ggang.cn/ImagesForNews/3fc33d40-4ee9-471e-bdef-d246830b6cf5.jpg' title='29部委联合签署备忘录  A级信用纳税人获41项联合措施激励' alt='29部委联合签署备忘录  A级信用纳税人获41项联合措施激励'></a><div class='left toutiaoinfo'><a onclick="window.open('http://news.ggang.cn/News/Newsitem/106569')">29部委联合签署备忘录  A级信用纳税人获41项联合措施激励</a><span> 
+ 12日国家发改委宣布，由发改委、国税总局等29个部门联合签署的《...<a onclick="window.open('http://news.ggang.cn/News/Newsitem/106569')"></a></span></div></div></div><ul><li><a onclick="window.open('http://news.ggang.cn/News/Newsitem/106568')">钢企二季度业绩亮眼  亏损企业打出翻身仗</a><span>[07-13]</span></li></ul><ul><li><a onclick="window.open('http://news.ggang.cn/News/Newsitem/106549')">中央明确企业化解钢铁煤炭过剩产能工作目标</a><span>[07-11]</span></li></ul></div>
+            </div>
+
+
+            <div class="left w260 ">
+
+                <h4 class="xwkx_title"></h4>
+                <ul>
+
+                    <li><span></span><a onclick="window.open('http://news.ggang.cn/News/Newsitem/106250')">股市快讯：两市低位震荡 钢铁板块</a></li><li><span></span><a onclick="window.open('http://news.ggang.cn/News/Newsitem/106231')">起底中晋系：“独特”合伙人模式疯</a></li><li><span></span><a onclick="window.open('http://news.ggang.cn/News/Newsitem/106230')">股市快讯：沪指震荡翻绿 仓储物流</a></li><li><span></span><a onclick="window.open('http://news.ggang.cn/News/Newsitem/106219')">股市快讯：沪指低开0.44% 风</a></li><li><span></span><a onclick="window.open('http://news.ggang.cn/News/Newsitem/106208')">股市快讯：沪指震荡翻红 猪肉概念</a></li><li><span></span><a onclick="window.open('http://news.ggang.cn/News/Newsitem/106205')">1.7万罐冒牌乳粉入市场 官方已</a></li><li><span></span><a onclick="window.open('http://news.ggang.cn/News/Newsitem/106198')">3月百城房价均价涨幅明显扩大 已</a></li><li><span></span><a onclick="window.open('http://news.ggang.cn/News/Newsitem/106193')">股市快讯：沪指低开0.23% 博</a></li><li><span></span><a onclick="window.open('http://news.ggang.cn/News/Newsitem/106188')">今日起诸多新政落地：驾照异地申请</a></li><li><span></span><a onclick="window.open('http://news.ggang.cn/News/Newsitem/106179')">中石化：油价到60美元方可全部盈</a></li><li><span></span><a onclick="window.open('http://news.ggang.cn/News/Newsitem/106178')">股市快讯：两市震荡整理 送转潜力</a></li><li><span></span><a onclick="window.open('http://news.ggang.cn/News/Newsitem/106174')">温州13年炒房高手被套：炒房已到</a></li>
+
+                </ul>
+            </div>
+
+        </div>
+    </div>
+
+
+
+
+
+
+</div>
+
+<div class="w1200 float_5 float ">
+    <div class="title_tb title_tb5">
+        <h2 class="h5f"></h2>
+
+        <div class=" rightdiv">
+
+            <a class="more" target="_blank" href="/EnterpriseInfoIndex">更多</a>
+            
+            <img src="/images/5F-2.jpg" alt="企业黄页，查找简易" title="企业黄页，查找简易">
+        </div>
+    </div>
+
+    <div class="border1">
+        <div class="m_info">
+            <div class="m_cont_info">
+
+                <span>收录1464家</span>
+            </div>
+
+            <img src="/images/5F_img2.jpg">
+
+            <ul>
+                <tbody><li><a onclick="window.open('/EnterpriseInfo/Enterpriseinfodateil?id=38')">北京欣龙华成精铸有限公司</a></li><li><a onclick="window.open('/EnterpriseInfo/Enterpriseinfodateil?id=132')">天津源泰德润钢管制造集团有限公司</a></li><li><a onclick="window.open('/EnterpriseInfo/Enterpriseinfodateil?id=40')"> 建龙钢铁控股有限公司</a></li><li><a onclick="window.open('/EnterpriseInfo/Enterpriseinfodateil?id=35')"> 北京红冶钢厂 </a></li><li><a onclick="window.open('/EnterpriseInfo/Enterpriseinfodateil?id=32')"> 首钢集团</a></li><li><a onclick="window.open('/EnterpriseInfo/Enterpriseinfodateil?id=1449')"> 新疆金特钢铁股份有限公司</a></li><li><a onclick="window.open('/EnterpriseInfo/Enterpriseinfodateil?id=1466')"> 西宁特殊钢股份有限公司</a></li><li><a onclick="window.open('/EnterpriseInfo/Enterpriseinfodateil?id=1515')"> 福建三钢闽光股份有限公司</a></li><li><a onclick="window.open('/EnterpriseInfo/Enterpriseinfodateil?id=33')">北京首钢股份有限公司</a></li><li><a onclick="window.open('/EnterpriseInfo/Enterpriseinfodateil?id=133')"> 天津轧一冷轧薄板有限公司</a></li><li><a onclick="window.open('/EnterpriseInfo/Enterpriseinfodateil?id=1377')"> 佛山津西金兰冷轧板有限公司 </a></li><li><a onclick="window.open('/EnterpriseInfo/Enterpriseinfodateil?id=1491')">春源钢铁</a></li></tbody>
+            </ul>
+        </div>
+
+
+
+        <div class="m_info">
+            <div class="m_cont_info">
+
+                <span>收录33家</span>
+
+            </div>
+            <img src="/images/5F_img.jpg">
+            <ul>
+                <li><a onclick="window.open('/EnterpriseInfo/Enterpriseinfodateil?id=10012')">常熟港钢材市场 </a></li><li><a onclick="window.open('/EnterpriseInfo/Enterpriseinfodateil?id=10025')">南京江北钢材城 </a></li><li><a onclick="window.open('/EnterpriseInfo/Enterpriseinfodateil?id=10024')">连云港国际钢材城 </a></li><li><a onclick="window.open('/EnterpriseInfo/Enterpriseinfodateil?id=10018')">江阴中闽钢材市场</a></li><li><a onclick="window.open('/EnterpriseInfo/Enterpriseinfodateil?id=10027')">南京龙建钢材市场 </a></li><li><a onclick="window.open('/EnterpriseInfo/Enterpriseinfodateil?id=10028')">南通市金三角钢贸城 </a></li><li><a onclick="window.open('/EnterpriseInfo/Enterpriseinfodateil?id=10023')">连云港伊凯钢材市场</a></li><li><a onclick="window.open('/EnterpriseInfo/Enterpriseinfodateil?id=10019')">江阴市金属材料市场</a></li><li><a onclick="window.open('/EnterpriseInfo/Enterpriseinfodateil?id=10020')">江阴华鑫钢材市场 </a></li><li><a onclick="window.open('/EnterpriseInfo/Enterpriseinfodateil?id=10026')">南京银通钢材市场 </a></li><li><a onclick="window.open('/EnterpriseInfo/Enterpriseinfodateil?id=10017')">江苏鑫品钢材市场</a></li><li><a onclick="window.open('/EnterpriseInfo/Enterpriseinfodateil?id=10021')">江苏长阳金属材料市场 </a></li></tbody>
+            </ul>
+        </div>
+
+    </div>
+</div>
+
+
+<div class="youqing w1200">
+    <h4>友情链接</h4>
+    <ul>
+        <li><a target="_blank" href="http://www.csteelnews.com/">中国钢铁新闻网</a></li>
+        <li><a target="_blank" href="http://www.100steel.net/">壹佰钢铁网</a></li>
+        <li><a target="_blank" href="http://www.banksteel.com/">钢银</a></li>
+        <li><a target="_blank" href="http://www.youtaidu.com/">钛度</a></li>
+        <li><a target="_blank" href="http://www.holdsteel.com/">荷钢网</a></li>
+        <li><a target="_blank" href="http://www.hmeonline.cn/">华诚创智</a></li>
+        <li><a target="_blank" href="https://www.tenpay.com/v2/">财付通</a></li>
+        <li><a target="_blank" href="http://www.gt123.cn/">钢铁123</a></li>
+        <li><a target="_blank" href="http://www.naking.cn/">纳金商城</a></li>
+        <li><a target="_blank" href="http://www.ycb.com/">承兑汇票</a></li>
+    </ul>
+
+</div>
+<input id="hdImgUrl" type="hidden" value='http://images.ggang.cn/Resource/advertisingimages/' />
+
+<ul class="left-fixed">
+    <li>钢材</li>
+    <li>钢票</li>
+    <li>物流</li>
+    <li>资讯</li>
+    <li>目录</li>
+</ul>
+
+
+
+
+
+<div class="footer">
+    <ul class="w1200"><li class="xt"><ul class="foot_li zhinan"><li> <h4>操作指南</h4></li><li><a class="c2" title="如何找货？" href="/HelpInfo/Index?id=5" target="_blank">如何找货？</a></li><li><a class="c2" title="如何注册会员？" href="/HelpInfo/Index?id=6" target="_blank">如何注册会员？</a></li><li><a class="c2" title="如何上传现货信息？" href="/HelpInfo/Index?id=7" target="_blank">如何上传现货信息？</a></li><li><a class="c2" title="如何下单？" href="/HelpInfo/Index?id=8" target="_blank">如何下单？</a></li><li><a class="c2" title="如何询价？" href="/HelpInfo/Index?id=11" target="_blank">如何询价？</a></li><li><a class="c2" title="如何报价？" href="/HelpInfo/Index?id=12" target="_blank">如何报价？</a></li><li><a class="c2" title="如何使用商票贷？" href="/HelpInfo/Index?id=22" target="_blank">如何使用商票贷？</a></li><li><a class="c2" title="如何使用小象物流？" href="/HelpInfo/Index?id=23" target="_blank">如何使用小象物流？</a></li></ul></li><li class="xt"><ul class="foot_li wenti"><li> <h4>常见问题</h4></li><li><a class="c2" title="如何找回密码" href="/HelpInfo/Index?id=13" target="_blank">如何找回密码</a></li><li><a class="c2" title="不能查看招标信息？" href="/HelpInfo/Index?id=14" target="_blank">不能查看招标信息？</a></li><li><a class="c2" title="如何关注官方微信？" href="/HelpInfo/Index?id=16" target="_blank">如何关注官方微信？</a></li></ul></li><li class="xt"><ul class="foot_li baozhang"><li> <h4>权益保障</h4></li><li><a class="c2" title="服务协议" href="/HelpInfo/Index?id=17" target="_blank">服务协议</a></li><li><a class="c2" title="权利声明" href="/HelpInfo/Index?id=18" target="_blank">权利声明</a></li><li><a class="c2" title="免责声明" href="/HelpInfo/Index?id=19" target="_blank">免责声明</a></li><li><a class="c2" title="隐私政策" href="/HelpInfo/Index?id=20" target="_blank">隐私政策</a></li><li><a class="c2" title="知识产权声明" href="/HelpInfo/Index?id=21" target="_blank">知识产权声明</a></li></ul></li><li class="xt xt2"><ul class="foot_li guanyu"><li> <h4>关于我们</h4></li><li><a class="c2" title="钢钢网简介" href="/HelpInfo/Index?id=1" target="_blank">钢钢网简介</a></li><li><a class="c2" title="联系我们" href="/HelpInfo/Index?id=3" target="_blank">联系我们</a></li><li><a class="c2" title="钢钢网大事记" href="http://www.ggang.cn/Copyright/Bigevent" target="_blank">钢钢网大事记</a></li><li><a class="c2" title="调查问卷" href="http://www.sojump.com/jq/5929132.aspx" target="_blank">调查问卷</a></li><li><a class="c2" title="网站地图" href="http://www.ggang.cn/Copyright/sitemap" target="_blank">网站地图</a></li></ul></li><li class="last_li"><img src="/images/wx.png"></li></ul>
+    <div class=" l_complaydibu">
+        <div class="w1200">
+            <ul>
+                <li><a href="/Copyright/Software" target="_blank"><img src="/images/ruanjianzhuzuoquan.jpg"></a></li>
+                <li><a href="/Copyright/HiTech" target="_blank"><img src="/images/gaoxinkeji.jpg"></a></li>
+                <li><a href="http://www.anquan.org/authenticate/cert/?site=www.ggang.cn&at=realname" target="_blank"><img src="/images/anquan.jpg"></a></li>
+                <li><a href="http://www.cyberpolice.cn/wfjb/" target="_blank"><img src="/images/jubao.jpg"></a></li>
+                <li><a href="https://ss.knet.cn/verifyseal.dll?sn=e14110331011255768ruq8000000&ct=df&a=1&pa=0.1910406419404661" target="_blank"><img src="/images/cnnic.png"></a></li>
+                <li><a href="https://www.sgs.gov.cn/lz/licenseLink.do?method=licenceView&entyId=dov71zgzilhvn4inh27pfqd6h0hvvq6tch" target="_blank"><img src="/images/shgs.jpg"></a></li>
+            </ul>
+            <p style=" margin-top:20px;overflow:hidden;">
+                Copyright 2011-2015 钢钢网电子商务（上海）股份有限公司 www.ggang.cn All Rights Reserved <a href="http://www.miitbeian.gov.cn" target="_blank" style="color: #666666;">沪ICP备 11003087</a> <a href="/Copyright/ICPlicense" target="_blank" style="color: #006aa8;">ICP许可证</a>
+            </p>
+        </div>
+    </div>
+</div>
+<div style="display: none;">
+    <script type="text/javascript">
+            var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://"); document.write(unescape("%3Cspan id='cnzz_stat_icon_1254747879'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s11.cnzz.com/z_stat.php%3Fid%3D1254747879' type='text/javascript'%3E%3C/script%3E"));
+
+    </script>
+    <script>
+            var _hmt = _hmt || [];
+            (function () {
+                var hm = document.createElement("script");
+                hm.src = "//hm.baidu.com/hm.js?f682135cf75d77a6fd1d8e7e482fa000";
+                var s = document.getElementsByTagName("script")[0];
+                s.parentNode.insertBefore(hm, s);
+            })();
+    </script>
+</div>  
+
+</body>
+
+
+</html>

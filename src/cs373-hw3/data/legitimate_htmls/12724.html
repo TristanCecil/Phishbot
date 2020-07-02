@@ -1,0 +1,998 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html class="no-js" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us"/>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9" />
+<link rel="SHORTCUT ICON" href="/favicon.ico"/>
+
+<meta content="width=device-width, initial-scale=1.0" name="viewport" />
+<title>SQL Server Tips, Techniques and Articles</title>
+<meta name="description" content="Valuable SQL Server resources to solve real world problems for DBAs, Developers and BI Pros - all for free. From SQL Server tips to videos, we can help you."/>
+<link rel="canonical" href="https://www.mssqltips.com/" />
+
+
+<link href="https://plus.google.com/113747121987215376460/" rel="publisher" />
+
+
+<link href="https://www.mssqltips.com/css/foundation2.css" rel="stylesheet" />
+<link href="https://www.mssqltips.com/css/app.css" rel="stylesheet" />
+<script src="https://www.mssqltips.com/js/vendor/modernizr.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+
+
+
+
+<script type='text/javascript'>
+var googletag = googletag || {};
+googletag.cmd = googletag.cmd || [];
+(function() {
+var gads = document.createElement('script');
+gads.async = true;
+gads.type = 'text/javascript';
+var useSSL = 'https:' == document.location.protocol;
+gads.src = (useSSL ? 'https:' : 'http:') +
+'//www.googletagservices.com/tag/js/gpt.js';
+var node = document.getElementsByTagName('script')[0];
+node.parentNode.insertBefore(gads, node);
+})();
+</script>
+
+
+<script type='text/javascript'>
+var gptAdSlots = [];
+googletag.cmd.push(function() {
+
+var mapping = googletag.sizeMapping().
+
+addSize([100, 100], []).
+addSize([320, 400], []).
+addSize([320, 700], []).
+addSize([750, 200], [728, 90]).
+addSize([1050, 200], [728, 90]).build();
+
+ googletag.defineSlot('/53998264/160x600-Primary', [160, 600], 'div-gpt-ad-1388505177750-0').addService(googletag.pubads());  googletag.defineSlot('/53998264/160x600-Secondary', [160, 600], 'div-gpt-ad-1388505177750-1').addService(googletag.pubads());  googletag.defineSlot('/53998264/300x250-Primary', [300, 250], 'div-gpt-ad-1388505177750-2').addService(googletag.pubads());  googletag.defineSlot('/53998264/300x250-Secondary', [300, 250], 'div-gpt-ad-1388505177750-3').addService(googletag.pubads());  
+	gptAdSlots[0] = googletag.defineSlot('/53998264/728x90-Primary', [728, 90], 'ad-slot-leader').
+	defineSizeMapping(mapping).
+	addService(googletag.pubads());
+
+
+googletag.pubads().enableSingleRequest();
+googletag.pubads().collapseEmptyDivs();
+googletag.enableServices();
+});
+</script>
+
+
+</head>
+
+<body>
+<a name="top"></a>
+
+<!-- Start Alexa Certify Javascript -->
+<script type="text/javascript">
+_atrk_opts = { atrk_acct:"oydse1a8gR00wM", domain:"mssqltips.com",dynamic: true};
+(function() { var as = document.createElement('script'); as.type = 'text/javascript'; as.async = true; as.src = "https://d31qbv1cthcecs.cloudfront.net/atrk.js"; var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(as, s); })();
+</script>
+<noscript><img src="https://d5nxst8fruw4z.cloudfront.net/atrk.gif?account=oydse1a8gR00wM" style="display:none" height="1" width="1" alt="" /></noscript>
+<!-- End Alexa Certify Javascript -->
+
+
+	<div class="row">
+		<div class="large-12 columns text-center">
+		<br />
+		<a onclick="_gaq.push(['_trackEvent', '990x30', 'Click', 'Top']);" target="_blank" href="/ss.asp?id=3149&link=https://www.mssqltips.com/sql-server-whitepaper/113/the-essential-dba-playbook-for-optimized-sql-server-management/"><img src="https://www.mssqltips.com/absolutebm/banners/MSSQLTips_990x30_DellWP113_20160718.png" border="0" height="30" width="990" alt="Learn more about SQL Server tools"></a>
+		<br /><br />
+		</div>
+	</div>
+
+
+<div class="row">
+	<div class="large-2 columns text-center">
+		<a href="https://www.mssqltips.com/"><img src="https://www.mssqltips.com/images/mslogo_113x60.gif" /></a>
+	</div>
+	
+	<div class="large-8 hide-for-print columns">
+		<div style="padding:10px; background-color:#DADADA">
+		<div style="padding: 5px; background-color:#FFFFFF">
+			<script>
+			  (function() {
+				var cx = '004111219998430415686:pjndvj5e2n4';
+				var gcse = document.createElement('script');
+				gcse.type = 'text/javascript';
+				gcse.async = true;
+				gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+				'//cse.google.com/cse/cse.js?cx=' + cx;
+				var s = document.getElementsByTagName('script')[0];
+				s.parentNode.insertBefore(gcse, s);
+			  })();
+			</script>
+			<gcse:searchbox-only resultsUrl="/search/" newWindow="false" queryParameterName="q"></gcse:searchbox-only>
+		</div>
+		</div>
+	</div>	
+	
+	<div class="large-2 columns hide-for-small hide-for-print text-center">
+		<a href="https://www.mssqltips.com/sqlservertip/4277/mssqltipscom-10-year-anniversary-celebration/"><img src="https://www.mssqltips.com/images/ten-year-anniversary.png" /></a>
+	</div>
+</div>
+<div class="row">
+	<div class="large-12 columns text-center">
+		&nbsp;
+	</div>
+</div>
+<div class="row" style="background-color:#3B6D93;">
+	<div class="large-12 columns text-center hide-for-medium hide-for-small hide-for-print">
+		<h3 style="text-align:center; color:white; padding:5px 0 0 0;">
+		<a onclick="_gaq.push(['_trackEvent', 'Menu_20160204', 'Click', 'Tutorials_l']);" href="https://www.mssqltips.com/sql-server-tutorials/" style="text-decoration:none;color:white">Tutorials</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<a onclick="_gaq.push(['_trackEvent', 'Menu_20160204', 'Click', 'DBA_l']);" href="https://www.mssqltips.com/sql-server-dba-resources/" style="text-decoration:none;color:white">DBA</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<a onclick="_gaq.push(['_trackEvent', 'Menu_20160204', 'Click', 'Dev_l']);" href="https://www.mssqltips.com/sql-server-developer-resources/" style="text-decoration:none;color:white">Dev</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<a onclick="_gaq.push(['_trackEvent', 'Menu_20160204', 'Click', 'BI_l']);" href="https://www.mssqltips.com/sql-server-business-intelligence-resources/" style="text-decoration:none;color:white">BI</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<a onclick="_gaq.push(['_trackEvent', 'Menu_20160204', 'Click', 'Career_l']);" href="https://www.mssqltips.com/sql-server-professional-development-resources/" style="text-decoration:none;color:white">Career</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<a onclick="_gaq.push(['_trackEvent', 'Menu_20160204', 'Click', 'Categories_l']);" href="https://www.mssqltips.com/sql-server-categories/" style="text-decoration:none;color:white">Categories</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<a onclick="_gaq.push(['_trackEvent', 'Menu_20160204', 'Click', 'Webcasts_l']);" href="https://www.mssqltips.com/sql-server-webcasts/" style="text-decoration:none;color:white">Events</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;		
+		<a onclick="_gaq.push(['_trackEvent', 'Menu_20160204', 'Click', 'Whitepapers_l']);" href="https://www.mssqltips.com/sql-server-whitepapers/" style="text-decoration:none;color:white">Whitepapers</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;		
+		<a onclick="_gaq.push(['_trackEvent', 'Menu_20160204', 'Click', 'TodaysTip_l']);" href="https://www.mssqltips.com/todays-sql-server-tip/" style="text-decoration:none;color:white">Today's&nbsp;Tip</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;		
+		<a onclick="_gaq.push(['_trackEvent', 'Menu_20160204', 'Click', 'Join_l']);" href="https://www.mssqltips.com/get-free-sql-server-tips/?ref=JoinHeaderMenu" style="text-decoration:none;color:white">Join</a>
+		</h3>
+	</div>
+</div>
+<div class="row" style="background-color:#3B6D93;">
+	<div class="large-12 columns text-center hide-for-large hide-for-small hide-for-print">
+		<h3 style="text-align:center; color:white; padding:5px 0 0 0;">
+		<a onclick="_gaq.push(['_trackEvent', 'Menu_20160204', 'Click', 'Tutorials_m']);" href="https://www.mssqltips.com/sql-server-tutorials/" style="text-decoration:none;color:white">Tutorials</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<a onclick="_gaq.push(['_trackEvent', 'Menu_20160204', 'Click', 'DBA_m']);" href="https://www.mssqltips.com/sql-server-dba-resources/" style="text-decoration:none;color:white">DBA</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<a onclick="_gaq.push(['_trackEvent', 'Menu_20160204', 'Click', 'Dev_m']);" href="https://www.mssqltips.com/sql-server-developer-resources/" style="text-decoration:none;color:white">Dev</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<a onclick="_gaq.push(['_trackEvent', 'Menu_20160204', 'Click', 'BI_m']);" href="https://www.mssqltips.com/sql-server-business-intelligence-resources/" style="text-decoration:none;color:white">BI</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;		
+		<a onclick="_gaq.push(['_trackEvent', 'Menu_20160204', 'Click', 'Categories_m']);" href="https://www.mssqltips.com/sql-server-categories/" style="text-decoration:none;color:white">Categories</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<a onclick="_gaq.push(['_trackEvent', 'Menu_20160204', 'Click', 'Webcasts_m']);" href="https://www.mssqltips.com/sql-server-webcasts/" style="text-decoration:none;color:white">Events</a>
+		</h3>
+	</div>
+</div>
+<div class="row" style="background-color:#3B6D93;">
+	<div class="large-12 columns text-center hide-for-medium hide-for-large hide-for-print">
+		<h3 style="text-align:center; color:white; padding:5px 0 0 0;">
+		<a onclick="_gaq.push(['_trackEvent', 'Menu_20160204', 'Click', 'DBA_s']);" href="https://www.mssqltips.com/sql-server-dba-resources/" style="text-decoration:none;color:white">DBA</a>&nbsp;&nbsp;&nbsp;
+		<a onclick="_gaq.push(['_trackEvent', 'Menu_20160204', 'Click', 'Dev_s']);" href="https://www.mssqltips.com/sql-server-developer-resources/" style="text-decoration:none;color:white">Dev</a>&nbsp;&nbsp;&nbsp;
+		<a onclick="_gaq.push(['_trackEvent', 'Menu_20160204', 'Click', 'BI_s']);" href="https://www.mssqltips.com/sql-server-business-intelligence-resources/" style="text-decoration:none;color:white">BI</a>&nbsp;&nbsp;&nbsp;
+		<a onclick="_gaq.push(['_trackEvent', 'Menu_20160204', 'Click', 'Categories_s']);" href="https://www.mssqltips.com/sql-server-categories/" style="text-decoration:none;color:white">Categories</a>
+		</h3>
+	</div>
+</div>
+<div class="row">
+	&nbsp;
+</div>
+
+
+
+
+
+<div class="row">
+
+	 <div class="large-9 columns" role="content"> 
+			<div align="center" class="hide-for-print">
+				<br />
+				<div id="ad-slot-leader" style="height:150px;">
+				   <script>
+					 googletag.cmd.push(function() {googletag.display('ad-slot-leader'); });
+				   </script>
+				</div>
+			</div>
+		
+
+
+<br />
+	
+
+
+<div class="row">
+	<div class="large-4 medium-4 small-4 columns">
+	
+	
+		<div>
+			<a class="highlightit" href="https://www.mssqltips.com/sql-server-tip-category/210/sql-server-2016/" "><img  alt="MSSQLTips" src="/images_newsletter/4362_NewsletterImage.png" /></a>
+		</div>
+	</div>
+	<div class="large-8 medium-8 small-8 columns">
+		<h3><a href="https://www.mssqltips.com/sql-server-tip-category/210/sql-server-2016/" style="text-decoration:none">Get up to speed on SQL Server 2016</a></h3>
+		<p class="hide-for-small hide-for-medium">Learn about all of the new SQL Server 2016 features from the MSSQLTips.com Team.</p>
+		<p>Author: <a href="#">MSSQLTips</a></p>
+	</div>
+	
+</div>
+<div>
+	<br /><br />
+</div>	
+
+
+
+<div class="row">
+	<div class="large-4 medium-4 small-4 columns">
+	
+	
+		<div>
+			<a class="highlightit" href="https://www.mssqltips.com/webcastSignupPage.asp?id=546&src=HP" target="_blank"  "><img  alt="Bullett Manale" src="/images_webcast/546_WebcastImage.png" /></a>
+		</div>
+	</div>
+	<div class="large-8 medium-8 small-8 columns">
+		<h3><a href="https://www.mssqltips.com/webcastSignupPage.asp?id=546&src=HP" target="_blank"  style="text-decoration:none">Webcast - Monitor SQL Server Business Intelligence with SQL BI Manager</a></h3>
+		<p class="hide-for-small hide-for-medium">Monitor the health and availability of your entire SQL Server BI environment including SQL Server Analysis Services (SSAS), SQL Server Reporting Services (SSRS), and SQL Server Integration Services (SSIS). </p>
+		<p>Author: <a href="#">Bullett Manale</a></p>
+	</div>
+	
+</div>
+<div>
+	<br /><br />
+</div>	
+
+
+
+<div class="row">
+	<div class="large-4 medium-4 small-4 columns">
+	
+	
+		<div>
+			<a class="highlightit" href="https://www.mssqltips.com/sql-server-whitepaper/99/guide-to-sql-server-performance-management-with-extended-events/" "><img  alt="SolarWinds" src="https://www.mssqltips.com/images_whitepaper/99_WhitepaperImage.png" /></a>
+		</div>
+	</div>
+	<div class="large-8 medium-8 small-8 columns">
+		<h3><a href="https://www.mssqltips.com/sql-server-whitepaper/99/guide-to-sql-server-performance-management-with-extended-events/" style="text-decoration:none">Guide to SQL Server Performance Management with Extended Events</a></h3>
+		<p class="hide-for-small hide-for-medium">Microsoft SQL Server Extended Events, a replacement for SQL Trace, provides a useful and very customizable framework for managing very technical, low-level event information about a SQL Server database and its instances. However...</p>
+		<p>Author: <a href="#">SolarWinds</a></p>
+	</div>
+	
+</div>
+<div>
+	<br /><br />
+</div>	
+
+
+
+<div class="row">
+	<div class="large-4 medium-4 small-4 columns">
+	
+	
+		<div>
+			<a class="highlightit" href="/sqlservertip/1599/sql-server-cursor-example/" "><img  alt="Jeremy Kadlec" src="/images/MSSQLTips_WhatsTrending_20160204.png" /></a>
+		</div>
+	</div>
+	<div class="large-8 medium-8 small-8 columns">
+		<h3><a href="/sqlservertip/1599/sql-server-cursor-example/" style="text-decoration:none">SQL Server Cursor Example</a></h3>
+		<p class="hide-for-small hide-for-medium">In my T-SQL code I always use set based operations.  I have been told these types of operations are what SQL Server is designed to process and it should be quicker than serial processing.  I know cursors exist but I am not sure how to use them.  Can you p</p>
+		<p>Author: <a href="/sqlserverauthor/38/jeremy-kadlec/">Jeremy Kadlec</a></p>
+	</div>
+	
+</div>
+<div>
+	<br /><br />
+</div>	
+
+
+
+<div class="row">
+	<div class="large-4 medium-4 small-4 columns">
+	
+	
+		<div>
+			<a class="highlightit" href="/sqlservertip/4375/monitor-sql-server-identity-column-values-to-prevent-arithmetic-overflow-errors/" "><img  alt="Ahmad Yaseen" src="/images/MSSQLTips_WhatsTrending_20160204.png" /></a>
+		</div>
+	</div>
+	<div class="large-8 medium-8 small-8 columns">
+		<h3><a href="/sqlservertip/4375/monitor-sql-server-identity-column-values-to-prevent-arithmetic-overflow-errors/" style="text-decoration:none">Monitor SQL Server IDENTITY Column Values to Prevent Arithmetic Overflow Errors</a></h3>
+		<p class="hide-for-small hide-for-medium">Learn the best practices to Monitor SQL Server IDENTITY Column Values to Prevent Arithmetic overflow error converting data type.</p>
+		<p>Author: <a href="/sqlserverauthor/145/ahmad-yaseen/">Ahmad Yaseen</a></p>
+	</div>
+	
+</div>
+<div>
+	<br /><br />
+</div>	
+
+
+
+<div class="row">
+	<div class="large-4 medium-4 small-4 columns">
+	
+	
+		<div>
+			<a class="highlightit" href="/sqlservertip/4368/execute-sql-server-dbcc-shrinkfile-without-causing-index-fragmentation/" "><img  alt="Simon Liew" src="/images/MSSQLTips_WhatsTrending_20160204.png" /></a>
+		</div>
+	</div>
+	<div class="large-8 medium-8 small-8 columns">
+		<h3><a href="/sqlservertip/4368/execute-sql-server-dbcc-shrinkfile-without-causing-index-fragmentation/" style="text-decoration:none">Execute SQL Server DBCC SHRINKFILE Without Causing Index Fragmentation</a></h3>
+		<p class="hide-for-small hide-for-medium">Learn how to execute SQL Server DBCC SHRINKFILE without causing index fragmentation and example conditions that cause fragmentation.</p>
+		<p>Author: <a href="/sqlserverauthor/112/simon-liew/">Simon Liew</a></p>
+	</div>
+	
+</div>
+<div>
+	<br /><br />
+</div>	
+
+
+
+<div class="row">
+	<div class="large-4 medium-4 small-4 columns">
+	
+	
+		<div>
+			<a class="highlightit" href="/sqlservertip/4375/monitor-sql-server-identity-column-values-to-prevent-arithmetic-overflow-errors/" "><img  alt="Ahmad Yaseen" src="/images_newsletter/4375_NewsletterImage.png" /></a>
+		</div>
+	</div>
+	<div class="large-8 medium-8 small-8 columns">
+		<h3><a href="/sqlservertip/4375/monitor-sql-server-identity-column-values-to-prevent-arithmetic-overflow-errors/" style="text-decoration:none">Monitor SQL Server IDENTITY Column Values to Prevent Arithmetic Overflow Errors</a></h3>
+		<p class="hide-for-small hide-for-medium">Learn the best practices to Monitor SQL Server IDENTITY Column Values to Prevent Arithmetic overflow error converting data type.</p>
+		<p>Author: <a href="/sqlserverauthor/145/ahmad-yaseen/">Ahmad Yaseen</a></p>
+	</div>
+	
+</div>
+<div>
+	<br /><br />
+</div>	
+
+
+
+<div class="row">
+	<div class="large-4 medium-4 small-4 columns">
+	
+	
+		<div>
+			<a class="highlightit" href="/sqlservertip/4396/creating-a-sql-server-2014-linked-server-for-an-oracle-11g-database/" "><img  alt="Rick Dobson" src="/images_newsletter/4396_NewsletterImage.png" /></a>
+		</div>
+	</div>
+	<div class="large-8 medium-8 small-8 columns">
+		<h3><a href="/sqlservertip/4396/creating-a-sql-server-2014-linked-server-for-an-oracle-11g-database/" style="text-decoration:none">Creating a SQL Server 2014 Linked Server for an Oracle 11g Database</a></h3>
+		<p class="hide-for-small hide-for-medium">Read these step-by-step instructions for installing an Oracle database server and setting up a SQL Server linked server that can query the data within the Oracle database server.</p>
+		<p>Author: <a href="/sqlserverauthor/57/rick-dobson/">Rick Dobson</a></p>
+	</div>
+	
+</div>
+<div>
+	<br /><br />
+</div>	
+
+
+
+<div class="row">
+	<div class="large-4 medium-4 small-4 columns">
+	
+	
+		<div>
+			<a class="highlightit" href="https://www.mssqltips.com/sqlservertip/4277/mssqltipscom-10-year-anniversary-celebration/" "><img  alt="Edgewood Solutions" src="/images_newsletter/4277_NewsletterImage.png" /></a>
+		</div>
+	</div>
+	<div class="large-8 medium-8 small-8 columns">
+		<h3><a href="https://www.mssqltips.com/sqlservertip/4277/mssqltipscom-10-year-anniversary-celebration/" style="text-decoration:none">MSSQLTips.com 10 Year Anniversary Celebration</a></h3>
+		<p class="hide-for-small hide-for-medium">On June 5, 2006 MSSQLTips.com started with just one tip in an effort to offer solutions to real world SQL Server problems. Ten years later, we never expected MSSQLTips.com to grow into a global community of millions of SQL Server Professionals.</p>
+		<p>Author: <a href="#">Edgewood Solutions</a></p>
+	</div>
+	
+</div>
+<div>
+	<br /><br />
+</div>	
+
+
+
+<div class="row">
+	<div class="large-4 medium-4 small-4 columns">
+	
+	
+		<div>
+			<a class="highlightit" href="/sqlservertip/4184/sql-server-2016-reporting-services-mobile-report/" "><img  alt="Scott Murray" src="/images/MSSQLTips_Comments_20160204.png" /></a>
+		</div>
+	</div>
+	<div class="large-8 medium-8 small-8 columns">
+		<h3><a href="/sqlservertip/4184/sql-server-2016-reporting-services-mobile-report/" style="text-decoration:none">SQL Server 2016 Reporting Services Mobile Report</a></h3>
+		<p class="hide-for-small hide-for-medium">New in SQL Server 2016 is the ability to create SSRS reports for mobile devices. In this tip we look at how to design flexible report layouts for different devices.</p>
+		<p>Author: <a href="/sqlserverauthor/81/scott-murray/">Scott Murray</a></p>
+	</div>
+	
+</div>
+<div>
+	<br /><br />
+</div>	
+
+
+
+<div class="row">
+	<div class="large-4 medium-4 small-4 columns">
+	
+	
+		<div>
+			<a class="highlightit" href="/sqlservertip/4359/altering-lock-escalation-for-sql-server-tables/" "><img  alt="Eli Leiba" src="/images_newsletter/4359_NewsletterImage.png" /></a>
+		</div>
+	</div>
+	<div class="large-8 medium-8 small-8 columns">
+		<h3><a href="/sqlservertip/4359/altering-lock-escalation-for-sql-server-tables/" style="text-decoration:none">Altering lock escalation for SQL Server tables</a></h3>
+		<p class="hide-for-small hide-for-medium">Learn about SQL Server lock escalation modes and how to modify how lock escalation occurs on user tables.</p>
+		<p>Author: <a href="/sqlserverauthor/63/eli-leiba/">Eli Leiba</a></p>
+	</div>
+	
+</div>
+<div>
+	<br /><br />
+</div>	
+
+
+
+<div class="row">
+	<div class="large-4 medium-4 small-4 columns">
+	
+	
+		<div>
+			<a class="highlightit" href="/sqlservertip/4390/columnstore-index-recommendations-using-sql-server-2016-upgrade-advisor/" "><img  alt="Mohammed Moinudheen" src="/images_newsletter/4390_NewsletterImage.png" /></a>
+		</div>
+	</div>
+	<div class="large-8 medium-8 small-8 columns">
+		<h3><a href="/sqlservertip/4390/columnstore-index-recommendations-using-sql-server-2016-upgrade-advisor/" style="text-decoration:none">ColumnStore Index Recommendations using SQL Server 2016 Upgrade Advisor</a></h3>
+		<p class="hide-for-small hide-for-medium">Use the SQL Server 2015 Upgrade Advisor to get recommendations on creating columnstore indexes in your database.</p>
+		<p>Author: <a href="/sqlserverauthor/66/mohammed-moinudheen/">Mohammed Moinudheen</a></p>
+	</div>
+	
+</div>
+<div>
+	<br /><br />
+</div>	
+
+
+
+<div class="row">
+	<div class="large-4 medium-4 small-4 columns">
+	
+	
+		<div>
+			<a class="highlightit" href="https://www.mssqltips.com/sql-server-whitepaper/114/sql-server-query-tuning-a-12-step-program/" target="_blank"  "><img  alt="SolarWinds" src="/images_whitepaper/114_WhitepaperImage.png" /></a>
+		</div>
+	</div>
+	<div class="large-8 medium-8 small-8 columns">
+		<h3><a href="https://www.mssqltips.com/sql-server-whitepaper/114/sql-server-query-tuning-a-12-step-program/" target="_blank"  style="text-decoration:none">Whitepaper - SQL Server Query Tuning - A 12-Step Program</a></h3>
+		<p class="hide-for-small hide-for-medium">This paper demystifies query tuning by providing a rigorous 12-step process that database professionals at any level can use to systematically assess and adjust query performance, starting from the basics and moving to advanced query tuning techniques.</p>
+		<p>Author: <a href="#">SolarWinds</a></p>
+	</div>
+	
+</div>
+<div>
+	<br /><br />
+</div>	
+
+
+
+<div class="row">
+	<div class="large-4 medium-4 small-4 columns">
+	
+	
+		<div>
+			<a class="highlightit" href="/sqlservertip/3541/grant-user-access-to-all-sql-server-databases/" "><img  alt="Ahmad Yaseen" src="/images/MSSQLTips_Comments_20160204.png" /></a>
+		</div>
+	</div>
+	<div class="large-8 medium-8 small-8 columns">
+		<h3><a href="/sqlservertip/3541/grant-user-access-to-all-sql-server-databases/" style="text-decoration:none">Grant User Access to All SQL Server Databases</a></h3>
+		<p class="hide-for-small hide-for-medium">Learn how to grant user access to all SQL Server databases with both SSMS and T-SQL scripts.</p>
+		<p>Author: <a href="/sqlserverauthor/145/ahmad-yaseen/">Ahmad Yaseen</a></p>
+	</div>
+	
+</div>
+<div>
+	<br /><br />
+</div>	
+
+
+
+<div class="row">
+	<div class="large-4 medium-4 small-4 columns">
+	
+	
+		<div>
+			<a class="highlightit" href="/sqlservertip/4383/power-bi-data-import-and-export-with-excel/" "><img  alt="Scott Murray" src="/images_newsletter/4383_NewsletterImage.png" /></a>
+		</div>
+	</div>
+	<div class="large-8 medium-8 small-8 columns">
+		<h3><a href="/sqlservertip/4383/power-bi-data-import-and-export-with-excel/" style="text-decoration:none">Power BI Data Import and Export with Excel</a></h3>
+		<p class="hide-for-small hide-for-medium">How can I import my Excel workbooks into Power BI Online?  Are there any options to export data from Power BI to a CSV file?  If so, can you provide the steps to complete both tasks?</p>
+		<p>Author: <a href="/sqlserverauthor/81/scott-murray/">Scott Murray</a></p>
+	</div>
+	
+</div>
+<div>
+	<br /><br />
+</div>	
+
+
+
+<div class="row">
+	<div class="large-4 medium-4 small-4 columns">
+	
+	
+		<div>
+			<a class="highlightit" href="/sqlservertip/4387/6-tips-for-writing-a-strong-cover-letter/" "><img  alt="Erica Woods" src="/images_newsletter/4387_NewsletterImage.png" /></a>
+		</div>
+	</div>
+	<div class="large-8 medium-8 small-8 columns">
+		<h3><a href="/sqlservertip/4387/6-tips-for-writing-a-strong-cover-letter/" style="text-decoration:none">6 Tips for Writing a Strong Cover Letter</a></h3>
+		<p class="hide-for-small hide-for-medium">Learn the 6 Tips for Writing a Strong Cover Letter including content, qualifications, excitement, concerns, work examples and formatting.</p>
+		<p>Author: <a href="/sqlserverauthor/128/erica-woods/">Erica Woods</a></p>
+	</div>
+	
+</div>
+<div>
+	<br /><br />
+</div>	
+
+
+
+<div class="row">
+	<div class="large-4 medium-4 small-4 columns">
+	
+	
+		<div>
+			<a class="highlightit" href="/sqlservertip/4370/transforming-cartesian-coordinates-to-spherical-coordinates-in-sql-server-with-tsql/" "><img  alt="Dallas Snider" src="/images_newsletter/4370_NewsletterImage.png" /></a>
+		</div>
+	</div>
+	<div class="large-8 medium-8 small-8 columns">
+		<h3><a href="/sqlservertip/4370/transforming-cartesian-coordinates-to-spherical-coordinates-in-sql-server-with-tsql/" style="text-decoration:none">Transforming Cartesian Coordinates to Spherical Coordinates in SQL Server with T-SQL</a></h3>
+		<p class="hide-for-small hide-for-medium">I need to transform Cartesian coordinate data in a SQL Server table to spherical coordinates. In this tip I show how this can be done in T-SQL. </p>
+		<p>Author: <a href="/sqlserverauthor/98/dallas-snider/">Dallas Snider</a></p>
+	</div>
+	
+</div>
+<div>
+	<br /><br />
+</div>	
+
+
+
+<div class="row">
+	<div class="large-4 medium-4 small-4 columns">
+	
+	
+		<div>
+			<a class="highlightit" href="/sqlservertip/4381/sql-server-dbcc-checkdb-overview/" "><img  alt="Brady Upton" src="/images_newsletter/4381_NewsletterImage.png" /></a>
+		</div>
+	</div>
+	<div class="large-8 medium-8 small-8 columns">
+		<h3><a href="/sqlservertip/4381/sql-server-dbcc-checkdb-overview/" style="text-decoration:none">SQL Server DBCC CHECKDB Overview</a></h3>
+		<p class="hide-for-small hide-for-medium">Database corruption can be a problem and can cause serious damage to a database. There are a few ways to detect database corruption, but this tip will focus more on DBCC CHECKDB.</p>
+		<p>Author: <a href="/sqlserverauthor/69/brady-upton/">Brady Upton</a></p>
+	</div>
+	
+</div>
+<div>
+	<br /><br />
+</div>	
+
+
+
+<div class="row">
+	<div class="large-4 medium-4 small-4 columns">
+	
+	
+		<div>
+			<a class="highlightit" href="/sqlservertip/4399/solutions-for-azure-sql-database-throttle-log-wait-of-hadrthrottlelogrategovernor/" "><img  alt="Tim Smith" src="/images_newsletter/4399_NewsletterImage.png" /></a>
+		</div>
+	</div>
+	<div class="large-8 medium-8 small-8 columns">
+		<h3><a href="/sqlservertip/4399/solutions-for-azure-sql-database-throttle-log-wait-of-hadrthrottlelogrategovernor/" style="text-decoration:none">Solutions for Azure SQL Database Throttle Log Wait of HADR_THROTTLE_LOG_RATE_GOVERNOR</a></h3>
+		<p class="hide-for-small hide-for-medium">Learn about solutions to address the Azure SQL Database throttle log wait of HADR_THROTTLE_LOG_RATE_GOVERNOR.</p>
+		<p>Author: <a href="/sqlserverauthor/92/tim-smith/">Tim Smith</a></p>
+	</div>
+	
+</div>
+<div>
+	<br /><br />
+</div>	
+
+
+
+<div class="row">
+	<div class="large-4 medium-4 small-4 columns">
+	
+	
+		<div>
+			<a class="highlightit" href="/sqlservertip/4362/whats-new-in-sql-server-integration-services-2016--part-1/" "><img  alt="Koen Verbeeck" src="/images_newsletter/4362_NewsletterImage.png" /></a>
+		</div>
+	</div>
+	<div class="large-8 medium-8 small-8 columns">
+		<h3><a href="/sqlservertip/4362/whats-new-in-sql-server-integration-services-2016--part-1/" style="text-decoration:none">What's New in SQL Server Integration Services 2016 - Part 1 </a></h3>
+		<p class="hide-for-small hide-for-medium">What's New in SQL Server Integration Services 2016 including AlwaysOn support, incremental deployments, Always Encrypted support, new security features and more.</p>
+		<p>Author: <a href="/sqlserverauthor/114/koen-verbeeck/">Koen Verbeeck</a></p>
+	</div>
+	
+</div>
+<div>
+	<br /><br />
+</div>	
+
+
+
+<div class="row">
+	<div class="large-4 medium-4 small-4 columns">
+	
+	
+		<div>
+			<a class="highlightit" href="/sqlservertip/4380/sql-server-performance-issues-when-using-mismatched-data-types/" "><img  alt="Ranga Babu" src="/images_newsletter/4380_NewsletterImage.png" /></a>
+		</div>
+	</div>
+	<div class="large-8 medium-8 small-8 columns">
+		<h3><a href="/sqlservertip/4380/sql-server-performance-issues-when-using-mismatched-data-types/" style="text-decoration:none">SQL Server performance issues when using mismatched data types</a></h3>
+		<p class="hide-for-small hide-for-medium">For one our applications we encountered deadlock issues when deleting rows for a high concurrency application.  The application queries were deleting only one row at a time, but we were still having deadlock issues.</p>
+		<p>Author: <a href="/sqlserverauthor/189/ranga-babu/">Ranga Babu</a></p>
+	</div>
+	
+</div>
+<div>
+	<br /><br />
+</div>	
+
+
+
+<div class="row">
+	<div class="large-4 medium-4 small-4 columns">
+	
+	
+		<div>
+			<a class="highlightit" href="/sqlservertip/2176/dynamically-find-where-table-data-starts-in-excel-using-ssis/" "><img  alt="Vamsi Bogullu" src="/images/MSSQLTips_Comments_20160204.png" /></a>
+		</div>
+	</div>
+	<div class="large-8 medium-8 small-8 columns">
+		<h3><a href="/sqlservertip/2176/dynamically-find-where-table-data-starts-in-excel-using-ssis/" style="text-decoration:none">Dynamically find where table data starts in Excel using SSIS</a></h3>
+		<p class="hide-for-small hide-for-medium">Recently I worked on a project to import Excel spreadsheets from various vendors into our database and not all spreadsheets had the same row number for the header record. This is because most of the vendors had additional information on the top of the hea</p>
+		<p>Author: <a href="/sqlserverauthor/52/vamsi-bogullu/">Vamsi Bogullu</a></p>
+	</div>
+	
+</div>
+<div>
+	<br /><br />
+</div>	
+
+
+
+<div class="row">
+	<div class="large-4 medium-4 small-4 columns">
+	
+	
+		<div>
+			<a class="highlightit" href="/sqlservertip/4376/resolving-sql-server-master-data-services-mds-patching-errors/" "><img  alt="Svetlana Golovko" src="/images_newsletter/4376_NewsletterImage.png" /></a>
+		</div>
+	</div>
+	<div class="large-8 medium-8 small-8 columns">
+		<h3><a href="/sqlservertip/4376/resolving-sql-server-master-data-services-mds-patching-errors/" style="text-decoration:none">Resolving SQL Server Master Data Services (MDS) Patching Errors</a></h3>
+		<p class="hide-for-small hide-for-medium">Learn how to resolve SQL Server Master Data Services (MDS) patching errors related to "The client version is incompatible with the database version..."</p>
+		<p>Author: <a href="/sqlserverauthor/94/svetlana-golovko/">Svetlana Golovko</a></p>
+	</div>
+	
+</div>
+<div>
+	<br /><br />
+</div>	
+
+
+
+<div class="row">
+	<div class="large-4 medium-4 small-4 columns">
+	
+	
+		<div>
+			<a class="highlightit" href="/sqlservertip/4378/deploying-azure-sql-database-using-resource-manager-powershell-cmdlets/" "><img  alt="John Miner" src="/images_newsletter/4378_NewsletterImage.png" /></a>
+		</div>
+	</div>
+	<div class="large-8 medium-8 small-8 columns">
+		<h3><a href="/sqlservertip/4378/deploying-azure-sql-database-using-resource-manager-powershell-cmdlets/" style="text-decoration:none">Deploying Azure SQL Database Using Resource Manager PowerShell cmdlets</a></h3>
+		<p class="hide-for-small hide-for-medium">Learn about the various PowerShell cmdlets to deploy an Azure SQL Database.</p>
+		<p>Author: <a href="/sqlserverauthor/154/john-miner/">John Miner</a></p>
+	</div>
+	
+</div>
+<div>
+	<br /><br />
+</div>	
+
+
+
+<div class="row">
+	<div class="large-4 medium-4 small-4 columns">
+	
+	
+		<div>
+			<a class="highlightit" href="/sqlservertip/4374/applying-the-software-development-life-cycle-to-your-resume/" "><img  alt="Cate Murray" src="/images_newsletter/4374_NewsletterImage.png" /></a>
+		</div>
+	</div>
+	<div class="large-8 medium-8 small-8 columns">
+		<h3><a href="/sqlservertip/4374/applying-the-software-development-life-cycle-to-your-resume/" style="text-decoration:none">Applying the Software Development Life Cycle to Your Resume</a></h3>
+		<p class="hide-for-small hide-for-medium">Many struggle when writing a resume because they lack a strategy for framing their relevant experience in the best possible way, and making modifications depending on roles they apply for, and additions throughout their career. Therefore, we’ve aligned so</p>
+		<p>Author: <a href="/sqlserverauthor/132/cate-murray/">Cate Murray</a></p>
+	</div>
+	
+</div>
+<div>
+	<br /><br />
+</div>	
+
+
+
+<div class="row">
+	<div class="large-4 medium-4 small-4 columns">
+	
+	
+		<div>
+			<a class="highlightit" href="/sqlservertip/4379/beware-of-sidechannel-attacks-in-rowlevel-security-in-sql-server-2016/" "><img  alt="Aaron Bertrand" src="/images_newsletter/4379_NewsletterImage.png" /></a>
+		</div>
+	</div>
+	<div class="large-8 medium-8 small-8 columns">
+		<h3><a href="/sqlservertip/4379/beware-of-sidechannel-attacks-in-rowlevel-security-in-sql-server-2016/" style="text-decoration:none">Beware of Side-Channel Attacks in Row-Level Security in SQL Server 2016</a></h3>
+		<p class="hide-for-small hide-for-medium">Now that SQL Server 2016 has been officially released, I wanted to address how some RLS security concerns can be mitigated, and a couple of new ones that have surfaced in the meantime. </p>
+		<p>Author: <a href="/sqlserverauthor/49/aaron-bertrand/">Aaron Bertrand</a></p>
+	</div>
+	
+</div>
+<div>
+	<br /><br />
+</div>	
+
+
+
+<div class="row">
+	<div class="large-4 medium-4 small-4 columns">
+	
+	
+		<div>
+			<a class="highlightit" href="http://www.mssqltips.com/whitepaper.asp?id=72" "><img  alt="SIOS Technology" src="/images_whitepaper/72_WhitepaperImage.png" /></a>
+		</div>
+	</div>
+	<div class="large-8 medium-8 small-8 columns">
+		<h3><a href="http://www.mssqltips.com/whitepaper.asp?id=72" style="text-decoration:none">Whitepaper - SQL Server HA and DR: A Strategy To Reduce Costs</a></h3>
+		<p class="hide-for-small hide-for-medium">In this free white paper, SQL expert, Joey D’Antoni discusses the costs associated with high availability and disaster protection in a SQL Server environment.</p>
+		<p>Author: <a href="#">SIOS Technology</a></p>
+	</div>
+	
+</div>
+<div>
+	<br /><br />
+</div>	
+
+
+
+<div class="row">
+	<div class="large-4 medium-4 small-4 columns">
+	
+	
+		<div>
+			<a class="highlightit" href="https://www.mssqltips.com/sql-server-video/535/analyze-your-sql-query-plan-like-a-microsoft-engineer/" "><img  alt="Daniel Janik" src="/images_webcast/535_WebcastImage.png" /></a>
+		</div>
+	</div>
+	<div class="large-8 medium-8 small-8 columns">
+		<h3><a href="https://www.mssqltips.com/sql-server-video/535/analyze-your-sql-query-plan-like-a-microsoft-engineer/" style="text-decoration:none">New On-Demand Webcast - Analyze your query plan like a Microsoft Engineer! (SQL Server 2016 Edition)</a></h3>
+		<p class="hide-for-small hide-for-medium">This session is a deep dive into query plans and is presented by a former Microsoft PFE (Field Engineer). Learn how a Microsoft Engineer looks at plans and go beyond the typical!</p>
+		<p>Author: <a href="#">Daniel Janik</a></p>
+	</div>
+	
+</div>
+<div>
+	<br /><br />
+</div>	
+
+
+
+
+<br /><br /><br /><br />
+
+
+
+
+
+
+
+
+
+
+
+		<div class="row">
+
+			
+
+		</div>
+
+		
+
+
+	</div>
+
+	
+	<aside class="large-3 hide-for-print columns">
+
+		<script language = "Javascript">
+function ValidateEmail(){
+	var emailID=document.optin.ea
+	
+	if ((emailID.value==null)||(emailID.value=="")||(emailID.value=="enter email address")){
+		alert("Please Enter your Email")
+		emailID.focus()
+		return false
+	}
+	if (echeck2(emailID.value)==false){
+		emailID.focus()
+		return false
+	}
+	return true
+ }
+</script>
+
+
+
+	<div id="search-div" style="height:300px;">
+		<div id="signup-div">
+		<div style="text-align: center;"><a href="/get-free-sql-server-tips/?ref=LeftGFSTSlant"><img border="0" src="/images/GetFreeSQLTips.png"  ></a></div>
+		<br />
+			<form action="/get-free-sql-server-tips/" method="post" name="optin" onsubmit="return ValidateEmail()">
+				<div style="text-align: center;">
+					<input name="URL" type="hidden" value="leftform" />
+					<input name="ReferralURL" type="hidden" value="" />
+					<input size="25" type="text" onblur="if (this.value=='') this.value=this.defaultValue" onclick="if (this.defaultValue==this.value) this.value=''" value="enter email address" name="ea">
+					<input type="submit" name="Button1" value="Join" />
+				</div>
+			</form>
+		</div>
+	</div>
+<!-- 160x600-Primary -->
+<div align="center">
+	<div id='div-gpt-ad-1388505177750-0' style='width:160px; height:800px;'>
+	<script type='text/javascript'>
+	googletag.cmd.push(function() { googletag.display('div-gpt-ad-1388505177750-0'); });
+	</script>
+	</div>
+</div><!-- 300x250-Primary -->
+<div align="center">
+	<div id='div-gpt-ad-1388505177750-2' style='width:300px; height:450px;'>
+	<script type='text/javascript'>
+	googletag.cmd.push(function() { googletag.display('div-gpt-ad-1388505177750-2'); });
+	</script>
+	</div>
+</div><!-- 160x600-Secondary -->
+<div align="center">
+	<div id='div-gpt-ad-1388505177750-1' style='width:160px; height:800px;'>
+	<script type='text/javascript'>
+	googletag.cmd.push(function() { googletag.display('div-gpt-ad-1388505177750-1'); });
+	</script>
+	</div>
+</div>	<!-- 300x250-Secondary -->
+<div align="center">
+	<div id='div-gpt-ad-1388505177750-3' style='width:300px; height:450px;'>
+	<script type='text/javascript'>
+	googletag.cmd.push(function() { googletag.display('div-gpt-ad-1388505177750-3'); });
+	</script>
+	</div>
+</div>	
+    </aside>
+    
+
+</div>
+
+
+<footer class="row">
+<div class="large-12 columns">
+	<hr />
+	<div class="row hide-for-print">
+		<div class="large-2 medium-3 columns hide-for-small">
+			<h3><span style="color:#3B6D93">Follow</span></h3>
+			<a href="/get-free-sql-server-tips/?ref=GetFooterMenu">Get Free SQL Tips</a><br /><br />
+			<a href="https://twitter.com/mssqltips" target="_blank">Twitter</a><br /><br />
+			<a href="https://www.linkedin.com/grp/home?gid=2320891" target="_blank">LinkedIn</a><br /><br />
+			<a href="https://plus.google.com/+Mssqltips_est_2006/posts" target="_blank">Google+</a><br /><br />
+			<a href="https://www.facebook.com/pages/MSSQLTips/155636491141708" target="_blank">Facebook</a><br /><br />
+			<a href="https://www.pinterest.com/mssqltips/" target="_blank">Pinterest</a><br /><br />
+			<a href="https://feeds.feedburner.com/MSSQLTips-LatestSqlServerTips" target="_blank">RSS</a><br />
+		</div>
+		
+		<div class="large-2 medium-3 small-6 columns">
+			<h3><span style="color:#3B6D93">Learning</span></h3>
+			<a href="/sql-server-dba-resources/">DBAs</a><br /><br />
+			<a href="/sql-server-developer-resources/">Developers</a><br /><br />
+			<a href="/sql-server-business-intelligence-resources/">BI Professionals</a><br /><br />
+			<a href="/sql-server-professional-development-resources/">Careers</a><br /><br />
+			<a href="http://sqlserverquestions.mssqltips.com/questionlist.asp">Q and A</a><br /><br />
+			<a href="/todays-sql-server-tip/">Today's Tip</a><br />
+		</div>	
+
+		<div class="large-2 medium-3 small-6 columns">
+			<h3><span style="color:#3B6D93">Resources</span></h3>
+			<a href="/sql-server-tutorials/">Tutorials</a><br /><br />
+			<a href="/sql-server-webcasts/">Webcasts</a><br /><br />
+			<a href="/sql-server-whitepapers/">Whitepapers</a><br /><br />
+			<a href="/sql-server-tools/">Tools</a><br /><br />
+		</div>
+		
+		<div class="large-2 medium-3 columns hide-for-small">
+			<h3><span style="color:#3B6D93">Search</span></h3>
+			<a href="/sql-server-categories/">Tip Categories</a><br /><br />
+			<a href="/search-tip-id/">Search By TipID</a><br /><br />
+			<a href="/sql-server-mssqltips-authors/">Authors</a><br />
+		</div>
+		
+		<div class="large-2 hide-for-medium columns hide-for-small">
+			<h3><span style="color:#3B6D93">Community</span></h3>
+			<a href="/learn-more-about-mssqltips/">First Timer?</a><br /><br />
+			<a href="/mssqltips-community/1/">Pictures</a><br /><br />
+			<a href="/contribute/">Contribute</a><br /><br />
+			<a href="/sql-server-event-list/">Events</a><br /><br />
+			<a href="/sql-server-user-groups/">User Groups</a><br /><br />
+			<a href="/mssqltips-author-of-year/">Author of the Year</a><br /><br />
+		</div>
+		
+		<div class="large-2 hide-for-medium columns hide-for-small">
+			<h3><span style="color:#3B6D93">More Info</span></h3>
+			<a href="/get-free-sql-server-tips/?ref=JoinFooterMenu">Join</a><br /><br />
+			<a href="/about/">About</a><br /><br />
+			<a href="/copyright/">Copyright</a><br /><br />
+			<a href="/privacy/">Privacy</a><br /><br />
+			<a href="/disclaimer/">Disclaimer</a><br /><br />
+			<a href="/feedback/">Feedback</a><br /><br />
+			<a href="/advertise/">Advertise</a><br />
+		</div>
+	</div>
+	<hr />
+	<div class="row">
+		<div class="large-12 columns text-center">
+			<p>Copyright (c) 2006-2016 <a href="https://www.edgewoodsolutions.com">Edgewood Solutions, LLC</a> All rights reserved<br />
+			<small>Some names and products listed are the registered trademarks of their respective owners.</small></p>
+		</div>
+	</div>
+</div>
+</footer>
+
+
+<!-- dropdown 990x30 -->
+<style type="text/css">
+#slideboxtop{
+    width:100%;
+    height:50px;
+    padding:10px;
+    background-color:#FFFFFF;
+    border-bottom:1px solid #000000;
+    position:fixed;
+    top: -250px;
+	-moz-box-shadow:-2px 0px 5px #aaa;
+	-webkit-box-shadow:-2px 0px 5px #aaa;
+/* 	box-shadow:-2px 0px 5px #aaa;    */
+}
+</style>
+
+<div class="hide-for-small hide-for-medium hide-for-print">
+	<div id="slideboxtop" style="z-index:99;">
+		<div style="text-align:center">
+			<a onclick="_gaq.push(['_trackEvent', '990x30', 'Click', 'Dropdown']);" target="_blank" href="/ss.asp?id=3149&link=https://www.mssqltips.com/sql-server-whitepaper/113/the-essential-dba-playbook-for-optimized-sql-server-management/"><img src="https://www.mssqltips.com/absolutebm/banners/MSSQLTips_990x30_DellWP113_20160718.png" border="0" height="30" width="990" alt="Learn more about SQL Server tools"></a>
+		</div>
+	</div>
+</div>
+
+
+<script type="text/javascript">
+$(function() {
+	$(window).scroll(function(){
+		if  ($(window).scrollTop() > 250)
+			$('#slideboxtop').animate({'top':'0px'});
+		else
+			$('#slideboxtop').stop(true).animate({'top':'-250px'});
+	});
+});
+</script>
+
+
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-910745-2']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,1376 @@
+
+
+<!DOCTYPE html>
+<html>
+    <head><meta charset="utf-8" /><title>
+	Heroes of the Storm (HotS): Home
+</title><meta name="keywords" content="Heroes of the Storm, HOTS, HOTS Logs, HOTSLogs, MMR, Ranking, Leaderboard, Replay, Replay File, Download Replay, Hero, Statistics, Matchmaking, Matchmaking Rating, Talent, Data" /><meta name="viewport" content="width=device-width, initial-scale=1" /><link href="/favicon.ico?v=2" rel="shortcut icon" type="image/x-icon" />
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
+        <script src="//cdn.datatables.net/t/dt/dt-1.10.11,cr-1.3.1/datatables.min.js"></script><link href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" /><link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" /><link href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.0/animate.min.css" rel="stylesheet" /><link id="linkCSSTheme" href="/assets/css/style-blue.css" rel="stylesheet" />
+
+        <script type="text/javascript">
+
+            (function (i, s, o, g, r, a, m) {
+                i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                    (i[r].q = i[r].q || []).push(arguments)
+                }, i[r].l = 1 * new Date(); a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+            })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+            ga('create', 'UA-53777913-1', 'auto');
+            ga('require', 'displayfeatures');
+            ga('send', 'pageview');
+
+            var RadGridReorderStripes;
+            $(document).ready(function ()
+            {
+                // Set DataTable Defaults
+                $.extend($.fn.dataTable.defaults, {
+                    paging: false,
+                    info: false,
+                    colReorder: true,
+                    columnDefs: [{ type: "smart", orderSequence: [ "desc", "asc" ], targets: "_all" }],
+                    buttons: [ { extend: "csv", text: "Export", className: "btn btn-primary" } ],
+                    dom: "lfrtipB"
+                });
+
+                $.extend($.fn.dataTableExt.oSort, {
+                    "smart-asc": function (a, b) {
+                        if (a === b)
+                            return 0;
+
+                        if (a === "&nbsp;")
+                            return 1;
+                        else if (b === "&nbsp;")
+                            return -1;
+
+                        if (a.length === 8 && a.charAt(2) === ":" && a.charAt(5) === ":" &&
+                            b.length === 8 && b.charAt(2) === ":" && b.charAt(5) === ":")
+                        {
+                            // Timespan format
+                            parseA = (parseInt(a.substring(0, 2)) * 3600) + (parseInt(a.substring(3, 5)) * 60) + parseInt(a.substring(6, 8));
+                            parseB = (parseInt(b.substring(0, 2)) * 3600) + (parseInt(b.substring(3, 5)) * 60) + parseInt(b.substring(6, 8));
+                        }
+                        else
+                        {
+                            // Check for Percent format
+                            var parseA = parseFloat(a.replace(",", "."));
+                            var parseB = parseFloat(b.replace(",", "."));
+
+                            if (isNaN(parseA))
+                            {
+                                // Text format
+                                parseA = a;
+
+                                // Remove HTML so we are only sorting on visible text
+                                var parseHTMLA = $.parseHTML(parseA);
+                                if (typeof parseHTMLA !== "undefined" && parseHTMLA.length === 1)
+                                    parseA = parseHTMLA[0].textContent;
+
+                                parseA = parseA.toLowerCase();
+                            }
+
+                            if (isNaN(parseB))
+                            {
+                                // Text format
+                                parseB = b;
+
+                                // Remove HTML so we are only sorting on visible text
+                                var parseHTMLB = $.parseHTML(parseB);
+                                if (typeof parseHTMLB !== "undefined" && parseHTMLB.length === 1)
+                                    parseB = parseHTMLB[0].textContent;
+
+                                parseB = parseB.toLowerCase();
+                            }
+                        }
+
+                        if (parseA > parseB)
+                            return 1;
+                        else
+                            return -1;
+                    },
+
+                    "smart-desc": function (a, b) {
+                        if (a === b)
+                            return 0;
+
+                        if (a === "&nbsp;")
+                            return 1;
+                        else if (b === "&nbsp;")
+                            return -1;
+
+                        if (a.length === 8 && a.charAt(2) === ":" && a.charAt(5) === ":" &&
+                            b.length === 8 && b.charAt(2) === ":" && b.charAt(5) === ":")
+                        {
+                            // Timespan format
+                            parseA = (parseInt(a.substring(0, 2)) * 3600) + (parseInt(a.substring(3, 5)) * 60) + parseInt(a.substring(6, 8));
+                            parseB = (parseInt(b.substring(0, 2)) * 3600) + (parseInt(b.substring(3, 5)) * 60) + parseInt(b.substring(6, 8));
+                        }
+                        else
+                        {
+                            // Check for Percent format
+                            var parseA = parseFloat(a.replace(",", "."));
+                            var parseB = parseFloat(b.replace(",", "."));
+
+                            if (isNaN(parseA))
+                            {
+                                // Text format
+                                parseA = a;
+
+                                // Remove HTML so we are only sorting on visible text
+                                var parseHTMLA = $.parseHTML(parseA);
+                                if (typeof parseHTMLA !== "undefined" && parseHTMLA.length === 1)
+                                    parseA = parseHTMLA[0].textContent;
+
+                                parseA = parseA.toLowerCase();
+                            }
+
+                            if (isNaN(parseB))
+                            {
+                                // Text format
+                                parseB = b;
+
+                                // Remove HTML so we are only sorting on visible text
+                                var parseHTMLB = $.parseHTML(parseB);
+                                if (typeof parseHTMLB !== "undefined" && parseHTMLB.length === 1)
+                                    parseB = parseHTMLB[0].textContent;
+
+                                parseB = parseB.toLowerCase();
+                            }
+                        }
+
+                        if (parseB > parseA)
+                            return 1;
+                        else
+                            return -1;
+                    }
+                });
+
+                // Function to Style RadGrid Stripes On DataTable Events
+                RadGridReorderStripes = function (RadGrid) {
+                    $("tr", RadGrid).removeClass("rgRow rgAltRow");
+                    $("tr.odd", RadGrid).addClass("rgRow");
+                    $("tr.even", RadGrid).addClass("rgAltRow");
+                };
+
+                // All DataTable Draw Events Should Restripe
+                $(document).on("draw.dt", "table", function () { if ($(this).hasClass("dataTable")) RadGridReorderStripes(this); })
+
+                // Set up Back to Top Link
+                $("#back-top").hide();
+                $(window).scroll(function (e) { if ($(this).scrollTop() > 100) { $('#back-top').fadeIn(); } else { $('#back-top').fadeOut(); } });
+                $('#back-top a').click(function (e) { $('body,html').animate({ scrollTop: 0 }, 500); return false; });
+
+                // Set Up Sign Out Menu Icon
+                $("#LoginStatus").html("<i class='fa fa-sign-out'></i>");
+
+                // Keep Focus on Player Search Menu Popup
+                $(".dropdown-menu input").click(function (e) { e.stopPropagation(); });
+
+                // Focus on Player Name Textbox when Clicking on Player Search
+                $(".playerSearchDropdown").click(function (e) { setTimeout(function () { $(".TextBoxPlayerSearch").focus(); }, 10); });
+
+                function PlayerSearchRedirect()
+                {
+                    window.location.href = "/PlayerSearch?Name=" + $(".TextBoxPlayerSearch").val();
+                }
+
+                $("#ButtonPlayerSearch").click(function (e) { PlayerSearchRedirect(); });
+
+                $(".TextBoxPlayerSearch").keydown(function (e) {
+                    if (e.keyCode === 13 /* Enter key */)
+                    {
+                        e.preventDefault();
+                        PlayerSearchRedirect();
+                    }
+                });
+
+                // Use onclick popups for tooltips (for Mobile devices)
+                $(document).on("click", "tr[title], img[title], div[title]", function (e) {
+                    if (!$(this).next().hasClass("titlePopup"))
+                    {
+                        $(".titlePopup").remove();
+                        $(this).after("<span class='titlePopup'>" + $(this).attr("title") + "</span>");
+                    }
+                    else
+                        $(".titlePopup").remove();
+                });
+
+                $(document).on("init.dt", "body", function (e, settings, json) {
+                    $("div.dt-buttons").each(function() {
+                        $(this).insertAfter($(this).parent().find("input[type='search']"));
+                    });
+                });
+            });
+
+        </script>
+
+        
+            <script src="//d3pkae9owd2lcf.cloudfront.net/mb105.gz.js"></script>
+            <script type="text/javascript">
+
+                if (typeof MonkeyBroker === "undefined")
+                {
+                    
+                    ga("send", "event", "AdFillMonkeyBroker", "Ad Blocked", { nonInteraction: true });
+
+                    if (Math.random() > 0.9)
+                        $(document).ready(function () {
+                            document.cookie = "AdExperience=Light; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
+                            $("#AdBlockWarning").removeAttr("style");
+                            ga("send", "event", "AdFillMonkeyBroker", "Ad Block Popup Message", { nonInteraction: true });
+                        });
+                }
+                else
+                {
+                    var isAdExperienceLight = false;
+
+                    if (!isAdExperienceLight)
+                        ga("send", "event", "AdFillMonkeyBroker", "Ad Displayed", { nonInteraction: true });
+                    else
+                        ga("send", "event", "AdFillMonkeyBroker", "Ad Displayed Light", { nonInteraction: true });
+
+                    var windowWidth = $(window).width();
+
+                    MonkeyBroker.site = {
+                        "id": 1788,
+                        "customDomainName": "mb.zam.com",
+                        "reportBadAd": true,
+                        "lightboxCallback": function (e, t) {
+                            var userExplanation = prompt("Please explain why this advertisement is inappropriate");
+
+                            if (userExplanation !== null && userExplanation !== "")
+                            {
+                                adHistoryPostURL = e.replace("http://mb.zam.com/mb/reportBadAd", "/StatusCheck") + "&Message=" + encodeURI(userExplanation);
+
+                                LogAdHistory(null);
+
+                                var iframeAdReport = document.createElement("iframe");
+                                iframeAdReport.src = e;
+                                iframeAdReport.height = 0;
+                                iframeAdReport.width = 0;
+                                document.getElementsByTagName("body")[0].appendChild(iframeAdReport);
+
+                                t.parentNode.removeChild(t);
+
+                                alert("Thank you for your feedback, we will look into it!");
+                            }
+                        }
+                    };
+	  
+                    MonkeyBroker.addAttribute("mb_pc", "default");
+                    MonkeyBroker.addAttribute("mb_ri", 90);
+
+                    if (windowWidth >= 1300)
+                    {
+                        if (!isAdExperienceLight)
+                        {
+                            MonkeyBroker.addSlot({ slot: "Horizontal_1", sizes: ["970x250", "970x90", "728x90"] });
+                            MonkeyBroker.addSlot({ slot: "Horizontal_2", sizes: ["970x250", "970x90", "728x90", "Unstacked 300x250"] });
+                        }
+                        else
+                        {
+                            MonkeyBroker.addSlot({ slot: "Horizontal_1", sizes: ["970x90", "728x90"] });
+                            MonkeyBroker.addSlot({ slot: "Horizontal_2", sizes: ["970x90", "728x90"] });
+                        }
+                    }
+                    else if (windowWidth > 728)
+                    {
+                        if (!isAdExperienceLight)
+                        {
+                            MonkeyBroker.addSlot({ slot: "Horizontal_1_Thin", sizes: ["728x90"] });
+                            MonkeyBroker.addSlot({ slot: "Horizontal_2_Thin", sizes: ["728x90", "Unstacked 300x250"] });
+                        }
+                        else
+                        {
+                            MonkeyBroker.addSlot({ slot: "Horizontal_1_Thin", sizes: ["728x90"] });
+                            MonkeyBroker.addSlot({ slot: "Horizontal_2_Thin", sizes: ["728x90"] });
+                        }
+                    }
+                    else
+                        MonkeyBroker.addSlot({ slot: "Horizontal_1_Mobile", sizes: ["320x50"] });
+
+                    if (!isAdExperienceLight)
+                    {
+                        if (windowWidth >= 1300)
+                            MonkeyBroker.addSlot({ slot: "Vertical_2", sizes: ["300x600", "300x250", "160x600", "120x600", "Stacked 300x250"] });
+                        else if (windowWidth >= 1070)
+                            MonkeyBroker.addSlot({ slot: "Vertical_2_Thin", sizes: ["160x600", "120x600"] });
+                    }
+
+                    MonkeyBroker.go();
+
+                    var VerticalSlotFilled = false;
+                    var VerticalThinSlotFilled = false;
+                    function FillMonkeyBrokerSlots()
+                    {
+                        if (windowWidth >= 1300 && !VerticalSlotFilled)
+                        {
+                            VerticalSlotFilled = true;
+
+                            MonkeyBroker.regSlotsMap["Vertical_2"].el = document.getElementById("mb_adslot_1");
+                            MonkeyBroker.regSlotsMap["Vertical_2"].elCreated = true;
+                            MonkeyBroker.fillSlot("Vertical_2");
+                            ga("send", "event", "AdFillMonkeyBroker", "Vertical_2", { nonInteraction: true });
+                        }
+                        else if (windowWidth >= 1070 && windowWidth < 1300 && !VerticalThinSlotFilled)
+                        {
+                            VerticalThinSlotFilled = true;
+
+                            MonkeyBroker.regSlotsMap["Vertical_2_Thin"].el = document.getElementById("mb_adslot_2");
+                            MonkeyBroker.regSlotsMap["Vertical_2_Thin"].elCreated = true;
+                            MonkeyBroker.fillSlot("Vertical_2_Thin");
+                            ga("send", "event", "AdFillMonkeyBroker", "Vertical_2_Thin", { nonInteraction: true });
+                        }
+                    }
+
+                    function FillMonkeyBrokerHorizontal1()
+                    {
+                        if (windowWidth >= 1300) {
+                            MonkeyBroker.fillSlot("Horizontal_1");
+                            ga("send", "event", "AdFillMonkeyBroker", "Horizontal_1", { nonInteraction: true });
+                        }
+                        else if (windowWidth > 728) {
+                            MonkeyBroker.fillSlot("Horizontal_1_Thin");
+                            ga("send", "event", "AdFillMonkeyBroker", "Horizontal_1_Thin", { nonInteraction: true });
+                        }
+                        else
+                        {
+                            MonkeyBroker.fillSlot("Horizontal_1_Mobile");
+                            ga("send", "event", "AdFillMonkeyBroker", "Horizontal_1_Mobile", { nonInteraction: true });
+                        }
+                    }
+
+                    
+                    var advertisementOffsetTop = 80;
+                    var advertisementOffsetTopAnimate = advertisementOffsetTop - 40;
+                    if (advertisementOffsetTopAnimate < 0)
+                        advertisementOffsetTopAnimate = 0;
+                    var isVerticalAdvertisementFixed = false;
+                    function FixVerticalAdvertisement(forceRefresh)
+                    {
+                        if (forceRefresh)
+                            isVerticalAdvertisementFixed = !isVerticalAdvertisementFixed;
+
+                        var scrollTop = $(document).scrollTop();
+                        var advertisementPlaceholder = $("#advertisementPlaceholder");
+                        var advertisementTop = advertisementPlaceholder.offset().top;
+                        var advertisementLeft = advertisementPlaceholder.width() + advertisementPlaceholder.position().left;
+
+                        var verticalAdvertisements = $("#mb_adslot_1, #mb_adslot_2");
+                        if (!isVerticalAdvertisementFixed && advertisementTop - scrollTop < advertisementOffsetTop)
+                        {
+                            isVerticalAdvertisementFixed = true;
+                            verticalAdvertisements.css("position", "fixed");
+                            verticalAdvertisements.css("top", advertisementOffsetTopAnimate + "px");
+                            verticalAdvertisements.css("left", (advertisementLeft + 30) + "px");
+
+                            if (!forceRefresh)
+                            {
+                                
+                                verticalAdvertisements.css("top", advertisementOffsetTopAnimate + "px");
+                                verticalAdvertisements.animate({ top: advertisementOffsetTop + "px" });
+                            }
+                            else
+                                
+                                verticalAdvertisements.css("top", advertisementOffsetTop + "px");
+                        }
+                        else if (isVerticalAdvertisementFixed && advertisementTop - scrollTop >= advertisementOffsetTop && false) {
+                            isVerticalAdvertisementFixed = false;
+                            verticalAdvertisements.css("position", "relative");
+                            verticalAdvertisements.css("top", "0");
+                            verticalAdvertisements.css("left", "0");
+                        }
+                    }
+
+                    $(document).ready(function () {
+
+                        if (!isAdExperienceLight)
+                        {
+                            FillMonkeyBrokerSlots();
+
+                            if ($(window).height() >= 600)
+                            {
+                                FixVerticalAdvertisement();
+
+                                $(window).scroll(function () {
+                                    FixVerticalAdvertisement();
+                                });
+
+                                $(window).resize(function () {
+                                    FixVerticalAdvertisement(true);
+                                });
+                            }
+                        }
+                        
+                    });
+                }
+
+                var adHistoryPostURL = "/StatusCheck?s=Log Ad History";
+                function LogAdHistory(data)
+                {
+                    if (data === null)
+                    {
+                        var userAdHistoryScript = document.createElement("script");
+                        userAdHistoryScript.setAttribute("src", "http://mb.zam.com/mb/HistoryViewer?callback=LogAdHistory");
+                        document.head.appendChild(userAdHistoryScript);
+                    }
+                    else
+                        $.post(adHistoryPostURL, data);
+                }
+                
+            </script>
+        
+
+            <style type="text/css">
+
+                /*  */
+                @media (min-width: 1300px) and (max-width: 1579px)
+                {
+                    #body.container
+                    {
+                        margin-right: 330px;
+                    }
+                }
+
+            </style>
+
+        
+
+        <style type="text/css">
+
+            @media (min-width: 1820px)
+            {
+                .advertisementBannerMonkeyBrokerRight, .advertisementBannerMonkeyBrokerRightThin
+                {
+                    left: 1170px;
+                }
+            }
+
+            @media (min-width: 1350px)
+            {
+                #body.container
+                {
+                    padding: 0;
+                }
+            }
+
+            @media (max-width: 1349px)
+            {
+                #body.container
+                {
+                    padding-left: 5px;
+                    padding-right: 5px;
+                }
+            }
+
+            @media (min-width: 1300px) and (max-width: 1819px)
+            {
+                #body.container
+                {
+                    width: 990px;
+                }
+
+                .advertisementBannerMonkeyBrokerRight, .advertisementBannerMonkeyBrokerRightThin
+                {
+                    left: 990px;
+                }
+            }
+
+            @media (min-width: 1070px) and (max-width: 1299px)
+            {
+                #body.container
+                {
+                    width: 750px;
+                }
+
+                .advertisementBannerMonkeyBrokerRight, .advertisementBannerMonkeyBrokerRightThin
+                {
+                    left: 750px;
+                }
+            }
+
+            @media (min-width: 1070px)
+            {
+                .RadGrid td {
+                    white-space: nowrap;
+                }
+            }
+
+            @media (max-width: 1069px)
+            {
+                .container {
+                    width: auto;
+                }
+            }
+
+            @media (max-width: 1069px)
+            {
+                .advertisementBannerMonkeyBrokerRight, .advertisementBannerMonkeyBrokerRightThin
+                {
+                    display: none;
+                }
+            }
+
+            @media (max-width: 728px)
+            {
+                .advertisementBannerMonkeyBrokerBottom
+                {
+                    display: none;
+                }
+            }
+
+            .advertisementBannerMonkeyBrokerRight, .advertisementBannerMonkeyBrokerRightThin
+            {
+                position: relative;
+                height: 0;
+            }
+
+            @media print
+            {
+                .no-print, .no-print *
+                {
+                    display: none !important;
+                }
+            }
+
+            .RadGrid
+            {
+                max-width: 100%;
+                overflow-y: hidden;
+            }
+
+            .RadGrid, .btn-border
+            {
+               border-radius: 10px !important;
+            }
+
+            .btn-border
+            {
+                overflow: hidden;
+            }
+
+            .RadGrid img
+            {
+                border-radius: 3px;
+                background-color: #484848;
+            }
+
+            .RadGrid table tr.rgRow > td
+            {
+                border-color: #dae2e8;
+            }
+
+            .advertisementBanner
+            {
+                min-height: 110px;
+                margin-left: auto;
+                margin-right: auto;
+                text-align: center;
+                overflow: hidden;
+            }
+
+            .section-title
+            {
+                margin-top: 0;
+            }
+
+            span.titlePopup
+            {
+                position: absolute;
+                padding: 4px;
+                background-color: white;
+                border: 1px solid black;
+                border-radius: 3px;
+                min-width: 100px;
+                font-size: 14px;
+                line-height: 20px;
+                color: black;
+                font-family: 'Open Sans', sans-serif;
+                z-index: 99;
+            }
+
+            /* Not able to select certain tabs if hovering expands them to a different row */
+            .nav-tabs li a, .nav-tabs li a:hover
+            {
+                transition: none !important;
+            }
+
+            .nav-tabs li.active a:hover
+            {
+                padding-left: 25px !important;
+                padding-right: 25px !important;
+            }
+
+            .nav-tabs li a:hover
+            {
+                padding-left: 9px !important;
+                padding-right: 9px !important;
+            }
+
+            #footer
+            {
+                padding: 5px 0;
+            }
+
+            #footer-widgets
+            {
+                padding-bottom: 0;
+            }
+
+            #footer-widgets .col-md-4
+            {
+                margin-top: 5px;
+            }
+
+            #AdBlockWarning
+            {
+                position: fixed;
+                width: 400px;
+                top: 30%;
+                left: 50%;
+                margin-left: -200px;
+                z-index: 99999;
+            }
+
+            /* RadGrid style changes */
+            .RadGrid .rgRow > td, .RadGrid .rgAltRow > td, .RadGrid .rgEditRow > td, .RadGrid .rgFooter>td, .RadGrid .rgFilterRow > td, .RadGrid .rgHeader, .RadGrid .rgResizeCol, .RadGrid .rgGroupHeader td {
+                padding-left: 5px !important;
+                padding-right: 5px !important;
+            }
+
+            /* Datatables Styles */
+            table.dataTable thead .sorting, table.dataTable thead .sorting_asc, table.dataTable thead .sorting_desc {
+                cursor: pointer;
+            }
+
+            table.dataTable thead .sorting_asc, table.dataTable thead .sorting_desc {
+                background-image: none;
+                background: linear-gradient(#8ebcd4,#64a3c0 50%,#368eb1 50%,#7abace);
+            }
+
+            table.dataTable thead .sorting_asc:after {
+                content: "\f0de";
+                font-family: FontAwesome;
+                float: right;
+            }
+
+            table.dataTable thead .sorting_desc:after {
+                content: "\f0dd";
+                font-family: FontAwesome;
+                float: right;
+            }
+
+            .mbReportBadAd {
+                font-size: 10px;
+                cursor: pointer;
+                margin: -13px 0 0 auto;
+                max-width: 125px;
+                opacity: 0.5;
+                white-space: nowrap;
+            }
+
+            .mbReportBadAd:hover {
+                opacity: 1;
+            }
+
+            .advertisementBannerMonkeyBrokerTop .mbReportBadAd, .advertisementBannerMonkeyBrokerBottom .mbReportBadAd {
+                margin-right: 250px;
+            }
+
+            .ajaxContainer {
+                width: 100%;
+                padding: 5px 5px 5px 30px;
+                border: 1px solid gray;
+            }
+
+            .ajaxLoader {
+	            width: 30px;
+	            height: 30px;
+	            margin-left: 15px;
+	            border: 8px solid black;
+	            border-right-color: transparent;
+	            border-radius: 50%;
+	            box-shadow: 0 0 25px 2px #eee;
+	            -webkit-animation: ajaxLoaderSpin 1s linear infinite;
+	            -moz-animation: ajaxLoaderSpin 1s linear infinite;
+	            -ms-animation: ajaxLoaderSpin 1s linear infinite;
+	            -o-animation: ajaxLoaderSpin 1s linear infinite;
+	            animation: ajaxLoaderSpin 1s linear infinite;
+            }
+
+            @-webkit-keyframes ajaxLoaderSpin
+            {
+	            from { -webkit-transform: rotate(0deg); opacity: 0.4; }
+	            50%  { -webkit-transform: rotate(180deg); opacity: 1; }
+	            to   { -webkit-transform: rotate(360deg); opacity: 0.4; }
+            }
+
+            @-moz-keyframes ajaxLoaderSpin
+            {
+	            from { -moz-transform: rotate(0deg); opacity: 0.4; }
+	            50%  { -moz-transform: rotate(180deg); opacity: 1; }
+	            to   { -moz-transform: rotate(360deg); opacity: 0.4; }
+            }
+
+            @-ms-keyframes ajaxLoaderSpin
+            {
+	            from { -ms-transform: rotate(0deg); opacity: 0.4; }
+	            50%  { -ms-transform: rotate(180deg); opacity: 1; }
+	            to   { -ms-transform: rotate(360deg); opacity: 0.4; }
+            }
+
+            @-o-keyframes ajaxLoaderSpin
+            {
+	            from { -o-transform: rotate(0deg); opacity: 0.4; }
+	            50%  { -o-transform: rotate(180deg); opacity: 1; }
+	            to   { -o-transform: rotate(360deg); opacity: 0.4; }
+            }
+
+            @keyframes ajaxLoaderSpin
+            {
+	            from { transform: rotate(0deg); opacity: 0.2; }
+	            50%  { transform: rotate(180deg); opacity: 1; }
+	            to   { transform: rotate(360deg); opacity: 0.2; }
+            }
+
+            td.details-control {
+	            background: url('/Images/DetailsOpen.png') no-repeat center center;
+	            cursor: pointer;
+                min-width: 30px;
+            }
+            tr.shown td.details-control {
+	            background: url('/Images/DetailsClose.png') no-repeat center center;
+            }
+
+            /* Pagination CSS */
+            .dataTables_length {
+                display: none;
+            }
+
+            .dataTables_wrapper .dataTables_paginate {
+              padding-top: 0.25em;
+              padding-bottom: 0.25em;
+            }
+            .dataTables_wrapper .dataTables_paginate .paginate_button {
+              box-sizing: border-box;
+              display: inline-block;
+              min-width: 1.5em;
+              padding: 0.5em 1em;
+              margin-left: 2px;
+              text-align: center;
+              text-decoration: none !important;
+              cursor: pointer;
+              *cursor: hand;
+              color: #333 !important;
+              border: 1px solid transparent;
+              border-radius: 2px;
+            }
+            .dataTables_wrapper .dataTables_paginate .paginate_button.current, .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+              color: #333 !important;
+              border: 1px solid #979797;
+              background-color: white;
+              background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, white), color-stop(100%, #dcdcdc));
+              /* Chrome,Safari4+ */
+              background: -webkit-linear-gradient(top, white 0%, #dcdcdc 100%);
+              /* Chrome10+,Safari5.1+ */
+              background: -moz-linear-gradient(top, white 0%, #dcdcdc 100%);
+              /* FF3.6+ */
+              background: -ms-linear-gradient(top, white 0%, #dcdcdc 100%);
+              /* IE10+ */
+              background: -o-linear-gradient(top, white 0%, #dcdcdc 100%);
+              /* Opera 11.10+ */
+              background: linear-gradient(to bottom, white 0%, #dcdcdc 100%);
+              /* W3C */
+            }
+            .dataTables_wrapper .dataTables_paginate .paginate_button.disabled, .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:hover, .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:active {
+              cursor: default;
+              color: #666 !important;
+              border: 1px solid transparent;
+              background: transparent;
+              box-shadow: none;
+            }
+            .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+              color: white !important;
+              border: 1px solid #111;
+              background-color: #585858;
+              background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #585858), color-stop(100%, #111));
+              /* Chrome,Safari4+ */
+              background: -webkit-linear-gradient(top, #585858 0%, #111 100%);
+              /* Chrome10+,Safari5.1+ */
+              background: -moz-linear-gradient(top, #585858 0%, #111 100%);
+              /* FF3.6+ */
+              background: -ms-linear-gradient(top, #585858 0%, #111 100%);
+              /* IE10+ */
+              background: -o-linear-gradient(top, #585858 0%, #111 100%);
+              /* Opera 11.10+ */
+              background: linear-gradient(to bottom, #585858 0%, #111 100%);
+              /* W3C */
+            }
+            .dataTables_wrapper .dataTables_paginate .paginate_button:active {
+              outline: none;
+              background-color: #2b2b2b;
+              background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #2b2b2b), color-stop(100%, #0c0c0c));
+              /* Chrome,Safari4+ */
+              background: -webkit-linear-gradient(top, #2b2b2b 0%, #0c0c0c 100%);
+              /* Chrome10+,Safari5.1+ */
+              background: -moz-linear-gradient(top, #2b2b2b 0%, #0c0c0c 100%);
+              /* FF3.6+ */
+              background: -ms-linear-gradient(top, #2b2b2b 0%, #0c0c0c 100%);
+              /* IE10+ */
+              background: -o-linear-gradient(top, #2b2b2b 0%, #0c0c0c 100%);
+              /* Opera 11.10+ */
+              background: linear-gradient(to bottom, #2b2b2b 0%, #0c0c0c 100%);
+              /* W3C */
+              box-shadow: inset 0 0 3px #111;
+            }
+            .dataTables_wrapper .dataTables_paginate .ellipsis {
+              padding: 0 1em;
+            }
+            .dataTables_wrapper .dataTables_processing {
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              width: 100%;
+              height: 40px;
+              margin-left: -50%;
+              margin-top: -25px;
+              padding-top: 20px;
+              text-align: center;
+              font-size: 1.2em;
+              background-color: white;
+              background: -webkit-gradient(linear, left top, right top, color-stop(0%, rgba(255, 255, 255, 0)), color-stop(25%, rgba(255, 255, 255, 0.9)), color-stop(75%, rgba(255, 255, 255, 0.9)), color-stop(100%, rgba(255, 255, 255, 0)));
+              background: -webkit-linear-gradient(left, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.9) 25%, rgba(255, 255, 255, 0.9) 75%, rgba(255, 255, 255, 0) 100%);
+              background: -moz-linear-gradient(left, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.9) 25%, rgba(255, 255, 255, 0.9) 75%, rgba(255, 255, 255, 0) 100%);
+              background: -ms-linear-gradient(left, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.9) 25%, rgba(255, 255, 255, 0.9) 75%, rgba(255, 255, 255, 0) 100%);
+              background: -o-linear-gradient(left, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.9) 25%, rgba(255, 255, 255, 0.9) 75%, rgba(255, 255, 255, 0) 100%);
+              background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.9) 25%, rgba(255, 255, 255, 0.9) 75%, rgba(255, 255, 255, 0) 100%);
+            }
+            .dataTables_wrapper .dataTables_length,
+            .dataTables_wrapper .dataTables_filter,
+            .dataTables_wrapper .dataTables_info,
+            .dataTables_wrapper .dataTables_processing,
+            .dataTables_wrapper .dataTables_paginate {
+              color: #333;
+            }
+
+            .dataTables_wrapper .dataTables_info, .dataTables_wrapper .dataTables_paginate {
+                float: none;
+                text-align: center;
+            }
+            .dataTables_wrapper .dataTables_paginate {
+                margin-top: 0.5em;
+            }
+
+            div.dt-buttons {
+                display: inline;
+            }
+
+            div.dt-buttons > .btn {
+                padding: 2px;
+            }
+
+        </style>
+
+        
+
+    <style type="text/css">
+
+        #RadGridCharacterStatistics .dataTables_filter label
+        {
+            width: 100%;
+        }
+
+        .HeroSubRoleInfoLink
+        {
+            padding: 1px;
+            margin: 3px;
+            color: black;
+            float: right;
+        }
+
+    </style>
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $("#RadGridCharacterStatistics table").DataTable({ order: [[5, "desc"]] });
+
+            $(".HeroSubRoleInfoLink").insertAfter($("#RadGridCharacterStatistics input[type='search']"));
+
+            $(".HeroSubRoleInfoLink").click(function () {
+                $("#RadGridCharacterStatistics input[type='search']").val($(this).text()).trigger("keyup");
+            });
+        });
+
+    </script>
+
+<link href="https://www.hotslogs.com/Default" rel="canonical" /><link href="/WebResource.axd?d=XMvugF2skguXxGMFpflQoHQv26kEA4TOAKcw2qIpvSjgDEYBkvEV9QpDoLwyDRt9l7ndWZZf2DLRJ4KjYNAMtMxOL-DxwRTdA1Xz5VwiXJZMPoJ5OtpwVxpdLQyVrjdUKBQ3J5Uv5vGyVl-YW1NvtWfb-nY1&amp;t=635978685080000000" type="text/css" rel="stylesheet" class="Telerik_stylesheet" /><link href="/WebResource.axd?d=6h8W07vfUIeIy9hWuM9hTqvGBNj7zIqkaUBJbusJAPpuNjM_VMCZRF_-q0pjcVp4lfs-8cFhfKzWvDauN7qFWNtnQc8hhrPQWEbBLT8ZbRKa_krFZbYmBOEr33zEdyRqOJxemeXdCWfq4hnFvRb0Y7PmIG4rqOulp_G6zMAgMnZyTUUQ0&amp;t=635978685080000000" type="text/css" rel="stylesheet" class="Telerik_stylesheet" /><link href="/WebResource.axd?d=J7rNVAs_y9UdzGPL9IbOJApJ63-aUXqgKvlKJzRTRrr9lFQa3eyaZQKtDCD-PawLPkZOdQSgj6z1YNx18LuUxVwIx-C55b7NCBJgQd84zaXP2iHZW13x7XkuaXmLk4ackrgMd2BR89H2m-0xNgxBIIFjhzI1&amp;t=635978685080000000" type="text/css" rel="stylesheet" class="Telerik_stylesheet" /><link href="/WebResource.axd?d=NqllLRaOE1zDMT6S7EOH_VQjpbOV_B2E1S1s7ybONiQu5d5mxh3csiKxwCjjqjHFUO7lMAFKcTY6G-dVH38nFvnzGCYICRWjnu_sx3RamyljrvK8QA2IqK6PJ2Bs8-iaRZSw3lFtIbJQ9jsb5YtFyyvWAk81&amp;t=635978685080000000" type="text/css" rel="stylesheet" class="Telerik_stylesheet" /><link href="/WebResource.axd?d=W1T0Fb4QEpZqpZFLuEBEmwTTmm7p2xWpMdQpGykEIV-VYUnFNrWRZbs6UJHslZUqXvXVk889RMzbOqWR0JMcaJl7pAsw2J_yUXwzG4VghbSYB_0gAmOhFLVSC2JhArRM6UQBVMA9jaq8i7b60kYQezyQseU1&amp;t=635978685080000000" type="text/css" rel="stylesheet" class="Telerik_stylesheet" /><link href="/WebResource.axd?d=EnXCl5Lroe154u5JqBQkV8BQ7FnUCnkE9n5w78NIFnYmzmyVtJ-Iyh9mmr2wHCDfyGfVp6bqlI7DcfqmKESQTKqXHc6MWKMPA0JjJkoovds3Urtn7gNIurUUQOn_o8IJIy8CHw2&amp;t=635978685080000000" type="text/css" rel="stylesheet" class="Telerik_stylesheet" /><link href="/WebResource.axd?d=ViFDzkt85FW2FC4_NkCJHkX6A_xkN_rT-rm6ty1BDJBqArO12qcGqtzKiz8VlXMjSiXGMv8SESc4oKt7Gshpx9x-n18r_aYE84XCPkd4xK1tRFvv_O6MpLj-RAxbrEsjyjOGMidLioQeQcylYO78ZPUtyfII_7vZW9wBtxH9Wuj0QAoh0&amp;t=635978685080000000" type="text/css" rel="stylesheet" class="Telerik_stylesheet" /></head>
+
+    <body>
+        <form method="post" action="./Default" id="ctl01">
+<div class="aspNetHidden">
+<input type="hidden" name="ctl11_TSM" id="ctl11_TSM" value="" />
+<input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" value="" />
+<input type="hidden" name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="" />
+<input type="hidden" name="__LASTFOCUS" id="__LASTFOCUS" value="" />
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUJODczOTg3NDg2D2QWAmYPZBYGAgEPZBYCAg4PFgIeB1Zpc2libGVnZAIDD2QWDAICDxYCHwBoZAIEDxYCHwBoZAIHD2QWCgIHDxYCHglpbm5lcmh0bWwFelRoYW5rIHlvdSB0byBldmVyeW9uZSBmb3IgeW91ciBwYXJ0aWNpcGF0aW9uISAgU28gZmFyLCBldmVyeW9uZSBoYXMgdXBsb2FkZWQgYSB0b3RhbCBvZiA8c3Ryb25nPjYyLDM4Myw2OTY8L3N0cm9uZz4gZ2FtZXMhZAILDxYCHwEFG0xhc3QgVXBkYXRlZCAzOCBNaW51dGVzIEFnb2QCDw8WAh4EVGV4dAWGBjxkaXYgY2xhc3M9Ikhlcm9TdWJSb2xlSW5mb0xpbmsgYnRuIiBzdHlsZT0iYmFja2dyb3VuZC1jb2xvcjogI0RERERERDsiPlV0aWxpdHk8L2Rpdj48ZGl2IGNsYXNzPSJIZXJvU3ViUm9sZUluZm9MaW5rIGJ0biIgc3R5bGU9ImJhY2tncm91bmQtY29sb3I6ICNBNjYwRTg7Ij5TaWVnZTwvZGl2PjxkaXYgY2xhc3M9Ikhlcm9TdWJSb2xlSW5mb0xpbmsgYnRuIiBzdHlsZT0iYmFja2dyb3VuZC1jb2xvcjogI0UzM0I4RTsiPlN1c3RhaW5lZCBEYW1hZ2U8L2Rpdj48ZGl2IGNsYXNzPSJIZXJvU3ViUm9sZUluZm9MaW5rIGJ0biIgc3R5bGU9ImJhY2tncm91bmQtY29sb3I6ICNFMzNCM0I7Ij5CdXJzdCBEYW1hZ2U8L2Rpdj48ZGl2IGNsYXNzPSJIZXJvU3ViUm9sZUluZm9MaW5rIGJ0biIgc3R5bGU9ImJhY2tncm91bmQtY29sb3I6ICNFM0UzM0I7Ij5BbWJ1c2hlcjwvZGl2PjxkaXYgY2xhc3M9Ikhlcm9TdWJSb2xlSW5mb0xpbmsgYnRuIiBzdHlsZT0iYmFja2dyb3VuZC1jb2xvcjogIzYwQ0RDRDsiPlN1cHBvcnQ8L2Rpdj48ZGl2IGNsYXNzPSJIZXJvU3ViUm9sZUluZm9MaW5rIGJ0biIgc3R5bGU9ImJhY2tncm91bmQtY29sb3I6ICMzQkUzM0I7Ij5IZWFsZXI8L2Rpdj48ZGl2IGNsYXNzPSJIZXJvU3ViUm9sZUluZm9MaW5rIGJ0biIgc3R5bGU9ImJhY2tncm91bmQtY29sb3I6ICNFM0EyM0I7Ij5CcnVpc2VyPC9kaXY+PGRpdiBjbGFzcz0iSGVyb1N1YlJvbGVJbmZvTGluayBidG4iIHN0eWxlPSJiYWNrZ3JvdW5kLWNvbG9yOiAjQ0NDQzk5OyI+VGFuazwvZGl2PmQCFQ88KwAOAgAUKwACDxYMHgtfIURhdGFCb3VuZGceElJlc29sdmVkUmVuZGVyTW9kZQspclRlbGVyaWsuV2ViLlVJLlJlbmRlck1vZGUsIFRlbGVyaWsuV2ViLlVJLCBWZXJzaW9uPTIwMTYuMi41MDQuNDUsIEN1bHR1cmU9bmV1dHJhbCwgUHVibGljS2V5VG9rZW49MTIxZmFlNzgxNjViYTNkNAIeF0VuYWJsZUFqYXhTa2luUmVuZGVyaW5naB4cRW5hYmxlRW1iZWRkZWRCYXNlU3R5bGVzaGVldGceC18hSXRlbUNvdW50AgEeFUVuYWJsZUVtYmVkZGVkU2NyaXB0c2dkFwIFD1NlbGVjdGVkSW5kZXhlcxYABQtFZGl0SW5kZXhlcxYAARYEFgsPAgQUKwAEFCsABRYEHghEYXRhVHlwZRkrAh4Eb2luZAICZGRkBQZjb2x1bW4UKwAFFgQfCRkrAh8KAgNkZGQFEE1hcE5hbWVMb2NhbGl6ZWQUKwAFFgQfCRkrAR8KAgRkZGQFC0dhbWVzUGxheWVkFCsABRYEHwkZKVxTeXN0ZW0uVGltZVNwYW4sIG1zY29ybGliLCBWZXJzaW9uPTQuMC4wLjAsIEN1bHR1cmU9bmV1dHJhbCwgUHVibGljS2V5VG9rZW49Yjc3YTVjNTYxOTM0ZTA4OR8KAgVkZGQFDUF2ZXJhZ2VMZW5ndGhkZRQrAAALKXlUZWxlcmlrLldlYi5VSS5HcmlkQ2hpbGRMb2FkTW9kZSwgVGVsZXJpay5XZWIuVUksIFZlcnNpb249MjAxNi4yLjUwNC40NSwgQ3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj0xMjFmYWU3ODE2NWJhM2Q0ATwrAAcACyl0VGVsZXJpay5XZWIuVUkuR3JpZEVkaXRNb2RlLCBUZWxlcmlrLldlYi5VSSwgVmVyc2lvbj0yMDE2LjIuNTA0LjQ1LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPTEyMWZhZTc4MTY1YmEzZDQBFgIeBF9lZnMWAh4TY3NfcG9wdXBzX0Nsb3NlVGV4dAUFQ2xvc2VkFgofA2ceFElzQm91bmRUb0ZvcndhcmRPbmx5Zx4IRGF0YUtleXMWAB4FXyFDSVMXAB8HAglkAgEWCw8CBRQrAAUUKwAFFgIfCgICZGRkBQlDaGFyYWN0ZXIUKwAFFgQeB19kZWZpbnZlHwoCA2RkZAULR2FtZXNQbGF5ZWQUKwAFFgQfEGUfCgIEZGRkBQtHYW1lc0Jhbm5lZBQrAAUWBB8QZR8KAgVkZGQFClBvcHVsYXJpdHkUKwAFFgQfEGUfCgIGZGRkBQpXaW5QZXJjZW50ZGUUKwAACysGATwrAAcACysHARYCHwsWAh8MBQVDbG9zZWQWAh4JR3JpZExpbmVzCyojU3lzdGVtLldlYi5VSS5XZWJDb250cm9scy5HcmlkTGluZXMDZGYWBmYPFCsAA2RkZGQCAQ8WBRQrAAIPFgofA2cfDWcfDhYAHw8XAB8HAglkFwMFC18hSXRlbUNvdW50AgkFCF8hUENvdW50ZAUGXyFEU0lDAgkWAh4DX3NlFgQeAl9jAgEeATAWBB4DX2ZuBRBNYXBOYW1lTG9jYWxpemVkHgNfc28LKXVUZWxlcmlrLldlYi5VSS5HcmlkU29ydE9yZGVyLCBUZWxlcmlrLldlYi5VSSwgVmVyc2lvbj0yMDE2LjIuNTA0LjQ1LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPTEyMWZhZTc4MTY1YmEzZDQBFCsACRQrAAIUKwABBQdNYXBOYW1lFCsAAQUXQmF0dGxlZmllbGQgb2YgRXRlcm5pdHkUKwACFCsAAQUHTWFwTmFtZRQrAAEFEEJsYWNraGVhcnQncyBCYXkUKwACFCsAAQUHTWFwTmFtZRQrAAEFDUN1cnNlZCBIb2xsb3cUKwACFCsAAQUHTWFwTmFtZRQrAAEFDERyYWdvbiBTaGlyZRQrAAIUKwABBQdNYXBOYW1lFCsAAQUQR2FyZGVuIG9mIFRlcnJvchQrAAIUKwABBQdNYXBOYW1lFCsAAQUQSW5mZXJuYWwgU2hyaW5lcxQrAAIUKwABBQdNYXBOYW1lFCsAAQUKU2t5IFRlbXBsZRQrAAIUKwABBQdNYXBOYW1lFCsAAQUYVG9tYiBvZiB0aGUgU3BpZGVyIFF1ZWVuFCsAAhQrAAEFB01hcE5hbWUUKwABBQ5Ub3dlcnMgb2YgRG9vbRYEZGRkZBYCZ2cWAmYPZBYoZg9kFgJmD2QWCGYPDxYCHwIFBiZuYnNwO2RkAgEPDxYEHwIFBiZuYnNwOx8AaGRkAgIPDxYCHwIFBiZuYnNwO2RkAgMPZBYCAgIPDxYCHhFVc2VTdWJtaXRCZWhhdmlvcmhkZAIBDw8WAh8AaGQWAmYPZBYMZg8PFgIfAgUGJm5ic3A7ZGQCAQ8PFgIfAgUGJm5ic3A7ZGQCAg8PFgIfAgUGJm5ic3A7ZGQCAw8PFgIfAgUGJm5ic3A7ZGQCBA8PFgIfAgUGJm5ic3A7ZGQCBQ8PFgIfAgUGJm5ic3A7ZGQCAg8PFgIeBF9paWgFATBkFgxmD2QWAmYPDxYCHxdoZGQCAQ8PFgQfAgUGJm5ic3A7HwBoZGQCAg9kFgJmDw8WAh4ISW1hZ2VVcmwFRS8vZDFpMWp4cmRoMmt2d3kuY2xvdWRmcm9udC5uZXQvSW1hZ2VzL01hcHMvQmF0dGxlZmllbGRvZkV0ZXJuaXR5LnBuZ2RkAgMPZBYCZg8PFgYfAgUXQmF0dGxlZmllbGQgb2YgRXRlcm5pdHkeC05hdmlnYXRlVXJsBTNodHRwOi8vaG90c2NvdW50ZXJzLmNvbS8jL21hcC9CYXR0bGVmaWVsZG9mRXRlcm5pdHkeB1Rvb2xUaXAFF0JhdHRsZWZpZWxkIG9mIEV0ZXJuaXR5ZGQCBA8PFgIfAgUFMTU0OTdkZAIFDw8WAh8CBQgwMDoyMDoxOGRkAgQPDxYCHwBoZBYCAgEPDxYIHgpDb2x1bW5TcGFuAgQeDVZlcnRpY2FsQWxpZ24LKidTeXN0ZW0uV2ViLlVJLldlYkNvbnRyb2xzLlZlcnRpY2FsQWxpZ24BHg9Ib3Jpem9udGFsQWxpZ24LKilTeXN0ZW0uV2ViLlVJLldlYkNvbnRyb2xzLkhvcml6b250YWxBbGlnbgEeBF8hU0ICgIAMZBYCZg8WBRQrAAIPFkAeBV9yYWRmZx4FX2djaWQLKX5UZWxlcmlrLldlYi5VSS5HcmlkQ29tbWFuZEl0ZW1EaXNwbGF5LCBUZWxlcmlrLldlYi5VSSwgVmVyc2lvbj0yMDE2LjIuNTA0LjQ1LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPTEyMWZhZTc4MTY1YmEzZDQAHgdndHZfZGlyCyl+VGVsZXJpay5XZWIuVUkuR3JpZFRhYmxlVGV4dERpcmVjdGlvbiwgVGVsZXJpay5XZWIuVUksIFZlcnNpb249MjAxNi4yLjUwNC40NSwgQ3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj0xMjFmYWU3ODE2NWJhM2Q0AB4IX3JhZG5kcnQFHE5vIGNoaWxkIHJlY29yZHMgdG8gZGlzcGxheS4fEQsrCAMeBV91YWRmaB4IZ3R2X3N1bW1lHgRfaGxtCysGAR4FX2RrbnMVAB4JZ3R2X2ZyYW1lCyl2VGVsZXJpay5XZWIuVUkuR3JpZFRhYmxlRnJhbWUsIFRlbGVyaWsuV2ViLlVJLCBWZXJzaW9uPTIwMTYuMi41MDQuNDUsIEN1bHR1cmU9bmV1dHJhbCwgUHVibGljS2V5VG9rZW49MTIxZmFlNzgxNjViYTNkNAgeGVJldGFpbkV4cGFuZFN0YXRlT25SZWJpbmRoHgRfdmljZh4JQWNjZXNzS2V5ZR4GZ3R2X3RsCyl3VGVsZXJpay5XZWIuVUkuR3JpZFRhYmxlTGF5b3V0LCBUZWxlcmlrLldlYi5VSSwgVmVyc2lvbj0yMDE2LjIuNTA0LjQ1LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPTEyMWZhZTc4MTY1YmEzZDQAHgRfaGRlaB4EX2dkZWceCkRhdGFNZW1iZXJlHgVfZXNodGceBV9naWlkCyl9VGVsZXJpay5XZWIuVUkuR3JpZEluc2VydEl0ZW1EaXNwbGF5LCBUZWxlcmlrLldlYi5VSSwgVmVyc2lvbj0yMDE2LjIuNTA0LjQ1LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPTEyMWZhZTc4MTY1YmEzZDQAHgRfZ2xtCyl5VGVsZXJpay5XZWIuVUkuR3JpZEdyb3VwTG9hZE1vZGUsIFRlbGVyaWsuV2ViLlVJLCBWZXJzaW9uPTIwMTYuMi41MDQuNDUsIEN1bHR1cmU9bmV1dHJhbCwgUHVibGljS2V5VG9rZW49MTIxZmFlNzgx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Hx8CgIAgHzgVAB85Zx86ZR87aB88Zx89CysSAWQXABYCHxIWCB8+aB8/Zx8TAgEfFBYEHxYLKwkCHxUFCldpblBlcmNlbnRkFgVkZGRkZBYCZ2dkAgIPD2QWAh4Fc3R5bGUFDWRpc3BsYXk6bm9uZTsWAmYPPCsADQEADxYEBRtVc2VDb2x1bW5IZWFkZXJzQXNTZWxlY3RvcnNoBRhVc2VSb3dIZWFkZXJzQXNTZWxlY3RvcnNoDxYEHhNFbmFibGVFbWJlZGRlZFNraW5zZx4RRW5hYmxlQXJpYVN1cHBvcnRoZGQCFw8PFgIfBWhkZAINDxBkZBYBZmQCDg8QZGQWAWZkAg8PEGRkFgFmZAIFDxYCHwBnZBgDBR5fX0NvbnRyb2xzUmVxdWlyZVBvc3RCYWNrS2V5X18WAgUsY3RsMDAkTWFpbkNvbnRlbnQkUmFkR3JpZENoYXJhY3RlclN0YXRpc3RpY3MFJmN0bDAwJE1haW5Db250ZW50JFJhZEdyaWRNYXBTdGF0aXN0aWNzBTJjdGwwMCRNYWluQ29udGVudCRSYWRHcmlkQ2hhcmFjdGVyU3RhdGlzdGljcyRjdGwwMA8UKwADFCsAAmQXAwULXyFJdGVtQ291bnQCNAUIXyFQQ291bnRkBQZfIURTSUMCNBYCHxIWAh8TZmRkBSxjdGwwMCRNYWluQ29udGVudCRSYWRHcmlkQ2hhcmFjdGVyU3RhdGlzdGljcw8UKwACZBcCBQ9TZWxlY3RlZEluZGV4ZXMWAAULRWRpdEluZGV4ZXMWAGS7AEihtHjT0pmfvRyA+tmUZB3GxA==" />
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+var theForm = document.forms['ctl01'];
+if (!theForm) {
+    theForm = document.ctl01;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+//]]>
+</script>
+
+
+<script src="/WebResource.axd?d=J7DAMIAWPzch3psUWpbKu1PLhw3mtpY3JxWNhTZCHY954j8yu8HSxwgRwBw0drQyrty6EP87J6XhY2giljpGd6fQvUQ1&amp;t=635793027671809273" type="text/javascript"></script>
+
+
+<script src="/Telerik.Web.UI.WebResource.axd?_TSM_HiddenField_=ctl11_TSM&amp;compress=1&amp;_TSM_CombinedScripts_=%3b%3bSystem.Web.Extensions%2c+Version%3d4.0.0.0%2c+Culture%3dneutral%2c+PublicKeyToken%3d31bf3856ad364e35%3aen-US%3a93a6b8ed-f453-4cc5-9080-8017894b33b0%3aea597d4b%3ab25378d2%3bTelerik.Web.UI%2c+Version%3d2016.2.504.45%2c+Culture%3dneutral%2c+PublicKeyToken%3d121fae78165ba3d4%3aen-US%3a90ca7d67-b00e-437e-ad14-27cf2faf3a32%3a16e4e7cd%3a33715776%3a58366029%3af7645509%3a88144a7a%3aed16cbdc" type="text/javascript"></script>
+<div class="aspNetHidden">
+
+	<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="CA0B0334" />
+	<input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="/wEdADtbwaAQgSAVIcOIupyNvNCGvQKDGQah9TqQx9H51wu3DDsjR0BHd3CCxdUfSQ9pCuBNRvN8UYVF+WPNTkOHoVjhtnHisRXC9jTdIuYpalBRTQ0RLHHmQyEstceZ39YgXo5SmC8h9+xKL+HgZKH0QTLDeXWugvGN9PdinfNACXRahBF0fMjWZf2WH0EXnwiGNelNCHkjs4EqN00rMmTvfmB5aAy161jkdg2X5jw5IS+mWNih6zHv/xWKyAyVeNcTjKdCMPjYojLWKcI2eyzEUpbrvU8W2TuuAfeY+gz5oYZSZoVutut7VonYQnRca+f3n2qhddig43F0WkpgT68rD0RvOxKPzYTJTB755UYMvm5RmJhidv8ivKHfYVgTtz8dEyjNdK5jA2cad6NdnsKzQjx1V3sCZRjj17ygmOiWrUSueUxwkwUyTPuGu3BigbU3DAMNytiHdz2m6CK5PsnrLuldnO6JX9Rzw1hhN+AncBwXsfh9enQqtgYD/hRfAP2XX8YuLehml7PuWBxiBq4PpF19syfJG+oE6qN2R+6Vr9aR8L0bMznWwWNNV/UMbDnFyZYsUK/t2+JWvuPNDzMaPS4zQLdTlk1u0glT9TaBLwIgqxjnOTcKvNFuU0xqizuQOX+2jn3YpzFFkHU8o+bQHjwSKF1Vp7Mu0sRg7PwGtJ0WMowRAaGkdc1IyskF0tXX8DOOPCMvz2DXzcIJy20b2yK58ztg+dXQdbUDHOxn4wGXSNqZX4Xc5pc4CX6WjiT0Sn6WrQaW6PzP1WOgAH1P3dQCfBC1IqeiKKecAYsihrBsqvUhiUg//32Q1JhwZNP9VmARgFz7HIQxgogLsaNhRtAcKNL54awbgW8maK/KEYn2MFL3RvmcA3EFicf7EaQNUHOS3E4JESomhjUHFZWsJOFYYSCSZTFsvLRHRWFhCSRcGjP8oAykCmS+/EL6RE1cInJ+kFqVsSVVn5yXomKUCGT3X5DDyiA7LOnKcD2NDY1stZYbYgpBncL09cIC+DMmeC7Q1IFwmZniqPJHczc10yA7meVFFG0Zgp3GaSFZocdgOUQYwfH1nTpKb8WnY0JioX3wrjSTEfgc8KwSGHenSUT2lFzPJ6KVY4K/EWgQ2h4rKILKmzVqaL77N3G2hZY9UFzFsu/T6zmg83rAmXUaxRmUqhraxGa5DQN64arays49uRYIRFlxU+Z9WYenuAt0+c3Y9xSH03SbnP4Gq1Q9jrY95SwiZgImP8CN5O3g6PPhDxilZzxpjyKhTbYyycxoH7xTTHP0" />
+</div>
+
+            <script type="text/javascript">
+//<![CDATA[
+Sys.WebForms.PageRequestManager._initialize('ctl00$ctl11', 'ctl01', ['tctl00$MainContent$ctl00$MainContent$RadGridMapStatisticsPanel','','tctl00$MainContent$RadAjaxManager1SU','MainContent_RadAjaxManager1SU'], ['ctl00$MainContent$RadGridMapStatistics',''], [], 90, 'ctl00');
+//]]>
+</script>
+
+
+            <div id="AdBlockWarning" class="alert alert-warning" style="display: none;">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <h4>Information</h4>
+                <p>To remain a free service, HOTS Logs relies on website advertisements.</p>
+                <p>Your browser has been automatically set to receive a lighter ad experience.</p>
+                <p>Please consider white listing this site to help develop new features.</p>
+                <p>If you want to disable all ads, please consider directly supporting via a <a href="/Account/Premium">Premium account</a></p>
+                <p>Thank you!  <a href="https://www.reddit.com/user/barrett777/">Ben Barrett, Creator</a></p>
+            </div>
+
+            <nav id="header" role="navigation" class="navbar navbar-static-top navbar-default no-print ">
+                <div class="container">
+                    <!-- Brand and toggle get grouped for better mobile display -->
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" style="position: relative;">
+                            <span class="sr-only">Toggle navigation</span>
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <a href="/Default"><img src="//d1i1jxrdh2kvwy.cloudfront.net/Images/logo.png" alt="HOTS Logs"></a>
+                    </div> <!-- navbar-header -->
+
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav navbar-right">
+                            <li><a href="/Event/List">eSports</a></li>
+                            <li class="dropdown">
+                                <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">Social</a>
+                                <ul class="dropdown-menu dropdown-menu-left">
+                                    <li><a href="/Social/GroupFinder">Group Finder</a></li>
+                                    <li><a href="/Social/GuessTheVictor">Guess the Victor</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">Leaderboard</a>
+                                <ul class="dropdown-menu dropdown-menu-left">
+                                    <li><a href="/Rankings?GameMode=5">Team League</a></li>
+                                    <li><a href="/Rankings?GameMode=4">Hero League</a></li>
+                                    <li><a href="/Rankings?GameMode=3">Quick Match</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">Hero Details</a>
+                                <ul class="dropdown-menu dropdown-menu-left">
+                                    <li><a href="/Sitewide/HeroDetails">Hero Details</a></li>
+                                    <li><a href="/Sitewide/HeroAndMapStatistics">Sitewide Hero and Map Statistics</a></li>
+                                    <li><a href="/Sitewide/TeamCompositions">Team Compositions</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">Replays</a>
+                                <ul class="dropdown-menu dropdown-menu-left">
+                                    <li><a href="/Replays/ReplaySearch">Search and Download Replays</a></li>
+                                    <li><a href="/Player/MatchHistory">Share Replay</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">My Account</a>
+                                <ul class="dropdown-menu dropdown-menu-left">
+                                    <li><a href="/Player/Profile">Profile</a></li>
+                                    <li><a href="/Player/HeroOverview">Hero Overview</a></li>
+                                    <li><a href="/Team/Overview">Team Overview</a></li>
+                                    <li><a href="/Player/MatchHistory">Match History</a></li>
+                                    <li><a href="/Account/Upload">Upload Replays</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#" class="dropdown-toggle playerSearchDropdown" data-toggle="dropdown"><i class="fa fa-search"></i></a>
+                                <div class="dropdown-menu dropdown-menu-right" style="padding: 10px;">
+                                    <table><tr>
+                                        <td style="padding-right: 10px;"><input name="ctl00$ctl30" type="text" class="TextBoxPlayerSearch" style="color: black;" placeholder="Find a Player" /></td>
+                                        <td><div ID="ButtonPlayerSearch" class="btn btn-border btn-ar btn-primary">Search</div></td>
+                                    </tr></table>
+                                </div>
+                            </li>
+                            
+                        </ul>
+                    </div><!-- navbar-collapse -->
+                </div><!-- container -->
+            </nav>
+
+            <div id="body" class="container" style="min-height: 800px;">
+                <section class="content-wrapper main-content clear-fix">
+                    <div id="advertisementPlaceholder"></div>
+                    
+                    
+                    <div id="advertisementBannerMonkeyBrokerRight" style="width: 300px;"><div id="mb_adslot_1" class="advertisementBannerMonkeyBrokerRight"></div></div>
+                    <div id="advertisementBannerMonkeyBrokerRightThin" style="width: 160px;"><div id="mb_adslot_2" class="advertisementBannerMonkeyBrokerRightThin"></div></div>
+                    
+
+    
+
+    <h2>Welcome to HOTS Logs!</h2>
+
+    <p>The best site dedicated to analyzing Heroes of the Storm replay files. <span id="MainContent_pTotalGamesPlayedMessage">Thank you to everyone for your participation!  So far, everyone has uploaded a total of <strong>62,383,696</strong> games!</span></p>
+    <p>Want to learn more?  MFPallytime made a <a href="https://www.youtube.com/watch?v=q8AB_WeeSE4">great YouTube video</a> explaining how to use HOTS Logs</p>
+
+    <h2>Sitewide Hero Statistics over the Last 7 Days</h2>
+    <p><strong>Note: </strong>Includes Hero League matches with <strong>Hero level 5+.</strong> <span id="MainContent_pLastUpdated">Last Updated 38 Minutes Ago</span>. <a href="/Sitewide/HeroAndMapStatistics">Additional Filters Available Here</a>.</p>
+
+    <div id="MainContent_advertisementBannerMonkeyBrokerTopReplacement" class="advertisementBanner advertisementBannerMonkeyBrokerTop" style="margin: 15px 0;"><script type="text/javascript"> FillMonkeyBrokerHorizontal1(); </script></div>
+
+    <div class="HeroSubRoleInfoLink btn" style="background-color: #DDDDDD;">Utility</div><div class="HeroSubRoleInfoLink btn" style="background-color: #A660E8;">Siege</div><div class="HeroSubRoleInfoLink btn" style="background-color: #E33B8E;">Sustained Damage</div><div class="HeroSubRoleInfoLink btn" style="background-color: #E33B3B;">Burst Damage</div><div class="HeroSubRoleInfoLink btn" style="background-color: #E3E33B;">Ambusher</div><div class="HeroSubRoleInfoLink btn" style="background-color: #60CDCD;">Support</div><div class="HeroSubRoleInfoLink btn" style="background-color: #3BE33B;">Healer</div><div class="HeroSubRoleInfoLink btn" style="background-color: #E3A23B;">Bruiser</div><div class="HeroSubRoleInfoLink btn" style="background-color: #CCCC99;">Tank</div>
+    <div id="RadGridCharacterStatistics" class="RadGrid RadGrid_WebBlue" style="width:100%;">
+
+<!-- 2016.2.504.45 --><table class="rgMasterTable" id="" style="width:100%;table-layout:auto;empty-cells:show;">
+	<colgroup>
+		<col  />
+		<col  />
+		<col  />
+		<col  />
+		<col  />
+		<col  />
+		<col  />
+		<col style="display:none;" />
+		<col style="display:none;" />
+	</colgroup>
+<thead>
+		<tr>
+			<th scope="col" class="rgHeader">&nbsp;</th><th scope="col" class="rgHeader">Hero</th><th scope="col" class="rgHeader">Games Played</th><th scope="col" class="rgHeader">Games Banned</th><th scope="col" title="Games Played + Games Banned" class="rgHeader">Popularity</th><th scope="col" class="rgHeader">Win Percent</th><th scope="col" class="rgHeader">% Δ</th><th scope="col" class="rgHeader" style="display:none;">&nbsp;</th><th scope="col" class="rgHeader" style="display:none;">&nbsp;</th>
+		</tr>
+	</thead><tbody>
+	<tr class="rgRow" id="__0">
+		<td align="center"><img id="imgcolumn" src="//d1i1jxrdh2kvwy.cloudfront.net/Images/Heroes/Portraits/TheLostVikings.png" style="height:40px;width:40px;" /></td><td><a title="The Lost Vikings" href="/Sitewide/HeroDetails?Hero=The Lost Vikings">The Lost Vikings</a></td><td>4279</td><td>1893</td><td>4.4 %</td><td>57.1 %</td><td style="color:Green;">1.7 %</td><td style="display:none;">Specialist</td><td style="display:none;">Utility</td>
+	</tr><tr class="rgAltRow" id="__1">
+		<td align="center"><img id="imgcolumn" src="//d1i1jxrdh2kvwy.cloudfront.net/Images/Heroes/Portraits/Rexxar.png" style="height:40px;width:40px;" /></td><td><a title="Rexxar" href="/Sitewide/HeroDetails?Hero=Rexxar">Rexxar</a></td><td>4676</td><td>168</td><td>3.5 %</td><td>55.4 %</td><td style="color:Green;">3.0 %</td><td style="display:none;">Warrior</td><td style="display:none;">Tank</td>
+	</tr><tr class="rgRow" id="__2">
+		<td align="center"><img id="imgcolumn" src="//d1i1jxrdh2kvwy.cloudfront.net/Images/Heroes/Portraits/Kaelthas.png" style="height:40px;width:40px;" /></td><td><a title="Kael&#39;thas" href="/Sitewide/HeroDetails?Hero=Kael&#39;thas">Kael'thas</a></td><td>54849</td><td>79192</td><td>96.1 %</td><td>54.6 %</td><td style="color:Red;">-0.4 %</td><td style="display:none;">Assassin</td><td style="display:none;">Burst Damage</td>
+	</tr><tr class="rgAltRow" id="__3">
+		<td align="center"><img id="imgcolumn" src="//d1i1jxrdh2kvwy.cloudfront.net/Images/Heroes/Portraits/Nazeebo.png" style="height:40px;width:40px;" /></td><td><a title="Nazeebo" href="/Sitewide/HeroDetails?Hero=Nazeebo">Nazeebo</a></td><td>26883</td><td>562</td><td>19.7 %</td><td>54.0 %</td><td style="color:Red;">-0.6 %</td><td style="display:none;">Specialist</td><td style="display:none;">Sustained Damage</td>
+	</tr><tr class="rgRow" id="__4">
+		<td align="center"><img id="imgcolumn" src="//d1i1jxrdh2kvwy.cloudfront.net/Images/Heroes/Portraits/Xul.png" style="height:40px;width:40px;" /></td><td><a title="Xul" href="/Sitewide/HeroDetails?Hero=Xul">Xul</a></td><td>37303</td><td>9357</td><td>33.4 %</td><td>53.4 %</td><td style="color:Red;">-0.6 %</td><td style="display:none;">Specialist</td><td style="display:none;">Siege</td>
+	</tr><tr class="rgAltRow" id="__5">
+		<td align="center"><img id="imgcolumn" src="//d1i1jxrdh2kvwy.cloudfront.net/Images/Heroes/Portraits/Diablo.png" style="height:40px;width:40px;" /></td><td><a title="Diablo" href="/Sitewide/HeroDetails?Hero=Diablo">Diablo</a></td><td>36714</td><td>4858</td><td>29.8 %</td><td>53.2 %</td><td style="color:Green;">0.2 %</td><td style="display:none;">Warrior</td><td style="display:none;">Tank</td>
+	</tr><tr class="rgRow" id="__6">
+		<td align="center"><img id="imgcolumn" src="//d1i1jxrdh2kvwy.cloudfront.net/Images/Heroes/Portraits/LiLi.png" style="height:40px;width:40px;" /></td><td><a title="Li Li" href="/Sitewide/HeroDetails?Hero=Li Li">Li Li</a></td><td>42642</td><td>4640</td><td>33.9 %</td><td>52.0 %</td><td style="color:Green;">0.3 %</td><td style="display:none;">Support</td><td style="display:none;">Healer</td>
+	</tr><tr class="rgAltRow" id="__7">
+		<td align="center"><img id="imgcolumn" src="//d1i1jxrdh2kvwy.cloudfront.net/Images/Heroes/Portraits/Gazlowe.png" style="height:40px;width:40px;" /></td><td><a title="Gazlowe" href="/Sitewide/HeroDetails?Hero=Gazlowe">Gazlowe</a></td><td>12582</td><td>552</td><td>9.4 %</td><td>51.6 %</td><td style="color:Green;">0.0 %</td><td style="display:none;">Specialist</td><td style="display:none;">Siege</td>
+	</tr><tr class="rgRow" id="__8">
+		<td align="center"><img id="imgcolumn" src="//d1i1jxrdh2kvwy.cloudfront.net/Images/Heroes/Portraits/Tyrande.png" style="height:40px;width:40px;" /></td><td><a title="Tyrande" href="/Sitewide/HeroDetails?Hero=Tyrande">Tyrande</a></td><td>29403</td><td>2255</td><td>22.7 %</td><td>51.5 %</td><td style="color:Green;">0.3 %</td><td style="display:none;">Support</td><td style="display:none;">Support</td>
+	</tr><tr class="rgAltRow" id="__9">
+		<td align="center"><img id="imgcolumn" src="//d1i1jxrdh2kvwy.cloudfront.net/Images/Heroes/Portraits/Zagara.png" style="height:40px;width:40px;" /></td><td><a title="Zagara" href="/Sitewide/HeroDetails?Hero=Zagara">Zagara</a></td><td>45299</td><td>8258</td><td>38.4 %</td><td>51.5 %</td><td style="color:Green;">0.7 %</td><td style="display:none;">Specialist</td><td style="display:none;">Siege</td>
+	</tr><tr class="rgRow" id="__10">
+		<td align="center"><img id="imgcolumn" src="//d1i1jxrdh2kvwy.cloudfront.net/Images/Heroes/Portraits/Johanna.png" style="height:40px;width:40px;" /></td><td><a title="Johanna" href="/Sitewide/HeroDetails?Hero=Johanna">Johanna</a></td><td>52612</td><td>15220</td><td>48.6 %</td><td>51.5 %</td><td style="color:Green;">0.0 %</td><td style="display:none;">Warrior</td><td style="display:none;">Tank</td>
+	</tr><tr class="rgAltRow" id="__11">
+		<td align="center"><img id="imgcolumn" src="//d1i1jxrdh2kvwy.cloudfront.net/Images/Heroes/Portraits/Chen.png" style="height:40px;width:40px;" /></td><td><a title="Chen" href="/Sitewide/HeroDetails?Hero=Chen">Chen</a></td><td>8198</td><td>266</td><td>6.1 %</td><td>51.3 %</td><td style="color:Green;">1.5 %</td><td style="display:none;">Warrior</td><td style="display:none;">Tank</td>
+	</tr><tr class="rgRow" id="__12">
+		<td align="center"><img id="imgcolumn" src="//d1i1jxrdh2kvwy.cloudfront.net/Images/Heroes/Portraits/Anubarak.png" style="height:40px;width:40px;" /></td><td><a title="Anub&#39;arak" href="/Sitewide/HeroDetails?Hero=Anub&#39;arak">Anub'arak</a></td><td>11718</td><td>556</td><td>8.8 %</td><td>51.2 %</td><td style="color:Green;">3.5 %</td><td style="display:none;">Warrior</td><td style="display:none;">Bruiser</td>
+	</tr><tr class="rgAltRow" id="__13">
+		<td align="center"><img id="imgcolumn" src="//d1i1jxrdh2kvwy.cloudfront.net/Images/Heroes/Portraits/Brightwing.png" style="height:40px;width:40px;" /></td><td><a title="Brightwing" href="/Sitewide/HeroDetails?Hero=Brightwing">Brightwing</a></td><td>29786</td><td>4294</td><td>24.4 %</td><td>51.1 %</td><td style="color:Red;">-0.5 %</td><td style="display:none;">Support</td><td style="display:none;">Healer</td>
+	</tr><tr class="rgRow" id="__14">
+		<td align="center"><img id="imgcolumn" src="//d1i1jxrdh2kvwy.cloudfront.net/Images/Heroes/Portraits/Thrall.png" style="height:40px;width:40px;" /></td><td><a title="Thrall" href="/Sitewide/HeroDetails?Hero=Thrall">Thrall</a></td><td>53659</td><td>9211</td><td>45.1 %</td><td>51.1 %</td><td style="color:Green;">0.6 %</td><td style="display:none;">Assassin</td><td style="display:none;">Sustained Damage</td>
+	</tr><tr class="rgAltRow" id="__15">
+		<td align="center"><img id="imgcolumn" src="//d1i1jxrdh2kvwy.cloudfront.net/Images/Heroes/Portraits/Azmodan.png" style="height:40px;width:40px;" /></td><td><a title="Azmodan" href="/Sitewide/HeroDetails?Hero=Azmodan">Azmodan</a></td><td>9959</td><td>566</td><td>7.5 %</td><td>50.9 %</td><td style="color:Green;">0.0 %</td><td style="display:none;">Specialist</td><td style="display:none;">Siege</td>
+	</tr><tr class="rgRow" id="__16">
+		<td align="center"><img id="imgcolumn" src="//d1i1jxrdh2kvwy.cloudfront.net/Images/Heroes/Portraits/Falstad.png" style="height:40px;width:40px;" /></td><td><a title="Falstad" href="/Sitewide/HeroDetails?Hero=Falstad">Falstad</a></td><td>55363</td><td>10379</td><td>47.1 %</td><td>50.6 %</td><td style="color:Green;">1.2 %</td><td style="display:none;">Assassin</td><td style="display:none;">Sustained Damage</td>
+	</tr><tr class="rgAltRow" id="__17">
+		<td align="center"><img id="imgcolumn" src="//d1i1jxrdh2kvwy.cloudfront.net/Images/Heroes/Portraits/TheButcher.png" style="height:40px;width:40px;" /></td><td><a title="The Butcher" href="/Sitewide/HeroDetails?Hero=The Butcher">The Butcher</a></td><td>10520</td><td>684</td><td>8.0 %</td><td>50.5 %</td><td style="color:Green;">0.4 %</td><td style="display:none;">Assassin</td><td style="display:none;">Ambusher</td>
+	</tr><tr class="rgRow" id="__18">
+		<td align="center"><img id="imgcolumn" src="//d1i1jxrdh2kvwy.cloudfront.net/Images/Heroes/Portraits/Rehgar.png" style="height:40px;width:40px;" /></td><td><a title="Rehgar" href="/Sitewide/HeroDetails?Hero=Rehgar">Rehgar</a></td><td>58616</td><td>28375</td><td>62.3 %</td><td>50.4 %</td><td style="color:Red;">-0.2 %</td><td style="display:none;">Support</td><td style="display:none;">Healer</td>
+	</tr><tr class="rgAltRow" id="__19">
+		<td align="center"><img id="imgcolumn" src="//d1i1jxrdh2kvwy.cloudfront.net/Images/Heroes/Portraits/Nova.png" style="height:40px;width:40px;" /></td><td><a title="Nova" href="/Sitewide/HeroDetails?Hero=Nova">Nova</a></td><td>20213</td><td>2926</td><td>16.6 %</td><td>50.3 %</td><td style="color:Green;">1.6 %</td><td style="display:none;">Assassin</td><td style="display:none;">Ambusher</td>
+	</tr><tr class="rgRow" id="__20">
+		<td align="center"><img id="imgcolumn" src="//d1i1jxrdh2kvwy.cloudfront.net/Images/Heroes/Portraits/Raynor.png" style="height:40px;width:40px;" /></td><td><a title="Raynor" href="/Sitewide/HeroDetails?Hero=Raynor">Raynor</a></td><td>37637</td><td>1018</td><td>27.7 %</td><td>50.2 %</td><td style="color:Green;">0.8 %</td><td style="display:none;">Assassin</td><td style="display:none;">Sustained Damage</td>
+	</tr><tr class="rgAltRow" id="__21">
+		<td align="center"><img id="imgcolumn" src="//d1i1jxrdh2kvwy.cloudfront.net/Images/Heroes/Portraits/Stitches.png" style="height:40px;width:40px;" /></td><td><a title="Stitches" href="/Sitewide/HeroDetails?Hero=Stitches">Stitches</a></td><td>24084</td><td>999</td><td>18.0 %</td><td>50.1 %</td><td style="color:Red;">-0.4 %</td><td style="display:none;">Warrior</td><td style="display:none;">Tank</td>
+	</tr><tr class="rgRow" id="__22">
+		<td align="center"><img id="imgcolumn" src="//d1i1jxrdh2kvwy.cloudfront.net/Images/Heroes/Portraits/Valla.png" style="height:40px;width:40px;" /></td><td><a title="Valla" href="/Sitewide/HeroDetails?Hero=Valla">Valla</a></td><td>50510</td><td>1389</td><td>37.2 %</td><td>49.9 %</td><td style="color:Green;">0.9 %</td><td style="display:none;">Assassin</td><td style="display:none;">Sustained Damage</td>
+	</tr><tr class="rgAltRow" id="__23">
+		<td align="center"><img id="imgcolumn" src="//d1i1jxrdh2kvwy.cloudfront.net/Images/Heroes/Portraits/SgtHammer.png" style="height:40px;width:40px;" /></td><td><a title="Sgt. Hammer" href="/Sitewide/HeroDetails?Hero=Sgt. Hammer">Sgt. Hammer</a></td><td>10685</td><td>2734</td><td>9.6 %</td><td>49.8 %</td><td style="color:Red;">-1.1 %</td><td style="display:none;">Specialist</td><td style="display:none;">Siege</td>
+	</tr><tr class="rgRow" id="__24">
+		<td align="center"><img id="imgcolumn" src="//d1i1jxrdh2kvwy.cloudfront.net/Images/Heroes/Portraits/Murky.png" style="height:40px;width:40px;" /></td><td><a title="Murky" href="/Sitewide/HeroDetails?Hero=Murky">Murky</a></td><td>5637</td><td>461</td><td>4.4 %</td><td>49.7 %</td><td style="color:Red;">-0.2 %</td><td style="display:none;">Specialist</td><td style="display:none;">Utility</td>
+	</tr><tr class="rgAltRow" id="__25">
+		<td align="center"><img id="imgcolumn" src="//d1i1jxrdh2kvwy.cloudfront.net/Images/Heroes/Portraits/Sylvanas.png" style="height:40px;width:40px;" /></td><td><a title="Sylvanas" href="/Sitewide/HeroDetails?Hero=Sylvanas">Sylvanas</a></td><td>35001</td><td>2115</td><td>26.6 %</td><td>49.7 %</td><td style="color:Green;">0.3 %</td><td style="display:none;">Specialist</td><td style="display:none;">Siege</td>
+	</tr><tr class="rgRow" id="__26">
+		<td align="center"><img id="imgcolumn" src="//d1i1jxrdh2kvwy.cloudfront.net/Images/Heroes/Portraits/LtMorales.png" style="height:40px;width:40px;" /></td><td><a title="Lt. Morales" href="/Sitewide/HeroDetails?Hero=Lt. Morales">Lt. Morales</a></td><td>29512</td><td>60987</td><td>64.9 %</td><td>49.6 %</td><td style="color:Green;">0.3 %</td><td style="display:none;">Support</td><td style="display:none;">Healer</td>
+	</tr><tr class="rgAltRow" id="__27">
+		<td align="center"><img id="imgcolumn" src="//d1i1jxrdh2kvwy.cloudfront.net/Images/Heroes/Portraits/Kharazim.png" style="height:40px;width:40px;" /></td><td><a title="Kharazim" href="/Sitewide/HeroDetails?Hero=Kharazim">Kharazim</a></td><td>19858</td><td>1106</td><td>15.0 %</td><td>49.5 %</td><td style="color:Red;">-0.1 %</td><td style="display:none;">Support</td><td style="display:none;">Healer</td>
+	</tr><tr class="rgRow" id="__28">
+		<td align="center"><img id="imgcolumn" src="//d1i1jxrdh2kvwy.cloudfront.net/Images/Heroes/Portraits/Sonya.png" style="height:40px;width:40px;" /></td><td><a title="Sonya" href="/Sitewide/HeroDetails?Hero=Sonya">Sonya</a></td><td>32383</td><td>3510</td><td>25.7 %</td><td>49.4 %</td><td style="color:Red;">-0.1 %</td><td style="display:none;">Warrior</td><td style="display:none;">Bruiser</td>
+	</tr><tr class="rgAltRow" id="__29">
+		<td align="center"><img id="imgcolumn" src="//d1i1jxrdh2kvwy.cloudfront.net/Images/Heroes/Portraits/ETC.png" style="height:40px;width:40px;" /></td><td><a title="E.T.C." href="/Sitewide/HeroDetails?Hero=E.T.C.">E.T.C.</a></td><td>39212</td><td>45278</td><td>60.6 %</td><td>49.4 %</td><td style="color:Green;">0.8 %</td><td style="display:none;">Warrior</td><td style="display:none;">Tank</td>
+	</tr><tr class="rgRow" id="__30">
+		<td align="center"><img id="imgcolumn" src="//d1i1jxrdh2kvwy.cloudfront.net/Images/Heroes/Portraits/Tychus.png" style="height:40px;width:40px;" /></td><td><a title="Tychus" href="/Sitewide/HeroDetails?Hero=Tychus">Tychus</a></td><td>16030</td><td>459</td><td>11.8 %</td><td>49.4 %</td><td style="color:Green;">1.0 %</td><td style="display:none;">Assassin</td><td style="display:none;">Sustained Damage</td>
+	</tr><tr class="rgAltRow" id="__31">
+		<td align="center"><img id="imgcolumn" src="//d1i1jxrdh2kvwy.cloudfront.net/Images/Heroes/Portraits/Artanis.png" style="height:40px;width:40px;" /></td><td><a title="Artanis" href="/Sitewide/HeroDetails?Hero=Artanis">Artanis</a></td><td>21698</td><td>802</td><td>16.1 %</td><td>49.3 %</td><td style="color:Red;">-0.4 %</td><td style="display:none;">Warrior</td><td style="display:none;">Bruiser</td>
+	</tr><tr class="rgRow" id="__32">
+		<td align="center"><img id="imgcolumn" src="//d1i1jxrdh2kvwy.cloudfront.net/Images/Heroes/Portraits/LiMing.png" style="height:40px;width:40px;" /></td><td><a title="Li-Ming" href="/Sitewide/HeroDetails?Hero=Li-Ming">Li-Ming</a></td><td>64871</td><td>67984</td><td>95.2 %</td><td>49.2 %</td><td style="color:Red;">-0.1 %</td><td style="display:none;">Assassin</td><td style="display:none;">Burst Damage</td>
+	</tr><tr class="rgAltRow" id="__33">
+		<td align="center"><img id="imgcolumn" src="//d1i1jxrdh2kvwy.cloudfront.net/Images/Heroes/Portraits/Malfurion.png" style="height:40px;width:40px;" /></td><td><a title="Malfurion" href="/Sitewide/HeroDetails?Hero=Malfurion">Malfurion</a></td><td>35591</td><td>2347</td><td>27.2 %</td><td>49.2 %</td><td style="color:Green;">0.3 %</td><td style="display:none;">Support</td><td style="display:none;">Healer</td>
+	</tr><tr class="rgRow" id="__34">
+		<td align="center"><img id="imgcolumn" src="//d1i1jxrdh2kvwy.cloudfront.net/Images/Heroes/Portraits/Greymane.png" style="height:40px;width:40px;" /></td><td><a title="Greymane" href="/Sitewide/HeroDetails?Hero=Greymane">Greymane</a></td><td>20130</td><td>1437</td><td>15.5 %</td><td>49.0 %</td><td style="color:Green;">1.9 %</td><td style="display:none;">Assassin</td><td style="display:none;">Sustained Damage</td>
+	</tr><tr class="rgAltRow" id="__35">
+		<td align="center"><img id="imgcolumn" src="//d1i1jxrdh2kvwy.cloudfront.net/Images/Heroes/Portraits/Lunara.png" style="height:40px;width:40px;" /></td><td><a title="Lunara" href="/Sitewide/HeroDetails?Hero=Lunara">Lunara</a></td><td>27028</td><td>1485</td><td>20.4 %</td><td>48.7 %</td><td style="color:Green;">1.1 %</td><td style="display:none;">Assassin</td><td style="display:none;">Sustained Damage</td>
+	</tr><tr class="rgRow" id="__36">
+		<td align="center"><img id="imgcolumn" src="//d1i1jxrdh2kvwy.cloudfront.net/Images/Heroes/Portraits/Tracer.png" style="height:40px;width:40px;" /></td><td><a title="Tracer" href="/Sitewide/HeroDetails?Hero=Tracer">Tracer</a></td><td>36648</td><td>71303</td><td>77.4 %</td><td>48.6 %</td><td style="color:Red;">-3.5 %</td><td style="display:none;">Assassin</td><td style="display:none;">Sustained Damage</td>
+	</tr><tr class="rgAltRow" id="__37">
+		<td align="center"><img id="imgcolumn" src="//d1i1jxrdh2kvwy.cloudfront.net/Images/Heroes/Portraits/Illidan.png" style="height:40px;width:40px;" /></td><td><a title="Illidan" href="/Sitewide/HeroDetails?Hero=Illidan">Illidan</a></td><td>33784</td><td>45228</td><td>56.6 %</td><td>48.1 %</td><td style="color:Green;">0.1 %</td><td style="display:none;">Assassin</td><td style="display:none;">Sustained Damage</td>
+	</tr><tr class="rgRow" id="__38">
+		<td align="center"><img id="imgcolumn" src="//d1i1jxrdh2kvwy.cloudfront.net/Images/Heroes/Portraits/Jaina.png" style="height:40px;width:40px;" /></td><td><a title="Jaina" href="/Sitewide/HeroDetails?Hero=Jaina">Jaina</a></td><td>50712</td><td>6420</td><td>40.9 %</td><td>48.1 %</td><td style="color:Green;">0.7 %</td><td style="display:none;">Assassin</td><td style="display:none;">Burst Damage</td>
+	</tr><tr class="rgAltRow" id="__39">
+		<td align="center"><img id="imgcolumn" src="//d1i1jxrdh2kvwy.cloudfront.net/Images/Heroes/Portraits/Dehaka.png" style="height:40px;width:40px;" /></td><td><a title="Dehaka" href="/Sitewide/HeroDetails?Hero=Dehaka">Dehaka</a></td><td>13359</td><td>1106</td><td>10.4 %</td><td>47.8 %</td><td style="color:Green;">0.2 %</td><td style="display:none;">Warrior</td><td style="display:none;">Tank</td>
+	</tr><tr class="rgRow" id="__40">
+		<td align="center"><img id="imgcolumn" src="//d1i1jxrdh2kvwy.cloudfront.net/Images/Heroes/Portraits/Leoric.png" style="height:40px;width:40px;" /></td><td><a title="Leoric" href="/Sitewide/HeroDetails?Hero=Leoric">Leoric</a></td><td>8684</td><td>433</td><td>6.5 %</td><td>47.7 %</td><td style="color:Red;">-0.6 %</td><td style="display:none;">Warrior</td><td style="display:none;">Bruiser</td>
+	</tr><tr class="rgAltRow" id="__41">
+		<td align="center"><img id="imgcolumn" src="//d1i1jxrdh2kvwy.cloudfront.net/Images/Heroes/Portraits/Cho.png" style="height:40px;width:40px;" /></td><td><a title="Cho" href="/Sitewide/HeroDetails?Hero=Cho">Cho</a></td><td>2474</td><td>317</td><td>2.0 %</td><td>47.6 %</td><td style="color:Green;">1.1 %</td><td style="display:none;">Warrior</td><td style="display:none;">Tank</td>
+	</tr><tr class="rgRow" id="__42">
+		<td align="center"><img id="imgcolumn" src="//d1i1jxrdh2kvwy.cloudfront.net/Images/Heroes/Portraits/Gall.png" style="height:40px;width:40px;" /></td><td><a title="Gall" href="/Sitewide/HeroDetails?Hero=Gall">Gall</a></td><td>2473</td><td>270</td><td>2.0 %</td><td>47.5 %</td><td style="color:Green;">1.1 %</td><td style="display:none;">Assassin</td><td style="display:none;">Sustained Damage</td>
+	</tr><tr class="rgAltRow" id="__43">
+		<td align="center"><img id="imgcolumn" src="//d1i1jxrdh2kvwy.cloudfront.net/Images/Heroes/Portraits/Arthas.png" style="height:40px;width:40px;" /></td><td><a title="Arthas" href="/Sitewide/HeroDetails?Hero=Arthas">Arthas</a></td><td>13665</td><td>921</td><td>10.5 %</td><td>47.5 %</td><td style="color:Green;">1.2 %</td><td style="display:none;">Warrior</td><td style="display:none;">Bruiser</td>
+	</tr><tr class="rgRow" id="__44">
+		<td align="center"><img id="imgcolumn" src="//d1i1jxrdh2kvwy.cloudfront.net/Images/Heroes/Portraits/Muradin.png" style="height:40px;width:40px;" /></td><td><a title="Muradin" href="/Sitewide/HeroDetails?Hero=Muradin">Muradin</a></td><td>54212</td><td>16428</td><td>50.6 %</td><td>47.1 %</td><td style="color:Red;">-0.7 %</td><td style="display:none;">Warrior</td><td style="display:none;">Tank</td>
+	</tr><tr class="rgAltRow" id="__45">
+		<td align="center"><img id="imgcolumn" src="//d1i1jxrdh2kvwy.cloudfront.net/Images/Heroes/Portraits/Zeratul.png" style="height:40px;width:40px;" /></td><td><a title="Zeratul" href="/Sitewide/HeroDetails?Hero=Zeratul">Zeratul</a></td><td>21108</td><td>3563</td><td>17.7 %</td><td>47.0 %</td><td style="color:Red;">-0.4 %</td><td style="display:none;">Assassin</td><td style="display:none;">Ambusher</td>
+	</tr><tr class="rgRow" id="__46">
+		<td align="center"><img id="imgcolumn" src="//d1i1jxrdh2kvwy.cloudfront.net/Images/Heroes/Portraits/Uther.png" style="height:40px;width:40px;" /></td><td><a title="Uther" href="/Sitewide/HeroDetails?Hero=Uther">Uther</a></td><td>28345</td><td>9767</td><td>27.3 %</td><td>47.0 %</td><td style="color:Red;">-0.8 %</td><td style="display:none;">Support</td><td style="display:none;">Healer</td>
+	</tr><tr class="rgAltRow" id="__47">
+		<td align="center"><img id="imgcolumn" src="//d1i1jxrdh2kvwy.cloudfront.net/Images/Heroes/Portraits/Tassadar.png" style="height:40px;width:40px;" /></td><td><a title="Tassadar" href="/Sitewide/HeroDetails?Hero=Tassadar">Tassadar</a></td><td>18175</td><td>3713</td><td>15.7 %</td><td>46.7 %</td><td style="color:Red;">-0.6 %</td><td style="display:none;">Support</td><td style="display:none;">Support</td>
+	</tr><tr class="rgRow" id="__48">
+		<td align="center"><img id="imgcolumn" src="//d1i1jxrdh2kvwy.cloudfront.net/Images/Heroes/Portraits/Kerrigan.png" style="height:40px;width:40px;" /></td><td><a title="Kerrigan" href="/Sitewide/HeroDetails?Hero=Kerrigan">Kerrigan</a></td><td>6665</td><td>183</td><td>4.9 %</td><td>46.5 %</td><td style="color:Green;">1.0 %</td><td style="display:none;">Assassin</td><td style="display:none;">Ambusher</td>
+	</tr><tr class="rgAltRow" id="__49">
+		<td align="center"><img id="imgcolumn" src="//d1i1jxrdh2kvwy.cloudfront.net/Images/Heroes/Portraits/Tyrael.png" style="height:40px;width:40px;" /></td><td><a title="Tyrael" href="/Sitewide/HeroDetails?Hero=Tyrael">Tyrael</a></td><td>8303</td><td>212</td><td>6.1 %</td><td>44.9 %</td><td style="color:Red;">-1.0 %</td><td style="display:none;">Warrior</td><td style="display:none;">Bruiser</td>
+	</tr><tr class="rgRow" id="__50">
+		<td align="center"><img id="imgcolumn" src="//d1i1jxrdh2kvwy.cloudfront.net/Images/Heroes/Portraits/Abathur.png" style="height:40px;width:40px;" /></td><td><a title="Abathur" href="/Sitewide/HeroDetails?Hero=Abathur">Abathur</a></td><td>12054</td><td>2236</td><td>10.2 %</td><td>44.9 %</td><td style="color:Red;">-0.2 %</td><td style="display:none;">Specialist</td><td style="display:none;">Utility</td>
+	</tr><tr class="rgAltRow" id="__51">
+		<td align="center"><img id="imgcolumn" src="//d1i1jxrdh2kvwy.cloudfront.net/Images/Heroes/Portraits/Chromie.png" style="height:40px;width:40px;" /></td><td><a title="Chromie" href="/Sitewide/HeroDetails?Hero=Chromie">Chromie</a></td><td>6460</td><td>3299</td><td>7.0 %</td><td>31.3 %</td><td>&nbsp;</td><td style="display:none;">Assassin</td><td style="display:none;">Burst Damage</td>
+	</tr>
+	</tbody>
+
+</table><div id="SharedCalendarContainer" style="display:none;">
+
+</div><input id="RadGridCharacterStatistics_ClientState" name="RadGridCharacterStatistics_ClientState" type="hidden" />	</div>
+
+    <br />
+
+    <h2>Sitewide Map Statistics over the Last 7 Days</h2>
+    <div class="RadAjaxPanel" id="ctl00_MainContent_ctl00_MainContent_RadGridMapStatisticsPanel">
+	<div id="ctl00_MainContent_RadGridMapStatistics" class="RadGrid RadGrid_WebBlue" style="width:100%;">
+
+	<table class="rgMasterTable" id="ctl00_MainContent_RadGridMapStatistics_ctl00" style="width:100%;table-layout:auto;empty-cells:show;">
+		<colgroup>
+		<col style="width:36px" />
+		<col  />
+		<col  />
+		<col  />
+		<col  />
+	</colgroup>
+<thead>
+			<tr>
+				<th scope="col" class="rgHeader rgExpandCol">&nbsp;</th><th scope="col" class="rgHeader">&nbsp;</th><th scope="col" class="rgHeader rgSorted"><a onclick="Telerik.Web.UI.Grid.Sort($find(&#39;ctl00_MainContent_RadGridMapStatistics_ctl00&#39;), &#39;MapNameLocalized&#39;); return false;" title="Click here to sort" href="javascript:__doPostBack(&#39;ctl00$MainContent$RadGridMapStatistics$ctl00$ctl02$ctl00$ctl00&#39;,&#39;&#39;)">Map Name</a>&nbsp;<button type="button" name="ctl00$MainContent$RadGridMapStatistics$ctl00$ctl02$ctl00$ctl01" value="Sorted asc" onclick="javascript:__doPostBack(&#39;ctl00$MainContent$RadGridMapStatistics$ctl00$ctl02$ctl00$ctl01&#39;,&#39;&#39;)" title="Sorted asc" class="t-button rgActionButton rgSortAsc"><span class="t-font-icon rgIcon rgSortAscIcon"></span></button></th><th scope="col" class="rgHeader"><a onclick="Telerik.Web.UI.Grid.Sort($find(&#39;ctl00_MainContent_RadGridMapStatistics_ctl00&#39;), &#39;GamesPlayed&#39;); return false;" title="Click here to sort" href="javascript:__doPostBack(&#39;ctl00$MainContent$RadGridMapStatistics$ctl00$ctl02$ctl00$ctl02&#39;,&#39;&#39;)">Games Played</a></th><th scope="col" class="rgHeader"><a onclick="Telerik.Web.UI.Grid.Sort($find(&#39;ctl00_MainContent_RadGridMapStatistics_ctl00&#39;), &#39;AverageLength&#39;); return false;" title="Click here to sort" href="javascript:__doPostBack(&#39;ctl00$MainContent$RadGridMapStatistics$ctl00$ctl02$ctl00$ctl03&#39;,&#39;&#39;)">Average Length</a></th>
+			</tr>
+		</thead><tbody>
+		<tr class="rgRow" id="ctl00_MainContent_RadGridMapStatistics_ctl00__0">
+			<td class="rgExpandCol"><button type="button" name="ctl00$MainContent$RadGridMapStatistics$ctl00$ctl04$GECBtnExpandColumn" value="Expand" onclick="javascript:__doPostBack(&#39;ctl00$MainContent$RadGridMapStatistics$ctl00$ctl04$GECBtnExpandColumn&#39;,&#39;&#39;)" id="ctl00_MainContent_RadGridMapStatistics_ctl00_ctl04_GECBtnExpandColumn" title="Expand" class="t-button rgActionButton rgExpand"><span class="t-font-icon rgIcon rgExpandIcon"></span></button></td><td align="center" style="width:100px;"><img id="ctl00_MainContent_RadGridMapStatistics_ctl00_ctl04_imgcolumn" src="//d1i1jxrdh2kvwy.cloudfront.net/Images/Maps/BattlefieldofEternity.png" style="width:75px;" /></td><td class="rgSorted"><a title="Battlefield of Eternity" href="http://hotscounters.com/#/map/BattlefieldofEternity">Battlefield of Eternity</a></td><td>15497</td><td>00:20:18</td>
+		</tr><tr class="rgAltRow" id="ctl00_MainContent_RadGridMapStatistics_ctl00__1">
+			<td class="rgExpandCol"><button type="button" name="ctl00$MainContent$RadGridMapStatistics$ctl00$ctl07$GECBtnExpandColumn" value="Expand" onclick="javascript:__doPostBack(&#39;ctl00$MainContent$RadGridMapStatistics$ctl00$ctl07$GECBtnExpandColumn&#39;,&#39;&#39;)" id="ctl00_MainContent_RadGridMapStatistics_ctl00_ctl07_GECBtnExpandColumn" title="Expand" class="t-button rgActionButton rgExpand"><span class="t-font-icon rgIcon rgExpandIcon"></span></button></td><td align="center" style="width:100px;"><img id="ctl00_MainContent_RadGridMapStatistics_ctl00_ctl07_imgcolumn" src="//d1i1jxrdh2kvwy.cloudfront.net/Images/Maps/BlackheartsBay.png" style="width:75px;" /></td><td class="rgSorted"><a title="Blackheart&#39;s Bay" href="http://hotscounters.com/#/map/BlackheartsBay">Blackheart's Bay</a></td><td>15486</td><td>00:21:16</td>
+		</tr><tr class="rgRow" id="ctl00_MainContent_RadGridMapStatistics_ctl00__2">
+			<td class="rgExpandCol"><button type="button" name="ctl00$MainContent$RadGridMapStatistics$ctl00$ctl10$GECBtnExpandColumn" value="Expand" onclick="javascript:__doPostBack(&#39;ctl00$MainContent$RadGridMapStatistics$ctl00$ctl10$GECBtnExpandColumn&#39;,&#39;&#39;)" id="ctl00_MainContent_RadGridMapStatistics_ctl00_ctl10_GECBtnExpandColumn" title="Expand" class="t-button rgActionButton rgExpand"><span class="t-font-icon rgIcon rgExpandIcon"></span></button></td><td align="center" style="width:100px;"><img id="ctl00_MainContent_RadGridMapStatistics_ctl00_ctl10_imgcolumn" src="//d1i1jxrdh2kvwy.cloudfront.net/Images/Maps/CursedHollow.png" style="width:75px;" /></td><td class="rgSorted"><a title="Cursed Hollow" href="http://hotscounters.com/#/map/CursedHollow">Cursed Hollow</a></td><td>15427</td><td>00:21:30</td>
+		</tr><tr class="rgAltRow" id="ctl00_MainContent_RadGridMapStatistics_ctl00__3">
+			<td class="rgExpandCol"><button type="button" name="ctl00$MainContent$RadGridMapStatistics$ctl00$ctl13$GECBtnExpandColumn" value="Expand" onclick="javascript:__doPostBack(&#39;ctl00$MainContent$RadGridMapStatistics$ctl00$ctl13$GECBtnExpandColumn&#39;,&#39;&#39;)" id="ctl00_MainContent_RadGridMapStatistics_ctl00_ctl13_GECBtnExpandColumn" title="Expand" class="t-button rgActionButton rgExpand"><span class="t-font-icon rgIcon rgExpandIcon"></span></button></td><td align="center" style="width:100px;"><img id="ctl00_MainContent_RadGridMapStatistics_ctl00_ctl13_imgcolumn" src="//d1i1jxrdh2kvwy.cloudfront.net/Images/Maps/DragonShire.png" style="width:75px;" /></td><td class="rgSorted"><a title="Dragon Shire" href="http://hotscounters.com/#/map/DragonShire">Dragon Shire</a></td><td>15545</td><td>00:22:02</td>
+		</tr><tr class="rgRow" id="ctl00_MainContent_RadGridMapStatistics_ctl00__4">
+			<td class="rgExpandCol"><button type="button" name="ctl00$MainContent$RadGridMapStatistics$ctl00$ctl16$GECBtnExpandColumn" value="Expand" onclick="javascript:__doPostBack(&#39;ctl00$MainContent$RadGridMapStatistics$ctl00$ctl16$GECBtnExpandColumn&#39;,&#39;&#39;)" id="ctl00_MainContent_RadGridMapStatistics_ctl00_ctl16_GECBtnExpandColumn" title="Expand" class="t-button rgActionButton rgExpand"><span class="t-font-icon rgIcon rgExpandIcon"></span></button></td><td align="center" style="width:100px;"><img id="ctl00_MainContent_RadGridMapStatistics_ctl00_ctl16_imgcolumn" src="//d1i1jxrdh2kvwy.cloudfront.net/Images/Maps/GardenofTerror.png" style="width:75px;" /></td><td class="rgSorted"><a title="Garden of Terror" href="http://hotscounters.com/#/map/GardenofTerror">Garden of Terror</a></td><td>15360</td><td>00:24:37</td>
+		</tr><tr class="rgAltRow" id="ctl00_MainContent_RadGridMapStatistics_ctl00__5">
+			<td class="rgExpandCol"><button type="button" name="ctl00$MainContent$RadGridMapStatistics$ctl00$ctl19$GECBtnExpandColumn" value="Expand" onclick="javascript:__doPostBack(&#39;ctl00$MainContent$RadGridMapStatistics$ctl00$ctl19$GECBtnExpandColumn&#39;,&#39;&#39;)" id="ctl00_MainContent_RadGridMapStatistics_ctl00_ctl19_GECBtnExpandColumn" title="Expand" class="t-button rgActionButton rgExpand"><span class="t-font-icon rgIcon rgExpandIcon"></span></button></td><td align="center" style="width:100px;"><img id="ctl00_MainContent_RadGridMapStatistics_ctl00_ctl19_imgcolumn" src="//d1i1jxrdh2kvwy.cloudfront.net/Images/Maps/InfernalShrines.png" style="width:75px;" /></td><td class="rgSorted"><a title="Infernal Shrines" href="http://hotscounters.com/#/map/InfernalShrines">Infernal Shrines</a></td><td>15525</td><td>00:21:51</td>
+		</tr><tr class="rgRow" id="ctl00_MainContent_RadGridMapStatistics_ctl00__6">
+			<td class="rgExpandCol"><button type="button" name="ctl00$MainContent$RadGridMapStatistics$ctl00$ctl22$GECBtnExpandColumn" value="Expand" onclick="javascript:__doPostBack(&#39;ctl00$MainContent$RadGridMapStatistics$ctl00$ctl22$GECBtnExpandColumn&#39;,&#39;&#39;)" id="ctl00_MainContent_RadGridMapStatistics_ctl00_ctl22_GECBtnExpandColumn" title="Expand" class="t-button rgActionButton rgExpand"><span class="t-font-icon rgIcon rgExpandIcon"></span></button></td><td align="center" style="width:100px;"><img id="ctl00_MainContent_RadGridMapStatistics_ctl00_ctl22_imgcolumn" src="//d1i1jxrdh2kvwy.cloudfront.net/Images/Maps/SkyTemple.png" style="width:75px;" /></td><td class="rgSorted"><a title="Sky Temple" href="http://hotscounters.com/#/map/SkyTemple">Sky Temple</a></td><td>15589</td><td>00:19:47</td>
+		</tr><tr class="rgAltRow" id="ctl00_MainContent_RadGridMapStatistics_ctl00__7">
+			<td class="rgExpandCol"><button type="button" name="ctl00$MainContent$RadGridMapStatistics$ctl00$ctl25$GECBtnExpandColumn" value="Expand" onclick="javascript:__doPostBack(&#39;ctl00$MainContent$RadGridMapStatistics$ctl00$ctl25$GECBtnExpandColumn&#39;,&#39;&#39;)" id="ctl00_MainContent_RadGridMapStatistics_ctl00_ctl25_GECBtnExpandColumn" title="Expand" class="t-button rgActionButton rgExpand"><span class="t-font-icon rgIcon rgExpandIcon"></span></button></td><td align="center" style="width:100px;"><img id="ctl00_MainContent_RadGridMapStatistics_ctl00_ctl25_imgcolumn" src="//d1i1jxrdh2kvwy.cloudfront.net/Images/Maps/TomboftheSpiderQueen.png" style="width:75px;" /></td><td class="rgSorted"><a title="Tomb of the Spider Queen" href="http://hotscounters.com/#/map/TomboftheSpiderQueen">Tomb of the Spider Queen</a></td><td>15299</td><td>00:22:02</td>
+		</tr><tr class="rgRow" id="ctl00_MainContent_RadGridMapStatistics_ctl00__8">
+			<td class="rgExpandCol"><button type="button" name="ctl00$MainContent$RadGridMapStatistics$ctl00$ctl28$GECBtnExpandColumn" value="Expand" onclick="javascript:__doPostBack(&#39;ctl00$MainContent$RadGridMapStatistics$ctl00$ctl28$GECBtnExpandColumn&#39;,&#39;&#39;)" id="ctl00_MainContent_RadGridMapStatistics_ctl00_ctl28_GECBtnExpandColumn" title="Expand" class="t-button rgActionButton rgExpand"><span class="t-font-icon rgIcon rgExpandIcon"></span></button></td><td align="center" style="width:100px;"><img id="ctl00_MainContent_RadGridMapStatistics_ctl00_ctl28_imgcolumn" src="//d1i1jxrdh2kvwy.cloudfront.net/Images/Maps/TowersofDoom.png" style="width:75px;" /></td><td class="rgSorted"><a title="Towers of Doom" href="http://hotscounters.com/#/map/TowersofDoom">Towers of Doom</a></td><td>15495</td><td>00:19:26</td>
+		</tr>
+		</tbody>
+
+	</table><div id="ctl00_MainContent_RadGridMapStatistics_SharedCalendarContainer" style="display:none;">
+
+	</div><input id="ctl00_MainContent_RadGridMapStatistics_ClientState" name="ctl00_MainContent_RadGridMapStatistics_ClientState" type="hidden" />	</div>
+
+</div>
+
+    <div id="MainContent_RadAjaxLoadingPanel1" class="RadAjax RadAjax_WebBlue" style="display:none;">
+	<div class="raDiv">
+
+	</div><div class="raColor raTransp">
+
+	</div>
+</div>
+
+    <div id="MainContent_RadAjaxManager1SU">
+	<span id="ctl00_MainContent_RadAjaxManager1" style="display:none;"></span>
+</div>
+
+
+                    <div id="advertisementBannerMonkeyBrokerBottom" style="text-align: center; margin-top: 15px;" class="advertisementBannerMonkeyBrokerBottom">
+                        <script type="text/javascript"> 
+
+                            if (windowWidth >= 1300) {
+                                MonkeyBroker.fillSlot("Horizontal_2");
+                                ga("send", "event", "AdFillMonkeyBroker", "Horizontal_2", { nonInteraction: true });
+                            }
+                            else if (windowWidth > 728) {
+                                MonkeyBroker.fillSlot("Horizontal_2_Thin");
+                                ga("send", "event", "AdFillMonkeyBroker", "Horizontal_2_Thin", { nonInteraction: true });
+                            }
+
+                        </script>
+                    </div>
+                </section>
+            </div>
+
+            <aside id="footer-widgets" class="no-print">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <ul class="list-unstyled">
+                                <li><a href="https://www.facebook.com/hotslogs">Facebook</a></li>
+                                <li><a href="/Info/About">About Us</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-4">
+                            <ul class="list-unstyled" style="text-align: center;">
+                                <li><a href="/Info/FAQ">Frequently Asked Questions</a></li>
+                                <li><a href="/Info/MMRInformation">MMR Information</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-4">
+                            <select name="ctl00$DropDownLanguage" onchange="javascript:setTimeout(&#39;__doPostBack(\&#39;ctl00$DropDownLanguage\&#39;,\&#39;\&#39;)&#39;, 0)" id="DropDownLanguage" style="color: black; display: block; margin-left: auto;">
+	<option selected="selected" value="en">English</option>
+	<option value="cs">Ceština</option>
+	<option value="da">Dansk</option>
+	<option value="de">Deutsch</option>
+	<option value="es">Espa&#241;ol</option>
+	<option value="fi">Suomi</option>
+	<option value="fr">Fran&#231;ais</option>
+	<option value="hu">Magyar</option>
+	<option value="ko">한국어</option>
+	<option value="nl">Nederlands</option>
+	<option value="pl">Polski</option>
+	<option value="ru">Pусский</option>
+	<option value="zh-Hans">简体中文</option>
+	<option value="zh-Hant">繁體中文</option>
+
+</select>
+                            <div style="margin-top: 5px; text-align: right;">
+                                <select name="ctl00$DropDownThemeNavbar" onchange="javascript:setTimeout(&#39;__doPostBack(\&#39;ctl00$DropDownThemeNavbar\&#39;,\&#39;\&#39;)&#39;, 0)" id="DropDownThemeNavbar" style="color: black;">
+	<option selected="selected" value="">Light Navbar</option>
+	<option value="navbar-dark">Dark Navbar</option>
+	<option value="navbar-inverse">Inverse Navbar</option>
+
+</select>
+                                <select name="ctl00$DropDownThemeColor" onchange="javascript:setTimeout(&#39;__doPostBack(\&#39;ctl00$DropDownThemeColor\&#39;,\&#39;\&#39;)&#39;, 0)" id="DropDownThemeColor" style="color: black;">
+	<option selected="selected" value="style-blue">Blue</option>
+	<option value="style-blue2">Blue 2</option>
+	<option value="style-blue3">Blue 3</option>
+	<option value="style-blue4">Blue 4</option>
+	<option value="style-blue5">Blue 5</option>
+	<option value="style-green">Green</option>
+	<option value="style-green2">Green 2</option>
+	<option value="style-green3">Green 3</option>
+	<option value="style-green4">Green 4</option>
+	<option value="style-green5">Green 5</option>
+	<option value="style-red">Red</option>
+	<option value="style-red2">Red 2</option>
+	<option value="style-red3">Red 3</option>
+	<option value="style-fuchsia">Fuchsia</option>
+	<option value="style-pink">Pink</option>
+	<option value="style-yellow">Yellow</option>
+	<option value="style-yellow2">Yellow 2</option>
+	<option value="style-orange">Orange</option>
+	<option value="style-orange2">Orange 2</option>
+	<option value="style-orange3">Orange 3</option>
+	<option value="style-violet">Violet</option>
+	<option value="style-violet2">Violet 2</option>
+	<option value="style-violet3">Violet 3</option>
+	<option value="style-gray">Gray</option>
+	<option value="style-aqua">Aqua</option>
+
+</select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            
+                        </div>
+                    </div> <!-- row -->
+                </div> <!-- container -->
+            </aside> <!-- footer-widgets -->
+
+            <footer id="footer" class="no-print"><p>&copy; 2016 - HOTS Logs</p></footer>
+        
+
+<script type="text/javascript">
+//<![CDATA[
+Sys.Application.add_init(function() {
+    $create(Telerik.Web.UI.RadGrid, {"ClientID":"RadGridCharacterStatistics","ClientSettings":{"AllowAutoScrollOnDragDrop":true,"ShouldCreateRows":true,"DataBinding":{},"Selecting":{"CellSelectionMode":0},"Scrolling":{},"Resizing":{},"ClientMessages":{},"KeyboardNavigationSettings":{"AllowActiveRowCycle":false,"EnableKeyboardShortcuts":true,"FocusKey":89,"InitInsertKey":73,"RebindKey":82,"ExitEditInsertModeKey":27,"UpdateInsertItemKey":13,"DeleteActiveRow":127,"ExpandDetailTableKey":39,"CollapseDetailTableKey":37,"MoveDownKey":40,"MoveUpKey":38,"SaveChangesKey":85,"CancelChangesKey":81},"Animation":{},"Virtualization":{}},"Skin":"WebBlue","UniqueID":"ctl00$MainContent$RadGridCharacterStatistics","_activeRowIndex":"","_controlToFocus":"","_currentPageIndex":0,"_defaultDateTimeFormat":"M/d/yyyy h:mm:ss tt","_editIndexes":"[]","_embeddedSkin":true,"_freezeText":"Freeze","_gridTableViewsData":"[{\"ClientID\":\"\",\"UniqueID\":\"ctl00$MainContent$RadGridCharacterStatistics$ctl00\",\"PageSize\":10,\"PageCount\":1,\"EditMode\":\"EditForms\",\"AllowPaging\":false,\"CurrentPageIndex\":0,\"VirtualItemCount\":0,\"AllowMultiColumnSorting\":false,\"AllowNaturalSort\":true,\"AllowFilteringByColumn\":false,\"PageButtonCount\":10,\"HasDetailTables\":false,\"HasMultiHeaders\":false,\"CheckListWebServicePath\":\"\",\"GroupLoadMode\":\"Server\",\"PagerAlwaysVisible\":false,\"IsItemInserted\":false,\"clientDataKeyNames\":[],\"hasDetailItemTemplate\":false,\"_dataBindTemplates\":false,\"_selectedItemStyle\":\"\",\"_selectedItemStyleClass\":\"rgSelectedRow\",\"_columnsData\":[{\"UniqueName\":\"column\",\"Resizable\":true,\"Reorderable\":true,\"Selectable\":true,\"Groupable\":true,\"ColumnType\":\"GridImageColumn\",\"ColumnGroupName\":\"\",\"Editable\":false,\"DataTypeName\":\"System.String\",\"DataAlternateTextField\":\"\",\"DataAlternateTextFormatString\":\"\",\"DataImageUrlFields\":[\"HeroPortraitURL\"],\"ImageHeight\":\"40px\",\"ImageWidth\":\"40px\",\"DataImageUrlFormatString\":\"//d1i1jxrdh2kvwy.cloudfront.net/Images/Heroes/Portraits/{0}.png\",\"Display\":true},{\"UniqueName\":\"Character\",\"Resizable\":true,\"Reorderable\":true,\"Selectable\":true,\"Groupable\":true,\"ColumnType\":\"GridHyperLinkColumn\",\"ColumnGroupName\":\"\",\"Editable\":false,\"DataTypeName\":\"System.String\",\"DataTextField\":\"Character\",\"DataTextFormatString\":\"\",\"DataNavigateUrlFields\":[\"CharacterURL\"],\"DataNavigateUrlFormatString\":\"/Sitewide/HeroDetails?Hero={0}\",\"Display\":true},{\"UniqueName\":\"GamesPlayed\",\"Resizable\":true,\"Reorderable\":true,\"Selectable\":true,\"Groupable\":true,\"ColumnType\":\"GridBoundColumn\",\"ColumnGroupName\":\"\",\"Editable\":true,\"DataTypeName\":\"System.Int32\",\"DataField\":\"GamesPlayed\",\"Display\":true},{\"UniqueName\":\"GamesBanned\",\"Resizable\":true,\"Reorderable\":true,\"Selectable\":true,\"Groupable\":true,\"ColumnType\":\"GridBoundColumn\",\"ColumnGroupName\":\"\",\"Editable\":true,\"DataTypeName\":\"System.Int32\",\"DataField\":\"GamesBanned\",\"Display\":true},{\"UniqueName\":\"Popularity\",\"Resizable\":true,\"Reorderable\":true,\"Selectable\":true,\"Groupable\":true,\"ColumnType\":\"GridBoundColumn\",\"ColumnGroupName\":\"\",\"Editable\":true,\"DataTypeName\":\"System.Decimal\",\"DataField\":\"Popularity\",\"DataFormatString\":\"{0:p1}\",\"Display\":true},{\"UniqueName\":\"WinPercent\",\"Resizable\":true,\"Reorderable\":true,\"Selectable\":true,\"Groupable\":true,\"ColumnType\":\"GridBoundColumn\",\"ColumnGroupName\":\"\",\"Editable\":true,\"DataTypeName\":\"System.Decimal\",\"DataField\":\"WinPercent\",\"DataFormatString\":\"{0:p1}\",\"Display\":true},{\"UniqueName\":\"WinPercentDelta\",\"Resizable\":true,\"Reorderable\":true,\"Selectable\":true,\"Groupable\":true,\"ColumnType\":\"GridBoundColumn\",\"ColumnGroupName\":\"\",\"Editable\":true,\"DataTypeName\":\"System.Decimal\",\"DataField\":\"WinPercentDelta\",\"DataFormatString\":\"{0:p1}\",\"Display\":true},{\"UniqueName\":\"Role\",\"Resizable\":true,\"Reorderable\":true,\"Selectable\":true,\"Groupable\":true,\"ColumnType\":\"GridBoundColumn\",\"ColumnGroupName\":\"\",\"Editable\":true,\"DataTypeName\":\"System.String\",\"DataField\":\"Role\",\"Display\":false},{\"UniqueName\":\"SubRole\",\"Resizable\":true,\"Reorderable\":true,\"Selectable\":true,\"Groupable\":true,\"ColumnType\":\"GridBoundColumn\",\"ColumnGroupName\":\"\",\"Editable\":true,\"DataTypeName\":\"System.String\",\"DataField\":\"SubRole\",\"Display\":false}]}]","_masterClientID":"","_shouldFocusOnPage":false,"_unfreezeText":"Unfreeze","allowMultiRowSelection":false,"clientStateFieldID":"RadGridCharacterStatistics_ClientState","expandItems":{},"renderMode":2}, null, null, $get("RadGridCharacterStatistics"));
+});
+Sys.Application.add_init(function() {
+    $create(Telerik.Web.UI.RadGrid, {"ClientID":"ctl00_MainContent_RadGridMapStatistics","ClientSettings":{"AllowAutoScrollOnDragDrop":true,"ShouldCreateRows":true,"DataBinding":{},"Selecting":{"CellSelectionMode":0},"Scrolling":{},"Resizing":{},"ClientMessages":{},"KeyboardNavigationSettings":{"AllowActiveRowCycle":false,"EnableKeyboardShortcuts":true,"FocusKey":89,"InitInsertKey":73,"RebindKey":82,"ExitEditInsertModeKey":27,"UpdateInsertItemKey":13,"DeleteActiveRow":127,"ExpandDetailTableKey":39,"CollapseDetailTableKey":37,"MoveDownKey":40,"MoveUpKey":38,"SaveChangesKey":85,"CancelChangesKey":81},"Animation":{},"Virtualization":{}},"Skin":"WebBlue","UniqueID":"ctl00$MainContent$RadGridMapStatistics","_activeRowIndex":"","_controlToFocus":"","_currentPageIndex":0,"_defaultDateTimeFormat":"M/d/yyyy h:mm:ss tt","_editIndexes":"[]","_embeddedSkin":true,"_freezeText":"Freeze","_gridTableViewsData":"[{\"ClientID\":\"ctl00_MainContent_RadGridMapStatistics_ctl00\",\"UniqueID\":\"ctl00$MainContent$RadGridMapStatistics$ctl00\",\"PageSize\":10,\"PageCount\":1,\"EditMode\":\"EditForms\",\"AllowPaging\":false,\"CurrentPageIndex\":0,\"VirtualItemCount\":0,\"AllowMultiColumnSorting\":false,\"AllowNaturalSort\":true,\"AllowFilteringByColumn\":false,\"PageButtonCount\":10,\"HasDetailTables\":true,\"HasMultiHeaders\":false,\"CheckListWebServicePath\":\"\",\"GroupLoadMode\":\"Server\",\"PagerAlwaysVisible\":false,\"IsItemInserted\":false,\"clientDataKeyNames\":[],\"hasDetailItemTemplate\":false,\"_dataBindTemplates\":false,\"_selectedItemStyle\":\"\",\"_selectedItemStyleClass\":\"rgSelectedRow\",\"_columnsData\":[{\"UniqueName\":\"ExpandColumn\",\"Resizable\":false,\"Reorderable\":false,\"Selectable\":false,\"Groupable\":false,\"ColumnType\":\"GridExpandColumn\",\"ColumnGroupName\":\"\",\"Editable\":false,\"DataTypeName\":\"System.String\",\"Display\":true},{\"UniqueName\":\"column\",\"Resizable\":true,\"Reorderable\":true,\"Selectable\":true,\"Groupable\":true,\"ColumnType\":\"GridImageColumn\",\"ColumnGroupName\":\"\",\"Editable\":false,\"DataTypeName\":\"System.String\",\"DataAlternateTextField\":\"\",\"DataAlternateTextFormatString\":\"\",\"DataImageUrlFields\":[\"MapImageURL\"],\"ImageWidth\":\"75px\",\"DataImageUrlFormatString\":\"//d1i1jxrdh2kvwy.cloudfront.net/Images/Maps/{0}.png\",\"Display\":true},{\"UniqueName\":\"MapNameLocalized\",\"Resizable\":true,\"Reorderable\":true,\"Selectable\":true,\"Groupable\":true,\"ColumnType\":\"GridHyperLinkColumn\",\"ColumnGroupName\":\"\",\"Editable\":false,\"SortExpression\":\"MapNameLocalized\",\"DataTypeName\":\"System.String\",\"DataTextField\":\"MapNameLocalized\",\"DataTextFormatString\":\"\",\"DataNavigateUrlFields\":[\"MapImageURL\"],\"DataNavigateUrlFormatString\":\"http://hotscounters.com/#/map/{0}\",\"Display\":true},{\"UniqueName\":\"GamesPlayed\",\"Resizable\":true,\"Reorderable\":true,\"Selectable\":true,\"Groupable\":true,\"ColumnType\":\"GridBoundColumn\",\"ColumnGroupName\":\"\",\"Editable\":true,\"SortExpression\":\"GamesPlayed\",\"DataTypeName\":\"System.Int32\",\"DataField\":\"GamesPlayed\",\"Display\":true},{\"UniqueName\":\"AverageLength\",\"Resizable\":true,\"Reorderable\":true,\"Selectable\":true,\"Groupable\":true,\"ColumnType\":\"GridBoundColumn\",\"ColumnGroupName\":\"\",\"Editable\":true,\"SortExpression\":\"AverageLength\",\"DataTypeName\":\"System.TimeSpan\",\"DataField\":\"AverageLength\",\"Display\":true}]}]","_masterClientID":"ctl00_MainContent_RadGridMapStatistics_ctl00","_shouldFocusOnPage":false,"_unfreezeText":"Unfreeze","allowMultiRowSelection":false,"clientStateFieldID":"ctl00_MainContent_RadGridMapStatistics_ClientState","expandItems":{},"renderMode":2}, null, null, $get("ctl00_MainContent_RadGridMapStatistics"));
+});
+Sys.Application.add_init(function() {
+    $create(Telerik.Web.UI.RadAjaxLoadingPanel, {"initialDelayTime":0,"isSticky":false,"minDisplayTime":0,"skin":"WebBlue","uniqueID":"ctl00$MainContent$RadAjaxLoadingPanel1","zIndex":90000}, null, null, $get("MainContent_RadAjaxLoadingPanel1"));
+});
+Sys.Application.add_init(function() {
+    $create(Telerik.Web.UI.RadAjaxManager, {"_updatePanels":"","ajaxSettings":[{InitControlID : "ctl00_MainContent_RadGridMapStatistics",UpdatedControls : [{ControlID:"ctl00_MainContent_RadGridMapStatistics",PanelID:"MainContent_RadAjaxLoadingPanel1"}]}],"clientEvents":{OnRequestStart:"",OnResponseEnd:""},"defaultLoadingPanelID":"","enableAJAX":true,"enableHistory":false,"links":[],"styles":[],"uniqueID":"ctl00$MainContent$RadAjaxManager1","updatePanelsRenderMode":0}, null, null, $get("ctl00_MainContent_RadAjaxManager1"));
+});
+//]]>
+</script>
+</form>
+
+        <div id="back-top"><a href="#header"><i class="fa fa-chevron-up"></i></a></div>
+
+        
+            <script type="text/html">
+                var _comscore = _comscore || [];
+                _comscore.push({ c1: "2", c2: "6036197" });
+                (function() {
+                    var s = document.createElement("script"), el = document.getElementsByTagName("script")[0]; s.async = true;
+                    s.src = (document.location.protocol == "https:" ? "https://sb" : "http://b") + ".scorecardresearch.com/beacon.js";
+                    el.parentNode.insertBefore(s, el);
+                })();
+            </script>
+            <noscript><img src="http://b.scorecardresearch.com/p?c1=2&c2=6036197&cv=2.0&cj=1" /></noscript>
+        
+        
+    </body>
+</html>

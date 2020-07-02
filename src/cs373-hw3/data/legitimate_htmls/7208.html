@@ -1,0 +1,460 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    
+        <script type="text/javascript">(window.NREUM||(NREUM={})).loader_config={xpid:"Vw8FU19XGwEFV1BRAgk="};window.NREUM||(NREUM={}),__nr_require=function(t,e,n){function r(n){if(!e[n]){var o=e[n]={exports:{}};t[n][0].call(o.exports,function(e){var o=t[n][1][e];return r(o||e)},o,o.exports)}return e[n].exports}if("function"==typeof __nr_require)return __nr_require;for(var o=0;o<n.length;o++)r(n[o]);return r}({1:[function(t,e,n){function r(t){try{s.console&&console.log(t)}catch(e){}}var o,i=t("ee"),a=t(11),s={};try{o=localStorage.getItem("__nr_flags").split(","),console&&"function"==typeof console.log&&(s.console=!0,-1!==o.indexOf("dev")&&(s.dev=!0),-1!==o.indexOf("nr_dev")&&(s.nrDev=!0))}catch(c){}s.nrDev&&i.on("internal-error",function(t){r(t.stack)}),s.dev&&i.on("fn-err",function(t,e,n){r(n.stack)}),s.dev&&(r("NR AGENT IN DEVELOPMENT MODE"),r("flags: "+a(s,function(t,e){return t}).join(", ")))},{}],2:[function(t,e,n){function r(t,e,n,r,o){try{d?d-=1:i("err",[o||new UncaughtException(t,e,n)])}catch(s){try{i("ierr",[s,(new Date).getTime(),!0])}catch(c){}}return"function"==typeof f?f.apply(this,a(arguments)):!1}function UncaughtException(t,e,n){this.message=t||"Uncaught error with no additional information",this.sourceURL=e,this.line=n}function o(t){i("err",[t,(new Date).getTime()])}var i=t("handle"),a=t(12),s=t("ee"),c=t("loader"),f=window.onerror,u=!1,d=0;c.features.err=!0,t(1),window.onerror=r;try{throw new Error}catch(l){"stack"in l&&(t(5),t(4),"addEventListener"in window&&t(3),c.xhrWrappable&&t(6),u=!0)}s.on("fn-start",function(t,e,n){u&&(d+=1)}),s.on("fn-err",function(t,e,n){u&&(this.thrown=!0,o(n))}),s.on("fn-end",function(){u&&!this.thrown&&d>0&&(d-=1)}),s.on("internal-error",function(t){i("ierr",[t,(new Date).getTime(),!0])})},{}],3:[function(t,e,n){function r(t){for(var e=t;e&&!e.hasOwnProperty(u);)e=Object.getPrototypeOf(e);e&&o(e)}function o(t){s.inPlace(t,[u,d],"-",i)}function i(t,e){return t[1]}var a=t("ee").get("events"),s=t(13)(a),c=t("gos"),f=XMLHttpRequest,u="addEventListener",d="removeEventListener";e.exports=a,"getPrototypeOf"in Object?(r(document),r(window),r(f.prototype)):f.prototype.hasOwnProperty(u)&&(o(window),o(f.prototype)),a.on(u+"-start",function(t,e){if(t[1]){var n=t[1];if("function"==typeof n){var r=c(n,"nr@wrapped",function(){return s(n,"fn-",null,n.name||"anonymous")});this.wrapped=t[1]=r}else"function"==typeof n.handleEvent&&s.inPlace(n,["handleEvent"],"fn-")}}),a.on(d+"-start",function(t){var e=this.wrapped;e&&(t[1]=e)})},{}],4:[function(t,e,n){var r=t("ee").get("raf"),o=t(13)(r);e.exports=r,o.inPlace(window,["requestAnimationFrame","mozRequestAnimationFrame","webkitRequestAnimationFrame","msRequestAnimationFrame"],"raf-"),r.on("raf-start",function(t){t[0]=o(t[0],"fn-")})},{}],5:[function(t,e,n){function r(t,e,n){t[0]=a(t[0],"fn-",null,n)}function o(t,e,n){this.method=n,this.timerDuration="number"==typeof t[1]?t[1]:0,t[0]=a(t[0],"fn-",this,n)}var i=t("ee").get("timer"),a=t(13)(i);e.exports=i,a.inPlace(window,["setTimeout","setImmediate"],"setTimer-"),a.inPlace(window,["setInterval"],"setInterval-"),a.inPlace(window,["clearTimeout","clearImmediate"],"clearTimeout-"),i.on("setInterval-start",r),i.on("setTimer-start",o)},{}],6:[function(t,e,n){function r(t,e){d.inPlace(e,["onreadystatechange"],"fn-",s)}function o(){var t=this,e=u.context(t);t.readyState>3&&!e.resolved&&(e.resolved=!0,u.emit("xhr-resolved",[],t)),d.inPlace(t,v,"fn-",s)}function i(t){y.push(t),h&&(g=-g,x.data=g)}function a(){for(var t=0;t<y.length;t++)r([],y[t]);y.length&&(y=[])}function s(t,e){return e}function c(t,e){for(var n in t)e[n]=t[n];return e}t(3);var f=t("ee"),u=f.get("xhr"),d=t(13)(u),l=NREUM.o,p=l.XHR,h=l.MO,m="readystatechange",v=["onload","onerror","onabort","onloadstart","onloadend","onprogress","ontimeout"],y=[];e.exports=u;var w=window.XMLHttpRequest=function(t){var e=new p(t);try{u.emit("new-xhr",[e],e),e.addEventListener(m,o,!1)}catch(n){try{u.emit("internal-error",[n])}catch(r){}}return e};if(c(p,w),w.prototype=p.prototype,d.inPlace(w.prototype,["open","send"],"-xhr-",s),u.on("send-xhr-start",function(t,e){r(t,e),i(e)}),u.on("open-xhr-start",r),h){var g=1,x=document.createTextNode(g);new h(a).observe(x,{characterData:!0})}else f.on("fn-end",function(t){t[0]&&t[0].type===m||a()})},{}],7:[function(t,e,n){function r(t){var e=this.params,n=this.metrics;if(!this.ended){this.ended=!0;for(var r=0;l>r;r++)t.removeEventListener(d[r],this.listener,!1);if(!e.aborted){if(n.duration=(new Date).getTime()-this.startTime,4===t.readyState){e.status=t.status;var i=o(t,this.lastSize);if(i&&(n.rxSize=i),this.sameOrigin){var a=t.getResponseHeader("X-NewRelic-App-Data");a&&(e.cat=a.split(", ").pop())}}else e.status=0;n.cbTime=this.cbTime,u.emit("xhr-done",[t],t),c("xhr",[e,n,this.startTime])}}}function o(t,e){var n=t.responseType;if("json"===n&&null!==e)return e;var r="arraybuffer"===n||"blob"===n||"json"===n?t.response:t.responseText;return i(r)}function i(t){if("string"==typeof t&&t.length)return t.length;if("object"==typeof t){if("undefined"!=typeof ArrayBuffer&&t instanceof ArrayBuffer&&t.byteLength)return t.byteLength;if("undefined"!=typeof Blob&&t instanceof Blob&&t.size)return t.size;if(!("undefined"!=typeof FormData&&t instanceof FormData))try{return JSON.stringify(t).length}catch(e){return}}}function a(t,e){var n=f(e),r=t.params;r.host=n.hostname+":"+n.port,r.pathname=n.pathname,t.sameOrigin=n.sameOrigin}var s=t("loader");if(s.xhrWrappable){var c=t("handle"),f=t(8),u=t("ee"),d=["load","error","abort","timeout"],l=d.length,p=t("id"),h=t(10),m=window.XMLHttpRequest;s.features.xhr=!0,t(6),u.on("new-xhr",function(t){var e=this;e.totalCbs=0,e.called=0,e.cbTime=0,e.end=r,e.ended=!1,e.xhrGuids={},e.lastSize=null,h&&(h>34||10>h)||window.opera||t.addEventListener("progress",function(t){e.lastSize=t.loaded},!1)}),u.on("open-xhr-start",function(t){this.params={method:t[0]},a(this,t[1]),this.metrics={}}),u.on("open-xhr-end",function(t,e){"loader_config"in NREUM&&"xpid"in NREUM.loader_config&&this.sameOrigin&&e.setRequestHeader("X-NewRelic-ID",NREUM.loader_config.xpid)}),u.on("send-xhr-start",function(t,e){var n=this.metrics,r=t[0],o=this;if(n&&r){var a=i(r);a&&(n.txSize=a)}this.startTime=(new Date).getTime(),this.listener=function(t){try{"abort"===t.type&&(o.params.aborted=!0),("load"!==t.type||o.called===o.totalCbs&&(o.onloadCalled||"function"!=typeof e.onload))&&o.end(e)}catch(n){try{u.emit("internal-error",[n])}catch(r){}}};for(var s=0;l>s;s++)e.addEventListener(d[s],this.listener,!1)}),u.on("xhr-cb-time",function(t,e,n){this.cbTime+=t,e?this.onloadCalled=!0:this.called+=1,this.called!==this.totalCbs||!this.onloadCalled&&"function"==typeof n.onload||this.end(n)}),u.on("xhr-load-added",function(t,e){var n=""+p(t)+!!e;this.xhrGuids&&!this.xhrGuids[n]&&(this.xhrGuids[n]=!0,this.totalCbs+=1)}),u.on("xhr-load-removed",function(t,e){var n=""+p(t)+!!e;this.xhrGuids&&this.xhrGuids[n]&&(delete this.xhrGuids[n],this.totalCbs-=1)}),u.on("addEventListener-end",function(t,e){e instanceof m&&"load"===t[0]&&u.emit("xhr-load-added",[t[1],t[2]],e)}),u.on("removeEventListener-end",function(t,e){e instanceof m&&"load"===t[0]&&u.emit("xhr-load-removed",[t[1],t[2]],e)}),u.on("fn-start",function(t,e,n){e instanceof m&&("onload"===n&&(this.onload=!0),("load"===(t[0]&&t[0].type)||this.onload)&&(this.xhrCbStart=(new Date).getTime()))}),u.on("fn-end",function(t,e){this.xhrCbStart&&u.emit("xhr-cb-time",[(new Date).getTime()-this.xhrCbStart,this.onload,e],e)})}},{}],8:[function(t,e,n){e.exports=function(t){var e=document.createElement("a"),n=window.location,r={};e.href=t,r.port=e.port;var o=e.href.split("://");!r.port&&o[1]&&(r.port=o[1].split("/")[0].split("@").pop().split(":")[1]),r.port&&"0"!==r.port||(r.port="https"===o[0]?"443":"80"),r.hostname=e.hostname||n.hostname,r.pathname=e.pathname,r.protocol=o[0],"/"!==r.pathname.charAt(0)&&(r.pathname="/"+r.pathname);var i=!e.protocol||":"===e.protocol||e.protocol===n.protocol,a=e.hostname===document.domain&&e.port===n.port;return r.sameOrigin=i&&(!e.hostname||a),r}},{}],9:[function(t,e,n){function r(t,e){return function(){o(t,[(new Date).getTime()].concat(a(arguments)),null,e)}}var o=t("handle"),i=t(11),a=t(12);"undefined"==typeof window.newrelic&&(newrelic=NREUM);var s=["setPageViewName","setCustomAttribute","finished","addToTrace","inlineHit"],c=["addPageAction"],f="api-";i(s,function(t,e){newrelic[e]=r(f+e,"api")}),i(c,function(t,e){newrelic[e]=r(f+e)}),e.exports=newrelic,newrelic.noticeError=function(t){"string"==typeof t&&(t=new Error(t)),o("err",[t,(new Date).getTime()])}},{}],10:[function(t,e,n){var r=0,o=navigator.userAgent.match(/Firefox[\/\s](\d+\.\d+)/);o&&(r=+o[1]),e.exports=r},{}],11:[function(t,e,n){function r(t,e){var n=[],r="",i=0;for(r in t)o.call(t,r)&&(n[i]=e(r,t[r]),i+=1);return n}var o=Object.prototype.hasOwnProperty;e.exports=r},{}],12:[function(t,e,n){function r(t,e,n){e||(e=0),"undefined"==typeof n&&(n=t?t.length:0);for(var r=-1,o=n-e||0,i=Array(0>o?0:o);++r<o;)i[r]=t[e+r];return i}e.exports=r},{}],13:[function(t,e,n){function r(t){return!(t&&"function"==typeof t&&t.apply&&!t[a])}var o=t("ee"),i=t(12),a="nr@original",s=Object.prototype.hasOwnProperty,c=!1;e.exports=function(t){function e(t,e,n,o){function nrWrapper(){var r,a,s,c;try{a=this,r=i(arguments),s="function"==typeof n?n(r,a):n||{}}catch(u){d([u,"",[r,a,o],s])}f(e+"start",[r,a,o],s);try{return c=t.apply(a,r)}catch(l){throw f(e+"err",[r,a,l],s),l}finally{f(e+"end",[r,a,c],s)}}return r(t)?t:(e||(e=""),nrWrapper[a]=t,u(t,nrWrapper),nrWrapper)}function n(t,n,o,i){o||(o="");var a,s,c,f="-"===o.charAt(0);for(c=0;c<n.length;c++)s=n[c],a=t[s],r(a)||(t[s]=e(a,f?s+o:o,i,s))}function f(e,n,r){if(!c){c=!0;try{t.emit(e,n,r)}catch(o){d([o,e,n,r])}c=!1}}function u(t,e){if(Object.defineProperty&&Object.keys)try{var n=Object.keys(t);return n.forEach(function(n){Object.defineProperty(e,n,{get:function(){return t[n]},set:function(e){return t[n]=e,e}})}),e}catch(r){d([r])}for(var o in t)s.call(t,o)&&(e[o]=t[o]);return e}function d(e){try{t.emit("internal-error",e)}catch(n){}}return t||(t=o),e.inPlace=n,e.flag=a,e}},{}],ee:[function(t,e,n){function r(){}function o(t){function e(t){return t&&t instanceof r?t:t?s(t,a,i):i()}function n(n,r,o){t&&t(n,r,o);for(var i=e(o),a=l(n),s=a.length,c=0;s>c;c++)a[c].apply(i,r);var u=f[v[n]];return u&&u.push([y,n,r,i]),i}function d(t,e){m[t]=l(t).concat(e)}function l(t){return m[t]||[]}function p(t){return u[t]=u[t]||o(n)}function h(t,e){c(t,function(t,n){e=e||"feature",v[n]=e,e in f||(f[e]=[])})}var m={},v={},y={on:d,emit:n,get:p,listeners:l,context:e,buffer:h};return y}function i(){return new r}var a="nr@context",s=t("gos"),c=t(11),f={},u={},d=e.exports=o();d.backlog=f},{}],gos:[function(t,e,n){function r(t,e,n){if(o.call(t,e))return t[e];var r=n();if(Object.defineProperty&&Object.keys)try{return Object.defineProperty(t,e,{value:r,writable:!0,enumerable:!1}),r}catch(i){}return t[e]=r,r}var o=Object.prototype.hasOwnProperty;e.exports=r},{}],handle:[function(t,e,n){function r(t,e,n,r){o.buffer([t],r),o.emit(t,e,n)}var o=t("ee").get("handle");e.exports=r,r.ee=o},{}],id:[function(t,e,n){function r(t){var e=typeof t;return!t||"object"!==e&&"function"!==e?-1:t===window?0:a(t,i,function(){return o++})}var o=1,i="nr@id",a=t("gos");e.exports=r},{}],loader:[function(t,e,n){function r(){if(!m++){var t=h.info=NREUM.info,e=u.getElementsByTagName("script")[0];if(t&&t.licenseKey&&t.applicationID&&e){c(l,function(e,n){t[e]||(t[e]=n)});var n="https"===d.split(":")[0]||t.sslForHttp;h.proto=n?"https://":"http://",s("mark",["onload",a()],null,"api");var r=u.createElement("script");r.src=h.proto+t.agent,e.parentNode.insertBefore(r,e)}}}function o(){"complete"===u.readyState&&i()}function i(){s("mark",["domContent",a()],null,"api")}function a(){return(new Date).getTime()}var s=t("handle"),c=t(11),f=window,u=f.document;NREUM.o={ST:setTimeout,CT:clearTimeout,XHR:f.XMLHttpRequest,REQ:f.Request,EV:f.Event,PR:f.Promise,MO:f.MutationObserver},t(9);var d=""+location,l={beacon:"bam.nr-data.net",errorBeacon:"bam.nr-data.net",agent:"js-agent.newrelic.com/nr-943.min.js"},p=window.XMLHttpRequest&&XMLHttpRequest.prototype&&XMLHttpRequest.prototype.addEventListener&&!/CriOS/.test(navigator.userAgent),h=e.exports={offset:a(),origin:d,features:{},xhrWrappable:p};u.addEventListener?(u.addEventListener("DOMContentLoaded",i,!1),f.addEventListener("load",r,!1)):(u.attachEvent("onreadystatechange",o),f.attachEvent("onload",r)),s("mark",["firstbyte",a()],null,"api");var m=0},{}]},{},["loader",2,7]);</script>
+    
+
+    <title>Ain't It Cool News: The best in movie, TV, DVD, and comic book news.</title>
+
+    
+    <meta property="og:url" content="http://www.aintitcool.com/">
+    <link rel="canonical" href="http://www.aintitcool.com/"/>
+    <meta property="og:image" content="http://media.aintitcool.com/static/social/facebook-wide.png"/>
+    <meta name="twitter:image" content="http://media.aintitcool.com/static/social/defaultsquarelogo.png">
+    <meta name="thumbnail" content="http://media.aintitcool.com/static/social/defaultsquarelogo.png" />
+    <link rel="image_src" href="http://media.aintitcool.com/static/social/defaultsquarelogo.png">
+    
+
+    <!-- Site-Wide Tags -->
+    <meta name="msapplication-starturl" content="http://www.aintitcool.com/">
+    <meta itemprop="inLanguage" content="en-US">
+    <meta name="site" content="Ain't It Cool News">
+    <meta property="og:site_name" content="Aint It Cool News" />
+    <meta name="twitter:site" content="@aintitcoolnews">
+    <meta property="fb:app_id" content="190151051022622"/>
+    <meta property="article:publisher" content="https://www.facebook.com/CoolNews" />
+
+    <link href='//fonts.googleapis.com/css?family=Bangers' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="http://media.aintitcool.com/static/2014/css/core.css">
+
+
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-106022-2', 'aintitcool.com');
+ga('require', 'displayfeatures');
+
+var googletag = googletag || {};
+googletag.cmd = googletag.cmd || [];
+</script>
+
+
+
+
+
+<script type="text/javascript">
+var AICNAds = AICNAds || {};
+AICNAds.page = 'home';
+</script>
+
+<!-- Small header script that includes jQuery, navigation code, and ad code -->
+<script type="text/javascript" src="http://media.aintitcool.com/static/2014/js/min/header-script-min.js"></script>
+
+
+<script type="text/javascript">
+ga('send', 'pageview');
+</script>
+
+</head>
+<body class="page-home">
+<div id="fb-root"></div>
+
+<div class="container">
+
+<header class="area-header">
+<!-- Header -->
+
+<div class="header-top">
+<div class="grid-container">
+<div class="headerleft">
+    <div class="headerleft-wrap">
+        <div class="header-masthead-wrap">
+  
+      <a href="/"><img src="http://media.aintitcool.com/media/mastheads/wolvieharry.gif" alt="" class="animated-masthead"/></a>
+  
+</div>
+        <a href="/" class="aicn-logo">Ain't It Cool News</a>
+
+    </div>
+
+</div>
+<div class="headerright">
+    <div class="ad-leaderboard-desktop"><div class="adwrapper" id="div-gpt-leaderboard-728x90">
+    </div>
+    </div>
+</div>
+
+
+
+</div><!-- /.grid-container -->
+<span class="print-only">Ain't It Cool News (www.aintitcool.com)</span>
+
+</div>
+
+<div class="header-bottom">
+
+    <div class="grid-container">
+<div class="mobile-expand-contract headlinefont">
+    <a href="/" class="mobilenav-home"><i class="fa fa-home"></i></a>
+    <a href="#talkback" class="mobilenav-comments"><i class="fa fa-comments"></i></a>
+    <a href="#" class="mobilenav-bars"><i class="fa fa-bars fa-double-up "></i></a>
+    </a></div>
+<ul class="nav-options headlinefont mobile-hidden">
+    <li class="nav-home"><a href="/">Home</a></li>
+    <li class="nav-coolnews"><a href="/section/coolnews">Cool News</a></li>
+    <li class="nav-coaxial"><a href="/section/coaxial">Coaxial</a></li>
+    <li class="nav-reviews"><a href="/section/reviews">Reviews</a></li>
+    <li class="nav-dvd"><a href="/section/dvds">Picks &amp; Peeks</a></li>
+    <li class="nav-contact"><a href="/contact/">Contact</a></li>
+    <li class="nav-search"><a href="/site-search/">Search <i class="fa fa-search"></i></a></li>
+</ul>
+
+</div>
+</div>
+
+</header><!-- /.area-header -->
+
+<div class="ad-leaderboard-mobile"><div id="div-gpt-mobile-leaderboard" class="adwrapper">
+</div></div>
+
+
+
+<div class="area-content">
+<div class="grid-container">
+
+<div class="pageleft homeleft">
+
+<div class="homeleft-wrapper homeleft-top">
+
+
+
+<div class="section-topstories box bg-yellowchecker" id="top-stories">
+    <div class="box-header headlinefont">
+        <div class="box-title">Top Stories</div>
+    </div>
+<div class="box-content">
+
+<ul class="article-list">
+<li class="">
+    <a href="/node/75262">Harry says to not miss PREACHER tonight, this is a beginning to a helluva series!</a></li><li class="">
+    <a href="/node/75252">Harry says Shane Black's NICE GUYS recalls BOOGIE NIGHTS, HAL ROACH, LOONEY TUNES & A Chandler Love!</a></li><li class="">
+    <a href="/node/75251">THOR: RAGNAROK - SO SHALL IT BE!!!</a></li><li class=" mobile-hidden">
+    <a href="/node/75219">More Than One Crew <br>Promised In CBS Unveiling <br>Of New STAR TREK Logo!!<br></a></li><li class=" mobile-hidden">
+    <a href="/node/75135">Harry survives X-MEN: APOCALYPSE to tell the tale!!! Oscar Isaac can do anything!</a></li><li class=" mobile-hidden">
+    <a href="/node/75126">Quint reviews CAPTAIN AMERICA: CIVIL WAR!</a></li><li class=" mobile-hidden">
+    <a href="/node/75106">Harry says, "Captain America: CIVIL WAR is great just like the 1996 Chicago Bulls!"</a></li><li class=" mobile-hidden">
+    <a href="/node/75086">Gale Anne Hurd doing Live Action GAIKING & other ANEW news!</a></li><li class=" mobile-hidden">
+    <a href="/node/75041">AICN Austin has a free screening of CAPTAIN AMERICA: CIVIL WAR - Rep your Team!!!</a></li><li class=" mobile-hidden">
+    <a href="/node/75009">Remembering Prince, 1958-2016</a></li><li class=" mobile-hidden">
+    <a href="/node/74952">Harry says Jon Favreau's JUNGLE BOOK is thoroughly spell-inducing Hollywood Magic!</a></li><li class=" mobile-hidden">
+    <a href="/node/74935">Will CBS’ New STAR TREK Series Be Set Before Archer And After Janeway??  Rumors Abound!!</a></li><li class=" mobile-hidden">
+    <a href="/node/74922">DOCTOR STRANGE Trailer now exists on our plane of existence!!!</a></li><li class=" mobile-hidden">
+    <a href="/node/74897">KONG: SKULL ISLAND featurette finally gives us a great look at the story!</a></li><li class=" mobile-hidden">
+    <a href="/node/74859">Here it is: the first trailer for the first Star Wars Spin-Off Movie ROGUE ONE!!!!</a></li>
+</ul>
+
+
+</div> <!-- /.box-content -->
+</div> <!-- /.box -->
+
+
+<div class="section-coolnews box bg-yellow-gradient" id="top-stories">
+    <div class="box-header headlinefont">
+        <div class="box-title">Cool News</div>
+        <div class="box-title-rss"><a href="/node/feed/coolnews/"><i class="fa fa-rss-square"></i></a></div>
+    </div>
+<div class="box-content">
+
+<ul class="article-list">
+
+    
+    <li class="">
+    <a href="/node/75269">New STAR TREK BEYOND Poster Pays Tribute To Robert Wise’s Big-Screen Version Of Starfleet!!</a>
+    </li>
+    
+    <li class="">
+    <a href="/node/75268">The BLACK PANTHER cast of characters unleashed... KLAW, MAN-APE, WHITE WOLF + More!</a>
+    </li>
+    
+    <li class="">
+    <a href="/node/75267">Here's a massive 4+ minute trailer for INDEPENDENCE DAY 2!!!</a>
+    </li>
+    
+    <li class="ad-mobile-wrap ad-mobile-item">
+    <div class="ad-mobile-box1">
+        <div id="div-gpt-mobile-300x250-a" class="adwrapper"></div>
+    </div>
+    </li>
+    
+    <li class="">
+    <a href="/node/75257">Muldoon Chats JURASSIC PARK, Film Distribution, and More With Joe Dante!</a>
+    </li>
+    
+    <li class="">
+    <a href="/node/75266">Bill Condon's gorgeous Beauty and the Beast teaser trailer is here!</a>
+    </li>
+    
+    <li class="">
+    <a href="/node/75259">JJ Abrams: <br>Paramount’s Suit Against Pricey STAR TREK Fan Film AXANAR ‘Is Going Away’!!</a>
+    </li>
+    
+    <li class="">
+    <a href="/node/75256">This Week's SATURDAY SHORTS: Aliens, Animation, and an X-Men Fan Film!</a>
+    </li>
+    
+    <li class="">
+    <a href="/node/75253">New poster and trailer for STAR TREK BEYOND finally sells the fun and adventure!</a>
+    </li>
+    
+    <li class="">
+    <a href="/node/75250">The Modern School of Film is Hosting a Conversation with Ken Burns, and We Can Get you Tickets!</a>
+    </li>
+    
+    <li class="">
+    <a href="/node/75248">Will Birdman be Flapping His Wings Once More in SPIDER-MAN: HOMECOMING?</a>
+    </li>
+    
+    <li class="">
+    <a href="/node/75247">Watch Christopher Walken do his thing in the latest NINE LIVES trailer!</a>
+    </li>
+    
+    <li class="">
+    <a href="/node/75249">SIFF 2016: Horrorella Reviews ANOTHER EVIL and THE LURE!</a>
+    </li>
+    
+    <li class="">
+    <a href="/node/75246">Capone's loves THE NICE GUYS' ragged, garage-band take on '70s private investigator films!!!</a>
+    </li>
+    
+    <li class="">
+    <a href="/node/75245">Capone says NEIGHBORS 2: SORORITY RISING feels familiar, but is that a bad thing?!!!</a>
+    </li>
+    
+    <li class="">
+    <a href="/node/75244">Capone's Art-House Round-Up with THE LOBSTER and MEN & CHICKEN!!!</a>
+    </li>
+    
+    <li class="">
+    <a href="/node/75243">Mike Birbiglia's DON'T THINK TWICE gets a trailer!</a>
+    </li>
+    
+    <li class="">
+    <a href="/node/75242">Capone debates whether it's worth flocking to THE ANGRY BIRDS MOVIE!!!</a>
+    </li>
+    
+    <li class="">
+    <a href="/node/75241">TMNT II's Krang Clears His Throat With A New Voice!</a>
+    </li>
+    
+    <li class="">
+    <a href="/node/75240">Fast & Furiousa! Meet Charlize Theron's Cipher from Fast 8!</a>
+    </li>
+    
+    <li class="">
+    <a href="/node/75239">Third time's the charm! The International GHOSTBUSTERS trailer is the best of 'em all!</a>
+    </li>
+    <li>
+        
+    </li>
+</ul>
+<p class="morearea"><a href="/section/coolnews" class="headlinefont morelink">More</a></p>
+
+
+</div> <!-- /.box-content -->
+</div> <!-- /.box -->
+
+
+</div> <!-- /.homeleft-top -->
+
+
+
+
+
+<div class="homeleft-wrapper homeleft-bottom">
+
+<div class="section-dvd box bg-yellow-harry" id="dvd">
+    <div class="box-header headlinefont">
+        <div class="box-title">Picks &amp; Peeks</div>
+        <div class="box-title-rss"><a href="/node/feed/dvds/"><i class="fa fa-rss-square"></i></a></div>
+    </div>
+<div class="box-content">
+
+<ul class="article-list">
+<li class="">
+    <a href="/node/71750">1st Picks & Peeks of June 2015: Tsui Hark, Wachowskis, SPRING, WOLFEN, SCARECROWS & SPONGEBOB!</a></li><li class="">
+    <a href="/node/71108">2nd Picks & Peeks of April 2015: Heavy Metal series, Preston Sturges, BABADOOK, BATMAN VS ROBIN & more!!!</a></li><li class=" mobile-hidden">
+    <a href="/node/70996">1st PICKS & PEEKS of April 2015: SILENT RUNNING, HOOPER, SHARKY'S MACHINE, BREATHLESS + More!</a></li><li class=" mobile-hidden">
+    <a href="/node/70990">STAR WARS is coming to everything digital!  All of em!  With extra extras!</a></li><li class=" mobile-hidden">
+    <a href="/node/70958">Remember that 3D Conversion of George Romero's DAWN OF THE DEAD?</a></li>
+</ul>
+
+<p class="morearea"><a href="/section/dvds" class="headlinefont morelink">More</a></p>
+</div> <!-- /.box-content -->
+</div> <!-- /.box -->
+
+<div class="section-reviews box bg-yellow-harry" id="reviews">
+    <div class="box-header headlinefont">
+        <div class="box-title">Reviews</div>
+        <div class="box-title-rss"><a href="/node/feed/reviews/"><i class="fa fa-rss-square"></i></a></div>
+    </div>
+<div class="box-content">
+
+<ul class="article-list">
+<li class="">
+    <a href="/node/75252">Harry says Shane Black's NICE GUYS recalls BOOGIE NIGHTS, HAL ROACH, LOONEY TUNES & A Chandler Love!</a></li><li class="">
+    <a href="/node/75249">SIFF 2016: Horrorella Reviews ANOTHER EVIL and THE LURE!</a></li><li class="">
+    <a href="/node/75246">Capone's loves THE NICE GUYS' ragged, garage-band take on '70s private investigator films!!!</a></li><li class="">
+    <a href="/node/75245">Capone says NEIGHBORS 2: SORORITY RISING feels familiar, but is that a bad thing?!!!</a></li><li class="">
+    <a href="/node/75244">Capone's Art-House Round-Up with THE LOBSTER and MEN & CHICKEN!!!</a></li><li class="">
+    <a href="/node/75242">Capone debates whether it's worth flocking to THE ANGRY BIRDS MOVIE!!!</a></li><li class="spoiler"><small>SPOILER</small>
+    <a href="/node/75238">AICN HORROR looks at I AM ALONE! HANK BOYD IS DEAD! THE WITCH! DEMENTIA! CRUSH THE SKULL! I SAW WHAT YOU DID! YOU’LL LIKE MY MOTHER! THE PREMONITION! MANSON’S LOST GIRLS! & DR. TERROR’S HOUSE OF PARTY!</a></li>
+</ul>
+
+<p class="morearea"><a href="/section/reviews" class="headlinefont morelink">More</a></p>
+</div> <!-- /.box-content -->
+</div> <!-- /.box -->
+
+
+<div class="section-comics box bg-yellow-gradient" id="reviews">
+    <div class="box-header headlinefont">
+        <div class="box-title">Comics</div>
+        <div class="box-title-rss"><a href="/node/feed/comics/"><i class="fa fa-rss-square"></i></a></div>
+    </div>
+<div class="box-content">
+
+<ul class="article-list">
+
+<li class="spoiler"><small>SPOILER</small>
+    <a href="/node/75214">AICN COMICS Reviews: BLACK PANTHER! THE LIVING FINGER! NINJAK! SIRENS! SERVING SUPES! Plus Remembering Darwyn Cooke…</a>
+</li>
+<li class="spoiler"><small>SPOILER</small>
+    <a href="/node/75201">AICN COMICS PODCAST review ACTION COMICS! BLACK PANTHER! THE FIX! VISION! Plus we look back on THE NEW FRONTIER and the amazing body of work from the late Darwyn Cooke…</a>
+</li>
+<li class="spoiler"><small>SPOILER</small>
+    <a href="/node/75147">AICN COMICS Reviews: THE PHANTOM! THUNDERBOLTS! PENNY DREADFUL! LADY MECHANIKA! & More!</a>
+</li>
+<li class="spoiler"><small>SPOILER</small>
+    <a href="/node/75139">AICN COMICS PODCAST review CAPTAIN AMERICA: CIVIL WAR! BLACK WIDOW! RENATO JONES: THE ONE PERCENT! THE PUNISHER! & More!</a>
+</li>
+<li class="spoiler"><small>SPOILER</small>
+    <a href="/node/75105">AICN COMICS Reviews: DR. STRANGE! X-FILES! BATMAN! & More!</a>
+</li>
+</ul>
+
+<p class="morearea"><a href="/section/comics" class="headlinefont morelink">More</a></p>
+</div> <!-- /.box-content -->
+</div> <!-- /.box -->
+
+</div> <!-- /.homeleft-bottom -->
+</div><!-- /.pageleft -->
+<div class="pageright homeright">
+
+<!--
+<div class="ad-mobile-box2">
+    <div id="div-gpt-mobile-300x250-b" class="adwrapper"></div>
+</div>
+-->
+
+<div class="ad-split-box1">
+    <div class="adwrapper" id="div-gpt-topright-300x250">
+    </div>
+</div>
+
+<div class="box box-purple section-coaxialsec bg-blue-herc" id="coaxial">
+    <div class="box-header headlinefont">
+        <div class="box-title">Coaxial</div>
+        <div class="box-title-rss"><a href="/node/feed/coaxial/"><i class="fa fa-rss-square"></i></a></div>
+    </div>
+<div class="box-content">
+
+<ul class="article-list">
+<li class="">
+    <a href="/node/73802"><font color=blue> Cheapest Ever Blu VENTURE BROS., BLACK DYNAMITE, ROBOT CHICKEN!! Supercheap Blu RICK & MORTY & METALOCALYPSE!!</font></a></li><li class="spoiler"><small>SPOILER</small>
+    <a href="/node/75264"><i>‘If You Were Only Sane!!’</i> Herc’s Seen Tonight’s Heller-Scripted Season Finale Of GOTHAM!!</a></li><li class="">
+    <a href="/node/75265">LAST MONDAY OF SWEEPS!! THE RETURN Of POV!! Pink On KIMMEL!! JLaw On FALLON!!</a></li><li class="">
+    <a href="/node/75261"><i>‘Hold The Door!!'</i> <br>Sunday Brings THRONES 6.5!!</a></li><li class="">
+    <a href="/node/75262">Harry says to not miss PREACHER tonight, this is a beginning to a helluva series!</a></li><li class="spoiler"><small>SPOILER</small>
+    <a href="/node/75260">Hercules Says Seth Rogen's PREACHER Offers A Compelling-Enough AMC Sermon!!</a></li><li class="spoiler"><small>SPOILER</small>
+    <a href="/node/75263">LAST SUNDAY OF SWEEPS!! Herc Endorses Tonight’s SILICON VALLEY!! The Go-Go’s On THE BILLBOARD AWARDS!!</a></li><li class="">
+    <a href="/node/75255">HERC RADIO!! GOTHAM Finale, A BIGGER SPLASH And HBO’s LBJ Movie!! Plus All The DC, Marvel, Star Wars & Trek News!!</a></li><li class="">
+    <a href="/node/75254">LAST SATURDAY OF SWEEPS!! Fred Armisen Returns To Host The 41st SNL Finale!! Herc’s Seen Tonight’s HBO LBJ Movie!!</a></li><li class="">
+    <a href="/node/75236">LAST FRIDAY OF SWEEPS!! Julian Fellowes’ DOCTOR THORNE Cuts Into Amazon!! Bamford’s LADY DYNAMITE Explodes On Netflix!!</a></li>
+</ul>
+<p class="morearea"><a href="/section/coaxial" class="headlinefont morelink">More</a></p>
+
+
+</div> <!-- /.box-content -->
+</div> <!-- /.box -->
+
+<div class="ad-split-box2">
+    <div class="adwrapper" id="div-gpt-bottomright-300x250">
+    </div>
+</div>
+
+<a class="box box-webmail headlinefont" href="http://webmail.aintitcool.com/email/scripts/loginuser.pl">Login to Webmail <i class="fa fa-envelope"></i></a>
+
+</div><!-- /.pageright -->
+</div>
+
+</div> <!-- /.area-content -->
+
+
+
+
+<footer class="area-footer">
+    <div class="grid-container">
+<span class="section-map"><a href="/">Home</a> | <a href="/section/coolnews">Cool News</a> | <a href="/section/coaxial">Coaxial / TV</a> | <a href="/section/dvds">Picks &amp; Peeks</a> | <a href="/section/reviews">Movie Reviews</a> | <a href="/section/animation">Animation</a> | <a href="/section/comics">Comics</a> | <a href="/site-search/">Search</a> | <a href="/section/comics">Comics</a> | <a href="http://zone.aintitcool.com/">The Zone Forums</a>
+    </span>
+<span class="rss-privacy-report"><a href="/node/feed/">RSS</a>  | <a href="/privacy/">Privacy Policy</a> | <a href="/contact/">Contact AICN</a></soan>
+<span class="copyright">This site is © 1996-2016 Ain't It Cool News.</span>
+<span class="credit">Managed Hosting by <a href="http://steadfast.net/?utm_source=aintitcool.com&utm_medium=referral&utm_content=footer_link&utm_campaign=referral_20140118_x_x_aintitcool_partner&source=referral_20140118_x_x_aintitcool_partner">Steadfast</a>. Dev &amp; Responsive Design by <a href="http://www.nickcatalano.com/">Nick Catalano</a>.</span>
+</div>
+</footer><!-- /.area-footer -->
+
+</div> <!-- /.container -->
+
+<div class="adwrapper" id="div-gpt-outofpage">
+</div>
+
+
+<!-- Footer script containing all other javascript (disqus, social, analytics, fitvid, etc) -->
+<script type="text/javascript" src="http://media.aintitcool.com/static/2014/js/min/delay-script-min.js"></script>
+
+
+<!-- Quantcast Tag -->
+<script type="text/javascript">
+var _qevents = _qevents || [];
+(function() {
+var elem = document.createElement('script');
+elem.src = (document.location.protocol == "https:" ? "https://secure" : "http://edge") + ".quantserve.com/quant.js";
+elem.async = true;
+elem.type = "text/javascript";
+var scpt = document.getElementsByTagName('script')[0];
+scpt.parentNode.insertBefore(elem, scpt);
+})();
+_qevents.push({
+  qacct:"p-sV5gZpXM_sdwB"
+});
+</script>
+<noscript>
+<div style="display:none;">
+<img src="//pixel.quantserve.com/pixel/p-sV5gZpXM_sdwB.gif" border="0" height="1" width="1" alt="Quantcast"/>
+</div>
+</noscript>
+<!-- End Quantcast tag -->
+
+
+<script type="text/javascript">window.NREUM||(NREUM={});NREUM.info={"beacon":"bam.nr-data.net","queueTime":0,"licenseKey":"1158427fed","agent":"","transactionName":"ZwNQZUNVW0cHVRdRXF5JdERfV0FdCVhMWUNAFRxSXlpBUQhCTU5aVRFBC3lbWFEwXwZPHVcDRg==","applicationID":"2531358","errorBeacon":"bam.nr-data.net","applicationTime":56}</script>
+
+</body>
+</html>

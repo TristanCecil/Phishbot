@@ -1,0 +1,1852 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-US" xml:lang="en-US" dir="ltr" xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+                <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+        <base href="https://labtestsonline.org/"><!--[if lte IE 6]></base><![endif]-->
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        
+        <title>Blood, Urine & Other Lab Tests Education | Lab Tests Online</title>
+        <meta name="keywords" content="lab tests, blood tests, blood testing, lab testing, lab test info, laboratory test information, laboratory tests, laboratory testing, medical tests, medical test information, clinical lab tests, patient education, healthcare education, health care management, health care information, lab news, testing news, screening tests" />
+        <meta name="description" content="Lab Tests Online offers patients and caregivers the latest information on blood, urine and other clinical lab tests so that they may better manage their care" />
+        <meta name="google-site-verification" content="J6zHEFwMM1d3W17FLgbF1yPhzNxl7Ag4yIn1y2kmkjo"><meta name="google-site-verification" content="2b5fMcaf_2hJd9hOPnNvCds3m76KSUGlmljQFZQt0ek"><meta name="msvalidate.01" content="2E8EA11035C27E2B7C82A165FA698E0C"><meta name="google-site-verification" content="Tm4rPOTvCQy9RToHBUrR4uiBcsY9xElJBFHv8sPttvs">
+
+        
+        <script type="text/javascript" src="framework/thirdparty/jquery/jquery.min.js"></script>
+
+        
+        <script type="text/javascript" src="mysite/javascript/jquery/plugins/cookie/jquery.cookie.js"></script>
+
+        <script language="javascript" type="text/javascript">
+    
+    var themeDir = "themes/lto";
+    var countryCode = "US";
+    var isOpenExternalLinksInNewWindow = "1";
+
+    
+    
+    
+
+    var isContactUsForm = 0;
+    var isCommentsForm = 0;
+    var isHelpfulForm = 0;
+    var isAskUsForm = 0;
+    var isAnalytePageWithSubarticle = 0;
+    var isSubarticlePage = 0;
+
+    var stakeholdersServerURL = "//stakeholders.labtestsonline.org";
+    var isEnableSponsoredPages = 1;
+    var isAdmin = 0;
+    var isShowAnalytics = 1;
+
+    
+    var isShowAds = getIsShowAds();
+
+
+    /**
+     * Determine whether or not to show ads by comparing referrer domain against
+     * list of ad-free domains.
+     *
+     * NOTE: this function only compares domains!  Even if the function determines
+     *       that ads should be displayed, there still could be no ads for the page
+     *       if its keywords and title doesn't match up with the ad keywords; the
+     *       latter logic is processed in Page_Controller::AdScript().
+     *
+     *       So if this function determines that ads should be displayed based on domains, but
+     *       Page_Controller::AdScript() returns null, then no ads are displayed since the template
+     *       variable  (see TopAd.ss and SideAd.ss) is null.
+     *
+     *       In summary, two factors determine whether ads are displayed:
+     *       1. referrer domain compared to ad-free domain list (getIsShowAds())
+     *       2. page keywords and title compared to Ad keywords (Page_Controller::AdScript(), TopAd.ss, SideAd.ss)
+     *
+     */
+    function getIsShowAds() {
+
+        /* initialize the return value */
+        var isDisplayAds = true;
+
+        var queryString = location.search;
+        /* don't show ads if in print preview mode */
+        if (queryString && queryString.match(/printpreview=1/i)) {
+            isDisplayAds = false;
+            return isDisplayAds;
+        }
+
+        /* get this website's domain (removing any possible port number */
+        var thisSiteDomain = (location.host).replace(/^(.*):.*$/, "$1");
+
+        /* get the referring URL, may or may not be available depending of response header */
+        var referrerUrl = document.referrer;
+
+        /* Admins only: for testing, can set 'referrer' query string in URL */
+        if (isAdmin) {
+            var queryString = location.search; // eg, ?a=b&c=d
+            if (queryString) {
+                queryString = queryString.replace('?','');
+                var matches = queryString.match(/referrer=[^&]+/i);
+                if (matches) {
+                    referrerUrl = matches[0].replace('referrer=', '');
+                }
+            }
+        }
+
+        /* extract the domain from the referrer URL */
+        var rdre = new RegExp('^https*://(.*?)/.*$', i);
+        var referrerDomain = referrerUrl.replace(rdre, "$1");
+
+        var externalReferrerDomain = jQuery.cookie('ExternalReferrerDomain');
+
+        /* if Ad cookie exists and is set to 'no', then don't show any ads for the rest of the session
+         * unless:
+         *     1. the referrer domain has changed and
+         *     2. the referrer domain is not the current site.
+         *
+         * Use case: visitor comes to LTO from an ad-free domain, visitor should see no ads and ad cookie is set to 'no';
+         *           if visitor then searches for a term from a search engine and clicks on a link to the LTO website,
+         *           then ads should be displayed again.  (Session cookie is valid a acroos all browser tabs and is
+         *           only auto cleared when entire browser is shut down but not when a tab is closed or re-used
+         */
+        var isCookieShowAds = jQuery.cookie('IsCookieShowAds');
+        if (isCookieShowAds && isCookieShowAds == 'no') {
+            if (externalReferrerDomain && (externalReferrerDomain != referrerDomain) && (referrerDomain != thisSiteDomain)) {
+                //alert(['Ad cookie is NO and referrer domain is DIFFERENT than previous external domain'].join(' | '));
+
+                /* on a different domain, so set a new external domain and delete Ad cookies;
+                   the new external domain will undergo domain analysis below */
+                jQuery.cookie('ExternalReferrerDomain', referrerDomain, {path: '/'});
+                jQuery.cookie('IsCookieShowAds', null, {path: '/'});
+            }
+            else {
+                //alert(['Ad cookie is NO and referrer domain is SAME as previous domain.  Exiting.'].join(' | '));
+                /* haven't left the LTO site since coming from the ad-free domain, so continue to not display ads;
+                   no domain analysis needed */
+                isDisplayAds = false;
+                return isDisplayAds;
+            }
+        }
+
+        /* at this stage, go through the domain analysis and determine if Ads should be displayed on this page based on referrer domain;
+           also set a session cookie if the referrer domain is in the ad-free list AND the ad cookie does not yet exist */
+
+        /* JS array of ad-free domains and exclusion subdomains (generated by SS) */
+        var adFreeDomains = [/nih\.gov/i, /medlineplus\.gov/i];
+        var adFreeExclusionSubDomains = "";
+
+        var numAdFreeDomains = adFreeDomains.length;
+        var numAdFreeExclusionSubDomains = adFreeExclusionSubDomains.length
+
+        if (referrerDomain && ((adFreeDomains instanceof Array) && numAdFreeDomains)) {
+
+            //alert(['referrer Url, referrer Domain, Ad Free Domains, Ad Free Exclusion Subdomains',referrerUrl, referrerDomain, adFreeDomains, adFreeExclusionSubDomains].join('|'));
+
+            /* check if referrer domain is in the ad-free domains array */
+            var isExclusionSubDomainMatch = false;
+            for (var i = 0; i < numAdFreeDomains; i++) {
+                //alert(['referrerDomain, adFreeDomains[i], match', referrerDomain, adFreeDomains[i], referrerDomain.match(adFreeDomains[i])].join(' | '));
+                if (referrerDomain.match(adFreeDomains[i])) {
+                    isDisplayAds = false;
+                    if (adFreeExclusionSubDomains instanceof Array && numAdFreeExclusionSubDomains) {
+                        isExclusionSubDomainMatch = false;
+                        for (var j = 0; j < numAdFreeExclusionSubDomains; j++) {
+                            //alert(['referrerDomain, adFreeExclusionSubDomains[j], match', referrerDomain, adFreeExclusionSubDomains[j], referrerDomain.match(adFreeExclusionSubDomains[j])].join(' | '));
+                            if (referrerDomain.match(adFreeExclusionSubDomains[j])) {
+                                isDisplayAds = true;
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                }
+            }
+            /* if Ad cookie doesn't exist and Ads should not be displayed, then set
+             * a session cookie to NOT show ads for the browsing session; also set
+             * the external referral domain */
+            if (!isCookieShowAds && !isDisplayAds) {
+                /* this is a session cookie since there is no 'expires' property set */
+                jQuery.cookie('IsCookieShowAds', 'no', {path: '/'});
+                jQuery.cookie('ExternalReferrerDomain', referrerDomain, {path: '/'});
+                //alert(['Ad cookie does not exist and not displaying ads  based on referrer url; setting no ad display cookie'].join(' | '));
+            }
+        }
+        else {
+            //if (typeof console == "object") { console.log('WARNING: browser did not report any referrer URL or adFreeDomains is not valid' + [referrerUrl, adFreeDomains].join(' | ')); }
+        }
+
+        //alert(['isDisplayAds based on comparing domains only', isDisplayAds].join(' | '));
+        return isDisplayAds;
+    }
+
+</script>
+
+
+        <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+
+        
+        
+            <link rel="alternate" hreflang="pt-BR" href="http://www.labtestsonline.org.br/" />
+        
+            <link rel="alternate" hreflang="zh-CN" href="http://www.labtestsonline.org.cn/" />
+        
+            <link rel="alternate" hreflang="ko-KR" href="http://www.labtestsonline.kr/" />
+        
+            <link rel="alternate" hreflang="tr-TR" href="http://labtestsonline.org.tr/" />
+        
+            <link rel="alternate" hreflang="en-GB" href="http://labtestsonline.org.uk/" />
+        
+            <link rel="alternate" hreflang="en-US" href="https://labtestsonline.org/" />
+        
+        
+        <link href="https://plus.google.com/108618580363700141471" rel="publisher" />
+
+		
+            <link rel="canonical" href="https://labtestsonline.org/" />
+        
+
+        
+            <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', "UA-5562595-1"]);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+</script>
+
+        
+    <link rel="stylesheet" type="text/css" href="/themes/lto/css/my_layout_3_col_960.css?m=1427503988" />
+<link rel="stylesheet" type="text/css" href="/mysite/javascript/jquery/plugins/bookmark/jquery.bookmark.css?m=1427503986" />
+<link rel="stylesheet" type="text/css" href="/mysite/javascript/jquery/plugins/bookmark/lto.jquery.bookmark.css?m=1427503986" />
+<link rel="stylesheet" type="text/css" href="/mysite/javascript/jquery/plugins/cluetip/jquery.cluetip.css?m=1427503986" />
+<link rel="stylesheet" type="text/css" href="/themes/lto/css/screen/date_tips.css?m=1427503991" />
+<link rel="stylesheet" type="text/css" media="print" href="/themes/lto/css/print/print.css?m=1427503991" />
+<link rel="stylesheet" type="text/css" href="/themes/lto/css/locale/US/locale.css?m=1451288287" />
+<!--[if lte IE 7]>
+            <link href="themes/lto/css/patches/patch_my_layout_3_col.css" rel="stylesheet" type="text/css" />
+        <![endif]-->
+        <!--[if lte IE 8]>
+            <link href="themes/lto/css/patches/all_ie_versions.css" rel="stylesheet" type="text/css" />
+        <![endif]-->
+</head>
+    <body id="HomePage">
+        <div class="page_margins">
+            <div class="page">
+                <a name="top"></a>
+                <div id="header">
+                    <noscript><div class="noindex" id="no_script">PLEASE NOTE: Your web browser does not have <a href="http://en.wikipedia.org/wiki/Javascript" title="JavaScript definition">JavaScript</a> enabled. Unless you <a href="http://www.google.com/support/websearch/bin/answer.py?hl=en&answer=23852" title="Enable JavaScript">enable Javascript</a>,  your ability to navigate and access the features of this website will be limited.
+</div></noscript>
+                    <div class="noindex">                
+                   <a href="/" title="Lab Tests Online: Empower Your Health. Understand Your Tests.  A public resource on clinical laboratory testing."><img id="banner" src="themes/lto/css/locale/US/images/lab-tests-online-LTO-banner.jpg" alt="Lab Tests Online: Empower Your Health. Understand Your Tests.  A public resource on clinical laboratory testing." /></a>
+                
+
+</div>
+                    <div class="noindex">                        <div id="globalsites">
+                            <div class="flags">
+                                <a href="/" title="Home">Home</a>
+                            </div>
+                            <div class="link">
+                                <a href="/global/sites/" title="Visit Global Sites">
+                                        <img src="themes/lto/images/world.png" alt="World Icon" />
+                                        
+                                            <span>Visit Global Sites</span>
+                                        
+                                </a>
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+</div>
+                </div>
+                <div id="main">
+                    <div id="col1">
+                        <div id="col1_content" class="clearfix">
+                            
+                            <div id="home_main_content">
+                                <h1 id="spothead">About Lab Tests Online</h1>
+                                <div class="paragraph"><p>Lab Tests Online is an <a href="/awards/">award-winning</a> health information web resource designed to help patients and caregivers understand the many lab tests that are a vital part of medical care. <a href="/site/o-editorial/">Laboratory and medical professionals</a>, who are experts in the field, develop and review all content, including articles on <a href="/map/aindex/"> lab tests</a>, <a href="/map/cindex/">conditions/diseases</a>, <a href="/map/sindex/">screening</a>, <a href="/map/findex/">clinical laboratory topics</a>, and <a href="/map/nindex/">lab test news</a>. The site is produced by <a href="https://www.aacc.org/">AACC</a>, a global scientific and medical professional organization dedicated to clinical laboratory science and its application to healthcare. <a title="Information about Lab Tests Online" href="/site/">Learn more</a>.</p></div>
+                                <h1 id="news">
+                                    
+                                        
+                                            <a href="/news/" title="Topics in the News">Topics in the News</a>
+                                        
+                                    </h1>
+                                
+                                
+                                    <h2 class="first"><a href="/news/160729legionnaires/" title="CDC: Cases of Legionnaires Disease on the Rise in U.S.">CDC: Cases of Legionnaires Disease on the Rise in U.S.</a></h2>
+                                    <div class="paragraph news_date">July 29, 2016</div>
+                                    <div class="paragraph"><p><img class="right" title="" src="assets/Uploads/_resampled/ResizedImage12694-16377-lores-CDC-Betty-Partin-2.jpg" alt="Xray image of chest" width="126" height="94">Cases of Legionnaires disease, a serious, often fatal form of pneumonia, nearly quadrupled from 2000 to 2014, according to a recent report from the CDC. The most common source of recent outbreaks was potable (drinkable) water used for common purposes, such as showering, followed by cooling towers, hot tubs, and decorative fountains. <em class="note_font_size">Photo source: <a href="https://phil.cdc.gov/phil/home.asp">CDC</a>, Betty Partin</em></p></div>
+                                
+                                    <h2 class=""><a href="/news/160715liquid-biopsy/" title="FDA Approves First ‘Liquid Biopsy’ to Guide Treatment of Cancer">FDA Approves First ‘Liquid Biopsy’ to Guide Treatment of Cancer</a></h2>
+                                    <div class="paragraph news_date">July 15, 2016</div>
+                                    <div class="paragraph"><p><img class="right" title="" src="assets/Uploads/_resampled/ResizedImage12684-Caps-DNA-97791-large-NHGRI-Ernesto-del-Aguila-III.jpg" alt="DNA diagram" width="126" height="84">The FDA has approved the first blood-based genetic test to guide the treatment of a common type of lung cancer called non-small cell lung cancer (NSCLC). The test is less invasive, requiring only a blood draw instead of a traditional tissue biopsy, and detects mutations that could indicate that the tumor is more likely to respond to the drug erlotinib. <em class="note_font_size">Photo source: NHGRI, Ernesto del Aguila III</em></p></div>
+                                
+                                    <h2 class="last"><a href="/news/160711bacteria/" title="Bacteria with Antibiotic Resistance MCR-1 Gene Found for the First Time in U.S. Patient, Raises Concern">Bacteria with Antibiotic Resistance MCR-1 Gene Found for the First Time in U.S. Patient, Raises Concern</a></h2>
+                                    <div class="paragraph news_date">July 11, 2016</div>
+                                    <div class="paragraph"><p><img class="right" title="" src="assets/Uploads/_resampled/ResizedImage126126-E-coli-plasmid-85224-crop-NHGRI-Darryl-Leja.jpg" alt="E.coli plasmid" width="126" height="126">Worry about antibiotic resistance recently intensified when it was discovered for the first time that a strain of the bacteria infecting a patient in the U.S. carries the gene called <em>mcr-1</em>. The gene makes the bacteria resistant to colistin, a polymyxin, which is a class of antibiotics considered to be a "last resort" to treat patients with multidrug-resistant infections. <em class="note_font_size">Photo source: NHGRI, Darryl Leja</em></p></div>
+                                
+                                
+                            </div>
+
+                        </div>
+                    </div>
+                    <div id="col2">
+                        <div id="col2_content" class="clearfix">
+                            <div class="noindex"><div class="right_features">
+    <img class="right_features_top" src="themes/lto/images/bck_right_features_top_trans.gif" alt="right features top" />
+    <div class="right_features_content">
+        <div id="search_nav_instr">
+            Use the search box and menus<br />below to quickly navigate<br />Lab Tests Online
+        </div>
+        <!--
+
+        Search form
+
+        -->
+        <!--
+        <form class="search" id="vert_search" name="search" method="get" action="themes/lto/search.php">
+            <input type="hidden" name="sp-a" value="" />
+            <table class="custom" id="search_table">
+                <tr>
+                    <td><input id="sp_q" name="sp_q" type="text" /></td>
+                    <td><input id="search_btn" name="search_btn" type="image" src="themes/lto/css/locale/US/images/btn_search.jpg" /></td>
+                </tr>
+            </table>
+        </form>
+        -->
+        <form id="SphinxSearchForm_SearchForm" action="/home/SearchForm" method="get" enctype="application/x-www-form-urlencoded">
+	
+	<p id="SphinxSearchForm_SearchForm_error" class="message " style="display: none"></p>
+	
+	<fieldset>
+		
+		<div id="Search" class="field text nolabel">
+	
+	<div class="middleColumn">
+		<input type="text" name="Search" class="text nolabel" id="SphinxSearchForm_SearchForm_Search" />
+	</div>
+	
+	
+	
+</div>
+
+		
+		
+		
+	<input type="submit" name="action_ProcessSphinxSearchForm" value="Go" class="action" id="SphinxSearchForm_SearchForm_action_ProcessSphinxSearchForm" />
+
+
+		
+	</fieldset>
+</form>
+
+        <form class="main_nav" id="vert_main_nav" name="main_nav" method="post" action="">
+            <!--
+
+            Analytes
+
+            -->
+            <h3>Tests</h3>
+            <select id="tests" name="tests" size="7">
+                
+            		<option value="/map/aindex/">List of all tests and synonyms</option>
+            	
+                
+                    
+                        <option value="/understanding/analytes/1a111/" title="Test not listed?">Test not listed?</option>
+                    
+                        <option value="/understanding/analytes/5hiaa/" title="5-HIAA">5-HIAA</option>
+                    
+                        <option value="/understanding/analytes/6-17hydroxy/" title="17-Hydroxyprogesterone">17-Hydroxyprogesterone</option>
+                    
+                        <option value="/understanding/analytes/tp/" title="A/G Ratio">A/G Ratio</option>
+                    
+                        <option value="/understanding/analytes/a1c/" title="A1c">A1c</option>
+                    
+                        <option value="/understanding/analytes/differential/" title="Absolute neutrophils">Absolute neutrophils</option>
+                    
+                        <option value="/understanding/analytes/ace/" title="ACE">ACE</option>
+                    
+                        <option value="/understanding/analytes/acetaminophen/" title="Acetaminophen">Acetaminophen</option>
+                    
+                        <option value="/understanding/analytes/cholinesterase/" title="Acetylcholinesterase">Acetylcholinesterase</option>
+                    
+                        <option value="/understanding/analytes/achr-antibody/" title="AChR Antibody">AChR Antibody</option>
+                    
+                        <option value="/understanding/analytes/microalbumin/" title="ACR">ACR</option>
+                    
+                        <option value="/understanding/analytes/act/" title="ACT">ACT</option>
+                    
+                        <option value="/understanding/analytes/acth/" title="ACTH">ACTH</option>
+                    
+                        <option value="/understanding/analytes/adenosine-deaminase/" title="Adenosine Deaminase">Adenosine Deaminase</option>
+                    
+                        <option value="/understanding/analytes/adh/" title="ADH">ADH</option>
+                    
+                        <option value="/understanding/analytes/afb-culture/" title="AFB Testing">AFB Testing</option>
+                    
+                        <option value="/understanding/analytes/triple-screen/" title="AFP Maternal">AFP Maternal</option>
+                    
+                        <option value="/understanding/analytes/afp-tumor/" title="AFP Tumor Markers">AFP Tumor Markers</option>
+                    
+                        <option value="/understanding/analytes/albumin/" title="Albumin">Albumin</option>
+                    
+                        <option value="/understanding/analytes/aldolase/" title="Aldolase">Aldolase</option>
+                    
+                        <option value="/understanding/analytes/aldosterone/" title="Aldosterone">Aldosterone</option>
+                    
+                        <option value="/understanding/analytes/alk-mutation/" title="ALK Mutation (Gene Rearrangement)">ALK Mutation (Gene Rearrangement)</option>
+                    
+                        <option value="/understanding/analytes/allergy/" title="Allergy Blood Testing">Allergy Blood Testing</option>
+                    
+                        <option value="/understanding/analytes/alp/" title="ALP">ALP</option>
+                    
+                        <option value="/understanding/analytes/alpha1-antitrypsin/" title="Alpha-1 Antitrypsin">Alpha-1 Antitrypsin</option>
+                    
+                        <option value="/understanding/analytes/alt/" title="ALT">ALT</option>
+                    
+                        <option value="/understanding/analytes/ama/" title="AMA">AMA</option>
+                    
+                        <option value="/understanding/analytes/aminoglycosides/" title="Amikacin">Amikacin</option>
+                    
+                        <option value="/understanding/analytes/aminoglycosides/" title="Aminoglycoside Antibiotics">Aminoglycoside Antibiotics</option>
+                    
+                        <option value="/understanding/analytes/ammonia/" title="Ammonia">Ammonia</option>
+                    
+                        <option value="/understanding/analytes/amnio/" title="Amniocentesis">Amniocentesis</option>
+                    
+                        <option value="/understanding/analytes/amylase/" title="Amylase">Amylase</option>
+                    
+                        <option value="/understanding/analytes/ana/" title="ANA">ANA</option>
+                    
+                        <option value="/understanding/analytes/anca/" title="ANCA">ANCA</option>
+                    
+                        <option value="/understanding/analytes/androstenedione/" title="Androstenedione">Androstenedione</option>
+                    
+                        <option value="/understanding/analytes/electrolytes/" title="Anion Gap">Anion Gap</option>
+                    
+                        <option value="/understanding/analytes/ccp/" title="Anti-CCP">Anti-CCP</option>
+                    
+                        <option value="/understanding/analytes/adb/" title="Anti-DNase B">Anti-DNase B</option>
+                    
+                        <option value="/understanding/analytes/anti-dsdna/" title="Anti-dsDNA">Anti-dsDNA</option>
+                    
+                        <option value="/understanding/analytes/anti-lkm-1/" title="Anti-LKM-1">Anti-LKM-1</option>
+                    
+                        <option value="/understanding/analytes/anti-mullerian-hormone/" title="Anti-Mullerian Hormone">Anti-Mullerian Hormone</option>
+                    
+                        <option value="/understanding/analytes/rbc-antibody/" title="Antibody ID, RBC">Antibody ID, RBC</option>
+                    
+                        <option value="/understanding/analytes/anticentromere-antibody/" title="Anticentromere Antibody">Anticentromere Antibody</option>
+                    
+                        <option value="/understanding/analytes/antiphospholipids/" title="Antiphospholipids">Antiphospholipids</option>
+                    
+                        <option value="/understanding/analytes/antithrombin/" title="Antithrombin">Antithrombin</option>
+                    
+                        <option value="/understanding/analytes/factor-v-and-pt20210/" title="APC Resistance">APC Resistance</option>
+                    
+                        <option value="/understanding/analytes/apoa/" title="Apo A-I">Apo A-I</option>
+                    
+                        <option value="/understanding/analytes/apob/" title="Apo B">Apo B</option>
+                    
+                        <option value="/understanding/analytes/apoe/" title="APOE Genotyping, Alzheimer Disease">APOE Genotyping, Alzheimer Disease</option>
+                    
+                        <option value="/understanding/analytes/apoe-cvd/" title="APOE Genotyping, CVD">APOE Genotyping, CVD</option>
+                    
+                        <option value="/understanding/analytes/aptt/" title="aPTT">aPTT</option>
+                    
+                        <option value="/understanding/analytes/arbovirus-testing/" title="Arbovirus Testing">Arbovirus Testing</option>
+                    
+                        <option value="/understanding/analytes/blood-gases/" title="Arterial Blood Gases">Arterial Blood Gases</option>
+                    
+                        <option value="/understanding/analytes/asca/" title="ASCA">ASCA</option>
+                    
+                        <option value="/understanding/analytes/asma/" title="ASMA">ASMA</option>
+                    
+                        <option value="/understanding/analytes/aso/" title="ASO">ASO</option>
+                    
+                        <option value="/understanding/analytes/ast/" title="AST">AST</option>
+                    
+                        <option value="/understanding/analytes/autoantibodies/" title="Autoantibodies">Autoantibodies</option>
+                    
+                        <option value="/understanding/analytes/b-vitamins/" title="B Vitamins">B Vitamins</option>
+                    
+                        <option value="/understanding/analytes/bcgr/" title="B-cell Ig Gene Rearrangement">B-cell Ig Gene Rearrangement</option>
+                    
+                        <option value="/understanding/analytes/bcr-abl/" title="BCR-ABL1">BCR-ABL1</option>
+                    
+                        <option value="/understanding/analytes/beta-2-glycoprotein-1-antibodies/" title="Beta-2 Glycoprotein 1 Antibodies">Beta-2 Glycoprotein 1 Antibodies</option>
+                    
+                        <option value="/understanding/analytes/beta-microglob-kd/" title="Beta-2 Microglobulin Kidney Disease">Beta-2 Microglobulin Kidney Disease</option>
+                    
+                        <option value="/understanding/analytes/beta-microglob/" title="Beta-2 Microglobulin Tumor Marker">Beta-2 Microglobulin Tumor Marker</option>
+                    
+                        <option value="/understanding/analytes/co2/" title="Bicarbonate">Bicarbonate</option>
+                    
+                        <option value="/understanding/analytes/bilirubin/" title="Bilirubin">Bilirubin</option>
+                    
+                        <option value="/understanding/analytes/blood-culture/" title="Blood Culture">Blood Culture</option>
+                    
+                        <option value="/lab/bloodbank/" title="Blood Donation">Blood Donation</option>
+                    
+                        <option value="/understanding/analytes/blood-gases/" title="Blood Gases">Blood Gases</option>
+                    
+                        <option value="/understanding/analytes/blood-ketones/" title="Blood Ketones">Blood Ketones</option>
+                    
+                        <option value="/understanding/analytes/blood-smear/" title="Blood Smear">Blood Smear</option>
+                    
+                        <option value="/lab/bloodbank/" title="Blood Transfusion">Blood Transfusion</option>
+                    
+                        <option value="/understanding/analytes/blood-typing/" title="Blood Typing">Blood Typing</option>
+                    
+                        <option value="/understanding/analytes/bmp/" title="BMP">BMP</option>
+                    
+                        <option value="/understanding/analytes/bnp/" title="BNP">BNP</option>
+                    
+                        <option value="/understanding/analytes/body-fluid/" title="Body Fluid Analysis">Body Fluid Analysis</option>
+                    
+                        <option value="/understanding/analytes/bone-markers/" title="Bone Markers">Bone Markers</option>
+                    
+                        <option value="/understanding/analytes/bone-marrow/" title="Bone Marrow">Bone Marrow</option>
+                    
+                        <option value="/understanding/analytes/brca/" title="BRCA">BRCA</option>
+                    
+                        <option value="/understanding/analytes/breast-genex/" title="Breast Cancer, Gene Expression">Breast Cancer, Gene Expression</option>
+                    
+                        <option value="/understanding/analytes/bun/" title="BUN">BUN</option>
+                    
+                        <option value="/understanding/analytes/anca/" title="c-ANCA">c-ANCA</option>
+                    
+                        <option value="/understanding/analytes/c-peptide/" title="C-peptide">C-peptide</option>
+                    
+                        <option value="/understanding/analytes/bone-markers/" title="C-telopeptide">C-telopeptide</option>
+                    
+                        <option value="/understanding/analytes/cdiff/" title="C. difficile">C. difficile</option>
+                    
+                        <option value="/understanding/analytes/ca15-3/" title="CA 15-3">CA 15-3</option>
+                    
+                        <option value="/understanding/analytes/ca19-9/" title="CA 19-9">CA 19-9</option>
+                    
+                        <option value="/understanding/analytes/ca15-3/" title="CA 27.29">CA 27.29</option>
+                    
+                        <option value="/understanding/analytes/ca125/" title="CA-125">CA-125</option>
+                    
+                        <option value="/understanding/analytes/theophylline/" title="Caffeine">Caffeine</option>
+                    
+                        <option value="/understanding/analytes/calcitonin/" title="Calcitonin">Calcitonin</option>
+                    
+                        <option value="/understanding/analytes/calcium/" title="Calcium">Calcium</option>
+                    
+                        <option value="/understanding/analytes/calprotectin/" title="Calprotectin">Calprotectin</option>
+                    
+                        <option value="/understanding/analytes/carbamazepine/" title="Carbamazepine">Carbamazepine</option>
+                    
+                        <option value="/understanding/analytes/cardiac-biomarkers/" title="Cardiac Biomarkers">Cardiac Biomarkers</option>
+                    
+                        <option value="/understanding/analytes/cardiac-risk/" title="Cardiac Risk">Cardiac Risk</option>
+                    
+                        <option value="/understanding/analytes/cardiolipin/" title="Cardiolipin Antibodies">Cardiolipin Antibodies</option>
+                    
+                        <option value="/understanding/analytes/catecholamine/" title="Catecholamines">Catecholamines</option>
+                    
+                        <option value="/understanding/analytes/cbc/" title="CBC">CBC</option>
+                    
+                        <option value="/understanding/analytes/ccp/" title="CCP Antibody">CCP Antibody</option>
+                    
+                        <option value="/understanding/analytes/cd4/" title="CD4 Count">CD4 Count</option>
+                    
+                        <option value="/understanding/analytes/cea/" title="CEA">CEA</option>
+                    
+                        <option value="/understanding/analytes/celiac-disease/" title="Celiac Disease Tests">Celiac Disease Tests</option>
+                    
+                        <option value="/understanding/analytes/cell-free-fetal-dna/" title="Cell-Free Fetal DNA">Cell-Free Fetal DNA</option>
+                    
+                        <option value="/understanding/analytes/ceruloplasmin/" title="Ceruloplasmin">Ceruloplasmin</option>
+                    
+                        <option value="/understanding/analytes/cf-gene/" title="CF Mutation Panel">CF Mutation Panel</option>
+                    
+                        <option value="/understanding/analytes/bmp/" title="Chem 7">Chem 7</option>
+                    
+                        <option value="/understanding/analytes/chem-panel/" title="Chemistry Panels">Chemistry Panels</option>
+                    
+                        <option value="/understanding/analytes/chickenpox/" title="Chickenpox">Chickenpox</option>
+                    
+                        <option value="/understanding/analytes/chlamydia/" title="Chlamydia">Chlamydia</option>
+                    
+                        <option value="/understanding/analytes/chloride/" title="Chloride">Chloride</option>
+                    
+                        <option value="/understanding/analytes/cholesterol/" title="Cholesterol">Cholesterol</option>
+                    
+                        <option value="/understanding/analytes/cholinesterase/" title="Cholinesterase">Cholinesterase</option>
+                    
+                        <option value="/understanding/analytes/chromogranin/" title="Chromogranin A">Chromogranin A</option>
+                    
+                        <option value="/understanding/analytes/chromosome-analysis/" title="Chromosome Analysis">Chromosome Analysis</option>
+                    
+                        <option value="/understanding/analytes/trypsin/" title="Chymotrypsin">Chymotrypsin</option>
+                    
+                        <option value="/understanding/analytes/ck/" title="CK">CK</option>
+                    
+                        <option value="/understanding/analytes/ckmb/" title="CK-MB">CK-MB</option>
+                    
+                        <option value="/understanding/analytes/clopidogrel/" title="Clopidogrel">Clopidogrel</option>
+                    
+                        <option value="/understanding/analytes/cdiff/" title="Clostridium difficile">Clostridium difficile</option>
+                    
+                        <option value="/understanding/analytes/cmp/" title="CMP">CMP</option>
+                    
+                        <option value="/understanding/analytes/cmv/" title="CMV Tests">CMV Tests</option>
+                    
+                        <option value="/understanding/analytes/co2/" title="CO2, Total">CO2, Total</option>
+                    
+                        <option value="/understanding/analytes/coag-cascade/" title="Coagulation Cascade">Coagulation Cascade</option>
+                    
+                        <option value="/understanding/analytes/coagulation-factors/" title="Coagulation Factors">Coagulation Factors</option>
+                    
+                        <option value="/understanding/analytes/cold-agglutinins/" title="Cold Agglutinins">Cold Agglutinins</option>
+                    
+                        <option value="/understanding/analytes/complement-levels/" title="Complement">Complement</option>
+                    
+                        <option value="/understanding/analytes/antiglobulin-direct/" title="Coombs, Direct">Coombs, Direct</option>
+                    
+                        <option value="/understanding/analytes/antiglobulin-indirect/" title="Coombs, Indirect">Coombs, Indirect</option>
+                    
+                        <option value="/understanding/analytes/copper/" title="Copper">Copper</option>
+                    
+                        <option value="/understanding/analytes/cortisol/" title="Cortisol">Cortisol</option>
+                    
+                        <option value="/understanding/analytes/creatinine/" title="Creatinine">Creatinine</option>
+                    
+                        <option value="/understanding/analytes/creatinine-clearance/" title="Creatinine Clearance">Creatinine Clearance</option>
+                    
+                        <option value="/understanding/analytes/crp/" title="CRP">CRP</option>
+                    
+                        <option value="/understanding/analytes/hscrp/" title="CRP, high-sensitivity">CRP, high-sensitivity</option>
+                    
+                        <option value="/understanding/analytes/cryoglobulin/" title="Cryoglobulins">Cryoglobulins</option>
+                    
+                        <option value="/understanding/analytes/csf/" title="CSF Analysis">CSF Analysis</option>
+                    
+                        <option value="/understanding/analytes/cyclosporine/" title="Cyclosporine">Cyclosporine</option>
+                    
+                        <option value="/understanding/analytes/cystatin-c/" title="Cystatin C">Cystatin C</option>
+                    
+                        <option value="/understanding/analytes/d-dimer/" title="D-dimer">D-dimer</option>
+                    
+                        <option value="/understanding/analytes/dcp/" title="DCP">DCP</option>
+                    
+                        <option value="/understanding/analytes/dengue/" title="Dengue Fever">Dengue Fever</option>
+                    
+                        <option value="/understanding/analytes/dheas/" title="DHEAS">DHEAS</option>
+                    
+                        <option value="/understanding/analytes/diabetes-auto/" title="Diabetes Autoantibodies">Diabetes Autoantibodies</option>
+                    
+                        <option value="/understanding/analytes/differential/" title="Differential">Differential</option>
+                    
+                        <option value="/understanding/analytes/digoxin/" title="Digoxin">Digoxin</option>
+                    
+                        <option value="/understanding/analytes/lupus-anticoagulant/" title="Dilute Russell Viper Venom Test">Dilute Russell Viper Venom Test</option>
+                    
+                        <option value="/understanding/analytes/antiglobulin-direct/" title="Direct Antiglobulin Test">Direct Antiglobulin Test</option>
+                    
+                        <option value="/understanding/analytes/dldl/" title="Direct LDL-C">Direct LDL-C</option>
+                    
+                        <option value="/understanding/analytes/drug-abuse/" title="Drug Abuse Testing">Drug Abuse Testing</option>
+                    
+                        <option value="/understanding/analytes/e-coli/" title="E. coli (Shiga toxin-producing)">E. coli (Shiga toxin-producing)</option>
+                    
+                        <option value="/understanding/analytes/ebv/" title="EBV Antibodies">EBV Antibodies</option>
+                    
+                        <option value="/understanding/analytes/gfr/" title="eGFR">eGFR</option>
+                    
+                        <option value="/understanding/analytes/egfr-her1/" title="EGFR [Her-1]">EGFR [Her-1]</option>
+                    
+                        <option value="/understanding/analytes/electrolytes/" title="Electrolytes">Electrolytes</option>
+                    
+                        <option value="/understanding/analytes/electrophoresis/" title="Electrophoresis">Electrophoresis</option>
+                    
+                        <option value="/understanding/analytes/emergency/" title="Emergency/Overdose Drug Testing">Emergency/Overdose Drug Testing</option>
+                    
+                        <option value="/understanding/analytes/ena-panel/" title="ENA Panel">ENA Panel</option>
+                    
+                        <option value="/understanding/analytes/erythrop/" title="Erythropoietin">Erythropoietin</option>
+                    
+                        <option value="/understanding/analytes/esr/" title="ESR">ESR</option>
+                    
+                        <option value="/understanding/analytes/estrogen/" title="Estradiol">Estradiol</option>
+                    
+                        <option value="/understanding/analytes/progesterone-receptors/" title="Estrogen/Progesterone Receptors">Estrogen/Progesterone Receptors</option>
+                    
+                        <option value="/understanding/analytes/estrogen/" title="Estrogens">Estrogens</option>
+                    
+                        <option value="/understanding/analytes/ethanol/" title="Ethanol">Ethanol</option>
+                    
+                        <option value="/understanding/analytes/factor-v-and-pt20210/" title="Factor V Leiden">Factor V Leiden</option>
+                    
+                        <option value="/understanding/analytes/fecal-fat/" title="Fecal Fat">Fecal Fat</option>
+                    
+                        <option value="/understanding/analytes/fecal-occult-blood/" title="Fecal Occult Blood Test">Fecal Occult Blood Test</option>
+                    
+                        <option value="/understanding/analytes/ferritin/" title="Ferritin">Ferritin</option>
+                    
+                        <option value="/understanding/analytes/ffn/" title="fFN">fFN</option>
+                    
+                        <option value="/understanding/analytes/fibrinogen/" title="Fibrinogen">Fibrinogen</option>
+                    
+                        <option value="/understanding/analytes/fip1l1-pdgfra/" title="FIP1L1-PDGFRA">FIP1L1-PDGFRA</option>
+                    
+                        <option value="/understanding/analytes/first-tri/" title="First Trimester Screen">First Trimester Screen</option>
+                    
+                        <option value="/understanding/analytes/flu/" title="Flu Tests">Flu Tests</option>
+                    
+                        <option value="/understanding/analytes/vitamin-b12/" title="Folate">Folate</option>
+                    
+                        <option value="/understanding/analytes/free-light/" title="Free Light Chains">Free Light Chains</option>
+                    
+                        <option value="/understanding/analytes/t3/" title="Free T3">Free T3</option>
+                    
+                        <option value="/understanding/analytes/t4/" title="Free T4">Free T4</option>
+                    
+                        <option value="/understanding/analytes/fructosamine/" title="Fructosamine">Fructosamine</option>
+                    
+                        <option value="/understanding/analytes/fsh/" title="FSH">FSH</option>
+                    
+                        <option value="/understanding/analytes/fungal/" title="Fungal Tests">Fungal Tests</option>
+                    
+                        <option value="/understanding/analytes/g6pd/" title="G6PD">G6PD</option>
+                    
+                        <option value="/understanding/analytes/gastrin/" title="Gastrin">Gastrin</option>
+                    
+                        <option value="/understanding/analytes/cancer-therapy/" title="Genetic Tests for Targeted Cancer Therapy">Genetic Tests for Targeted Cancer Therapy</option>
+                    
+                        <option value="/understanding/analytes/aminoglycosides/" title="Gentamicin">Gentamicin</option>
+                    
+                        <option value="/understanding/analytes/gfr/" title="GFR">GFR</option>
+                    
+                        <option value="/understanding/analytes/ggt/" title="GGT">GGT</option>
+                    
+                        <option value="/understanding/analytes/gastrointestinal-pathogens-panel/" title="GI Pathogens Panel">GI Pathogens Panel</option>
+                    
+                        <option value="/understanding/analytes/glucose/" title="Glucose">Glucose</option>
+                    
+                        <option value="/understanding/analytes/gonorrhea/" title="Gonorrhea">Gonorrhea</option>
+                    
+                        <option value="/understanding/analytes/gram-stain/" title="Gram Stain">Gram Stain</option>
+                    
+                        <option value="/understanding/analytes/group-b-strep/" title="Group B Strep Screen">Group B Strep Screen</option>
+                    
+                        <option value="/understanding/analytes/growth-hormone/" title="Growth Hormone">Growth Hormone</option>
+                    
+                        <option value="/understanding/analytes/h-pylori/" title="H. pylori">H. pylori</option>
+                    
+                        <option value="/understanding/analytes/haptoglobin/" title="Haptoglobin">Haptoglobin</option>
+                    
+                        <option value="/understanding/analytes/hcg/" title="hCG Pregnancy">hCG Pregnancy</option>
+                    
+                        <option value="/understanding/analytes/hcg-tumor/" title="hCG Tumor Marker">hCG Tumor Marker</option>
+                    
+                        <option value="/understanding/analytes/hdl/" title="HDL">HDL</option>
+                    
+                        <option value="/understanding/analytes/he4/" title="HE4">HE4</option>
+                    
+                        <option value="/understanding/analytes/heavy-metals/" title="Heavy Metals">Heavy Metals</option>
+                    
+                        <option value="/understanding/analytes/hematocrit/" title="Hematocrit">Hematocrit</option>
+                    
+                        <option value="/understanding/analytes/hemoglobin/" title="Hemoglobin">Hemoglobin</option>
+                    
+                        <option value="/understanding/analytes/a1c/" title="Hemoglobin A1c">Hemoglobin A1c</option>
+                    
+                        <option value="/understanding/analytes/hemoglobin-var/" title="Hemoglobinopathy Eval">Hemoglobinopathy Eval</option>
+                    
+                        <option value="/understanding/analytes/heparin/" title="Heparin Anti-Xa">Heparin Anti-Xa</option>
+                    
+                        <option value="/understanding/analytes/hepatitis-a/" title="Hepatitis A">Hepatitis A</option>
+                    
+                        <option value="/understanding/analytes/hepatitis-b/" title="Hepatitis B">Hepatitis B</option>
+                    
+                        <option value="/understanding/analytes/hepatitis-c/" title="Hepatitis C">Hepatitis C</option>
+                    
+                        <option value="/understanding/analytes/hepatitis-panel/" title="Hepatitis Panel">Hepatitis Panel</option>
+                    
+                        <option value="/understanding/analytes/her2neu/" title="HER2/neu">HER2/neu</option>
+                    
+                        <option value="/understanding/analytes/herpes/" title="Herpes">Herpes</option>
+                    
+                        <option value="/understanding/analytes/histamine/" title="Histamine">Histamine</option>
+                    
+                        <option value="/understanding/analytes/histone-antibody/" title="Histone Antibody">Histone Antibody</option>
+                    
+                        <option value="/understanding/analytes/heparin-induced-thrombocytopenia-antibody/" title="HIT Antibody">HIT Antibody</option>
+                    
+                        <option value="/understanding/analytes/hiv-genotypic/" title="HIV Antiretroviral Drug Resistance">HIV Antiretroviral Drug Resistance</option>
+                    
+                        <option value="/understanding/analytes/hiv-antibody/" title="HIV Screening">HIV Screening</option>
+                    
+                        <option value="/understanding/analytes/viral-load/" title="HIV Viral Load">HIV Viral Load</option>
+                    
+                        <option value="/understanding/analytes/hla-testing/" title="HLA Testing">HLA Testing</option>
+                    
+                        <option value="/understanding/analytes/hla-b27/" title="HLA-B27">HLA-B27</option>
+                    
+                        <option value="/understanding/analytes/homocysteine/" title="Homocysteine">Homocysteine</option>
+                    
+                        <option value="/understanding/analytes/hpv/" title="HPV">HPV</option>
+                    
+                        <option value="/understanding/analytes/hscrp/" title="hs-CRP">hs-CRP</option>
+                    
+                        <option value="/understanding/analytes/htlv/" title="HTLV">HTLV</option>
+                    
+                        <option value="/understanding/analytes/total-ige/" title="IgE, Total">IgE, Total</option>
+                    
+                        <option value="/understanding/analytes/igf1/" title="IGF-1">IGF-1</option>
+                    
+                        <option value="/understanding/analytes/ima/" title="IMA">IMA</option>
+                    
+                        <option value="/understanding/analytes/electrophoresis/" title="Immunoelectrophoresis">Immunoelectrophoresis</option>
+                    
+                        <option value="/understanding/analytes/immunoglobulins/" title="Immunoglobulins">Immunoglobulins</option>
+                    
+                        <option value="/understanding/analytes/immunophenotyping/" title="Immunophenotyping">Immunophenotyping</option>
+                    
+                        <option value="/understanding/analytes/flu/" title="Influenza Tests">Influenza Tests</option>
+                    
+                        <option value="/understanding/analytes/triple-screen/" title="Inhibin A">Inhibin A</option>
+                    
+                        <option value="/understanding/analytes/pt/" title="INR">INR</option>
+                    
+                        <option value="/understanding/analytes/insulin/" title="Insulin">Insulin</option>
+                    
+                        <option value="/understanding/analytes/interleukin-6/" title="Interleukin-6">Interleukin-6</option>
+                    
+                        <option value="/understanding/analytes/intrinsic-factor-antibody/" title="Intrinsic Factor Antibody">Intrinsic Factor Antibody</option>
+                    
+                        <option value="/understanding/analytes/calcium/" title="Ionized Calcium">Ionized Calcium</option>
+                    
+                        <option value="/understanding/analytes/iron/" title="Iron Tests">Iron Tests</option>
+                    
+                        <option value="/understanding/analytes/serum-iron/" title="Iron, serum">Iron, serum</option>
+                    
+                        <option value="/understanding/analytes/jak2/" title="JAK2 Mutation">JAK2 Mutation</option>
+                    
+                        <option value="/understanding/analytes/free-light/" title="Kappa/Lambda Ratio">Kappa/Lambda Ratio</option>
+                    
+                        <option value="/understanding/analytes/chromosome-analysis/" title="Karyotyping">Karyotyping</option>
+                    
+                        <option value="/understanding/analytes/blood-ketones/" title="Ketones, blood">Ketones, blood</option>
+                    
+                        <option value="/understanding/analytes/kidney-stone-analysis/" title="Kidney Stone Analysis">Kidney Stone Analysis</option>
+                    
+                        <option value="/understanding/analytes/kidney-stone-risk/" title="Kidney Stone Risk Panel">Kidney Stone Risk Panel</option>
+                    
+                        <option value="/understanding/analytes/kras-mutation/" title="KRAS Mutation">KRAS Mutation</option>
+                    
+                        <option value="/understanding/analytes/lactate/" title="Lactate">Lactate</option>
+                    
+                        <option value="/understanding/analytes/lactoferrin/" title="Lactoferrin">Lactoferrin</option>
+                    
+                        <option value="/understanding/analytes/lactose-tolerance/" title="Lactose Tolerance Tests">Lactose Tolerance Tests</option>
+                    
+                        <option value="/understanding/analytes/ldh/" title="LD">LD</option>
+                    
+                        <option value="/understanding/analytes/ldl/" title="LDL">LDL</option>
+                    
+                        <option value="/understanding/analytes/lipoprotein-subfractions/" title="LDL-P">LDL-P</option>
+                    
+                        <option value="/understanding/analytes/lead/" title="Lead">Lead</option>
+                    
+                        <option value="/understanding/analytes/legionella/" title="Legionella">Legionella</option>
+                    
+                        <option value="/understanding/analytes/leptin/" title="Leptin">Leptin</option>
+                    
+                        <option value="/understanding/analytes/levetiracetam/" title="Levetiracetam">Levetiracetam</option>
+                    
+                        <option value="/understanding/analytes/lh/" title="LH">LH</option>
+                    
+                        <option value="/understanding/analytes/lipase/" title="Lipase">Lipase</option>
+                    
+                        <option value="/understanding/analytes/lipid/" title="Lipid Profile">Lipid Profile</option>
+                    
+                        <option value="/understanding/analytes/lithium/" title="Lithium">Lithium</option>
+                    
+                        <option value="/understanding/analytes/liver-panel/" title="Liver Panel">Liver Panel</option>
+                    
+                        <option value="/understanding/analytes/lp-a/" title="Lp(a)">Lp(a)</option>
+                    
+                        <option value="/understanding/analytes/lp-pla2/" title="Lp-PLA2">Lp-PLA2</option>
+                    
+                        <option value="/understanding/analytes/lupus-anticoagulant/" title="Lupus Anticoagulant Testing">Lupus Anticoagulant Testing</option>
+                    
+                        <option value="/understanding/analytes/lyme/" title="Lyme Disease">Lyme Disease</option>
+                    
+                        <option value="/understanding/analytes/magnesium/" title="Magnesium">Magnesium</option>
+                    
+                        <option value="/understanding/analytes/rdw/" title="MCH">MCH</option>
+                    
+                        <option value="/understanding/analytes/rdw/" title="MCHC">MCHC</option>
+                    
+                        <option value="/understanding/analytes/rdw/" title="MCV">MCV</option>
+                    
+                        <option value="/understanding/analytes/measles/" title="Measles">Measles</option>
+                    
+                        <option value="/understanding/analytes/mercury/" title="Mercury">Mercury</option>
+                    
+                        <option value="/understanding/analytes/metanephrines/" title="Metanephrines">Metanephrines</option>
+                    
+                        <option value="/understanding/analytes/methotrexate/" title="Methotrexate">Methotrexate</option>
+                    
+                        <option value="/understanding/analytes/microalbumin/" title="Microalbumin">Microalbumin</option>
+                    
+                        <option value="/understanding/analytes/mma/" title="MMA">MMA</option>
+                    
+                        <option value="/understanding/analytes/mono/" title="Mononucleosis Test">Mononucleosis Test</option>
+                    
+                        <option value="/understanding/analytes/mpa/" title="MPA">MPA</option>
+                    
+                        <option value="/understanding/analytes/mrsa/" title="MRSA Screening">MRSA Screening</option>
+                    
+                        <option value="/understanding/analytes/mthfr/" title="MTHFR Mutation">MTHFR Mutation</option>
+                    
+                        <option value="/understanding/analytes/measles/" title="Mumps">Mumps</option>
+                    
+                        <option value="/understanding/analytes/mycoplasma/" title="Mycoplasma">Mycoplasma</option>
+                    
+                        <option value="/understanding/analytes/myoglobin/" title="Myoglobin">Myoglobin</option>
+                    
+                        <option value="/understanding/analytes/nicotine/" title="Nicotine / Cotinine">Nicotine / Cotinine</option>
+                    
+                        <option value="/understanding/analytes/cell-free-fetal-dna/" title="NIPT">NIPT</option>
+                    
+                        <option value="/understanding/analytes/bnp/" title="NT-proBNP">NT-proBNP</option>
+                    
+                        <option value="/understanding/analytes/osmolality/" title="Osmolality">Osmolality</option>
+                    
+                        <option value="/understanding/analytes/op/" title="Ova and Parasite Exam">Ova and Parasite Exam</option>
+                    
+                        <option value="/understanding/analytes/anca/" title="p-ANCA">p-ANCA</option>
+                    
+                        <option value="/understanding/analytes/bone-markers/" title="P1NP">P1NP</option>
+                    
+                        <option value="/understanding/analytes/pap/" title="Pap Test">Pap Test</option>
+                    
+                        <option value="/understanding/analytes/first-tri/" title="PAPP-A">PAPP-A</option>
+                    
+                        <option value="/understanding/analytes/parietal-cell-antibody/" title="Parietal Cell Antibody">Parietal Cell Antibody</option>
+                    
+                        <option value="/understanding/analytes/parvo/" title="Parvovirus B19">Parvovirus B19</option>
+                    
+                        <option value="/understanding/analytes/pericardial/" title="Pericardial Fluid Analysis">Pericardial Fluid Analysis</option>
+                    
+                        <option value="/understanding/analytes/peritoneal/" title="Peritoneal Fluid Analysis">Peritoneal Fluid Analysis</option>
+                    
+                        <option value="/understanding/analytes/pertussis/" title="Pertussis">Pertussis</option>
+                    
+                        <option value="/understanding/analytes/pharmacogenetic-tests/" title="Pharmacogenetic Tests">Pharmacogenetic Tests</option>
+                    
+                        <option value="/understanding/analytes/phenobarbital/" title="Phenobarbital">Phenobarbital</option>
+                    
+                        <option value="/understanding/analytes/phenytoin/" title="Phenytoin">Phenytoin</option>
+                    
+                        <option value="/understanding/analytes/phosphorus/" title="Phosphorus">Phosphorus</option>
+                    
+                        <option value="/understanding/analytes/plasma-metanephrine/" title="Plasma Metanephrines">Plasma Metanephrines</option>
+                    
+                        <option value="/understanding/analytes/platelet/" title="Platelet Count">Platelet Count</option>
+                    
+                        <option value="/understanding/analytes/platelet-function/" title="Platelet Function Tests">Platelet Function Tests</option>
+                    
+                        <option value="/understanding/analytes/pleural/" title="Pleural Fluid Analysis">Pleural Fluid Analysis</option>
+                    
+                        <option value="/understanding/analytes/pml-rara/" title="PML-RARA">PML-RARA</option>
+                    
+                        <option value="/understanding/analytes/porphyrins/" title="Porphyrins">Porphyrins</option>
+                    
+                        <option value="/understanding/analytes/potassium/" title="Potassium">Potassium</option>
+                    
+                        <option value="/understanding/analytes/prealbumin/" title="Prealbumin">Prealbumin</option>
+                    
+                        <option value="/understanding/analytes/hcg/" title="Pregnancy Test">Pregnancy Test</option>
+                    
+                        <option value="/understanding/analytes/pregnenolone/" title="Pregnenolone">Pregnenolone</option>
+                    
+                        <option value="/understanding/analytes/procalcitonin/" title="Procalcitonin">Procalcitonin</option>
+                    
+                        <option value="/understanding/analytes/progesterone/" title="Progesterone">Progesterone</option>
+                    
+                        <option value="/understanding/analytes/progesterone-receptors/" title="Progesterone Receptors">Progesterone Receptors</option>
+                    
+                        <option value="/understanding/analytes/prolactin/" title="Prolactin">Prolactin</option>
+                    
+                        <option value="/understanding/analytes/protein-c-and-s/" title="Protein C">Protein C</option>
+                    
+                        <option value="/understanding/analytes/electrophoresis/" title="Protein Electrophoresis">Protein Electrophoresis</option>
+                    
+                        <option value="/understanding/analytes/protein-c-and-s/" title="Protein S">Protein S</option>
+                    
+                        <option value="/understanding/analytes/pt/" title="Prothrombin Time">Prothrombin Time</option>
+                    
+                        <option value="/understanding/analytes/psa/" title="PSA">PSA</option>
+                    
+                        <option value="/understanding/analytes/psen1/" title="PSEN1">PSEN1</option>
+                    
+                        <option value="/understanding/analytes/cholinesterase/" title="Pseudocholinesterase">Pseudocholinesterase</option>
+                    
+                        <option value="/understanding/analytes/factor-v-and-pt20210/" title="PT 20210">PT 20210</option>
+                    
+                        <option value="/understanding/analytes/pth/" title="PTH">PTH</option>
+                    
+                        <option value="/understanding/analytes/aptt/" title="PTT">PTT</option>
+                    
+                        <option value="/understanding/analytes/triple-screen/" title="Quad Screen">Quad Screen</option>
+                    
+                        <option value="/understanding/analytes/rbc/" title="RBC">RBC</option>
+                    
+                        <option value="/understanding/analytes/rbc-antibody/" title="RBC Antibody ID">RBC Antibody ID</option>
+                    
+                        <option value="/understanding/analytes/antiglobulin-indirect/" title="RBC Antibody Screen">RBC Antibody Screen</option>
+                    
+                        <option value="/understanding/analytes/rdw/" title="RDW">RDW</option>
+                    
+                        <option value="/understanding/analytes/renal-panel/" title="Renal Panel">Renal Panel</option>
+                    
+                        <option value="/understanding/analytes/aldosterone/" title="Renin">Renin</option>
+                    
+                        <option value="/understanding/analytes/reticulocyte/" title="Reticulocytes">Reticulocytes</option>
+                    
+                        <option value="/understanding/analytes/rheumatoid/" title="Rheumatoid Factor">Rheumatoid Factor</option>
+                    
+                        <option value="/understanding/analytes/rsv/" title="RSV">RSV</option>
+                    
+                        <option value="/understanding/analytes/rubella/" title="Rubella">Rubella</option>
+                    
+                        <option value="/understanding/analytes/salicylates/" title="Salicylates">Salicylates</option>
+                    
+                        <option value="/understanding/analytes/triple-screen/" title="Second Trimester Screen">Second Trimester Screen</option>
+                    
+                        <option value="/understanding/analytes/semen/" title="Semen Analysis">Semen Analysis</option>
+                    
+                        <option value="/understanding/analytes/susceptibility/" title="Sensitivity Testing">Sensitivity Testing</option>
+                    
+                        <option value="/understanding/analytes/serotonin/" title="Serotonin">Serotonin</option>
+                    
+                        <option value="/understanding/analytes/serum-iron/" title="Serum Iron">Serum Iron</option>
+                    
+                        <option value="/understanding/analytes/shbg/" title="SHBG">SHBG</option>
+                    
+                        <option value="/understanding/analytes/chickenpox/" title="Shingles">Shingles</option>
+                    
+                        <option value="/understanding/analytes/sickle/" title="Sickle Cell Tests">Sickle Cell Tests</option>
+                    
+                        <option value="/understanding/analytes/sirolimus/" title="Sirolimus">Sirolimus</option>
+                    
+                        <option value="/understanding/analytes/asma/" title="Smooth Muscle Antibody">Smooth Muscle Antibody</option>
+                    
+                        <option value="/understanding/analytes/smrp/" title="SMRP">SMRP</option>
+                    
+                        <option value="/understanding/analytes/sodium/" title="Sodium">Sodium</option>
+                    
+                        <option value="/understanding/analytes/soluble-transferrin-receptor/" title="Soluble Transferrin Receptor">Soluble Transferrin Receptor</option>
+                    
+                        <option value="/understanding/analytes/sputum-culture/" title="Sputum Culture">Sputum Culture</option>
+                    
+                        <option value="/understanding/analytes/stool-culture/" title="Stool Culture">Stool Culture</option>
+                    
+                        <option value="/understanding/analytes/strep/" title="Strep Throat Test">Strep Throat Test</option>
+                    
+                        <option value="/understanding/analytes/susceptibility/" title="Susceptibility Testing">Susceptibility Testing</option>
+                    
+                        <option value="/understanding/analytes/sweat-chloride/" title="Sweat Test">Sweat Test</option>
+                    
+                        <option value="/understanding/analytes/synovial/" title="Synovial Fluid Analysis">Synovial Fluid Analysis</option>
+                    
+                        <option value="/understanding/analytes/syphilis/" title="Syphilis">Syphilis</option>
+                    
+                        <option value="/understanding/analytes/tcgr/" title="T-Cell Receptor Gene Rearrangement">T-Cell Receptor Gene Rearrangement</option>
+                    
+                        <option value="/understanding/analytes/t3/" title="T3">T3</option>
+                    
+                        <option value="/understanding/analytes/t4/" title="T4">T4</option>
+                    
+                        <option value="/understanding/analytes/tacrolimus/" title="Tacrolimus">Tacrolimus</option>
+                    
+                        <option value="/understanding/analytes/tau/" title="Tau/Aß42">Tau/Aß42</option>
+                    
+                        <option value="/understanding/analytes/tb-skin/" title="TB Screening Tests">TB Screening Tests</option>
+                    
+                        <option value="/understanding/analytes/testosterone/" title="Testosterone">Testosterone</option>
+                    
+                        <option value="/understanding/analytes/theophylline/" title="Theophylline">Theophylline</option>
+                    
+                        <option value="/understanding/analytes/therapeutic-drug/" title="Therapeutic Drug Monitoring">Therapeutic Drug Monitoring</option>
+                    
+                        <option value="/understanding/analytes/strep/" title="Throat Culture">Throat Culture</option>
+                    
+                        <option value="/understanding/analytes/thrombin-time/" title="Thrombin Time">Thrombin Time</option>
+                    
+                        <option value="/understanding/analytes/thyroglobulin/" title="Thyroglobulin">Thyroglobulin</option>
+                    
+                        <option value="/understanding/analytes/thyroid-antibodies/" title="Thyroid Antibodies">Thyroid Antibodies</option>
+                    
+                        <option value="/understanding/analytes/thyroid-panel/" title="Thyroid Panel">Thyroid Panel</option>
+                    
+                        <option value="/understanding/analytes/tibc/" title="TIBC">TIBC</option>
+                    
+                        <option value="/understanding/analytes/aminoglycosides/" title="Tobramycin">Tobramycin</option>
+                    
+                        <option value="/understanding/analytes/torch/" title="TORCH">TORCH</option>
+                    
+                        <option value="/understanding/analytes/tp/" title="Total Protein">Total Protein</option>
+                    
+                        <option value="/understanding/analytes/toxoplasmosis/" title="Toxoplasmosis">Toxoplasmosis</option>
+                    
+                        <option value="/understanding/analytes/tpmt/" title="TPMT">TPMT</option>
+                    
+                        <option value="/understanding/analytes/trace-minerals/" title="Trace Minerals">Trace Minerals</option>
+                    
+                        <option value="/understanding/analytes/tibc/" title="Transferrin">Transferrin</option>
+                    
+                        <option value="/understanding/analytes/trichomonas/" title="Trichomonas">Trichomonas</option>
+                    
+                        <option value="/understanding/analytes/triglycerides/" title="Triglycerides">Triglycerides</option>
+                    
+                        <option value="/understanding/analytes/triple-screen/" title="Triple Screen">Triple Screen</option>
+                    
+                        <option value="/understanding/analytes/troponin/" title="Troponin">Troponin</option>
+                    
+                        <option value="/understanding/analytes/trypsin/" title="Trypsin">Trypsin</option>
+                    
+                        <option value="/understanding/analytes/trypsinogen/" title="Trypsinogen">Trypsinogen</option>
+                    
+                        <option value="/understanding/analytes/tryptase/" title="Tryptase">Tryptase</option>
+                    
+                        <option value="/understanding/analytes/tsh/" title="TSH">TSH</option>
+                    
+                        <option value="/understanding/analytes/celiac-disease/" title="tTG Antibody">tTG Antibody</option>
+                    
+                        <option value="/understanding/analytes/tumor-markers/" title="Tumor Markers">Tumor Markers</option>
+                    
+                        <option value="/understanding/analytes/tibc/" title="UIBC">UIBC</option>
+                    
+                        <option value="/understanding/analytes/urine-protein/" title="UP/CR">UP/CR</option>
+                    
+                        <option value="/understanding/analytes/uric-acid/" title="Uric Acid">Uric Acid</option>
+                    
+                        <option value="/understanding/analytes/urinalysis/" title="Urinalysis">Urinalysis</option>
+                    
+                        <option value="/understanding/analytes/microalbumin/" title="Urine Albumin">Urine Albumin</option>
+                    
+                        <option value="/understanding/analytes/urine-culture/" title="Urine Culture">Urine Culture</option>
+                    
+                        <option value="/understanding/analytes/urine-metanephrine/" title="Urine Metanephrines">Urine Metanephrines</option>
+                    
+                        <option value="/understanding/analytes/urine-protein/" title="Urine Protein">Urine Protein</option>
+                    
+                        <option value="/understanding/analytes/valproic-acid/" title="Valproic Acid">Valproic Acid</option>
+                    
+                        <option value="/understanding/analytes/vancomycin/" title="Vancomycin">Vancomycin</option>
+                    
+                        <option value="/understanding/analytes/vitamin-a/" title="Vitamin A">Vitamin A</option>
+                    
+                        <option value="/understanding/analytes/vitamin-b12/" title="Vitamin B12">Vitamin B12</option>
+                    
+                        <option value="/understanding/analytes/vitamin-d/" title="Vitamin D">Vitamin D</option>
+                    
+                        <option value="/understanding/analytes/vitamin-k/" title="Vitamin K">Vitamin K</option>
+                    
+                        <option value="/understanding/analytes/vldl/" title="VLDL">VLDL</option>
+                    
+                        <option value="/understanding/analytes/vma/" title="VMA">VMA</option>
+                    
+                        <option value="/understanding/analytes/vwf/" title="von Willebrand Factor">von Willebrand Factor</option>
+                    
+                        <option value="/understanding/analytes/warfarin-sensitivity-testing/" title="Warfarin Sensitivity Testing">Warfarin Sensitivity Testing</option>
+                    
+                        <option value="/understanding/analytes/wbc/" title="WBC">WBC</option>
+                    
+                        <option value="/understanding/analytes/differential/" title="WBC Differential">WBC Differential</option>
+                    
+                        <option value="/understanding/analytes/west-nile/" title="West Nile Virus">West Nile Virus</option>
+                    
+                        <option value="/understanding/analytes/pertussis/" title="Whooping Cough">Whooping Cough</option>
+                    
+                        <option value="/understanding/analytes/widal/" title="Widal Test">Widal Test</option>
+                    
+                        <option value="/understanding/analytes/wound-culture/" title="Wound Culture">Wound Culture</option>
+                    
+                        <option value="/understanding/analytes/xylose-absorption-test/" title="Xylose Absorption">Xylose Absorption</option>
+                    
+                        <option value="/understanding/analytes/zika/" title="Zika Virus Testing">Zika Virus Testing</option>
+                    
+                        <option value="/understanding/analytes/zpp/" title="ZPP">ZPP</option>
+                    
+                
+            </select>
+            <!--
+
+            Conditions and Diseases
+
+            -->
+            <h3>Conditions/Diseases</h3>
+            <select id="conditions_diseases" name="conditions_diseases" size="7">
+				
+					<option value="/map/cindex/">List of all conditions/diseases</option>
+				
+                
+                    
+                        <option value="/understanding/conditions/1a111/" title="Condition not listed?">Condition not listed?</option>
+                    
+                        <option value="/understanding/conditions/acidosis/" title="Acidosis/Alkalosis">Acidosis/Alkalosis</option>
+                    
+                        <option value="/understanding/conditions/heart-attack/" title="ACS">ACS</option>
+                    
+                        <option value="/understanding/conditions/addisons-disease/" title="Addison Disease">Addison Disease</option>
+                    
+                        <option value="/understanding/conditions/addisons-disease/" title="Adrenal Insufficiency">Adrenal Insufficiency</option>
+                    
+                        <option value="/understanding/conditions/alcoholism/" title="Alcoholism">Alcoholism</option>
+                    
+                        <option value="/understanding/conditions/allergies/" title="Allergies">Allergies</option>
+                    
+                        <option value="/understanding/conditions/alzheimers/" title="Alzheimer Disease">Alzheimer Disease</option>
+                    
+                        <option value="/understanding/conditions/anemia/" title="Anemia">Anemia</option>
+                    
+                        <option value="/understanding/conditions/angina/" title="Angina">Angina</option>
+                    
+                        <option value="/understanding/conditions/ankylosing/" title="Ankylosing Spondylitis">Ankylosing Spondylitis</option>
+                    
+                        <option value="/understanding/conditions/anthrax/" title="Anthrax">Anthrax</option>
+                    
+                        <option value="/understanding/conditions/antiphospholipid/" title="Antiphospholipid Syndrome">Antiphospholipid Syndrome</option>
+                    
+                        <option value="/understanding/conditions/arthritis/" title="Arthritis">Arthritis</option>
+                    
+                        <option value="/understanding/conditions/asthma/" title="Asthma">Asthma</option>
+                    
+                        <option value="/understanding/conditions/autoimmune/" title="Autoimmune Diseases">Autoimmune Diseases</option>
+                    
+                        <option value="/understanding/conditions/bioterrorism/" title="Bioterrorism Agents">Bioterrorism Agents</option>
+                    
+                        <option value="/understanding/conditions/bleeding-disorders/" title="Bleeding Disorders">Bleeding Disorders</option>
+                    
+                        <option value="/understanding/conditions/bone-marrow-disorders/" title="Bone Marrow Disorders">Bone Marrow Disorders</option>
+                    
+                        <option value="/understanding/conditions/bph/" title="BPH">BPH</option>
+                    
+                        <option value="/understanding/conditions/breast/" title="Breast Cancer">Breast Cancer</option>
+                    
+                        <option value="/understanding/conditions/cah/" title="CAH">CAH</option>
+                    
+                        <option value="/understanding/conditions/cancer/" title="Cancer">Cancer</option>
+                    
+                        <option value="/understanding/conditions/celiac/" title="Celiac Disease">Celiac Disease</option>
+                    
+                        <option value="/understanding/conditions/cervical/" title="Cervical Cancer">Cervical Cancer</option>
+                    
+                        <option value="/understanding/conditions/chf/" title="CHF">CHF</option>
+                    
+                        <option value="/understanding/conditions/std/" title="Chlamydia">Chlamydia</option>
+                    
+                        <option value="/understanding/conditions/cfs/" title="Chronic Fatigue Syndrome">Chronic Fatigue Syndrome</option>
+                    
+                        <option value="/understanding/conditions/cirrhosis/" title="Cirrhosis">Cirrhosis</option>
+                    
+                        <option value="/understanding/conditions/colon/" title="Colon Cancer">Colon Cancer</option>
+                    
+                        <option value="/understanding/conditions/conn/" title="Conn Syndrome">Conn Syndrome</option>
+                    
+                        <option value="/understanding/conditions/cushing/" title="Cushing Syndrome">Cushing Syndrome</option>
+                    
+                        <option value="/understanding/conditions/cvd/" title="CVD">CVD</option>
+                    
+                        <option value="/understanding/conditions/cystic-fibrosis/" title="Cystic Fibrosis">Cystic Fibrosis</option>
+                    
+                        <option value="/understanding/conditions/dehydration/" title="Dehydration">Dehydration</option>
+                    
+                        <option value="/understanding/conditions/diabetes/" title="Diabetes">Diabetes</option>
+                    
+                        <option value="/understanding/conditions/diarrhea/" title="Diarrhea">Diarrhea</option>
+                    
+                        <option value="/understanding/conditions/dic/" title="DIC">DIC</option>
+                    
+                        <option value="/understanding/conditions/down-syndrome/" title="Down Syndrome">Down Syndrome</option>
+                    
+                        <option value="/understanding/conditions/meningitis/" title="Encephalitis">Encephalitis</option>
+                    
+                        <option value="/understanding/conditions/endocrine/" title="Endocrine Syndromes">Endocrine Syndromes</option>
+                    
+                        <option value="/understanding/conditions/epilepsy/" title="Epilepsy">Epilepsy</option>
+                    
+                        <option value="/understanding/conditions/hypercoagulable-disorders/" title="Excessive Clotting Disorders">Excessive Clotting Disorders</option>
+                    
+                        <option value="/understanding/conditions/fibromyalgia/" title="Fibromyalgia">Fibromyalgia</option>
+                    
+                        <option value="/understanding/conditions/vitaminb12/" title="Folate Deficiency">Folate Deficiency</option>
+                    
+                        <option value="/understanding/conditions/food-and-waterborne-illness/" title="Food and Waterborne Illness">Food and Waterborne Illness</option>
+                    
+                        <option value="/understanding/conditions/fungal/" title="Fungal Infections">Fungal Infections</option>
+                    
+                        <option value="/understanding/conditions/std/" title="Gonorrhea">Gonorrhea</option>
+                    
+                        <option value="/understanding/conditions/gout/" title="Gout">Gout</option>
+                    
+                        <option value="/understanding/conditions/graves/" title="Graves Disease">Graves Disease</option>
+                    
+                        <option value="/understanding/conditions/guillain/" title="Guillain-Barre Syndrome">Guillain-Barre Syndrome</option>
+                    
+                        <option value="/understanding/conditions/hashimoto/" title="Hashimoto Thyroiditis">Hashimoto Thyroiditis</option>
+                    
+                        <option value="/understanding/conditions/heart-attack/" title="Heart Attack">Heart Attack</option>
+                    
+                        <option value="/understanding/conditions/heart/" title="Heart Disease">Heart Disease</option>
+                    
+                        <option value="/understanding/conditions/hematuria/" title="Hematuria">Hematuria</option>
+                    
+                        <option value="/understanding/conditions/hemochrom/" title="Hemochromatosis">Hemochromatosis</option>
+                    
+                        <option value="/understanding/conditions/hemoglobin-abnormalities/" title="Hemoglobin Abnormalities">Hemoglobin Abnormalities</option>
+                    
+                        <option value="/understanding/conditions/hep/" title="Hepatitis">Hepatitis</option>
+                    
+                        <option value="/understanding/conditions/std/" title="Herpes">Herpes</option>
+                    
+                        <option value="/understanding/conditions/hiv/" title="HIV">HIV</option>
+                    
+                        <option value="/understanding/conditions/std/" title="HPV">HPV</option>
+                    
+                        <option value="/understanding/conditions/huntington-disease/" title="Huntington Disease">Huntington Disease</option>
+                    
+                        <option value="/understanding/conditions/hypertension/" title="Hypertension">Hypertension</option>
+                    
+                        <option value="/understanding/conditions/hyperthyroidism/" title="Hyperthyroidism">Hyperthyroidism</option>
+                    
+                        <option value="/understanding/conditions/hypothyroidism/" title="Hypothyroidism">Hypothyroidism</option>
+                    
+                        <option value="/understanding/conditions/infertility/" title="Infertility">Infertility</option>
+                    
+                        <option value="/understanding/conditions/inflammatory-bowel/" title="Inflammatory Bowel Disease">Inflammatory Bowel Disease</option>
+                    
+                        <option value="/understanding/conditions/influenza/" title="Influenza">Influenza</option>
+                    
+                        <option value="/understanding/conditions/insulin-resistance/" title="Insulin Resistance">Insulin Resistance</option>
+                    
+                        <option value="/understanding/conditions/jaundice/" title="Jaundice">Jaundice</option>
+                    
+                        <option value="/understanding/conditions/jra/" title="Juvenile Rheumatoid Arthritis">Juvenile Rheumatoid Arthritis</option>
+                    
+                        <option value="/understanding/conditions/kidney/" title="Kidney Disease">Kidney Disease</option>
+                    
+                        <option value="/understanding/conditions/lactose-intolerance/" title="Lactose Intolerance">Lactose Intolerance</option>
+                    
+                        <option value="/understanding/conditions/leadpoison/" title="Lead Poisoning">Lead Poisoning</option>
+                    
+                        <option value="/understanding/conditions/leukemia/" title="Leukemia">Leukemia</option>
+                    
+                        <option value="/understanding/conditions/liver-disease/" title="Liver Disease">Liver Disease</option>
+                    
+                        <option value="/understanding/conditions/lung-cancer/" title="Lung Cancer">Lung Cancer</option>
+                    
+                        <option value="/understanding/conditions/lung-diseases/" title="Lung Diseases">Lung Diseases</option>
+                    
+                        <option value="/understanding/conditions/lupus/" title="Lupus">Lupus</option>
+                    
+                        <option value="/understanding/conditions/lyme/" title="Lyme Disease">Lyme Disease</option>
+                    
+                        <option value="/understanding/conditions/lymphoma/" title="Lymphoma">Lymphoma</option>
+                    
+                        <option value="/understanding/conditions/malabsorption/" title="Malabsorption">Malabsorption</option>
+                    
+                        <option value="/understanding/conditions/malaria/" title="Malaria">Malaria</option>
+                    
+                        <option value="/understanding/conditions/malnutrition/" title="Malnutrition">Malnutrition</option>
+                    
+                        <option value="/understanding/conditions/melanoma/" title="Melanoma">Melanoma</option>
+                    
+                        <option value="/understanding/conditions/meningitis/" title="Meningitis and Encephalitis">Meningitis and Encephalitis</option>
+                    
+                        <option value="/understanding/conditions/menopause/" title="Menopause">Menopause</option>
+                    
+                        <option value="/understanding/conditions/metabolic/" title="Metabolic Syndrome">Metabolic Syndrome</option>
+                    
+                        <option value="/understanding/conditions/staph/" title="MRSA">MRSA</option>
+                    
+                        <option value="/understanding/conditions/mult-myeloma/" title="Multiple Myeloma">Multiple Myeloma</option>
+                    
+                        <option value="/understanding/conditions/multiplesclerosis/" title="Multiple Sclerosis">Multiple Sclerosis</option>
+                    
+                        <option value="/understanding/conditions/myasthenia-gravis/" title="Myasthenia Gravis">Myasthenia Gravis</option>
+                    
+                        <option value="/understanding/conditions/myelodysplastic-syndrome/" title="Myelodysplastic Syndrome">Myelodysplastic Syndrome</option>
+                    
+                        <option value="/understanding/conditions/myelopro-disorders/" title="Myeloproliferative Neoplasms">Myeloproliferative Neoplasms</option>
+                    
+                        <option value="/understanding/conditions/neural-tube/" title="Neural Tube Defects">Neural Tube Defects</option>
+                    
+                        <option value="/understanding/conditions/neuropathy/" title="Neuropathy">Neuropathy</option>
+                    
+                        <option value="/understanding/conditions/ntm/" title="Nontuberculous Mycobacteria">Nontuberculous Mycobacteria</option>
+                    
+                        <option value="/understanding/conditions/osteo/" title="Osteoarthritis">Osteoarthritis</option>
+                    
+                        <option value="/understanding/conditions/osteoporosis/" title="Osteoporosis">Osteoporosis</option>
+                    
+                        <option value="/understanding/conditions/ovarian/" title="Ovarian Cancer">Ovarian Cancer</option>
+                    
+                        <option value="/understanding/conditions/pancreatic-cancer/" title="Pancreatic Cancer">Pancreatic Cancer</option>
+                    
+                        <option value="/understanding/conditions/pancreatic-diseases/" title="Pancreatic Diseases">Pancreatic Diseases</option>
+                    
+                        <option value="/understanding/conditions/pancreatic-insuf/" title="Pancreatic Insufficiency">Pancreatic Insufficiency</option>
+                    
+                        <option value="/understanding/conditions/pancreatitis/" title="Pancreatitis">Pancreatitis</option>
+                    
+                        <option value="/understanding/conditions/parathyroid-diseases/" title="Parathyroid Diseases">Parathyroid Diseases</option>
+                    
+                        <option value="/understanding/conditions/pcos/" title="PCOS">PCOS</option>
+                    
+                        <option value="/understanding/conditions/peptic-ulcer/" title="Peptic Ulcer">Peptic Ulcer</option>
+                    
+                        <option value="/understanding/conditions/pid/" title="PID">PID</option>
+                    
+                        <option value="/understanding/conditions/pituitary/" title="Pituitary Disorders">Pituitary Disorders</option>
+                    
+                        <option value="/understanding/conditions/pneumonia/" title="Pneumonia">Pneumonia</option>
+                    
+                        <option value="/understanding/conditions/porphyria/" title="Porphyria">Porphyria</option>
+                    
+                        <option value="/understanding/conditions/pre-eclampsia/" title="Pre-eclampsia">Pre-eclampsia</option>
+                    
+                        <option value="/understanding/wellness/pregnancy/" title="Pregnancy">Pregnancy</option>
+                    
+                        <option value="/understanding/conditions/prostate/" title="Prostate Cancer">Prostate Cancer</option>
+                    
+                        <option value="/understanding/conditions/proteinuria/" title="Proteinuria">Proteinuria</option>
+                    
+                        <option value="/understanding/conditions/reactive/" title="Reactive Arthritis">Reactive Arthritis</option>
+                    
+                        <option value="/understanding/conditions/rheumatoid/" title="Rheumatoid Arthritis">Rheumatoid Arthritis</option>
+                    
+                        <option value="/understanding/conditions/sarcoidosis/" title="Sarcoidosis">Sarcoidosis</option>
+                    
+                        <option value="/understanding/conditions/scleroderma/" title="Scleroderma">Scleroderma</option>
+                    
+                        <option value="/understanding/conditions/sepsis/" title="Sepsis">Sepsis</option>
+                    
+                        <option value="/understanding/conditions/septic/" title="Septic Arthritis">Septic Arthritis</option>
+                    
+                        <option value="/understanding/conditions/shingles/" title="Shingles">Shingles</option>
+                    
+                        <option value="/understanding/conditions/sickle/" title="Sickle Cell Anemia">Sickle Cell Anemia</option>
+                    
+                        <option value="/understanding/conditions/sjogren/" title="Sjögren Syndrome">Sjögren Syndrome</option>
+                    
+                        <option value="/understanding/conditions/staph/" title="Staph Wound Infections">Staph Wound Infections</option>
+                    
+                        <option value="/understanding/conditions/std/" title="STDs">STDs</option>
+                    
+                        <option value="/understanding/conditions/stroke/" title="Stroke">Stroke</option>
+                    
+                        <option value="/understanding/conditions/std/" title="Syphilis">Syphilis</option>
+                    
+                        <option value="/understanding/conditions/testicular/" title="Testicular Cancer">Testicular Cancer</option>
+                    
+                        <option value="/understanding/conditions/thalassemia/" title="Thalassemia">Thalassemia</option>
+                    
+                        <option value="/understanding/conditions/thyroid-cancer/" title="Thyroid Cancer">Thyroid Cancer</option>
+                    
+                        <option value="/understanding/conditions/thyroid/" title="Thyroid Diseases">Thyroid Diseases</option>
+                    
+                        <option value="/understanding/conditions/travelers/" title="Travelers' Diseases">Travelers' Diseases</option>
+                    
+                        <option value="/understanding/conditions/std/" title="Trichomonas">Trichomonas</option>
+                    
+                        <option value="/understanding/conditions/tuberculosis/" title="Tuberculosis">Tuberculosis</option>
+                    
+                        <option value="/understanding/conditions/uti/" title="UTI">UTI</option>
+                    
+                        <option value="/understanding/conditions/vaginitis/" title="Vaginitis/Vaginosis">Vaginitis/Vaginosis</option>
+                    
+                        <option value="/understanding/conditions/vasculitis/" title="Vasculitis">Vasculitis</option>
+                    
+                        <option value="/understanding/conditions/vitaminb12/" title="Vitamin B12 Deficiency">Vitamin B12 Deficiency</option>
+                    
+                        <option value="/understanding/conditions/vitamink/" title="Vitamin K Deficiency">Vitamin K Deficiency</option>
+                    
+                        <option value="/understanding/conditions/westnile/" title="West Nile Virus">West Nile Virus</option>
+                    
+                        <option value="/understanding/conditions/wilsons/" title="Wilson Disease">Wilson Disease</option>
+                    
+                        <option value="/understanding/conditions/wound-infections/" title="Wound and Skin Infections">Wound and Skin Infections</option>
+                    
+                
+            </select>
+            <!--
+
+            Screening
+
+            -->
+            <h3>Screening</h3>
+            <select id="screening" name="screening" size="7">
+				
+					<option value="/map/sindex/">List of screening recommendations</option>
+				
+                
+                    
+                        <option value="/understanding/wellness/a-newborn-1/" title="Newborns">Newborns</option>
+                    
+                        <option value="/understanding/wellness/ab-infant-1/" title="Infants">Infants</option>
+                    
+                        <option value="/understanding/wellness/b-children-1/" title="Children">Children</option>
+                    
+                        <option value="/understanding/wellness/c-teen-1/" title="Teens">Teens</option>
+                    
+                        <option value="/understanding/wellness/c-youngadult1-1/" title="Young Adults">Young Adults</option>
+                    
+                        <option value="/understanding/wellness/d-adult-1/" title="Adults">Adults</option>
+                    
+                        <option value="/understanding/wellness/e-over50-1/" title="Adults 50+">Adults 50+</option>
+                    
+                        <option value="/understanding/wellness/pregnancy/" title="Pregnancy">Pregnancy</option>
+                    
+                
+            </select>
+        </form>
+
+    </div>
+    <img class="right_features_bottom" src="themes/lto/images/bck_right_features_bottom_trans.gif" alt="right features bottom" />
+</div>
+
+<!-- Follow Us -->
+
+    	<div id="follow" class="left_features_white">
+	<h2>Follow Us</h2>
+	<!--
+
+Note: using custom (actually, just resized) images below
+
+
+-->
+<!-- AddThis Follow BEGIN -->
+<div class="addthis_toolbox addthis_default_style">
+<a class="addthis_button_facebook_follow" addthis:userid="LabTestsOnline"><img src="/themes/lto/images/follow_fb_27x27.jpg" title="Follow us on Facebook" width="27" height="27" /></a>
+<a class="addthis_button_twitter_follow" addthis:userid="LabTestsOnline"><img src="/themes/lto/images/follow_tw_27x27.jpg" title="Follow us on Twitter" width="27" height="27" /></a>
+<a class="addthis_button_google_follow" addthis:userid="108618580363700141471"><img src="/themes/lto/images/follow_gp_27x27.jpg" title="Follow us on Google+" width="27" height="27" /></a>
+</div>
+<script type="text/javascript" src="/mysite/javascript/jquery/plugins/shadowbox-2.0/shadowbox-2.0.js?m=1427503986"></script><script type="text/javascript" src="/mysite/javascript/jquery/plugins/bookmark/lto.jquery.bookmark.js?m=1427503986"></script><script type="text/javascript" src="/mysite/javascript/jquery/plugins/cluetip/jquery.dimensions-1.2.js?m=1427503986"></script><script type="text/javascript" src="/mysite/javascript/jquery/plugins/cluetip/jquery.hoverIntent.js?m=1427503986"></script><script type="text/javascript" src="/mysite/javascript/jquery/plugins/cluetip/jquery.cluetip.js?m=1427503986"></script><script type="text/javascript" src="/mysite/javascript/jquery/plugins/media/jquery.media.js?m=1427503986"></script><script type="text/javascript" src="/mysite/javascript/jquery/plugins/oembed/jquery.oembed.js?m=1427503986"></script><script type="text/javascript" src="/mysite/javascript/jquery/plugins/metadata/jquery.metadata.js?m=1427503986"></script><script type="text/javascript" src="/mysite/javascript/date_tips.js?m=1427503986"></script><script type="text/javascript" src="/mysite/javascript/global_ready.js?m=1442860083"></script><script type="text/javascript" src="/mysite/javascript/media-stuff.js?m=1427503986"></script><script type="text/javascript" src="/framework/javascript/i18n.js?m=1427503966"></script><script type="text/javascript" src="/mysite/javascript/lang/en_US.js?m=1427503987"></script><script type="text/javascript" src="//s7.addthis.com/js/250/addthis_widget.js#pubid=ra-4fa09f61583c02ab"></script>
+<!-- AddThis Follow END -->
+<div class="newsletter" style="width: 91px;"><a class="lto_email_signup" href="/subscribe"><img src="/themes/lto/images/newsltrglyf-horizontal.jpg" title="Subscribe to our newsletter"  /></a></div><!-- newsletter subscription -->
+	</div>
+
+</div>
+                        </div>
+                    </div>
+                    <div id="col3">
+                        <div id="col3_content" class="clearfix">
+                            <div class="noindex">    
+
+    
+    <div class="left_features_white" id="page-sponsor">
+       <img alt="subnav top" src="themes/lto/images/bck_subnav_top.jpg" class="subnav_top">
+        <div class="left_features_content">
+            <h2>Proudly sponsored by ...</h2>
+            
+            <a><div class="table-row"><div class="table-cell"><img class="winning-logo" /></div></div></a>
+        </div>
+        <img alt="subnav bottom" src="themes/lto/images/bck_subnav_bottom.jpg" class="subnav_bottom">
+    </div>
+
+    
+    <div class="left_features_white" id="house-ad">
+       <img alt="subnav top" src="themes/lto/images/bck_subnav_top.jpg" class="subnav_top">
+        <div class="left_features_content">
+            <h2>Learn more about ...</h2>
+            <img class="pointer" src="themes/lto/css/locale/US/images/arrow_down_cf0f0f.png" alt="pointer" />
+            
+            <a><div class="table-cell"></div></a>
+        </div>
+        <img alt="subnav bottom" src="themes/lto/images/bck_subnav_bottom.jpg" class="subnav_bottom">
+    </div>
+
+
+    <img alt="subnav top" src="themes/lto/images/bck_subnav_top.jpg" class="subnav_top">
+    
+    
+    <ul class="subnav_content">
+        
+            <li class="link first" id="expanded">
+                <a title="Understanding Your Tests" href="/understanding/">Understanding Your Tests</a>
+                
+                    
+                
+            </li>
+        
+            <li class="link " id="expanded">
+                <a title="Inside the Lab" href="/lab/">Inside the Lab</a>
+                
+                    
+                
+            </li>
+        
+            <li class="link " id="expanded">
+                <a title="In the News" href="/news/">In the News</a>
+                
+                    
+                
+            </li>
+        
+            <li class="link " id="expanded">
+                <a title="Article Index" href="/map/">Article Index</a>
+                
+                    
+                
+            </li>
+        
+            <li class="link " id="expanded">
+                <a title="About This Site" href="/site/">About This Site</a>
+                
+                    
+                
+            </li>
+        
+            <li class="link " id="expanded">
+                <a title="Send Us Your Comments" href="/comments/">Send Us Your Comments</a>
+                
+                    
+                
+            </li>
+        
+            <li class="link last" id="expanded">
+                <a title="For Health Professionals" href="/for-health-professionals/">For Health Professionals</a>
+                
+                    
+                
+            </li>
+        
+    </ul>
+    <img alt="subnav bottom" src="themes/lto/images/bck_subnav_bottom.jpg" class="subnav_bottom">
+    
+
+                                
+                            </div>
+                                                        <!--
+
+                                Display site news directly under left nav option
+
+                            -->
+                            
+                                
+                            
+                            <!--
+
+                            Supporters
+
+                            -->
+                            
+                            <div class="left_features" id="our_supporters">
+                               <img class="left_features_top" src="themes/lto/images/bck_left_features_top_trans.gif" alt="left features top" />
+                                <div class="left_features_content">
+                                    <h2><a href="/#sponsors">Our Supporters</a></h2>
+                                    <p><a href="/#sponsors" style="color: #000;"><p>This public resource would not be possible without substantial corporate and association support.</p></a></p>
+                                </div>
+                                <img class="left_features_bottom" src="themes/lto/images/bck_left_features_bottom_trans.gif" alt="left features bottom" />
+                            </div>
+                            
+                            <!--
+
+                            Awards
+
+                            -->
+                            
+                            <!--
+
+                            Commitment
+
+                            -->
+                            
+                                <div class="left_features" id="our_commitment">
+                                    <img class="left_features_top" src="themes/lto/images/bck_left_features_top_trans.gif" alt="left features top" />
+                                    <div class="left_features_content">
+                                        <h2>Our Commitment</h2>
+                                        <table class="custom">
+                                            
+												<tr>
+													<td class="left"><a href="https://www.healthonnet.org/HONcode/Conduct.html?HONConduct253967" title="https://www.healthonnet.org/HONcode/Conduct.html?HONConduct253967"><img src="//www.honcode.ch/HONcode/Seal/HONConduct253967_s1.gif" alt="//www.honcode.ch/HONcode/Seal/HONConduct253967_s1.gif" /><br /></a></td>
+													<td id="compliance"><p>We comply with the <a title="HONcode standard for trustworthy health information" href="http://www.healthonnet.org/HONcode/Conduct.html">HONCode Standard</a> for trustworthy health information.<br><a title="This website is certified by Health On the Net Foundation. Click to verify." href="https://www.healthonnet.org/HONcode/Conduct.html?HONConduct253967"><strong>Verify compliance</strong></a>.</p></td>
+												</tr>
+											
+											
+                                        </table>
+                                    </div>
+                                    <img class="left_features_bottom" src="themes/lto/images/bck_left_features_bottom_trans.gif" alt="left features bottom" />
+                                </div>
+                            
+                            <!--
+
+                            Generic modules
+
+                            -->
+                            
+                               
+                               
+                                    <div class="left_features_white">
+                                       <img class="left_features_top" src="themes/lto/images/bck_left_features_top_trans.gif" alt="left features top" />
+                                        <div class="left_features_content">
+                                            <h2>Get the Mobile App</h2>
+                                            <div><div id="mobile" class="clearfix" style="padding: 0; height: auto;"><img class="leftAlone" title="" src="assets/Uploads/_resampled/ResizedImage2727-LTOLinkeding50x50-icon.png" alt="LTO mobile app button" width="27" height="27"><br><h4>Mobile app for</h4>
+<div id="stores"><a title="iTunes" href="http://itunes.apple.com/us/app/labtestsonline-m/id447858911">iTunes</a>|<a title="Android" href="https://play.google.com/store/apps/details?id=com.livewirekiosk.lwk.labtestsonline">Android</a>|<a title="Kindle" href="http://www.amazon.com/American-Association-for-Clinical-Chemistry/dp/B006P6AJJ0">Kindle</a></div>
+</div></div>
+                                        </div>
+                                        <img class="left_features_bottom" src="themes/lto/images/bck_left_features_bottom_trans.gif" alt="left features bottom" />
+                                    </div>
+                               
+                               
+                            
+
+                            <!--
+
+                                Display site news at bottom option
+
+                            -->
+                            
+                                
+                                                                
+                                <div class="left_features_grey">
+                                    <img class="left_features_top" src="themes/lto/images/bck_left_features_top_trans.gif" alt="left features top" />
+                                    <div class="left_features_content">
+                                        <h2><a href="/site-news">LTO Stat</a></h2>
+                                        
+                                        
+                                            <p><a href="/site-news/mnews/160729zika/" title="Zika in the U.S.">Zika in the U.S.</a><br />July 29, 2016<br>First local spread of Zika virus in continental U.S. found in Florida.</p>
+                                        
+                                            <p><a href="/site-news/mnews/160724immunotherapy/" title="Study of Melanoma Tumors Provides Incite into Why Some Cancers Become Resistant to Immunotherapy">Immunotherapy Resistance</a><br />July 24, 2016<br>Researchers have learned why some cancers stop responding to immunotherapy.</p>
+                                        
+                                        
+                                    </div>
+                                    <img class="left_features_bottom" src="themes/lto/images/bck_left_features_bottom_trans.gif" alt="left features bottom" />
+                                </div>
+                            
+
+
+                                
+                            
+                        </div>
+                        <!-- IE Column Clearing -->
+                        <div id="ie_clearing"> &#160; </div>
+                    </div>
+                </div>
+                <div id="sponsors_partners">
+                                        
+                        <a name="sponsors"></a>
+                        <div id="sponsors">
+                            <h2>Site Sponsors</h2>
+                            <ul class="clearfix">
+                            	
+                                
+                                    <li><a href="/site/n-sponsors/#roche" title="Roche"><img src="/assets/sponsors/roche.jpg" alt="roche.jpg" /></a></li>
+                                
+                                    <li><a href="/site/n-sponsors/#abbott" title="Abbott Diagnostics"><img src="/assets/sponsors/abbott.jpg" alt="abbott.jpg" /></a></li>
+                                
+                                    <li><a href="/site/n-sponsors/#procoop" title="Professional Co-op"><img src="/assets/sponsors/PCSlogo_2.jpg" alt="PCSlogo_2.jpg" /></a></li>
+                                
+                                    <li><a href="/site/n-sponsors/#biorad" title="Bio-Rad"><img src="/assets/sponsors/BioRadlogo2013.jpg" alt="BioRadlogo2013.jpg" /></a></li>
+                                
+                                    <li><a href="/site/n-sponsors/#fujirebio" title="Fujirebio Diagnostics"><img src="/assets/sponsors/FDIlogo.gif" alt="FDIlogo.gif" /></a></li>
+                                
+                                    <li><a href="/site/n-sponsors/#sysmex" title="Sysmex"><img src="/assets/sponsors/sysmex.gif" alt="sysmex.gif" /></a></li>
+                                
+                                    <li><a href="/site/n-sponsors/#paml" title="PAML"><img src="/assets/sponsors/PAML-logo.png" alt="PAML-logo.png" /></a></li>
+                                
+                                    <li><a href="/site/n-sponsors/#wako" title="Wako Diagnostics"><img src="/assets/Uploads/Wako-Diagnostics-Logo.gif" alt="Wako Diagnostics Logo" /></a></li>
+                                
+                                
+                            </ul>
+                        </div>
+                    
+
+                    
+                        <a name="partners"></a>
+                        <div id="partners">
+                            <h2>Collaborating Partners</h2>
+                            <ul class="clearfix">
+                            	
+                                
+                                    <li><a href="/site/m-partners/#AACC" title="American Association for Clinical Chemistry"><img src="/assets/Uploads/AACCLogo.png" alt="AACCLogo" /></a></li>
+                                
+                                    <li><a href="/site/m-partners/#ascls" title="American Society for Clinical Laboratory Science"><img src="/assets/partners/ascls_logo.gif" alt="ascls_logo.gif" /></a></li>
+                                
+                                    <li><a href="/site/m-partners/#asm" title="American Society for Microbiology"><img src="/assets/partners/american_society_for_microbiology.jpg" alt="american_society_for_microbiology.jpg" /></a></li>
+                                
+                                    <li><a href="/site/m-partners/#clma" title="CLMA"><img src="/assets/Uploads/CLMA-Logo-CMYKw-NAME2pms7462.jpg" alt="CLMA Logo CMYKw NAME2pms7462" /></a></li>
+                                
+                                    <li><a href="/site/m-partners/#ash" title="American Society of Hematology"><img src="/assets/partners/ash_logo.gif" alt="ash_logo.gif" /></a></li>
+                                
+                                    <li><a href="/site/m-partners/#amp" title="Association for Molecular Pathology"><img src="/assets/Uploads/AMP.jpg" alt="AMP" /></a></li>
+                                
+                                    <li><a href="/site/m-partners/#ascp" title="American Society for Clinical Pathology"><img src="/assets/partners/ascp.jpg" alt="ascp.jpg" /></a></li>
+                                
+                                    <li><a href="/site/m-partners/#cap" title="College of American Pathologists"><img src="/assets/Uploads/CAP-new.jpg" alt="CAP new" /></a></li>
+                                
+                                    <li><a href="/site/m-partners/#csmls" title="Canadian Society for Medical Laboratory Science"><img src="/assets/partners/csmls.jpg" alt="CSMLSofficiallogo160p.jpg" /></a></li>
+                                
+                                    <li><a href="/site/m-partners/#cscc" title="Canadian Society of Clinical Chemists"><img src="/assets/partners/cscc.jpg" alt="cscc.jpg" /></a></li>
+                                
+                                    <li><a href="/site/m-partners/#clsi" title="Clinical and Laboratory Standards Institute"><img src="/assets/partners/clinical_and_lab.jpg" alt="clinical_and_lab.jpg" /></a></li>
+                                
+                                    <li><a href="/site/m-partners/#nacb" title="National Academy of Clinical Biochemistry"><img src="/assets/partners/nacb.jpg" alt="nacb.jpg" /></a></li>
+                                
+                                    <li><a href="/site/m-partners/#joint" title="Joint Commission Laboratory"><img src="/assets/partners/joint_commission.jpg" alt="joint_commission.jpg" /></a></li>
+                                
+                                    <li><a href="/site/m-partners/#aphl" title="Association of Public Health Laboratories"><img src="/assets/partners/aphl.jpg" alt="aphl.jpg" /></a></li>
+                                
+                                    <li><a href="/site/m-partners/#aabb" title="AABB"><img src="/assets/partners/aabb.jpg" alt="aabb.jpg" /></a></li>
+                                
+                                    <li><a href="/site/m-partners/#aafppt" title="American Academy of Family Physicians Proficiency Testing"><img src="/assets/Uploads/LOGO-new-PT-50pixdeep.jpg" alt="LOGO new PT 50pixdeep" /></a></li>
+                                
+                                    <li><a href="/site/m-partners/#endocrine" title="Endocrine Society"><img src="/assets/Uploads/Endocrine-Society-Logo-4C.jpg" alt="Endocrine Society Logo 4C" /></a></li>
+                                
+                                    <li><a href="/site/m-partners/#cola" title="COLA"><img src="/assets/Uploads/logo-cola2.png" alt="logo cola2" /></a></li>
+                                
+                                
+                            </ul>
+                        </div>
+                    
+
+                    
+                </div>
+                <div id="footer">
+                    <div class="noindex">				
+                    <div id="links">
+						
+							<a href="/understanding/" title="Understanding Your Tests">Understanding Your Tests</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+						
+							<a href="/lab/" title="Inside the Lab">Inside the Lab</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+						
+							<a href="/news/" title="In the News">In the News</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+						
+							<a href="/map/" title="Article Index">Article Index</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+						
+							<a href="/site/" title="About This Site">About This Site</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+						
+							<a href="/comments/" title="Send Us Your Comments">Send Us Your Comments</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+						
+							<a href="/for-health-professionals/" title="For Health Professionals">For Health Professionals</a>
+						
+                    </div>
+                    <div id="notes">
+                        &copy;2001 - <script type="text/javascript">var today = new Date();document.write(today.getFullYear());</script> by American Association for Clinical Chemistry&nbsp;&nbsp;&#8226;&nbsp;&nbsp; <a href="/contact" title="Contact Us">Contact Us</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="/site/policies?start=2" title="Terms of Use">Terms of Use</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="/site/policies?start=4" title="Privacy">Privacy</a>
+                    </div>
+
+                    
+                    	<div id="produced_by">
+                        	<span>Produced by</span> <a href="http://www.aacc.org" title="AACC website"><img src="/themes/lto/css/locale/US/images/logo_producer_footer.gif" alt="AACC logo" /></a>
+                    	</div>
+                    
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="bottom_corner"></div>
+
+    </body>
+</html>

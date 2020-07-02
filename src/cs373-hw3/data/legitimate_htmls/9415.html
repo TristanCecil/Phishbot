@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html ng-app="wildApp"  flow-init>
+<head>
+
+                                                                            <!--
+  ,d88b.d88b,
+  88888888888
+  `Y8888888Y'  Eroshare loves you!
+    `Y888Y'
+      `Y'
+                                                                             -->
+
+
+  <title>Eroshare &hearts;</title>
+
+  <meta name="viewport" content="width=device-width,initial-scale=1,minimal-ui"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+
+
+<!--
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+  <link rel="apple-touch-icon" href="//assets.eroshare.com/assets/logo-square-e530c5a03249d626da3bfc5970cc0b87.png">
+-->
+  <link rel="apple-touch-icon" href="//assets.eroshare.com/assets/logo-square-e530c5a03249d626da3bfc5970cc0b87.png">
+
+  <link rel="stylesheet" media="all" href="//assets.eroshare.com/assets/application-bb9183f41e771eedff9e3b5411ee5fab.css" />
+  <meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="HixbXFcDcp3pgOtqY/9vghTJ6IYZffABq07P2TY7VaciqtL8qZX3gu3mkDe1v4mvyGBc69IaJmdpSZuAbCNJXQ==" />
+
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="apple-itouch-icon" href="/favicon.png"/>
+
+  <script type="text/javascript">
+      var chunked_upload = false;
+
+      var logged_in = false;
+      var current_user = null;
+
+      var upload_path = "https://c1.eroshare.com/api/v1/items/chunked";
+
+    var production = true;
+    var env = "production";
+    var basepath = "https://eroshare.com/"
+
+
+  </script>
+
+  <script src="//assets.eroshare.com/assets/application-005e079cda1bf6a44078f8003c945b13.js"></script>
+
+
+
+
+
+
+
+  
+</head>
+
+<body role="document" ng-controller="AlbumCtrl" data-no-turbolink="true" flow-prevent-drop>
+
+<div class="wrapper" flow-drop>
+
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+            <a href="/?src=mob_head_upload_btn" class="navbar-toggle navbar-toggle-popular collapsed">UPLOAD</a>
+
+
+          <a class="navbar-brand" href="/"><span></span></a>
+        </div>
+
+
+
+        <div id="navbar" class="navbar-collapse collapse">
+
+
+          <ul class="nav navbar-nav navbar-right">
+
+
+            <!-- desktop -->
+              <li class="navbar-btn-container hidden-xs">
+                <div class="navbar-btn">
+                  <a href="/?src=bm" class="btn upload-button"><i class="fa fa-heart"></i><span>UPLOAD</span></a>
+                </div>
+              </li>
+
+            <!-- mobile -->
+              <li class="visible-xs navbar-btn-container">
+                <a href="/?src=bm_mob" class="btn upload-button"><i class="fa fa-user"></i> <span>Sign Up to Upload</span></a>
+              </li>
+              <li class="visible-xs navbar-btn-container">
+                <br/>
+                <p>Dear Redditor,<br/><br/>
+                I hope I created the perfect host for your wild photos &amp; videos!
+                Do you have questions or feedback? <a href="https://www.reddit.com/message/compose/?to=eroshare">PM me on Reddit</a> or read the <a href="/faq">FAQ</a>.<br/><br/>
+                Cheers, Randy</p>
+              </li>
+
+
+
+
+
+
+
+          </ul>
+
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+    <script type="text/javascript">
+    $(function(){
+     var navMain = $("#navbar");
+
+     navMain.on("click", "input", null, function () {
+         navMain.collapse('hide');
+     });
+ });
+    </script>
+
+
+    <div class="nav-progress" ng-cloak>
+      <div class="nav-progress-bar transition-ease" ng-style="{ 'width': $flow.progress() * 100 + '%' }"></div>
+    </div>
+
+
+      <div class="bg" ng-if="!album">
+        <img src="//assets.eroshare.com/assets/bg3-1e89346c3d60597c6caa1c4cbfbd9bb1.jpg" alt="Bg3" />
+      </div>
+
+
+
+    <div class="container " role="main">
+
+
+
+      <div ng-show="!album">
+        
+<div class="row">
+
+
+  <div class="col-sm-6 col-sm-offset-3">
+
+    <div class="calc-top-center black-background-semi-transparent">
+
+      <div class="text-center" style="margin-bottom:30px;">
+        <img class="logo-square" style="width:150px;" alt="eroshare.com - " src="//assets.eroshare.com/assets/logo-eroshare-vertical-aaecade15bb82086a55170921a5b09bf.png" />
+      </div>
+
+
+      <div class="text-center intro-text small-nice-text" style="line-height:2em">
+        Free Photo &amp; Video Hosting<br/>
+        Please sign in to start uploading.
+      </div>
+
+      <div class="text-center">
+
+
+        <div>
+          <div style="margin-top:10px;">
+            <a class="btn btn-pink btn-fa btn-lg btn-lg-240" href="/auth/reddit"><i class="fa fa-reddit-alien fa-lg"></i><span>Login with Reddit</span></a>
+          </div>
+        </div>
+
+        <div class="seperator small-nice-text">
+
+          <span>&mdash; OR &mdash;</span>
+
+        </div>
+
+        <div class="other-login-methods">
+
+          <div class="btn-group btn-group-lg btn-group-200" role="group" style="margin:auto;">
+            <a type="button" class="btn btn-pink" href="/auth/twitter"><i class="fa fa-twitter fa-lg"></i></a>
+            <a type="button" class="btn btn-pink" href="/auth/facebook"><i class="fa fa-facebook fa-lg"></i></a>
+            <a type="button" class="btn btn-pink" href="/auth/google_oauth2"><i class="fa fa-google-plus fa-lg"></i></a>
+            <a type="button" class="btn btn-pink" href="/users/sign_up"><i class="fa fa fa-envelope fa-lg"></i></a>
+          </div>
+
+        </div>
+
+      </div><!--text-center-->
+      <div class="panel panel-default">
+        <div class="text-left small-nice-text panel-body" style="margin-top:30px; font-size:13px;">
+          Dear Redditor,<br/><br/>
+          I hope I created the perfect photo &amp; video host!<br/><br/>
+          Do you have questions or feedback? <a href="https://www.reddit.com/message/compose/?to=eroshare">PM me on Reddit</a> or read the <a href="/faq">FAQ</a>.<br/><br/>
+          Cheers, Randy
+        </div>
+      </div>
+
+
+    </div>
+
+
+
+  </div>
+
+
+</div>
+
+      </div>
+
+    </div>
+
+
+
+    
+
+
+    <noscript>Please enable Javascript. Otherwise eroshare won't work properly.</noscript>
+
+</div><!--wrapper-->
+    <div class="footer">
+
+
+      <a href="/faq">FAQ</a> &bull;
+      <a href="/terms">Terms &amp; Privacy</a> &bull;
+      <a href="/report-abuse">Report Abuse</a>
+
+    </div>
+
+
+    <script src="//assets.eroshare.com/assets/postload-c6ffebe24fa758ba5603f1993153dd4e.js"></script>
+
+
+
+<div class="modal fade" id="signup-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-signup" role="document" style="">
+    <div class="modal-content">
+
+      <div class="modal-body">
+
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+        <h4>Registration</h4>
+
+        <div id="new_user_errors"></div>
+
+        <form role="form" class="new_user" id="new_user" action="/users.json" accept-charset="UTF-8" data-remote="true" method="post"><input name="utf8" type="hidden" value="&#x2713;" />
+
+          <div class="form-group">
+            <input autofocus="autofocus" placeholder="Username" class="form-control" type="text" name="user[nick]" id="user_nick" />
+          </div>
+
+          <div class="form-group">
+            <input class="form-control" placeholder="Password" type="password" name="user[password]" id="user_password" />
+          </div>
+
+
+          <div class="form-group">
+            <input class="form-control" placeholder="E-Mail (optional)" type="email" name="user[email]" id="user_email" />
+          </div>
+
+
+          <input type="submit" name="commit" value="Sign up" class="btn btn-pink btn-block uppercase" data-disable-with="Please wait..." />
+
+          <input type="hidden" id="follow_after_signing_up" name="follow_user"/>
+          <input type="hidden" id="like_after_signing_up" name="like_album"/>
+
+</form>
+        <div class="text-center">
+
+          <div class="seperator small-nice-text">
+
+            <span>&mdash; OR &mdash;</span>
+
+          </div>
+
+          <div class="other-login-methods">
+
+            <div class="btn-group btn-group-25 btn-group-200" role="group" style="margin:auto;">
+              <a type="button" class="btn btn-pink" href="/auth/reddit"><i class="fa fa fa-reddit-alien fa-lg"></i></a>
+              <a type="button" class="btn btn-pink" href="/auth/twitter"><i class="fa fa-twitter fa-lg"></i></a>
+              <a type="button" class="btn btn-pink" href="/auth/facebook"><i class="fa fa-facebook fa-lg"></i></a>
+              <a type="button" class="btn btn-pink" href="/auth/google_oauth2"><i class="fa fa-google-plus fa-lg"></i></a>
+
+            </div>
+            <div style="clear:both;"></div>
+          </div><!--other-login-methods-->
+
+          <div style="margin-top:20px;">
+            <a href="/users/sign_up" style="opacity:0.4">Already a member?</a>
+          </div>
+        </div><!--text-center-->
+
+
+
+
+      </div><!--modal-body-->
+    </div><!--modal-content-->
+  </div><!--modal-dialog-->
+</div><!--modal-->
+
+<div class="modal fade" id="embed-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-album-id="">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel">Embed Album</h4>
+      </div>
+      <div class="modal-body">
+        <form class="form">
+          <div class="form-group" >
+            <input class="form-control" onclick="this.select()" style="font-size:11px;" rows="1"/>
+          </div>
+        </form>
+
+        <a href="#" data-dismiss="modal" class="btn btn-pink btn-small">Done</a>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="share-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document" style="max-width:350px;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="share-modal-title">Share Album</h4>
+      </div>
+      <div class="modal-body">
+
+        <ul class="nav nav-tabs" role="tablist" id="share-modal-tabs">
+          <li role="presentation" class="active" id="share-link-tab"><a href="#share-link" aria-controls="home" role="tab" data-toggle="tab">Share</a></li>
+          <li role="presentation" id="direct-link-tab"><a href="#direct-link" aria-controls="home" role="tab" data-toggle="tab">Direct Link</a></li>
+          <li role="presentation"><a href="#embed" aria-controls="home" role="tab" data-toggle="tab">Embed</a></li>
+        </ul>
+
+        <div class="tab-content" style="padding-top:10px;">
+          <div role="tabpanel" class="tab-pane active" id="share-link">
+            <form class="form">
+              <div class="form-group">
+                  <input class="form-control" id="share-modal-url-input" onclick="this.select()" style="font-size:11px;" rows="1"/>
+                  <input type="hidden" id="share-modal-title"/>
+              </div>
+            </form>
+
+            <button class="copy-button btn btn-pink float-left clipboard" data-clipboard-target="#share-modal-url-input">Copy</button>
+            <button class="btn btn-pink share-network float-left" data-share-network="reddit" data-share-input="share-modal-url-input"><i class="fa fa-reddit-alien fa-fw"></i></button>
+            <button class="btn btn-pink share-network float-left" data-share-network="tumblr" data-share-input="share-modal-url-input"><i class="fa fa-tumblr fa-fw"></i></button>
+            <button class="btn btn-pink share-network float-left" data-share-network="twitter" data-share-input="share-modal-url-input"><i class="fa fa-twitter fa-fw"></i></button>
+
+            <a href="#" data-dismiss="modal" class="btn btn-pink" style="float:right;">Done</a>
+            <div style="clear:both;"></div>
+          </div><!--share_link-->
+
+          <div role="tabpanel" class="tab-pane" id="direct-link">
+            <form class="form">
+              <div class="form-group">
+                  <input class="form-control" id="share-modal-direct-link-input" onclick="this.select()" style="font-size:11px;" rows="1"/>
+              </div>
+            </form>
+
+            <button class="copy-button btn btn-pink float-left clipboard" data-clipboard-target="#share-modal-direct-link-input">Copy</button>
+            <button class="btn btn-pink share-network float-left" data-share-network="reddit" data-share-input="share-modal-direct-link-input"><i class="fa fa-reddit-alien fa-fw"></i></button>
+            <button class="btn btn-pink share-network float-left" data-share-network="tumblr" data-share-input="share-modal-direct-link-input"><i class="fa fa-tumblr fa-fw"></i></button>
+            <button class="btn btn-pink share-network float-left" data-share-network="twitter" data-share-input="share-modal-direct-link-input"><i class="fa fa-twitter fa-fw"></i></button>
+
+            <a href="#" data-dismiss="modal" class="btn btn-pink" style="float:right;">Done</a>
+            <div style="clear:both;"></div>
+
+          </div><!--share_link-->
+
+          <div role="tabpanel" class="tab-pane" id="embed">
+            <form class="form">
+              <div class="form-group">
+                  <input class="form-control" id="share-modal-embed-input" onclick="this.select()" style="font-size:11px;" rows="1"/>
+              </div>
+            </form>
+
+            <button class="copy-button btn btn-pink float-left clipboard" data-clipboard-target="#share-modal-embed-input">Copy</button>
+            <a href="#" data-dismiss="modal" class="btn btn-pink" style="float:right;">Done</a>
+            <div style="clear:both;"></div>
+
+          </div><!--share_link-->
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-66111540-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+</body>
+</html>

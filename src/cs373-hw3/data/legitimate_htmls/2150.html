@@ -1,0 +1,453 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+            <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="content-language" content="en" />
+    <meta name="keywords" content="file transfer, large file, big file, free send, send file" />
+    <meta name="description" content="Free file hosting. Email large files for free."/>
+            <title>Free large file hosting. Send big files the easy way!</title>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <link type="text/css" rel="stylesheet" href="/css/sendspace.css?v=00f69b43"/>
+            <link rel="shortcut icon" href="/favicon.ico" />
+                <script type="text/javascript" src="/js/jquery-1.7.1.min.js?v=00f69b43"></script>
+        <link type="text/css" rel="stylesheet" href="/openid/css/openid.css?v=00f69b43"/>
+    <link type="text/css" rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css"/>
+    <meta name="inmobi-site-verification" content="f7e57f912b67a1b15d78bc607d2da1e9"/>
+    <meta name="google-signin-requestvisibleactions" content="http://schema.org/AddAction" />
+    <meta name="google-signin-cookiepolicy" content="single_host_origin" />
+    <script type="text/javascript" src="https://apis.google.com/js/client:platform.js" async></script>
+      </head>
+  <body id="homepage_page"
+        class="desktop">
+
+        
+
+<form style="display: none;" id="processgpluslogin_form" action="/processgpluslogin.html" method="post">
+  <input name="auth_result" type="text" />
+  <input type="submit" value="Submit" />
+</form>
+
+<script type="text/javascript">
+    function gp_signinCallback(authResult) {
+        //hack to prevent Uncaught Security Exception
+        delete authResult['g-oauth-window'];
+
+        //skip failed cookie/storage auto-restore
+        if (authResult.error === 'immediate_failed')
+            return false;
+
+        //declined / signed out, broke workflow
+        if (['user_signed_out', 'access_denied'].indexOf(authResult.error) !== -1)
+        {
+            alert('Please retry');
+            return false;
+        }
+        $('input[name="auth_result"]').val(ss_toJson(authResult));
+        $('#processgpluslogin_form').submit();
+        return false;
+    }
+
+    $(document).ready(function () {
+        $(document).on('click', '.Google-signin-button', function (evt) {
+            evt.preventDefault();
+            $('#glass').trigger('click');
+            gapi.auth.authorize({
+                client_id: "4951770878-7uubtcnnukiscfg3lih9rb2ne156s9l0.apps.googleusercontent.com",
+                scope: 'https://www.googleapis.com/auth/plus.profile.emails.read'
+            }, gp_signinCallback);
+            return false;
+        });
+    });
+</script>
+    <!--[if lt IE 8]>
+        <div style='border: 1px solid #F7941D; background: #FEEFDA; text-align: center; clear: both; height: 75px; position: relative;'>
+            <div style='position: absolute; right: 3px; top: 3px; font-family: courier new; font-weight: bold;'>
+                <a href='#' onclick='javascript:this.parentNode.parentNode.style.display="none"; return false;'>
+                    <img src='/graphics/ie6nomore/ie6nomore-cornerx.jpg' style='border: none;' alt='Close this notice'/>
+                </a>
+            </div>
+            <div style='width: 640px; margin: 0 auto; text-align: left; padding: 0; overflow: hidden; color: black;'>
+                  <div style='width: 75px; float: left;'><img src='/graphics/ie6nomore/ie6nomore-warning.jpg' alt='Warning!'/></div>
+                  <div style='width: 275px; float: left; font-family: Arial, sans-serif;'>
+                    <div style='font-size: 14px; font-weight: bold; margin-top: 12px;'>You are using an outdated browser</div>
+                    <div style='font-size: 12px; margin-top: 6px; line-height: 12px;'>For a better experience using this site, please upgrade to any of the following:</div>
+                  </div>
+                  <div style='width: 75px; float: left;'>
+                    <a href='http://www.firefox.com' target='_blank'>
+                        <img src='/graphics/ie6nomore/ie6nomore-firefox.jpg' style='border: none;' alt='Get Firefox 5'/>
+                    </a>
+                  </div>
+                  <div style='width: 75px; float: left;'>
+                    <a href='http://www.browserforthebetter.com/download.html' target='_blank'>
+                        <img src='/graphics/ie6nomore/ie6nomore-ie.jpg' style='border: none;' alt='Get Internet Explorer 9'/>
+                    </a>
+                  </div>
+                  <div style='width: 73px; float: left;'>
+                    <a href='http://www.apple.com/safari/download/' target='_blank'>
+                        <img src='/graphics/ie6nomore/ie6nomore-safari.jpg' style='border: none;' alt='Get Safari 5'/>
+                    </a>
+                  </div>
+                  <div style='float: left;'>
+                    <a href='http://www.google.com/chrome' target='_blank'>
+                        <img src='/graphics/ie6nomore/ie6nomore-chrome.jpg' style='border: none;' alt='Get Google Chrome'/>
+                    </a>
+                  </div>
+            </div>
+        </div>
+    <![endif]-->
+
+        <div id="header">
+                <div class="grasp">
+                            <div id="illustration">
+                                    <img src="/graphics/android_app2.png" width="959px" height="382px" alt="" />
+                </div>
+            
+            <div class="wrap">
+              <div id="logo">
+                <a href="/">
+                  <img style="width:222px;height:42px" src="/graphics/header/logo.png" alt="sendspace" />
+                  <span id="userType"></span>
+                  <span id="slogan" style="clear:left;">Send, Receive, Track &amp; Share Your Big Files!</span>
+                </a>
+              </div>
+              
+    <ul id="control" role="navigation">
+                              <li style="position: relative; z-index:3">
+                <a href="/login.html" class="login" rel="open">Log In</a>
+                <div id="login_frame" class="overlay">
+                  <a href="#" class="login close_label" rel="close">Log In</a>
+                  <a class="remove login" rel="close"></a>
+                  <div class="clear" style="height: 10px"></div>
+                  <form method="post" action="/login.html" onsubmit="$('#glass').trigger('click');
+                                      return true" role="login">
+                    <input type="hidden" name="action" value="login" />
+                    <input type="hidden" name="submit" value="login" />
+                    <input type="hidden" name="target" value="j5lq1XLlY3qQnjfWHEkgNNl2MmElKXM66Z8=" />
+                    <input type="hidden" name="action_type" value="login" />
+                                        <div class="row first">
+                      <span class="label">Your Email or Username</span>
+                      <input type="text" name="username" class="input" id="top_login_username" tabindex="1" />
+                    </div>
+                    <div class="row">
+                      <span class="label" style="width: auto !important;">Your Password <a style="font-weight: normal !important; display: inline-block; margin-left: 20px;" tabindex="5" href="/forgot.html">Forgot your password?</a></span>
+                      <input type="password" name="password" class="input" tabindex="2" />
+                    </div>
+                    <div class="row" style="margin:3px 0">
+                      <label style="float: left;line-height:36px;margin-left: 5px" ><input tabindex="3" type="checkbox" class="checkbox" name="remember" checked="checked" /> <span>Remember me</span></label>
+                      <input style="float: right;margin: 0 0 0 2px" type="submit" class="submit button" tabindex="4" value="Log In"/>
+                    </div>
+                  </form>
+
+                  <form action="//www.sendspace.com/openid/auth.php" method="get" id="openid_form">
+                    <input type="hidden" name="action" value="verify" />
+                    <p style="margin: 5px 0 5px 60px;"><strong>Or Login with</strong></p>
+
+                    <div class="row" style="margin-top:-10px; margin-left: 0;">
+                      <div id="openid_choice">
+                        <div id="openid_btns"></div>
+                      </div>
+                      <div id="openid_input_area">
+                        <input id="openid_identifier" name="openid_identifier" type="text" value="http://" />
+                        <input id="openid_submit" type="submit" value="Sign-In"/>
+                      </div>
+                    </div>
+
+                  </form>
+                </div>
+              </li>
+                       <li><a href="/register.html">Sign Up</a></li>       <li><a href="/premium_upgrade.html">Plans</a></li>
+      <li><a href="/download_tools.html">Tools</a></li>
+      <li class="last"><a href="/help.html">Contact Us</a></li>
+
+          </ul>
+
+              <div class="clear"></div>
+              
+    <script type="text/javascript">
+        var collection = [        ];</script>
+
+    <div id="progress_bar" class="dragbar downloading" style="height:auto; display:none; padding:30px">
+
+      <p id="cur_file"></p>
+
+      <div class="bar">
+        <div class="frame"></div>
+        <div class="fill"></div>
+        <span class="tag">0%</span>
+      </div>
+
+      <div class="stats">
+        <div class="col">
+          <b>Remaining Time:</b> <span class="time_left">00:00:00</span> at <span class="kbps">0KB/s</span>
+          <span class="elapsed">(<b>Elapsed:</b> <span>00:00:00</span>)</span>
+        </div>
+        <div class="col col2">
+          Uploaded <b class="data">0KB</b> of <b class="total">0KB</b>
+        </div>
+      </div>
+
+      <br />
+            <button id="cancel_button" class="submit_blue button" style="margin:30px auto; display:block; clear:left;">
+        <span style="position: relative; top: -2px;">Cancel Upload</span>
+      </button>
+    </div>
+
+    <div id="start">
+      <a id="android_ad" style="width:140px; z-index:9999;height:160px; position:absolute; top:50px; left:770px;" href="https://market.android.com/details?id=com.app.sendspace.mobile" target="_blank"></a>
+      <form role="main" method="post" action="https://fs01u.sendspace.com/upload?SPEED_LIMIT=0&MAX_FILE_SIZE=314572800&UPLOAD_IDENTIFIER=2005267165.1462944728.76658CC2.20.0&DESTINATION_DIR=2" enctype="multipart/form-data" style="margin-left:-165px;">
+        <input type="hidden" name="PROGRESS_URL" value="https://fs01u.sendspace.com/progress.php?UPLOAD_IDENTIFIER=2005267165.1462944728.76658CC2.20.0" />
+                <input type="hidden" name="js_enabled"	id="js_enabled" value="0" />
+        <input type="hidden" name="signature" value="1184390b39a2479da7a1024cb5796cc5" />
+        <input type="hidden" name="upload_files" id="upload_files" value="" />
+                <input type="hidden" name="terms" value="1" id="terms" />
+        <div class="browse">
+                    <div class="start en"></div>
+          <div class="click">Click to upload</div>
+          <label for="upload_file" style="display:none">Select a file to upload</label>
+          <a class="button"> <input type="file" id="upload_file"	name="upload_file[]" class="file" size="1" multiple /> </a>
+          <div class="steps">What happens next? <span>1</span> Upload your file(s) <span>2</span> Share with anyone you like!</div>
+
+          <div id="cloud">
+            <p>&nbsp;Have you tried our new <br /> Drag and Drop yet?</p>
+          </div>
+
+        </div>
+        <div class="clear" style="height: 70px"></div>
+        <div class="select">
+          <table>
+            <tr class="droid">
+              <th style="font-size: 20pt; width: 240px">Selected files</th>
+              <th style="width: 400px"></th>
+                          </tr>
+
+            <tr class="hoverable">
+              <td>
+                <label> <input type="hidden" name="file[]" checked="checked" /> <a class="remove" title="Remove File"></a> <span class="filename">%filename%</span> </label>
+              </td>
+              <td><input name="description[]" class="click_to_add" value="Click to add a description" /></td>
+                          </tr>
+                        <tr>
+              <td>
+                <label for="password">Protection password (optional):</label>
+              </td>
+              <td colspan="2">
+                                    <a style="font-size: 13px; font-weight: bold;" href="/premium_upgrade.html">please upgrade your Plan to use this feature</a>
+                                <br/>
+                <p style="font-size: 11px; color:#2571a2; margin: 5px 0 5px 0; display: inline-block; width: 300px;">Protected files can be only accessed by the file owner and users who knows the protection password</p>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="3">
+                <a class="add_more">
+                  <input type="file" id="newUpload" name="upload_file[]" size="1" class="new_file" multiple />
+                  <label for="newUpload">Add more files</label>
+                </a>
+              </td>
+            </tr>
+
+            <tr id="maxSize">
+              <td colspan="2">
+                Max upload size: 300MB                                    <br />* File limit for free users is temporarily back to 300MB while we bring up new servers to handle the demand.
+                              </td>
+            </tr>
+          </table>
+
+          <div class="send">
+            <div style="float: left;">
+              <div style="float: left">
+                <label for="recpemail" style="padding:2px;float:left; margin-top:12px;">To:</label>
+                <select name="recpemail_holder" id="recpemail_holder" class="recpemail_holder" style="display:none;" multiple="multiple"></select>
+                <input style="width: 220px; max-width: 220px; height: 17px; margin-right: 5px" name="recpemail" id="recpemail" autocomplete="off" type="text" value="" class="form_input" />
+              </div>
+
+              <div style="float: left; margin-top: 4px;">
+                                    <label for="ownemail">From:</label> <input name="ownemail" id="ownemail" type="text" class="input" value="" />
+                              </div>
+
+              <div class="clear"></div>
+            </div>
+
+            <div class="go">
+              <input type="submit" class="submit button" value="Upload" title="Click to start upload" />
+              <br /><br />Next step: Share or just store your files
+            </div>
+
+            <div class="clear"></div>
+
+            <br />
+
+            <span class="upload_terms"><em>* By uploading you confirm your files comply with our <a href="/terms.html" target="_blank" title="Terms of Service">Terms of Service</a>.</em></span>
+            <div class="clear"></div>
+            <br />
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <script type="text/javascript">
+    // variables used in homepage.js
+    var upload_form_max_upload_size = 314572800;
+    var upload_form_drag_url = 'https://fs01u.sendspace.com/dragupload?SPEED_LIMIT=0&MAX_FILE_SIZE=314572800&UPLOAD_IDENTIFIER=2005267165.1462944728.76658CC2.20.0&DESTINATION_DIR=2';
+    var upload_form_destination_dir = '2';
+    var upload_form_too_big_msg = ' It must be under 300MB.\nPlease upgrade to a Premium account if you need to upload larger files.';
+    $(function () {
+        $('#js_enabled').val(1);
+
+        //wrapped in case missing on expiry
+        $('#ownemail').each(function () {
+            if (this.value === '')
+                this.value = 'sender@email.com';
+        });
+
+        $("input#recpemail").fcbkcomplete({
+            json_url: window.collection || [],
+            target: $('.recpemail_holder'),
+            maxitems: 30,
+            height: 5,
+            bricket: false,
+            defaultval: 'recipient@email.com',
+            autocomplete: false,
+            filter_selected: true,
+            filter_hide: true,
+            newel: true
+        });
+    });
+</script>
+            </div>
+          </div>
+          </div>
+<div id="headline">
+  <h1 class="droid">Uploading</h1>
+</div>
+
+<div class="clear"></div>
+
+<div id="content" style="min-height: 0;padding: 0px 20px">
+  <div class="uploading" id="uploading_progress" style="padding: 10px 20px">
+    <center>
+      <iframe name="progressbar_frame" id="frm_progressbar" src="" width="800" height="150" scrolling="no" style="border: 0;display: none" frameborder=0></iframe>
+      <div id="div_progressloading" style="width: 800px; font-size:22px; height: 150px;text-align:center;">	
+        <br><br><img widht="16px" height="16px" src="/img/loading.gif" alt="loading... please wait..."><br>
+        <br>Starting upload... Please wait...
+      </div>
+            <button id="cancel_button" class="submit_blue button" onclick="cancelupload('/', 20)" style="margin: 5px;"><span style="position: relative; top: -2px;">Cancel Upload</span></button>
+      <br>
+    </center>
+  </div>
+
+  <!--<div class="content_splitter"></div>-->
+    
+<noscript>
+<div id="nojs" style='border: 1px solid #F7941D; background: #FEEFDA; text-align: center; clear: both; height: 75px; position: relative;'>
+  <div style='width: 640px; margin: 0 auto; text-align: left; padding: 0; overflow: hidden; color: black;'>
+    <div style='width: 100%; float: left; font-family: Arial, sans-serif;'>
+      <div style='width: 75px; float: left;'><img src='/graphics/ie6nomore/ie6nomore-warning.jpg' alt='Warning!'/></div>
+      <div style='font-size: 14px; font-weight: bold; margin-top: 12px;'>No javascript available!</div>
+      <div style='font-size: 12px; margin-top: 6px; line-height: 12px;'>Your browser does not support JavaScript or JavaScript is disabled. You must enable JavaScript or use a JavaScript supported browser for this site to function correctly.</div>
+    </div>
+  </div>
+</div>
+</noscript>
+
+
+</div> <!-- #content -->
+
+<div id="footer">
+  <div class="wrap">
+            <ul id="footer_menu">
+          <li>
+            <ul>
+              <li class="title">SendSpace</li>
+                                          <li><a href="/about.html">About Us</a></li>
+              <li><a href="/terms.html">Terms Of Use</a></li>
+              <li><a href="/privacy_policy.html">Privacy Policy</a></li>
+                                <li><a href="/?desktop_version=false">For Mobile</a></li>
+                          </ul>
+          </li>
+          <li>
+            <ul>
+              <li class="title">Tools</li>
+              <li><a href="/download_wizard.html">Wizard (Win*, Mac, Linux)</a></li>
+              <li><a href="/download_android.html">SendSpace for Android</a></li>
+              <!--
+              <li><a href="/download_ishare.html">iShare for iPhone</a></li>
+              -->
+              <li><a href="/dev_index.html">Developer Tools</a></li>
+            </ul>
+          </li>
+
+          <li style="width:90px">
+            <ul>
+              <li class="title">Help &amp; Support</li>
+              <li><a href="/help.html">Contact Us</a></li>
+                                <li><a href="/faqs.html">FAQ</a></li>
+                          </ul>
+          </li>
+                                            <li class="android_qr" style="float:right; width:100px; padding:0">
+                                <a href="https://market.android.com/details?id=com.app.sendspace.mobile" title="SendSpace Android Application">
+                  <img width="100" height="100" src="/img/androidqr.gif" alt="SendSpace Android Application QR" />
+                </a>
+              </li>
+                  </ul>
+
+        
+        <div id="signature">
+            <div class="clear"></div>
+      &copy; 2005-2016 sendspace.com
+    </div>
+  </div>
+</div>
+<div id="glass"></div>
+
+
+<script type="text/javascript" src="/js/sendspace.js?v=00f69b43"></script><script type="text/javascript" src="/openid/js/openid-jquery.js?v=00f69b43"></script><script type="text/javascript" src="/js/homepage.js?v=00f69b43"></script><script type="text/javascript" src="/js/jquery.fcbkcomplete.min.js?v=00f69b43"></script><script type="text/javascript">
+
+        $(function(){
+           $.getScript('/openid/js/openid-en.js', function(){
+       			openid.img_path = '/openid/images/';
+    			openid.init('openid_identifier');
+                $('#openid_form,#openid_container,#openid_prefs').show();
+            }) 
+        });
+
+</script>
+
+<script type="text/javascript">
+// Monkey patching of openid.getBoxHTML to allow customizing icons
+    var tabfrom = 5;
+    openid.getBoxHTML = function (box_id, provider, box_size, index) {
+        var faClass = 'fa-' + provider['name'].toLowerCase();
+        var jsHandler = 'javascript:openid.signin(\'' + box_id + '\');';
+        if (provider["name"] == 'Google') {
+            jsHandler = '#';
+            faClass += '-plus';
+        }
+        return '<a tabindex="' + (++tabfrom) + '" class="header-alt-login-button ' + provider["name"] + '-signin-button" title="' + this.image_title.replace('{provider}', provider["name"]) + '"  href="' + jsHandler + '"><i class="fa ' + faClass + ' "><' + '/i><' + '/a>';
+    };
+</script>
+    
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r;
+            i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
+            a = s.createElement(o),
+                    m = s.getElementsByTagName(o)[0];
+            a.async = 1;
+            a.src = g;
+            m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-2221170-1', 'auto', {'legacyCookieDomain': '.sendspace.com'});
+        ga('require', 'displayfeatures'); // Display Advertising
+                ga('send', 'pageview');
+    
+        // Setup autolink plugin
+        // https://developers.google.com/analytics/devguides/collection/analyticsjs/cross-domain#autolink
+        ga('require', 'linker');
+        </script>
+
+</body>
+</html>
+

@@ -1,0 +1,22 @@
+<html><body>
+
+<script type="text/javascript" language="JavaScript">
+var l = window.location,
+    d = decodeURIComponent,
+    host = '//www.filmon.com',
+    f = [
+	'<form method="get" action="' + l.protocol + host + l.pathname + '">',
+	l.search.substr(1).split('&').map(function(a) { 
+		a = a.split('='); 
+		a[1] = a.length > 1 ? d(a[1]) : ""; 
+		return "<input type='hidden' name='" + a[0] + "' value='" + a[1] + "' />" 
+	}).join(''),
+	'</form>'
+    ].join(''),
+    D = document;
+
+    D.write(f);
+    setTimeout(function() { window.location = l.protocol + host + l.pathname + l.search ; }, 30);
+    setTimeout(function() { D.forms[0].submit(); }, 1);
+</script>
+</body></html>

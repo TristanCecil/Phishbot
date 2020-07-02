@@ -1,0 +1,1011 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+
+
+
+
+
+
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9" />
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+
+    <title>Главная Портал Закупок</title>
+
+    <script type="text/javascript">
+        var contextPath = "/epz/main/public";
+    </script>
+
+    
+    <link type="text/css" rel="stylesheet" media="all" href="/epz/main/public/css/style.css"/>
+    <link type="text/css" rel="stylesheet" media="all" href="/epz/main/public/css/skin.css"/>
+    <link type="text/css" rel="stylesheet" href="/epz/main/public/css/jquery.datepick.css"/>
+    <link type="text/css" rel="stylesheet" href="/epz/main/public/css/barChart.css"/>
+    <link type="text/css" rel="stylesheet" href="/epz/main/public/css/ui.dynatree.css"/>
+    <link type="text/css" rel="stylesheet" href="/epz/main/public/css/jquery_msgbox.css"/>
+    
+
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+    <script>window.jQuery || document.write('<script src="/epz/main/public/js/jquery-1.8.3.js"><\/script>')</script>
+    <script type="text/javascript" src="/epz/main/public/js/baseLayout.js"></script>
+    <script type="text/javascript" src="/epz/main/public/js/script.js"></script>
+    <script type="text/javascript" src="/epz/main/public/js/jquery-ui-1.8.24.js"></script>
+    <script type="text/javascript" src="/epz/main/public/js/ui_autocomplete.js"></script>
+
+    
+    <script type="text/javascript" src="/epz/main/public/js/jquery.ui.datepicker-ru.js"></script>
+    <script type="text/javascript" src="/epz/main/public/js/jquery.price_format.1.7.js"></script>
+    <script type="text/javascript" src="/epz/main/public/js/jquery.jcarousel.min.js"></script>
+    <script type="text/javascript" src="/epz/main/public/js/jquery.maskedinput.min.js"></script>
+    <script type="text/javascript" src="/epz/main/public/js/jquery.dynatree.js"></script>
+    <script type="text/javascript" src="/epz/main/public/js/validation/jquery.numeric.js"></script>
+    <script type="text/javascript" src="/epz/main/public/js/common/config.js"></script>
+    <script type="text/javascript" src="/epz/main/public/js/common/choose-headagency.js"></script>
+    <script type="text/javascript" src="/epz/main/public/js/common/choose-okpd.js"></script>
+    <script type="text/javascript" src="/epz/main/public/js/custom.js"></script>
+    <script type="text/javascript" src="/epz/main/public/js/popupCommon.js"></script>
+    <script type="text/javascript" src="/epz/main/public/js/common/choose-organization.js"></script>
+    <script type="text/javascript" src="/epz/main/public/js/validation/jquery.validate.js"></script>
+    <script type="text/javascript" src="/epz/main/public/js/jquery_msgBox.js"></script>
+
+    
+
+
+
+<script type="text/javascript">
+    epzCommonConfig.initCommonConfig({
+        contextPath: '/epz/main/public',
+        smartSearchEnable: true,
+
+        urls: {
+            epzMainPublicUrl: '/epz/main/public/',
+            epzNsiUrl: '/epz/nsi/',
+            epzOrderUrl: '/epz/order/',
+            epzOrderPlanUrl: '/epz/orderplan/',
+            epzOrderClauseUrl: '/epz/orderclause/',
+            epzContractUrl: '/epz/contract/',
+            epzContractFz223Url: '/epz/contractfz223/',
+            epzContractReportingUrl: '/epz/contractreporting/',
+            epzCustomerReportsUrl: '/epz/customerreports/',
+            epzOrganizationUrl: '/epz/organization/',
+            epzDishonestSupplierUrl: '/epz/dishonestsupplier/',
+            epzComplaintUrl: '/epz/complaint/',
+            epzBankGuaranteeUrl: '/epz/bankguarantee/',
+            epzInspectionPlanUrl: '/epz/inspectionplan/',
+            epzUnscheduledInspectionUrl: '/epz/unscheduledinspection/',
+            epzControlResultUrl: '/epz/controlresult/',
+            epzDizkUrl: '/epz/dizk/'
+        }
+    });
+</script>
+
+</head>
+<body>
+
+    
+
+<div class="outerWrapper mainPage mainPage">
+
+    <div class="wrapper">
+        
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="http://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var userRegionName = $.cookie("userRegionName");
+        var userRegionId = $.cookie("userRegionId");
+
+        if (userRegionId != null && userRegionId != 0) {
+            setRegionNameHeader(userRegionName);
+        } else {
+            setRegionNameHeader("Не выбран");
+
+            ymaps.ready(function () {
+                ymaps.geolocation.get({
+                    provider: 'yandex',
+                    autoReverseGeocode: true
+                }).then(function (result) {
+                    var administrativeAreaName = result.geoObjects.get(0).properties.get('metaDataProperty.GeocoderMetaData.AddressDetails.Country.AdministrativeArea.AdministrativeAreaName');
+                    var subAdministrativeAreaName = result.geoObjects.get(0).properties.get('metaDataProperty.GeocoderMetaData.AddressDetails.Country.AdministrativeArea.SubAdministrativeArea.SubAdministrativeAreaName');
+
+                    if (findFederalRegionYandexAnswer(administrativeAreaName)) {
+                        userRegionName = subAdministrativeAreaName;
+                    } else {
+                        userRegionName = administrativeAreaName;
+                    }
+
+                    $.cookie("userRegionName", prepareYandexRegionName(userRegionName), { path: '/epz', expires: 182 });
+                    $.cookie("yandexRegionName", administrativeAreaName + ', ' + subAdministrativeAreaName, { path: '/epz', expires: 182 });
+
+                    if (!$.cookie("doNotShowKladrPopUp")) {
+                        $("#chooseRegion").click();
+                    }
+
+                    /*Отладочная информация - все регионы РФ из ответа Яндекса https://yandex.ru/yaca/geo.c2n */
+                    /*for (var i = 0; i < yandexRegionNameArray.length; i++) {
+                        console.log(prepareYandexRegionName(yandexRegionNameArray[i]));
+                    }*/
+                });
+            });
+        }
+    });
+
+    function setRegionNameHeader(regionName) {
+        $("#headerUserRegionName").text(regionName);
+    }
+
+    function prepareYandexRegionName(regionName) {
+        if (regionName === 'Москва и Московская область') {
+            return 'Московская';
+        }
+
+        if (regionName === 'Москва и область') {
+            return 'Московская';
+        }
+
+        if (regionName === 'Санкт-Петербург и Ленинградская область') {
+            return 'Ленинградская';
+        }
+
+        if (regionName === 'Санкт-Петербург и область') {
+            return 'Ленинградская';
+        }
+
+        var resultRegionName = null;
+        var stringToRemoveArray = [' автономный округ', ' автономная область', ' АО', ' область', ' край', 'Республика ', ' Республика', ' республика'];
+
+        for (var j = 0; j < stringToRemoveArray.length; j++) {
+            if (regionName.search(stringToRemoveArray[j]) > -1) {
+                resultRegionName = regionName.replace(stringToRemoveArray[j], '');
+
+                break;
+            } else {
+                resultRegionName = regionName;
+            }
+        }
+
+        return resultRegionName.split('-')[0];
+    }
+
+    function findFederalRegionYandexAnswer(yandexAnswer) {
+        var answerArray = yandexAnswer.split(' ');
+
+        for (var i = 0; i < answerArray.length; i++) {
+            if (answerArray[i] === 'округ') {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /*Отладочная информация - все регионы РФ из ответа Яндекса https://yandex.ru/yaca/geo.c2n */
+    /*var yandexRegionNameArray = ['Москва и область', 'Белгородская область', 'Брянская область', 'Владимирcкая область', 'Воронежcкая область', 'Ивановская область', 'Калужская область', 'Костромская область', 'Курская область',
+     'Липецкая область', 'Орловская область', 'Рязанская область', 'Смоленская область', 'Тамбовская область', 'Тверская область', 'Тульская область', 'Ярославская область',
+     'Санкт-Петербург и Ленинградская область', 'Архангельская область', 'Вологодская область', 'Калининградская область', 'Мурманская область',
+     'Новгородская область', 'Псковская область', 'Республика Коми', 'Республика Карелия', 'Ненецкий АО',
+     'Астраханская область', 'Волгоградская область', 'Краснодарский край', 'Республика Адыгея', 'Республика Калмыкия', 'Ростовская область',
+     'Кировская область', 'Республика Марий Эл', 'Нижегородская область', 'Оренбургская область', 'Пензенская область', 'Пермский край', 'Республика Башкортостан',
+     'Республика Мордовия', 'Татарстан', 'Самарская область', 'Саратовская область', 'Удмуртская республика', 'Ульяновская область', 'Чувашская республика',
+     'Курганская область', 'Свердловская область', 'Тюменская область', 'Ханты-Мансийский АО', 'Челябинская область', 'Ямало-Ненецкий АО',
+     'Алтайский край', 'Иркутская область', 'Кемеровская область', 'Красноярский край', 'Новосибирская область', 'Омская область',
+     'Республика Алтай', 'Республика Бурятия', 'Республика Тыва', 'Республика Хакасия', 'Томская область', 'Забайкальский край',
+     'Магаданская область', 'Камчатский край', 'Еврейская автономная область', 'Чукотский автономный округ', 'Хабаровский край', 'Приморский край', 'Амурская область', 'Республика Саха (Якутия)', 'Сахалинская область',
+     'Республика Дагестан', 'Республика Ингушетия', 'Республика Кабардино-Балкария', 'Республика Северная Осетия-Алания', 'Ставропольский край', 'Карачаево-Черкесская Республика', 'Чеченская Республика', 'Крым', 'Севастополь'];*/
+</script>
+
+
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function (d, w, c) {
+        (w[c] = w[c] || []).push(function() {
+            try {
+                w.yaCounter36706425 = new Ya.Metrika({
+                    id:36706425,
+                    clickmap:true,
+                    trackLinks:true,
+                    accurateTrackBounce:true
+                });
+            } catch(e) { }
+        });
+
+        var n = d.getElementsByTagName("script")[0],
+                s = d.createElement("script"),
+                f = function () { n.parentNode.insertBefore(s, n); };
+        s.type = "text/javascript";
+        s.async = true;
+        s.src = "https://mc.yandex.ru/metrika/watch.js";
+
+        if (w.opera == "[object Opera]") {
+            d.addEventListener("DOMContentLoaded", f, false);
+        } else { f(); }
+    })(document, window, "yandex_metrika_callbacks");
+
+    function yandexCounterHit(url) {
+        if (typeof(yaCounter36706425) != "undefined") {
+            yaCounter36706425.hit(url);
+        }
+    }
+
+    $(document).ready(function () {
+        $("a[target=_blank]:not([initialHref])").click(function (event) {
+            yandexCounterHit($(this).attr("href"));
+        });
+
+        $(document).ajaxSend(function (event, request, settings) {
+            yandexCounterHit(settings.url);
+        });
+    });
+
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/36706425" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+
+
+
+
+
+<div class="header">
+    <table class="" cellpadding="0" cellspacing="0">
+        <tr>
+            <td>
+                <a href="/epz/main/public/home.html" class="logo"></a>
+            </td>
+            <td class="">
+                <ul>
+                    <li class="titlePart">
+                        <a href="/epz/main/public/home.html" class="headerLinkCaption">Официальный сайт</a>
+                    </li>
+                    <li class="titleCite">
+                        <a href="/epz/main/public/home.html" class="headerLinkCaption">
+                            <strong>ЕДИНОЙ ИНФОРМАЦИОННОЙ<br/>СИСТЕМЫ В СФЕРЕ ЗАКУПОК</strong>
+                        </a>
+                        <a class="linkPopUp" href="/epz/main/public/information.html"><span class="info"></span></a>
+                    </li>
+                    <li>
+                        <a href="/epz/main/public/forCustomers.html?tmstmp=1463578237308" class="clientIco">ЗАКАЗЧИКАМ</a>
+                        <a href="/epz/main/public/forSuppliers.html?tmstmp=1463578237308" class="catererIco">ПОСТАВЩИКАМ</a>
+                    </li>
+                </ul>
+            </td>
+            <td>
+                <ul class="fullTime">
+                    <li class="titlePart">Служба поддержки</li>
+                    <li class=""><strong>8 495 517-92-48</strong></li>
+                    <li class="padBtm8"><strong>8 800 775-21-66</strong></li>
+                    <li class=""><a href="/epz/main/public/user-feedback.html">Обратная связь</a></li>
+                    <li class=""><a href="/epz/main/public/qa/view.html">Вопросы и ответы</a></li>
+                </ul>
+            </td>
+            <td>
+                <ul class="locationIco">
+                    <li class="titlePart">Ваш субъект РФ <span class="help"
+                                                               title="Информация о местоположении пользователя используется в поисковых запросах для динамической детализации результатов поиска"></span>
+                    </li>
+                    <li><strong><span id="headerUserRegionName"></span></strong></li>
+                    <li><a id="chooseRegion" class="linkPopUp" href="/epz/nsi/kladr/chooseRegion.html">Сменить</a></li>
+                </ul>
+            </td>
+            <td>
+                <dl class="lkBox">
+                    <dt class=""></dt>
+                    <dd class="cabinet"><span>Личный<br/>кабинет</span>
+
+                        <div class="personalCabinetPopUp">
+                            <div class="imgArr"></div>
+                            <div class="cabinetItem"><a href="http://zakupki.gov.ru/auth/pcabinet.jsp" target="_blank">Личный кабинет 44-ФЗ</a></div>
+                            <div class="cabinetItem"><a href="https://zakupki.gov.ru/223/clause/private" target="_blank">Личный кабинет 223-ФЗ</a></div>
+                        </div>
+                    </dd>
+                </dl>
+            </td>
+        </tr>
+    </table>
+</div>
+
+        
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" src="/epz/main/public/js/searchString.js"></script>
+
+<div class="searchBlockAll">
+    <form id="quickSearchForm_header" action="/epz/order/quicksearch/search_eis.html" method="GET" >
+    <div class="searchBox">
+        <span class="titleField">ПОИСК</span>
+        <div class="searchField">
+            <input type="text"
+                   id="quickSearchForm_header_searchString"
+                   class="hint autocompleteOrder"
+                   name="searchString"
+                   value="Поиск по ключевым словам"
+                   title="Поиск по ключевым словам" />
+            <input type="button" value="" onclick="submitQuickSearchForm(); return false;" />
+        </div>
+        <p class="accounting">
+            <label>
+                <span id="morphologyWrapper" class='customCheck
+                 
+                        
+                        
+                            check
+                        
+                    ' onclick="morphologyWrapperClick()">
+                    <input type="checkbox" id="morphology" name="morphology" checked="checked"/>
+                </span>
+                С учетом всех форм слов
+            </label>
+
+            <label>
+                <span id="strictEqualWrapper" class='mainPageStrictEqual customCheck' onclick="strictEqualWrapperClick()">
+                    <input type="checkbox" id="strictEqual" name="strictEqual"/>
+                </span>
+                Строгое соответствие
+            </label>
+        </p>
+    </div>
+    </form>
+</div>
+
+        
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="navigation">
+    <div class="fixed">
+    <ul class="topLevel">
+        <li class="nav1 oneLine"><a class="_homePage" href="/epz/main/public/home.html">Главная страница</a></li>
+    </ul>
+    <ul class="topLevel"><li class="nav2"><span>Планирование </br>закупок</span></li></ul>
+    <ul class="nextLevel">
+        <li><a class="_purchasePlanFz44Search" href="/epz/purchaseplanfz44/quicksearch/search.html">Планы закупок (44-ФЗ)</a></li>
+        <li><a class="_planSearch" href="/epz/orderplan/quicksearch/search.html">Планы-графики закупок (44-ФЗ) и планы закупки (223-ФЗ)</a></li>
+        <li><a class="_pricereqSearch" href="/epz/pricereq/quicksearch/search.html">Запросы цен товаров, работ, услуг (44-ФЗ)</a></li>
+        <li><a class="_normalizationRulesSearch" href="/epz/normalizationrules/quicksearch/search.html">Правила нормирования в сфере закупок (44-ФЗ)</a></li>
+        <li><a class="_orderClauseSearch" href="/epz/orderclause/quicksearch/search.html">Положения о закупке (223-ФЗ)</a></li>
+    </ul>
+
+    <ul class="topLevel"><li class="nav3"><span>Осуществление<br />закупок</span></li></ul>
+    <ul class="nextLevel">
+        <li><a class="_orderSearch" href="/epz/order/quicksearch/search.html">Все закупки</a></li>
+        
+            <li><a class="_obozSearch" href="/epz/oboz/public/quicksearch/search.html">Общественное обсуждение крупных закупок</a></li>
+        
+        <li><a class="_bankGuaranteeSearch" href="/epz/bankguarantee/quicksearch/search.html">Реестр банковских гарантий</a></li>
+        
+            <li><a class="_gwsSearch" href="/epz/gws/quicksearch/search.html">Перечни товаров, работ, услуг, закупки которых осуществляются у субъектов малого и среднего предпринимательства (223-ФЗ)</a></li>
+        
+        <li><a class="_mechProducts" href="/epz/mechproducts/quicksearch/search.html">Перечни перспективных потребностей в продукции машиностроения (223-ФЗ)</a></li>
+    </ul>
+
+    <ul class="topLevel"><li class="nav4"><span>Информация о контрактах<br />и договорах</span></li></ul>
+    <ul class="nextLevel">
+        <li><a class="_contractSearch" href="/epz/contract/quicksearch/search.html">Реестр контрактов, заключенных заказчиками</a></li>
+        
+            <li><a class="_contractfz223" href="/epz/contractfz223/quicksearch/search.html">Реестр договоров, заключенных заказчиками по результатам закупки</a></li>
+        
+        <li><a class="_customerReportsSearch" href="/epz/customerreports/quicksearch/search.html">Отчеты заказчиков</a></li>
+        <li><a class="_contract/reporting" href="/epz/contractreporting/quicksearch/search.html">Отчетность по договорам (223-ФЗ)</a></li>
+        
+        <li><a class="_btkSearch" href="/epz/btk/quicksearch/search.html">Библиотека типовых контрактов, типовых условий контрактов (44-ФЗ)</a></li>
+    </ul>
+
+    <ul class="topLevel"><li class="nav5"><span>Мониторинг, аудит <br />и контроль в сфере закупок</span></li></ul>
+    <ul class="nextLevel padTop0">
+        <li class="itemLastLevel"><span>Нормативно-методическая<br />и справочная информация<br />по регулированию <br/> контрактной системы<br />в сфере закупок (44-ФЗ)</span>
+            <ul class="lastLevel">
+                <li><a class="_freeAnalyticalReport" href="/epz/legalacts/report/quicksearch/search.html">Сводные аналитические отчеты</a></li>
+                <li><a class="_legalActsSearch" href="/epz/legalacts/quicksearch/search.html">Иная информация</a></li>
+            </ul>
+        </li>
+        <li><a class="_auditSearch" href="/epz/audit/quicksearch/search.html">Информации о результатах деятельности органов аудита в сфере закупок (44-ФЗ)</a></li>
+        <li><a class="_dishonestSupplierSearch" href="/epz/dishonestsupplier/quicksearch/search.html">Реестр недобросовестных поставщиков</a></li>
+        <li class="itemLastLevel"><span><a class="_aggregateFeedback" href="/epz/main/public/aggregate-feedback.html" style="color: white">
+                                        Реестр жалоб, плановых и внеплановых проверок, их результатов и выданных предписаний</a></span>
+            <ul class="lastLevel">
+                <li><a class="_complaintSearch" href="/epz/complaint/quicksearch/search.html">Жалобы</a></li>
+                <li><a class="_unscheduledInspectionSearch" href="/epz/unscheduledinspection/quicksearch/search.html">Внеплановые проверки (44-ФЗ)</a></li>
+                <li><a class="_inspectionPlanSearch" href="/epz/inspectionplan/quicksearch/search.html">Плановые проверки (44-ФЗ)</a></li>
+                <li><a class="_controlResultSearch" href="/epz/controlresult/quicksearch/search.html">Результаты контроля (44-ФЗ)</a></li>
+                <li><a class="_activitySearch" href="/epz/activity/quicksearch/search.html">Отчеты о проведенных <br>мероприятиях (44-ФЗ)</a></li>
+            </ul>
+        </li>
+    </ul>
+
+    <ul class="topLevel"><li class="nav6"><span>Дополнительная<br />информация</span></li></ul>
+    <ul class="nextLevel">
+        <li><a class="_dizkSearch" href="/epz/dizk/quicksearch/search.html">Дополнительная информация о закупках, об исполнении контрактов (44-ФЗ)</a></li>
+        <li><a class="_organization/search" href="/epz/organization/quicksearch/search.html">Реестр организаций</a></li>
+        <li><a class="_revenueSearch" href="/epz/revenue/quicksearch/search.html">Реестр сведений об объеме выручки (223-ФЗ)</a></li>
+        
+        
+        
+        <li><a class="_openData" href="/epz/opendata/search.html">Открытые данные</a></li>
+    </ul>
+
+    <ul class="topLevel"><li class="nav7 oneLine"><a class="_documents" href="/epz/main/public/document/view.html">Документы</a></li></ul>
+    </div>
+</div>
+
+<script type="text/javascript">
+    
+        var sectionSelector = "li:has(a[class*='_homePage'])";
+        $(sectionSelector).addClass("current");
+        $(sectionSelector).parents('ul').prev('ul.topLevel').find('li').addClass('current');
+    
+</script>
+
+        
+        <div class="mainBox">
+            
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="mainBox margBtm50">
+
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" src="/epz/main/public/js/bannersBlock.js"></script>
+<script type="text/javascript">
+    $(function() {
+        var bannerInitialStats = {
+            purchasesCnt: '1 722 794',
+            purchasesSum: '8 980 627',
+            contractsCnt: '1 695 271',
+            usersCnt: '8 472'
+        };
+
+        runBanner('/epz/main/public', bannerInitialStats, 7);
+    })
+</script>
+
+<div class="bannersBlock">
+    <span class="animBanner">
+       <span class="dataBanner">
+           1 722 794
+       </span>
+       <span class="titleBanner" data-banner-name="purchasesCnt">Количество размещенных закупок с начала года</span>
+       <span class="titleBanner" data-banner-name="purchasesSum" style="display:none;">Объем закупок в текущем году (млн. рублей)</span>
+       <span class="titleBanner" data-banner-name="contractsCnt" style="display:none;">Количество заключенных контрактов/договоров в этом году</span>
+       <span class="titleBanner" data-banner-name="usersCnt" style="display:none;">Количество одновременно работающих в ЕИС пользователей</span>
+    </span>
+    
+    <a href="/epz/oboz/public/quicksearch/search.html">
+        <img src="/epz/main/public/images/newDesign/banner_1.png" border="0" alt="Принять участие в общественном обсуждении миллиардных закупок" />
+    </a>
+    
+    <a href="/epz/order/smp/">
+        <img src="/epz/main/public/images/newDesign/banner_2.png" border="0" alt="Закупки у СМП, СОНО" />
+    </a>
+</div>
+
+
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    var DEFAULT_DELAY = 5000;
+    $(document).ready(function(){
+        $(carousel);
+    });
+
+</script>
+
+<script type="text/javascript" src="/epz/main/public/js/newsBlock.js"></script>
+
+<div class="newsBlock">
+    <h1 class="padTop30">Новости и объявления
+        <a href="/epz/main/public/news/news.html"><span class="btnBrd" onclick="location='/epz/main/public/news/news.html';">Все новости</span></a>
+        <sup><a href="/epz/main/public/news/rss" target="_blank" title="Подписаться на RSS-ленту">rss</a></sup>
+    </h1>
+    <div class="clear"></div>
+    <div class="collapseBlock">
+        <div id="expandNewsBlock" class="collapceBox collapceBase">
+            <span class="collapce">Свернуть новостные сообщения</span>
+            <span class="expand">Развернуть новостные сообщения</span>
+        </div>
+    </div>
+
+    <div>
+        <table cellpadding="0" cellspacing="0" class="tableNews">
+            <tr>
+                <td colspan="2">
+                    <div class="listNewsWrapper newsMain">
+
+                        <span class="newsIco"></span>
+                        <div class="jcarousel">
+                            <ul class="carousel">
+                                
+                                    <li class="topNews">
+                                        
+                                            
+                                                <img src="/epz/main/public/download/download.html?id=11928" alt="" border="0"/>
+                                            
+                                            
+                                        
+                                        <dl>
+                                            <dt><a href="/epz/main/public/news/news_preview.html?newsId=12086">"Мониторинг применения Закона № 44-ФЗ"</a></dt>
+                                            <dd>Подготовлен и опубликован доклад о результатах мониторинга применения Закона № 44-ФЗ</dd>
+                                            <dd><span class="timeNews">
+                                                19 февраля 2016 15:10
+                                            </span><span class="fzNews">44-ФЗ</span></dd>
+                                        </dl>
+                                    </li>
+                                
+                            </ul>
+                            <div class="pagingList padBtm10">
+                                <ul>
+                                    
+                                </ul>
+                                <div class="clear"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </td>
+                
+                <td class="newsBanners alignRight"><a href="/epz/isp/news/search.html"><img src="/epz/main/public/images/newDesign/news_banner_1.jpg" border="0" alt="" /></a></td>
+            </tr>
+            <tr class="addedNews">
+
+                
+                    <td>
+                        <dl>
+                            <dt><a href="/epz/main/public/news/news_preview.html?newsId=13569" class="">Задержка отправки сведений о публикации планов графиков </a></dt>
+                            <dd class="newsPreview">С 17 мая 2016 г. наблюдается задержка отправки сведений о публикации планов графиков в внешние системы размещения заказов.</dd>
+                            <dd>
+                                
+
+                                <span class="timeNews">Сегодня в 10:43</span>
+                                <span class="fzNews">44-ФЗ</span>
+                            </dd>
+                        </dl>
+                    </td>
+                
+                    <td>
+                        <dl>
+                            <dt><a href="/epz/main/public/news/news_preview.html?newsId=13553" class="">Информация об обновлении версии Официального сайта ЕИС</a></dt>
+                            <dd class="newsPreview">В субботу, 14 мая 2016 г., была обновлена версия Официального сайта ЕИС (версия ЕИС 5.1.4)</dd>
+                            <dd>
+                                
+
+                                <span class="timeNews">14 мая 2016 10:20</span>
+                                <span class="fzNews">223-ФЗ</span>
+                            </dd>
+                        </dl>
+                    </td>
+                
+                    <td>
+                        <dl>
+                            <dt><a href="/epz/main/public/news/news_preview.html?newsId=13552" class="">Информация об обновлении версии Официального сайта ЕИС</a></dt>
+                            <dd class="newsPreview">В субботу, 14 мая 2016 г., была обновлена версия Официального сайта ЕИС (версия ЕИС 6.2.6)</dd>
+                            <dd>
+                                
+
+                                <span class="timeNews">14 мая 2016 10:19</span>
+                                <span class="fzNews">Общая</span>
+                            </dd>
+                        </dl>
+                    </td>
+                
+            </tr>
+        </table>
+    </div>
+</div>
+
+
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="tapeBannersBlock">
+        <div class="collapseBlock">
+            <div id="expandBannersBlock" class="collapceBox collapceBase"><span class="collapce">Свернуть баннеры</span><span class="expand">Развернуть баннеры</span>
+            </div>
+        </div>
+
+        <div class="jqcarousel">
+            <ul class="carousel">
+                
+                    <li>
+                        <table cellpadding="0" cellspacing="0" class="">
+                            <tr>
+                                
+                                    <td><a href="http://old.zakupki.gov.ru/epz/main/public/home.html" onclick="window.open(this.href); return false;"><img
+                                            src="/epz/main/public/download/download.html?id=12750"
+                                            border="0" alt=""/></a></td>
+                                
+                                    <td><a href="http://zakupki.gov.ru/epz/main/public/document/view.html?sectionId=325" onclick="window.open(this.href); return false;"><img
+                                            src="/epz/main/public/download/download.html?id=12728"
+                                            border="0" alt=""/></a></td>
+                                
+                                    <td><a href="http://zakupki.gov.ru/epz/main/public/document/view.html?sectionId=363" onclick="window.open(this.href); return false;"><img
+                                            src="/epz/main/public/download/download.html?id=12889"
+                                            border="0" alt=""/></a></td>
+                                
+                                
+                                    
+                                        
+                                
+                            </tr>
+                        </table>
+                    </li>
+                
+                    <li>
+                        <table cellpadding="0" cellspacing="0" class="">
+                            <tr>
+                                
+                                    <td><a href="ftp://free:free@ftp.zakupki.gov.ru/offline_rw/" onclick="window.open(this.href); return false;"><img
+                                            src="/epz/main/public/download/download.html?id=12888"
+                                            border="0" alt=""/></a></td>
+                                
+                                    <td><a href="http://zakupki.gov.ru/epz/main/public/qa/view.html" onclick="window.open(this.href); return false;"><img
+                                            src="/epz/main/public/download/download.html?id=12731"
+                                            border="0" alt=""/></a></td>
+                                
+                                    <td><a href="http://economy.gov.ru/minec/about/structure/depfks/sovet" onclick="window.open(this.href); return false;"><img
+                                            src="/epz/main/public/download/download.html?id=12732"
+                                            border="0" alt=""/></a></td>
+                                
+                                
+                                    
+                                        
+                                
+                            </tr>
+                        </table>
+                    </li>
+                
+            </ul>
+
+            <div class="pagingList">
+                <ul class="alignCenter">
+                    
+                        <li class="active"><span>0</span></li>
+                    
+                        <li class=""><span>1</span></li>
+                    
+                </ul>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+
+
+
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link type="text/css" rel="stylesheet" href="/epz/main/public/css/newDesign/custom.css"/>
+<link type="text/css" rel="stylesheet" href="/epz/main/public/js/newDesign/slick/slick.css"/>
+<link type="text/css" rel="stylesheet" href="/epz/main/public/js/newDesign/slick/slick-theme.css"/>
+<script type="text/javascript" src="/epz/main/public/js/newDesign/slick/slick.min.js"></script>
+<script type="text/javascript" src="/epz/main/public/js/spin.min.js"></script>
+<script type="text/javascript" src="/epz/main/public/js/jquery.spin.js"></script>
+<script type="text/javascript" src="/epz/main/public/js/amcharts3/amcharts.js"></script>
+<script type="text/javascript" src="/epz/main/public/js/amcharts3/xy.js"></script>
+<script type="text/javascript" src="/epz/main/public/js/amcharts3/serial.js"></script>
+<script type="text/javascript" src="/epz/main/public/js/amcharts3/plugins/dataloader/dataloader.min.js"></script>
+<script type="text/javascript" src="/epz/main/public/js/newDesign/widgets.js"></script>
+<div class="infoSuppliesBlock">
+    <h1 class="alignCenter padTop30">Информация по закупкам</h1>
+
+    <div class="collapseBlock">
+        <div id="expandInfoSuppliesBlock" class="collapceBox collapceBase">
+            <span class="collapce">Свернуть информацию по закупкам</span>
+            <span class="expand">Развернуть информацию по закупкам</span>
+        </div>
+    </div>
+    <div>
+        
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+    .borderBottomEff0f1{
+        border-bottom: 3px solid #eff0f1;
+    }
+</style>
+<div class="displayTable height51px width100pr backgroundColorEFF0F1">
+    <div class="displayTableRow fontSize16px fontWeightBold handlerClickWidget handlerHoverTab">
+        <div class="currentTab displayTableCell borderBottomEff0f1 verticalAlignMiddle textAlignCenter cursorPointer marginTop13px border-top-left-radius-5px"
+             data-url="/epz/main/public/analytics/purchases.html">Закупки в цифрах
+        </div>
+        <div class="displayTableCell borderBottomEff0f1 verticalAlignMiddle textAlignCenter cursorPointer marginTop13px"
+             data-url="/epz/main/public/analytics/tops-main.html">Топ рейтинги
+        </div>
+        <div class="displayTableCell borderBottomEff0f1 verticalAlignMiddle textAlignCenter cursorPointer marginTop13px" data-url="/epz/main/public/analytics/economy-main.html">
+            Экономия
+        </div>
+        <div class="displayTableCell borderBottomEff0f1 verticalAlignMiddle textAlignCenter cursorPointer marginTop13px" data-url="/epz/main/public/analytics/dynamics-main.html">Закупки</div>
+        <div class="displayTableCell borderBottomEff0f1 verticalAlignMiddle textAlignCenter cursorPointer marginTop13px" data-url="/epz/main/public/analytics/mainContracts.html">Контракты</div>
+        <div class="displayTableCell borderBottomEff0f1 verticalAlignMiddle textAlignCenter  cursorPointer marginTop13px border-top-right-radius-5px"
+             data-url="/epz/main/public/analytics/electronicTradingPlatformMain.html">Электронные площадки</div>
+    </div>
+</div>
+        <div class="handlerInnerHtmlWidget positionRelative min-height-500-px"></div>
+    </div>
+</div>
+
+
+
+</div>
+
+        </div>
+    </div>
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="expandFooterBlock" class="collapceBox collapseBoxFooter">
+    <span class="collapce">Свернуть</span><span class="expand">Развернуть</span>
+</div>
+<div class="footer">
+    <div class="wrapperFooter">
+        <div class="footerBannersBlock">
+            <table cellspacing="0" cellpadding="0" border="0">
+                <tr>
+                    <td><a target="_blank" href="http://www.sberbank-ast.ru/" class="banner1">Система<br />торгов<br />Сбербанк-АСТ</a></td>
+                    <td><a target="_blank" href="http://www.roseltorg.ru/"    class="banner2">Единая электронная торговая площадка</a></td>
+                    <td><a target="_blank" href="http://etp.zakazrf.ru/"      class="banner3">Общероссийская система электронной торговли</a></td>
+                    <td><a target="_blank" href="http://www.rts-tender.ru/"   class="banner4">Электронная площадка России</a></td>
+                    <td><a target="_blank" href="http://www.etp-micex.ru/"    class="banner5">Электронная торговая площадка Госзакупки</a></td>
+                </tr>
+            </table>
+        </div>
+
+        <ul>
+            <li class="footerFirstRow"><strong>© 2016, ФЕДЕРАЛЬНОЕ КАЗНАЧЕЙСТВО</strong><br />
+                
+                    Версия 6.2.6#18rev28976<br />
+                    от 13.05.2016
+                
+                <ul>
+                    <li><a href="/epz/main/public/forCustomersAndSuppliers.html">Информация для заказчиков и поставщиков</a></li>
+                    <li><a href="/epz/main/public/quiz/list.html">Опросы</a></li>
+                    <li><a href="/epz/main/public/userFeedback/openFeedbackForm.html" class="linkPopUp pWidth_840">Ваши идеи по улучшению сайта</a></li>
+                    <li><a href="/epz/main/public/document/view.html?sectionId=364&pageNo=1&categories=FZ94&_categories=on&categories=FZ223&_categories=on&categories=FZ44&_categories=on&categories=FZALL&_categories=on">Журнал версий системы</a></li>
+                    <li><a href="/epz/main/public/user-feedback.html">Техническая поддержка</a></li>
+                    <li><a target="_blank" href="http://zakupki.gov.ru/forum/forums/list.page">Форум</a></li>
+                    <li><a href="/epz/main/public/siteMap.html" class="linkPopUp">Карта сайта</a></li>
+                </ul>
+            </li>
+            <li>
+                <ul>
+                    <li><a target="_blank" href="http://www.kremlin.ru">Президент Российской Федерации</a></li>
+                    <li><a target="_blank" href="http://www.minfin.ru">Министерство финансов Российской Федерации</a></li>
+                    <li><a target="_blank" href="http://rosfinnadzor.ru">Федеральная служба финансово-бюджетного надзора</a></li>
+                    
+                </ul>
+            </li>
+            <li>
+                <ul>
+                    <li><a target="_blank" href="http://www.government.ru">Правительство Российской Федерации</a></li>
+                    <li><a target="_blank" href="http://www.fas.gov.ru">Федеральная антимонопольная служба</a></li>
+                    <li><a target="_blank" href="http://www.rosoboronpostavka.ru">Федеральное агентство по поставкам вооружения, военной, специальной техники и материальных средств</a></li>
+                </ul>
+            </li>
+            <li>
+                <ul>
+                    <li><a target="_blank" href="http://www.economy.gov.ru">Министерство экономического развития Российской Федерации</a></li>
+                    <li><a target="_blank" href="http://roskazna.ru">Федеральное казначейство</a></li>
+                    <li><a target="_blank" href="http://www.roszdravnadzor.ru">Росздравнадзор</a></li>
+                </ul>
+            </li>
+        </ul>
+        <div class="clear"></div>
+    </div>
+</div>
+
+
+</div>
+</body>
+
+</html>

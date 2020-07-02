@@ -1,0 +1,1141 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="description" content="TraDove | The premier business social network | b2b social media | Top B2B websites" />
+    <title>TraDove</title>
+    <link media="all" type="text/css" rel="stylesheet" href="https://www.tradove.com/css/tradove_common.css">
+    <link media="all" type="text/css" rel="stylesheet" href="https://www.tradove.com/css/jquery-ui.css">
+    <script src="https://www.tradove.com/js/jquery-1.9.1.min.js"></script>
+    <script src="https://www.tradove.com/js/jquery-ui.js"></script>
+    <script src="https://www.tradove.com/js/layer/layer.js"></script>
+    <script src="https://www.tradove.com/js/tradove.js"></script>
+    <script src="https://www.tradove.com/js/common.js"></script>
+    <script src="https://www.tradove.com/js/jquery.showLoading.min.js"></script>
+        <link type="text/css" rel="stylesheet" href="/video-js/video-js.css">
+    <script src="/video-js/video.js"></script>
+    <script src="https://www.tradove.com/js/async.js"></script>
+    <script type="text/javascript" src="/js/bxCarousel.js"></script>
+    <script type="text/javascript">
+
+
+        var my_layer;
+
+
+        function hrefMoreCompanies() {
+            window.location.href = "/whoisin";
+        }
+
+
+        $(document).ready(function () {
+
+            var reActivationPop = null;
+            $("#pop_resend_close").click(function () {
+                layer.close(reActivationPop);
+            });
+            $("#requestToReSendActive").click(function () {
+                reActivationPop = $.layer({
+                    type: 1,
+                    title: false,
+                    fix: false,
+                    border: [0],
+                    closeBtn: 0,
+                    page: {dom: '#pop_resend_activation'},
+                    success: function () {
+                    }
+                });
+            });
+            $("#resend_activation_email_btn").click(function () {
+                var email = $("#re_activation_email").val();
+                if (email != null && email != '' && isEmail(email)) {
+                    $.ajax({
+                        url: '/user/check_email_exist',
+                        type: 'POST',
+                        async: false,
+                        data: {
+                            "email": email
+                        },
+                        beforeSend: function () {
+                        },
+                        success: function (data) {
+                            var result = $.parseJSON(data);
+                            if (!result.exist) {
+                                tradove.msg('The email address you entered has not been registered.', 5, 10);
+                            } else {
+                                $.ajax({
+                                    url: '/rActive_email',
+                                    type: 'POST',
+                                    async: false,
+                                    data: {
+                                        "email": email
+                                    },
+                                    beforeSend: function () {
+                                    },
+                                    success: function (data) {
+                                        var response = $.parseJSON(data);
+                                        if (response.result) {
+                                            tradove.msg('Your activation email has been sent.', 1, 5);
+                                            layer.close(reActivationPop);
+                                        } else {
+                                            tradove.msg(response.msg, 5, 5);
+                                        }
+
+                                    },
+                                    error: function (data) {
+                                    }
+                                });
+
+                            }
+                        },
+                        error: function (data) {
+                        }
+                    });
+                } else {
+                    tradove.msg("Please enter a valid email address.", 5, 10);
+                }
+
+            });
+
+
+            var isValid = true;
+
+            function verfiyGroup(fnameInput, emailInput, callback) {
+                var firstName = $(fnameInput).val();
+                var email = $(emailInput).val();
+
+                ////console.log(firstName + "," + email);
+
+
+                $(fnameInput).parent().parent().find('li[name=error_msg_node]').remove();
+
+
+                if (firstName != '' && email != '') {
+
+                    ////console.log(isEmail(email));
+
+                    if (!isEmail(email)) {
+                        //console.log('email error.');
+                        var msg = $('#error_msg').clone();
+                        $(msg).removeAttr("id");
+                        $(msg).attr("name", "error_msg_node");
+                        $(emailInput).parent().parent().append(msg);
+                        //$(msg).insertAfter((emailInput).parent().parent());
+                        $(msg).find("div.red_word").text("Please enter a valid email address.");
+                        $(msg).show();
+                        callback(false);
+                    } else {
+
+
+
+                        //console.log('send to backend.');
+                        //callback(firstName + ':' + email);
+
+                        //server verify email
+
+                        $.ajax({
+                            url: '/invite/exist/check',
+                            type: 'POST',
+                            async: false,
+                            data: {
+                                "email": email
+                            },
+                            beforeSend: function () {
+                            },
+                            success: function (data) {
+                                var result = $.parseJSON(data);
+                                if (result.result) {
+                                    var msg = $('#error_msg').clone();
+                                    $(msg).removeAttr("id");
+                                    $(msg).attr("name", "error_msg_node");
+                                    $(emailInput).parent().parent().append(msg);
+                                    //$(msg).insertAfter((emailInput).parent().parent());
+                                    $(msg).find("div.red_word").text(result.msg);
+                                    $(msg).show();
+                                    layer.close(my_layer);
+                                    callback(false);
+
+                                } else {
+                                    //console.log('sucess.');
+                                    callback(firstName + ':' + email);
+                                }
+                            },
+                            error: function (data) {
+                                return false;
+                            }
+                        });
+                        
+
+                    }
+
+                } else {
+
+
+                    if (firstName == '' && email != '') {
+                        var msg = $('#error_msg').clone();
+                        $(msg).removeAttr("id");
+                        $(msg).attr("name", "error_msg_node");
+                        $(fnameInput).parent().parent().append(msg);
+                        //$(msg).insertAfter((fnameInput).parent().parent());
+                        $(msg).find("div.red_word").text("Please provide first name.");
+                        $(msg).show();
+
+                        callback(false);
+
+                    } else if (firstName != '' && email == '') {
+                        var msg = $('#error_msg').clone();
+                        $(msg).removeAttr("id");
+                        $(msg).attr("name", "error_msg_node");
+                        $(emailInput).parent().parent().append(msg);
+                        //$(msg).insertAfter((emailInput).parent().parent());
+                        $(msg).find("div.red_word").text("Please enter a valid email address.");
+                        $(msg).show();
+
+                        callback(false);
+
+                    } else {
+                        callback("empty");
+                    }
+                }
+            }
+
+            function cleanData(){
+                $("li[data-val=user-group]").each(function (index) {
+                    $(this).find("input[name=partner_email]").val('');
+                    $(this).find("input[name=partner_firstname]").val('');
+                });
+            }
+
+            var invitePartnerPop = null;
+            $("#pop_invite_partner_close").click(function () {
+                layer.close(invitePartnerPop);
+                cleanData();
+            });
+            $("#invite_partner_cancel").click(function () {
+                layer.close(invitePartnerPop);
+                cleanData();
+            });
+
+            $("#invitePartnerBtn").click(function () {
+                invitePartnerPop = $.layer({
+                    type: 1,
+                    title: false,
+                    fix: false,
+                    border: [0],
+                    closeBtn: 0,
+                    page: {dom: '#pop_invite_partner'},
+                    offset: ['' , '30%'],
+                    success: function () {
+                    }
+                });
+            });
+
+            $("#invite_partner_submit").click(function () {
+
+                my_layer = layer.load(0);
+
+                var emailGroup = [];
+                $("li[data-val=user-group]").each(function (index) {
+                    var email = $(this).find("input[name=partner_email]");
+                    var firstName = $(this).find("input[name=partner_firstname]");
+                    emailGroup.push({
+                        email: email,
+                        name: firstName
+                    });
+                });
+
+                //console.log('emailgroup:' + emailGroup.length);
+
+                async.parallel([
+                            function (callback) {
+                                verfiyGroup(emailGroup[0].name, emailGroup[0].email, function (result) {
+                                    callback(null, result);
+                                });
+                            },
+                            function (callback) {
+                                verfiyGroup(emailGroup[1].name, emailGroup[1].email, function (result) {
+                                    callback(null, result);
+                                });
+                            },
+                            function (callback) {
+                                verfiyGroup(emailGroup[2].name, emailGroup[2].email, function (result) {
+                                    callback(null, result);
+                                });
+                            }, function (callback) {
+                                verfiyGroup(emailGroup[3].name, emailGroup[3].email, function (result) {
+                                    callback(null, result);
+                                });
+                            }, function (callback) {
+                                verfiyGroup(emailGroup[4].name, emailGroup[4].email, function (result) {
+                                    callback(null, result);
+                                });
+                            }
+                        ],
+                        function (err, results) {
+
+                            var isBreak = false;
+                            var emails = [];
+                            for (var i = 0; i < results.length; i++) {
+                                if (results[i] != false && results[i] != 'empty') {
+                                    emails.push(results[i]);
+                                } else if(results[i] == false) {
+                                    isBreak = true;
+                                    break;
+                                }
+                            }
+                            //console.log('isBreak:' + isBreak + ":" + emails.length);
+
+
+                            if (!isBreak && emails.length > 0) {
+                                $.ajax({
+                                    url: '/login_invite_partner',
+                                    type: 'POST',
+                                    async: false,
+                                    data: {
+                                        "emails": emails.join(',')
+                                    },
+                                    beforeSend: function () {
+                                    },
+                                    success: function (data) {
+                                        layer.close(my_layer);
+                                        tradove.msg("Your invitation email has been sent.", 1, 5);
+                                    },
+                                    error: function (data) {
+                                        return false;
+                                    }
+                                });
+                            }
+
+                            layer.close(my_layer);
+                        });
+
+            });
+
+
+            $("#company_logoes").bxCarousel({
+                display_num: 5,
+                move: 1,
+                auto: true,
+                margin: 25,
+                next_text: "",
+                prev_text: ""
+            });
+
+            $("#reputations").bxCarousel({
+                display_num: 1,
+                move: 1,
+                auto: true,
+                speed: 1500,
+                auto_interval: 10000,
+                margin: 0,
+                next_text: "",
+                prev_text: ""
+            });
+
+        });
+
+
+    </script>
+    </head>
+
+<body class="body_login">
+
+<div class="top_shadow"></div>
+
+<div class="top">
+    <div class="div980">
+    <div class="navigation_logo"><img src="/imgs/logo.gif"></div>
+    <div class="navigation_logo_words">The Largest and Most Trusted Global Business Network</div>
+    <div class="navigation_login">
+        <form id="login_form" method="post" action="https://www.tradove.com/login">
+        <div class="div_left">
+            <span>Email: <input id="login_email" type="text" name="email" value="" class="input100_login"/>&nbsp;&nbsp;</span>
+            <span>Password: <input id="login_password" type="password" name="password" value="" class="input100_login"/></span>
+            <input type="hidden" name="to" value="" />
+            <input type="hidden" name="uid" value="" />
+            <input type="hidden" name="ntid" value="" />
+        </div>
+            <!-- div class="div_right"><input type="submit" value="Log In" class="btn_gray_22_login_2"></div -->
+
+        <div class="div_right">
+            <div class="input59_login" onclick="loginSubmit()">Log In</div>
+        </div>
+        <!-- input type="button" value="Log In" class="input59_login" onclick="loginSubmit()" / -->
+
+        <div class="div_right2">
+            <input name="remember_me" type="checkbox" value="1">&nbsp;Remember me
+                        |<a href="javascript:void(0)" onclick="showForgetPwdDom();">&nbsp;Forgot Password?</a>
+                        &nbsp;&nbsp;
+            <div class="input59_login_orange"  onclick="gotoRegister()">Join In</div>
+        </form>
+
+        <!--
+        <ul>
+            <form id="login_form" method="post" action="https://www.tradove.com/login">
+            <li id="navigation_login">
+                Email:
+                <input id="login_email" type="text" name="email" value="" class="input100_login"/>
+                <input type="hidden" name="to" value="" />
+                <input type="hidden" name="uid" value="" />
+                <input type="hidden" name="ntid" value="" />
+            </li>
+            <li>Password: <input id="login_password" type="password" name="password" value="" class="input100_login"/></li>
+            <li><input id="remember" name="remember" type="checkbox" value="remember me"></li>
+            <li>
+                <input type="submit" value="Log In" class="btn_gray_22_login">
+            </li>
+            </form>
+        </ul>
+        -->
+    </div>
+</div>
+
+<!--pop forget password-->
+<div id="forget_pwd" style="display: none" class="pop_width550">
+    <div class="pop_width550_title">Forgot your password?</div>
+    <div class="pop_width550_content">
+        <ul>
+            <li>
+                <div class="div380b">
+                        <span style="margin-left: 20px;">
+                            Enter your registered email and you will be sent a link to reset password.
+                        </span>
+                </div>
+            </li>
+            <li>
+                <div class="div380b">
+                    <span>&nbsp;</span>
+                </div>
+            </li>
+            <li class="li530">
+                <div class="div140">Your Account Email:</div>
+                <div class="div380">
+                    <input id="email" type="text" value="" class="input300"/>
+                </div>
+            </li>
+            <li class="li530">
+                <div class="div380b">
+                    <span id="result_info">&nbsp;</span>
+                </div>
+            </li>
+            <li class="li530">
+                <div class="div380b">
+                    <input id="confirm_btn" type="button" class="btn_gray_22" value="Confirm" onclick="forgetPwd();"/>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+</div>
+<!--pop registration over-->
+
+<script>
+
+
+    $(document).on("keydown", "#login_password", function (e) {
+        var curKey = e.which;
+        if(curKey == 13){
+            loginSubmit();
+            return false;
+        }
+    });
+
+    var forgetPwdLayerIndex = 0;
+
+    function loginSubmit() {
+
+        var loginEmail = $("#login_email").val();
+        var loginPassword = $("#login_password").val();
+        if (loginEmail == '' || loginPassword == '') {
+            tradove.msg('Your email and password is required.', 5, 3);
+            // layer.tips("Your email and password is required.", "#navigation_login", 0, "400px", 0);
+            return false;
+        }
+
+        $("#login_form").submit();
+
+    }
+
+    function gotoRegister() {
+        window.location.href = "/t_reg";
+    }
+
+    function showForgetPwdDom(){
+        $("#result_info").html("&nbsp;");
+        forgetPwdLayerIndex = $.layer({
+            type: 1,
+            title: false,
+            fix: false,
+            border: [0],
+            area: ['550px', 'auto'],
+            page: {dom: '#forget_pwd'},
+            offset: ['200px' , '50%'],
+            zIndex:1000,
+            success: function () {
+            }
+        });
+    }
+
+    function forgetPwd(){
+        var cc= $("#confirm_btn").parent();
+
+        $("#result_info").html("&nbsp;");
+        var companyEmail = $("#email").val();
+        if (companyEmail == '' || !isEmail(companyEmail)) {
+            $("#result_info").html("Please enter a valid email address.");
+            return;
+        }
+
+        if(companyEmail == 'admin@tradove.net'){
+            $("#result_info").html("Can not reset password for admin");
+            return;
+        }
+
+        var exist = false;
+        $.ajax({
+            url: '/user/check_email_exist',
+            type: 'POST',
+            async:false,
+            data: {
+                "email": companyEmail
+            },
+            beforeSend: function () {
+                cc.showLoading();
+            },
+            success: function (data) {
+                var result = $.parseJSON(data);
+                if (! result.exist) {
+                    $("#result_info").html(result.msg);
+                    cc.hideLoading();
+                } else {
+                    exist = true;
+                    $("#result_info").html("&nbsp;");
+                }
+            },
+            error: function (data) {
+                alert(data);
+            }
+        });
+
+        if(exist){
+            //generate a password for user and email it
+            $.ajax({
+                url: '/user/forget_pwd',
+                type: 'POST',
+                data: {
+                    "email": companyEmail
+                },
+                beforeSend: function () {
+                },
+                success: function (data) {
+                    var json = $.parseJSON(data);
+                    if (json.result) {
+                        layer.close(forgetPwdLayerIndex);
+                        tradove.msg(json.msg, 1, 10);
+                        //$("#result_info").html(json.msg);
+                    }
+                    cc.hideLoading();
+                },
+                error: function (data) {
+                }
+            });
+        }
+    }
+</script>    <div class="div980">
+    <div class="navigation_left">
+        <ul>
+            <li>
+                <div class="navigation_left_diva" onclick="location.href='https://www.tradove.com/home';">Home</div>
+            </li>
+            <li><div class="navigation_left_diva" onclick="location.href='https://www.tradove.com/about_us';">About TraDove</div></li>
+            <li><div class="navigation_left_diva" onclick="location.href='https://www.tradove.com/privacy_policy';">TraDove Privacy Policy</div></li>
+            <li><div class="navigation_left_diva" onclick="location.href='https://www.tradove.com/leads_list'">TraDove Leads</div></li>
+            <li><div class="navigation_left_diva" onclick="location.href='https://www.tradove.com/blog/home'">TraDove Blogs/News</div></li>
+            <!--<li><div class="navigation_left_diva" onclick="location.href='https://www.tradove.com/tradove_news/0';">TraDove News</div></li>-->
+        </ul>
+    </div>
+    <div class="navigation_right"></div>
+    <!--
+    <div class="navigation_right">
+                <a href="javascript:void(0)" onclick="showForgetPwdDom();">Forgot Password?</a>
+            </div>
+    -->
+</div>
+<!--pop forget password-->
+<div id="forget_pwd" style="display: none" class="pop_width550">
+    <div class="pop_width550_title">Forgot your password?</div>
+        <div class="pop_width550_content">
+            <ul>
+                <li>
+                    <div class="div380b">
+                        <span style="margin-left: 20px;">
+                            • Please enter your company email address and we will send you a new password.
+                        </span>
+                    </div>
+                </li>
+                <li>
+                    <div class="div380b">
+                        <span>&nbsp;</span>
+                    </div>
+                </li>
+                <li class="li530">
+                    <div class="div140">Your Account Email:</div>
+                    <div class="div380">
+                        <input id="email" type="text" value="" class="input300"/>
+                    </div>
+                </li>
+                <li class="li530">
+                    <div class="div380b">
+                        <span id="result_info">&nbsp;</span>
+                    </div>
+                </li>
+                <li class="li530">
+                    <div class="div380b">
+                        <input id="confirm_btn" type="button" class="btn_gray_22" value="Confirm" onclick="forgetPwd();"/>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!--pop registration over-->
+<script>
+    var forgetPwdLayerIndex = 0;
+    function showForgetPwdDom(){
+        $("#result_info").html("&nbsp;");
+        forgetPwdLayerIndex = $.layer({
+            type: 1,
+            title: false,
+            fix: false,
+            border: [0],
+            area: ['550px', 'auto'],
+            page: {dom: '#forget_pwd'},
+            offset: ['200px' , '50%'],
+            zIndex:1000,
+            success: function () {
+            }
+        });
+    }
+
+    function forgetPwd(){
+        var cc= $("#confirm_btn").parent();
+
+        $("#result_info").html("&nbsp;");
+        var companyEmail = $("#email").val();
+        if (companyEmail == '' || !isEmail(companyEmail)) {
+            $("#result_info").html("Please enter a valid email address.");
+            return;
+        }
+
+        if(companyEmail == 'admin@tradove.net'){
+            $("#result_info").html("Can not reset password for admin");
+            return;
+        }
+
+        var exist = false;
+        $.ajax({
+            url: '/user/check_email_exist',
+            type: 'POST',
+            async:false,
+            data: {
+                "email": companyEmail
+            },
+            beforeSend: function () {
+                cc.showLoading();
+            },
+            success: function (data) {
+                var result = $.parseJSON(data);
+                if (! result.exist) {
+                    $("#result_info").html(result.msg);
+                    cc.hideLoading();
+                } else {
+                    exist = true;
+                    $("#result_info").html("&nbsp;");
+                }
+            },
+            error: function (data) {
+                alert(data);
+            }
+        });
+
+        if(exist){
+            //generate a password for user and email it
+            $.ajax({
+                url: '/user/forget_pwd',
+                type: 'POST',
+                data: {
+                    "email": companyEmail
+                },
+                beforeSend: function () {
+                },
+                success: function (data) {
+                    var json = $.parseJSON(data);
+                    if (json.result) {
+                        layer.close(forgetPwdLayerIndex);
+                        tradove.msg(json.msg, 1, 10);
+                        //$("#result_info").html(json.msg);
+                    }
+                    cc.hideLoading();
+                },
+                error: function (data) {
+                }
+            });
+        }
+    }
+</script></div>
+<!-- feedback start -->
+<script type="text/javascript">
+    function center(obj){
+        obj.css("position","fixed");
+        obj.css("z-index","10000");
+        obj.css("top", Math.max(0, (($(window).height() - obj.outerHeight()) / 2)) + "px");
+        obj.css("left", Math.max(0, (($(window).width() - obj.outerWidth()) / 2)) + "px");
+    }
+
+    function showContact(){
+        $("#feedback_content").show();
+        center($("#feedback_content"));
+    }
+
+    function hideContact(){
+        $("#feedback_content").hide();
+    }
+</script>
+<div id="feedback_content" class="pop_width800" style="display: none">
+    <div class="pop_width800_left">
+        <ul>
+            <li class="pop_w800_l_title">Contact Us</li>
+            <li>&nbsp;</li>
+            <li id="right_contact_menu" class="pop_w800_l_select" onclick="showContact();">&bull;Contact Us</li>
+            <li class="pop_w800_l_notselect" onclick="hideContact()">&bull;Close the Window</li>
+        </ul>
+    </div>
+    <div id="right_contact" class="pop_width800_right">
+        <ul>
+            <li class="pop_w800_r_word_bule">TraDove, Inc.</li>
+            <li><hr class="hr100"></li>
+            <li class="pop_w800_r_word_bule">1000 Elwell Court</li>
+            <li class="pop_w800_r_word_bule">Palo Alto, CA 94303</li>
+            <li><hr class="hr100"></li>
+            <li class="pop_w800_r_word_bule">Tel: 650-567-9260</li>
+            <li class="pop_w800_r_word_bule">Fax: 650-567-9511</li>
+            <li class="pop_w800_r_word_bule">Email: contact@tradove.net</li>
+        </ul>
+    </div>
+</div>
+<!-- feedback end -->
+<div class="middle">
+        
+        <div class="space20"></div>
+    <div class="div980">
+        <!--Left-->
+        <div class="left_660">
+            <div class="left_660_login">
+                <div class="left_660_login_div1">Find the right corporate buyers, sellers and partners in just a few clicks</div>
+                <div class="left_660_login_div2">Connect and maintain business relationships through the most trustworthy B2B social network</div>
+                <div class="left_660_login_div3">Trade and do business with greater success than ever before</div>
+            </div>
+        </div>
+        <!--Left over-->
+
+        <!--right-->
+
+        <div class="right_320_login">
+            <div class="right_320_login_content">
+                <div class="space10"></div>
+                <div class="right_320_l_c_div"><a href="/t_reg"><img src="imgs/login_register2.png" border="0"/></a>
+                </div>
+
+                <div class="space10"></div>
+
+
+                <div class="right_320_l_c_div">
+                    <video id="tradove" class="video-js vjs-default-skin" controls preload="none" width="305"
+                           height="172"
+                           poster="/downloadfile/tradove_video_poster.png"
+                           data-setup="{}">
+                        <source src="/downloadfile/tradove_video_final.mp4" type='video/mp4'/>
+                        <source src="/downloadfile/tradove_video_final.webm" type='video/webm'/>
+                        <source src="/downloadfile/tradove_video_final.ogv" type='video/ogg'/>
+                        <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a
+                            web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports
+                                HTML5 video</a></p>
+                    </video>
+                </div>
+
+
+                <div class="space20"></div>
+                <div class="right_320_l_c_div">
+                    <div class="right_320_l_c_div_border"></div>
+                    <div class="right_320_l_c_div_list">
+                        <div class="space10"></div>
+                        <div class="right_320_l_c_div_list_c1"><a id="requestToReSendActive" href="javascript:void(0);">Click
+                                here if you have not received the activation email</a></div>
+                        <div class="right_320_l_c_div_list_line"></div>
+                        <!--
+                        <div class="right_320_l_c_div_list_c2"><a id="invitePartnerBtn" href="javascript:void(0);">Click
+                                here to invite your business partners</a></div>
+                        <div class="right_320_l_c_div_list_line"></div>
+                        -->
+                        <div class="right_320_l_c_div_list_c3"><a href="user_reward">Check out our user reward
+                                program</a></div>
+                    </div>
+                    <div class="right_320_l_c_div_border"></div>
+                </div>
+            </div>
+        </div>
+
+        <!--right over-->
+        <!--good reputation-->
+
+        
+                    <div class="goodreputation">
+                <div class="login_reputation_title"><a href="out_reputation_list">User Feedback</a>&nbsp;&nbsp;<img
+                            src="imgs/icon/gray_arrow.png" align="absmiddle"/></div>
+                <div class="login_reputation_content">
+                    <div id="reputations" class="login_reputation_c_l">
+                        <ul>
+                                                            <li>
+                                    <div class="login_reputation_c1">
+                                        <div class="login_reputation_c1_name"><span>Brady Girt</span>&nbsp;-&nbsp;<span>Agroecologist, Strategist, Local systems builder, and writer</span>&nbsp;-&nbsp;<span>The Hub -- hubwild.com, Carbon and Hydrogen Agro-Research, Stewardship Farm</span>&nbsp;-&nbsp;<span>Oregon</span>
+                                        </div>
+                                        <div class="login_reputation_c1_word">Looks professional, nice site.</div>
+                                    </div>
+                                </li>
+                                                            <li>
+                                    <div class="login_reputation_c1">
+                                        <div class="login_reputation_c1_name"><span>Anthony Carson </span>&nbsp;-&nbsp;<span>New Business Manager</span>&nbsp;-&nbsp;<span>Great Lakes Overstock </span>&nbsp;-&nbsp;<span>United States</span>
+                                        </div>
+                                        <div class="login_reputation_c1_word">This network looks very detailed and efficient.</div>
+                                    </div>
+                                </li>
+                                                            <li>
+                                    <div class="login_reputation_c1">
+                                        <div class="login_reputation_c1_name"><span>Siham AlKurdi</span>&nbsp;-&nbsp;<span>Business Owner</span>&nbsp;-&nbsp;<span>studiococo</span>&nbsp;-&nbsp;<span></span>
+                                        </div>
+                                        <div class="login_reputation_c1_word">I like your website and your social and business activities.</div>
+                                    </div>
+                                </li>
+                                                            <li>
+                                    <div class="login_reputation_c1">
+                                        <div class="login_reputation_c1_name"><span>Ömer Pesen</span>&nbsp;-&nbsp;<span>Owner</span>&nbsp;-&nbsp;<span>ATCO Foreign Trade Co.Ltd. </span>&nbsp;-&nbsp;<span>Turkey
+</span>
+                                        </div>
+                                        <div class="login_reputation_c1_word">Thank you very much for your invitation . I have already registered and found your network very interesting .
+Hopefully , we will enjoy fruitfull and long-term business relations here .</div>
+                                    </div>
+                                </li>
+                                                            <li>
+                                    <div class="login_reputation_c1">
+                                        <div class="login_reputation_c1_name"><span>Louis Phillip</span>&nbsp;-&nbsp;<span>Senior Procurement</span>&nbsp;-&nbsp;<span>Monsanto Company</span>&nbsp;-&nbsp;<span>Brazil</span>
+                                        </div>
+                                        <div class="login_reputation_c1_word">I´ve just joined your B2B Global network, surely it´s a great channel to close professionals whose main overall is just create opportunities. </div>
+                                    </div>
+                                </li>
+                                                            <li>
+                                    <div class="login_reputation_c1">
+                                        <div class="login_reputation_c1_name"><span>Nicole (Nyhan) Haase</span>&nbsp;-&nbsp;<span>Sr. Director of Merchandising</span>&nbsp;-&nbsp;<span>Modcloth</span>&nbsp;-&nbsp;<span>United States</span>
+                                        </div>
+                                        <div class="login_reputation_c1_word">I think this is going to be a great resource and am looking forward to using it. 
+I've registered online and can't wait to begin utilizing this network.</div>
+                                    </div>
+                                </li>
+                                                            <li>
+                                    <div class="login_reputation_c1">
+                                        <div class="login_reputation_c1_name"><span>Amanda Bray</span>&nbsp;-&nbsp;<span>Assistant Merchandise Manager</span>&nbsp;-&nbsp;<span>Barnes & Noble</span>&nbsp;-&nbsp;<span>United States</span>
+                                        </div>
+                                        <div class="login_reputation_c1_word">I am currently looking to enter into corporate buying planning, or allocation and know that being apart of this network will undoubtedly aid in this.</div>
+                                    </div>
+                                </li>
+                                                            <li>
+                                    <div class="login_reputation_c1">
+                                        <div class="login_reputation_c1_name"><span>Zayn A. Kadiri</span>&nbsp;-&nbsp;<span>Joint CEO</span>&nbsp;-&nbsp;<span>Afrobizhub Enterprise</span>&nbsp;-&nbsp;<span>Lagos</span>
+                                        </div>
+                                        <div class="login_reputation_c1_word">I find it very useful.</div>
+                                    </div>
+                                </li>
+                                                            <li>
+                                    <div class="login_reputation_c1">
+                                        <div class="login_reputation_c1_name"><span>Arthur Eli Rodriguez</span>&nbsp;-&nbsp;<span>Agave Spirits Buyer</span>&nbsp;-&nbsp;<span>Healthy Spirits</span>&nbsp;-&nbsp;<span>United States</span>
+                                        </div>
+                                        <div class="login_reputation_c1_word">Awesome</div>
+                                    </div>
+                                </li>
+                                                            <li>
+                                    <div class="login_reputation_c1">
+                                        <div class="login_reputation_c1_name"><span>Jenny Zhao</span>&nbsp;-&nbsp;<span>Owner</span>&nbsp;-&nbsp;<span>BYS International (China) Co., Ltd</span>&nbsp;-&nbsp;<span>China</span>
+                                        </div>
+                                        <div class="login_reputation_c1_word">I just checked the website, it really has a good rank, and the visitors area is really fit for us</div>
+                                    </div>
+                                </li>
+                                                    </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="goodreputation2"></div>
+                                <!--good reputation over-->
+
+            <div class="goodreputation2"></div>
+
+            <div class="whoisin_login">
+                <!--
+        <div class="who_l_title">Come and join our <span>100000+</span>
+             high-quality corporate buyers, sellers and others from         </div>
+        -->
+
+                <div class="who_l_content">
+
+
+                    <div class="who_l_c_left">
+                        <ul>
+                            <li>Come and join our                                 <span>100000+</span> high-quality corporate buyers, sellers and others from                                 <span>30000+</span> companies,                                 <span>80+</span> countries and                                 <span>100+</span> industries.</li>
+                            <li>&nbsp;</li>
+                            <!-- li><a href="/whoisin">See More</a></li -->
+                            <li>
+                                <div class="input66_login"
+                                     onclick="hrefMoreCompanies()">See More</div>
+                                <!-- input type="button" class="input66_login" value="See More" onclick="hrefMoreCompanies()" / -->
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="who_l_c_right">
+                        <div class="who_l_c_r_photo">
+                            <!--company_logoes-->
+                            <div id="company_logoes" class="who_l_c_r_photo">
+                                <div class="who_l_c_r_p_all">
+                                    <ul>
+                                        <li class="who_l_c_r_p_row">
+                                            <div class="li_a"><img src="/imgs/whoisin/company/aa123_b.gif"/></div>
+                                            <div class="li_b"></div>
+                                            <div class="li_a"><img src="/imgs/whoisin/company/AMD.gif"/></div>
+                                        </li>
+                                        <li class="who_l_c_r_p_row">
+                                            <div class="li_a"><img src="/imgs/whoisin/company/amazon.gif"/></div>
+                                            <div class="li_b"></div>
+                                            <div class="li_a"><img src="/imgs/whoisin/company/audi.gif"/></div>
+                                        </li>
+                                        <li class="who_l_c_r_p_row">
+                                            <div class="li_a"><img src="/imgs/whoisin/company/BMW.gif"/></div>
+                                            <div class="li_b"></div>
+                                            <div class="li_a"><img src="/imgs/whoisin/company/wal_mart.gif"/></div>
+                                        </li>
+                                        <li class="who_l_c_r_p_row">
+                                            <div class="li_a"><img src="/imgs/whoisin/company/chrysler.gif"/></div>
+                                            <div class="li_b"></div>
+                                            <div class="li_a"><img src="/imgs/whoisin/company/canon.gif"/></div>
+                                        </li>
+                                        <li class="who_l_c_r_p_row">
+                                            <div class="li_a"><img src="/imgs/whoisin/company/coca_cola.gif"/></div>
+                                            <div class="li_b"></div>
+                                            <div class="li_a"><img src="/imgs/whoisin/company/Daewoo.gif"/></div>
+                                        </li>
+                                        <li class="who_l_c_r_p_row">
+                                            <div class="li_a"><img src="/imgs/whoisin/company/dell.gif"/></div>
+                                            <div class="li_b"></div>
+                                            <div class="li_a"><img src="/imgs/whoisin/company/emerson.gif"/></div>
+                                        </li>
+                                        <li class="who_l_c_r_p_row">
+                                            <div class="li_a"><img src="/imgs/whoisin/company/Ford.gif"/></div>
+                                            <div class="li_b"></div>
+                                            <div class="li_a"><img src="/imgs/whoisin/company/gm.gif"/></div>
+                                        </li>
+                                        <li class="who_l_c_r_p_row">
+                                            <div class="li_a"><img src="/imgs/whoisin/company/hp.gif"/></div>
+                                            <div class="li_b"></div>
+                                            <div class="li_a"><img src="/imgs/whoisin/company/honda.gif"/></div>
+                                        </li>
+                                        <li class="who_l_c_r_p_row">
+                                            <div class="li_a"><img src="/imgs/whoisin/company/hsbc.gif"/></div>
+                                            <div class="li_b"></div>
+                                            <div class="li_a"><img src="/imgs/whoisin/company/huawei.gif"/></div>
+                                        </li>
+                                        <li class="who_l_c_r_p_row">
+                                            <div class="li_a"><img src="/imgs/whoisin/company/ISUZU.gif"/></div>
+                                            <div class="li_b"></div>
+                                            <div class="li_a"><img src="/imgs/whoisin/company/Jaguar-Land-Rover.gif"/>
+                                            </div>
+                                        </li>
+                                        <li class="who_l_c_r_p_row">
+                                            <div class="li_a"><img src="/imgs/whoisin/company/lenovo.gif"/></div>
+                                            <div class="li_b"></div>
+                                            <div class="li_a"><img src="/imgs/whoisin/company/microsoft.gif"/></div>
+                                        </li>
+                                        <li class="who_l_c_r_p_row">
+                                            <div class="li_a"><img src="/imgs/whoisin/company/Mercedes-Benz.gif"/></div>
+                                            <div class="li_b"></div>
+                                            <div class="li_a"><img src="/imgs/whoisin/company/mitsubishielectic.gif"/>
+                                            </div>
+                                        </li>
+                                        <li class="who_l_c_r_p_row">
+                                            <div class="li_a"><img src="/imgs/whoisin/company/nec.gif"/></div>
+                                            <div class="li_b"></div>
+                                            <div class="li_a"><img src="/imgs/whoisin/company/lg.gif"/></div>
+                                        </li>
+                                        <li class="who_l_c_r_p_row">
+                                            <div class="li_a"><img src="/imgs/whoisin/company/nike.gif"/></div>
+                                            <div class="li_b"></div>
+                                            <div class="li_a"><img src="/imgs/whoisin/company/nikon.gif"/></div>
+                                        </li>
+                                        <li class="who_l_c_r_p_row">
+                                            <div class="li_a"><img src="/imgs/whoisin/company/p&g.gif"/></div>
+                                            <div class="li_b"></div>
+                                            <div class="li_a"><img src="/imgs/whoisin/company/pepsi.gif"/></div>
+                                        </li>
+                                        <li class="who_l_c_r_p_row">
+                                            <div class="li_a"><img src="/imgs/whoisin/company/shell_global.gif"/></div>
+                                            <div class="li_b"></div>
+                                            <div class="li_a"><img src="/imgs/whoisin/company/siemens.gif"/></div>
+                                        </li>
+                                        <li class="who_l_c_r_p_row">
+                                            <div class="li_a"><img src="/imgs/whoisin/company/Volkswagen.gif"/></div>
+                                            <div class="li_b"></div>
+                                            <div class="li_a"><img src="/imgs/whoisin/company/wal_mart.gif"/></div>
+                                        </li>
+                                        <li class="who_l_c_r_p_row">
+                                            <div class="li_a"><img src="/imgs/whoisin/company/yahoo.gif"/></div>
+                                            <div class="li_b"></div>
+                                            <div class="li_a"><img src="/imgs/whoisin/company/virqin.gif"/></div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+    </div>
+    <div class="space30"></div>
+
+
+
+    <!--resend activation start-->
+    <div id="pop_resend_activation" style="display: none" class="pop_width450">
+        <div class="pop_width450_title">Resend activation email
+        <span>
+            <a id="pop_resend_close" href="javascript:void(0);"><img src="imgs/icon/icon_delete_12px.png"
+                                                                     border="0"/></a>
+        </span>
+        </div>
+
+        <div class="pop_width450_content">
+            <ul>
+                <li class="li430">Enter the email address you used to register:</li>
+                <li class="space10">&nbsp;</li>
+                <li class="li430"><input id="re_activation_email" name="email" class="input350" type="text"/></li>
+                <li class="li430">&nbsp;</li>
+                <li class="li430" style="text-align:center;">
+                    <input id="resend_activation_email_btn" type="submit" class="btn_gray_22"
+                           value="Send activation email"/></li>
+                <li class="li430">&nbsp;</li>
+            </ul>
+        </div>
+    </div>
+    <!--pop invite over-->
+
+
+    <li id="error_msg" style="display: none">
+        <div class="div90">&nbsp;</div>
+        <div class="div500">
+            <div class="red_word"></div>
+        </div>
+    </li>
+
+    <!--pop invite-->
+    <div id="pop_invite_partner" class="pop_width550" style="display: none">
+        <div class="pop_width550_title">Invite your business partner to join TraDove<span><a
+                        id="pop_invite_partner_close" href="javascript:void(0);"><img border="0"
+                                                                                      src="imgs/icon/icon_delete_12px.png"></a></span>
+        </div>
+
+        <div class="pop_width550_content">
+            <ul>
+                <li data-val="user-group" class="li530">
+                    <div class="div100">Company Email:</div>
+                    <div class="divinput"><input name="partner_email" class="input120" type="text"/>&nbsp;</div>
+                    <div class="div100">First Name:</div>
+                    <div class="divinput"><input name="partner_firstname" class="input120" type="text"/>&nbsp;</div>
+                </li>
+                <li class="li530">
+                    <hr class="hr100">
+                </li>
+                <li data-val="user-group" class="li530">
+                    <div class="div100">Company Email:</div>
+                    <div class="divinput"><input name="partner_email" class="input120" type="text"/>&nbsp;</div>
+                    <div class="div100">First Name:</div>
+                    <div class="divinput"><input name="partner_firstname" class="input120" type="text"/>&nbsp;</div>
+                </li>
+                <li class="li530">
+                    <hr class="hr100">
+                </li>
+                <li data-val="user-group" class="li530">
+                    <div class="div100">Company Email:</div>
+                    <div class="divinput"><input name="partner_email" class="input120" type="text"/>&nbsp;</div>
+                    <div class="div100">First Name:</div>
+                    <div class="divinput"><input name="partner_firstname" class="input120" type="text"/>&nbsp;</div>
+                </li>
+                <li class="li530">
+                    <hr class="hr100">
+                </li>
+                <li data-val="user-group" class="li530">
+                    <div class="div100">Company Email:</div>
+                    <div class="divinput"><input name="partner_email" class="input120" type="text"/>&nbsp;</div>
+                    <div class="div100">First Name:</div>
+                    <div class="divinput"><input name="partner_firstname" class="input120" type="text"/>&nbsp;</div>
+                </li>
+                <li class="li530">
+                    <hr class="hr100">
+                </li>
+                <li data-val="user-group" class="li530">
+                    <div class="div100">Company Email:</div>
+                    <div class="divinput"><input name="partner_email" class="input120" type="text"/>&nbsp;</div>
+                    <div class="div100">First Name:</div>
+                    <div class="divinput"><input name="partner_firstname" class="input120" type="text"/>&nbsp;</div>
+                </li>
+                <li class="li530">
+                    <hr class="hr100">
+                </li>
+                <li class="li530">&nbsp;</li>
+                <li class="li530"><input id="invite_partner_submit" type="button" class="btn_blue_22" value="Submit"/>&nbsp;&nbsp;
+                    <input id="invite_partner_cancel" type="button" class="btn_gray_22" value="Cancel"/></li>
+                </li>
+                <li class="li530">&nbsp;</li>
+            </ul>
+        </div>
+    </div>
+    <!--pop invite over-->
+
+
+
+</div>
+
+<div class="bottom">
+    <div class="div980">
+        <div class="bottom_option">
+            <a href="/about_us">About</a>
+            
+            <!--
+            <span>|</span>
+            <a href="/out/1/0">Browse Buyer</a>
+            <span>|</span>
+            <a href="/out/2/0">Browse Seller</a>
+            <span>|</span>
+            <a href="/out/3/0">Browse Other</a>
+            -->
+
+            <span>|</span>
+            <a href="/out/4/0">Browse Companies</a>
+            <span>|</span>
+            <a href="/out/5/0">Browse Products/Services</a>
+            <span>|</span>
+            <a href="javascript:void(0)" onclick="if(typeof showFeedback === 'function'){showFeedback('right_contact')}else{showContact();}">Contact Us</a></div>
+        <div class="bottom_copyright">Copyright &copy; 2010, 2016 TraDove, Inc. All rights reserved.</div>
+        <div class="space30"></div>
+        <div class="space30"></div>
+    </div>
+</div>
+</body>
+
+</html>

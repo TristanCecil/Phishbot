@@ -1,0 +1,1156 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <title>Seopult &ndash; автоматизированная рекламная система. Самостоятельное автоматизированное продвижение сайтов. Продвижение сайтов, контекстная реклама, персональный менеджер, обучение. &mdash; SeoPult.Ru</title>
+    <meta name="viewport" content="width=1200, initial-scale=1, maximum-scale=1, minimal-ui, user-scalable=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=windows-1251"/>
+    <meta name="description" lang="ru" content="Система SeoPult (СеоПульт) - сервис самостоятельного автоматизированного продвижения сайтов в ТОП10 поисковых систем Яндекс и Google, а также ведения контекстных рекламных кампаний."/>
+                <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="alternate" type="application/rss+xml" title="SeoPult.ru - Новости" href="http://seopult.ru/news/rss" />
+    <link rel="alternate" type="application/rss+xml" title="SeoPult.ru - Рассылка" href="http://seopult.ru/subscribe/rss" />
+    <!--<link rel="manifest" href="/push-chrome-manifest.json">-->
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300" type="text/css" rel="stylesheet" />
+    <link href="/themes/default/css/lightbox_sp.css?14423" type="text/css" rel="stylesheet" />
+    <link href="/themes/default/css/buttons_sp.css?71411" type="text/css" rel="stylesheet" />
+    <link href="/themes/default/css/seopult_main.css?23287" type="text/css" rel="stylesheet" />
+
+
+    <script src="/themes/default/js/jquery.js?7109" type="text/javascript"></script>
+    <script src="/themes/default/js/common.js?30461" type="text/javascript"></script>
+    <script src="/themes/default/js/regions.js?56182" type="text/javascript"></script>
+    <script src="/themes/default/js/lightbox.js?76938" type="text/javascript"></script>
+    <script src="/themes/default/js/jsp.pack.js?7109" type="text/javascript"></script>
+    <script src="/themes/default/js/seopult_front_lb.js?61678" type="text/javascript"></script>
+    <script src="/themes/default/js/seopult_main.js?62100" type="text/javascript"></script>
+    <script type="text/javascript">
+        var __itp_current_host='SEOPULT';
+        function check_subscribe(){
+            var mail=$('#subscribe_input').val();
+            if(mail==''){
+                lb_alert('Заполните, пожалуйста, поле E-mail');
+                return false;
+            }
+            if(!valid_email(mail)){
+                lb_alert("Поле E-mail заполнено неверно.\nВведите, пожалуйста, действующий адрес электронной почты.");
+                return false;
+            }
+            return true;
+        }
+
+    </script>
+	<!-- Piwik -->
+	<script type="text/javascript">
+		var _paq = _paq || [];
+		_paq.push(["setDomains", ["*.seopult.ru"]]);
+		_paq.push(['setCustomDimension', 1, 'WEB_NEW']);
+		_paq.push(['trackPageView']);
+		_paq.push(['enableLinkTracking']);
+		(function() {
+			var u="//counter.seopult.ru/";
+			_paq.push(['setTrackerUrl', u+'piwik.php']);
+			_paq.push(['setSiteId', 2]);
+			var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+			g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+		})();
+	</script>
+	<noscript><p><img src="//counter.seopult.ru/piwik.php?idsite=2" style="border:0;" alt="" /></p></noscript>
+	<!-- End Piwik Code -->
+    <script>
+        /*Registration  validate*/
+        function check_fields(formname) {
+            var form=document[formname];
+            var elms=form.elements;
+            if (formname == 'user_form') {
+                $('span.field_wrng').css({'display':'none'});
+                $('td.inp input').css({'background-color':'#fff'});
+                var failed = false;
+                for (i=0;i<elms.length;i++){
+                    var el_value = elms[i].value.trim();
+                    var el_name = elms[i].name;
+                    if (el_name=='name' && el_value==''){
+                        show_field_warning(el_name, 'Заполните, пожалуйста, поле Имя'); failed = true;
+                    } else if(el_name=='email'){
+                        if (el_value==''){
+                            show_field_warning(el_name, 'Заполните, пожалуйста, поле E-mail'); failed = true;
+                        } else if (!valid_email(el_value)){
+                            show_field_warning(el_name, 'Введите действующий адрес электронной почты'); failed = true;
+                        } else if (el_value.length>255) {
+                            show_field_warning(el_name, 'Слишком длинный адрес электронной почты'); failed = true;
+                        }
+                    } else if(el_name=='uname'){
+                        if (el_value==''){
+                            show_field_warning(el_name, 'Заполните, пожалуйста, поле логин'); failed = true;
+                        } else if (el_value.length < 4) {
+                            show_field_warning(el_name, 'Логин должен состоять минимум из 4 символов'); failed = true;
+                        } else if (el_value.length>25) {
+                            show_field_warning(el_name, 'Логин должен состоять максимум из 25 символов'); failed = true;
+                        }	else {
+                            preg_uname=/^[a-zA-Z0-9_]?[-a-zA-Z0-9_-]{3,24}$/;
+                            if (!el_value.match(preg_uname)){
+                                show_field_warning(el_name, 'Запрещенные символы в логине'); failed = true;
+                            }
+                        }
+                    } else if (el_name=='captcha_code' && el_value==''){
+                        show_field_warning(el_name, 'Введите код с картинки'); failed = true;
+                    } else if(el_name=='pass'){
+                        var i_pass=elms[i];
+                    } else if(el_name=='vpass'){
+                        var i_vpass=elms[i];
+                    } else if(el_name=='promo_code') {
+                        var promo_code=elms[i];
+                        var promo_code_val=promo_code.value.trim();
+                    } else if(el_name=='send_sms_yandex_storm_percent' && (parseInt(el_value) < 1 || parseInt(el_value) > 99)) {
+                        lb_alert("Введите, пожалуйста, значение шторма от 1 до 99", function(){elms[i].select();}); return;
+                    } else if(el_name=='sms_yandex_storm_notif_type' && el_value == '2' && elms[i].checked){
+                        if (parseInt($('#sms_yandex_storm_time_start').val()) == parseInt($('#sms_yandex_storm_time_end').val())){
+                            lb_alert('Начальное значение периода времени должно отличаться от конечного', function(){elms[i].focus();}); return;
+                        }
+                    } else if (el_name=='send_ppc_positions_interval') {
+                        if (elms[i].value != EmailNotificationSetting.validate_interval(elms[i].value)){
+                            lb_alert('Неверный интервал оповещение о смене позиций объявлений.', function(){EmailNotificationSetting.show_setting_lb("ppc"); G("lb_send_ppc_positions_interval").focus();}); return;
+
+                        }
+                    }
+                }
+
+                if (i_pass.value==''){
+                    show_field_warning('pass', 'Введите пароль'); show_field_warning('vpass'); failed = true;
+                } else {
+                    if (i_pass.value.length<8) {
+                        i_pass.value=''; i_vpass.value='';
+                        show_field_warning('pass', 'Пароль должен состоять минимум из 8 символов'); show_field_warning('vpass'); failed = true;
+                    } else if (i_vpass.value == ''){
+                        show_field_warning('vpass', 'Введите, пожалуйста, пароль повторно'); failed = true;
+                    } else if (i_pass.value != i_vpass.value){
+                        i_pass.value=''; i_vpass.value='';
+                        show_field_warning('pass', 'Введенные пароли не совпадают'); show_field_warning('vpass'); failed = true;
+                    }
+                }
+                if (failed) {
+                    focus_field_warning();
+                    return;
+                }
+                if (promo_code_val.length>0 && document.getElementById('check_promo_code').innerHTML!='ok') {
+                    var has_fio = !!document.getElementById('firstname');
+                    check_promo_code(promo_code_val, has_fio);
+                    return;
+                }
+                var url = '/register.html?'+submitter(form).replace("op=register", "op=check");
+                execute_dimmed(url, "Регистрация пользователя", "Подождите, идет проверка введенных данных", false, {'progress':'on', 'adjust':'1'});
+            }
+        }
+        function show_field_warning(f_name, msg) {
+            var form = G('user_form');
+            $('#'+f_name, form).css({'background-color':'#FFE3B9'});
+            if (typeof msg != 'undefined') {
+                var w = $('#wrng_'+f_name, form)[0];
+                if (w) {w.innerHTML = msg; w.style.display='inline';}
+            }
+        }
+        function focus_field_warning() {
+            var form = G('user_form');
+            if (form) {
+                var e = form.elements, w;
+                for (var i=0; i<e.length; i++) {
+                    w = $('#wrng_'+e[i].name, form)[0];
+                    if (w && w.style.display!='none') {
+                        e[i].focus();
+                        if (e[i].type!='checkbox') e[i].select();
+                        return false;
+                    }
+                }
+            }
+        }
+        function submit_new_user(goal_url) {
+            var form = document.getElementById('user_form');
+            if (goal_url.trim().length > 0) {
+                form.in_redirect = goal_url;
+            }
+            form.action = '/user.html?from=register'; form.op.value = 'login'; form.submit();
+        }
+        function check_promo_code(promo_c, has_fio) {
+            execute('check_promo_code','/other/register/check_promo_code.php?code='+URLEncode(promo_c)+'&has_fio='+(has_fio?1:0),"Идет проверка кода "+default_process+"");
+        }
+        function clear_promo_code() {
+            document.getElementById('promo_code').value='';
+            document.getElementById('check_promo_code').innerHTML='';
+            deleteById('tr_fio_wrng'); deleteById('tr_firstname'); deleteById('tr_surname'); deleteById('tr_fname'); deleteById('tr_rules');
+        }
+        function show_promo_code_wrng() {
+            var promo_code_wrapper = $("#lb-content #user_form .promo_code-form-row");
+            var fields = new Array('surname', 'firstname', 'fname', 'rules');
+            var data = {'surname':{'h':'Фамилия','t':'text','r':1,'a':''},'firstname':{'h':'Имя','t':'text','r':1,'a':''},'fname':{'h':'Отчество','t':'text','r':0,'a':''},'rules':{'h':'Договоры и условия','t':'checkbox','r':1,'a':" &nbsp;<a href='/rules.html' target='_blank' class='dash' style='font-size: 12px;'>Принимаю</a> &nbsp; <span class='as_adash' title='Нажмите, если не хотите использовать промокод' onclick=\"clear_promo_code(); check_fields('user_form')\">Не хочу заполнять</span>"}};
+            var rows_html = "";
+            for (f=0; f<fields.length; f++) {
+                rows_html+= '<div class="lb-form-row">';
+                rows_html+= '<input type="'+data[fields[f]]['t']+'" name="'+fields[f]+'" id="'+fields[f]+'" value="'+(data[fields[f]]['t']=='checkbox'?'1':'')+'" placeholder="'+data[fields[f]]['h']+'" class="box" data-role="none">';
+                if (data[fields[f]]['t']=='checkbox') {
+                    rows_html+= data[fields[f]]['h'];
+                }
+                rows_html+= '<span id="check_'+fields[f]+'"></span>';
+                rows_html+= '<div><span class="field_wrng" id="wrng_'+fields[f]+'"></span></div>';
+                rows_html+= '</div>';
+            }
+            promo_code_wrapper.after('<div class="lb-form-row" ><div><span class="field_wrng">Чтобы принять участие в промо-акции, необходимо заполнить<br>дополнительные поля и принять условия и правила работы Системы</span></div></div>'+rows_html);
+        }
+        function check_activation_code(code){
+            code.replace(/[\s]+/,"");
+            if (code.length!=16){
+                document.getElementById('check_ac_code').innerHTML="<span style='color:red;'>Неверный код</span>";
+            }else{
+                execute('check_ac_code','/other/register/check_activation_code.php?code='+code,"Идет проверка кода "+default_process+"");
+            }
+        }
+        function reload_captcha(focus) {
+            var form = G('user_form');
+            $('#captcha', form)[0].src = '/other/captcha/show.php?' + Math.random();
+            $('#captcha_code', form)[0].value = '';
+            if (typeof(focus) != 'undefined') {
+                $('#captcha_code', form)[0].focus();
+            }
+        }
+
+        /*Рефераллы*/
+        function ref_decline_check(){
+            execute_dimmed('/other/system/users.php?op=ref_decline_check', "Участие в реферальной программе", "Идет загрузка формы"+default_process, null, {'adjust':1});
+        }
+        function ref_decline(){
+            $("span.uw_fwrng").css('display', 'none');
+            var pass = $('#lb_pass').val();
+            if (pass.length == 0) {
+                sh_lg_wrng('pass', 'Введите Ваш текущий пароль');
+            } else{
+                document.getElementById('uw_lb_but').style.display = 'none';
+                document.getElementById('uw_lb_exec').style.display = 'block';
+                execute('uw_lb_exec', {
+                    'path' : "/other/system/users.php?op=ref_decline",
+                    'data' : 'lb_pass='+URLEncode(pass)
+                });
+            }
+        }
+        function ref_decline_callback(){
+            $("#ref_accept_td").html('<span class="as_a" title="" style="padding-left:0px;font-size:12px;" onclick="ref_accept_check();">Принять правила и показать</span>');
+        }
+        function ref_accept_check(){
+            execute_dimmed('/other/system/users.php?op=ref_accept_check', "Участие в реферальной программе", "Идет загрузка формы"+default_process, null, {'adjust':1});
+        }
+        function ref_accept(){
+            $("span.uw_fwrng").css('display', 'none');
+            var pass = $('#lb_pass').val();
+            if (pass.length == 0) {
+                sh_lg_wrng('pass', 'Введите Ваш текущий пароль');
+                return false;
+            }
+            if(!document.getElementById('lb_accept').checked){
+                sh_lg_wrng('accept', 'Необходимо принять правила работы');
+                return false;
+            }
+            document.getElementById('uw_lb_but').style.display = 'none';
+            document.getElementById('uw_lb_exec').style.display = 'block';
+            execute('uw_lb_exec', {
+                'path' : "/other/system/users.php?op=ref_accept",
+                'data' : 'lb_pass='+URLEncode(pass)+'&lb_accept=1'
+            });
+        }
+        function ref_accept_callback(){
+            location.reload();
+        }
+        function confirm_change_utype(utype) {
+            lb_confirm("Вы уверены, что хотите переключиться в "+(utype==0 ? "простой":"профессиональный")+" режим работы?", {'OK':function(){document.location='/user.html?op=changeutype&type='+utype;}, 'Отмена':'window_dim_off()'});
+        }
+        var last_valid_email = "";
+        function reg_email_check(){
+            var email = G('email').value.trim();
+            if (email && valid_email(email) && email.length<=255 && last_valid_email!=email){
+                last_valid_email=email;
+                execute('', {'path' : "/register.html?op=reg_email_check", 'data' : 'email='+URLEncode(email)});
+            }
+        }
+
+    </script>
+</head>
+<body pildtm="1469793246.9424">
+<div class="front-lb-wrapper" id="front-lb-wrapper" onclick="SeoPultFrontLb.lb_overflow_click();">
+    <div class="lb-wrapper" id="lb-wrapper">
+        <div class="lb-close svg" id="lb-close" onclick="SeoPultFrontLb.lb_close();"></div>
+        <div class="lb-body" id="lb-body">
+            <div class="lb-title" id="lb-title"></div>
+            <div class="lb-content" id="lb-content"></div>
+        </div>
+    </div>
+</div>
+<div style="display: none">
+    <div  id="lb-login-content">
+        <div class="lb-login-content">
+            <div class="login-form-wrapper">
+                <form action="/user.html" method="POST" id="rtm-login-form" onsubmit="return SeoPultMain.check_login($(this));">
+                    <input type="hidden" name="op" value="login">
+                    <input type="text" class="box" value="" name="uname" id="login-uname" placeholder="логин или e-mail"/>
+                    <span class="lb-error" id="uname-error"></span>
+                    <input type="password" name="pass" value="" class="box" id="login-pass" placeholder="пароль">
+                    <span class="lb-error" id="pass-error"></span>
+                    <input type="submit" class="btn btn-orange btn-big" value="Войти" style="width: 100%;" id="login-btn"/>
+                </form>
+                <a href="https://seopult.ru/user.html?lostpass" class="losspass">Забыли пароль?</a>
+            </div>
+            <div class="register-wrapper">
+                <a href="https://seopult.ru/register.html" class="btn btn-transparent btn-big" onclick="_paq.push(['trackEvent', 'NewMug', 'Register', 'Reg7']); return SeoPultMain.lb_register();">Зарегистрироваться</a>
+            </div>
+        </div>
+    </div>
+    <div id="lb-register">
+        <div class="lb-register">
+            <form method="POST" name="user_form_hidden" id="user_form_hidden" onsubmit="return false;" data-ajax="false">
+                <input type="hidden" name="op" value="register">
+                <input type="hidden" name="register_lb_front" value="1">
+                <div class="lb-form-row">
+                    <input type="text" name="uname" id="uname" placeholder="логин *" class="box" data-role="none">
+                    <div><span class="field_wrng" id="wrng_uname"></span></div>
+                    <span class="field_rules">должен быть уникальным, состоять из букв, цифр и символов '-', '_'</span>
+                </div>
+                <div class="lb-form-row">
+                    <input type="text" name="email" id="email" onblur="reg_email_check()" placeholder="е-mail *" class="box" data-role="none">
+                    <div><span class="field_wrng" id="wrng_email"></span></div>
+                    <span class="field_rules">используется для оповещений системы</span>
+                </div>
+                <div class="lb-form-row">
+                    <input type="password" name="pass" id="pass" class="parol box" placeholder="пароль *" data-role="none">
+                    <div><span class="field_wrng" id="wrng_pass"></span></div>
+                    <span class="field_rules">минимум 8 символов</span>
+                </div>
+                <div class="lb-form-row">
+                    <input type="password" name="vpass" id="vpass" class="parol box" placeholder="повтор пароля *" data-role="none">
+                    <div><span class="field_wrng" id="wrng_vpass"></span></div>
+                </div>
+                <div class="lb-form-row">
+                    <div style="float:left;">
+                        <input type="text" name="captcha_code" id="captcha_code" data-role="none" class="box">
+                    </div>
+                    <div style="float:left">
+                        <img id="captcha" src="/other/captcha/show.php" alt="Защитный код" title="защитный код">
+                    </div>
+                    <div class="captcha_refresh">
+                        <a href="javascript:reload_captcha(true)" title="Нажмите, чтобы обновить картинку"></a>
+                    </div>
+                    <div class="clear"></div>
+                    <div><span class="field_wrng" id="wrng_captcha_code"></span></div>
+                    <span class="field_rules">введите код с картинки</span>
+                </div>
+                <div class="lb-form-row promo_code-form-row">
+                    <input type="text" name="promo_code" id="promo_code" value=""  placeholder="промокод" class="box" data-role="none">
+                    <span id="check_promo_code"></span>
+                    <div><span class="field_wrng" id="wrng_promo_code"></span></div>
+                    <span class="field_rules">только для участников промо-акций</span>
+                </div>
+                                                                    <div class="lb-form-row">
+                    <input type="button" onclick="check_fields('user_form');" value="Зарегистрировать" class="btn btn-orange btn-big" data-role="none" >
+                </div>
+                <div class="lb_links">
+                    <a href="/user.html" onclick="return SeoPultMain.lb_login();">Вход для зарегистрированных</a>
+                    <a href="/rules.html" target="_blank">Договоры и условия</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="go-up svg" id="go-up" onclick="$('html, body').animate({scrollTop: 0},500);"></div>
+<div class="page-wrapper page-main section" id="page-main">
+    <div class="main-page-top">
+        <a href="/" class="logo"></a>
+        <div class="main-menu">
+                            
+                <a href="/technology" onclick="_paq.push(['trackLink', '/technology', 'top_menu' ]);" title="Принцип работы и преимущества продвинутых алгоритмов SeoPult" >Технологии</a>
+                            
+                <a href="/seopulttv.html" onclick="_paq.push(['trackLink', '/seopulttv.html', 'top_menu' ]);" title="Наше интернет-телевидение, в архиве которого можно найти семинары, обучающие работе с Системой SeoPult" >ТВ</a>
+                            
+                <a href="/education.html" onclick="_paq.push(['trackLink', '/education.html', 'top_menu' ]);" title="Официальный сайт нашего обучающего центра" >Обучение</a>
+                            
+                <a href="/subscribe.html" onclick="_paq.push(['trackLink', '/subscribe.html', 'top_menu' ]);" title="Архив рассылки «Практика продвижения сайтов. Профессиональное пособие от SeoPult»" >Рассылка</a>
+                            
+                <a href="http://blog.seopult.ru" onclick="_paq.push(['trackLink', 'http://blog.seopult.ru', 'top_menu' ]);" title="Официальный блог сервиса"  target="_blank">Блог</a>
+                            
+                <a href="/howto/intro" onclick="_paq.push(['trackLink', '/howto/intro', 'top_menu' ]);" title="Пошаговая подробная инструкция по работе с Системой" >Инструкция</a>
+                            
+                <a href="/faq.html" onclick="_paq.push(['trackLink', '/faq.html', 'top_menu' ]);" title="Часто задаваемые вопросы пользователей Системы и подробные ответы" >FAQ</a>
+                    </div>
+        <div class="auth-btn-wrapper">
+            <a href="/user.html" class="btn btn-transparent btn-small login-btn" onclick="return SeoPultMain.lb_login();">Вход</a>
+            <a href="/register.html" class="btn btn-orange btn-small register-btn" onclick="_paq.push(['trackEvent', 'NewMug', 'Register', 'Reg1']);return SeoPultMain.lb_register();">Регистрация</a>
+        </div>
+    </div>
+    <div class="content-field">
+        <div class="page-main-content">
+            <table class="page-table page-main-content-wrapper" cellspacing="0" cellpadding="0" border="0">
+                <tr>
+                    <td>
+                        <h1 class="title t32">Автоматизированная рекламная система</h1>
+                        <div class="txt">Система SeoPult - сервис для привлечения клиентов из интернета в простых и дружелюбных интерфейсах</div>
+                        <div class="txt">Поисковое продвижение, контекстная реклама, контент-маркетинг и другие инструменты для вашего бизнеса.</div>
+                        <div class="icon-corners-wrapper svg">
+                            <div class="icon-corners-block">
+                                <div class="icon-corner" id="icon-cornet-bisnes"></div>
+                                <div class="title t24">каждый 7-й бизнес</div>
+                                <div>использует SeoPult</div>
+                            </div>
+                            <div class="icon-corners-block">
+                                <div class="icon-corner" id="icon-cornet-sites"></div>
+                                <div class="title t24">80% сайтов в ТОП-10</div>
+                                <div>благодаря SeoPult</div>
+                            </div>
+                            <div class="icon-corners-block">
+                                <div class="icon-corner" id="icon-cornet-sale"></div>
+                                <div class="title t24">экономия до 50%</div>
+                                <div>рекламного бюджета</div>
+                            </div>
+                        </div>
+                        <a href="/register.html" class="btn btn-orange btn-big try-free-btn" onclick="_paq.push(['trackEvent', 'NewMug', 'Register', 'Reg2']); return SeoPultMain.lb_register();">Попробовать бесплатно</a>
+                        <a class="videopresentation-btn" href="javascript:upplay('pl=1pbcd5FGd5s7bCwM3WlVv2slvSwMfmhUbgR7OQ4ZwmnZwgnlbCGUbQujdmGUv3GUkWvyv5nZkeRSxUwZ6jEc6Su7v3ucb3TUa76m6gA9daAUfpcVNmuDd3n9bCwMfuCSUkjiDYCeUkziZu5AUkaiDuCeUkWBHDCcUNdi9Y5PoY5RUkjBHb5CUkaiZY5kfpcVNanUdpwMfWRlNaLVkCbQX3bcdWYUvaoVOQbIbgBcw7IZkWYsdWRedgi9wV0ZbaRldmFLwpuDv3ByNSucdWYUvao9XVRVfWebJiqq','https://seopult.ru/')" onclick="_paq.push(['trackEvent', 'NewMug', 'Video', 'Seo1']);">
+                            <span class="videopresentation-btn-bg svg"></span><span>Видеопрезентация системы</span>
+                        </a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="corners" id="page-main-corners">
+        <div class="corners-width">
+            <div class="corner" id="site-counts" data-val="505112">
+                <div class="corner-title">Сайтов в работе</div>
+                <div class="corner-wrapper loader"><img src="/themes/default/_img/loader-tiny.gif" width="16" height="11" alt="Loading..." align="top"></div>
+                <div class="corner-wrapper data"><span>5</span><span>0</span><span>5</span><i></i><span>1</span><span>1</span><span>2</span></div>
+            </div>
+            <div class="corner" id="request-counts" data-val="15647490">
+                <div class="corner-title">Продвигаемых запросов</div>
+                <div class="corner-wrapper loader"><img src="/themes/default/_img/loader-tiny.gif" width="16" height="11" alt="Loading..." align="top"></div>
+                <div class="corner-wrapper data" ><span>1</span><span>5</span><i></i><span>6</span><span>4</span><span>7</span><i></i><span>4</span><span>9</span><span>0</span></div>
+            </div>
+            <div class="corner" id="ppc-counts" data-val="8373784">
+                <div class="corner-title">Контекстных объявлений</div>
+                <div class="corner-wrapper loader"><img src="/themes/default/_img/loader-tiny.gif" width="16" height="11" alt="Loading..." align="top"></div>
+                <div class="corner-wrapper data"><span>8</span><i></i><span>3</span><span>7</span><span>3</span><i></i><span>7</span><span>8</span><span>4</span></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="page-wrapper pp-slider-wrapper" id="fullpage">
+    <div class="title t32 page-promo-title">Рекламные инструменты SeoPult</div>
+    <div class="pp-switcher">
+        <span class="pp-switch-btn active" onClick="SeoPultMain.pp_slider_switch(1,false);" id="ppsw1"><span>Описание</span></span>
+        <span class="pp-switch-btn" onClick="SeoPultMain.pp_slider_switch(2,false);" id="ppsw2"><span>Преимущества</span></span>
+        <span class="pp-switch-btn" onClick="SeoPultMain.pp_slider_switch(3,false);" id="ppsw3"><span>Эффективность</span></span>
+    </div>
+    <div class="pp-slider" id="pp-slider">
+        <div class="promo-page active" id="pp1">
+            <div class="content-field">
+                <div class="column left-column">
+                    <div class="title t24">Поисковое продвижение</div>
+                    <div class="promo-content">
+                        SEO - это методы по улучшению сайта для повышения его позиций в поисковых системах (Яндекс, Googlle, Mail).
+                        Нахождение вашего сайта на первой странице результатов поиска позволит вам привлекать большее количество клиентов.
+                        SeoPult - набор инструментов и сервисов, который поможет продвигать ваш сайт в автоматическом режиме, значительно экономить ресурсы и
+                        получать качественный трафик на сайт.
+                    </div>
+                </div>
+                <div class="column right-column">
+                    <div class="title t24">Контекстная реклама</div>
+                    <div class="promo-content">
+                        Контекстная реклама - это объявления, которые показываются в соответсвии с поисковыми запросами в Яндекс и Google.
+                        Контекстный модуль SeoPult - это создание рекламы и управление ею в удобном интерфейсе.
+                        Автоматическое управление ставками, удержание позиций, формирование единой отчетности - это лишь небольшая часть доступных инструментов.
+                        Без комиссии в Яндекс.Директе.
+                        <a href="javascript:upplay('st=42AEcsal1SQi6dMtXzBGDY31X1CaQ4Hj1l1k0nTWw3jG3NXzBGDY315X1kQ3Q3Q3Q31Hl1k0nTWwjG3NAkbk1WNxaTcCO4L1kOkZ2MJzC5ak42Qi63Gktj1eozC5k1sQ3Q2GzkTCGfFdGJTCQBhRdwDGmwiTSGQDp2wXbdwIQd5a6L2MXzsNkTWwEWTSQopBwnQB5ZXT2Nyp2wV9B5Y6L2MXTSUhTd0Hyp2wV9B5rY2NekTSUhTd0ktj1rJTWwf9vwnY31GXcv1T1kOk7W0AyG3NkbSYT8Catl1SNyG3Nkbk1ST1kOk03NkXvOakZv0h9m0yT30tcLWNkbSal1SwBhp30cYv1X1SGSfzkOk03whT31eX=jOk430bzfUrh&amp;pl=1pbcd5FGd5s7bCwM3WlVv2slvSwMfmhUbgR7OQ4ZwmnZwgnlbCGUbQujdmGUv3GUkWYsdWRedgBJwV0ZwgRjaWRpdmeZk2ecYCwlfmYZd3esdViVOQJiLYCpUNkiZDC4UktBHDC8UkJi9Y5AUkzilDCcUkWiZbC+Uk0HUNPiZu5AUktilDCzUkaiZbC8Uk0HUkriZDCuUNkiDbCMUNgBHDCuUkzi9StBHYCeUkri9uCcUk7iZDCGfpcVNanUdpwMfWRlNaLVJneu','http://seopult.tv/programs/ppc/teksty_obyavleniy_kreativ_ili_racionalnost/')" class="ppc-instruction svg" onclick="_paq.push(['trackEvent', 'NewMug', 'Video', 'PPC1']);">Как работает контекстная реклама</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="promo-page" id="pp2">
+            <div class="content-field">
+                <div class="column left-column">
+                    <div class="title t24">Поисковое продвижение</div>
+                    <div class="promo-content">
+                        <span class="page-list svg">автоматический и ручной режимы продвижения</span>
+                        <span class="page-list svg">высокая результативность и позиции в поиске</span>
+                        <span class="page-list svg">экономия до 50% за счет автоматизации</span>
+                        <span class="page-list svg">прозрачность и отсутствие скрытых комиссий</span>
+                    </div>
+                </div>
+                <div class="column right-column">
+                    <div class="title t24">Контекстная реклама</div>
+                    <div class="promo-content">
+                        <span class="page-list svg">автоматическая настройка и управление</span>
+                        <span class="page-list svg">единый рекламный кабинет в Яндекс и Google</span>
+                        <span class="page-list svg">персональная техническая поддержка</span>
+                        <span class="page-list svg">наличие бонусной программы</span>
+                        <div class="partner-wrapper">
+                            <span class="y-partner"></span>
+                            <span class="sum-partner"></span>
+                            <span class="g-partner">Мы одни из 4-х премиум партнеров Google в России</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="promo-page" id="pp3">
+            <div class="content-field">
+                <div class="ppc-seo-connect">
+                    Комбинация двух видов продвижения дает результат как в краткосрочной так и в долгосрочной перспективе
+                </div>
+                <div class="column left-column">
+                    <div class="title t24">Поисковое продвижение</div>
+                    <div class="promo-content">
+                        <div class="promo_graph seo svg"></div>
+                        Первые результаты поискового продвижения появляются через 1-3 месяца с начала работ.
+                        Поисковое продвижение экономичнее, чем контекстная реклама.
+                    </div>
+                </div>
+                <div class="column right-column">
+                    <div class="title t24">Контекстная реклама</div>
+                    <div class="promo-content">
+                        <div class="promo_graph ppc svg"></div>
+                        Контекстная реклама позволяет получить клиентов уже в течении 1-2 часов, однако стоимость привлечения в 2-3 раза выше, чем в поисковом продвижении.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="fixed-content" id="fixed-content">
+        <div class="search svg"></div>
+        <div class="try-it-free-wrapper fixeble-content">
+            <a href="/register.html" class="btn btn-orange btn-big try-it-free-btn" onclick="_paq.push(['trackEvent', 'NewMug', 'Register', 'Reg3']); return SeoPultMain.lb_register();">Попробовать бесплатно</a>
+        </div>
+    </div>
+</div>
+<div class="rate-site" id="rate-site">
+    <div class="content-field" id="rate-site-content">
+        <div class="title t32">Оцените возможности вашего сайта</div>
+        <div class="sub-title">Узнайте количество переходов, которые вы получите, продвигая сайт в поисковых системах и ведя контекстную рекламу в SeoPult</div>
+        <div class="rate-site-form">
+            <div class="rate-site-row form-wrapper">
+                <form id="rate-site-form">
+                    <div class="form-ceil url-ceil">
+                        Адрес вашего сайта: <input type="text" value="" name="site_url" id="site_url" class="form-el" onkeyup="SeoPultMain.rate_site_submit_from_field();" placeholder="http://"/>
+                    </div>
+                    <div class="form-ceil region-ceil" id="form-ceil-region-ceil">
+                        <span id="region-site-title">Регион продвижения:</span>
+                        <input type="text" value="Москва" name="site_region" id="site_region" placeholder="Выберите регион" onkeyup="SeoPultMain.trySelRegion(event);" autocomplete="off"/>
+                        <div class="fake-region-select" id="fake-region-list">
+                            <div class="fake-region-option" onclick="SeoPultMain.fake_option_click(213);">Москва / Москва и Московская область / Центр / Россия / Евразия<div></div></div>
+                        </div>
+                        <select
+                                name="region_id"
+                                id="region-list"
+                                class="region-list"
+                                size="10"
+                                onchange="SeoPultMain.setRegion(this.value, {region_list_id: SeoPultMain.region_select_id, region_value_id: SeoPultMain.region_input_id, region_list_box_id: SeoPultMain.region_select_id});"
+                                ondblclick="SeoPultMain.hideRegions(this);"
+                                onkeyup="SeoPultMain.tryHideRegions(event);"
+                        >
+                            <option value="213" selected >Москва / Москва и Московская область / Центр / Россия / Евразия</option>
+                        </select>
+                    </div>
+                    <div class="form-ceil btn-ceil">
+                        <span class="btn btn-transparent black btn-big" onclick="SeoPultMain.rate_site_submit('new');_paq.push(['trackEvent', 'NewMug', 'Competitors', 'Submit']);">Оценить возможности</span>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="rate-site-progress" id="rate-site-progress">
+            <div class="load-text">Идет обработка данных</div>
+            <div class="step-progress title t24" id="step-progress">Шаг 1 из 3 - Анализируем сайт</div>
+            <div id="fountainG" class="fountainG-wrapper">
+                <div id="fountainG_1" class="fountainG"></div>
+                <div id="fountainG_2" class="fountainG"></div>
+                <div id="fountainG_3" class="fountainG"></div>
+                <div id="fountainG_4" class="fountainG"></div>
+                <div id="fountainG_5" class="fountainG"></div>
+                <div id="fountainG_6" class="fountainG"></div>
+                <div id="fountainG_7" class="fountainG"></div>
+                <div id="fountainG_8" class="fountainG"></div>
+            </div>
+        </div>
+        <div class="rate-site-error" id="rate-site-error"></div>
+        <div class="rate-site-result" id="rate-site-result">
+            <div class="rate-site-row" id="rate-site-result-wrapper-row">
+                <div class="rate-site-result-row">
+                    Прогноз результативности продвижения вашего сайта при условии выполнения рекомендаций системы
+                </div>
+                <div class="rate-site-result-row">
+                    Поисковое продвижение
+                    <div class="rate-result-wrapper">
+                        SEO
+                        <div class="arifmetic">+</div>
+                    </div>
+                </div>
+                <div class="rate-site-result-row">
+                    Контекстная реклама
+                    <div class="rate-result-wrapper">
+                        PPC
+                        <div class="arifmetic">=</div>
+                    </div>
+                </div>
+                <div class="rate-site-result-row">
+                    Переходов в месяц
+                    <div class="rate-result-wrapper" id="rate-result-visits"></div>
+                </div>
+                <div class="rate-site-result-row">
+                    Цена одного перехода
+                    <div class="rate-result-wrapper" id="rate-result-visit-price"></div>
+                </div>
+            </div>
+            <div class="title t24" id="competitors-title">Ваши конкуренты уже продвигают свои сайты. Не теряйте времени!</div>
+            <div class="competitors-wrapper" id="competitors-wrapper">
+                <div class="competitors-row" id="competitors-user-site">
+                    <div class="competitors-circle user-site">
+                        <div>Ваш сайт</div>
+                    </div>
+                    <div class="competitors-site">
+                        <img src="" align="center" class="competitors-favicon"><!--
+                    --><span class="competitors-url"></span>
+                    </div>
+                </div>
+                <div class="competitors-list count-3" id="competitors-list">
+                    <div class="competitors-row" id="competitor0-wrapper">
+                        <div class="competitors-circle competitor0" id="competitor0">
+                            <div class="as_adash ckeywords" onclick="SeoPultMain.show_competitor_kw($(this))"></div>
+                            <div class="text ckeywords_text">продвинуто слов</div>
+                            <div class="as_adash cad" onclick="SeoPultMain.show_competitor_ad($(this))"></div>
+                            <div class="text cad_text">объявлений</div>
+                        </div>
+                        <div class="competitors-site">
+                            <img src="" align="center" class="competitors-favicon"><!--
+                    --><span class="competitors-url"></span>
+                        </div>
+                    </div>
+                    <div class="competitors-row" id="competitor1-wrapper">
+                        <div class="competitors-circle competitor1" id="competitor1">
+                            <div class="as_adash ckeywords" onclick="SeoPultMain.show_competitor_kw($(this))"></div>
+                            <div class="text ckeywords_text">продвинуто слов</div>
+                            <div class="as_adash cad" onclick="SeoPultMain.show_competitor_ad($(this))"></div>
+                            <div class="text cad_text">объявлений</div>
+                        </div>
+                        <div class="competitors-site">
+                            <img src="" align="center" class="competitors-favicon"><!--
+                    --><span class="competitors-url"></span>
+                        </div>
+                    </div>
+                    <div class="competitors-row" id="competitor2-wrapper">
+                        <div class="competitors-circle competitor2" id="competitor2">
+                            <div class="as_adash ckeywords" onclick="SeoPultMain.show_competitor_kw($(this))"></div>
+                            <div class="text ckeywords_text">продвинуто слов</div>
+                            <div class="as_adash cad" onclick="SeoPultMain.show_competitor_ad($(this))"></div>
+                            <div class="text cad_text">объявлений</div>
+                        </div>
+                        <div class="competitors-site">
+                            <img src="" align="center" class="competitors-favicon"><!--
+                    --><span class="competitors-url"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="competitors-row" id="custom-competitor-add-link-wrapper">
+                    <div class="competitors-circle add-site" id="competitors-add-site" onclick="SeoPultMain.show_custom_competitor_block();">
+                        <div>+</div>
+                    </div>
+                    <div class="competitors-site">
+                        <span class="competitors-url as_adash" onclick="SeoPultMain.show_custom_competitor_block();">Добавить конкурента</span>
+                    </div>
+                </div>
+                <div class="competitors-row custom-competitor-add-form-wrapper" id="custom-competitor-add-form-wrapper">
+                    <div class="competitor-delete" onclick="SeoPultMain.hide_custom_competitor_block();"></div>
+                    <div class="competitors-circle add-site-form" id="competitors-add-form">
+                        <div id="competitors-add-form-wrapper">
+                            <div class="label">Введите адрес сайта</div>
+                            <div class="form-wrapper">
+                                <input type="text" name="custom-competitor" id="custom-competitor-input" onkeyup="SeoPultMain.custom_competitor_add_key();">
+                                <span class="btn" onclick="SeoPultMain.custom_competitor_add();">OK</span>
+                            </div>
+                        </div>
+                        <div id="competitors-add-loader" class="fountainG-wrapper">
+                            <div id="fountainG_1" class="fountainG"></div>
+                            <div id="fountainG_2" class="fountainG"></div>
+                            <div id="fountainG_3" class="fountainG"></div>
+                            <div id="fountainG_4" class="fountainG"></div>
+                            <div id="fountainG_5" class="fountainG"></div>
+                            <div id="fountainG_6" class="fountainG"></div>
+                            <div id="fountainG_7" class="fountainG"></div>
+                            <div id="fountainG_8" class="fountainG"></div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="start-btn-wrapper">
+                <a href="/register.html" class="btn btn-orange btn-big" onclick="_paq.push(['trackEvent', 'NewMug', 'Register', 'Reg8']); return SeoPultMain.lb_register();">Начать продвижение</a>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="tools-page" id="tools-page">
+    <div class="content-field">
+        <div class="title t32">Передовые инструменты маркетинга</div>
+        <div class="sub-title">SeoPult - это наиболее востребованные инструменты для привлечения клиентов, увеличения конверсий и улучшения привлекательности сайта.</div>
+        <div class="columns">
+            <div class="column column-left">
+                <div class="tools-row">
+                    <span class="icon competitors-analisys svg"></span>
+                    <div class="title t24">Анализ конкурентов</div>
+                    <span>Помогает изучить опыт успешных конкурентов, исправить ошибки на собственном сайте и сделать рекламу еще эффективнее.</span>
+                </div>
+                <div class="tools-row">
+                    <span class="icon articles svg"></span>
+                    <div class="title t24">Наполнение сайта</div>
+                    <span>Если вы не хотите тратить время или не уверены в своих силах, то вы всегда можете заказать контент для своего сайта у наших специалистов.</span>
+                </div>
+                <div class="tools-row">
+                    <span class="icon prof-analitics svg"></span>
+                    <div class="title t24">Профессиональная аналитика</div>
+                    <span>Высокая эффективность достигается благодаря постоянной адаптации и совершенствованию алгоритмов работы системы.</span>
+                </div>
+            </div>
+            <div class="column column-center">
+                <div class="gorizontal-lines gl1">
+                    <div class="bubble glb11"></div>
+                    <div class="bubble glb12"></div>
+                    <div class="gl-line gll11"></div>
+                    <div class="gl-line gll12"></div>
+                </div>
+                <div class="vertical-line vl1">
+                    <div class="vl-line vll11"></div>
+                    <div class="vl-line vll12"></div>
+                    <div class="bubble vlb11"></div>
+                    <div class="bubble vlb12"></div>
+                </div>
+                <div class="gorizontal-lines gl2">
+                    <div class="bubble glb21"></div>
+                    <div class="bubble glb22"></div>
+                    <div class="bubble glb23"></div>
+                    <div class="bubble glb24"></div>
+                    <div class="gl-line gll21"></div>
+                    <div class="gl-line gll22"></div>
+                </div>
+                <div class="vertical-line vl2">
+                    <div class="vl-line vll21"></div>
+                    <div class="vl-line vll22"></div>
+                    <div class="bubble vlb21"></div>
+                    <div class="bubble vlb22"></div>
+                </div>
+                <div class="gorizontal-lines gl3">
+                    <div class="bubble glb31"></div>
+                    <div class="bubble glb32"></div>
+                    <div class="gl-line gll31"></div>
+                    <div class="gl-line gll32"></div>
+                </div>
+                <div class="seopult-logo"></div>
+                <a href="/register.html" class="btn btn-orange btn-big" onclick="_paq.push(['trackEvent', 'NewMug', 'Register', 'Reg4']); return SeoPultMain.lb_register();">Начать работу</a>
+            </div>
+            <div class="column column-right">
+                <div class="tools-row">
+                    <span class="icon seotraf svg"></span>
+                    <div class="title t24">Трафиковое продвижение</div>
+                    <span>Трафиковое продвижение не только увеличивает продажи, но и помогает сайту продвигаться в результатах поиска.</span>
+                </div>
+                <div class="tools-row">
+                    <span class="icon serm svg"></span>
+                    <div class="title t24">Управление репутацией в сети</div>
+                    <span>Что пишут о вас в интернете? SERM-модуль поможет вовремя отреагировать на сигнал и повлиять на вектор информации о вашей компании.</span>
+                </div>
+                <div class="tools-row">
+                    <span class="icon cm svg"></span>
+                    <div class="title t24">Контент-маркетинг</div>
+                    <span>Размещение премиального контента, рассказывающего о ваших товарах и услугах, способно привлечь тысячи потенциальных клиентов.</span>
+                </div>
+
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+</div>
+<div class="work-with-seopult" id="work-with-seopult">
+    <div class="content-field">
+        <div class="title t32">Что вы получаете при работе с SeoPult</div>
+        <div class="wws-columns">
+            <div class="wws-column">
+                <div class="wws-column-icon icon-effeciency svg"></div>
+                <div class="title t24">Эффективность</div>
+                <div class="description">Использование передовых технологий позволяет SeoPult предлагать своим клиентам самые прогрессивные инструменты</div>
+            </div>
+            <div class="wws-column">
+                <div class="wws-column-icon icon-economy svg"></div>
+                <div class="title t24">Экономия</div>
+                <div class="description">Исключение ручного труда и посредников: экспертиза лидера рынка позволит вам сэкономить с SeoPult до 50% стоимости привлечения клиентов</div>
+            </div>
+            <div class="wws-column">
+                <div class="wws-column-icon icon-easy svg"></div>
+                <div class="title t24">Простота</div>
+                <div class="description">Удобный интерфейс Системы, четко заданный алгоритм настройки, а также большое количество подсказок на всех этапах заведения кампании</div>
+            </div>
+            <div class="wws-column">
+                <div class="wws-column-icon icon-support svg"></div>
+                <div class="title t24">Поддержка</div>
+                <div class="description">Помощь клиентам на всех уровнях. Начиная от консультаций службы поддержки до бесплатных обучающих курсов</div>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <a href="/register.html" class="btn btn-orange btn-big" onclick="_paq.push(['trackEvent', 'NewMug', 'Register', 'Reg5']); return SeoPultMain.lb_register();">Начать работу</a>
+    </div>
+</div>
+<div class="support-education" id="support-education">
+    <a name="support-education">
+    <div style="display:none;z-index:100;width:100%;height:100%;text-align:center;margin:0px;" id="multup"></div>
+    <div class="title t32">Поддержка и обучение наших клиентов</div>
+    <div class="sub-title">Если вы только делаете первые шаги в интернет-маркетинге, если вы хотите развиваться в рамках профессии маркетолога, то вас обязательно заинтересуют наши информационные продукты.</div>
+    <div class="se-columns">
+        <div class="content-field">
+            <div class="se-column cybermarketing-column">
+                <div class="title t24">Бесплатное обучение</div>
+                <div class="sec-icon icon-cybermarketing"></div>
+                <div class="text">Обучающий центр по интернет-маркетингу. Бесплатные семинары и вебинары проводят ведущие спикеры рунета.</div>
+                <div class="se-slider" id="slider-cybermarketing">
+                    <div class="se-switcher">
+                        <div class="se-switch-arrow ssa-prev" onclick="SeoPultMain.switcher_arrow_click('cybermarketing','prev');"></div>
+                        <div class="se-switch active" id="seswcm1" onclick="SeoPultMain.swicther_click('cybermarketing',1);"></div>
+                        <div class="se-switch" id="seswcm2" onclick="SeoPultMain.swicther_click('cybermarketing',2);"></div>
+                        <div class="se-switch-arrow ssa-next" onclick="SeoPultMain.switcher_arrow_click('cybermarketing','next');"></div>
+                    </div>
+                    
+                    <div class="se-slide active" id="seslcm1">
+                                                                    <div class="slide-row">
+                            <span class="time">25 августа c 13:00 по 17:00</span>
+                            <a href="https://www.cybermarketing.ru/seminar5.html?ref=3101365769" class="name" target="_blank"> Базовый курс по контекстной рекламе</a>
+                        </div>
+                        
+                                                                    <div class="slide-row">
+                            <span class="time">25 августа c 14:00 по 18:00</span>
+                            <a href="https://www.cybermarketing.ru/seminar4.html?ref=3101365769" class="name" target="_blank"> Базовый курс SEO</a>
+                        </div>
+                        
+                                                                    <div class="slide-row">
+                            <span class="time">12 августа c 13:00 по 17:00</span>
+                            <a href="https://www.cybermarketing.ru/seminar3.html?ref=3101365769" class="name" target="_blank"> Продвинутый курс по контекстной рекламе</a>
+                        </div>
+                        
+                                                                        </div>
+                            <div class="se-slide" id="seslcm2">
+                                                <div class="slide-row">
+                            <span class="time">26 августа c 14:00 по 18:00</span>
+                            <a href="https://www.cybermarketing.ru/seminar1.html?ref=3101365769" class="name" target="_blank"> Продвинутый курс SEO</a>
+                        </div>
+                        
+                                                                    <div class="slide-row">
+                            <span class="time">По расписанию</span>
+                            <a href="https://www.cybermarketing.ru/seminar2.html?ref=3101365769" class="name" target="_blank">Все о работе с Системой</a>
+                        </div>
+                        
+                                                                    <div class="slide-row">
+                            <span class="time">По расписанию</span>
+                            <a href="https://www.cybermarketing.ru/seminar136.html?ref=3101365769" class="name" target="_blank">Частые ошибки в рекламных кампаниях</a>
+                        </div>
+                        
+                                        </div>
+                </div>
+                <a href="https://seopult.ru/education.html" target="_blank"  class="btn btn-transparent black btn-big">Полное расписание</a>
+            </div>
+            <div class="se-column seopulttv-column">
+                <div class="title t24">Обучающие видео</div>
+                <div class="sec-icon icon-seopulttv"></div>
+                <div class="text">Интернет-телевидение для всех заинтересованных в интернет-продвижении, заработке в сети, интернет-технологиях.</div>
+                <div class="se-slider slider-seopulttv" id="slider-seopulttv">
+                    <div class="se-switcher">
+                        <div class="se-switch-arrow ssa-prev" onclick="SeoPultMain.switcher_arrow_click('seopulttv','prev');"></div>
+                        <div class="se-switch active" id="seswst1" onclick="SeoPultMain.swicther_click('seopulttv',1);"></div>
+                        <div class="se-switch" id="seswst2" onclick="SeoPultMain.swicther_click('seopulttv',2);"></div>
+                        
+                                                                                    <div class="se-switch" id="seswst3" onclick="SeoPultMain.swicther_click('seopulttv',3);"></div>
+                                
+                                                                                                                                                                            <div class="se-switch" id="seswst4" onclick="SeoPultMain.swicther_click('seopulttv',4);"></div>
+                                    
+                                                                    <div class="se-switch" id="seswst5" onclick="SeoPultMain.swicther_click('seopulttv',5);"></div>
+                                    
+                                                                                                                                                            <div class="se-switch" id="seswst6" onclick="SeoPultMain.swicther_click('seopulttv',6);"></div>
+                                    
+                                                                                                            <div class="se-switch-arrow ssa-next" onclick="SeoPultMain.switcher_arrow_click('seopulttv','next');"></div>
+                    </div>
+                    <div class="se-slide active" id="seslst1">
+                        <a class="slide-row" href="javascript:upplay('pl=1pbcd5FGd5s7bCwM3WlVv2slvSwMfmhUbgR7OQ4ZwmnZwgnlbCGUbQujdmGUv3GUkWYsdWRedgBJwV0ZwgfZvQGDwtiVkCbjdmeDv3GUf7IVUfki9YCUUkaiZDC8UkWBHb5CUNtBHuCMUNdi9Y5PoYC/UNtiZD5EUkaBHb5RUkjiZDCuUkti9u56UkWiZDC7Uk8HUNtiDbCmUkjiZYCcoFYsdeRedgiVkCbhbaBZf7IVw5Th1SbuaaUq&amp;st=03ARzSGfzkOtk03whT31X=jOked3QVhdwf9vwjzC5RzeSaktj1vz31XexaDAAjOk=Wsvz31X1Sakktj1tYmsvz31gVjb1czsNcYmsXzBGDYe31X7uaItj1tzC5TZtj1oF2Qf9m0kbk1hfp3Q3pvNXZv0h9mb0XZ2NnT3wmRdQXe4vw6Id5XT2G3TSQDb6dwfF3NXR3GXe2wtITWwWTCwXFWs6I2iMcTSQD6dwXisNXHfms6I2McTfMjF3NX6isNXHv1l1f0XR30bcLWwjzC5kAuyb1kYOk1mwXRWNvzdwf9ZvwjzC5k42Qi63GkDtj1ozC5kAxOT=x5N8ij1l1CQVYv1XAutaLtj1mzC5Ttj1nzbB0kbk13Q3Q3Q3Qkdtj1fRdwnYWQkzfUrd', 'https://seopult.ru')">
+                            <div class="video-curse-logo" style="background-image: url(/themes/default/_img/seopult_main/pleer/seopult_prof_regim.png);"></div>
+                            <div class="name">Видеоинструкция профессионального режима</div>
+                        </a>
+                    </div>
+                    <div class="se-slide" id="seslst2">
+                        <a class="slide-row" href="javascript:upplay('pl=1pbcd5FGd5s7bCwM3WlVv2slvSwMfmhUbgR7OQ4ZwmnZwgnlbCGUbQujdmGUv3GUkWYsdWRedgBJwV0ZwmnZwgnlbFucw2uDdpGDwtiVkCbjdmeDv3GUf7IVUfki9YCUUkaiZDC8UkWBHb5CUNtBHuCMUNdi9Y5PoYC/UNtiZD5RUNkiZDC7Uk8HUNtiDbCmUkjiZYCcoFYsdeRedgiVkCbhbaBZf7IVw5Th1SbuaaUq&amp;st=03ARzSGfzkOtk03whT31X=jOked3QVhdwf9vwjzC5RzeSaktj1vz31XexaDAAjOk=Wsvz31X1Sakktj1tYmsvz31gVjb1czsNcYmsXzBGDYe31X7uaItj1tzC5TZtj1oF2Qf9m0kbk1hfp3Q3pvNXZv0h9mb0XZ2NnT3wmRdQXe4vw6Id5XT2G3TSQDb6dwfF3NXR3GXe2wtITWwWTCwXFWs6I2iMcTSQD6dwXisNXHfms6I2McTfMjF3NX6isNXHv1l1f0XR30bcLWwjzC5kAuyb1kYOk1mwXRWNvzdwf9ZvwjzC5k42Qi63GkDtj1ozC5kAxOT=x5N8ij1l1CQVYv1XAutaLtj1mzC5Ttj1nzbB0kbk13Q3Q3Q3Qkdtj1fRdwnYWQkzfUrd', 'https://seopult.ru')">
+                            <div class="video-curse-logo" style="background-image: url(/themes/default/_img/seopult_main/pleer/seopult_easy_regim.png);"></div>
+                            <div class="name">Видеоинструкция простого режима</div>
+                        </a>
+                    </div>
+                    
+                                                                        <div class="se-slide" id="seslst3">
+                                <a class="slide-row" href="javascript:upplay('st=42AEcsal1SQi6dMtXzBGDY31X1CaQ4Hj1l1k0nTWw3jG3NXzBGDY315X1kQ3Q3Q3Q31Hl1k0nTWwjG3NAkbk1WNxaTcCO4L1kOkZ2MJzC5ak42Qi63Gktj1eozC5k1sQ3Q2GzkTCGfFdGJTCQBhRdwDGmwiTSGQDp2wXbdwIQd5a6L2MXzsNkTWwEWTSQopBwnQB5ZXT2Nyp2wV9B5Y6L2MXTSUhTd0Hyp2wV9B5rY2NekTSUhTd0ktj1rJTWwf9vwnY31GXcv1T1kOk7W0AyG3NkbSYT8Catl1SNyG3Nkbk1ST1kOk03NkXvOakZv0h9m0yT30tcLWNkbSal1SwBhp30cYv1X1SGSfzkOk03whT31eX=jOk430bzfUrh&amp;pl=XgBUwg6Mkpu7v3ucb3TUkVBmkWRlk7w8YCG2Yxo8Yxicvjs2Y7H867NcN3Bsvjvs63BLvtRjN2FsNpGcdAqq&amp;uid=seotvplayer1','http://seopult.tv/programs/seo/uroki_seopult_regionalnoe_prodvizhenie/')">
+                                    <div class="video-curse-logo" style="background-image:url(/themes/default/_img/content/videocourses/seo__uroki_seopult_regionalnoe_prodvizhenie.jpg);"></div>
+                                    <div class="name">Новичку: Продвижение сайта в регионах</div>
+                                </a>
+                            </div>
+                            
+                                                                                                                                                    <div class="se-slide" id="seslst4">
+                                    <a class="slide-row" href="javascript:upplay('st=42AEcsal1SQi6dMtXzBGDY31X1CaQ4Hj1l1k0nTWw3jG3NXzBGDY315X1kQ3Q3Q3Q31Hl1k0nTWwjG3NAkbk1WNxaTcCO4L1kOkZ2MJzC5ak42Qi63Gktj1eozC5k1sQ3Q2GzkTCGfFdGJTCQBhRdwDGmwiTSGQDp2wXbdwIQd5a6L2MXzsNkTWwEWTSQopBwnQB5ZXT2Nyp2wV9B5Y6L2MXTSUhTd0Hyp2wV9B5rY2NekTSUhTd0ktj1rJTWwf9vwnY31GXcv1T1kOk7W0AyG3NkbSYT8Catl1SNyG3Nkbk1ST1kOk03NkXvOakZv0h9m0yT30tcLWNkbSal1SwBhp30cYv1X1SGSfzkOk03whT31eX=jOk430bzfUrh&amp;pl=XgBUwg6Mkpu7v3ucb3TUkVBmkWRlk7Ne6Q88656G67i8OtnLYxHpv50p67o76ths6jHT6xEGN2FhYQGcdAqq&amp;uid=seotvplayer1','http://seopult.tv/programs/ppc/osnovi_kontekstnoi_reklami/')">
+                                        <div class="video-curse-logo" style="background-image:url(/themes/default/_img/content/videocourses/ppc__osnovi_kontekstnoi_reklami.jpg);"></div>
+                                        <div class="name">Новичку: Для чего нужна контекстная реклама?</div>
+                                    </a>
+                                </div>
+                                
+                                                            <div class="se-slide" id="seslst5">
+                                    <a class="slide-row" href="javascript:upplay('st=42AEcsal1SQi6dMtXzBGDY31X1CaQ4Hj1l1k0nTWw3jG3NXzBGDY315X1kQ3Q3Q3Q31Hl1k0nTWwjG3NAkbk1WNxaTcCO4L1kOkZ2MJzC5ak42Qi63Gktj1eozC5k1sQ3Q2GzkTCGfFdGJTCQBhRdwDGmwiTSGQDp2wXbdwIQd5a6L2MXzsNkTWwEWTSQopBwnQB5ZXT2Nyp2wV9B5Y6L2MXTSUhTd0Hyp2wV9B5rY2NekTSUhTd0ktj1rJTWwf9vwnY31GXcv1T1kOk7W0AyG3NkbSYT8Catl1SNyG3Nkbk1ST1kOk03NkXvOakZv0h9m0yT30tcLWNkbSal1SwBhp30cYv1X1SGSfzkOk03whT31eX=jOk430bzfUrh&amp;pl=XgBUwg6Mkpu7v3ucb3TUkVBmkWRlk7NUYQ8G6tnLOxh26xw8O50WYx6mN7sjYjLmYmoUvxh2v56pNpGcdAqq&amp;uid=seotvplayer1','http://seopult.tv/programs/smm/Neitralizacia_negativa_v_socialnyh_setah/')">
+                                        <div class="video-curse-logo" style="background-image:url(/themes/default/_img/content/videocourses/smm__Neitralizacia_negativa_v_socialnyh_setah.jpg);"></div>
+                                        <div class="name">Новичку: Нейтрализация негатива в соц. сетях</div>
+                                    </a>
+                                </div>
+                                
+                                                                                                                                        <div class="se-slide" id="seslst6">
+                                    <a class="slide-row" href="javascript:upplay('st=42AEcsal1SQi6dMtXzBGDY31X1CaQ4Hj1l1k0nTWw3jG3NXzBGDY315X1kQ3Q3Q3Q31Hl1k0nTWwjG3NAkbk1WNxaTcCO4L1kOkZ2MJzC5ak42Qi63Gktj1eozC5k1sQ3Q2GzkTCGfFdGJTCQBhRdwDGmwiTSGQDp2wXbdwIQd5a6L2MXzsNkTWwEWTSQopBwnQB5ZXT2Nyp2wV9B5Y6L2MXTSUhTd0Hyp2wV9B5rY2NekTSUhTd0ktj1rJTWwf9vwnY31GXcv1T1kOk7W0AyG3NkbSYT8Catl1SNyG3Nkbk1ST1kOk03NkXvOakZv0h9m0yT30tcLWNkbSal1SwBhp30cYv1X1SGSfzkOk03whT31eX=jOk430bzfUrh&amp;pl=XgBUwg6Mkpu7v3ucb3TUkVBmkWRlk7wTYpGh6mNmvjEcY2iT6jLTN2ieOxH7vx6WY2vQY5EcO5oU6QGcdAqq&amp;uid=seotvplayer1','http://seopult.tv/programs/seo/nachinaem_campaniyu_v_kontekstnoy_reklame/')">
+                                        <div class="video-curse-logo" style="background-image:url(/themes/default/_img/content/videocourses/seo__nachinaem_campaniyu_v_kontekstnoy_reklame.jpg);"></div>
+                                        <div class="name">Профессионалу: Новое в контекстной рекламе</div>
+                                    </a>
+                                </div>
+                                
+                                                                                        </div>
+                <a href="https://seopult.ru/seopulttv.html" target="_blank" class="btn btn-transparent black btn-big">Ещё видео</a>
+            </div>
+            <div class="se-column subscribe-column">
+                <div class="title t24">Обучающие материалы</div>
+                <div class="sec-icon icon-subscribe"></div>
+                <div class="text">Тематическая рассылка по самым интересным, спорным темам (как теория, так и практические кейсы). Большой архив.</div>
+                <div class="se-slider">
+                    <div class="se-slide active">
+                                                <div class="slide-row">
+                            <div class="time">18 июля 2016</div>
+                            <a href="/subscribe.html?id=287" class="name" target="_blank" title="Выпуск №253: Howto: как бороться с медленной загрузкой сайта">Выпуск №253: Howto: как бороться с медленной загрузкой сайта</a>
+                        </div>
+                                                <div class="slide-row">
+                            <div class="time">21 июня 2016</div>
+                            <a href="/subscribe.html?id=284" class="name" target="_blank" title="Специальный выпуск: Контекстная реклама для продвижения">Специальный выпуск: Контекстная реклама для продвижения</a>
+                        </div>
+                                                <div class="slide-row">
+                            <div class="time">17 июня 2016</div>
+                            <a href="/subscribe.html?id=283" class="name" target="_blank" title="Выпуск №252: Настройка целей в Яндекс.Метрике">Выпуск №252: Настройка целей в Яндекс.Метрике</a>
+                        </div>
+                                            </div>
+                </div>
+                <div class="email-subscribe">
+                    <div>Подпишитесь на рассылку</div>
+                    <div class="form">
+                        <form action="/subscribe.html?op=subscribe" method="post">
+                            <input type="text" name="email" value="" placeholder="ваш email"id="subscribe_input"/>
+                            <input type="submit" class="btn btn-transparent black" onclick="return check_subscribe();" value="OK">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="user-support">
+    <div class="content-field">
+        <div class="title t32">Поддержка пользователей</div>
+        <div class="support-emails-list">
+            <div class="support-emails-ceil">
+                <div class="title">Техническая поддержка</div>
+                <a href="mailto:support@seopult.ru" target="_blank">support@seopult.ru</a>
+            </div>
+            <div class="support-emails-ceil">
+                <div class="title">Контентная оптимизация</div>
+                <a href="mailto:content@seopult.ru" target="_blank">content@seopult.ru</a>
+            </div>
+            <div class="support-emails-ceil">
+                <div class="title">Персональный менеджер</div>
+                <a href="mailto:manager@seopult.ru" target="_blank">manager@seopult.ru</a>
+            </div>
+            <div class="support-emails-ceil">
+                <div class="title">Для партнеров</div>
+                <a href="mailto:partner@seopult.ru" target="_blank">partner@seopult.ru</a>
+            </div>
+            <div class="support-emails-ceil">
+                <div class="title">Финансовые вопросы</div>
+                <a href="mailto:billing@seopult.ru" target="_blank">billing@seopult.ru</a>
+            </div>
+            <div class="support-emails-ceil">
+                <div class="title">Статейное продвижение</div>
+                <a href="mailto:articles@seopult.ru" target="_blank">articles@seopult.ru</a>
+            </div>
+            <div class="support-emails-ceil">
+                <div class="title">Контекстная реклама</div>
+                <a href="mailto:click@seopult.ru" target="_blank">click@seopult.ru</a>
+            </div>
+            <div class="support-emails-ceil">
+                <div class="title">Специалист on-line</div>
+                <a href="/welcome.html?goal=%2Ffeedback.html">Задавайте вопросы прямо из своего профиля</a>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+</div>
+<div class="y_updates">
+    <div class="content-field">
+        <div class="title t32">Анализатор апдейтов поисковой системы Яндекс</div>
+        <table class="y_updates_tbl" border="0" cellpadding="0" cellspacing="0" id="updates_tbl">
+            <thead>
+            <tr>
+                <th>Дата</th>
+                <th>Текстовый апдейт</th>
+                <th>Шторм</th>
+                <th>ВЧ</th>
+                <th>СЧ</th>
+                <th>НЧ</th>
+                <th>Подтверждено</th>
+            </tr>
+            </thead>
+            <tbody>
+                        <tr class="orange1_tds">
+                <td>сегодня</td>
+                <td> <span style='cursor: help;' title='Апдейт документов в индексе'>00:50:00</span> </td>
+                <td title="26.58">26.56 %</td>
+                <td title="28.18">28.07 %</td>
+                <td title="26.82">26.84 %</td>
+                <td title="25.44">25.44 %</td>
+                <td>&mdash;</td>
+            </tr>
+                        <tr class="">
+                <td>вчера</td>
+                <td> &mdash; </td>
+                <td title="15.02">15.07 %</td>
+                <td title="16.07">16.12 %</td>
+                <td title="14.82">14.84 %</td>
+                <td title="14.49">14.55 %</td>
+                <td>&mdash;</td>
+            </tr>
+                        <tr class="orange0_tds">
+                <td>2016-07-27</td>
+                <td> &mdash; </td>
+                <td title="37.83">37.88 %</td>
+                <td title="37.09">37.16 %</td>
+                <td title="38.63">38.65 %</td>
+                <td title="37.79">37.85 %</td>
+                <td>&mdash;</td>
+            </tr>
+                        <tr class="">
+                <td>2016-07-26</td>
+                <td> &mdash; </td>
+                <td title="12.82">12.84 %</td>
+                <td title="13.32">13.48 %</td>
+                <td title="12.79">12.66 %</td>
+                <td title="12.53">12.55 %</td>
+                <td>&mdash;</td>
+            </tr>
+                        <tr class="orange_tds">
+                <td>2016-07-25</td>
+                <td> <span style='cursor: help;' title='Апдейт документов в индексе'>01:00:00</span> </td>
+                <td title="30.78">30.69 %</td>
+                <td title="32.66">32.60 %</td>
+                <td title="30.83">30.75 %</td>
+                <td title="29.57">29.47 %</td>
+                <td>&mdash;</td>
+            </tr>
+                        <tr class="">
+                <td>2016-07-24</td>
+                <td> &mdash; </td>
+                <td title="11.68">11.53 %</td>
+                <td title="12.37">12.13 %</td>
+                <td title="11.72">11.39 %</td>
+                <td title="11.23">11.26 %</td>
+                <td>&mdash;</td>
+            </tr>
+                        <tr class="">
+                <td>2016-07-23</td>
+                <td> &mdash; </td>
+                <td title="13.42">13.28 %</td>
+                <td title="14.45">14.17 %</td>
+                <td title="13.17">13.18 %</td>
+                <td title="12.94">12.78 %</td>
+                <td>&mdash;</td>
+            </tr>
+                        <tr class="">
+                <td>2016-07-22</td>
+                <td> &mdash; </td>
+                <td title="16.70">16.79 %</td>
+                <td title="17.39">17.45 %</td>
+                <td title="16.99">17.13 %</td>
+                <td title="16.10">16.17 %</td>
+                <td>&mdash;</td>
+            </tr>
+                        </tbody>
+        </table>
+        <span class="btn btn_transparent"  onclick="more_updates()" id="updates_more_div">Показать ещё</span>
+    </div>
+</div>
+<div class="mobile-app">
+    <div class="mobile-app-wrapper">
+        <div class="content-field">
+            <div class="screen"></div>
+            <div class="mobile-app-content">
+                <div class="title t32">Мобильное приложение SeoPult</div>
+                <span>Установив приложение на ваш смартфон, вы сможете отслеживать динамику SEO - и контекстного продвижения, корректировать настройки кампаний, пополнять баланс и получать важные уведомления системы</span>
+            </div>
+            <div class="mobile-app-links">
+                <a href="https://itunes.apple.com/us/app/seopult/id1017714335" target="_blank" class="appstore svg"></a>
+                <a href="https://play.google.com/store/apps/details?id=ru.seopult.app" target="_blank" class="googleplay svg"></a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="news" id="news">
+    <div class="content-field">
+        <div class="title t32">Новости компании:</div>
+        <div class="news-list">
+                            <div class="news-row">
+                    <a href="/news.289.html"  target="_blank" title="Продвижение в мобильном поиске" class="time">15 июля</a>
+                    <a href="/news.289.html"  target="_blank" title="Продвижение в мобильном поиске" class="news-title">
+                        Продвижение в мобильном поиске
+                                            </a>
+                    <div class="text">Система SeoPult следует тренду, заданному поисковыми системами Яндекс и Google. Мы начинаем показывать позиции в мобильном поиске и давать рекомендации по оптимизации сайтов под мобильные устройства. Функционал полностью бесплатен для пользователей, продвигающих свои проекты в Системе.</div>
+                </div>
+                            <div class="news-row">
+                    <a href="/news.296.html"  target="_blank" title="Перекрестная минусовка ключевых слов" class="time">06 июля</a>
+                    <a href="/news.296.html"  target="_blank" title="Перекрестная минусовка ключевых слов" class="news-title">
+                        Перекрестная минусовка ключевых слов
+                                            </a>
+                    <div class="text">В модуле контекстной рекламы SeoPult появился новый полезный инструмент — перекрестная минусовка ключевых слов.</div>
+                </div>
+                            <div class="news-row">
+                    <a href="/news.293.html"  target="_blank" title="Новые метрики качества ссылок" class="time">09 июня</a>
+                    <a href="/news.293.html"  target="_blank" title="Новые метрики качества ссылок" class="news-title">
+                        Новые метрики качества ссылок
+                                            </a>
+                    <div class="text">По многочисленным просьбам в Систему выведены используемые внутренние показатели оценки качества ссылок - поисковая видимость домена и спамность страницы донора</div>
+                </div>
+                    </div>
+        <div class="all-news">
+            <a href="/news.html" class="btn btn-transparent btn-small">Все новости</a>
+        </div>
+    </div>
+</div>
+<div class="footer">
+    <div class="content-field">
+        <div class="copiright">&copy; Copyright 2016 SeoPult.Ru</div>
+        <div class="soclinks">
+            <a href="https://vk.com/seopultru" class="vk svg" target="_blank"></a>
+            <a href="https://twitter.com/SeoPultRU" class="twitter svg" target="_blank"></a>
+            <a href="https://www.facebook.com/seopult/" class="facebook svg" target="_blank"></a>
+        </div>
+    </div>
+</div>
+
+
+<div id="ltizer-wrapper" style="display:none;" class="ltizer-wrapper">
+    <div class="ltizer_new" id="ltizer_new">
+        <div class="ltizer_close svg" onclick="SeoPultMain.ltizer_close();"></div>
+        <div class="ltizer_content">
+            <div class="title t24">Бесплатная регистрация</div>
+            <div class="txt">Получите все преимущества Системы - начните самостоятельную рекламную кампанию прямо сейчас</div>
+        </div>
+        <div class="ltizer_button">
+            <a href="/register.html" class="btn btn-orange btn-big" onclick="_paq.push(['trackEvent', 'NewMug', 'Register', 'Reg6']); return SeoPultMain.lb_register();">Начать продвижение</a>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">if(typeof(LTizer) == 'object') {LTizer.init({"timeout":2000,"speed":800}, [{"id":171,"title":"Бесплатная регистрация в<br />Системе SeoPult","body":"Получите все преимущества Системы &ndash; начните самостоятельную рекламную кампанию прямо сейчас.","pic":"","button":"<input type=\"button\" class=\"btn_or_13d\" onclick=\"lb_redirect('/register.html?s=ltizer');\" value=\"Начать продвижение\">"}]);addEvent(window,"resize",function(){LTizer.resize();});}</script>
+</body></html>

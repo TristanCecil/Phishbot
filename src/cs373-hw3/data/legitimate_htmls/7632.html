@@ -1,0 +1,1268 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<HTML>
+<HEAD>
+<TITLE>MissyUSA.com</TITLE>
+<meta name="robots" content="index,follow"><!--구글검색-->
+<meta name="robots" content="noarchive"><!--구글검색-->
+<META NAME="Author" CONTENT="">
+<META NAME="Keywords" CONTENT="">
+<META NAME="Description" CONTENT="">
+<meta http-equiv="content-type" content="text/html; charset=euc-kr">
+<link rel="apple-touch-icon-precomposed" href="/mainpage/image/missyusa.png">
+<Link rel="SHORTCUT ICON" href="/missycon.ico">
+<link rel='STYLESHEET' type='text/css' href='/mainpage/include/css/style.css'>
+<meta name="google-site-verification" content="ooBEYFF10-eUW_s35g8HO-_MVTwOKVoO4uPp_VDXrgk" /><!--구글인증태그-->
+<meta name="google-site-verification" content="uMw3MMUFT3J28tJ49OsuBvhe3-5eDVmsCHZQG4K1ndU" /><!--구글메일 확인태그-->
+<script language="javascript" src="/mainpage/include/js_file/cookie.js"></script>
+<script language="javascript" src="/mainpage/include/js_file/lib.js"></script>
+<script language="javascript" src="/mainpage/include/js_file/div_change.js"></script>
+<script language="javascript" type="text/javascript">
+<!--
+	var Member_Id;
+    var isovercnt=true;
+	
+	function Set_MemberId(MemberId){
+		Member_Id = MemberId;
+	}
+
+	function send_memo(){
+		WinPop=window.open("/mainpage/func/message/send_memo.asp?to_id="+Member_Id,"memo_list","width=510, height=420,left=10,top=10,scrollbars=no");
+		WinPop.focus();
+		document.getElementById("blog_memo").style.visibility="hidden";
+	}
+	
+	function move_blog(){	
+		window.open("http://blog.missyusa.com/move_user_blog.asp?userid="+Member_Id);	
+		document.getElementById("blog_memo").style.visibility="hidden";
+	}
+	
+	function viewP(uid,e){
+	
+		var old_uid = Member_Id;
+		var new_uid = uid;
+
+		Set_MemberId(uid);
+
+		send_memo();
+		return; //쪽지창띄우는걸로 변경 2014-09-30
+
+		var brname = navigator.appName
+		if (brname=="Netscape"){
+		    //send_memo();
+		}
+
+        if (e==undefined){
+            e=this.event;
+        }
+        if (e==undefined){
+            send_memo();
+        }
+		var pos = cfGetEventPosition(e);
+		var x = pos.x;
+		var y = pos.y;
+
+		if (document.getElementById("blog_memo").style.visibility=="hidden"){
+			document.getElementById("blog_memo").style.left=x;
+			document.getElementById("blog_memo").style.top=y;
+			document.getElementById("blog_memo").style.visibility="visible";
+		}else{
+			if (old_uid==new_uid){
+				document.getElementById("blog_memo").style.visibility="hidden";
+			}else{
+				document.getElementById("blog_memo").style.left=x+"px";
+				document.getElementById("blog_memo").style.top=y+"px";
+			}
+		}
+		
+	}
+
+	function viewBP(uid){
+		WinPop=window.open("/mainpage/business/message/send_memo.asp?to_id="+uid,"memo_list","width=510, height=420,left=10,top=10,scrollbars=no");
+		WinPop.focus();
+	}
+
+    function viewLoginFrame(vw){
+
+        var scrWidth = window.outerWidth ;
+        var scrHeight = document.body.scrollTop;
+        var left = (scrWidth-320) / 2;
+        var top = (scrHeight+100) ;
+        
+        document.getElementById("login_frame").style.left=left;
+        document.getElementById("login_frame").style.top=top;
+        document.getElementById("login_frame").style.visibility = vw;
+        if (vw=="visible"){
+            document.getElementById("loginframe").src="/mainpage/account/login_pop.asp";
+        }else if (vw=="hidden"){
+            isovercnt = true;
+        }
+
+    }
+		
+	function cfGetEventPosition(evt) {
+
+		var e = evt || this.event;
+		var b = document.body;
+		var scroll = cfGetScrollOffset();
+		var pos = {
+			x : window.event.pageX || e.clientX+scroll.x-b.clientLeft,
+			y : window.event.pageY || e.clientY+scroll.y-b.clientTop
+		}
+		return pos;
+	  
+	}
+
+	function cfGetScrollOffset(win) {
+	
+		if (!win) win = self;
+		var x = win.pageXOffset || win.document.body.scrollLeft || document.documentElement.scrollLeft || 0;
+		var y = win.pageYOffset || win.document.body.scrollTop || document.documentElement.scrollTop || 0;
+		return { x:x, y:y };
+	  
+	}	
+
+	function list_memo(){
+		WinPop=window.open("/mainpage/func/message/memo_recive_list.asp","","width=510,height=420,left=10,top=10,scrollbars=no");
+		WinPop.focus()
+	}
+
+	function OpenChatting(){//폐기
+	    
+	}
+	
+	function go2Content(arg0,arg1,arg2,arg3,arg4,arg5) {
+		location.href = "/mainpage/boards/board_read.asp?section="+arg4+"&idx="+arg5+"&id="+arg3+"&ref="+arg0+"&step="+arg1+"&level="+arg2;
+	}
+	
+	function go3Content(arg0,arg1,arg2,arg3,arg4,arg5) {
+		location.href = "/mainpage/news/board_read.asp?section=" + arg4+ "&idx=" + arg5 + "&id=" + arg3 + "&ref=" + arg0 + "&step=" + arg1 + "&level=" + arg2 ;
+	}
+	
+	function go4Content(arg0,arg1,arg2,arg3,arg4,arg5) {
+		location.href = "/mainpage/lawcases/board_read.asp?section=" + arg4+ "&idx=" + arg5 + "&id=" + arg3 + "&ref=" + arg0 + "&step=" + arg1 + "&level=" + arg2 ;
+	}
+	
+	function resize_frame_this(obj){  //<iframe 태그에서 onload="resize_frame_this(this)" 로 호출하는 iframe 리사이징
+
+		var obj_document = obj.contentWindow.document; 
+        var iheight = 0;
+
+		if(obj_document.height){
+			iheight = obj_document.height;			
+		}else{
+			iheight = obj_document.body.scrollHeight;			
+		}
+
+        obj.height = iheight;
+
+	}
+
+	function updateIFrame(height,obj) {
+	
+		var iframe = document.getElementById(obj);
+		iframe.setAttribute('height', height ); 
+		
+	}
+
+//-->
+</script>
+<!--//구글분석기-->
+<script>
+    (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date(); a = s.createElement(o),
+  m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+    ga('create', 'UA-27909044-1', 'missyusa.com');
+    ga('send', 'pageview');
+
+</script>
+<!--구글분석기//-->
+</HEAD>
+<BODY topmargin="0"
+
+>
+
+    <!--248 / remote:23.228.221.74 / forward:60.53.121.90, 23.228.221.74 / real:60.53.121.90-->
+
+<!--// 상단 로고 영역 -->
+<!--//팝업공지-->
+
+<script language="javascript">
+<!--
+
+	function s_Cookie22(name, value, expiredays) {
+		var todayDate = new Date();
+		todayDate.setDate(todayDate.getDate() + expiredays);
+		document.cookie = name + "=" + escape(value) + "; path=/; expires=" + todayDate.toGMTString() + ";"
+	}
+
+	function shape_close22(lname, chk) {
+		if (chk == true) {
+		    s_Cookie22(lname, "close", 1);
+		}
+		hidePop22(lname);
+	}
+
+	function hidePop22(nm) {
+		document.getElementById(nm).style.visibility = "hidden";
+	}
+
+//-->
+</script>
+<table width="880" align="center" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+		<td width="1" style="position:absolute">
+        	
+		</td>		    
+    </tr>
+</table>
+
+<!--팝업공지//-->
+<table cellpadding="0" border="0" cellspacing="0" width="880" align="center">
+	<tr>	
+		<td width="429" align="left"><a href="/"><img src="/mainpage/img/logo_new.gif"></a></td>
+		<td width="101">&nbsp;</td>
+		<td width="350" align="right">
+			<!-- 상단 우측 top navigation -->
+			<table width="100%" cellpadding="0" cellspacing="0" border="0">
+			  <tr><td colspan="8" height="21"></td></tr>
+			  <tr>
+				<td width="194"></td>				
+				<td><a href="http://blog.missyusa.com"><img src="/mainpage/img/topmenu02.gif"></a></td>
+				<td><img src="/mainpage/img/topmenu_bar.gif"></td>
+				<td><a href="http://club.missyusa.com"><img src="/mainpage/img/topmenu03.gif"></a></td>
+				<td><img src="/mainpage/img/topmenu_bar.gif"></td>
+				<td><a href="http://www.musalist.com/mainpage/business/subContent_dirc.asp?section=dirc"><img src="/mainpage/img/topmenu04.gif"></a></td>
+			  </tr>
+			  <tr><td colspan="8" height="36">
+                
+              </td></tr>
+			</table>
+		</td>
+	</tr>
+</table>
+<!-- 상단 로고 영역 //-->
+<!-- Main 네비게이션 -->
+<table cellpadding="0" border="0" cellspacing="0" width="880" align="center">
+	<tr>
+		<td width="1" style="position:absolute;">
+						                
+				<div id="ad_right" style='position:absolute; top:0px;left:885px;'>
+					<table border="0" cellpadding="0" cellspacing="0">
+						<tr>
+							<td><!--main@outer_right1-->
+								<iframe src="http://adps.missyusa.com/main_outer_right1.asp" id="main_outer_right1" width="85" height="178" frameborder="0" scrolling="no"></iframe>
+							</td>
+						</tr>
+						<tr><td height="3"></td></tr>
+					</table>
+				</div>			
+				<div id="ad_right2" style='position:absolute; top:182px;left:885px;'>
+					<table border="0" cellpadding="0" cellspacing="0">
+						<tr>
+							<td><!--main@outer_right2-->
+								<iframe src="http://adps.missyusa.com/main_outer_right2.asp" id="main_outer_right2" width="85" height="335" frameborder="0" scrolling="no"></iframe>
+								<!--85*335-->
+							</td>
+						</tr>
+						<tr><td height="3"></td></tr>
+					</table>
+				</div>            
+                <!--//원래 main@outer_left1자리-->
+				<div id="ad_left" style="position:absolute; top:0px;left:-90px; z-index:10">
+					<table border="0" cellpadding="0" cellspacing="0">
+						<tr>
+							<td><!--main@outer_left1-->
+								<iframe src="http://adps.missyusa.com/main_outer_left1.asp" id="main_outer_left1" width="85" height="190" frameborder="0" scrolling="no"></iframe>
+							</td>
+						</tr>
+						<tr><td height="3"></td></tr>
+					</table>
+				</div>		               
+                <!--원래 main@outer_left1자리//-->			
+				<div id="ad_left1" style='position:absolute; top:194px;left:-90px;'>
+					<table border="0" cellpadding="0" cellspacing="0">
+						<tr>
+							<td><!--main@outer_left2-->
+								<iframe src="http://adps.missyusa.com/main_outer_left2.asp" id="main_outer_left2" width="85" height="190" frameborder="0" scrolling="no"></iframe>
+							</td>
+						</tr>
+						<tr><td height="3"></td></tr>
+					</table>
+				</div>	
+                
+		</td>
+        <!--//개편-->
+		<td><a href="/mainpage/content/MainContent.asp?section=talk"><img src="/mainpage/img/navi/mainpage_navi01.gif"></a></td>
+		<td><a href="/mainpage/content/MainContent.asp?section=healthy"><img src="/mainpage/img/navi/mainpage_navi02.gif"></a></td>
+		<td><a href="/mainpage/content/MainContent.asp?section=home"><img src="/mainpage/img/navi/mainpage_navi03.gif"></a></td>
+		<td><a href="/mainpage/content/MainContent.asp?section=mother"><img src="/mainpage/img/navi/mainpage_navi04.gif"></a></td>
+		<td><a href="/mainpage/content/MainContent.asp?section=life"><img src="/mainpage/img/navi/mainpage_navi05.gif"></a></td>
+		<td><a href="/mainpage/content/MainContent.asp?section=town"><img src="/mainpage/img/navi/mainpage_navi06.gif"></a></td>
+		<td><a href="/mainpage/content/MainContent.asp?section=writer"><img src="/mainpage/img/navi/mainpage_navi07.gif"></a></td>
+        <td><a href="http://www.musalist.com" target="_blank"><img src="/mainpage/img/navi/mainpage_navi08.gif"></a></td>
+		<td><a href="http://www.haeorumusa.com/missy_shop"><img src="/mainpage/img/navi/mainpage_navi09.gif"></a></td>
+        <!--개편//-->
+	</tr>
+</table>
+<table><tr><td height="5"></td></tr></table>
+
+<table cellpadding="0" cellspacing="0" width="880" align="center">
+	<tr>
+        <td valign="top">
+		<div id="blog_memo" style="position:absolute; visibility:hidden; left:370px; top:86px;">
+		<table width="45" border="0" cellpadding="2" cellspacing="0" bgcolor="#999999">
+		  <tr>
+			<td>
+				<table width="100%" border="0" cellpadding="3" cellspacing="0" bgcolor="#dcdcdc">
+				  <tr><td class="login_text" valign="middle"><a href="javascript:send_memo();">쪽지</a></td></tr>
+				  <tr><td class="login_text" valign="middle"><a href="javascript:move_blog();">블로그</a></td><tr>
+				</table>
+			</td>
+		  </tr>
+		</table>
+		</div>
+        <!--//팝업로그인프레임-->
+        <div id="login_frame" style="position:absolute; visibility:hidden; left:-600px; top:100px;">
+        <table border="0" cellpadding="3" cellspacing="0">
+          <tr>
+            <td bgcolor="#f4dfb4">
+              <table width="300" border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td><iframe src="" id="loginframe" width="300px" height="250px" frameborder="0" scrolling="no"></iframe></td>
+                </tr>
+                <tr>
+                  <td align="right" height="15" bgcolor="#f9f0e1"><img src="/mainpage/content/image/close8.gif" style="cursor:pointer;" onclick="viewLoginFrame('hidden');" /></td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>        
+        </div>
+        <!--팝업로그인프레임//-->
+<script language="javascript">
+<!--
+
+    function chk_login_main() {
+
+        var oF = document.frm_login_main;
+
+        if (oF.iss.checked == true) {
+            oF.save_id.value = "y";
+        } else {
+            oF.save_id.value = "n";
+        }
+
+    }
+
+    function selectAction(fm) {
+
+        if (fm.search_section.value == "") {
+            alert("검색하실 섹션을 선택해주세요..");
+            //fm.search_section.focus();
+            return false;
+        }
+        else if (fm.searchWord.value == "") {
+            alert("검색어를 입력해주세요..");
+            fm.searchWord.focus();
+            return false;
+        }
+        else {
+            return true;
+        }
+
+    }
+	
+//-->
+</script>
+<!-- Talk lounge, banner, login -->
+<table border="0" cellpadding="0" cellspacing="0" width="880" align="center">
+	<tr>
+		<td background="/mainpage/img/top_talk_bg.gif" width="305">
+			<!-- Talk Lounge -->
+			<table cellpadding="0" cellspacing="0" width="100%" height="114">				
+                <!--<tr>
+					<td align="left" style="padding-top:7px;padding-left:2px;text-align:left"><a href="/mainpage/content/MainContent.asp?section=talk"><img src="/mainpage/img/top_talk.gif"></a></td>
+				</tr>-->
+				<tr><td height="5"></td></tr>
+				<tr><td style='padding-left:5px'><table width='100%' cellpadding='0' cellspacing='0' border='0'><tr><td width='7' style='padding-right:5px;'><a href='/mainpage/boards/board_list.asp?section=talk&id=talk1'><img src='/mainpage/img/talk_img_talk1.gif'></a> </td><td><div style='height:15px; width:98%; overflow:hidden;'><a style='height:15px; display:block;' href=javascript:go2Content('2120024','1','0','talk1','talk','4461419');>montvale nj summer school</a></div></td></tr></table></td></tr><tr><td style='padding-left:5px'><table width='100%' cellpadding='0' cellspacing='0' border='0'><tr><td width='7' style='padding-right:5px;'><a href='/mainpage/boards/board_list.asp?section=talk&id=talk13'><img src='/mainpage/img/talk_img_talk13.gif'></a> </td><td><div style='height:15px; width:98%; overflow:hidden;'><a style='height:15px; display:block;' href=javascript:go2Content('2130538','1','0','talk13','talk','2775112');>뉴욕에서 한국 가는 비행기 최근 싸게 구입하신분 계시나요?</a></div></td></tr></table></td></tr><tr><td style='padding-left:5px'><table width='100%' cellpadding='0' cellspacing='0' border='0'><tr><td width='7' style='padding-right:5px;'><a href='/mainpage/boards/board_list.asp?section=talk&id=talk3'><img src='/mainpage/img/talk_img_talk3.gif'></a> </td><td><div style='height:15px; width:98%; overflow:hidden;'><a style='height:15px; display:block;' href=javascript:go2Content('12700','1','0','talk3','talk','4461391');>며칠 전 밥먹다가 죽을뻔했고 용케 살았네요</a></div></td></tr></table></td></tr><tr><td style='padding-left:5px'><table width='100%' cellpadding='0' cellspacing='0' border='0'><tr><td width='7' style='padding-right:5px;'><a href='/mainpage/boards/board_list.asp?section=talk&id=talk6'><img src='/mainpage/img/talk_img_talk6.gif'></a> </td><td><div style='height:15px; width:98%; overflow:hidden;'><a style='height:15px; display:block;' href=javascript:go2Content('1149075','1','0','talk6','talk','3168108');>오바마. 연방법에서 동양인 비하 단어인`오리엔탈` 사용 금지 법안 통과</a></div></td></tr></table></td></tr><tr><td style='padding-left:5px'><table width='100%' cellpadding='0' cellspacing='0' border='0'><tr><td width='7' style='padding-right:5px;'><a href='/mainpage/boards/board_list.asp?section=talk&id=talk9'><img src='/mainpage/img/talk_img_talk9.gif'></a> </td><td><div style='height:15px; width:98%; overflow:hidden;'><a style='height:15px; display:block;' href=javascript:go2Content('69768','1','0','talk9','talk','4461382');>[IQ테스트]반팔티의 구멍은 몇 개?</a></div></td></tr></table></td></tr><!--세월호 연예부분 삭제한태그-->
+                <!--세월호 임시-->
+				<tr><td height="5"></td></tr>
+			</table>
+		</td>
+		<td background="/mainpage/img/top_ad_bg.gif" width="390" height="114">
+			<!-- top banner -->
+			<iframe src="http://adps.missyusa.com/main_top.asp?adrnd=4" id="main_top" width="390" height="110" frameborder="0" scrolling="no"></iframe>
+		</td>
+		<td width="181">
+			<table width="100%" cellpadding="0" cellspacing="0" border="0">
+				<tr>
+					<td background="/mainpage/img/top_login_bg.gif" >
+					<!-- login -->
+					
+						<table border="0" cellpadding="0" cellspacing="0" width="100%" height="84">
+						  <form name="frm_login_main" method="post" action="/mainpage/account/login_ok.asp" onsubmit="return chk_login_main();">
+							<tr><td colspan="3" height="6"></td></tr>
+							<tr>
+								<td width="15" style="padding-left:5px;" class="login_text" align="center">ID</td>
+								<td style="padding-left:5px;"><input type="text" value="" style="width:90px;height:18px;border:#bebebe 1PX SOLID;font-size:11px;font-family:돋움;" name="userid" tabindex="1">
+								<td class="login_text"><input type="checkbox" name="iss" tabindex="3"> ID저장<input type="hidden" name="save_id" value=""></td>
+							</tr>
+							<tr>
+								<td style="padding-left:5px;" class="login_text">PW</td>
+								<td style="padding-left:5px;"><input type="password" style="width:90px;height:18px;border:#bebebe 1PX SOLID;font-size:11px;font-family:돋움;" name="passwd" tabindex="2">
+								<td class="login_text"><input type="image" src="/mainpage/img/top_login_btn.gif" class="white_icon"></td>
+							</tr>
+							<tr>
+								<td colspan="3" class="login_text" align="center"><a href="/mainpage/account/id_pw_search.asp" class="login_text">아이디/비밀번호 찾기</a> | 
+								<a href="/mainpage/account/join.asp" class="login_text"><b>회원가입</b></a></td>
+							</tr>
+							<tr><td colspan="3" height="6"></td></tr>
+						  </form>
+						</table>
+					
+					</td>
+				</tr>
+				<tr>
+					<td background="/mainpage/img/top_login_bg2.gif">
+						<!--//공지-->
+						<table cellpadding="0" cellspacing="0" height="30">
+							<tr>
+								<td style="padding-left:5px;">
+									
+	<table width="100%" cellpadding="0" cellspacing="0">
+		<tr>
+			<td width="100%" height="26" valign="middle">
+			&nbsp;<a href="/mainpage/boards/board_list.asp?section=admin&id=admin1"><img src="/mainpage/image/mainpage/icon_notice.gif" align="absmiddle" border="0"></a>
+			
+			<a href="javascript:go2Content('87','1','0','admin1','admin','398479');">
+			로그인 오류</a>
+			
+			</td>
+		</tr>
+	</table>	
+
+								</td>
+							</tr>
+						</table>						
+						<!--공지//-->
+					</td>
+				</tr>
+			</table>
+		</td>
+		<td width="2" background="/mainpage/img/top_talk_bg_right.gif"></td>		
+	</tr>
+</table>
+<!-- search -->
+<table border="0" cellpadding="0" cellspacing="0" width="880" height="35" align="center">
+	<form name="searchform" action="/mainpage/content/MainSearch.asp" method="get" onsubmit="return selectAction(this);">
+	<tr>
+ 		<td height="" style="position:absolute;">		
+			<script language="javascript">
+			    function s_Cookie(name, value, expiredays) {
+			        var todayDate = new Date();
+			        todayDate.setDate(todayDate.getDate() + expiredays);
+			        document.cookie = name + "=" + escape(value) + "; path=/; expires=" + todayDate.toGMTString() + ";"
+			    }
+
+			    function shape_close(lname, chk) {
+			        if (chk == true) {
+			            s_Cookie(lname, "close", 1);
+			        }
+			        document.all['divpop'].style.visibility = "hidden";
+			        updateIFrame(0, "main_popup"); //광고가 플래시일때 크롬에서 광고 안사라짐 해결
+			    }
+
+			    function shape_close_l(lname, chk) {
+			        if (chk == true) {
+			            s_Cookie(lname, "close", 1);
+			        }
+			        document.all['divlay'].style.visibility = "hidden";
+			        updateIFrame(0, "main_lay"); //광고가 플래시일때 크롬에서 광고 안사라짐 해결
+			    }
+
+			    function div_auto_close(dname) {
+			        document.all[dname].style.visibility = "hidden";
+			        if (dname == "divpop") {
+			            updateIFrame(0, "main_popup"); //광고가 플래시일때 크롬에서 광고 안사라짐 해결
+			        } else if (dname == "divlay") {
+			            updateIFrame(0, "main_lay"); //광고가 플래시일때 크롬에서 광고 안사라짐 해결
+			        }
+			    }                				                       				
+			</script>
+            
+			<div id="divpop" style="position:absolute; z-index:200; visibility:; left:116px; top:35px;">
+			<table width="1" height="1" cellpadding="0" cellspacing="0" border="0">
+			<tr>
+				<td height="180" align="center">
+                    <!--토요타광고 오류로 임시로 수정... 광고끝난후 추후에 /mainpage/ad/ad_function.asp , /mainpage/ad/main_popup.asp 삭제-->
+					<iframe src="http://adps.missyusa.com/main_popup.asp?adrnd=4&host=missyusa.com" id="main_popup" width="474" height="210" frameborder="0" scrolling="no"></iframe>
+                    
+                    <!--<iframe src="/mainpage/ad/main_popup.asp?host=missyusa.com" id="main_popup" width="474" height="210" frameborder="0" scrolling="no"></iframe>-->
+				</td>
+			</tr>
+			<tr>
+				<td height="25" align="right" bgcolor="#cccccc">
+					<input type="checkbox" name="closepop" value="y">오늘하루 이 창을 열지않음. 
+					<b><a href="javascript:shape_close('divpop',document.all.closepop.checked);">[닫기]</a></b>&nbsp;
+				</td>
+			</tr>
+			</table>
+			</div>
+            
+		</td>       
+		<td style="padding-top:5px;padding-left:10px;">
+			<select style="100;height:22px;border:#bebebe 1PX SOLID;font-size:12px;font-family:돋움;" name="search_section">
+				<option value=''>섹션별검색</option>
+				<option value='talk'>Talk Lounge</option>
+				<option value='healthy'>Healthy Beauty</option>
+				<option value='home'>Home & Food</option>
+				<option value='mother'>Motherhood</option>
+				<option value='life'>Life Info</option>
+				<option value='town'>Buy & Sell</option>
+			</select>
+		</td>
+		<td style="padding-top:5px;">
+			<input type="text" style="width:340px;height:20px;border:#bebebe 1PX SOLID;font-size:11px;font-family:돋움;" name="searchWord"> 
+			<input type="image" src="/mainpage/img/top_search_btn.gif" class="white_icon" align="absmiddle">
+		</td>
+		<td width="285" style="padding-top:5px;" valign="middle">
+			<!--<script language="javascript" src="http://ad2.joyfulad.com:8080/js.kti/missyusa/main@top_right"></script>-->
+			<iframe src="http://adps.missyusa.com/main_search.asp" id="main_search" width="285" height="22" frameborder="0" scrolling="no"></iframe>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="3" height="3"></td>
+	</tr>
+	</form>
+</table>
+<!-- Missy zone & Missy Writer -->
+<table border="0" cellpadding="0" cellspacing="0" width="880" align="center">
+	<tr>
+		<td>
+		<!-- Missy Zone -->
+			<table cellpadding="0" cellspacing="0" width="589">
+				<tr>
+					<td width="115"><img src="/mainpage/img/top_mzon_img.gif"></td>
+					<td background="/mainpage/img/top_mzon_bg.gif" width="474" height="230">
+						<table>
+							<tr>
+								<td width="115" align="center">
+									<!--MissyZone-->
+									<table border='0'><tr><td><table cellpadding='2' cellspacing='0' border='0'>  <tr>	<td><a href='/mainpage/boards/board_read.asp?section=talk&id=home14&page=1&category=0&key_field=&mypost=0&key_word=&idx=236187&ref=19183&step=1&level=0' target='_self'><img src='/fileServer/AdminImg/npreview/201605221952437647.JPG' border='0' width='100' height='70'></a></td> </tr>  <tr>	<td><a href='/mainpage/boards/board_read.asp?section=talk&id=home14&page=1&category=0&key_field=&mypost=0&key_word=&idx=236187&ref=19183&step=1&level=0' target='_self'>메밀국수 품은 …</a></td>  </tr></table></td></tr><tr><td height='10'></td></tr><tr><td><table cellpadding='2' cellspacing='0' border='0'>  <tr>	<td><a href='/mainpage/boards/board_read.asp?section=talk&id=home31&page=1&category=0&key_field=&mypost=0&key_word=&idx=236116&ref=12856&step=1&level=0' target='_self'><img src='/fileServer/AdminImg/npreview/201605192136143449.jpg' border='0' width='100' height='70'></a></td> </tr>  <tr>	<td><a href='/mainpage/boards/board_read.asp?section=talk&id=home31&page=1&category=0&key_field=&mypost=0&key_word=&idx=236116&ref=12856&step=1&level=0' target='_self'>텃밭</a></td>  </tr></table></td></tr></table>
+
+								</td>
+								<td valign="top">
+									<table width="345" border="0">
+										<tr><td align='left'><table width='100%' cellpadding='0' cellspacing='0' border='0'><tr><td width='7'><img src='/mainpage/img/icon02.gif'> </td><td><div style='height:15px; width:98%; overflow:hidden;'><a style='height:15px; display:block;' href=javascript:go2Content('136311','1','0','healthy1','healthy','695664');>trish mcevoy 브러쉬 어떤가요??</a></div></td></tr></table></td></tr><tr><td align='left'><table width='100%' cellpadding='0' cellspacing='0' border='0'><tr><td width='7'><img src='/mainpage/img/icon02.gif'> </td><td><div style='height:15px; width:98%; overflow:hidden;'><a style='height:15px; display:block;' href=javascript:go2Content('415029','1','0','healthy2','healthy','695668');>삭스세일 보테가 가방과 지갑</a></div></td></tr></table></td></tr><tr><td align='left'><table width='100%' cellpadding='0' cellspacing='0' border='0'><tr><td width='7'><img src='/mainpage/img/icon02.gif'> </td><td><div style='height:15px; width:98%; overflow:hidden;'><a style='height:15px; display:block;' href=javascript:go2Content('20549','1','0','healthy5','healthy','695667');>필라테스 10회만으로 효과가 있을까요? (수술전 근력운동..)</a></div></td></tr></table></td></tr><tr><td align='left'><table width='100%' cellpadding='0' cellspacing='0' border='0'><tr><td width='7'><img src='/mainpage/img/icon02.gif'> </td><td><div style='height:15px; width:98%; overflow:hidden;'><a style='height:15px; display:block;' href=javascript:go2Content('67644','1','0','healthy6','healthy','695666');>[고도비만160+고도리] 86일째- 하루 워킹 6.21마일</a></div></td></tr></table></td></tr><tr><td align='left'><table width='100%' cellpadding='0' cellspacing='0' border='0'><tr><td width='7'><img src='/mainpage/img/icon02.gif'> </td><td><div style='height:15px; width:98%; overflow:hidden;'><a style='height:15px; display:block;' href=javascript:go2Content('14598','1','0','healthy7','healthy','695637');>센츄리 스파~ 아이디 보관 요청 ..</a></div></td></tr></table></td></tr>
+										<tr><td height="3"></td></tr>
+										<tr><td height="1" bgcolor="#dedede"></td></tr>
+										<tr><td height="3"></td></tr>
+										<tr><td align='left'><table width='100%' cellpadding='0' cellspacing='0' border='0'><tr><td width='7'><img src='/mainpage/img/icon02.gif'> </td><td><div style='height:15px; width:98%; overflow:hidden;'><a style='height:15px; display:block;' href=javascript:go2Content('14584','1','0','home1','home','236115');>세탁기 삼성 or 엘지 추천해주세요..</a></div></td></tr></table></td></tr><tr><td align='left'><table width='100%' cellpadding='0' cellspacing='0' border='0'><tr><td width='7'><img src='/mainpage/img/icon02.gif'> </td><td><div style='height:15px; width:98%; overflow:hidden;'><a style='height:15px; display:block;' href=javascript:go2Content('36532','1','0','home6','home','236230');>Royal canin 사료 어떤가요?</a></div></td></tr></table></td></tr><tr><td align='left'><table width='100%' cellpadding='0' cellspacing='0' border='0'><tr><td width='7'><img src='/mainpage/img/icon02.gif'> </td><td><div style='height:15px; width:98%; overflow:hidden;'><a style='height:15px; display:block;' href=javascript:go2Content('30854','1','0','home12','home','236226');>일식 닭가슴살 편육??</a></div></td></tr></table></td></tr><tr><td align='left'><table width='100%' cellpadding='0' cellspacing='0' border='0'><tr><td width='7'><img src='/mainpage/img/icon02.gif'> </td><td><div style='height:15px; width:98%; overflow:hidden;'><a style='height:15px; display:block;' href=javascript:go2Content('8790','1','0','home13','home','235988');>케익 만들었어요~</a></div></td></tr></table></td></tr><tr><td align='left'><table width='100%' cellpadding='0' cellspacing='0' border='0'><tr><td width='7'><img src='/mainpage/img/icon02.gif'> </td><td><div style='height:15px; width:98%; overflow:hidden;'><a style='height:15px; display:block;' href=javascript:go2Content('15519','1','0','home3','home','236234');>CCTV</a></div></td></tr></table></td></tr>
+									</table>
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+			</table>
+		</td>
+		<td width="6"></td>
+		<td valign="top">
+		<!-- Missy Writer -->
+			<table cellpadding="0" cellspacing="0">
+				<tr>
+					<td colspan="2"><a href="/mainpage/content/MainContent.asp?section=writer"><img src="/mainpage/img/top_writer_top.gif"></a></td>
+				</tr>
+				<tr>
+					<td colspan="2" style="padding-left:10px;padding-top:5px;" background="/mainpage/img/top_writer_bg.gif" height="202">
+						<table>	<tr>		<td><img src='/fileServer/AdminImg/npreview/201605212219562386.JPG' width='100' height='70'></td>		<td width='5'></td>		<td>			<a href='/mainpage/boards/board_read.asp?section=talk&idx=4460206&id=talk68&ref=10&step=1&level=0' target='_self' style='color:#ff6600;height:18px'>별빛속을 걸으며</a>			<br><a href='/mainpage/boards/board_read.asp?section=talk&idx=4460206&id=talk68&ref=10&step=1&level=0' target='_self'>Camino Story-5 오리송 산장에서 Day-1</a>		</td>	</tr>	<tr><td colspan='3' height='5'></td></tr></table>
+
+						<table border="0" cellpadding="0" cellspacing="0">
+						  <tr>
+							<td>
+							<script language="javascript">
+							<!--
+					
+								var PM = new TextSlider('PM');
+								PM.item = [
+			'<td height="20"><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=talk&id=talk68">별빛속을 걸으며</a></td><td><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=healthy&id=home100">칼리의 뷰티 시크릿</a></td>'
+			
+				,
+			
+			'<td height="20"><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=talk&id=talk65">남작부인처럼 여행하기</a></td><td><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=talk&id=talk63">신시아의 무드북</a></td>'
+			
+				,
+			
+			'<td height="20"><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=mother&id=mother66">아티스트맘의 미술놀이</a></td><td><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=talk&id=talk62">Life  Forecast</a></td>'
+			
+				,
+			
+			'<td height="20"><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=talk&id=talk61">신수의 공감툰</a></td><td><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=talk&id=talk60">클래식의 향기</a></td>'
+			
+				,
+			
+			'<td height="20"><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=mother&id=mother61">윈디씨티맘의 미국 교육</a></td><td><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=home&id=home99">Savory Good Life</a></td>'
+			
+				,
+			
+			'<td height="20"><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=talk&id=talk59">줄리아의 친절한 미술관</a></td><td><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=talk&id=talk58">카페 뤼미에르</a></td>'
+			
+				,
+			
+			'<td height="20"><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=healthy&id=healthy50">Estar의 약없이 천연치..</a></td><td><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=home&id=home97">떡과 전통음식 이야..</a></td>'
+			
+				,
+			
+			'<td height="20"><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=talk&id=talk24">마가렛의 작은 서재</a></td><td><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=mother&id=mother60">미술치료사 이야기</a></td>'
+			
+				,
+			
+			'<td height="20"><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=mother&id=mother59">샤론의 메이드바이맘</a></td><td><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=home&id=home95">Sarahs Hand-made</a></td>'
+			
+				,
+			
+			'<td height="20"><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=home&id=home94">배워서 남주는 EZ DIY</a></td><td><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=talk&id=talk56">이부현의 해피엔딩</a></td>'
+			
+				,
+			
+			'<td height="20"><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=talk&id=talk54">나를 찾아가는 여행</a></td><td><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=talk&id=talk53">Jane의 신앙 에세이</a></td>'
+			
+				,
+			
+			'<td height="20"><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=talk&id=talk52">일드에 대한 수다</a></td><td><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=home&id=home92">박혜리의 해피와인..</a></td>'
+			
+				,
+			
+			'<td height="20"><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=home&id=home91">수하의 Happy Paleo</a></td><td><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=home&id=home90">미즈강의 리본강의</a></td>'
+			
+				,
+			
+			'<td height="20"><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=mother&id=mother55">연년생 네아이 키우기</a></td><td><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=home&id=home89">실비의 해피 프로젝..</a></td>'
+			
+				,
+			
+			'<td height="20"><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=mother&id=mother50">몬테소리맘의 행복 학교</a></td><td><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=home&id=home85">김태옥의 DIY 더 좋..</a></td>'
+			
+				,
+			
+			'<td height="20"><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=home&id=home84">Claire의 Tips&Touch</a></td><td><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=home&id=home80">The Tasting Menu</a></td>'
+			
+				,
+			
+			'<td height="20"><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=talk&id=talk44">Gratitude Living</a></td><td><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=home&id=home78">작은 공예정원</a></td>'
+			
+				,
+			
+			'<td height="20"><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=talk&id=talk41">커피와 쥐포</a></td><td><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=mother&id=mother44">미술이랑 엄마랑</a></td>'
+			
+				,
+			
+			'<td height="20"><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=home&id=home73">송세영의 D`lish</a></td><td><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=home&id=home72">로라의 전통떡과 퓨..</a></td>'
+			
+				,
+			
+			'<td height="20"><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=healthy&id=healthy38">IM의 알뜰살뜰 코디법</a></td><td><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=mother&id=home66">조앤의 홈메이드 맘..</a></td>'
+			
+				,
+			
+			'<td height="20"><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=home&id=home65">Sue의 바느질 놀이</a></td><td><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=mother&id=mother41">엄마랑 홈스쿨링</a></td>'
+			
+				,
+			
+			'<td height="20"><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=home&id=home62">Janet`s Blooms in Styl..</a></td><td><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=home&id=home61">김수연의 플라워데..</a></td>'
+			
+				,
+			
+			'<td height="20"><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=life&id=life32">토종댁의 신토불이 영어</a></td><td><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=life&id=life31">이재선의 영어쏙 문..</a></td>'
+			
+				,
+			
+			'<td height="20"><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=healthy&id=home59">함도은의 천연공방</a></td><td><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=talk&id=talk32">연아의 이야기</a></td>'
+			
+				,
+			
+			'<td height="20"><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=talk&id=talk31">노을빛 수채화처럼</a></td><td><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=talk&id=talk30">노랑의 달빛이야기</a></td>'
+			
+				,
+			
+			'<td height="20"><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=talk&id=talk29">들꽃들의 반란</a></td><td><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=talk&id=talk26">Hello, Stranger!</a></td>'
+			
+				,
+			
+			'<td height="20"><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=life&id=life25">굿바이 영어 울렁증</a></td><td><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=home&id=home53">Stella의 궁중요리</a></td>'
+			
+				,
+			
+			'<td height="20"><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=life&id=life24">JJ의 즐겨찾기</a></td><td><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=talk&id=talk23">Love and the City</a></td>'
+			
+				,
+			
+			'<td height="20"><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=home&id=home51">101Food</a></td><td><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=home&id=home50">호연엄마와 요리조..</a></td>'
+			
+				,
+			
+			'<td height="20"><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=mother&id=mother32">엄마와 함께 하는 놀이</a></td><td><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=home&id=home49">퀼트가든 이야기</a></td>'
+			
+				,
+			
+			'<td height="20"><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=home&id=home46">Sweet Home Bakery</a></td><td><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=mother&id=mother30">혼자 굴러가는 아이..</a></td>'
+			
+				,
+			
+			'<td height="20"><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=healthy&id=healthy21">Jolie`s Choice</a></td><td><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=home&id=home44">Amy의 퀼트나눔</a></td>'
+			
+				,
+			
+			'<td height="20"><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=life&id=life20">Jackie English Plus</a></td><td><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=talk&id=talk18">마담딕시의 남부생..</a></td>'
+			
+				,
+			
+			'<td height="20"><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=talk&id=talk17">이계숙의 미국에 살며</a></td><td><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=home&id=home32">케이킴의 깔끔요리</a></td>'
+			
+				,
+			
+			'<td height="20"><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=mother&id=mother27">김경하의 초등영어</a></td><td><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=home&id=home27">약(藥)이 되는 한국..</a></td>'
+			
+				,
+			
+			'<td height="20"><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=home&id=home25">이미나의 맛있는 세상</a></td><td><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=life&id=life14">송애경의Bumpy빼빼..</a></td>'
+			
+				,
+			
+			'<td height="20"><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=talk&id=life5">나는야 1.5세 아줌마</a></td><td><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=home&id=home24">크리스틴의 르 쁘띠..</a></td>'
+			
+				,
+			
+			'<td height="20"><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=home&id=home11">김정연의 Happy House</a></td><td></td>'
+			];
+							    PM.width = 270; // Ticker의 가로길이
+							    PM.height = 100; // Ticker의 세로길이
+							    PM.speed = 40; // text가 slide되는 빠르기. 단위는 ms
+							    PM.pixel = 1;  // text가 한번 slide할 때 움직일 픽셀.
+							    PM.interval = 1000; // text가 slide된 후 다음 text가 slide되기 까지의 대기시간
+							    PM.size = 20;  // text간의 간격. height와 같거나 크게 하여야 제대로 보인다.
+							    PM.direction = 'up'; // text가 slide될 방향
+							    PM.align = 'left'; // text의 정렬 (left|right)
+							    PM.init(); // TextSlider의 작동을 지시한다.
+
+							//-->
+							</script>
+							</td>
+						  </tr>
+						</table>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="880" align="center">
+	<tr><td colspan="3" height="10"></td></tr>
+	<tr>
+		<td>
+			<table cellspacing="0" cellpadding="0">
+				<!-- banner -->
+				<tr>
+					<td><iframe src="http://adps.missyusa.com/main_middle_left1.asp" id="main_middle_left1" width="292" height="60" frameborder="0" scrolling="no"></iframe></td>
+					<td width="5"></td>
+					<td><iframe src="http://adps.missyusa.com/main_middle_left2.asp" id="main_middle_left2" width="292" height="60" frameborder="0" scrolling="no"></iframe></td>
+				</tr>
+				<tr><td colspan="3" height="29"></td></tr>
+				<tr>
+					<td><a href="/mainpage/content/MainContent.asp?section=mother"><img src="/mainpage/img/top_mother.gif"></a></td>
+					<td width="5"></td>
+					<td><a href="/mainpage/content/MainContent.asp?section=life"><img src="/mainpage/img/top_life.gif"></a></td>
+				</tr>
+				<tr><td colspan="3" height="5"></td></tr>
+				<tr>
+					<td style="border-top: 1px solid #d6d6d6;border-left: 1px solid #d6d6d6;border-right:1px solid #d6d6d6;border-bottom:2px solid #ffa05a;padding:7px;">
+						<!-- motherhood -->
+						<table>
+						  <tr>
+							<td>
+							  <table>  <tr>    <td align='center'><img src='/fileServer/AdminImg/npreview/201605192137268768.jpg'></td>    <td width='3'></td>    <td valign='top' style='line-height:140%;'>		<a href='/mainpage/boards/board_read.asp?section=talk&id=talk12&page=1&category=0&key_field=&mypost=0&key_word=&idx=4457412&ref=15506&step=1&level=0' target='_self' class='blue_title'>한국에 나온김에 남매촬영해주…</a>		<br><a href='/mainpage/boards/board_read.asp?section=talk&id=talk12&page=1&category=0&key_field=&mypost=0&key_word=&idx=4457412&ref=15506&step=1&level=0' target='_self'>나중에 모아놓고 보면 성장앨범이 될꺼같아서 매년은 아니지만 
+…</a>	</td>  </tr></table>
+
+							</td>
+						  </tr>						  
+						  <tr><td align='left'><table width='100%' cellpadding='0' cellspacing='0' border='0'><tr><td width='7'><img src='/mainpage/img/icon02.gif'> </td><td><div style='height:15px; width:98%; overflow:hidden;'><a style='height:15px; display:block;' href=javascript:go2Content('296387','1','0','mother1','mother','753627');>임신 4-5주차 하혈을 해요. 경험 좀 나눠주세요</a></div></td></tr></table></td></tr><tr><td align='left'><table width='100%' cellpadding='0' cellspacing='0' border='0'><tr><td width='7'><img src='/mainpage/img/icon02.gif'> </td><td><div style='height:15px; width:98%; overflow:hidden;'><a style='height:15px; display:block;' href=javascript:go2Content('1377','1','0','mother2','mother','753548');>임당산모 양수터진 출산경험 ^^</a></div></td></tr></table></td></tr><tr><td align='left'><table width='100%' cellpadding='0' cellspacing='0' border='0'><tr><td width='7'><img src='/mainpage/img/icon02.gif'> </td><td><div style='height:15px; width:98%; overflow:hidden;'><a style='height:15px; display:block;' href=javascript:go2Content('1376','1','0','mother2','mother','752847');>자연산 울 셋째 태어난날....</a></div></td></tr></table></td></tr><tr><td align='left'><table width='100%' cellpadding='0' cellspacing='0' border='0'><tr><td width='7'><img src='/mainpage/img/icon02.gif'> </td><td><div style='height:15px; width:98%; overflow:hidden;'><a style='height:15px; display:block;' href=javascript:go2Content('18502','1','0','mother3','mother','753506');>시험관에 대해 묻고 싶습니다</a></div></td></tr></table></td></tr><tr><td align='left'><table width='100%' cellpadding='0' cellspacing='0' border='0'><tr><td width='7'><img src='/mainpage/img/icon02.gif'> </td><td><div style='height:15px; width:98%; overflow:hidden;'><a style='height:15px; display:block;' href=javascript:go2Content('142738','1','0','mother4','mother','753626');>커클랜드 분유 괜찮을까요?</a></div></td></tr></table></td></tr><tr><td align='left'><table width='100%' cellpadding='0' cellspacing='0' border='0'><tr><td width='7'><img src='/mainpage/img/icon02.gif'> </td><td><div style='height:15px; width:98%; overflow:hidden;'><a style='height:15px; display:block;' href=javascript:go2Content('18688','1','0','mother15','mother','753591');>LA 중국어 배우실 분 모집합니다~^^</a></div></td></tr></table></td></tr><tr><td align='left'><table width='100%' cellpadding='0' cellspacing='0' border='0'><tr><td width='7'><img src='/mainpage/img/icon02.gif'> </td><td><div style='height:15px; width:98%; overflow:hidden;'><a style='height:15px; display:block;' href=javascript:go2Content('31075','1','0','mother16','mother','753624');>Looking for a tutor- 2nd grade math in Manhattan</a></div></td></tr></table></td></tr><tr><td align='left'><table width='100%' cellpadding='0' cellspacing='0' border='0'><tr><td width='7'><img src='/mainpage/img/icon02.gif'> </td><td><div style='height:15px; width:98%; overflow:hidden;'><a style='height:15px; display:block;' href=javascript:go2Content('27002','1','0','mother17','mother','753605');>Sat 문제집 추천 부탁드려요</a></div></td></tr></table></td></tr>
+						</table>
+					</td>
+					<td width="5"></td>
+					<td style="border-top: 1px solid #d6d6d6;border-left: 1px solid #d6d6d6;border-right:1px solid #d6d6d6;border-bottom:2px solid #ffa05a;padding:5px;" valign="top">
+					<!-- life info -->
+						<table>
+							<tr><td align="left" height="20"><img src="/mainpage/img/top_life_box01.gif"></td></tr>
+							<tr><td align='left'><table width='100%' cellpadding='0' cellspacing='0' border='0'><tr><td width='7'><img src='/mainpage/img/icon02.gif'> </td><td><div style='height:15px; width:98%; overflow:hidden;'><a style='height:15px; display:block;' href=javascript:go3Content('730','1','0','law1','life','781');>미국 투자이민 신청 급증… 발급 80% 이상은 ‘중국인’</a></div></td></tr></table></td></tr><tr><td align='left'><table width='100%' cellpadding='0' cellspacing='0' border='0'><tr><td width='7'><img src='/mainpage/img/icon02.gif'> </td><td><div style='height:15px; width:98%; overflow:hidden;'><a style='height:15px; display:block;' href=javascript:go3Content('729','1','0','law1','life','780');>샌더스 “국경장벽 대신 포괄이민개혁을”</a></div></td></tr></table></td></tr><tr><td align='left'><table width='100%' cellpadding='0' cellspacing='0' border='0'><tr><td width='7'><img src='/mainpage/img/icon02.gif'> </td><td><div style='height:15px; width:98%; overflow:hidden;'><a style='height:15px; display:block;' href=javascript:go3Content('728','1','0','law1','life','779');>범죄 피해 이민자 U·T비자 신청 증가</a></div></td></tr></table></td></tr>
+							<tr><td width="292" height="1" bgcolor="#dedede"></td></tr>
+							<tr><td width="292" height="2" ></td></tr>
+							<tr><td align="left" height="20"><img src="/mainpage/img/top_life_box02.gif"></td></tr>
+							<tr><td align='left'><table width='100%' cellpadding='0' cellspacing='0' border='0'><tr><td width='7'><img src='/mainpage/img/icon02.gif'> </td><td><div style='height:15px; width:98%; overflow:hidden;'><a style='height:15px; display:block;' href=javascript:go2Content('82233','1','0','life13','life','416431');>취업비자 재입국</a></div></td></tr></table></td></tr><tr><td align='left'><table width='100%' cellpadding='0' cellspacing='0' border='0'><tr><td width='7'><img src='/mainpage/img/icon02.gif'> </td><td><div style='height:15px; width:98%; overflow:hidden;'><a style='height:15px; display:block;' href=javascript:go2Content('70665','1','0','life1','life','416433');>컨퍼런스에서 스케줄 정할때 말하고자 합니다. 영작 부탁드려요</a></div></td></tr></table></td></tr><tr><td align='left'><table width='100%' cellpadding='0' cellspacing='0' border='0'><tr><td width='7'><img src='/mainpage/img/icon02.gif'> </td><td><div style='height:15px; width:98%; overflow:hidden;'><a style='height:15px; display:block;' href=javascript:go2Content('8457','1','0','life22','life','416432');>분당 지역 1년 랜트 하실분....</a></div></td></tr></table></td></tr>
+							<tr><td height="1" bgcolor="#dedede"></td></tr>
+							<tr><td width="292" height="2" ></td></tr>
+							<tr><td align="left" height="20"><img src="/mainpage/img/top_life_box03.gif"></td></tr>
+							<tr><td align='left'><table width='100%' cellpadding='0' cellspacing='0' border='0'><tr><td width='7'><img src='/mainpage/img/icon02.gif'> </td><td><div style='height:15px; width:98%; overflow:hidden;'><a style='height:15px; display:block;' href=javascript:go2Content('68085','1','0','life7','life','416430');>프라퍼티 퍼밋 이나 렌트 컨트롤 알라보려면 어디로 전화해야하나요?</a></div></td></tr></table></td></tr><tr><td align='left'><table width='100%' cellpadding='0' cellspacing='0' border='0'><tr><td width='7'><img src='/mainpage/img/icon02.gif'> </td><td><div style='height:15px; width:98%; overflow:hidden;'><a style='height:15px; display:block;' href=javascript:go2Content('25161','1','0','life8','life','416426');>federal whithholding 이 뭔가요?</a></div></td></tr></table></td></tr><tr><td align='left'><table width='100%' cellpadding='0' cellspacing='0' border='0'><tr><td width='7'><img src='/mainpage/img/icon02.gif'> </td><td><div style='height:15px; width:98%; overflow:hidden;'><a style='height:15px; display:block;' href=javascript:go2Content('35306','1','0','life12','life','416420');>부동산면허시험(브로커/에이전트)(맞춤형코스)(한국어,영어반)</a></div></td></tr></table></td></tr>
+						</table>
+					</td>
+				</tr>
+				<tr><td colspan="3" height="20"></td></tr>				
+			</table>
+		</td>
+		<td width="6"></td>
+		<td width="285" valign="top">
+			<table border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td height="" style="position:absolute;">
+                    
+			            <div id="divlay" style="border:0px solid #000000; position:absolute; z-index:201; visibility:; left:-15px; top:130px;">
+			            <table width="1" height="1" cellpadding="0" cellspacing="0" border="0">
+			            <tr>
+				            <td height="250" align="center">
+					            <iframe src="http://adps.missyusa.com/main_middle_rightlay.asp?host=missyusa.com" id="main_lay" width="300" height="250" frameborder="0" scrolling="no"></iframe>
+				            </td>
+			            </tr>
+			            <tr>
+				            <td height="20" align="right" bgcolor="#cccccc">
+					            <input type="checkbox" name="closelay" value="y">오늘하루 이 창을 열지않음. 
+					            <b><a href="javascript:shape_close_l('divlay',document.all.closelay.checked);">[닫기]</a></b>&nbsp;
+				            </td>
+			            </tr>
+			            </table>					
+			            </div>
+                    
+                    </td>
+                </tr>
+				<!-- right banner -->
+				<tr>
+					<td><iframe src="http://adps.missyusa.com/main_middle_right1.asp" id="main_middle_right1" width="285" height="60" frameborder="0" scrolling="no"></iframe></td>
+				</tr>
+				<tr><td height="5"></td></tr>
+				<tr>
+					<td><iframe src="http://adps.missyusa.com/main_middle_right2.asp" id="main_middle_right2" width="285" height="60" frameborder="0" scrolling="no"></iframe></td>
+				</tr>
+				<tr><td height="10"></td></tr>
+				<tr>
+					<td><!--쇼핑몰광고--><a href="http://www.haeorumusa.com/missy_shop/"><img src="/mainpage/img/top_shop_top.gif" width="285" height="28"></a></td>
+				</tr>
+				<tr>
+					<td background="/mainpage/img/top_shop_bg.gif" height="224px"><!--쇼핑몰제품노출-->
+						<table cellpadding="0" cellspacing="2" align="center">
+							<tr>
+								<td colspan="4" align="center">
+								<a href='http://www.haeorumusa.com/missy_shop/prod_cat_list.asp?cat_code=220702 ' target='_blank'><img src='/fileServer/AdminImg/npreview/201511031100359766.jpg' border='0'></a>
+
+								</td>
+							</tr>
+							<tr><td colspan="4" height="10"></td></tr>
+							<tr>
+								<td align='center'>  <table cellpadding'0' cellspacing='0'>	<tr><td align='center'><a href='http://www.haeorumusa.com/missy_shop/prod_detail.asp?prod_code=roichen035' target='_blank'><img src='/fileServer/AdminImg/npreview/201511251051482089.jpg' border='0'></a></td></tr>	<tr><td align='center'><a href='http://www.haeorumusa.com/missy_shop/prod_detail.asp?prod_code=roichen035' target='_blank' class='8pt'>로이첸</a></td></tr>	<tr><td align='center'><a href='http://www.haeorumusa.com/missy_shop/prod_detail.asp?prod_code=roichen035' target='_blank' class='blue_title'>$ 139.99</a></td></tr>  </table></td><td align='center'>  <table cellpadding'0' cellspacing='0'>	<tr><td align='center'><a href='http://www.haeorumusa.com/missy_shop/prod_detail.asp?prod_code=cream17' target='_blank'><img src='/fileServer/AdminImg/npreview/201511251054051353.jpg' border='0'></a></td></tr>	<tr><td align='center'><a href='http://www.haeorumusa.com/missy_shop/prod_detail.asp?prod_code=cream17' target='_blank' class='8pt'>크림하우스</a></td></tr>	<tr><td align='center'><a href='http://www.haeorumusa.com/missy_shop/prod_detail.asp?prod_code=cream17' target='_blank' class='blue_title'>$ 549.99</a></td></tr>  </table></td><td align='center'>  <table cellpadding'0' cellspacing='0'>	<tr><td align='center'><a href='http://www.haeorumusa.com/missy_shop/prod_detail.asp?prod_code=bluerabbit' target='_blank'><img src='/fileServer/AdminImg/npreview/201511251052485481.jpg' border='0'></a></td></tr>	<tr><td align='center'><a href='http://www.haeorumusa.com/missy_shop/prod_detail.asp?prod_code=bluerabbit' target='_blank' class='8pt'>블루래빗</a></td></tr>	<tr><td align='center'><a href='http://www.haeorumusa.com/missy_shop/prod_detail.asp?prod_code=bluerabbit' target='_blank' class='blue_title'>$ 350.00</a></td></tr>  </table></td><td align='center'>  <table cellpadding'0' cellspacing='0'>	<tr><td align='center'><a href='http://www.haeorumusa.com/missy_shop/prod_detail.asp?prod_code=cuck076' target='_blank'><img src='/fileServer/AdminImg/npreview/201509281444267618.jpg' border='0'></a></td></tr>	<tr><td align='center'><a href='http://www.haeorumusa.com/missy_shop/prod_detail.asp?prod_code=cuck076' target='_blank' class='8pt'>쿠쿠</a></td></tr>	<tr><td align='center'><a href='http://www.haeorumusa.com/missy_shop/prod_detail.asp?prod_code=cuck076' target='_blank' class='blue_title'>$ 529.99</a></td></tr>  </table></td>
+
+							</tr>
+						</table>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="880" align="center">
+	<tr><td colspan="3" height="5"></td></tr>
+	<tr>
+		<td width="589" valign="top">
+			<table cellspacing="0" cellpadding="0">
+                <tr>
+					<!-- Blog title -->
+					<td colspan="3" height="15" valign="top"><a href="http://blog.missyusa.com" target="_blank"><img src="/mainpage/img/top_blog.gif"></a></td>
+				</tr>
+				<tr>
+					<td colspan="3" style="border-top: 1px solid #d6d6d6;border-left: 1px solid #d6d6d6;border-right:1px solid #d6d6d6;border-bottom:2px solid #ffa05a;padding:7px;">
+						<table align="center">
+							<tr>
+							  <td width='131' height='162' background='/mainpage/img/top_blog_bg.gif' align='center'>	<table cellspacing='0' cellpadding='0' border='0'>		<tr><td  align='center' style='padding-top:0px'><a href='http://blog.missyusa.com/sangky0701/201602102050058439' target='_blank'><img src='/fileServer/AdminImg/npreview/201602111813458932.jpg' border='0'></a></td></tr>		<tr><td height='10'></td></tr>		<tr><td align='center'><a href='http://blog.missyusa.com/sangky0701/201602102050058439' target='_blank' class='blue_title'>새벽에 생각하다</a></td></tr>		<tr><td align='center' style='padding:5px;'><a href='http://blog.missyusa.com/sangky0701/201602102050058439' target='_blank'>세계 각국의 계단</a><br>&nbsp;</td></tr></table></td><td width='10'></td><td width='131' height='162' background='/mainpage/img/top_blog_bg.gif' align='center'>	<table cellspacing='0' cellpadding='0' border='0'>		<tr><td  align='center' style='padding-top:0px'><a href='http://blog.missyusa.com/myland53/201602092222217046' target='_blank'><img src='/fileServer/AdminImg/npreview/201602111756236101.jpg' border='0'></a></td></tr>		<tr><td height='10'></td></tr>		<tr><td align='center'><a href='http://blog.missyusa.com/myland53/201602092222217046' target='_blank' class='blue_title'>퀼트 이야기 나…</a></td></tr>		<tr><td align='center' style='padding:5px;'><a href='http://blog.missyusa.com/myland53/201602092222217046' target='_blank'>십자수와 퀼트의 만남</a></td></tr></table></td><td width='10'></td><td width='131' height='162' background='/mainpage/img/top_blog_bg.gif' align='center'>	<table cellspacing='0' cellpadding='0' border='0'>		<tr><td  align='center' style='padding-top:0px'><a href='http://blog.missyusa.com/carol818/201601121622593661' target='_blank'><img src='/fileServer/AdminImg/npreview/201601181419088144.jpg' border='0'></a></td></tr>		<tr><td height='10'></td></tr>		<tr><td align='center'><a href='http://blog.missyusa.com/carol818/201601121622593661' target='_blank' class='blue_title'>아삭아삭한 올게…</a></td></tr>		<tr><td align='center' style='padding:5px;'><a href='http://blog.missyusa.com/carol818/201601121622593661' target='_blank'>하얀밥 한공기 무우말랭이 무침이 최고</a></td></tr></table></td><td width='10'></td><td width='131' height='162' background='/mainpage/img/top_blog_bg.gif' align='center'>	<table cellspacing='0' cellpadding='0' border='0'>		<tr><td  align='center' style='padding-top:0px'><a href='http://blog.missyusa.com/susanshin35/201601081405033833' target='_blank'><img src='/fileServer/AdminImg/npreview/201601181418065893.jpg' border='0'></a></td></tr>		<tr><td height='10'></td></tr>		<tr><td align='center'><a href='http://blog.missyusa.com/susanshin35/201601081405033833' target='_blank' class='blue_title'>꼼지락 떡과 케…</a></td></tr>		<tr><td align='center' style='padding:5px;'><a href='http://blog.missyusa.com/susanshin35/201601081405033833' target='_blank'>다육이 앙금플라워, 선인장 앙금플라워 …</a></td></tr></table></td>
+
+							</tr>
+						</table>
+					</td>
+				</tr>
+				<tr><td colspan="3" height="20"></td></tr>				
+			</table>
+		</td>
+		<td width="6"></td>
+		<td valign="top">
+			<table cellpadding="0" cellspacing="0">
+				<tr>
+					<td><a href="/mainpage/content/MainContent.asp?section=town"><img src="/mainpage/img/top_buy_top.gif"></a></td>
+				</tr>
+				<tr>
+					<td background="/mainpage/img/top_buy_bg.gif" height="191px" valign="top">
+						<table cellpadding="0" cellspacing="2" border="0" align="center">
+							<tr>
+								<td align='center' valign='top'><table width='100%' cellpadding='2' cellspacing='0'><tr><td align='center'><a href=javascript:go2Content('2496282','1','0','town6','town','5120904');><img src='/fileServer/ImageServer/thum/town6/20165/2016052220304025991.jpg' width='56' height='51' style='border:1px #a8aaa9 solid;'></a></td></tr><tr><td style='word-break:break-all'><a href=javascript:go2Content('2496282','1','0','town6','town','5120904'); class='8pt'><span class='cutstr' style='height:28px;'>한국 여름 치마</span></a></td></tr></table></td><td align='center' valign='top'><table width='100%' cellpadding='2' cellspacing='0'><tr><td align='center'><a href=javascript:go2Content('2496280','1','0','town6','town','5120900');><img src='/fileServer/ImageServer/thum/town6/20165/2016052220232766561.jpg' width='56' height='51' style='border:1px #a8aaa9 solid;'></a></td></tr><tr><td style='word-break:break-all'><a href=javascript:go2Content('2496280','1','0','town6','town','5120900'); class='8pt'><span class='cutstr' style='height:28px;'>[정품] miu miu by prada crossbody bag</span></a></td></tr></table></td><td align='center' valign='top'><table width='100%' cellpadding='2' cellspacing='0'><tr><td align='center'><a href=javascript:go2Content('856645','1','0','town7','town','5120902');><img src='/fileServer/ImageServer/thum/town7/20165/2016052220272760981.jpeg' width='56' height='51' style='border:1px #a8aaa9 solid;'></a></td></tr><tr><td style='word-break:break-all'><a href=javascript:go2Content('856645','1','0','town7','town','5120902'); class='8pt'><span class='cutstr' style='height:28px;'>장난감수납 기차테이블가능</span></a></td></tr></table></td><td align='center' valign='top'><table width='100%' cellpadding='2' cellspacing='0'><tr><td align='center'><a href=javascript:go2Content('856644','1','0','town7','town','5120898');><img src='/fileServer/ImageServer/thum/town7/20165/2016052220230112061.jpeg' width='56' height='51' style='border:1px #a8aaa9 solid;'></a></td></tr><tr><td style='word-break:break-all'><a href=javascript:go2Content('856644','1','0','town7','town','5120898'); class='8pt'><span class='cutstr' style='height:28px;'>포터리반 범블비 튜튜 커스튬</span></a></td></tr></table></td></tr><tr><td align='center' valign='top'><table width='100%' cellpadding='2' cellspacing='0'><tr><td align='center'><a href=javascript:go2Content('1091954','1','0','town4','town','5120908');><img src='/fileServer/ImageServer/thum/town4/20165/2016052220321310171.jpg' width='56' height='51' style='border:1px #a8aaa9 solid;'></a></td></tr><tr><td style='word-break:break-all'><a href=javascript:go2Content('1091954','1','0','town4','town','5120908'); class='8pt'><span class='cutstr' style='height:28px;'>강아지 ear washer+ ear powder</span></a></td></tr></table></td><td align='center' valign='top'><table width='100%' cellpadding='2' cellspacing='0'><tr><td align='center'><a href=javascript:go2Content('124659','1','0','town16','town','5120857');><img src='/fileServer/ImageServer/thum/town16/20165/2016052219182215151.jpg' width='56' height='51' style='border:1px #a8aaa9 solid;'></a></td></tr><tr><td style='word-break:break-all'><a href=javascript:go2Content('124659','1','0','town16','town','5120857'); class='8pt'><span class='cutstr' style='height:28px;'>만원 도시락 : 돈도 아끼고 건강도 챙기는 30일 도시락 전략</span></a></td></tr></table></td><td align='center' valign='top'><table width='100%' cellpadding='2' cellspacing='0'><tr><td align='center'><a href=http://www.musalist.com/mainpage/business/land/land_read.asp?id=busi2&idx=25124 target='_blank'><img src='/fileServer/ImageServer/thum/busi3/20165/2016052217113194151.jpg' width='56' height='51' style='border:1px #a8aaa9 solid;'></a></td></tr><tr><td style='word-break:break-all'><a href=http://www.musalist.com/mainpage/business/land/land_read.asp?id=busi2&idx=25124 target='_blank' class='8pt'><span class='cutstr' style='height:28px;'>Irvine 앤드유닛 타운하우스!</span></a></td></tr></table></td><td align='center' valign='top'><table width='100%' cellpadding='2' cellspacing='0'><tr><td align='center'><a href=http://www.musalist.com/mainpage/business/cars/cars_read.asp?id=busi2&idx=25120 target='_blank'><img src='/fileServer/ImageServer/thum/busi2/20165/2016052214132538121.PNG' width='56' height='51' style='border:1px #a8aaa9 solid;'></a></td></tr><tr><td style='word-break:break-all'><a href=http://www.musalist.com/mainpage/business/cars/cars_read.asp?id=busi2&idx=25120 target='_blank' class='8pt'><span class='cutstr' style='height:28px;'>2012 MERCEDES-BENZ GL450</span></a></td></tr></table></td>                                
+							</tr>
+						</table>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+<table border="0" width="880" cellpadding="0" cellspacing="0" align="center">
+    <tr><td colspan="3" height="5"></td></tr>
+    <tr>
+        <td align="left" bgcolor="#ffffff" width="720"><iframe src="http://adps.missyusa.com/main_728_90.asp?host=missyusa.com" id="main_728_90" width="728px" height="90px" frameborder="0" scrolling="no"></iframe></td>
+        <td width="4"></td>
+        <td align="right">
+            <a href="http://mobile.missyusa.com" target="_blank"><img src="/mainpage/image/145_90open.gif" border="0" /></a>
+        </td>
+    </tr>
+</table>
+<table border="0" width="880" cellpadding="0" cellspacing="0" align="center">
+	<tr><td colspan="3" height="5"></td></tr> 
+	<tr>
+		<td>
+			<table border="0" cellpadding="0" cellspacing="0">
+                <tr>
+					<td width="292" style="padding-bottom:3px;"><a href="/mainpage/boards/board_list.asp?section=talk&id=talk1"><img src="/mainpage/img/top_town.gif"></a></td>
+					<td width="5"></td>
+					<td width="292" style="padding-bottom:3px;" align="left"><img src="/mainpage/img/top_special.gif"></td>
+				</tr>
+				<tr>
+					<td style="border-top: 1px solid #d6d6d6;border-left: 1px solid #d6d6d6;border-right:1px solid #d6d6d6;border-bottom:2px solid #ffa05a;padding:7px;" width="292">
+						<!-- town zone -->
+						<table>
+							<tr><td align='left'><table width='100%' cellpadding='0' cellspacing='0' border='0'><tr><td width='7'><img src='/mainpage/img/icon02.gif'> </td><td><div style='height:15px; width:98%; overflow:hidden;'><a style='height:15px; display:block;' href=javascript:go2Content('2120024','1','0','talk1','talk','4461419');>montvale nj summer school</a></div></td></tr></table></td></tr><tr><td align='left'><table width='100%' cellpadding='0' cellspacing='0' border='0'><tr><td width='7'><img src='/mainpage/img/icon02.gif'> </td><td><div style='height:15px; width:98%; overflow:hidden;'><a style='height:15px; display:block;' href=javascript:go2Content('2120023','1','0','talk1','talk','4461417');>달러(3500불) 필요하신분 환전해용( LA OC지역)</a></div></td></tr></table></td></tr><tr><td align='left'><table width='100%' cellpadding='0' cellspacing='0' border='0'><tr><td width='7'><img src='/mainpage/img/icon02.gif'> </td><td><div style='height:15px; width:98%; overflow:hidden;'><a style='height:15px; display:block;' href=javascript:go2Content('2120022','1','0','talk1','talk','4461416');>마켓에서 카드 계산할때 사인대신 ccv 넘버 넣는거 경험해 보신분요..</a></div></td></tr></table></td></tr><tr><td align='left'><table width='100%' cellpadding='0' cellspacing='0' border='0'><tr><td width='7'><img src='/mainpage/img/icon02.gif'> </td><td><div style='height:15px; width:98%; overflow:hidden;'><a style='height:15px; display:block;' href=javascript:go2Content('2120021','1','0','talk1','talk','4461412');>대학 2학년</a></div></td></tr></table></td></tr><tr><td align='left'><table width='100%' cellpadding='0' cellspacing='0' border='0'><tr><td width='7'><img src='/mainpage/img/icon02.gif'> </td><td><div style='height:15px; width:98%; overflow:hidden;'><a style='height:15px; display:block;' href=javascript:go2Content('2120020','1','0','talk1','talk','4461411');>wmf concent 11pc 언제 또 세일할까요?</a></div></td></tr></table></td></tr><tr><td align='left'><table width='100%' cellpadding='0' cellspacing='0' border='0'><tr><td width='7'><img src='/mainpage/img/icon02.gif'> </td><td><div style='height:15px; width:98%; overflow:hidden;'><a style='height:15px; display:block;' href=javascript:go2Content('2120019','1','0','talk1','talk','4461408');>버지니아에 살고 계신 미씨님들 조언부탁드려요~ 학군하고 트래픽 관련이요</a></div></td></tr></table></td></tr><tr><td align='left'><table width='100%' cellpadding='0' cellspacing='0' border='0'><tr><td width='7'><img src='/mainpage/img/icon02.gif'> </td><td><div style='height:15px; width:98%; overflow:hidden;'><a style='height:15px; display:block;' href=javascript:go2Content('2120018','1','0','talk1','talk','4461403');>Atomy, 애터미제품 쓰고 싶은데요</a></div></td></tr></table></td></tr><tr><td align='left'><table width='100%' cellpadding='0' cellspacing='0' border='0'><tr><td width='7'><img src='/mainpage/img/icon02.gif'> </td><td><div style='height:15px; width:98%; overflow:hidden;'><a style='height:15px; display:block;' href=javascript:go2Content('2120017','1','0','talk1','talk','4461401');>산호세 한국마트에 한국산 현미 파나요?</a></div></td></tr></table></td></tr>
+						</table>
+					</td>
+					<td width="5"></td>
+					<td style="border-top: 1px solid #d6d6d6;border-left: 1px solid #d6d6d6;border-right:1px solid #d6d6d6;border-bottom:2px solid #ffa05a;padding-top:9px;padding-left:7px;" valign="top" width="292">
+					<!-- column -->
+						<table border="0" cellpadding="0" cellspacing="0" border="0">
+							<tr>
+								<td style="padding-left:5px;">
+								<script language="javascript">
+								<!--
+					
+									var PM2 = new TextSlider('PM2');
+									PM2.item = [
+			'<td height="20"><img src="/mainpage/img/icon02.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=talk&id=talk67">동변호사의 가정폭력칼..</a></td><td><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=life&id=life51">더불어 사는 민족학..</a></td>'
+			
+				,
+			
+			'<td height="20"><img src="/mainpage/img/icon02.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=talk&id=talk64">심선보의 마음이야기</a></td><td><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=mother&id=mother67">홍다운의 행동언어..</a></td>'
+			
+				,
+			
+			'<td height="20"><img src="/mainpage/img/icon02.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=healthy&id=healthy54">Rick.Y-All about Fitne..</a></td><td><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=mother&id=mother65">자폐상담 키즈라인</a></td>'
+			
+				,
+			
+			'<td height="20"><img src="/mainpage/img/icon02.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=mother&id=mother63">폴샘의 한국&글로벌 진..</a></td><td><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=mother&id=mother62">친근한 클래식 피아..</a></td>'
+			
+				,
+			
+			'<td height="20"><img src="/mainpage/img/icon02.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=healthy&id=healthy51">아름다운 여성 한방상담</a></td><td><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=life&id=life48">토마스리의 노동/이..</a></td>'
+			
+				,
+			
+			'<td height="20"><img src="/mainpage/img/icon02.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=home&id=home96">김황식의 수의학 상담</a></td><td><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=mother&id=mother58">난임/시험관아기 Q&..</a></td>'
+			
+				,
+			
+			'<td height="20"><img src="/mainpage/img/icon02.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=mother&id=mother57">Hae Joh 의 교육상담</a></td><td><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=life&id=life44">샤론쌤의 뽀대나는 ..</a></td>'
+			
+				,
+			
+			'<td height="20"><img src="/mainpage/img/icon02.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=mother&id=mother56">Kristi의 입시정보방</a></td><td><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=healthy&id=healthy44">눈밑지방/다크서클 ..</a></td>'
+			
+				,
+			
+			'<td height="20"><img src="/mainpage/img/icon02.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=talk&id=talk48">이순자박사의 행복가정</a></td><td><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=mother&id=mother52">Dr.이혜경의 피아노..</a></td>'
+			
+				,
+			
+			'<td height="20"><img src="/mainpage/img/icon02.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=talk&id=talk47">최명자 박사 부부상담</a></td><td><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=mother&id=mother49">불임,유산,출산 한..</a></td>'
+			
+				,
+			
+			'<td height="20"><img src="/mainpage/img/icon02.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=healthy&id=healthy40">서예준의 치과 Q&A</a></td><td><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=home&id=life39">이천의 사진이야기</a></td>'
+			
+				,
+			
+			'<td height="20"><img src="/mainpage/img/icon02.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=talk&id=life36">강변의 가정법 이야기</a></td><td><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=life&id=life37">최병태의 사회복지 ..</a></td>'
+			
+				,
+			
+			'<td height="20"><img src="/mainpage/img/icon02.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=home&id=home64">David An의 비밀 레시피</a></td><td><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=healthy&id=healthy31">최지혜 YOGA</a></td>'
+			
+				,
+			
+			'<td height="20"><img src="/mainpage/img/icon02.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=life&id=life36">강변의 가정법 이야기</a></td><td><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=life&id=life35">김준서 변호사의 이..</a></td>'
+			
+				,
+			
+			'<td height="20"><img src="/mainpage/img/icon02.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=life&id=life34">Brian Joo의 융자컬럼</a></td><td><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=healthy&id=healthy29">디스크 관절 클리닉</a></td>'
+			
+				,
+			
+			'<td height="20"><img src="/mainpage/img/icon02.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=healthy&id=healthy27">강태헌의 잇몸/임플란트</a></td><td><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=life&id=life29">유변호사의 쉬운 이..</a></td>'
+			
+				,
+			
+			'<td height="20"><img src="/mainpage/img/icon02.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=life&id=life28">사진.포토샵 온라인 강..</a></td><td><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=mother&id=mother34">박영희의 언어치료</a></td>'
+			
+				,
+			
+			'<td height="20"><img src="/mainpage/img/icon02.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=healthy&id=healthy22">김승기의 안과 Q&A</a></td><td><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=mother&id=mother31">져스틴최의 아동심..</a></td>'
+			
+				,
+			
+			'<td height="20"><img src="/mainpage/img/icon02.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=mother&id=mother28">이영숙박사의 자녀교육</a></td><td><img src="/mainpage/img/icon01.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=life&id=life17">이창환의 이민법컬..</a></td>'
+			
+				,
+			
+			'<td height="20"><img src="/mainpage/img/icon02.gif" align="absmiddle"> <a href="/mainpage/boards/board_list.asp?section=mother&id=mother10">박윤재박수정의 음악교..</a></td><td></td>'
+			];
+								    PM2.width = 270; // Ticker의 가로길이
+								    PM2.height = 160; // Ticker의 세로길이
+								    PM2.speed = 40; // text가 slide되는 빠르기. 단위는 ms
+								    PM2.pixel = 1;  // text가 한번 slide할 때 움직일 픽셀.
+								    PM2.interval = 1000; // text가 slide된 후 다음 text가 slide되기 까지의 대기시간
+								    PM2.size = 20;  // text간의 간격. height와 같거나 크게 하여야 제대로 보인다.
+								    PM2.direction = 'up'; // text가 slide될 방향
+								    PM2.align = 'left'; // text의 정렬 (left|right)
+								    PM2.init(); // TextSlider의 작동을 지시한다.						
+
+								//-->
+								</script>
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+			</table>
+		</td>
+		<td width="6"></td>
+		<td valign="top"><iframe src="http://adps.missyusa.com/main_bottom.asp" id="main_bottom" width="285" height="177" frameborder="0" scrolling="no"></iframe></td>
+	</tr>
+</table>
+
+<table border="0" width="880" cellpadding="0" cellspacing="0" align="center">
+  <tr><td height="5" colspan="3"</tr>
+  <tr>
+    <td valign="top">
+      <table width="100%" border="0" cellpadding="0" cellspacing="0">
+        <tr>
+          <td width="50%" style="padding-right:2px;">
+            <table width="100%" border="0" cellpadding="5" cellspacing="1" bgcolor="#dddddd">
+              <tr>
+                <td bgcolor="#FFFFFF"><table width="100%" border="0" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td height="30"><img src="/mainpage/img/top_car.gif" /></td>
+                    <td align="right" style="font-size:10px;"><a href="http://www.musalist.com/mainpage/business/cars/dealer_list.asp" target="_blank">전체보기</a></td>
+                  </tr>
+                  <tr>
+                    <td colspan="2">
+        <table width="100%" border="0" cellpadding="0" cellspacing="0"><tr>
+    
+            <td width="20%">
+            <table width="100%" border="0" cellpadding="0" cellspacing="0">
+              <tr>
+                <td align="center"><div style="width:80px;height:80px;overflow:hidden;border:0px #949496 solid;" align="center"><a href="http://www.musalist.com/mainpage/business/cars/dealer_content.asp?dealeridx=195" target="_blank"><img src="/fileServer/BusinessImg/dealer/201601191155542694.jpg" width="80" onerror="this.src='/mainpage/content/image/people2.gif';" /></a></div></td>
+              </tr>
+              <tr>
+                <td style="padding-top:7px;"><div align="center" style="display:inline-block; width:100%; height:17px; overflow:hidden;" class="text17"><a href="http://www.musalist.com/mainpage/business/cars/dealer_content.asp?dealeridx=195" target="_blank">Kevin  Im</a></div></td>
+              </tr>
+              <tr>
+                <td height="25"><div align="center" style="font-size:11px; letter-spacing:-1px;">CA/<strong>보유<font color="red">29</font>건</strong></div></td>
+              </tr>
+            </table>
+            </td>
+            
+            <td width="20%">
+            <table width="100%" border="0" cellpadding="0" cellspacing="0">
+              <tr>
+                <td align="center"><div style="width:80px;height:80px;overflow:hidden;border:0px #949496 solid;" align="center"><a href="http://www.musalist.com/mainpage/business/cars/dealer_content.asp?dealeridx=28" target="_blank"><img src="/fileServer/BusinessImg/dealer/201506261442476921.jpg" width="80" onerror="this.src='/mainpage/content/image/people2.gif';" /></a></div></td>
+              </tr>
+              <tr>
+                <td style="padding-top:7px;"><div align="center" style="display:inline-block; width:100%; height:17px; overflow:hidden;" class="text17"><a href="http://www.musalist.com/mainpage/business/cars/dealer_content.asp?dealeridx=28" target="_blank">J  Park</a></div></td>
+              </tr>
+              <tr>
+                <td height="25"><div align="center" style="font-size:11px; letter-spacing:-1px;">CA/<strong>보유<font color="red">383</font>건</strong></div></td>
+              </tr>
+            </table>
+            </td>
+            
+            <td width="20%">
+            <table width="100%" border="0" cellpadding="0" cellspacing="0">
+              <tr>
+                <td align="center"><div style="width:80px;height:80px;overflow:hidden;border:0px #949496 solid;" align="center"><a href="http://www.musalist.com/mainpage/business/cars/dealer_content.asp?dealeridx=159" target="_blank"><img src="/fileServer/BusinessImg/dealer/201601041051098656.JPG" width="80" onerror="this.src='/mainpage/content/image/people2.gif';" /></a></div></td>
+              </tr>
+              <tr>
+                <td style="padding-top:7px;"><div align="center" style="display:inline-block; width:100%; height:17px; overflow:hidden;" class="text17"><a href="http://www.musalist.com/mainpage/business/cars/dealer_content.asp?dealeridx=159" target="_blank">Michael  Kim</a></div></td>
+              </tr>
+              <tr>
+                <td height="25"><div align="center" style="font-size:11px; letter-spacing:-1px;">CA/<strong>보유<font color="red">374</font>건</strong></div></td>
+              </tr>
+            </table>
+            </td>
+            
+        </tr></table>
+    </td>
+                  </tr>
+                </table>
+                <table width="100%" border="0" cellpadding="0" cellspacing="0">              
+                  <tr><td colspan="3" height="1px" bgcolor="#dddddd"></td></tr>
+                  <tr><td colspan="3" height="5px"></td></tr>
+                  <tr><td height='23px'>CA</td><td width='58px' align='right' style='padding-right:5px;'><strong><font color='#f7ab64'>$345</font></strong></td><td><div style='width:100%; height:15px; overflow:hidden;' class='text17'><a href='http://www.musalist.com/mainpage/business/cars/cars_read.asp?id=busi2&idx=25119' target='_blank'>5월 LEASE★ $345 렉서스 NEW NX200T SUV 풀옵션 ★ 2016년 모델</a></div></td></tr><tr><td height='23px'>CA</td><td width='58px' align='right' style='padding-right:5px;'><strong><font color='#f7ab64'>$11,400</font></strong></td><td><div style='width:100%; height:15px; overflow:hidden;' class='text17'><a href='http://www.musalist.com/mainpage/business/cars/cars_read.asp?id=busi2&idx=25118' target='_blank'>★ 2012년 혼다 시빅 EX ( 한주인/무사고/클린타이틀/굿 컨디션 )</a></div></td></tr><tr><td height='23px'>CA</td><td width='58px' align='right' style='padding-right:5px;'><strong><font color='#f7ab64'>$286</font></strong></td><td><div style='width:100%; height:15px; overflow:hidden;' class='text17'><a href='http://www.musalist.com/mainpage/business/cars/cars_read.asp?id=busi2&idx=25116' target='_blank'>대문짝만한 제사진을 걸고 정직하겠습니다</a></div></td></tr><tr><td height='23px'>CA</td><td width='58px' align='right' style='padding-right:5px;'><strong><font color='#f7ab64'>$245</font></strong></td><td><div style='width:100%; height:15px; overflow:hidden;' class='text17'><a href='http://www.musalist.com/mainpage/business/cars/cars_read.asp?id=busi2&idx=25115' target='_blank'>5월 ,bmw i3, 노다운 도다운 케빈이 $245에 강력 추천합니다</a></div></td></tr><tr><td height='23px'>CA</td><td width='58px' align='right' style='padding-right:5px;'><strong><font color='#f7ab64'>$85</font></strong></td><td><div style='width:100%; height:15px; overflow:hidden;' class='text17'><a href='http://www.musalist.com/mainpage/business/cars/cars_read.asp?id=busi2&idx=25114' target='_blank'>5월 도요타 코롤라 케빈이 $85에 강력 추천합니다</a></div></td></tr><tr><td height='23px'>CA</td><td width='58px' align='right' style='padding-right:5px;'><strong><font color='#f7ab64'>$85</font></strong></td><td><div style='width:100%; height:15px; overflow:hidden;' class='text17'><a href='http://www.musalist.com/mainpage/business/cars/cars_read.asp?id=busi2&idx=25113' target='_blank'>5월 현대 전차종 리스 케빈이 추천합니다</a></div></td></tr><tr><td height='23px'>CA</td><td width='58px' align='right' style='padding-right:5px;'><strong><font color='#f7ab64'>$12,400</font></strong></td><td><div style='width:100%; height:15px; overflow:hidden;' class='text17'><a href='http://www.musalist.com/mainpage/business/cars/cars_read.asp?id=busi2&idx=25110' target='_blank'>★ 2008년 렉서스 ES350 풀옵션 ( 무사고/클린타이틀/굿 컨디션 )</a></div></td></tr>
+                </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+          <td width="50%" style="padding-left:2px;">
+            <table width="100%" border="0" cellpadding="5" cellspacing="1" bgcolor="#dddddd">
+              <tr>
+                <td bgcolor="#FFFFFF"><table width="100%" border="0" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td height="30"><img src="/mainpage/img/top_house.gif" /></td>
+                    <td align="right" style="font-size:10px;"><a href="http://www.musalist.com/mainpage/business/land/dealer_list.asp" target="_blank">전체보기</a></td>
+                  </tr>
+                  <tr>
+                    <td colspan="2">
+        <table width="100%" border="0" cellpadding="0" cellspacing="0"><tr>
+    
+            <td width="20%">
+            <table width="100%" border="0" cellpadding="0" cellspacing="0">
+              <tr>
+                <td align="center"><div style="width:80px;height:80px;overflow:hidden;border:0px #949496 solid;" align="center"><a href="http://www.musalist.com/mainpage/business/land/dealer_content.asp?dealeridx=194" target="_blank"><img src="/fileServer/BusinessImg/dealer/201601122014093779.jpg" width="80" onerror="this.src='/mainpage/content/image/people2.gif';" /></a></div></td>
+              </tr>
+              <tr>
+                <td style="padding-top:7px;"><div align="center" style="display:inline-block; width:100%; height:17px; overflow:hidden;" class="text17"><a href="http://www.musalist.com/mainpage/business/land/dealer_content.asp?dealeridx=194" target="_blank">Brian  Jung</a></div></td>
+              </tr>
+              <tr>
+                <td height="25"><div align="center" style="font-size:11px; letter-spacing:-1px;">CA/<strong>보유<font color="red">30</font>건</strong></div></td>
+              </tr>
+            </table>
+            </td>
+            
+            <td width="20%">
+            <table width="100%" border="0" cellpadding="0" cellspacing="0">
+              <tr>
+                <td align="center"><div style="width:80px;height:80px;overflow:hidden;border:0px #949496 solid;" align="center"><a href="http://www.musalist.com/mainpage/business/land/dealer_content.asp?dealeridx=178" target="_blank"><img src="/mainpage/content/image/common/people2.gif" width="80" onerror="this.src='/mainpage/content/image/people2.gif';" /></a></div></td>
+              </tr>
+              <tr>
+                <td style="padding-top:7px;"><div align="center" style="display:inline-block; width:100%; height:17px; overflow:hidden;" class="text17"><a href="http://www.musalist.com/mainpage/business/land/dealer_content.asp?dealeridx=178" target="_blank">anna  jung</a></div></td>
+              </tr>
+              <tr>
+                <td height="25"><div align="center" style="font-size:11px; letter-spacing:-1px;">CA/<strong>보유<font color="red">10</font>건</strong></div></td>
+              </tr>
+            </table>
+            </td>
+            
+            <td width="20%">
+            <table width="100%" border="0" cellpadding="0" cellspacing="0">
+              <tr>
+                <td align="center"><div style="width:80px;height:80px;overflow:hidden;border:0px #949496 solid;" align="center"><a href="http://www.musalist.com/mainpage/business/land/dealer_content.asp?dealeridx=184" target="_blank"><img src="/fileServer/BusinessImg/dealer/201510091405052046.jpg" width="80" onerror="this.src='/mainpage/content/image/people2.gif';" /></a></div></td>
+              </tr>
+              <tr>
+                <td style="padding-top:7px;"><div align="center" style="display:inline-block; width:100%; height:17px; overflow:hidden;" class="text17"><a href="http://www.musalist.com/mainpage/business/land/dealer_content.asp?dealeridx=184" target="_blank">jason  bai</a></div></td>
+              </tr>
+              <tr>
+                <td height="25"><div align="center" style="font-size:11px; letter-spacing:-1px;">CA/<strong>보유<font color="red">25</font>건</strong></div></td>
+              </tr>
+            </table>
+            </td>
+            
+        </tr></table>
+    </td>
+                  </tr>
+                </table>
+                <table width="100%" border="0" cellpadding="0" cellspacing="0">              
+                  <tr><td colspan="3" height="1px" bgcolor="#dddddd"></td></tr>
+                  <tr><td colspan="3" height="5px"></td></tr>
+                  <tr><td height='23px'>CA</td><td width='58px' align='right' style='padding-right:5px;'><strong><font color='#f7ab64'>$660,000</font></strong></td><td><div style='width:100%; height:15px; overflow:hidden;' class='text17'><a href='http://www.musalist.com/mainpage/business/land/land_read.asp?id=busi3&idx=25124' target='_blank'>Irvine 앤드유닛 타운하우스!</a></div></td></tr><tr><td height='23px'>CA</td><td width='58px' align='right' style='padding-right:5px;'><strong><font color='#f7ab64'>$839,000</font></strong></td><td><div style='width:100%; height:15px; overflow:hidden;' class='text17'><a href='http://www.musalist.com/mainpage/business/land/land_read.asp?id=busi3&idx=25123' target='_blank'>얼바인 노스우드 하이도보 싱글집!</a></div></td></tr><tr><td height='23px'>CA</td><td width='58px' align='right' style='padding-right:5px;'><strong><font color='#f7ab64'>$585,000</font></strong></td><td><div style='width:100%; height:15px; overflow:hidden;' class='text17'><a href='http://www.musalist.com/mainpage/business/land/land_read.asp?id=busi3&idx=25078' target='_blank'>라팔마 ^^ 아담한 단층 하우스 ^</a></div></td></tr><tr><td height='23px'>CA</td><td width='58px' align='right' style='padding-right:5px;'><strong><font color='#f7ab64'>$929,000</font></strong></td><td><div style='width:100%; height:15px; overflow:hidden;' class='text17'><a href='http://www.musalist.com/mainpage/business/land/land_read.asp?id=busi3&idx=25069' target='_blank'>관리잘된 K타운 매물![4유닛,K타운]$92.9만 월렌트$5232,GCAP 6.8</a></div></td></tr><tr><td height='23px'>CA</td><td width='58px' align='right' style='padding-right:5px;'><strong><font color='#f7ab64'>$850,000</font></strong></td><td><div style='width:100%; height:15px; overflow:hidden;' class='text17'><a href='http://www.musalist.com/mainpage/business/land/land_read.asp?id=busi3&idx=25068' target='_blank'>K타운 최고의 CAP!!![6유닛,K타운]$85만 월렌트$5940,GCAP 8.3</a></div></td></tr><tr><td height='23px'>CA</td><td width='58px' align='right' style='padding-right:5px;'><strong><font color='#f7ab64'>$789,800</font></strong></td><td><div style='width:100%; height:15px; overflow:hidden;' class='text17'><a href='http://www.musalist.com/mainpage/business/land/land_read.asp?id=busi3&idx=25063' target='_blank'>멋진 뷰가 있는 새 단독주택***브레아***</a></div></td></tr><tr><td height='23px'>CA</td><td width='58px' align='right' style='padding-right:5px;'><strong><font color='#f7ab64'>$550,000</font></strong></td><td><div style='width:100%; height:15px; overflow:hidden;' class='text17'><a href='http://www.musalist.com/mainpage/business/land/land_read.asp?id=busi3&idx=25049' target='_blank'>풀러튼 학군 좋고 완전 리모델링 단층집</a></div></td></tr>
+                </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>      
+    </td>
+    <td width="4" valign="top"></td>
+    <td width="202" valign="top">
+      <table border="0" width="100%" cellpadding="0" cellspacing="0" align="center">
+        <tr>
+          <td colspan="3"><img src="/mainpage/img/top_powerads.gif" /></td>
+        </tr>        
+        <tr><td align='center' style='padding-top:5px;'><a href='http://www.musalist.com/mainpage/business/dirc/dirc_content.asp?diridx=81' target='_blaink'><img src='/fileServer/BusinessImg/powerdir/2015071320083542911.jpg' width='202' alt='로고이미지' /></a></td></tr><tr><td align='center' style='padding-top:5px;'><a href='http://www.musalist.com/mainpage/business/dirc/dirc_content.asp?diridx=104' target='_blaink'><img src='/fileServer/BusinessImg/powerdir/2016050415351885551.jpg' width='202' alt='로고이미지' /></a></td></tr><tr><td align='center' style='padding-top:5px;'><a href='http://www.musalist.com/mainpage/business/dirc/dirc_content.asp?diridx=108' target='_blaink'><img src='/fileServer/BusinessImg/powerdir/2016051417290276821.jpg' width='202' alt='로고이미지' /></a></td></tr><tr><td align='center' style='padding-top:5px;'><a href='http://www.musalist.com/mainpage/business/dirc/dirc_content.asp?diridx=101' target='_blaink'><img src='/fileServer/BusinessImg/powerdir/2016032320384148581.png' width='202' alt='로고이미지' /></a></td></tr><tr><td align='center' style='padding-top:5px;'><a href='http://www.musalist.com/mainpage/business/dirc/dirc_content.asp?diridx=50' target='_blaink'><img src='/fileServer/BusinessImg/powerdir/2014121000084567731.jpg' width='202' alt='로고이미지' /></a></td></tr><tr><td align='center' style='padding-top:5px;'><a href='http://www.musalist.com/mainpage/business/dirc/dirc_content.asp?diridx=106' target='_blaink'><img src='/fileServer/BusinessImg/powerdir/2016050917143544111.jpg' width='202' alt='로고이미지' /></a></td></tr><tr><td align='center' style='padding-top:5px;'><a href='http://www.musalist.com/mainpage/business/dirc/dirc_content.asp?diridx=109' target='_blaink'><img src='/fileServer/BusinessImg/powerdir/2016051717203867451.jpg' width='202' alt='로고이미지' /></a></td></tr>        
+      </table> 
+    </td>    
+  </tr>
+</table>
+
+
+<script language="javascript">
+<!--
+    function vw_hidden_banner(wv) {
+        document.all['bottom_fixed'].style.visibility = wv;
+    }            
+//-->    
+</script>
+<div id="bottom_fixed" style="position:fixed; visibility:hidden; bottom:0px;">
+    <table border="0" cellpadding="0" cellspacing="0" style="width:880px;">
+        <tr>
+            <td style="position:absolute;">
+                <div style="position:absolute; top:0px; left:866px;">
+                    <img src="/mainpage/img/close8.gif" style="cursor:pointer;" onclick="vw_hidden_banner('hidden');" />
+                </div>
+            </td>
+            <td>
+                <iframe src="/mainpage/ad/bottom_fixed.asp?id=&section=" id="Iframe1" width="100%" height="25px" frameborder="0" scrolling="no"></iframe>
+            </td>
+        </tr>
+    </table>
+</div>		    
+
+        </td>
+	</tr>
+</table>
+<table width="880" cellpadding="0" cellspacing="0" border="0" align="center">
+  <tr><td height="20" colspan="3"></td></tr>
+  <tr><td height="1" bgcolor='#d1d1d1' colspan="3"></td></tr>
+  <tr>
+	<td width="10"></td>
+	<td>
+	<table width="100%" cellpadding="0" cellspacing="0" border="0" align="center">
+		<tr><td height="15"></td></tr>
+		<tr>
+			<td align="center" valign="middle" style="font-size:8pt;line-height:150%">
+				<a href="/company/content/company.asp">사이트소개</a> | <a href="/company/content/policy.asp">서비스약관</a> | 				
+				<a href="/mainpage/boards/singo.asp">건의/에러신고</a> |
+				<a href="/mainpage/boards/uprequest.asp">정회원등업안내</a> |
+                <a href="/company/content/affiliation.asp">광고문의</a>
+			</td>
+		</tr>
+	</table>
+	<table width="100%" cellpadding="0" cellspacing="0" border="0" align="center">
+		<tr><td height="10"></td></tr>
+		<tr>
+			<td align=center><img src="http://missyusa.com/mainpage/image/footer/logo_small.gif" align="absmiddle"> Copyright 2009 &copy; <b>MissyUSA.com</b> All rights reserved.</td>
+		</tr>	
+		<tr><td height="10"></td></tr>
+	</table>
+	</td>	
+    
+    <td width="10"></td>
+    
+  </tr>
+</table>
+</BODY>
+</HTML>

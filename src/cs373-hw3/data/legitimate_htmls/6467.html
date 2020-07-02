@@ -1,0 +1,580 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr_FR" lang="fr_FR" >
+<head class="page_header"><script type="text/javascript" src="//d1m6l9dfulcyw7.cloudfront.net/uxt/905ab6b3cb9bd.js"></script>
+<title>Mode et Ventes priv&eacute;es de grandes marques | Brandalley</title>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+<meta name="robots" content="noodp" />
+<meta name="Description" content="Retrouvez sur Brandalley 2000 marques de mode et des ventes priv&amp;eacute;es jusqu'&amp;agrave; -80%. Livraison offerte d&amp;egrave;s 60 euros d'achats non remis&amp;eacute;s. Retours gratuits" />
+<meta http-equiv="verify-v1" content="D6dfgeyAFIu17zHpq53OO07H0L6pgM0yD9D8g4S6y4A=" />
+<meta name="google-site-verification" content="s3U_4-9LCI7wKZwxxoZPM_D6rSALEb2htH2V8hRT6Cc" />
+<meta property="fb:page_id" content="74899913624" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<script type="text/javascript" src="//d2yp9b3a29g3i2.cloudfront.net/ergotest/02e74f10e0.js"></script><script type="text/javascript">
+
+                function __unserialize(data){
+                    var that=this, utf8Overhead=function(chr) {
+                        var code=chr.charCodeAt(0);
+                        if(code<0x0080){return 0;}
+                        if(code<0x0800){ return 1;}
+                      return 2;
+                    },
+                    error = function (type, msg, filename, line) {
+                      throw new that.window[type](msg, filename, line);
+                    },
+                    read_until = function (data, offset, stopchr) {
+                      var i = 2, buf = [], chr = data.slice(offset, offset + 1);
+
+                      while (chr != stopchr) {
+                        if ((i + offset) > data.length) {
+                          error('Error', 'Invalid');
+                        }
+                        buf.push(chr);
+                        chr = data.slice(offset + (i - 1), offset + i);
+                        i += 1;
+                      }
+                      return [buf.length, buf.join('')];
+                    },
+                    read_chrs = function (data, offset, length) {
+                      var i, chr, buf;
+
+                      buf = [];
+                      for (i = 0; i < length; i++) {
+                        chr = data.slice(offset + (i - 1), offset + i);
+                        buf.push(chr);
+                        length -= utf8Overhead(chr);
+                      }
+                      return [buf.length, buf.join('')];
+                    },
+                    _unserialize = function (data, offset) {
+                      var dtype, dataoffset, keyandchrs, keys, contig,
+                        length, array, readdata, readData, ccount,
+                        stringlength, i, key, kprops, kchrs, vprops,
+                        vchrs, value, chrs = 0,
+                        typeconvert = function (x) {
+                          return x;
+                        };
+
+                      if (!offset) {
+                        offset = 0;
+                      }
+                      dtype = (data.slice(offset, offset + 1)).toLowerCase();
+
+                      dataoffset = offset + 2;
+
+                      switch (dtype) {
+                        case 'i':
+                          typeconvert = function (x) {
+                            return parseInt(x, 10);
+                          };
+                          readData = read_until(data, dataoffset, ';');
+                          chrs = readData[0];
+                          readdata = readData[1];
+                          dataoffset += chrs + 1;
+                          break;
+                        case 'b':
+                          typeconvert = function (x) {
+                            return parseInt(x, 10) !== 0;
+                          };
+                          readData = read_until(data, dataoffset, ';');
+                          chrs = readData[0];
+                          readdata = readData[1];
+                          dataoffset += chrs + 1;
+                          break;
+                        case 'd':
+                          typeconvert = function (x) {
+                            return parseFloat(x);
+                          };
+                          readData = read_until(data, dataoffset, ';');
+                          chrs = readData[0];
+                          readdata = readData[1];
+                          dataoffset += chrs + 1;
+                          break;
+                        case 'n':
+                          readdata = null;
+                          break;
+                        case 's':
+                          ccount = read_until(data, dataoffset, ':');
+                          chrs = ccount[0];
+                          stringlength = ccount[1];
+                          dataoffset += chrs + 2;
+
+                          readData = read_chrs(data, dataoffset + 1, parseInt(stringlength, 10));
+                          chrs = readData[0];
+                          readdata = readData[1];
+                          dataoffset += chrs + 2;
+                          if (chrs != parseInt(stringlength, 10) && chrs != readdata.length) {
+                            error('SyntaxError', 'String length mismatch');
+                          }
+                          break;
+                        case 'a':
+                          readdata = {};
+
+                          keyandchrs = read_until(data, dataoffset, ':');
+                          chrs = keyandchrs[0];
+                          keys = keyandchrs[1];
+                          dataoffset += chrs + 2;
+
+                          length = parseInt(keys, 10);
+                          contig = true;
+
+                          for (i = 0; i < length; i++) {
+                            kprops = _unserialize(data, dataoffset);
+                            kchrs = kprops[1];
+                            key = kprops[2];
+                            dataoffset += kchrs;
+
+                            vprops = _unserialize(data, dataoffset);
+                            vchrs = vprops[1];
+                            value = vprops[2];
+                            dataoffset += vchrs;
+
+                            if (key !== i)
+                              contig = false;
+
+                            readdata[key] = value;
+                          }
+
+                          if (contig) {
+                            array = new Array(length);
+                            for (i = 0; i < length; i++)
+                              array[i] = readdata[i];
+                            readdata = array;
+                          }
+
+                          dataoffset += 1;
+                          break;
+                        default:
+                          error('SyntaxError', 'Unknown / Unhandled data type(s): ' + dtype);
+                          break;
+                      }
+                      return [dtype, dataoffset - offset, typeconvert(readdata)];
+                    }
+                  ;
+
+                  return _unserialize((data + ''), 0)[2];
+                }
+
+                function _getCookie(name) {
+                  var dc = document.cookie;
+                  var prefix = name + "=";
+                  var begin = dc.indexOf("; " + prefix);
+                  if (begin == -1) {
+                    begin = dc.indexOf(prefix);
+                    if (begin != 0) return null;
+                  } else
+                    begin += 2;
+                  var end = document.cookie.indexOf(";", begin);
+                  if (end == -1)
+                    end = dc.length;
+                  return unescape(dc.substring(begin + prefix.length, end));
+                }
+
+                function _setCookie(name, value, expires, path, domain, secure) {
+                    var curCookie = name + "=" + escape(value) +
+                                    ((expires) ? "; expires=" + d.toGMTString() : "") +
+                                    ((path) ? "; path=" + path : "") +
+                                    ((domain) ? "; domain=" + domain : "") +
+                                    ((secure) ? "; secure" : "");
+
+                    document.cookie = curCookie;
+                }
+                    var android        = new RegExp("Android"); var mobile = new RegExp("Mobile");
+                    var isAndroid      = (android.test(navigator.userAgent) && mobile.test(navigator.userAgent));
+                    var isWindowsPhone = navigator.userAgent.match(/Windows Phone/i);
+                    var isIphone       = navigator.userAgent.match(/iPhone/i);
+                    var isIpod         = navigator.userAgent.match(/iPod/i);
+                    var isMobile       = false;
+                    if ( isIphone || isAndroid ) {
+                        isMobile = true;
+                         byPassChoice = true; var redirect = _getCookie( "redirectMobile");
+                                    if(redirect != "false" ) {
+                                    var email = "";
+                                        if(_getCookie( "AccessPrivateSale")) {
+                                            cookieInfo =  __unserialize(_getCookie( "AccessPrivateSale"));
+                                             if(cookieInfo)
+                                             {
+                                                email = "&email="+__unserialize(cookieInfo[0]);
+                                             }
+                                        }
+
+                 						if(_getCookie("choiceSite") != null || byPassChoice){
+                 							if(_getCookie("choiceSite") == "mobi" || byPassChoice){
+                                        		document.location.href = "http://m.brandalley.fr/redirect.php?path=accueil"+email;          }
+                                        }}
+
+                                }</script><link rel="StyleSheet"   type="text/css" href="//media.brandalley.com/cvsmedia/v5/www307/css/ionicon/css/ionicons.min.css" />
+<link rel="StyleSheet"   type="text/css" href="//media.brandalley.com/cvsmedia/v5/www307/css/fonts/fonts6.css" />
+<link rel="StyleSheet" type="text/css" href="//media.brandalley.com/min/?b=cvsmedia/v5/www307/css&f=newpopup.css,ui-saumon/jquery-ui-1.10.3.custom.min.css,slick/slick.css,popupGB.css,common.css,accueil.css,divers.css,popupPrehome.css,menuNewBaPo.css,whatsnew.css" />
+<script type="text/javascript" src="//media.brandalley.com/min/?b=cvsmedia/v3/www307/scripts&f=jquery-1.10.2.min.js"></script>
+<script type="text/javascript">var J = jQuery.noConflict();
+                    function ECollectorForPopupConfirmation(submit)
+                    {       
+                        
+                        if (submit || submit == undefined) {
+                            path = "/popup-creation-compte/confirmation/nouveaulead";
+
+                        } else {
+                            path = "/popup-creation-compte/";
+                        }
+                        if( J.cookie( "vje" ) !== undefined ){
+                            uid = unserialize(J.cookie( "vje" ));
+                            uid = unserialize(uid[0]);
+                        }
+                        if( J.cookie( "BA" ) !== undefined ){
+                            uid = J.cookie( "BA" ) * 10;
+                        }
+                        if (typeof EA_collector == "function") {
+                            if (submit || submit == undefined ) {
+                                    EA_collector([
+                                        "path",path
+                                        ,"from","brandalley-fr"
+                                        ,"device","web"
+                                        ,"estimate","1"
+                                        ,"ref", J("#m_cy").html()
+                                        ,"email", J("#m_cy").html()
+                                    ]);
+                            } else { 
+                                    EA_collector([
+                                        "path",path
+                                        ,"from","brandalley-fr"
+                                        ,"device","web"
+                                        ,"estimate","1"
+                                    ]);
+                            }
+                        }
+                    }
+                    </script>
+<script type="text/javascript">var UnivOffreDuJour = Array('Femme','Homme','Enfant','Decoration','Lingerie');</script>
+<script type="text/javascript">var iplobserverstart = new Date();</script>
+<style type="text/css">
+<!--
+#nav li a { padding:0 }
+body { background-color:#FFF;  }
+.header-menuuser { width:500px; }
+menuuser1New { width:530px; }
+div.header-1 { margin-top:0px;; margin-bottom:0px; }
+#wishListHeader, #divBoutonMonCompte, #divBoutonPanier, #divBoutonSepNew, #menuMonCompteHeader, #divBoutonAide { margin-top:7px; }
+#wishListHeader #divBoutonSepNew { margin-top:0px; }
+.header-logo { margin-top:10px; }
+#formrecherche { margin: 0 0 0 13px; }
+#historique #adressepopup1 { z-index:999; }
+.ui-widget-content { z-index:1000; }
+div.popup-dialog { z-index:1001; }
+-->
+</style>
+<script type="application/ld+json">
+{
+"@context": "http://schema.org",
+"@type": "WebSite",
+"url": "http//www.brandalley.fr",
+"potentialAction": {
+"@type": "SearchAction",
+"target": "http://www.brandalley.fr/RechercheRedirect?keyword={search_term}",
+"query-input": "required name=search_term"
+}
+}
+</script><link rel="canonical" href="//www.brandalley.fr" /></head>
+<body >
+<div id="opacDiv">&nbsp;</div>
+<div id="page-content" class="page">
+<div id="page-header" class="header"><div class="header"><div class="header-1">
+<div class="header-logo">
+<div id="logo" style="float:left;"><h1 ><a href="/"><img src="//media.brandalley.com/shops/3/reskin/skin/3/logo.png" alt="Brandalley" border="0" /></a></h1></div>
+<div id="formrecherche" class="module_moteur"><form class="recherche_motcle" method="post" action="/RechercheRedirect/" name="formRecherche" id="formRecherche"><div class="boutonsearch"><img src="//media.brandalley.com/shops/3/reskin/menu/v6/search.jpg"></div><input type="text" maxlength="90" name="keyword" autocomplete="off" id="monkeyword" value="Je cherche un article, une marque" onfocus="if(this.value == 'Je cherche un article, une marque') this.value = '';" class="textfield" title="rechercher" /><div class="boutonok"><a href="javascript:void(0)" onclick="if($F('monkeyword') != 'Je cherche un article, une marque' && $F('monkeyword') != '' ){document.forms['formRecherche'].submit();}"><span class="btnOk">OK</span></a></div></form><div id="suggestLayer" style="display:none;" class="suggestLayer"></div><div style="display:none;" id="searchTitle">Suggestions pour votre recherche</div></div></div>
+<div class="header-menuuser"><div id="menuuser1New"><div id="divBoutonPanier" class="mon_panier panierText"><span class="concierge/Panier/" id="boutonPanier">Mon Panier</span><span id="item_count"></span></div><div id="wishListHeader"><div id="divBoutonSepNew" style="width: 5px; height: 15px;"><img src="//media.brandalley.com/shops/3/reskin/menu/v6/sep.png"></div><div style="position:relative;float:left;"><span class="concierge/Panier/" style="position:relative;">Mes sélections</span><span id="nbWishList"></span></div><div id="sousMenuWishListHeader"><span class="concierge/Brand/">Mes Marques</span><br/><span class="concierge/Panier/">Ma wishlist</span><br/></div></div><div id="divBoutonSepNew" style="width: 5px; height: 15px;"><img src="//media.brandalley.com/shops/3/reskin/menu/v6/sep.png"></div><div><span class="boxconnexion"><a id="deconnexion" style="display:none" href="#" rel="nofollow"></a></span></div><div id="divBoutonMonCompte"><span class="concierge/MonCompte/">Mon compte</span></div><div id="menuMonCompteHeader" class=""><div id="welcomeName"></div><div class="imgmenuMonCompteHeader"><img src="//media.brandalley.com/shops/3/reskin/wbottom.gif"></div><div id="sousMenuMonComtpeHeader" ><span class="concierge/MonCompte/">Mon compte</span><br/><span class="concierge/MonCompte/">Mes commandes</span><br/><span class="concierge/MonCompte~Editer/">Mes coordonnées</span><br/><span class="concierge/MonCompte~GetListCoupon/">Mes coupons</span><br/><div class="sepMenuUser">&nbsp;</div><a href="" id="deconnexionSousMenu">Déconnexion</a></div></div><div id="divBoutonSepNew" style="width: 5px; height: 15px;"><img src="//media.brandalley.com/shops/3/reskin/menu/v6/sep.png"></div><div id="divBoutonAide" style=""><span class="concierge/Aide/" id="boutonAide">Aide</span></div></div></div><div id="perso"><a href="//eulerian.brandalley.fr/dynbpromoclick/brandalley-fr/Header_V5_Parrainage/?eurl=%2F%2Fwww.brandalley.fr%2FMonCompte%7EParrainer%2FMC.1"><div id="header_parrainage" style="display: none;"><span>1 ami parrainé</span><span class="header_parrainage_egal">=</span><span class="header_parrainage_offert">10€ OFFERTS</span></div></a></div></div>
+<div id="baseline" style="float:left;width:100%;margin-bottom:4px;font-size:10px;">Le site des Fashionistas Economistas</div><div id='menu-selector'><a class="float-left menu-home" href="/"><span class="ion-home"></span></a><div class="text-center"><a class="dropdown active menu-catalogue" href="/" ><div ><span class="cambria-ital menu-bapo">catalogue</span><div class="shadow">&nbsp;</div></div></a><span class="separator">|</span><a class="dropdown menu-vp" href="/ventes-privees"><div ><span class="cambria-ital menu-bapo" style="text-transform: none;">Ventes privées</span><div class="shadow">&nbsp;</div></div></a></div></div><div id="centeredmenu" class="cataloguemenu" ><ul class="ulmenu"><li class="linkcat" id="menu-soldes" data-univers="soldes" style="display:none"></li>  <li class="linkcat christmas" id="menu-christmas-container" data-univers="christmas" style="display:none">
+                                    <div id="menu-christmas" class="btn-mid"></div>
+                                </li><li class="linkcat" data-univers="menu_haut_marques"><a  href="/Brand" ><span>marques</span></a></li><li class="linkcat" data-univers="femme"><a  href="/Femme/" ><span>Femme</span></a></li><li class="linkcat" data-univers="homme"><a  href="/Homme/" ><span>Homme</span></a></li><li class="linkcat" data-univers="enfant"><a  href="/Enfant/" ><span>Enfant</span></a></li><li class="linkcat" data-univers="lingerie"><a  href="/Lingerie/" ><span>Lingerie</span></a></li><li class="linkcat" data-univers="beaute"><a  href="/Beaute/" ><span>Beaut&eacute;</span></a></li><li class="linkcat" data-univers="decoration"><a  href="/Decoration/" ><span>Maison</span></a></li><li class="linkcat" data-univers="titlelelab"><a  href="/Lelab" target="blank"><span>Le Lab</span></a></li></ul><div class="subMenuCatalogue vertical" data-univers="menu_haut_marques"><h3 class="title margin-bottom"><a href="/Brand">Marques de A à Z</a></h3><ul class="ulBrand"><li class=""><a href="/Marque/Marque-3662-aubade" class="link" >Aubade</a></li><li class=""><a href="/Marque/Marque-11225-becquet" class="link" >Becquet</a></li><li class=""><a href="/Marque/Marque-1661-best-mountain" class="link" >Best Mountain</a></li><li class=""><a href="/Marque/Marque-3419-bonobo-jeans" class="link" >Bonobo Jeans</a></li><li class=""><a href="/Marque/Marque-1967-buffalo" class="link" >Buffalo</a></li><li class=""><a href="/Marque/Marque-10163-bunker" class="link" >Bunker</a></li><li class=""><a href="/Marque/Marque-29-converse" class="link" >Converse</a></li><li class=""><a href="/Marque/Marque-4867-desigual" class="link" >Desigual</a></li></ul><ul class="ulBrand bordered"><li class="bordered"><a href="/Marque/Marque-590-elle" class="link" >Elle</a></li><li class="bordered"><a href="/Marque/Marque-147-esprit" class="link" >Esprit</a></li><li class="bordered"><a href="/Marque/Marque-1919-geox" class="link" >Geox</a></li><li class="bordered"><a href="/Marque/Marque-49-guess" class="link" >Guess</a></li><li class="bordered"><a href="/Marque/Marque-8067-hipanema" class="link" >Hipanema</a></li><li class="bordered"><a href="/Marque/Marque-9675-jack-jones" class="link" >Jack & Jones</a></li><li class="bordered"><a href="/Marque/Marque-851-kaporal" class="link" >Kaporal</a></li><li class="bordered"><a href="/Marque/Marque-3856-kickers" class="link" >Kickers</a></li></ul><ul class="ulBrand bordered"><li class="bordered"><a href="/Marque/Marque-1092-la-city" class="link" >La City</a></li><li class="bordered"><a href="/Marque/Marque-2040-lacoste" class="link" >Lacoste</a></li><li class="bordered"><a href="/Marque/Marque-1160-le-temps-des-cerises" class="link" >Le Temps des Cerises</a></li><li class="bordered"><a href="/Marque/Marque-1953-les-tropeziennes-par-m-belarbi" class="link" >Les Tropéziennes par M Belarbi</a></li><li class="bordered"><a href="/Marque/Marque-868-levi-s" class="link" >Levi's</a></li><li class="bordered"><a href="/Marque/Marque-1800-mellow-yellow" class="link" >Mellow Yellow</a></li><li class="bordered"><a href="/Marque/Marque-188-morgan" class="link" >Morgan</a></li><li class="bordered"><a href="/Marque/Marque-178-new-balance" class="link" >New Balance</a></li></ul><ul class="ulBrand bordered"><li class="bordered"><a href="/Marque/Marque-84-nike" class="link" >Nike</a></li><li class="bordered"><a href="/Marque/Marque-86-oxbow" class="link" >Oxbow</a></li><li class="bordered"><a href="/Marque/Marque-536-pepe-jeans-london" class="link" >Pepe Jeans London</a></li><li class="bordered"><a href="/Marque/Marque-3683-princesse-tam-tam" class="link" >Princesse tam.tam</a></li><li class="bordered"><a href="/Marque/Marque-91-puma" class="link" >Puma</a></li><li class="bordered"><a href="/Marque/Marque-2739-redskins" class="link" >Redskins</a></li><li class="bordered"><a href="/Marque/Marque-863-schott" class="link" >Schott</a></li><li class="bordered"><a href="/Marque/Marque-3535-vero-moda" class="link" >Vero Moda</a></li></ul><div class="clear"></div><h3 class="title margin-top"><a href="/Brand">Voir toutes les marques...</a></h3></div><div class="subMenuCatalogue vertical" data-univers="femme"><ul class="col" style="width:20%"><ul class="sgmts" ><li class="head green" >Prêt-à-porter</li><li><a class="link" href="/Femme/Categorie-9084-robes">Robes</a></li><li><a class="link" href="/Femme/Categorie-9081-blousons-manteaux">Blousons/Manteaux</a></li><li><a class="link" href="/Femme/Categorie-9088-vestes-tailleurs">Vestes/Tailleurs</a></li><li><a class="link" href="/Femme/Categorie-9087-tuniques-blouses">Tuniques/Blouses</a></li><li><a class="link" href="/Femme/Categorie-9075-chemisiers">Chemisiers</a></li><li><a class="link" href="/Femme/Categorie-9086-t-shirts">T-shirts</a></li><li><a class="link" href="/Femme/Categorie-9077-jeans">Jeans</a></li><li><a class="link" href="/Femme/Categorie-9074-shorts-bermudas">Shorts/Bermudas</a></li><li><a class="link" href="/Femme/Categorie-9078-jupes">Jupes</a></li><li><a class="link" href="/Femme/Categorie-9082-pantalons">Pantalons</a></li><li><a class="link" href="/Femme/Categorie-9085-sweats">Sweats</a></li><li><a class="link" href="/Femme/Categorie-9076-gilets">Gilets</a></li><li><a class="link" href="/Femme/Categorie-9083-pulls">Pulls</a></li><li><a class="link" href="/Femme/Categorie-10029-survetements">Survêtements</a></li><li><a class="link" href="/Femme/Categorie-30726-grandes-tailles">Grandes Tailles</a></li></ul><div style='clear:both;'></div></ul><ul class="col bordered" style="width:20%"><ul class="sgmts" ><li class="head" ><a class="link-green" href="/Femme/Categorie-9093-chaussures">Chaussures</a></li><li><a class="link" href="/Femme/Categorie-9120-baskets-sneakers">Baskets/Sneakers</a></li><li><a class="link" href="/Femme/Categorie-9129-sandales-spartiates">Sandales/Spartiates</a></li><li><a class="link" href="/Femme/Categorie-9130-tongs">Tongs</a></li><li><a class="link" href="/Femme/Categorie-9119-ballerines">Ballerines</a></li><li><a class="link" href="/Femme/Categorie-9126-compensees">Compensées</a></li><li><a class="link" href="/Femme/Categorie-9127-escarpins-chaussures-a-talon">Escarpins/Chaussures à talon</a></li><li><a class="link" href="/Femme/Categorie-9270-chaussures-lacees-derbies">Chaussures lacées/Derbies</a></li><li><a class="link" href="/Femme/Categorie-9128-mocassins">Mocassins</a></li><li><a class="link" href="/Femme/Categorie-9121-bottes-boots">Bottes/Boots</a></li><li><a class="link" href="/Femme/Categorie-230196-bottes-de-pluie">Bottes de pluie</a></li><li><a class="link" href="/Femme/Categorie-9125-chaussures-de-sport">Chaussures de sport</a></li><li><a class="link" href="/Femme/Categorie-23229-accessoires-chaussures">Accessoires Chaussures</a></li><li><a class="link" href="/Femme/Categorie-43068-chaussures-de-marche">Chaussures de marche</a></li><li><a class="link" href="/Femme/Categorie-9124-chaussons">Chaussons</a></li><li><a class="link" href="/Femme/Categorie-9122-chaussettes-de-sport">Chaussettes de sport</a></li></ul><div style='clear:both;'></div></ul><ul class="col bordered" style="width:20%"><ul class="sgmts" ><li class="head green" >Accessoires</li><li><a class="link" href="/Femme/Categorie-9073-sacs-maroquinerie">Sacs/Maroquinerie</a></li><li><a class="link" href="/Femme/Categorie-9092-bijoux">Bijoux</a></li><li><a class="link" href="/Femme/Categorie-9068-joaillerie">Joaillerie</a></li><li><a class="link" href="/Femme/Categorie-9069-montres">Montres</a></li><li><a class="link" href="/Femme/Categorie-93870-ceintures">Ceintures</a></li><li><a class="link" href="/Femme/Categorie-93877-chapeaux-casquettes-bonnets">Chapeaux / Casquettes / Bonnets</a></li><li><a class="link" href="/Femme/Categorie-93876-gants">Gants</a></li><li><a class="link" href="/Femme/Categorie-93875-echarpes">Echarpes</a></li><li><a class="link" href="/Femme/Categorie-93874-etoles-cheches">Etoles / Chèches</a></li><li><a class="link" href="/Femme/Categorie-93886-lunettes-de-soleil">Lunettes de soleil</a></li><li><a class="link" href="/Femme/Categorie-93889-bagagerie-voyage">Bagagerie / Voyage</a></li><li><a class="link" href="/Femme/Categorie-93871-high-tech">High Tech</a></li><li><a class="link" href="/Femme/Categorie-93887-ecriture-agendas">Ecriture / Agendas</a></li><li><a class="link" href="/Femme/Categorie-94098-parapluies">Parapluies</a></li><li><a class="link" href="/Femme/Categorie-93890-accessoires-chaussures">Accessoires Chaussures</a></li></ul><div style='clear:both;'></div></ul><ul class="col bordered" style="width:20%"><ul class="sgmts" ><li class="head green" >Sport</li><li><a class="link" href="/Femme/Categorie-94396-running">Running</a></li><li><a class="link" href="/Femme/Categorie-94400-fitness">Fitness</a></li><li><a class="link" href="/Femme/Categorie-94404-skate-surf">Skate / Surf</a></li><li><a class="link" href="/Femme/Categorie-99875-natation-piscine">Natation / Piscine</a></li><li><a class="link" href="/Femme/Categorie-94401-randonnee-outdoor">Randonnée / Outdoor</a></li><li><a class="link" href="/Femme/Categorie-94403-ski-snowboard">Ski / Snowboard</a></li><li><a class="link" href="/Femme/Categorie-99901-tennis">Tennis</a></li><li><a class="link" href="/Femme/Categorie-99916-danse">Danse</a></li><li><a class="link" href="/Femme/Categorie-99925-nautisme">Nautisme</a></li><li><a class="link" href="/Femme/Categorie-94405-autres-sports">Autres sports</a></li></ul><div style='clear:both;'></div></ul><ul class="col bordered" style="width:20%"><ul class="sgmts" ><li class="green expanded"><a class="link-green" href="javascript:void(0);">Boutiques</a></li><li class="boutiques" ><a class="link" href="/FSIndex/Id-31683">Boutique Fête des Mères</a></li><li class="boutiques" ><a class="link" href="/FSIndex/Id-30548">Print Party</a></li><li class="boutiques" ><a class="link" href="/FSIndex/Id-10105">Nouveautés Printemps Eté</a></li><li class="boutiques" ><a class="link" href="/FSIndex/Id-30120">La Bohème</a></li><li class="boutiques" ><a class="link" href="/FSIndex/Id-30699">La boutique bain</a></li><li class="boutiques" ><a class="link" href="/FSIndex/Id-30588">Tongs Bar</a></li><li class="boutiques" ><a class="link" href="/FSIndex/Id-30121">Week-End</a></li><li class="boutiques" ><a class="link" href="/FSIndex/Id-30133">What's Hot</a></li><li class="boutiques" ><a class="link" href="/FSIndex/Id-5691">Denim Bar Femme</a></li><li class="boutiques" style="padding-bottom: 15px;"><a class="link" href="/FSIndex/Id-29610">Mes bijoux par milliers</a></li><li><a class="link-green" href="/Marques/Femme">Marques (694)</a></li><li><a class="link-green" id="whatsnewMenu_Femme" href="/Femme" style="display:none;">Nouveaut&eacute;s</a></li><li><a class="link-green" href="/Operations/Univ.Femme">Offres spéciales</a></li><li><a class="link-green" href="/LookBook/Id-31546">LookBook</a></li></ul><div style='clear:both;'></div></ul></div><div class="subMenuCatalogue vertical" data-univers="homme"><ul class="col" style="width:20%"><ul class="sgmts" ><li class="head green" >Prêt-à-porter</li><li><a class="link" href="/Homme/Categorie-8892-blousons-manteaux">Blousons & Manteaux</a></li><li><a class="link" href="/Homme/Categorie-8894-sweats-pulls-gilets">Sweats & Pulls & Gilets</a></li><li><a class="link" href="/Homme/Categorie-8896-t-shirts-polos">T-shirts & Polos</a></li><li><a class="link" href="/Homme/Categorie-8887-bermudas-shorts">Bermudas & Shorts</a></li><li><a class="link" href="/Homme/Categorie-8890-jeans">Jeans</a></li><li><a class="link" href="/Homme/Categorie-8893-pantalons">Pantalons</a></li><li><a class="link" href="/Homme/Categorie-8888-chemises">Chemises</a></li><li><a class="link" href="/Homme/Categorie-8889-costumes-vestes">Costumes & Vestes</a></li><li><a class="link" href="/Homme/Categorie-9292-survetements">Survêtements</a></li><li><a class="link" href="/Homme/Categorie-8764-vetements-ski">Vêtements ski</a></li><li><a class="link" href="/Homme/Categorie-8891-maillots-de-bain">Maillots de bain</a></li></ul><div style='clear:both;'></div></ul><ul class="col bordered" style="width:20%"><ul class="sgmts" ><li class="head" ><a class="link-green" href="/Homme/Categorie-8759-chaussures">Chaussures</a></li><li><a class="link" href="/Homme/Categorie-8785-baskets-sneakers">Baskets & Sneakers</a></li><li><a class="link" href="/Homme/Categorie-8793-chaussures-de-ville">Chaussures de ville</a></li><li><a class="link" href="/Homme/Categorie-8794-mocassins">Mocassins</a></li><li><a class="link" href="/Homme/Categorie-8795-sandales-tongs">Sandales & Tongs</a></li><li><a class="link" href="/Homme/Categorie-8786-boots-bottes">Boots & Bottes</a></li><li><a class="link" href="/Homme/Categorie-8792-chaussures-de-sport">Chaussures de sport</a></li><li><a class="link" href="/Homme/Categorie-10261-chaussures-de-marche">Chaussures de marche</a></li><li><a class="link" href="/Homme/Categorie-8791-chaussons">Chaussons</a></li></ul><div style='clear:both;'></div></ul><ul class="col bordered" style="width:20%"><ul class="sgmts" ><li class="head green" >Accessoires</li><li><a class="link" href="/Homme/Categorie-37525-lunettes-de-soleil">Lunettes de soleil</a></li><li><a class="link" href="/Homme/Categorie-8761-montres-bijoux">Montres & Bijoux</a></li><li><a class="link" href="/Homme/Categorie-93719-sacs-maroquinerie">Sacs & Maroquinerie</a></li><li><a class="link" href="/Homme/Categorie-93867-bagagerie-voyage">Bagagerie & Voyage</a></li><li><a class="link" href="/Homme/Categorie-93720-ceintures">Ceintures</a></li><li><a class="link" href="/Homme/Categorie-93862-cheches-echarpes">Chèches & Echarpes</a></li><li><a class="link" href="/Homme/Categorie-93866-chapeaux-casquettes-bonnets">Chapeaux, Casquettes & Bonnets</a></li><li><a class="link" href="/Homme/Categorie-15097-beaute">Beauté</a></li><li><a class="link" href="/Homme/Categorie-93724-cravates">Cravates</a></li><li><a class="link" href="/Homme/Categorie-93729-boutons-de-manchette">Boutons de manchette</a></li><li><a class="link" href="/Homme/Categorie-93721-high-tech">High Tech</a></li><li><a class="link" href="/Homme/Categorie-93863-gants">Gants</a></li><li><a class="link" href="/Homme/Categorie-109238-autour-du-vin">Autour du Vin</a></li><li><a class="link" href="/Homme/Categorie-93723-ecriture-agendas">Ecriture & Agendas</a></li><li><a class="link" href="/Homme/Categorie-93722-parapluies">Parapluies</a></li><li><a class="link" href="/Homme/Categorie-109231-cadeaux-insolites">Cadeaux insolites</a></li></ul><div style='clear:both;'></div></ul><ul class="col bordered" style="width:20%"><ul class="sgmts" ><li class="head green" >Sport</li><li><a class="link" href="/Homme/Categorie-94534-running">Running</a></li><li><a class="link" href="/Homme/Categorie-94538-skate-surf">Skate & Surf</a></li><li><a class="link" href="/Homme/Categorie-94537-ski-snow">Ski & Snow</a></li><li><a class="link" href="/Homme/Categorie-94535-fitness-musculation">Fitness & Musculation</a></li><li><a class="link" href="/Homme/Categorie-94536-randonnee-outdoor">Randonnée & Outdoor</a></li><li><a class="link" href="/Homme/Categorie-99987-football">Football</a></li><li><a class="link" href="/Homme/Categorie-99964-tennis">Tennis</a></li><li><a class="link" href="/Homme/Categorie-99941-natation-piscine">Natation & Piscine</a></li><li><a class="link" href="/Homme/Categorie-99965-nautisme">Nautisme</a></li><li><a class="link" href="/Homme/Categorie-99999-autres-sports">Autres sports</a></li></ul><div style='clear:both;'></div><ul class="sgmts" ><li class="head green" style="margin-top:20px;">Underwear</li><li><a class="link" href="/Homme/Categorie-93990-boxers">Boxers</a></li><li><a class="link" href="/Homme/Categorie-93991-calecons">Caleçons</a></li><li><a class="link" href="/Homme/Categorie-93992-slips">Slips</a></li><li><a class="link" href="/Homme/Categorie-93993-maillots-de-corps">Maillots de corps</a></li><li><a class="link" href="/Homme/Categorie-94005-pyjamas">Pyjamas</a></li><li><a class="link" href="/Homme/Categorie-94003-chaussettes-fantaisie">Chaussettes fantaisie</a></li><li><a class="link" href="/Homme/Categorie-93995-chaussettes-unies">Chaussettes unies</a></li><li><a class="link" href="/Homme/Categorie-93994-chaussettes-de-sport">Chaussettes de sport</a></li><li><a class="link" href="/Homme/Categorie-94004-chaussons">Chaussons</a></li><li><a class="link" href="/Homme/Categorie-94006-robes-de-chambre">Robes de chambre</a></li></ul><div style='clear:both;'></div></ul><ul class="col bordered" style="width:20%"><ul class="sgmts" ><li class="green expanded"><a class="link-green" href="javascript:void(0);">Boutiques</a></li><li class="boutiques" ><a class="link" href="/FSIndex/Id-14243">Denim Bar</a></li><li class="boutiques" ><a class="link" href="/FSIndex/Id-29904">Nouveautés Printemps-Eté</a></li><li class="boutiques" ><a class="link" href="/FSIndex/Id-30589">Black and White</a></li><li class="boutiques" ><a class="link" href="/FSIndex/Id-30108">Les indispensables de l'entrée de saison</a></li><li class="boutiques" ><a class="link" href="/FSIndex/Id-30701">Underwear Chic</a></li><li class="boutiques" ><a class="link" href="/FSIndex/Id-17607">Tout à moins de 50 €</a></li><li class="boutiques" ><a class="link" href="/FSIndex/Id-16674">Les Basiques au Masculin</a></li><li class="boutiques" ><a class="link" href="/FSIndex/Id-11568">Street Corner</a></li><li class="boutiques" ><a class="link" href="/FSIndex/Id-30105">Le Dressing de l'Homme</a></li><li class="boutiques" style="padding-bottom: 15px;"><a class="link" href="/FSIndex/Id-28677">Le Tiroir des Accessoires</a></li><li><a class="link-green" href="/Marques/Homme">Marques (329)</a></li><li><a class="link-green" id="whatsnewMenu_Homme" href="/Homme" style="display:none;">Nouveaut&eacute;s</a></li><li><a class="link-green" href="/Operations/Univ.Homme">Offres spéciales</a></li><li><a class="link-green" href="/LookBook/Id-31547">LookBook</a></li></ul><div style='clear:both;'></div></ul></div><div class="subMenuCatalogue vertical" data-univers="enfant"><ul class="col" style="width:25%"><ul class="sgmts" ><li class="head" ><a class="link-green" href="/Enfant/Categorie-9609-fille">Fille</a></li><li><a class="link" href="/Enfant/Categorie-9667-robes-jupes">Robes & Jupes</a></li><li><a class="link" href="/Enfant/Categorie-9666-pulls-sweats-gilets">Pulls, Sweats & Gilets</a></li><li><a class="link" href="/Enfant/Categorie-9669-t-shirts">T-shirts</a></li><li><a class="link" href="/Enfant/Categorie-9657-bermudas-shorts">Bermudas & Shorts</a></li><li><a class="link" href="/Enfant/Categorie-9661-jeans">Jeans</a></li><li><a class="link" href="/Enfant/Categorie-9665-pantalons-pantacourts">Pantalons & Pantacourts</a></li><li><a class="link" href="/Enfant/Categorie-9660-chemisiers-tuniques">Chemisiers & Tuniques</a></li><li><a class="link" href="/Enfant/Categorie-9664-manteaux-blousons-vestes">Manteaux, Blousons & Vestes</a></li><li><a class="link" href="/Enfant/Categorie-93898-montres-bijoux-beaute">Montres, Bijoux & Beauté</a></li><li><a class="link" href="/Enfant/Categorie-9656-accessoires">Accessoires</a></li><li><a class="link" href="/Enfant/Categorie-9659-chaussettes-et-collants">Chaussettes et Collants</a></li><li><a class="link" href="/Enfant/Categorie-9670-vetements-de-sport">Vêtements de sport</a></li><li><a class="link" href="/Enfant/Categorie-9668-sous-vetements-pyjamas">Sous-vêtements & Pyjamas</a></li><li><a class="link" href="/Enfant/Categorie-9663-maillots-de-bain-et-plage">Maillots de bain et Plage</a></li><li><a class="link" href="/Enfant/Categorie-106449-ski-et-snow">Ski et Snow</a></li><li><a class="link" href="/Enfant/Categorie-93891-fournitures-scolaires">Fournitures Scolaires</a></li></ul><div style='clear:both;'></div><ul class="sgmts" ><li class="head" style="margin-top:20px;"><a class="link-green" href="/Enfant/Categorie-9612-jouets">Jouets</a></li></ul><div style='clear:both;'></div></ul><ul class="col bordered" style="width:25%"><ul class="sgmts" ><li class="head" ><a class="link-green" href="/Enfant/Categorie-9610-garcon">Garçon</a></li><li><a class="link" href="/Enfant/Categorie-9636-manteaux-blousons-vestes">Manteaux, Blousons & Vestes</a></li><li><a class="link" href="/Enfant/Categorie-9638-sweats-gilets-pulls">Sweats, Gilets & Pulls</a></li><li><a class="link" href="/Enfant/Categorie-9632-chemises">Chemises</a></li><li><a class="link" href="/Enfant/Categorie-9640-t-shirts">T-shirts</a></li><li><a class="link" href="/Enfant/Categorie-96423-polos">Polos</a></li><li><a class="link" href="/Enfant/Categorie-9633-jeans">Jeans</a></li><li><a class="link" href="/Enfant/Categorie-9637-pantalons-pantacourts">Pantalons & Pantacourts</a></li><li><a class="link" href="/Enfant/Categorie-9629-bermudas-shorts">Bermudas & Shorts</a></li><li><a class="link" href="/Enfant/Categorie-93899-montres">Montres</a></li><li><a class="link" href="/Enfant/Categorie-9628-accessoires">Accessoires</a></li><li><a class="link" href="/Enfant/Categorie-9639-sous-vetements-pyjamas">Sous-vêtements & Pyjamas</a></li><li><a class="link" href="/Enfant/Categorie-9641-vetements-de-sport">Vêtements de sport</a></li><li><a class="link" href="/Enfant/Categorie-9635-maillots-de-bain-et-plage">Maillots de bain et Plage</a></li><li><a class="link" href="/Enfant/Categorie-106445-ski-et-snow">Ski et Snow</a></li><li><a class="link" href="/Enfant/Categorie-9631-chaussettes">Chaussettes</a></li><li><a class="link" href="/Enfant/Categorie-93893-fournitures-scolaires">Fournitures Scolaires</a></li></ul><div style='clear:both;'></div><ul class="sgmts" ><li class="head" style="margin-top:20px;"><a class="link-green" href="/Enfant/Categorie-9611-bebe">Bébé</a></li></ul><div style='clear:both;'></div></ul><ul class="col bordered" style="width:25%"><ul class="sgmts" ><li class="head" ><a class="link-green" href="/Enfant/Categorie-67616-chaussures-fille">Chaussures Fille</a></li><li><a class="link" href="/Enfant/Categorie-67627-baskets-et-sneakers">Baskets et Sneakers</a></li><li><a class="link" href="/Enfant/Categorie-67626-ballerines-babies-et-salomes">Ballerines, Babies et Salomés</a></li><li><a class="link" href="/Enfant/Categorie-67628-sandales-et-nu-pieds">Sandales et Nu-pieds</a></li><li><a class="link" href="/Enfant/Categorie-67629-bottillons-et-chaussures-montantes">Bottillons et Chaussures montantes</a></li><li><a class="link" href="/Enfant/Categorie-67630-bottes-et-bottines">Bottes et Bottines</a></li><li><a class="link" href="/Enfant/Categorie-230264-bottes-de-pluie">Bottes de pluie</a></li><li><a class="link" href="/Enfant/Categorie-67631-chaussures-de-sport">Chaussures de sport</a></li><li><a class="link" href="/Enfant/Categorie-67632-chaussons">Chaussons</a></li></ul><div style='clear:both;'></div><ul class="sgmts" ><li class="head" style="margin-top:20px;"><a class="link-green" href="/Enfant/Categorie-67618-chaussures-garcon">Chaussures Garçon</a></li><li><a class="link" href="/Enfant/Categorie-67636-baskets-et-sneakers">Baskets et Sneakers</a></li><li><a class="link" href="/Enfant/Categorie-67641-chaussures-de-sport">Chaussures de sport</a></li><li><a class="link" href="/Enfant/Categorie-67635-sandales-et-nu-pieds">Sandales et Nu-pieds</a></li><li><a class="link" href="/Enfant/Categorie-67639-mocassins-et-derbies">Mocassins et Derbies</a></li><li><a class="link" href="/Enfant/Categorie-67637-bottillons-et-chaussures-montantes">Bottillons et Chaussures montantes</a></li><li><a class="link" href="/Enfant/Categorie-67638-bottes-et-bottines">Bottes et Bottines</a></li><li><a class="link" href="/Enfant/Categorie-230265-bottes-de-pluie">Bottes de pluie</a></li><li><a class="link" href="/Enfant/Categorie-67640-chaussons">Chaussons</a></li></ul><div style='clear:both;'></div></ul><ul class="col bordered" style="width:25%"><ul class="sgmts" ><li class="green expanded"><a class="link-green" href="javascript:void(0);">Boutiques</a></li><li class="boutiques" ><a class="link" href="/FSIndex/Id-31683">Boutique Fête des Mères</a></li><li class="boutiques" ><a class="link" href="/FSIndex/Id-29905">Nouveautés Printemps-Été</a></li><li class="boutiques" ><a class="link" href="/FSIndex/Id-29658">La Boutique du Jouet</a></li><li class="boutiques" ><a class="link" href="/FSIndex/Id-30118">Les indispensables de l'entrée de saison</a></li><li class="boutiques" ><a class="link" href="/FSIndex/Id-10044">Les Indispensables pour Bébé</a></li><li class="boutiques" ><a class="link" href="/FSIndex/Id-28679">Les Chaussures des petits</a></li><li class="boutiques" ><a class="link" href="/FSIndex/Id-30116">Mode Ado !</a></li><li class="boutiques" ><a class="link" href="/FSIndex/Id-22615">Sport Enfant</a></li><li class="boutiques" ><a class="link" href="/FSIndex/Id-14244">Denim Bar</a></li><li class="boutiques" style="padding-bottom: 15px;"><a class="link" href="/FSIndex/Id-28678">Prêt à Porter Hiver</a></li><li><a class="link-green" href="/Marques/Enfant">Marques (231)</a></li><li><a class="link-green" id="whatsnewMenu_Enfant" href="/Enfant" style="display:none;">Nouveaut&eacute;s</a></li><li><a class="link-green" href="/Operations/Univ.Enfant">Offres spéciales</a></li><li><a class="link-green" href="/LookBook/Id-31512">LookBook</a></li></ul><div style='clear:both;'></div></ul></div><div class="subMenuCatalogue vertical" data-univers="lingerie"><ul class="col" style="width:20%"><ul class="sgmts" ><li class="head green" >Lingerie</li><li><a class="link" href="/Lingerie/Categorie-128916-soutiens-gorge">Soutiens-gorge</a></li><li><a class="link" href="/Lingerie/Categorie-128927-bas">Bas</a></li><li><a class="link" href="/Lingerie/Categorie-128934-parures-ensembles">Parures & Ensembles</a></li><li><a class="link" href="/Lingerie/Categorie-128935-bodys-caracos">Bodys & Caracos</a></li><li><a class="link" href="/Lingerie/Categorie-128936-guepieres-bustiers">Guêpières & Bustiers</a></li><li><a class="link" href="/Lingerie/Categorie-128937-accessoires">Accessoires</a></li></ul><div style='clear:both;'></div><ul class="sgmts" ><li class="head green" style="margin-top:20px;">Grandes tailles</li><li><a class="link" href="/Lingerie/Categorie-128940-soutiens-gorges">Soutiens-gorges</a></li><li><a class="link" href="/Lingerie/Categorie-128944-bas">Bas</a></li><li><a class="link" href="/Lingerie/Categorie-128950-bodys-caracos">Bodys & Caracos</a></li><li><a class="link" href="/Lingerie/Categorie-128951-guepieres-bustiers">Guêpières & Bustiers</a></li><li><a class="link" href="/Lingerie/Categorie-128952-maternite">Maternité</a></li></ul><div style='clear:both;'></div></ul><ul class="col bordered" style="width:20%"><ul class="sgmts" ><li class="head green" >Bas/Collant</li><li><a class="link" href="/Lingerie/Categorie-128963-collants">Collants</a></li><li><a class="link" href="/Lingerie/Categorie-128969-leggings">Leggings</a></li><li><a class="link" href="/Lingerie/Categorie-128970-bas-bas-jarretieres">Bas & Bas jarretières</a></li><li><a class="link" href="/Lingerie/Categorie-128974-mi-bas-chaussettes">Mi-bas & Chaussettes</a></li></ul><div style='clear:both;'></div></ul><ul class="col bordered" style="width:20%"><ul class="sgmts" ><li class="head green" >Nuit</li><li><a class="link" href="/Lingerie/Categorie-128953-nuisettes">Nuisettes</a></li><li><a class="link" href="/Lingerie/Categorie-128954-chemises-de-nuit">Chemises de nuit</a></li><li><a class="link" href="/Lingerie/Categorie-128955-pyjamas">Pyjamas</a></li><li><a class="link" href="/Lingerie/Categorie-128956-peignoirs-deshabilles">Peignoirs & Déshabillés</a></li><li><a class="link" href="/Lingerie/Categorie-128957-tops-t-shirts">Tops & T-shirts</a></li><li><a class="link" href="/Lingerie/Categorie-128958-pantalons">Pantalons</a></li><li><a class="link" href="/Lingerie/Categorie-128959-accessoires">Accessoires</a></li></ul><div style='clear:both;'></div></ul><ul class="col bordered" style="width:20%"><ul class="sgmts" ><li class="head green" >Bain</li><li><a class="link" href="/Lingerie/Categorie-128978-maillots-2-pieces">Maillots 2 pièces</a></li><li><a class="link" href="/Lingerie/Categorie-128981-maillots-1-piece">Maillots 1 pièce</a></li><li><a class="link" href="/Lingerie/Categorie-128984-draps-de-plage">Draps de plage</a></li><li><a class="link" href="/Lingerie/Categorie-128985-robes-tuniques-pareos">Robes, tuniques & paréos</a></li><li><a class="link" href="/Lingerie/Categorie-128986-accessoires">Accessoires</a></li></ul><div style='clear:both;'></div></ul><ul class="col bordered" style="width:20%"><ul class="sgmts" ><li class="green expanded"><a class="link-green" href="javascript:void(0);">Boutiques</a></li><li class="boutiques" ><a class="link" href="/FSIndex/Id-30128">La lingerie dans tous ses états</a></li><li class="boutiques" ><a class="link" href="/FSIndex/Id-30699">La boutique bain</a></li><li class="boutiques" ><a class="link" href="/FSIndex/Id-30701">Underwear Chic</a></li><li class="boutiques" ><a class="link" href="/FSIndex/Id-25240">Nouveautés Printemps-Eté 2016</a></li><li class="boutiques" ><a class="link" href="/FSIndex/Id-12831">Boutique Grands Bonnets</a></li><li class="boutiques" ><a class="link" href="/FSIndex/Id-28686">Le Coin du Homewear</a></li><li class="boutiques" ><a class="link" href="/FSIndex/Id-28687">Les Essentiels Lingerie</a></li><li class="boutiques" ><a class="link" href="/FSIndex/Id-22655">Ma Lingerie à Petits Prix</a></li><li class="boutiques" ><a class="link" href="/FSIndex/Id-30693">Lingerie Sexy</a></li><li class="boutiques" style="padding-bottom: 15px;"><a class="link" href="/FSIndex/Id-30694">Ma lingerie Mode</a></li><li><a class="link-green" href="/Marques/Lingerie">Marques (158)</a></li><li><a class="link-green" id="whatsnewMenu_Lingerie" href="/Lingerie" style="display:none;">Nouveaut&eacute;s</a></li><li><a class="link-green" href="/Operations/Univ.Lingerie">Offres spéciales</a></li><li><a class="link-green" href="/LookBook/Id-31457">LookBook</a></li></ul><div style='clear:both;'></div></ul></div><div class="subMenuCatalogue vertical" data-univers="beaute"><ul class="col" style="width:20%"><ul class="sgmts" ><li class="head green" >Maquillage</li><li><a class="link" href="/Beaute/Categorie-55146-yeux">Yeux</a></li><li><a class="link" href="/Beaute/Categorie-55115-teint">Teint</a></li><li><a class="link" href="/Beaute/Categorie-55153-levres">Lèvres</a></li><li><a class="link" href="/Beaute/Categorie-55160-ongles">Ongles</a></li><li><a class="link" href="/Beaute/Categorie-67029-pinceaux">Pinceaux</a></li><li><a class="link" href="/Beaute/Categorie-70890-accessoires">Accessoires</a></li><li><a class="link" href="/Beaute/Categorie-55319-maquillage-corps">Maquillage corps</a></li></ul><div style='clear:both;'></div><ul class="sgmts" ><li class="head green" style="margin-top:20px;">Parfums</li><li><a class="link" href="/Beaute/Categorie-95931-eau-de-toilette-femme">Eau de toilette Femme</a></li><li><a class="link" href="/Beaute/Categorie-95932-eau-de-parfum-femme">Eau de parfum Femme</a></li><li><a class="link" href="/Beaute/Categorie-95933-coffrets-femme">Coffrets Femme</a></li><li><a class="link" href="/Beaute/Categorie-128064-eau-de-toilette-homme">Eau de toilette Homme</a></li><li><a class="link" href="/Beaute/Categorie-128065-eau-de-parfum-homme">Eau de parfum Homme</a></li><li><a class="link" href="/Beaute/Categorie-128067-eau-de-toilette-enfant">Eau de toilette Enfant</a></li><li><a class="link" href="/Beaute/Categorie-128068-coffrets-enfant">Coffrets Enfant</a></li></ul><div style='clear:both;'></div></ul><ul class="col bordered" style="width:20%"><ul class="sgmts" ><li class="head green" >Soins du visage</li><li><a class="link" href="/Beaute/Categorie-149251-solaires">Solaires</a></li><li><a class="link" href="/Beaute/Categorie-55185-cremes-hydratantes">Crèmes hydratantes</a></li><li><a class="link" href="/Beaute/Categorie-55192-anti-age">Anti-âge</a></li><li><a class="link" href="/Beaute/Categorie-141279-serums">Sérums</a></li><li><a class="link" href="/Beaute/Categorie-141280-purifiants-matifiants">Purifiants & matifiants</a></li><li><a class="link" href="/Beaute/Categorie-141278-nettoyants">Nettoyants</a></li><li><a class="link" href="/Beaute/Categorie-55182-demaquillants">Démaquillants</a></li><li><a class="link" href="/Beaute/Categorie-55208-gommages-masques">Gommages & masques</a></li><li><a class="link" href="/Beaute/Categorie-55203-dents-blanches">Dents blanches</a></li><li><a class="link" href="/Beaute/Categorie-55197-soins-cibles">Soins ciblés</a></li><li><a class="link" href="/Beaute/Categorie-141276-accessoires">Accessoires</a></li></ul><div style='clear:both;'></div></ul><ul class="col bordered" style="width:20%"><ul class="sgmts" ><li class="head green" >Soins du corps</li><li><a class="link" href="/Beaute/Categorie-141281-laits-corporels">Laits corporels</a></li><li><a class="link" href="/Beaute/Categorie-141282-huiles-de-soin">Huiles de soin</a></li><li><a class="link" href="/Beaute/Categorie-56002-gommage">Gommage</a></li><li><a class="link" href="/Beaute/Categorie-55217-bain-douche">Bain & douche</a></li><li><a class="link" href="/Beaute/Categorie-141283-accessoires">Accessoires</a></li><li><a class="link" href="/Beaute/Categorie-55211-deodorant">Déodorant</a></li><li><a class="link" href="/Beaute/Categorie-55215-epilation">Epilation</a></li><li><a class="link" href="/Beaute/Categorie-55224-solaires">Solaires</a></li><li><a class="link" href="/Beaute/Categorie-55212-mains-pieds">Mains/Pieds</a></li><li><a class="link" href="/Beaute/Categorie-55216-minceur">Minceur</a></li><li><a class="link" href="/Beaute/Categorie-56289-soins-cibles">Soins ciblés</a></li></ul><div style='clear:both;'></div></ul><ul class="col bordered" style="width:20%"><ul class="sgmts" ><li class="head green" >Cheveux</li><li><a class="link" href="/Beaute/Categorie-55321-shampooing">Shampooing & Après-shampooing</a></li><li><a class="link" href="/Beaute/Categorie-55279-soins-cibles">Soins ciblés</a></li><li><a class="link" href="/Beaute/Categorie-55278-coiffant-modelant">Coiffant & Modelant</a></li><li><a class="link" href="/Beaute/Categorie-55228-appareils-a-coiffer">Appareils à coiffer</a></li><li><a class="link" href="/Beaute/Categorie-149253-accessoires">Accessoires</a></li><li><a class="link" href="/Beaute/Categorie-240834-coloration">Coloration</a></li></ul><div style='clear:both;'></div><ul class="sgmts" ><li class="head green" style="margin-top:20px;">Homme</li><li><a class="link" href="/Beaute/Categorie-149254-visage">Visage</a></li><li><a class="link" href="/Beaute/Categorie-149255-rasage">Rasage</a></li><li><a class="link" href="/Beaute/Categorie-149256-cheveux">Cheveux</a></li><li><a class="link" href="/Beaute/Categorie-149257-corps">Corps</a></li></ul><div style='clear:both;'></div></ul><ul class="col bordered" style="width:20%"><ul class="sgmts" ><li class="green expanded"><a class="link-green" href="javascript:void(0);">Boutiques</a></li><li class="boutiques" ><a class="link" href="/FSIndex/Id-31683">Boutique Fête des Mères</a></li><li class="boutiques" ><a class="link" href="/FSIndex/Id-28689">Le Maquillage top tendance !</a></li><li class="boutiques" ><a class="link" href="/FSIndex/Id-28690">Mon rituel beauté</a></li><li class="boutiques" ><a class="link" href="/FSIndex/Id-30129">La Boutique Beauté</a></li><li class="boutiques" ><a class="link" href="/FSIndex/Id-30726">Beauté petits prix</a></li><li class="boutiques" ><a class="link" href="/FSIndex/Id-18888">Nail Bar</a></li><li class="boutiques" ><a class="link" href="/FSIndex/Id-28492">L’Atout Séduction : un beau Rouge à lèvres</a></li><li class="boutiques" style="padding-bottom: 15px;"><a class="link" href="/FSIndex/Id-26809">La Boutique Bio</a></li><li><a class="link-green" href="/Marques/Beaute">Marques (61)</a></li><li><a class="link-green" id="whatsnewMenu_Beaute" href="/Beaute" style="display:none;">Nouveaut&eacute;s</a></li></ul><div style='clear:both;'></div></ul></div><div class="subMenuCatalogue vertical" data-univers="decoration"><ul class="col" style="width:20%"><ul class="sgmts" ><li class="head green" >Cuisine</li><li><a class="link" href="/Decoration/Categorie-115734-cuisson">Cuisson</a></li><li><a class="link" href="/Decoration/Categorie-115735-preparation">Préparation</a></li><li><a class="link" href="/Decoration/Categorie-115736-coutellerie">Coutellerie</a></li><li><a class="link" href="/Decoration/Categorie-115737-linge-d-office">Linge d'office</a></li><li><a class="link" href="/Decoration/Categorie-115738-livres-de-cuisine">Livres de cuisine</a></li><li><a class="link" href="/Decoration/Categorie-115739-petits-electromenagers">Petits électroménagers</a></li></ul><div style='clear:both;'></div></ul><ul class="col bordered" style="width:20%"><ul class="sgmts" ><li class="head green" >Table</li><li><a class="link" href="/Decoration/Categorie-116193-vaisselle">Vaisselle</a></li><li><a class="link" href="/Decoration/Categorie-116194-verrerie">Verrerie</a></li><li><a class="link" href="/Decoration/Categorie-116195-couverts">Couverts</a></li><li><a class="link" href="/Decoration/Categorie-116196-the-cafe">Thé & Café</a></li><li><a class="link" href="/Decoration/Categorie-116200-cocktail-sommelier">Cocktail & Sommelier</a></li><li><a class="link" href="/Decoration/Categorie-116197-salieres-poivrieres">Salières & Poivrières</a></li><li><a class="link" href="/Decoration/Categorie-116198-accessoires-de-table">Accessoires de Table</a></li><li><a class="link" href="/Decoration/Categorie-116199-linge-de-table">Linge de Table</a></li></ul><div style='clear:both;'></div></ul><ul class="col bordered" style="width:20%"><ul class="sgmts" ><li class="head green" >Déco</li><li><a class="link" href="/Decoration/Categorie-117324-objets-de-decoration">Objets de Décoration</a></li><li><a class="link" href="/Decoration/Categorie-117326-coussins-plaids-rideaux">Coussins / Plaids / Rideaux</a></li><li><a class="link" href="/Decoration/Categorie-117327-tapis">Tapis</a></li><li><a class="link" href="/Decoration/Categorie-117328-luminaires">Luminaires</a></li><li><a class="link" href="/Decoration/Categorie-117325-bougies-senteurs">Bougies / Senteurs</a></li><li><a class="link" href="/Decoration/Categorie-117329-rangement">Rangement</a></li><li><a class="link" href="/Decoration/Categorie-152621-jardinage-bricolage">Jardinage / Bricolage</a></li><li><a class="link" href="/Decoration/Categorie-152765-entretien">Entretien</a></li><li><a class="link" href="/Decoration/Categorie-117330-enfant">Enfant</a></li></ul><div style='clear:both;'></div></ul><ul class="col bordered" style="width:20%"><ul class="sgmts" ><li class="head green" >Chambre</li><li><a class="link" href="/Decoration/Categorie-117238-linge-de-lit">Linge de Lit</a></li><li><a class="link" href="/Decoration/Categorie-117239-couettes-et-oreillers">Couettes et Oreillers</a></li><li><a class="link" href="/Decoration/Categorie-117240-literie">Literie</a></li><li><a class="link" href="/Decoration/Categorie-117241-linge-de-lit-enfant">Linge de Lit Enfant</a></li></ul><div style='clear:both;'></div><ul class="sgmts" ><li class="head green" style="margin-top:20px;">Salle de bain</li><li><a class="link" href="/Decoration/Categorie-117261-linge-de-bain">Linge de Bain</a></li><li><a class="link" href="/Decoration/Categorie-117262-accessoires">Accessoires</a></li><li><a class="link" href="/Decoration/Categorie-117263-enfant">Enfant</a></li></ul><div style='clear:both;'></div></ul><ul class="col bordered" style="width:20%"><ul class="sgmts" ><li class="green expanded"><a class="link-green" href="javascript:void(0);">Boutiques</a></li><li class="boutiques" ><a class="link" href="/FSIndex/Id-22327">Black & White</a></li><li class="boutiques" ><a class="link" href="/FSIndex/Id-9947">Les Essentiels</a></li><li class="boutiques" ><a class="link" href="/FSIndex/Id-23014">Tout pour la cuisine</a></li><li class="boutiques" ><a class="link" href="/FSIndex/Id-28692">Design Déco</a></li><li class="boutiques" ><a class="link" href="/FSIndex/Id-28693">Nouveautés Linge de Lit</a></li><li class="boutiques" ><a class="link" href="/FSIndex/Id-29461">J'habille mes murs</a></li><li class="boutiques" ><a class="link" href="/FSIndex/Id-29927">Nouveautés Printemps-Eté</a></li><li class="boutiques" ><a class="link" href="/FSIndex/Id-30330">La boutique des Luminaires</a></li><li class="boutiques" ><a class="link" href="/FSIndex/Id-31570">Scandinave Mood</a></li><li class="boutiques" style="padding-bottom: 15px;"><a class="link" href="/FSIndex/Id-31665">Spécial extérieur</a></li><li><a class="link-green" href="/Marques/Decoration">Marques (142)</a></li><li><a class="link-green" id="whatsnewMenu_Decoration" href="/Decoration" style="display:none;">Nouveaut&eacute;s</a></li><li><a class="link-green" href="/Operations/Univ.Decoration">Offres spéciales</a></li></ul><div style='clear:both;'></div></ul></div></div></div></div>
+<div id="header2" class="header2"></div>
+<div id="page_container">
+<div class="accueil_whatsnew"><div id="home_top"><div class="coverflow"><div><a href="javascript:firstVP_V4('/FSMarque/Id-14244-Produit-0')"target="_self"  ><div   id="1layer"  style="width:817px; height:494px;background-image:url(//media.brandalley.com/2016/05/24/encards/3/160525_denim_bar_home.jpg); background-size:817px 494px;">
+		<div style="float:right;position:relative;margin-top:252px;">
+		<div style="position:relative;z-index: 200;float:left;">
+			<div style="display:table-cell;vertical-align:middle;color:#ede49f;background-color:#000000;font-size:28px;font-family:futura_medium;text-align:center;padding-left:5px;padding-right:5px;width:300px;height:40px;"><p>BLACK FRIDAY</p></div>
+			<div style="">			
+				<div style="display:table-cell;vertical-align:middle;color:#000000;font-size:17px;font-family:proxima_nova_alt_bold;text-align:center;text-transform:uppercase;padding-left:5px;padding-right:5px;width:300px;height:70px;"><p>Denim Bar</p></div>
+				<div style="color:#f5515a;font-size:18px;font-family:proxima_nova_alt_reg;text-align:center;padding-top:3px;padding-bottom:10px;padding-left:5px;padding-right:5px;width:300px;"><p>Jusqu'à <big>80%</big> de remise</p></div>
+			</div>
+		</div>
+		<div id="transparence" style="background-color: #FFFFFF;height: 100%;opacity: 0.8;position: absolute;width:100%;z-index: 199;"></div>
+	</div>
+</div></a><div class="Macaron48h"><div><img src="//media.brandalley.com/shops/3/reskin/shopviewid/3/picto_48hhomes.png"></div></div><div style="position: absolute;text-align: right;top: 458px;width: 100%;"><a href="/FSMarque/Id-14244-Produit-0"  ><div class="btnDefault btnRose" style="float:right;" ><div class="btnFleche btnRose"><img  src="//media.brandalley.com/shops/3/reskin/bouton_fleche.png"/></div><div class="btnDefaultText btnRose"   >Accéder à la boutique</div></div></a></div></div><div><a href="/BlackFriday/"target="_self"  ><div style="background-image:url(//media.brandalley.com/2016/05/23/encards/3/blackfriday_home_prolong_fr.jpg); width:817px; height:494px;"    id="2layer"  ></div></a><div class="Macaron48h"><div>&nbsp;</div></div></div><div><a href="javascript:firstVP_V4('/FSIndex/Id-31683')"target="_self"  ><div style="background-image:url(//media.brandalley.com/2016/05/19/encards/3/160505-home-keurparis2.jpg); width:817px; height:494px;"    id="3layer"  ></div></a><div class="Macaron48h"><div>&nbsp;</div></div></div><div><a href="/CoMarque/Corner-2069-Marque-10689-celio"target="_self"  ><div   id="4layer"  style="width:817px; height:494px;background-image:url(//media.brandalley.com/2016/05/24/encards/3/160525_celio_home.jpg); background-size:817px 494px;">
+		<div style="float:right;position:relative;margin-top:32%;">
+		<div style="position:relative;z-index: 200;float:left;">
+			<div style="display:table-cell;vertical-align:middle;color:#000000;background-color:#ffffff;font-size:18px;font-family:proxima_nova_alt_bold;text-align:center;text-transform:uppercase;padding-left:5px;padding-right:5px;width:300px;height:32px;"><p>nouvelle collection</p></div>
+			<div style="">			
+				<div style="display:table-cell;vertical-align:middle;color:#000000;font-size:17px;font-family:proxima_nova_alt_bold;text-align:center;text-transform:uppercase;padding-left:5px;padding-right:5px;width:300px;height:70px;"><p><img class="logoBrand" src="//media.brandalley.com/logo/celio_logo16.png"></p></div>
+				<div style="color:#f5515a;font-size:21px;font-family:proxima_nova_alt_reg;text-align:center;padding-top:3px;padding-bottom:10px;padding-left:5px;padding-right:5px;width:300px;"><p>- 50% sur le 2&#232;me Bermuda </p></div>
+			</div>
+		</div>
+		<div id="transparence" style="background-color: #FFFFFF;height: 100%;opacity: 0.8;position: absolute;width:100%;z-index: 199;"></div>
+	</div>
+</div></a><div class="Macaron48h"><div>&nbsp;</div></div><div style="position: absolute;text-align: right;top: 458px;width: 100%;"><a href="/CoMarque/Corner-2069-Marque-10689-celio"  ><div class="btnDefault btnRose" style="float:right;" ><div class="btnFleche btnRose"><img  src="//media.brandalley.com/shops/3/reskin/bouton_fleche.png"/></div><div class="btnDefaultText btnRose"   >Voir la collection</div></div></a></div></div><div><a href="javascript:firstVP_V4('/FSMarque/Id-31980-Produit-0')"target="_self"  ><div   id="5layer"  style="width:817px; height:494px;background-image:url(//media.brandalley.com/2016/05/24/encards/3/160525_createurs_home.jpg); background-size:817px 494px;">
+		<div style="float:right;position:relative;margin-top:32%;">
+		<div style="position:relative;z-index: 200;float:left;">
+			<div style="display:table-cell;vertical-align:middle;color:#000000;background-color:#ffffff;font-size:18px;font-family:proxima_nova_alt_bold;text-align:center;text-transform:uppercase;padding-left:5px;padding-right:5px;width:300px;height:32px;"><p>vente privée</p></div>
+			<div style="">			
+				<div style="display:table-cell;vertical-align:middle;color:#000000;font-size:17px;font-family:proxima_nova_alt_bold;text-align:center;text-transform:uppercase;padding-left:5px;padding-right:5px;width:300px;height:70px;"><p>Sergio Rossi, Fendi, Dolce & Gabbana ...</p></div>
+				<div style="color:#f5515a;font-size:21px;font-family:proxima_nova_alt_reg;text-align:center;padding-top:3px;padding-bottom:10px;padding-left:5px;padding-right:5px;width:300px;"><p>Jusqu'à <big>70%</big> de remise</p></div>
+			</div>
+		</div>
+		<div id="transparence" style="background-color: #FFFFFF;height: 100%;opacity: 0.8;position: absolute;width:100%;z-index: 199;"></div>
+	</div>
+</div></a><div class="Macaron48h"><div>&nbsp;</div></div><div style="position: absolute;text-align: right;top: 458px;width: 100%;"><a href="/FSMarque/Id-31980-Produit-0"  ><div class="btnDefault btnRose" style="float:right;" ><div class="btnFleche btnRose"><img  src="//media.brandalley.com/shops/3/reskin/bouton_fleche.png"/></div><div class="btnDefaultText btnRose"   >Accéder à la vente</div></div></a></div></div></div><div class="home_bottom"><div class="ligne_boutique_new" style="padding-right:11px;"><a href="https://www.brandalley.fr/FSIndex/Id-31683"target="_blank" ><img id="img_boutique1" src="//media.brandalley.com/2016/05/20/encards/3/1605_hp_keurparis.jpg"></a></div><div class="ligne_boutique_new" style="padding-right:11px;"><a href="/FSMarque/Id-31995-Produit-0"target="_self" ><div style="width:{IMG_WIDTH}px; height:{IMG_HEIGHT}px;background-image:url(//media.brandalley.com/2016/05/24/encards/3/160525_espace2.jpg)">
+	<style type='text/css'>
+		.HpAccroche .logoBrand { height:50px;}
+		.HpSousTitre .logoBrand { height:41px;}
+	</style>
+	<div style="height:127px;width:315px;padding:1px;">
+		<div style="float:left;width:315px;">
+			<div style="display:table-cell;vertical-align:middle;color:#000000;background-color:#FFFFFF;font-size:28px;letter-spacing:3px;font-family:proxima_nova_alt_bold;text-align:center;text-transform:uppercase;padding-top:8px;padding-left:5px;padding-right:5px;width:305px;height:40px;"><p>ventes privées</p></div>
+		</div>
+		<div class="HpSousTitre" style="float:left;width:315px;">
+			<div style="display:table-cell;vertical-align:middle;color:#000000;background-color:#FFFFFF;font-size:17px;letter-spacing:2px;font-family:proxima_nova_alt_bold;text-align:center;text-transform:uppercase;padding-left:5px;padding-right:5px;width:305px;height:45px;"><p><img src="//media.brandalley.com/instances/20656/mim.png"></p></div>
+		</div>
+		<div class="HpAccroche" style="float:left;width:315px;">
+			<div style="display:table-cell;vertical-align:middle;color:#000000;background-color:#FFFFFF;font-size:20px;letter-spacing:1px;font-family:proxima_nova_alt_reg;text-align:center;padding-left:5px;padding-right:5px;width:305px;height:30px;"><p>Jusqu'à <big><b style="color:red;">65%</b></big> de remise !</p></div>
+		</div>
+	</div>
+	<div style="height:205px;width:100%;">
+		<div style="position:absolute;display:table-cell;vertical-align:middle;display:none;color:#FFFFFF;font-size:14px;font-family:proxima_nova_alt_reg;text-align:center;padding-top:5px;padding-left:5px;width:100px;height:100px;"></div>
+	</div>
+	<div style="height:54px;width:315px;padding:1px;">
+		<div style="display:table-cell;vertical-align:middle;color:#000000;background-color:#FFFFFF;font-size:16px;letter-spacing:1px;font-family:proxima_nova_alt_bold;text-align:center;text-transform:uppercase;width:315px;height:54px;">> <span style="border-bottom: 1px solid lightgray;">accéder</span></div>
+	</div>
+</div></a></div><div class="ligne_boutique_new" style="padding-right:0px;"><a href="/CoMarque/Corner-2194-Marque-1254-scotch-soda"target="_self" ><div style="width:{IMG_WIDTH}px; height:{IMG_HEIGHT}px;background-image:url(//media.brandalley.com/2016/05/24/encards/3/160525_espace3.jpg)">
+	<style type='text/css'>
+		.HpAccroche .logoBrand { height:50px;}
+		.HpSousTitre .logoBrand { height:41px;}
+	</style>
+	<div style="height:127px;width:315px;padding:1px;">
+		<div style="float:left;width:315px;">
+			<div style="display:table-cell;vertical-align:middle;color:#000000;background-color:#FFFFFF;font-size:28px;letter-spacing:3px;font-family:proxima_nova_alt_bold;text-align:center;text-transform:uppercase;padding-top:8px;padding-left:5px;padding-right:5px;width:305px;height:45px;"><p>nouvelle collection</p></div>
+		</div>
+		<div class="HpSousTitre" style="float:left;width:315px;">
+			<div style="display:table-cell;vertical-align:middle;color:#000000;background-color:#FFFFFF;font-size:17px;letter-spacing:2px;font-family:proxima_nova_alt_bold;text-align:center;text-transform:uppercase;padding-left:5px;padding-right:5px;width:305px;height:30px;"><p><img class="logoBrand" src="//media.brandalley.com/logo/logo2194.png"></p></div>
+		</div>
+		<div class="HpAccroche" style="float:left;width:315px;">
+			<div style="display:table-cell;vertical-align:middle;display:none;color:#000000;background-color:#FFFFFF;font-size:20px;letter-spacing:1px;font-family:proxima_nova_alt_reg;text-align:center;padding-left:5px;padding-right:5px;width:305px;height:42px;"></div>
+		</div>
+	</div>
+	<div style="height:205px;width:100%;">
+		<div style="position:absolute;display:table-cell;vertical-align:middle;color:#FFFFFF;font-size:14px;font-family:proxima_nova_alt_reg;text-align:center;padding-top:5px;padding-left:5px;width:100px;height:100px;"></div>
+	</div>
+	<div style="height:54px;width:315px;padding:1px;">
+		<div style="display:table-cell;vertical-align:middle;color:#000000;background-color:#FFFFFF;font-size:16px;letter-spacing:1px;font-family:proxima_nova_alt_bold;text-align:center;text-transform:uppercase;width:315px;height:54px;">> <span style="border-bottom: 1px solid lightgray;">découvrir</span></div>
+	</div>
+</div></a></div></div><div class="home_bottom"><div class="home_marque" class="firstColumn" style="width:16.666666666667%;margin-left:0px;"><h2 ><span class="titre_univers_home">Femme</span></h2><div style="margin-top:20px;padding-left:1px;padding-right:10px;"><a href="/Marque/Marque-9341-lauren-ralph-lauren--Categorie-1">Lauren Ralph Lauren</a><br/><a href="/Marque/Marque-188-morgan--Categorie-1">Morgan</a><br/><a href="/Marque/Marque-7728-caroll--Categorie-1">Caroll</a><br/><a href="/Marque/Marque-3535-vero-moda-Categorie-1">Vero Moda</a><br/><a href="/Marque/Marque-9616-suncoo--Categorie-1">Suncoo</a><br/></div><div class="home_marques"><a href="/Marques/Femme">Voir toutes les marques</a></div></div><div class="home_marque" class="firstColumn" style="width:16.666666666667%;margin-left:0px;"><h2 ><span class="titre_univers_home">Homme</span></h2><div style="margin-top:20px;padding-left:1px;padding-right:10px;"><a href="/Marque/Marque-32-diesel--Categorie-2">Diesel</a><br/><a href="/Marque/Marque-868-levi-s-Categorie-2">Levi's</a><br/><a href="/Marque/Marque-3143-hilfiger-denim-Categorie-2">Hilfiger Denim</a><br/><a href="/Marque/Marque-534-calvin-klein-jeans--Categorie-2">Calvin Klein Jeans</a><br/><a href="/Marque/Marque-84-nike--Categorie-2">Nike</a><br/></div><div class="home_marques"><a href="/Marques/Homme">Voir toutes les marques</a></div></div><div class="home_marque" class="firstColumn" style="width:16.666666666667%;margin-left:0px;"><h2 ><span class="titre_univers_home">Enfant</span></h2><div style="margin-top:20px;padding-left:1px;padding-right:10px;"><a href="/Marque/Marque-4164-petit-bateau-Categorie-3">Petit Bateau</a><br/><a href="/Marque/Marque-7695-levi-s-kids--Categorie-3">Levi's Kids</a><br/><a href="/Marque/Marque-1865-benetton--Categorie-3">Benetton</a><br/><a href="/Marque/Marque-9715-we-are-young--Categorie-3">We Are Young</a><br/><a href="/Marque/Marque-6630-le-temps-des-cerises-jr--Categorie-3">Le Temps des Cerises Jr</a><br/></div><div class="home_marques"><a href="/Marques/Enfant">Voir toutes les marques</a></div></div><div class="home_marque" class="firstColumn" style="width:16.666666666667%;margin-left:0px;"><h2 ><span class="titre_univers_home">Lingerie</span></h2><div style="margin-top:20px;padding-left:1px;padding-right:10px;"><a href="/Marque/Marque-3683-princesse-tam-tam--Categorie-55039">Princesse tam.tam</a><br/><a href="/Marque/Marque-3662-aubade--Categorie-55039">Aubade</a><br/><a href="/Marque/Marque-130-passionata--Categorie-55039">Passionata</a><br/><a href="/Marque/Marque-880-dim-lingerie-Categorie-55039">Dim Lingerie</a><br/><a href="/Marque/Marque-1882-chantelle--Categorie-55039">Chantelle</a><br/></div><div class="home_marques"><a href="/Marques/Lingerie">Voir toutes les marques</a></div></div><div class="home_marque" class="firstColumn" style="width:16.666666666667%;margin-left:0px;"><h2 ><span class="titre_univers_home">Beaut&eacute;</span></h2><div style="margin-top:20px;padding-left:1px;padding-right:10px;"><a href="/Marque/Marque-1756-essie--Categorie-55036">Essie</a><br/><a href="/Marque/Marque-4906-gemey-maybelline-Categorie-55036">Gemey Maybelline</a><br/><a href="/Marque/Marque-1477-revlon--Categorie-55036">Revlon</a><br/></div><div class="home_marques"><a href="/Marques/Beaute">Voir toutes les marques</a></div></div><div class="home_marque" class="firstColumn" style="width:16.666666666667%;margin-left:0px;"><h2 ><span class="titre_univers_home">Maison</span></h2><div style="margin-top:20px;padding-left:1px;padding-right:10px;"><a href="/Marque/Marque-11880-monbento--Categorie-4">monbento</a><br/><a href="/Marque/Marque-4295-guy-degrenne-Categorie-4">Guy Degrenne</a><br/><a href="/Marque/Marque-6536-olivier-desforges-Categorie-4">Olivier Desforges</a><br/><a href="/Marque/Marque-8066-yves-delorme-Categorie-4">Yves Delorme</a><br/><a href="/Marque/Marque-3889-madura--Categorie-4">Madura</a><br/></div><div class="home_marques"><a href="/Marques/Maison">Voir toutes les marques</a></div></div></div><div id="HomeUniversSEO" style="margin-top: 15px;margin-bottom: 0px;"><p style="text-align: justify;display:block;">Tout au long de l’année, faites-vous plaisir grâce à Brandalley qui vous invite à craquer sur des <strong>vêtements de marque</strong>, mais également des <strong>chaussures de marque</strong> ainsi que diverses références beauté et des idées de <a href="//www.brandalley.fr/FSIndex/Id-16423-Produit-0" style="color:#535353;font-weight: bold;text-decoration: underline;">cadeaux</a> pour toutes les envies.<br><br>Pour les hommes comme pour les femmes, les enfants, mais aussi la maison, Brandalley vous fait bénéficier de nombreux avantages ainsi que de tarifs très attractifs. Découvrez sans plus attendre une <strong>vente privée mode</strong> Morgan, Diesel, Guess ou encore Puma ou une <strong>nouvelle collection mode</strong> de chez Levi’s, Tommy Hilfiger, Mango et Nike, entre autres.<br><br>Avec Brandalley, vous commandez en toute simplicité, grâce à un panier unique regroupant tous vos achats. La livraison est effectuée en 24h chrono à votre domicile et, si l’un de vos vêtements de marque ne vous allait pas, nous vous invitons à nous le renvoyer : tous les retours sont entièrement gratuits sous forme d’avoirs.<br><br>Découvrez le plaisir de passer commande sur Brandalley et alliez le choix, l’accès à de nombreuses <a href="/ventes-privees" style="color:#535353;font-weight: bold;text-decoration: underline;">ventes privées mode</a> et la facilité : vous réalisez vos achats au moment qui vous convient et profitez des réductions en cours ! Ne manquez pas également les <a href="/Soldes/" style="color:#535353;font-weight: bold;text-decoration: underline;">soldes</a>, nos idées de cadeaux de Noël et de fête des mères et participez à nos divers <a href="/JeuxConcours" style="color:#535353;font-weight: bold;text-decoration: underline;">jeux-concours</a>.</p></div></div>
+<div class="accueil_promo"></div></div>
+<div id="page-footer">
+<div id="aster" style="float: left; font-size: 9px; margin-bottom: 20px;display:none;"></div><div class="others"><span class="concierge/Avoirs" style="width:20%;float:left;"><div class="fond_services bloc_services"><p class="pit">Retours</p><p class="pbold">gratuits <small><small>sous conditions</small></small></p></div></span><span class="concierge/Livraison~VingtQuatreHeures/" style="width:20%;float:left;"><div class="fond_services bloc_services"><p class="pit">Livraison chez vous</p><p class="pbold">en 24h chrono</p></div></span><span class="concierge/Aide/Node.BA_engagement.Article.968" style="width:20%;float:left;"><div class="fond_services bloc_services"><p class="pbold">Un seul panier</p><p class="pit">une seule livraison</p></div></span><span class="concierge/MonCompte~Parrainer/MC.1" style="width:20%;float:left;"><div class="fond_services bloc_services" style="margin-right:0px;padding-top: 8px;height:57px;"><p class="pbold">Gagnez 10€</p><p class="pit" >en parrainant un ami</p></div></span><span class="concierge/ServiceClient~ContacterServiceClient/" style="width:20%;float:left;"><div class="fond_services bloc_services" style="margin-right:0px;"><p class="pit">Service client</p><p class="pbold">du Lundi au Samedi</p></div></span></div><div id="colchiffre"><ul id="footer_nav"><li><h3 ><span class="concierge/Aide/">Aide</span></h3></li><li><h3 ><span class="concierge/ServiceClient~ContacterServiceClient/">Contactez-nous</span></h3></li><li><h3 ><span class="concierge/Aide/Node.BA_engagement.Article.968">Nos engagements</span></h3></li><li><h3 ><span class = "concierge/QuiSommesNous/">Qui sommes-nous ?</span></h3></li><li><h3 ><span class = "concierge/QuiSommesNous/media">Brandalley dans les médias</span></h3></li><li><h3 ><span class="concierge/Statique/Node.Affiliation">Affiliation</span></h3></li><li><h3 ><span class="concierge/Cheques">Chèques cadeaux</span></h3></li><li class="sans-border"><h3 ><span style="font: bold 12px proxima_nova_alt_reg,Arial,Helvetica;">Newsletter:</span></h3></li><li class="sans-border"><div id="bloc-newsletter" style="height:24px;"><form id="inscription_at_pagefooter" method="post" action="#response" class="form" name="form_news_email"><input id="email_page_footer" name="newsletter-email" type="text" placeholder="-- Saisissez un email --"  class="textfield" onkeyup="remplacerCaracteresCasse(this, false);chercherEmail(event, J(this));"><div id="diversok" style="background-color:#777;"><a href="javascript:void(0)"  onclick='return testerEmail(J("input#email_page_footer"),J("form#inscription_at_pagefooter"))'  style="color: #fff">OK</a></div><input name="tag" type="hidden" value="HomePage" /></form></div></li><li class="sans-border"><div class="reseaux-sociaux"><div id="bloc-reseaux-sociaux"><a href="https://www.facebook.com/pages/Brandalley-France/74899913624?ref=stream" target="_blank"><img class="actu" src="//media.brandalley.com/shops/3/reskin/footer/v7/fb.jpg"></a><a href="http://twitter.com/BrandalleyFr?utm_campaign=twitter20080331162631&utm_content=profile&evid=EBgHISFgUVuEvzbnO%2BTTsHTRK%2Bp%2BDMEUDa8uIzczP%2BI%3D&utm_medium=email&utm_source=follow" target="_blank"><img src="//media.brandalley.com/shops/3/reskin/footer/v7/twitter.jpg"></a><a href="http://pinterest.com/brandalley/" target="_blank"><img src="//media.brandalley.com/shops/3/reskin/footer/v7/pinter.jpg"></a></div></div></li></ul></div></div><div class="footercartes"><div style="float:left;border-right:1px solid #ccc;" id="chequesCadeaux"><a href="//eulerian.brandalley.fr/dynbpromoclick/brandalley-fr/Footer_ChequesCadeaux/?eurl=%2F%2Fwww.brandalley.fr%2FCheques"><img src="//media.brandalley.com/shops/3/reskin/footer/v7/cheques.jpg" width="256" height="120" alt="Cheques Cadeaux"></a></div><div style="float:left;"><img src="//media.brandalley.com/shops/3/reskin/footer/v7/adyen.png" width="233" height="120" alt="Adyen" /></div><div class="footer_nospartenaires"><div class="titleNosPartenaires">Nos partenaires : </div><div class="logoPartenaires" ><a href="/PartenariatCroixRouge"><img src="//media.brandalley.com/shops/3/reskin/footer/v7/logoCR.jpg" style="border:0;width:80px;padding-top: 10px;" /></a></div></div><a href="/Applications"><div class="footer_appli_mobile" style="padding-left:0;padding-top:0;width:287px;height:121px;padding-right:5px;"><div style="float:left"><img src="//media.brandalley.com/shops/3/reskin/footer/v7/encart_appli_footer2.jpg" style="margin-top:6px;"/></div></div></a></div>
+<div class="footerFinalLine"><p id="pasteItFromDestroyed"></p><p id="FinalLine" ><a href="/Aide/Node.ConditionsDeVente.Article.1" target="_blank">Conditions générales de vente</a><a href="/Aide/Node.ConditionsDeVente.Article.9">Protections de vos données</a></p><div class="copyright" itemtype="http://data-vocabulary.org/Review-aggregate" itemscope="" style="margin:10px 5px 0;float: left;">
+                                    <img src="//media.brandalley.com/shops/3/reskin/googlestars.png" style="vertical-align: middle;">
+                                    <span itemtype="http://data-vocabulary.org/rating" itemscope="" itemprop="rating" style="display: inline; ">
+                                        <span itemprop="average">4.4</span> / 
+                                        <span itemprop="best">5</span>
+                                    </span>sur <a href="http://www.google.fr/shopping/seller?q=brandalley.fr">
+                                    <span itemprop="votes">28003</span> avis recueillis par 
+                                    <span itemprop="reviewer">Google</span></a>
+                                </div><p id="copyright" >Copyright  2004-2016 www.brandalley.com All Rights Reserved | <a href="https://www.brandalley.fr"><img style="vertical-align:middle;margin-right: 3px;" height="13" src="//media.brandalley.com/shops/3/reskin/footer/v7/flags/fr.png" />Brandalley.fr</a> | <a href="http://www.brandalley.it"><img style="vertical-align:middle;margin-right: 3px;" height="13" src="//media.brandalley.com/shops/3/reskin/footer/v7/flags/it.png" />Brandalley.it</a> | <a href="http://www.brandalley.es"><img style="vertical-align:middle;margin-right: 3px;" height="13" src="//media.brandalley.com/shops/3/reskin/footer/v7/flags/es.png" />Brandalley.es</a> | <a href="http://www.brandalley.de"><img style="vertical-align:middle;margin-right: 3px;" height="13" src="//media.brandalley.com/shops/3/reskin/footer/v7/flags/de.png" />Brandalley.de</a> | <a href="http://www.fr.outlet-avenue.brandalley.be"><img style="vertical-align:middle;margin-right: 3px;" height="13" src="//media.brandalley.com/shops/3/reskin/footer/v7/flags/be.png" />Brandalley.be</a> | <a href="http://www.outlet-avenue.brandalley.co.nl"><img style="vertical-align:middle;margin-right: 3px;" height="13" src="//media.brandalley.com/shops/3/reskin/footer/v7/flags/nl.png" />Brandalley.nl</a> | <a href="http://www.brandalley.com"><img style="vertical-align:middle;margin-right: 3px;" height="13" src="//media.brandalley.com/shops/3/reskin/footer/v7/flags/euro.png" />Brandalley.com</a></p></div>
+</div>
+
+				<div id="popup-confirme-email" title="ADRESSE EMAIL" style="display:none;">
+					<span id="spn-title"></span>
+			        <div id="spn-message"></div>
+			        <div id="spn-adresse">Adresse saisie : <span id="spn-adresse-saisie"></span></div>
+			        <div id="spn-modifier"></div>
+			    </div>
+			</div><script type="text/javascript" src="//media.brandalley.com/cvsmedia/v3/www307/scripts/prototype.js"></script>
+<script type="text/javascript" src="//media.brandalley.com/cvsmedia/v3/www307/scripts/commonElements.js"></script>
+<script type="text/javascript" src="//www.brandalley.fr/scripts/enginePHP.php?code=v4&projet=v5&lang=1"></script>
+<script type="text/javascript" src="//media.brandalley.com/min/?b=cvsmedia/v3/www307/scripts&f=common.js,utils.js,newPopUp.js,menuDer.js,popupVF_v4.js,popupSoldes.js,popupProducts.js,jquery-ui-1.10.3.custom.min.js,jquery.cookie.js,capMail.js,launcher2.js,placeholder.js,slick/slick.min.js,menuNewBaPo.js,cy.js,sh.js,giftBoxMessage.js,autoLogger.js,conciergerieLight.js,suggest.js,gact-zip.js,popup.js,effects.js,tourne.js,template.js,jqueryplugin/jquery.sliderkit.1.9.2.pack.js,jqueryplugin/jquery.easing.1.3.min.js,jeuconcours.js"></script>
+<script type="text/javascript">jQuery.widget.bridge('uitooltip', jQuery.ui.tooltip);</script>
+<script type="text/javascript">addJavascriptEulerianImpression("//eulerian.brandalley.fr/dynbpromoview/brandalley-fr/Header_V5_Parrainage/random");</script>
+<script type="text/javascript">
+                                           var newinscrit = getPHPCookie('newinscrit');
+
+                                           if (newinscrit != null && newinscrit != '' && newinscrit != 'undefined' && newinscrit.indexOf('newinscrit') == -1) {
+                                                document.cookie = 'newinscrit=; path=/';
+                                                var origine = getCookie('Origine');
+                                                if (origine == null) origine = 0;
+                                                var type_lead = 'nouveaulead';
+                                                var optin = getPHPCookie('newinscritoptin');
+                                                var uid = getCookie('BA');
+                                                if (uid == null) uid='';
+                                                else {
+                                                    uid = uid * 10;
+                                                }
+                                                if (optin != null && optin == 'no') {
+                                                    type_lead = 'nouvelinscrit';
+                                                }
+                                                var typeInscription = 'inscription_newsletter';
+                                                if (getParameterByName('creation') && getParameterByName('confirm')) {
+                                                  var typeInscription = 'creation_compte';
+                                                }
+                                                //eulerian
+                                                var EA_data = ['uid', uid, 'estimate', '1' ,'ref', newinscrit, 'path', type_lead,  "from","brandalley-fr",  "device","web" , 'type', typeInscription];
+												(function(){var d=document,i='et-ea-js';if(!d.location.protocol.indexOf('http')&&!d.getElementById(i)){var o=d.createElement('script'),a=d.getElementsByTagName('script')[0];o.type='text/javascript';o.id=i;o.async='async';o.defer='defer';o.src='//eulerian.brandalley.fr/ea.js';a.parentNode.insertBefore(o,a);}})();
+
+                                                document.write('<noscript><iframe width="2" height="2" border="0" src="//eulerian.brandalley.fr/collector/-/'+ newinscrit +'.html?estimate=1&ref='+ newinscrit +'&urlp='+ type_lead +'&url=%3A%2F%2Fwww.brandalley.fr"\/><\/noscript>');
+
+
+                                                // Adsmarket Lead Tracking code
+                                                document.write('<script src="//network.adsmarket.com/cpx?script=1&programid=29911&action=lead&p1=' + newinscrit + '" type="text/javascript"><\/script>');
+
+                                                // tradedoubler
+                                                var checksumCode = '1421';
+                                                var orderValue = '0.00';
+                                                var tduid = '';
+                                                var trade = getCookie('TRADEDOUBLER');
+                                                if (trade != null) tduid = getCookie('TRADEDOUBLER');
+                                                var checksum = 'v04' + MD5(checksumCode + newinscrit + orderValue);
+                                                document.write('<img src="//tbl.tradedoubler.com/report?organization=1051495&event=227280&leadNumber=' + newinscrit + '&checksum=' + checksum + '&tduid=' + tduid + '&reportInfo=" width="0" height="0" border="0">');
+
+                                                if (origine == 368) {
+                                                    document.write('<IMG SRC="//ads.bluelithium.com/pixel?id=1013076&t=2" width="1" height="1" />');
+                                                }
+                                                //orange
+                                                if (origine == 576 || origine == 575 || origine == 577) {
+                                                    document.write('<IMG SRC="//ad.yieldmanager.com/pixel?id=656570&t=2" width="1" height="1" />');
+                                                }
+
+                                                //avant solde 17/06/2011
+                                                document.write('<img src="//fbm.performads.fr/tracker?uid='+ newinscrit +'&amount=10&type=36" style="width:1px;height:1px;border:none" /> ');
+
+
+                                                // baobaz
+                                                document.write('<script language="JavaScript">var google_conversion_id = 992890017;var google_conversion_language = "fr";var google_conversion_format = "2";var google_conversion_color = "ffffff";var google_conversion_label = "HFsACLecgAIQoZm52QM";var google_conversion_value = 0;<\/script>');
+                                                document.write('<script language="JavaScript" src="//www.googleadservices.com/pagead/conversion.js"><\/script>');
+                                                // resoneo
+                                                document.write('<script language="JavaScript">var google_conversion_id = 1068530642;var google_conversion_language = "en";var google_conversion_format = "3";var google_conversion_color = "666666";var google_conversion_label = "oWIJCLj16gEQ0vfB_QM";var google_conversion_value = 0;<\/script>');
+                                                document.write('<script language="JavaScript" src="//www.googleadservices.com/pagead/conversion.js"><\/script>');
+                                                // adword
+                                                document.write('<script language="JavaScript">var google_conversion_id = 1015875732;var google_conversion_language = "en";var google_conversion_format = "2";var google_conversion_color = "ffffff";var google_conversion_label = "5EXwCJSbtAIQlJG05AM";var google_conversion_value = 0;<\/script>');
+                                                document.write('<script language="JavaScript" src="//www.googleadservices.com/pagead/conversion.js"><\/script>');
+
+                                                var uniqid = newinscrit;
+                                                var data = '';
+
+                                               if (origine == 28 && newinscrit != null) document.write('<img src="//tracking.publicidees.com/check.php?comid=74058&progid=370&uniqid=' + newinscrit + '" width="0" height="0" border="0">');
+
+                                               document.write('<img src="//er.brandalley.fr/ERMO/W/31/7a920/'+ newinscrit +'" style="border :0px ;"/>');
+                                               newinscrit = null;
+
+
+
+                                           }
+											//envoy� � chaque connexion
+											if ( !getCookie( 'sent' ) && getCookie( 'AccessPrivateSale' )) {
+												var exp = new RegExp( '([a-z0-9\-_]+[\.]?[a-z0-9\-_]*@?[a-z0-9\-_]+\.[a-z]{2,3})' , 'i' );
+												var recupEmail = getCookie('AccessPrivateSale');
+												if( !isNull( recupEmail ) ) recupEmail = exp.exec( recupEmail )[0];
+												recupEmail = MD5(recupEmail);
+												document.write('<img src="//er.brandalley.fr/ERMO/W/31/7a920/'+ recupEmail +'" style="border :0px ;"/>');
+												setCookie('sent',1,'','/');
+											}
+
+
+
+										</script>
+<script type="text/javascript">var prehome = $("prehome");
+if(prehome == null) {
+     if(getCookie("testConnexion") == null && getCookie("credential") == null && getCookie("popupforever") == null && getCookie("AccessPrivateSale") == null && getCookie("Origine") != "505"  && getCookie("Origine") != "506" && getCookie("Origine") != "568" && getCookie("Origine") != "4049" && getCookie("showPopupInscriptionVIP")==null ){
+         if(getCookie("poppupSession") == null){
+             var cookiePopupExpireTime = new Date();
+             cookiePopupExpireTime.setTime(cookiePopupExpireTime.getTime()+(30*24*60*60*1000));
+             setCookie("poppupSession","on",cookiePopupExpireTime,"/",null,null);
+             if ( getCookie("brandalley") == null && ( $('jeu_concours') == null || $('jeu_concours').style.display == "none" ) ) {
+                 var zeNewPopup = new newPopUp('newPopUpNewsletter',3,3, {urlMedia:'//media.brandalley.com/shops/3/reskin/', languageId:1, coreg:0, capMailProposition:1, capMailValidation:1, coregLabel:'verychic', opacDiv:1,center:1,contentId:'page-content',code:'BRAND16'});
+                 zeNewPopup.display();
+                 setCookieLong("brandalley", "1", "/", null, null, 1*30*24*60*60);
+             }else if(getCookie("brandalley")<2 && ( $('jeu_concours') == null || $('jeu_concours').style.display == "none" ) ){
+                 var zeNewPopup = new newPopUp('newPopUpNewsletter',3,3, {urlMedia:'//media.brandalley.com/shops/3/reskin/', languageId:1, coreg:0, capMailProposition:1, capMailValidation:1, coregLabel:'verychic', opacDiv:1,center:1,contentId:'page-content',code:'BRAND16'})
+                 zeNewPopup.display();
+                 setCookieLong("brandalley", parseInt(getCookie("brandalley"))+1, "/", null, null, 1*30*24*60*60);
+             }
+         }
+     }
+}</script>
+<script type="text/javascript">
+            var isPo = 0;
+			if( typeof( launcher ) != "undefined" ){
+				var params = "universeName:";
+				var launch = new launcher();
+			}conciergerie.init(); if( typeof( suggest ) != "undefined" ){
+				new suggest();
+			}adapteFleche();</script>
+<script type="text/javascript">addJavascriptEulerianImpression("//eulerian.brandalley.fr/dynbpromoview/brandalley-fr/Footer_ChequesCadeaux/random");</script>
+<script type="text/javascript">
+
+
+			    if ( typeof(isMobile) !== 'undefined' ) {
+
+				    if (isMobile != undefined && isMobile == true) {
+				    	$("prixInnovation").update("<a href=\"http://m.brandalley.fr\"><img src=\"//media.brandalley.com/shops/3/reskin/footer/v7/bouton_encart_mobile.jpg\"  alt=\"site mobile\" style=\"margin:40px 34px 0px 33px;\"></a>");
+				    }
+
+			    }
+
+			    </script>
+
+						<script type="text/javascript">
+
+						    var _gaq = _gaq || [];
+	                        var resoneo_gact = new r_gact();
+	                        _gaq.push(["_setAccount", "UA-6021724-1"]);
+	                        _gaq.push(["_trackPageview"]);
+	                        // Matriceo Tracking
+	                        _gaq.push(function() {
+	                            try {
+	                                resoneo_gact.trackSource();
+	                            } catch(err) {}
+	                        });
+	                        (function() {
+	                        var ga = document.createElement("script"); ga.type = "text/javascript"; ga.async = true;
+	                        ga.src = ("https:" == document.location.protocol ? "https://ssl" : "http://www") + ".google-analytics.com/ga.js";
+	                        var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(ga, s);
+	                        })();
+
+						</script><script type="text/javascript">if(!getCookie( "newinscrit" ) && !getCookie( "applidownload" )){
+			var uid = "";
+			var stat = "";
+			var email = "";
+            if( getCookie( "vje" )){
+                uid = unserialize(getCookie( "vje"));
+                uid = unserialize(uid[0]);
+            }
+            if( getCookie( "BA" )){
+                uid = getCookie( "BA") * 10;
+            }
+            if( getCookie( "AccessPrivateSale" )){
+                cookieInfo =  unserialize(getCookie( "AccessPrivateSale"));
+                if(cookieInfo)
+                {
+                   email = MD5(unserialize(cookieInfo[0]));
+                }
+            }
+            if( getCookie( "vjestat" )){
+                var stat = getCookie( "vjestat");
+
+                if(stat == "a87ff679a2f3e71d9181a67b7542122c")
+                    stat = 4;
+                else if(stat == "e4da3b7fbbce2345d7772b0674a318d5")
+                    stat = 5;
+                else if(stat == "1679091c5a880faf6fb5e6087eb1b2dc")
+                    stat = 6;
+            }
+            if (stat == null || stat == "undefined") stat = "";
+
+    	
+				/*<![CDATA[*/
+				var EA_data = [ "from","brandalley-fr" ,  "device","web"  ,  "uid",uid ,  "email",email];
+				(function(){var d=document,i='et-ea-js';if(!d.location.protocol.indexOf('http')&&!d.getElementById(i)){var o=d.createElement('script'),a=d.getElementsByTagName('script')[0];o.type='text/javascript';o.id=i;o.async='async';o.defer='defer';o.src='//eulerian.brandalley.fr/ea.js';a.parentNode.insertBefore(o,a);}})();
+				/*]]>*/}</script><script id="clobscript" type="text/javascript" src="//media.brandalley.com/cvsmedia/v3/www307/scripts/clobs.js?id=brandalley&i=9&v=1&20130320"></script><div id="eulerianImpressions"></div><script type="text/javascript">processEulerianImpressionList();</script><!-- DATE=25-05-2016 07:30:11 on br-vit_w35 - www.brandalley.fr -  mem 7864320 6455240 pick 8126464 7863488-->	<script type="text/javascript">
+	   					(function() {
+	       				var mt = document.createElement("script"); mt.type = "text/javascript"; mt.async = true;
+	       				mt.src = "//d2yp9b3a29g3i2.cloudfront.net/mousetest/brandalley/f0a3b375-cefa-4b29-b509-b1fc984c8d6e_p.js";
+	       				document.getElementsByTagName("head")[0].appendChild(mt);
+	   					})();
+					</script></body>
+</html>

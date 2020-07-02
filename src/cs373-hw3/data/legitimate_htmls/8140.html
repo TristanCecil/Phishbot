@@ -1,0 +1,1127 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Language" content="zh-CN" />
+<meta name="Keywords" content="广告联盟,网络广告,网站联盟,成果网,CHANet,效果营销" />
+<meta name="Description" content="CHANet成果网广告联盟提供专业的网络广告营销服务，免费提供站长各类CPA、CPC、CPS、CPM等广告，佣金单价高，支付信用优，是站长投放广告的最佳选择。" />
+<meta name="author" content="CHANet成果网-爱德威广告（上海）有限公司 Adways China Co.,Ltd" />
+<title>CHANet成果网网络广告联盟-中国第一的效果营销平台</title>
+<link rel="icon" href="images/chanet.ico" type="image/x-icon" /> <link rel="shortcut icon" href="images/chanet.ico" type="image/x-icon" />
+<link href="style/basic.css" rel="stylesheet"  type="text/css" />
+<link href="style/index.css" rel="stylesheet"  type="text/css" />
+<style>
+			.top-banner{width:961px;margin:0 auto;} .top-banner .s-bnr{display:none;}
+			.top-banner a{display:block;} .top-banner a img{border:0 none;}
+</style>
+<script type="text/javascript" src="/html/top3/js/jquery.js"></script>
+<script src="/html/top3/js/topbanner.js"></script>
+<script type="text/javascript" src="/html/top3/js/chanetPartner.js"></script>
+<script type="text/javascript">
+if(typeof(pgvMain) == 'function')
+pgvMain();
+</script>
+<script language="javascript">
+var gtopTab="one";
+function $id(id){
+    return "string" == typeof id ? document.getElementById(id) : id;
+}
+function changesTab(tab_id){
+    if (tab_id==gtopTab){
+        return; 
+    }else{
+        $id(gtopTab).className="unselect";  
+        $id(tab_id).className="select";
+        $id("tab_"+gtopTab).style.display="none";
+        $id("tab_"+tab_id).style.display="block";
+        gtopTab=tab_id;
+    }
+}
+
+var Extend = function(destination, source) {
+    for (var property in source) {
+        destination[property] = source[property];
+    }
+    return destination;
+}
+var CurrentStyle = function(element){
+    return element.currentStyle || document.defaultView.getComputedStyle(element, null);
+}
+var Bind = function(object, fun) {
+    var args = Array.prototype.slice.call(arguments).slice(2);
+    return function() {
+        return fun.apply(object, args.concat(Array.prototype.slice.call(arguments)));
+    }
+}
+var Tween = {
+    Quart: {
+        easeOut: function(t,b,c,d){
+            return -c * ((t=t/d-1)*t*t*t - 1) + b;
+        }
+    },
+    Back: {
+        easeOut: function(t,b,c,d,s){
+            if (s == undefined) s = 1.70158;
+            return c*((t=t/d-1)*t*((s+1)*t + s) + 1) + b;
+        }
+    },
+    Bounce: {
+        easeOut: function(t,b,c,d){
+            if ((t/=d) < (1/2.75)) {
+                return c*(7.5625*t*t) + b;
+            } else if (t < (2/2.75)) {
+                return c*(7.5625*(t-=(1.5/2.75))*t + .75) + b;
+            } else if (t < (2.5/2.75)) {
+                return c*(7.5625*(t-=(2.25/2.75))*t + .9375) + b;
+            } else {
+                return c*(7.5625*(t-=(2.625/2.75))*t + .984375) + b;
+            }
+        }
+    }
+}
+//容器对象、滑动对象、切换数量
+var SlideTrans = function(container, slider, count, options) {
+    this._slider = $id(slider);
+    this._container = $id(container);//容器对象
+    this._timer = null;//定时器
+    this._count = Math.abs(count);//切换数量
+    this._target = 0;//目标值
+    this._t = this._b = this._c = 0;//tween参数
+    this.Index = 0;//当前索引
+    this.SetOptions(options);
+    this.Auto = !!this.options.Auto;
+    this.Duration = Math.abs(this.options.Duration);
+    this.Time = Math.abs(this.options.Time);
+    this.Pause = Math.abs(this.options.Pause);
+    this.Tween = this.options.Tween;
+    this.onStart = this.options.onStart;
+    this.onFinish = this.options.onFinish;
+    var bVertical = !!this.options.Vertical;
+    this._css = bVertical ? "top" : "left";//方向
+    //样式设置
+    var p = CurrentStyle(this._container).position;
+    p == "relative" || p == "absolute" || (this._container.style.position = "relative");
+    this._container.style.overflow = "hidden";
+    this._slider.style.position = "absolute";
+    this.Change = this.options.Change ? this.options.Change :
+        this._slider[bVertical ? "offsetHeight" : "offsetWidth"] / this._count;
+};
+SlideTrans.prototype = {
+  //设置默认属性
+  SetOptions: function(options) {
+    this.options = {//默认值
+        Vertical:   true,//是否垂直方向（方向不能改）
+        Auto:       true,//是否自动
+        Change:     0,//改变量
+        Duration:   50,//滑动持续时间
+        Time:       10,//滑动延时
+        Pause:      4000,//停顿时间(Auto为true时有效)
+        onStart:    function(){},//开始转换时执行
+        onFinish:   function(){},//完成转换时执行
+        Tween:      Tween.Quart.easeOut//tween算子
+    };
+    Extend(this.options, options || {});
+  },
+  //开始切换
+  Run: function(index) {
+    //修正index
+    index == undefined && (index = this.Index);
+    index < 0 && (index = this._count - 1) || index >= this._count && (index = 0);
+    //设置参数
+    this._target = -Math.abs(this.Change) * (this.Index = index);
+    this._t = 0;
+    this._b = parseInt(CurrentStyle(this._slider)[this.options.Vertical ? "top" : "left"]);
+    this._c = this._target - this._b;
+    this.onStart();
+    this.Move();
+  },
+  //移动
+  Move: function() {
+    clearTimeout(this._timer);
+    //未到达目标继续移动，否则进行下一次滑动
+    if (this._c && this._t < this.Duration) {
+        this.MoveTo(Math.round(this.Tween(this._t++, this._b, this._c, this.Duration)));
+        this._timer = setTimeout(Bind(this, this.Move), this.Time);
+    }else{
+        this.MoveTo(this._target);
+        this.Auto && (this._timer = setTimeout(Bind(this, this.Next), this.Pause));
+    }
+  },
+  //移动到
+  MoveTo: function(i) {
+    this._slider.style[this._css] = i + "px";
+  },
+  //下一个
+  Next: function() {
+    this.Run(++this.Index);
+  },
+  //上一个
+  Previous: function() {
+    this.Run(--this.Index);
+  },
+  //停止
+  Stop: function() {
+    clearTimeout(this._timer); this.MoveTo(this._target);
+  }
+};
+</script>
+ <script type="text/javascript">   
+  <!--   
+  function   hideDiv(sDiv)   
+  {   
+  document.getElementById(sDiv).style.display   =   "none";   
+  }   
+  function   showDiv(sDiv)   
+  {   
+  document.getElementById(sDiv).style.display   =   "block";   
+  }   
+  //-->    
+  function chco1(obj) 
+{ 
+obj.setAttribute("className", 'area1');
+obj.setAttribute("class", 'area1');
+}
+  function chco2(obj) 
+{
+obj.setAttribute("className", 'area2');
+obj.setAttribute("class", 'area2');
+
+} 
+function update_ca(id){
+    if(document.getElementById(id)){
+        document.getElementById(id).src="/captcha.cgi?"+  (parseInt(Math.random()*100 + 0.4999));
+    }
+}
+function update_ca2(id){
+    if(document.getElementById(id)){
+        document.getElementById(id).src="/merchant/captcha?"+  (parseInt(Math.random()*100 + 0.4999));
+    }
+}
+
+var form_num= 1;
+function keydown_submit(e){
+    if (e.keyCode == 13) {
+        if(form_num == 1){
+            document.getElementById('form_1').submit();
+        }else if(form_num == 2){
+            document.getElementById('merchant_login').submit();
+        }
+    }
+}
+</script>
+<script type="text/javascript">
+function gid(id){return document.getElementById(id);}
+function changeV(n)
+{
+    var tds=document.getElementById('vshow').getElementsByTagName('td');
+    for(var i=0;i<tds.length;i+=3)
+    {
+     var j=i;
+     tds[j++].style.display="";
+     tds[j++].style.display="";
+     tds[j++].style.display="none";
+    }
+    tds[n++].style.display="none";
+    tds[n++].style.display="none";
+    tds[n++].style.display="";
+}
+function autoChange()
+{
+    changeV(c_num);
+    c_num+=3;
+    c_num=c_num==c_len?0:c_num;
+}
+
+var c_len=0;//document.getElementById('vshow').getElementsByTagName('td').length;
+var c_num=0;
+var iauto=0;//window.setInterval('autoChange()',1500);
+
+jQuery(document).ready(function(){
+    c_len=document.getElementById('vshow').getElementsByTagName('td').length;
+    iauto=window.setInterval('autoChange()',1500);
+    chanetPartner.loginByCookie(function(response){
+        eval('var tmp='+response+';');
+        if(tmp.flag==1){
+            document.getElementById('cont1').innerHTML='<ul  style="list-style-type:none;"><li  class="f14"><span id="partnerName" class="or">'+tmp.name+'</span> ，欢迎您再次登录。</li><li style="font-family:\'Verdana\',\'宋体\';padding-bottom:10px;margin-bottom:20px;border-bottom:1px dashed #ccc;" class="f14">您的ID号为 <span class="or" id="partnerID">'+tmp.id+'</span>　<a href="/partner/logout.cgi" title="退出"><img src="images/loginout.jpg" alt="退出" /></a></li><li  style="margin-bottom:10px;">现在您可以：</li><li><ul id="login-btns"><li style="background:url(images/lbtn1.gif);"><a href="/partner/pm_list.cgi" ><span style="margin-left:30px;line-height:22px;">获取广告</span></a></li><li style="background:url(images/lbtn2.gif);"><a href="/partner/pt_report.cgi" ><span style="margin-left:30px;line-height:22px;">查看报表</span></a></li><li style="background:url(images/lbtn3.gif);"><a href="/partner/as_list.cgi" ><span style="margin-left:30px;line-height:22px;">网站管理</span></a></li><li style="background:url(images/lbtn4.gif);"><a href="/partner/pt_detail.cgi" ><span style="margin-left:30px;line-height:22px;">用户管理</span></a></li><li style="background:url(images/lbtn5.gif);"><a href="/partner/pt_payed_history.cgi" ><span style="margin-left:30px;line-height:22px;">帐务查询</span></a></li><li style="background:url(images/lbtn6.gif);"><a href="/partner/pt_msg_list.cgi" ><span style="margin-left:30px;line-height:22px;">站内短信</span></a></li></ul></li></ul>';
+            document.getElementById('register').style.background= 'transparent url(../images/regbgs.gif) repeat scroll 0 0';
+            chanetPartner.name= tmp.name;
+            chanetPartner.id=   tmp.id;
+        }
+    });
+    
+});
+
+</script>
+<script type="text/javascript">
+var _bdhm_top = 0;
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+var _bdhm_tim = new Image(1,1);
+_bdhm_tim.id = "bdhmPerimg";
+_bdhm_tim.src = _bdhmProtocol + "hm.baidu.com/_tt.gif?si=8a3ccf95e588f7c28f6f3595aa8d7ee2&rnd=" + Math.round(Math.random()*2147483647);
+_bdhm_tim.onload=function(){_bdhm_top = 1;}
+</script> 
+</head>
+
+<body onkeydown="keydown_submit(event);">
+<div id="container">
+<!----------头部---------->
+<script type="text/javascript" src="/html/top3/js/announce.js"></script>
+	<div id="header">
+			<div  id="logo">
+				<a href="http://www.chanet.com.cn" title="CHANet成果网-中国第一的效果营销平台" name="top">
+                
+                <img src="/html/images/logo.png" width="206" height="94" alt="CHANet成果网-中国第一的效果营销平台" id="logo-img" />                                
+                </a>
+<!--<object style="float:left;display:block;" width="206" border="0" height="94" classid="clsid:D27CDB6E-AE6D-11CF-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab version=6,0,40,0">
+        <param name="movie" value="/images/2012.swf">
+        <param name="quality" value="High">
+        <embed width="206" height="94" src="/images/2012.swf" pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash">
+</object>-->
+                <h1 style="" class="yh">中国第一的效果营销平台</h1>
+				<p><a href="/about.htm">关于CHANet</a>　|　<a href="http://blog.chanet.com.cn" target="_blank">CHANet网志</a>　|　<a href="/help.htm" >帮助中心</a></p>
+
+  		<div id="block2" style="">
+          <ul id="rolltxt">
+          </ul>
+		  <script type="text/javascript">
+		  function myAddFavorite(name1,url,name2){
+    if((typeof window.sidebar=="object")&&(typeof window.sidebar.addPanel=="function")){
+        window.sidebar.addPanel(name1,url,name2);
+    }else{
+        window.external.AddFavorite(url,name1);
+    }
+}
+
+ 			function initAnnounce(){
+				var str ='';
+				for(var i=0; i<announce.length-1; i++){
+					str+= '<li><a target="_blank" href="'+ announce[i].link +'">'+ announce[i].content +'</a></li>';
+				}
+	
+				if(document.getElementById('rolltxt')){
+					document.getElementById('rolltxt').innerHTML= str;
+				}
+			}
+
+            function extractNodes(pNode){
+                if(pNode.nodeType == 3)return null;
+                var node,nodes = new Array();
+                for(var i=0;node= pNode.childNodes[i];i++){
+                    if(node.nodeType == 1)nodes.push(node);
+                }
+                return nodes;
+            }
+            
+            initAnnounce();
+            var obj=document.getElementById("rolltxt");
+            for(i=0;i<4;i++){
+                obj.appendChild(extractNodes(obj)[i].cloneNode(true));
+            }
+            settime=0;
+            var t=setInterval(rolltxt,50);
+            function rolltxt(){
+                if(obj.scrollTop % (obj.clientHeight-5) ==0){
+                    settime+=1;
+                    if(settime==50){
+                        obj.scrollTop+=1;
+                        settime=0; 
+                    }
+                }else{
+                    obj.scrollTop+=1; 
+                    if(obj.scrollTop==(obj.scrollHeight-obj.clientHeight)){
+                        obj.scrollTop=0;
+                    }
+                }
+            }
+            obj.onmouseover=function(){clearInterval(t)}
+            obj.onmouseout=function(){t=setInterval(rolltxt,50)}
+			 </script>
+		   </div>
+
+			</div>
+            <div id="menu">
+					<ul>
+						<li><a href="/index.htm"><span>首 页</span></a></li>
+						<li><img src="/images/menu-space.gif" /></li>
+						<li><a href="/affiliate.htm">网站主</a></li>
+						<li><img src="/images/menu-space.gif" /></li>
+						<li><a href="/merchant.htm">广告主</a></li>
+						<li><img src="/images/menu-space.gif" /></li>
+						<li><a href="/learning.htm">学习中心</a></li>
+						<li><img src="/images/menu-space.gif" /></li>
+						<li><a href="http://bbs.chanet.com.cn" target="_blank">BBS论坛</a></li>
+						<li><img src="/images/menu-space.gif" /></li>
+						<li><a href="/contact.htm">联系我们</a></li>
+						<li><img src="/images/menu-space.gif" /></li>
+					</ul>
+					<a href="http://weibo.com/chanetadways" class="add-wb-btn" target="_blank" title="关注成果网"></a>
+			</div>
+	</div>
+    
+   
+<!----------内容部分---------->
+    <div id="main">
+            <div id="spotimg"  class="ad">
+        
+        
+        <div id="idContainer2" class="container">
+  <table id="idSlider2" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      
+      <td class="td_f"><a href="https://www.chanet.com.cn/show_news_z.cgi?id=24960"><img src="images/tb1.jpg" /></a></td>
+      
+      <td class="td_f"><a href="https://www.chanet.com.cn/show_news_z.cgi?id=24959"><img src="images/tb2.gif" /></a></td>
+      
+      <td class="td_f"><a href="https://www.chanet.com.cn/show_news_z.cgi?id=24943"><img src="images/tb3.jpg" /></a></td>
+      
+      <td class="td_f"><a href="https://www.chanet.com.cn/show_news_z.cgi?id=24958"><img src="images/tb4.jpg" /></a></td>
+      
+      <td class="td_f"><a href="http://www.chanet.com.cn/show_news_z.cgi?id=24974"><img src="images/tb5.jpg" /></a></td>
+      
+      <td class="td_f"><a href="http://www.chanet.com.cn/show_news_z.cgi?id=24876"><img src="images/tb6.jpg" /></a></td>
+      
+      <td class="td_f"><a href="http://count.chanet.com.cn/adwhere.php?a=217&amp;u=&amp;e=&amp;url=http%3A%2F%2Fwww.banggo.com%2Ftheme%2F20151224-01.shtml%3Favn%3D1"><img src="images/tb7.jpg" /></a></td>
+      
+      <td class="td_f"><a href="https://www.chanet.com.cn/show_news_z.cgi?id=24946"><img src="images/tb8.jpg" /></a></td>
+      
+      <td class="td_f"><a href="http://count.chanet.com.cn/adwhere.php?a=217&amp;u=&amp;e=&amp;url=http%3A%2F%2Fwww.underarmour.cn%2Fs.htm%3Fkeyword%3D%25E8%258B%25B1%25E9%259B%2584"><img src="images/tb9.jpg" /></a></td>
+      
+      <td class="td_f"><a href="http://www.chanet.com.cn/show_news_z.cgi?id=24897"><img src="images/tb10.jpg" /></a></td>
+      
+    </tr>
+  </table>
+  <ul id="idNum" class="num"></ul>
+</div>
+<script language="javascript">
+//new SlideTrans("idContainer", "idSlider", 3).Run();
+///////////////////////////////////////////////////////////
+var forEach = function(array, callback, thisObject){
+    if(array.forEach){
+        array.forEach(callback, thisObject);
+    }else{
+        for (var i = 0, len = array.length; i < len; i++) { callback.call(thisObject, array[i], i, array); }
+    }
+}
+var st = new SlideTrans("idContainer2", "idSlider2", 10, { Vertical: false });
+var nums = [];
+//插入数字
+for(var i = 0, n = st._count - 1; i <= n;){
+    (nums[i] = $id("idNum").appendChild(document.createElement("li"))).innerHTML = ++i;
+}
+forEach(nums, function(o, i){
+    o.onmouseover = function(){ o.className = "on"; st.Auto = false; st.Run(i); }
+    o.onmouseout = function(){ o.className = ""; st.Auto = true; st.Run(); }
+})
+//设置按钮样式
+st.onStart = function(){
+    forEach(nums, function(o, i){ o.className = st.Index == i ? "on" : ""; })
+}
+//$id("idAuto").onclick = function(){
+    //if(st.Auto){
+        //st.Auto = false; st.Stop(); this.value = "自动";
+    //}else{
+        //st.Auto = true; st.Run(); this.value = "停止";
+    //}
+//}
+//$id("idNext").onclick = function(){ st.Next(); }
+//$id("idPre").onclick = function(){ st.Previous(); }
+//$id("idTween").onchange = function(){
+    //switch (parseInt(this.value)){
+        //case 2 :
+            //st.Tween = Tween.Bounce.easeOut; break;
+        //case 1 :
+            //st.Tween = Tween.Back.easeOut; break;
+        //default :
+            //st.Tween = Tween.Quart.easeOut;
+    //}
+//}
+st.Run();
+</script>
+        
+        
+        
+            </div>  
+<!--用户登录-->     
+<div id="register">                 
+       <div  id="login" class="loginbga">
+            <ul id="regmenu"  style="margin-left:30px;">
+                <li style="margin-right:70px;">
+                <a href="#1" id="lb1" onClick="form_num=1;showDiv('cont1');hideDiv('cont2');chco2(this);chco1(document.getElementById('lb2'));document.getElementById('login').setAttribute('class','loginbga');document.getElementById('login').setAttribute('className','loginbga');update_ca('cap_1');" class="area2">网站主登录</a></li>
+                <li >
+                <a href="#1" id="lb2" onClick="form_num=2;hideDiv('cont1');showDiv('cont2');chco2(this);chco1(document.getElementById('lb1'));document.getElementById('login').setAttribute('class','loginbgb');document.getElementById('login').setAttribute('className','loginbgb');update_ca2('cap_2');" class="area1">广告主登录</a></li>    
+            </ul>
+      </div>
+      
+        <div id="cont" style="width:255px;height:168px;clear:both;margin-left:20px;">
+                            <div id="cont1" style="margin-top:15px;">
+                                <ul  style="list-style-type:none;">
+<form id="form_1" action="/partner/login.cgi" method="post">
+    <input type="hidden" value="1" name="confirm"/>
+                                <li>用户名：<input name="login_name" type="text" style="width:150px;" /></li>
+                                <li>密　码：<input name="login_pass" type="password" style="width:150px;" /></li>
+                                <li ><p style="clear:both;float:left;width:130px;">验证码：<input style="width:50px;" name="validate_code" type="text" size="10" /></p><img id="cap_1" src="" style="margin-top:3px;float:left;margin-left:0px;margin-bottom:10px;" onclick="update_ca('cap_1');" /><a href="javascript:update_ca('cap_1');" style="float:left; line-height:14px; font-size:12px; margin-left:13px;">看不清？<br />换一张</a></li></li>       
+                                <li style="font-size:12px;clear:both;"><input name="login_week" type="checkbox" id="saveuid" style="border:0;margin-left:55px;"/> <label for="saveuid">一周内自动登录</label></li>                     
+                                <li style="margin-left:57px;margin-top:5px;margin-bottom:15px;">
+                                <p style="float:left;width:44px;padding-right:10px;margin-right:0px;"><input name="" type="button" class="loginbtn" style="width:44px;height:20px;background:url(images/logbtn.gif);border:0;" onclick="document.getElementById('form_1').submit();"  /></p>
+                                <p style="float:left;color:#666;">
+                                <a href="/partner/get_password.cgi" class="gw12">忘记密码？</a></p>
+                                </li>
+</form>
+                                <li class="logw">只需简单3步，您的网站即可赢利！</li>
+                                <li><a href="/reg_main.cgi"><img src="images/regbtn.gif" /></a></li>
+                                </ul>
+                                <script type="text/javascript">
+                                update_ca('cap_1');
+                                </script>
+                            </div>
+
+<form action="/merchant/login" method="post" id="merchant_login">
+<input type="hidden" value="1" name="confirm"/>
+                            <div id="cont2" style="display:none;margin-top:25px;"> 
+                                <ul  style="list-style-type:none;">
+                                <li>用户名：<input name="login_name" type="username"  style="width:150px;" /></li>
+                                <li>密　码：<input name="login_pass" type="password"  style="width:150px;" name="password" /></li>
+                                <li ><p style="clear:both;float:left;width:130px;">验证码：<input style="width:50px;" name="validate_code" type="text" size="10" /></p><img onclick="update_ca2('cap_2');"  id="cap_2" src="" style="margin-top:3px;float:left;margin-left:0px;margin-bottom:10px;" /><a href="javascript:update_ca2('cap_2');" style="float:left; line-height:14px; font-size:12px; margin-left:13px;">看不清？<br />换一张</a></li>                              
+                                <li style="margin-left:57px;margin-top:15px;margin-bottom:23px;">
+                                <p style="float:left;width:44px;padding-right:10px;margin-right:0px;"><input name="" type="button" class="loginbtn" style="width:44px;height:20px;background:url(images/logbtn.gif);border:0;" onclick="document.getElementById('merchant_login').submit();"/></p>
+                                <p style="float:left;color:#666;"> <a href="/merchant/get_password.cgi" class="gw12">忘记密码？</a></p>
+                                </li>                               
+
+                                <li><a href="/merchanet_7.htm"><img src="images/regbtn1.gif" alt="广告主免费注册"/></a></li>
+                                </ul>
+                            </div>
+</form>
+        </div>
+</div>
+<div style="clear:both"></div>
+ <!--用户登录 end-->        
+        <div class="news-box" style="heigth:313px;width:100%;margin=0;">
+            <div id="chanews">
+                    <h1><a href="show_news_z_list.cgi?gid=2">成果动态</a></h1>
+                    <ul>
+                        
+                            
+<li><span>2015-09-23&nbsp;<a href="show_news_z.cgi?id=22412"><font color="#000000" ><strong>成果网针对运行商拦截行为发布重要通知</strong></font></a></span></li>
+
+
+                            
+<li><span>2016-03-29&nbsp;<a href="show_news_z.cgi?id=24527"><font color="#FF0000" ><strong>成果网佣金支付重要通知</strong></font></a></span></li>
+
+
+                            
+<li><span>2014-06-20&nbsp;<a href="show_news_z.cgi?id=17473"><font color="#" >CPS活动确认数据更新</font></a></span></li>
+
+
+                            
+<li><span>2015-08-27&nbsp;<a href="show_news_z.cgi?id=22122"><font color="#FF0000" >去买网系统升级公告</font></a></span></li>
+
+
+                            
+<li><span>2015-01-22&nbsp;<a href="show_news_z.cgi?id=19942"><font color="#000000" >海淘最新优惠汇总（不定时更新）</font></a></span></li>
+
+
+</ul>
+
+<a href="https://www.chanet.com.cn/show_news_z.cgi?id=22412"><img src="images/banner-a.jpg" width="270" height="90" /></a>
+
+</div>
+            
+        <div id="news">                   
+          <!-- <h1>
+                        	
+                            <a class="more" href="#" target="_blank">更多活动信息</a>
+                            <a href="#">
+                                活动公告
+                            </a>
+                        </h1>   
+                        -->      
+                            <h1 style="color:#FD5300;">活动公告<span style= "text-align:right;"><a class="more" style="font-size:12px;color:#2F2F2F;" href="show_news_z_list.cgi?gid=1" target="_blank">> 更多活动信息</a></span></h1>
+                            
+                            
+                           <div class="bd clearfix">
+                            
+                            <ul id="con_one_listnews">
+
+                            <li style="overflow:hidden; height:30px"><span><a href="show_news_z.cgi?id=24967">【佣金变动公告】<font title="【佣金调整】乐天国际5月佣金奖励活动" color="#">【佣金调整】乐天国际5月佣金奖励活动</font></a></span></li>
+
+
+                            <li style="overflow:hidden; height:30px"><span><a href="show_news_z.cgi?id=24964">【佣金变动公告】<font title="【重要】【佣金调整】Booking酒店预订CPA佣金调整通知" color="#">【重要】【佣金调整】Booking酒店预订CPA佣金调整通知</font></a></span></li>
+
+
+                            <li style="overflow:hidden; height:30px"><span><a href="show_news_z.cgi?id=24934">【佣金变动公告】<font title="【金宝贝】媒体给到下属返利会员最高返利1%" color="#">【金宝贝】媒体给到下属返利会员最高返利1%</font></a></span></li>
+
+
+                            <li style="overflow:hidden; height:30px"><span><a href="show_news_z.cgi?id=24905">【活动下线】<font title="【活动下线】Myhabit时尚闪购下线通知" color="#">【活动下线】Myhabit时尚闪购下线通知</font></a></span></li>
+
+
+                            <li style="overflow:hidden; height:30px"><span><a href="show_news_z.cgi?id=24975">【佣金变动公告】<font title="【丰趣海淘】520吃货节 佣金翻倍！！！" color="#FF0000">【丰趣海淘】520吃货节 佣金翻倍！！！</font></a></span></li>
+
+
+                            </ul>
+                             <ul id="con_two_listnews">
+  
+                                <li style="overflow:hidden; height:30px"><span ><a href="show_news_z.cgi?id=24977">【优惠促销】<font title="【C&A中国官网】5/20-6/1买正价童装即得好礼" color="#FF0000">【C&amp;A中国官网】5/20-6/1买正价童装即得好礼</font></a></span></li> 
+    
+                                <li style="overflow:hidden; height:30px"><span ><a href="show_news_z.cgi?id=24976">【优惠促销】<font title="【丰趣海淘】520吃货节 低至五折" color="#FF0000"><strong>【丰趣海淘】520吃货节 低至五折</strong></font></a></span></li> 
+    
+                                <li style="overflow:hidden; height:30px"><span ><a href="show_news_z.cgi?id=24974">【优惠促销】<font title="【华为商城】520 为爱出机，全场最高减500元" color="#">【华为商城】520 为爱出机，全场最高减500元</font></a></span></li> 
+    
+                                <li style="overflow:hidden; height:30px"><span ><a href="show_news_z.cgi?id=24973">【优惠促销】<font title="【德国BA】520爱之优选免邮+税费补贴" color="#">【德国BA】520爱之优选免邮+税费补贴</font></a></span></li> 
+    
+                                <li style="overflow:hidden; height:30px"><span ><a href="show_news_z.cgi?id=24972">【优惠促销】<font title="【香港莎莎网】「SK-II」品牌团开团 全场低至5.3折！" color="#">【香港莎莎网】「SK-II」品牌团开团 全场低至5.3折！</font></a></span></li> 
+                             
+                             </ul>
+                             </div>
+               
+                    <div class="ft">
+                        
+                                    <a href="https://www.chanet.com.cn/show_news_z.cgi?id=24913"><img src="images/banner-b.gif" width="300" height="90" /></a>
+                        
+                                    <a href="https://www.chanet.com.cn/show_news_z.cgi?id=24960"><img src="images/banner-c.gif" width="300" height="90" /></a>
+                        
+                     </div>
+                       
+            </div>
+        </div>    
+            
+              <div id="introduce">
+                	<h1 style="color:#FD5300;">
+							活动介绍
+					</h1>
+                    <div class="bd clearfix">
+                    	<script>
+						function setTab(name,cursel,n){
+							for(i=1;i<=n;i++){
+								var menu=document.getElementById(name+i);
+								var con=document.getElementById("con_"+name+"_"+i);
+								menu.className=i==cursel?"hover":"";
+								con.style.display=i==cursel?"block":"none";
+							}
+						}
+						</script>
+                        <div class="nav-box">
+                            <ul>
+                                <li id="two1" onmouseover="setTab('two',1,3)" class="hover"><a href="#" class="newest">最新活动<span></span></a></li>
+                                <li id="two2" onmouseover="setTab('two',2,3)"><a href="#" class="recomm">推荐活动<span></span></a></li>
+                                <li id="two3" onmouseover="setTab('two',3,3)"><a href="#" class="coupon">优惠推荐<span></span></a></li>
+                            </ul>
+                        </div>
+                        
+                        <div class="cnt-box">
+                            <div id="con_two_1" class="cnt selected">
+                                 
+                                    
+                                        <div class="unit">
+                                   		    <a href="https://www.chanet.com.cn/show_news_z.cgi?id=21724" class="shop-logo" ><img style="height:44px; width:185px" src="images/type1fixed_flag8.jpg" /></a>
+                                   		    
+                                            <div class="info">
+                                        	    <p>名称：<span>日本乐天(CPS)</span></p>
+                                                <p>佣金：<span>70%</span></p>
+                                            </div>
+                                        </div>
+                                       
+                                 
+                                    
+                                        <div class="unit">
+                                   		    <a href="https://www.chanet.com.cn/show_news_z.cgi?id=23476" class="shop-logo" ><img style="height:44px; width:185px" src="images/type1fixed_flag1.jpg" /></a>
+                                   		    
+                                            <div class="info">
+                                        	    <p>名称：<span>UnderArmour官网(CPS)</span></p>
+                                                <p>佣金：<span>10.5%</span></p>
+                                            </div>
+                                        </div>
+                                       
+                                 
+                                    
+                                        <div class="unit">
+                                   		    <a href="https://www.chanet.com.cn/show_news_z.cgi?id=21606" class="shop-logo" ><img style="height:44px; width:185px" src="images/type1fixed_flag2.jpg" /></a>
+                                   		    
+                                            <div class="info">
+                                        	    <p>名称：<span>乐天国际(CPS)</span></p>
+                                                <p>佣金：<span>9.6%</span></p>
+                                            </div>
+                                        </div>
+                                       
+                                 
+                                    
+                                        <div class="unit">
+                                   		    <a href="https://www.chanet.com.cn/show_news_z.cgi?id=24663" class="shop-logo" ><img style="height:44px; width:185px" src="images/type1fixed_flag4.jpg" /></a>
+                                   		    
+                                            <div class="info">
+                                        	    <p>名称：<span>华住酒店(CPS)</span></p>
+                                                <p>佣金：<span>3.5%</span></p>
+                                            </div>
+                                        </div>
+                                       
+                                 
+                                    
+                                        <div class="unit">
+                                   		    <a href="https://www.chanet.com.cn/show_news_z.cgi?id=23344" class="shop-logo" ><img style="height:44px; width:185px" src="images/type1fixed_flag5.png" /></a>
+                                   		    
+                                            <div class="info">
+                                        	    <p>名称：<span>中兴威武(CPS)</span></p>
+                                                <p>佣金：<span>1.1%-7%</span></p>
+                                            </div>
+                                        </div>
+                                       
+                                 
+                                    
+                                        <div class="unit">
+                                   		    <a href="http://www.chanet.com.cn/show_news_z.cgi?id=24655" class="shop-logo" ><img style="height:44px; width:185px" src="images/type1fixed_flag6.png" /></a>
+                                   		    
+                                            <div class="info">
+                                        	    <p>名称：<span>booking(CPS)</span></p>
+                                                <p>佣金：<span>80元</span></p>
+                                            </div>
+                                        </div>
+                                       
+                                 
+                                    
+                                        <div class="unit">
+                                   		    <a href="http://www.chanet.com.cn/show_news_z.cgi?id=22556" class="shop-logo" ><img style="height:44px; width:185px" src="images/type1fixed_flag3.jpg" /></a>
+                                   		    
+                                            <div class="info">
+                                        	    <p>名称：<span>五洲会海购(CPS)</span></p>
+                                                <p>佣金：<span>5.6%</span></p>
+                                            </div>
+                                        </div>
+                                       
+                                 
+                                    
+                                        <div class="unit">
+                                   		    <a href="https://www.chanet.com.cn/show_news_z.cgi?id=21863" class="shop-logo" ><img style="height:44px; width:185px" src="images/type1fixed_flag7.jpg" /></a>
+                                   		    
+                                            <div class="info">
+                                        	    <p>名称：<span>考拉海购(CPS)</span></p>
+                                                <p>佣金：<span>0.7%-7%</span></p>
+                                            </div>
+                                        </div>
+                                       
+                                   
+                            </div>
+                            <div id="con_two_2" class="cnt">
+                                
+                                    
+                                        <div class="unit" >
+                                   		    <a href="http://www.chanet.com.cn/show_news_z.cgi?id=24897" class="shop-logo" ><img style="height:44px; width:185px" src="images/type2fixed_flag4.jpg" /></a>
+                                            <div class="info">
+                                        	    <p>名称：<span>奇酷(CPS)</span></p>
+                                                <p>佣金：<span>2%</span></p>
+                                            </div>
+                                        </div>
+                                       
+                                 
+                                    
+                                        <div class="unit" >
+                                   		    <a href="https://www.chanet.com.cn/show_news_z.cgi?id=522" class="shop-logo" ><img style="height:44px; width:185px" src="images/type2fixed_flag5.jpg" /></a>
+                                            <div class="info">
+                                        	    <p>名称：<span>1号店(CPS)</span></p>
+                                                <p>佣金：<span>0%-4.2%</span></p>
+                                            </div>
+                                        </div>
+                                       
+                                 
+                                    
+                                        <div class="unit" >
+                                   		    <a href="https://www.chanet.com.cn/show_news_z.cgi?id=24680" class="shop-logo" ><img style="height:44px; width:185px" src="images/type2fixed_flag3.png" /></a>
+                                            <div class="info">
+                                        	    <p>名称：<span>乐天国际(CPS)</span></p>
+                                                <p>佣金：<span>9.6%</span></p>
+                                            </div>
+                                        </div>
+                                       
+                                 
+                                    
+                                        <div class="unit" >
+                                   		    <a href="https://www.chanet.com.cn/show_news_z.cgi?id=18643" class="shop-logo" ><img style="height:44px; width:185px" src="images/type2fixed_flag6.png" /></a>
+                                            <div class="info">
+                                        	    <p>名称：<span>GAP(CPS)</span></p>
+                                                <p>佣金：<span>3.5%-6.3%</span></p>
+                                            </div>
+                                        </div>
+                                       
+                                 
+                                    
+                                        <div class="unit" >
+                                   		    <a href="https://www.chanet.com.cn/show_news_z.cgi?id=22757" class="shop-logo" ><img style="height:44px; width:185px" src="images/type2fixed_flag7.png" /></a>
+                                            <div class="info">
+                                        	    <p>名称：<span>酒仙网(CPS)</span></p>
+                                                <p>佣金：<span>0.7%-7%</span></p>
+                                            </div>
+                                        </div>
+                                       
+                                 
+                                    
+                                        <div class="unit" >
+                                   		    <a href="https://www.chanet.com.cn/show_news_z.cgi?id=3821" class="shop-logo" ><img style="height:44px; width:185px" src="images/type2fixed_flag2.png" /></a>
+                                            <div class="info">
+                                        	    <p>名称：<span>易迅(CPS)</span></p>
+                                                <p>佣金：<span>0元</span></p>
+                                            </div>
+                                        </div>
+                                       
+                                 
+                                    
+                                        <div class="unit" >
+                                   		    <a href="http://www.chanet.com.cn/partner/login.cgi?p=1432" class="shop-logo" ><img style="height:44px; width:185px" src="images/type2fixed_flag8.jpg" /></a>
+                                            <div class="info">
+                                        	    <p>名称：<span>国美(CPS)</span></p>
+                                                <p>佣金：<span>0%-18%</span></p>
+                                            </div>
+                                        </div>
+                                       
+                                 
+                                    
+                                        <div class="unit" >
+                                   		    <a href="http://count.chanet.com.cn/click.cgi?a=217&amp;d=390106&amp;u=&amp;e=" class="shop-logo" ><img style="height:44px; width:185px" src="images/type2fixed_flag1.jpg" /></a>
+                                            <div class="info">
+                                        	    <p>名称：<span>华为(CPS)</span></p>
+                                                <p>佣金：<span>0.21%-3.5%</span></p>
+                                            </div>
+                                        </div>
+                                       
+                                   
+                            </div>
+                            <div id="con_two_3" class="cnt">
+                                
+                                    
+                                        <div class="unit">
+                                   		    <a href="https://www.chanet.com.cn/partner/partner.cgi?dis=coupon&amp;act=show_coupon" class="shop-logo"><img  style="height:44px; width:185px" src="images/type3fixed_flag1.jpg"  /></a>
+                                            <div class="info">
+                                        	    <p>名称：<span>奇酷</span></p>
+                                                <p>面值：<span>3月200元</span></p>
+                                            </div>
+                                        </div>
+                                       
+                                 
+                                    
+                                        <div class="unit">
+                                   		    <a href="https://www.chanet.com.cn/partner/partner.cgi?dis=coupon&amp;act=show_coupon" class="shop-logo"><img  style="height:44px; width:185px" src="images/type3fixed_flag2.jpg"  /></a>
+                                            <div class="info">
+                                        	    <p>名称：<span>1药网</span></p>
+                                                <p>面值：<span>2.3月5元券</span></p>
+                                            </div>
+                                        </div>
+                                       
+                                 
+                                    
+                                        <div class="unit">
+                                   		    <a href="https://www.chanet.com.cn/partner/partner.cgi?dis=coupon&amp;act=show_coupon" class="shop-logo"><img  style="height:44px; width:185px" src="images/type3fixed_flag7.jpg"  /></a>
+                                            <div class="info">
+                                        	    <p>名称：<span>优购网</span></p>
+                                                <p>面值：<span>3月30元礼品卡</span></p>
+                                            </div>
+                                        </div>
+                                       
+                                 
+                                    
+                                        <div class="unit">
+                                   		    <a href="https://www.chanet.com.cn/partner/partner.cgi?dis=coupon&amp;act=show_coupon" class="shop-logo"><img  style="height:44px; width:185px" src="images/type3fixed_flag3.jpg"  /></a>
+                                            <div class="info">
+                                        	    <p>名称：<span>韩都</span></p>
+                                                <p>面值：<span>3.4月299-70</span></p>
+                                            </div>
+                                        </div>
+                                       
+                                 
+                                    
+                                        <div class="unit">
+                                   		    <a href="https://www.chanet.com.cn/partner/partner.cgi?dis=coupon&amp;act=show_coupon" class="shop-logo"><img  style="height:44px; width:185px" src="images/type3fixed_flag4.jpg"  /></a>
+                                            <div class="info">
+                                        	    <p>名称：<span>特步</span></p>
+                                                <p>面值：<span>满199减20</span></p>
+                                            </div>
+                                        </div>
+                                       
+                                 
+                                    
+                                        <div class="unit">
+                                   		    <a href="https://www.chanet.com.cn/partner/partner.cgi?dis=coupon&amp;act=show_coupon" class="shop-logo"><img  style="height:44px; width:185px" src="images/type3fixed_flag6.jpg"  /></a>
+                                            <div class="info">
+                                        	    <p>名称：<span>M18趣天麦网</span></p>
+                                                <p>面值：<span>3月满45减5</span></p>
+                                            </div>
+                                        </div>
+                                       
+                                 
+                                    
+                                        <div class="unit">
+                                   		    <a href="https://www.chanet.com.cn/partner/partner.cgi?dis=coupon&amp;act=show_coupon" class="shop-logo"><img  style="height:44px; width:185px" src="images/type3fixed_flag5.jpg"  /></a>
+                                            <div class="info">
+                                        	    <p>名称：<span>麦包包</span></p>
+                                                <p>面值：<span>3.4月满388减38元</span></p>
+                                            </div>
+                                        </div>
+                                       
+                                 
+                                    
+                                        <div class="unit">
+                                   		    <a href="https://www.chanet.com.cn/partner/partner.cgi?dis=coupon&amp;act=show_coupon" class="shop-logo"><img  style="height:44px; width:185px" src="images/type3fixed_flag8.jpg"  /></a>
+                                            <div class="info">
+                                        	    <p>名称：<span>知我药妆</span></p>
+                                                <p>面值：<span>3月满100减10元</span></p>
+                                            </div>
+                                        </div>
+                                       
+                                   
+                            </div>
+                        </div>
+                	</div>
+                </div>
+            
+            <div id="hot">
+            <div id="function">
+<h1 style="line-height:30px;"><a href="#">成果网特色功能</a>
+                    <span>成果网全新开通“去买网”电子购物商城系统，轻松5步就可以拥有属于自己的电子购物商城。</span>
+                    <a href="http://www.chanet.com.cn/qmw/index.html" style="font-size:12px;color:#2f2f2f;" target="_blank">马上去看看</a> <img src="images/icon-look.gif" />
+                    </h1>
+                        
+<!--roll-images-start-->
+
+<div style="width:950px;height:159px;margin-left:10px;margin-top:11px;">
+
+<table id="vshow" cellpadding="0" cellspacing="0" align="center" style="border:1px #e6e6e6 solid">
+  <tr onMouseOver="window.clearInterval(iauto)" onMouseOut="iauto=window.setInterval('autoChange()',1500);">
+    <td style="display:none; cursor:pointer" onClick="changeV(0)"><img src="images/roll-menu1.jpg" width="38" height="159"/></td>
+    <td style="display:none;"><img src="images/line.jpg" /></td>
+    <td><a href="http://www.chanet.com.cn/qmw/index.html" target="_blank"><img src="images/roll-img1.jpg" width="830" height="159" border="0" /></a></td>
+    <td style="cursor:pointer;" onClick="changeV(3)"><img src="images/roll-menu2.jpg" width="38" height="159"/></td>
+    <td><img src="images/line.jpg" /></td>
+    <td style="display:none"><a href="https://www.chanet.com.cn/wangjinlian/index.html" target="_blank"><img src="images/roll-img2.jpg" width="830" height="159"  border="0"/></a></td>
+    
+    <td style="cursor:pointer;" onClick="changeV(6)"><img src="images/roll-menu4.jpg" width="38" height="159"/></td>
+    <td><img src="images/line.jpg" /></td>
+    <td style="display:none"><img src="images/roll-img4.jpg" width="830" height="159"  border="0"/></td>
+    <td style="cursor:pointer" onClick="changeV(9)"><img src="images/roll-menu5.jpg" width="38" height="159"/></td>
+    <td><img src="images/line.jpg" /></td>
+    <td style="display:none"><a href="http://www.chanet.com.cn/show_news_z.cgi?id=2453" target="_blank"><img src="images/roll-img5.jpg" width="830" height="159"  border="0"/></a></td>    
+  </tr>
+</table>
+
+</div>
+<!--roll-images-over-->
+                        
+
+            </div>
+            
+            <div id="bbs">
+                    <h1><a href="http://bbs.chanet.com.cn" target="_blank">论坛热点</a></h1>
+                    <ul id="bbs_info_1" style="width:200px;height:174px;">
+                    
+<li><a target="_blank" title="又到收钱的时候啦，晒晒偶的收入" href="http://bbs.chanet.com.cn/bbs/viewthread.php?tid=7499">又到收钱的时候啦，晒晒偶的收入</a></li><li><a target="_blank" title="如何提高网站浏览量" href="http://bbs.chanet.com.cn/bbs/viewthread.php?tid=6196">如何提高网站浏览量</a></li><li><a target="_blank" title="常见的SEO术语" href="http://bbs.chanet.com.cn/bbs/viewthread.php?tid=4646">常见的SEO术语</a></li><li><a target="_blank" title="现在做网站最关键的是什么？" href="http://bbs.chanet.com.cn/bbs/viewthread.php?tid=4622">现在做网站最关键的是什么？</a></li><li><a target="_blank" title="学生该如何利用网络创业" href="http://bbs.chanet.com.cn/bbs/viewthread.php?tid=2483">学生该如何利用网络创业</a></li><li><a target="_blank" title="月赚10000真的很容易，附加近万元收款图" href="http://bbs.chanet.com.cn/bbs/viewthread.php?tid=8363">月赚10000真的很容易，附加近万</a></li>                    </ul>
+                    <p style="padding-bottom:20px;border-bottom:1px dashed #d3d3d3;">
+                        <img src="images/m_1243703561622.gif" />
+                        <a href="http://bbs.chanet.com.cn/bbs/viewthread.php?tid=4603&extra=page%3D1" target="_blank">网赚新手要避免的误区</a>如果你已网赚三月，还未月入五百以上...
+                    </p>
+                    <p >
+                        <img src="images/b_1243705659809.gif" />
+                        <a href="http://bbs.chanet.com.cn/bbs/viewthread.php?tid=2158" target="_blank">有付出就有收获，就有成果</a>回首自己做网站的历程，已经有三年的时间...
+                    </p>
+            </div>
+            
+            <div id="learning">
+                    <h1><a href="learning.htm">学习中心</a></h1>
+                    <p >
+                    <a href="/show_news_z_list.cgi?gid=6&category_id=4"><img src="images/4011432_thumbnail.gif" style="float:left;margin-right:10px;" /></a><span><a href="/show_news_z_list.cgi?gid=6&category_id=4">广告联盟成功法则</a></span>
+               因为流量直接影响了佣金，所以事先就要选择容易增加流量的主题，而不是稍后选择。如果一旦选定了主题，增加流量就不是这么容易了。一般来说，容易增加流量的主题应该要满足热门且竞争网站少这2个条件....</p>
+                    <div >
+                    <a href="http://www.chanet.com.cn/show_news_z.cgi?id=2447"><img src="/images/indexshare.jpg" /></a>
+                    <ul >
+                    <li><a href="show_news_z.cgi?id=5486">新技术和新媒体为营销者带来机遇</a></li>
+
+                        <li><a href="show_news_z.cgi?id=5594">网站成功关键之三：彪悍的执行力</a></li>
+
+                        <li><a href="show_news_z.cgi?id=5593">网站成功关键之二：标题与内容</a></li>
+
+                        <li><a href="show_news_z.cgi?id=5540">网站成功关键之一：网站设计</a></li>
+
+                    </ul>
+                    </div>
+            </div>
+            <div class="banner-mid">
+            
+            <a  href="https://www.chanet.com.cn/show_news_z.cgi?id=24960" target="_blank"><img src="images/banner-mid.gif" /></a>
+            
+            </div>
+            
+            <div id="chaintro">
+                    <h1>
+                    <a href="about.htm">CHANet成果网介绍</a><span>中国领先的<font> 成果报酬型 </font>网络广告平台,是按网络广告投放的<font> 最终效果记费 </font>的网络广告营销平台。</span>
+                    </h1>
+                    
+                    <dl style="margin-right:20px;color:#666;">
+                        <dt>
+                            <dd><span>放心信用   值得信赖</span></dd>
+                            <dd style="margin-bottom:20px;">上市母公司雄厚的资金支持，保证你的收入准确</dd>
+                            <dd><span>公正可靠   实时反馈</span></dd>
+                            <dd>公正及时的广告效果监测，保证数据真实可靠</dd>
+                        </dt></dl>  
+                    <dl style="color:#666;">            
+                        <dt>
+                            <dd><span>更多客户   轻松选择</span></dd>
+                            <dd style="margin-bottom:20px;">不同类型的广告主任您轻松选择，获得更多报酬</dd>
+                            <dd><span>操作简单   便捷易用</span></dd>
+                            <dd>成熟先进的系统及运作模式，人性化的操作体验</dd>
+                        </dt>
+                    </dl>                   
+            </div>
+            
+            <div id="service" >
+                    <h1><a href="contact.htm">客服中心</a></h1>
+                    <ul>
+                        <li><span>服务时间</span>：AM 09:30~PM 18:00</li>
+                        <li><span>客服电话</span>：021-64718181 转 675</li>
+                        <li><span>客服QQ</span>：800005291 <img style="CURSOR: pointer" onclick="javascript:window.open('http://b.qq.com/webc.htm?new=0&sid=800005291&eid=2188z8p8p8p8p8R8K808q&o=www.chanet.com.cn&q=7', '_blank', 'height=544, width=644,toolbar=no,scrollbars=no,menubar=no,status=no');" border="0" SRC="images/zx_qq.gif"></li>
+                        
+                        <li><span>客服邮箱</span>：service@mail.chanet.com.cn</li>
+                        <li><a href="/contact.htm"><img src="images/serqa.gif" /></a></li>
+                    </ul>
+            </div>
+    </div>
+<!----------尾部---------->
+<div style="clear:both;height:30px;"></div>
+    <div id="footer">
+             <div  id="footer-links">
+                 <ul>
+                    <li style="padding-left:43px;"><a href="http://www.miibeian.gov.cn/" target="_blank"><img src="images/footer-linka.gif" alt="ICP备案号：沪ICP备15020920号" /></a></li>
+                    <li><a href="http://www.chanet.com.cn/about_adways.htm" target="_blank"><img src="images/footer-linkb.gif" alt="ADWAYS爱德威旗下网站" /></a></li>
+                    <li><a href="http://www.isc.org.cn/" target="_blank"><img src="images/footer-linkc.gif" alt="中国互联网协会会员单位" /></a></li>
+                    <li><a href="http://www.12321.cn/" target="_blank"><img src="images/footer-linkd.gif" alt="12321垃圾信息举报中心" /></a></li>
+                    <li><div style="margin-top: 10px; margin-left: 20px; width: 128px; height: 47px;">
+                    <!--可信网站图片LOGO安装开始-->
+                    <script src="https://ss.cnnic.cn/seallogo.dll?sn=2011021800100006525&ct=df"></script>
+                    <!--可信网站图片LOGO安装结束-->
+                    </div></li>
+      <!--              <li><div style="margin-top:5px;margin-left:10px;width:115px;height:55px;"><script src="//smarticon.geotrust.com/si.js" charset="Shift_JIS" type="text/javascript" language="JavaScript"></script></div></li>   --->
+                 </ul>
+             </div>
+                          
+             <div id="footer-bg">
+                <div id="partner">
+                    <span>合作媒体：</span> 
+
+    
+<script language="javascript">
+function ScrollImgLeft(){
+var speed=35
+var scroll_begin = document.getElementById("scroll_begin");
+var scroll_end = document.getElementById("scroll_end");
+var scroll_div = document.getElementById("scroll_div");
+scroll_end.innerHTML=scroll_begin.innerHTML
+  function Marquee(){
+    if(scroll_end.offsetWidth-scroll_div.scrollLeft<=0)
+      scroll_div.scrollLeft-=scroll_begin.offsetWidth
+    else
+      scroll_div.scrollLeft++
+  }
+var MyMar=setInterval(Marquee,speed)
+  scroll_div.onmouseover=function() {clearInterval(MyMar)}
+  scroll_div.onmouseout=function() {MyMar=setInterval(Marquee,speed)}
+}
+</script>
+
+<!--#####滚动区域#####-->
+    <div id="scroll_div" >
+      <div id="scroll_begin">
+        <ul>
+          <li><img src="images/partner-logo1.gif" alt="凤凰网" /></li>
+          <li><img src="images/partner-logo2.gif" alt="搜狐网" /></li>
+          <li><img src="images/partner-logo3.gif" alt="新浪网" /></li>
+          <li><img src="images/partner-logo4.gif" alt="Pconline.com.cn" /></li>
+          <li><img src="images/partner-logo5.gif" alt="Onlylady" /></li>
+          <li><img src="images/partner-logo6.gif" alt="土豆网" /></li>
+          <li><img src="images/partner-logo7.gif" alt="艾瑞网" /></li>
+          <li><img src="images/partner-logo8.gif" alt="雅虎网" /></li>
+          <li><img src="images/partner-logo9.gif" alt="天涯社区" /></li>
+          <li><img src="images/partner-logo10.gif" alt="tom.com" /></li>
+        </ul>
+      </div>
+      <div id="scroll_end"></div>
+    </div>
+      <script type="text/javascript">ScrollImgLeft();</script>
+<!--#####滚动区域#####-->
+                </div>
+            
+                <ul id="friendlink" >
+                    <li><span>友情链接：</span></li>                    
+                    
+                    <li><a href="http://www.langlang.cc" target="_blank">琅琅比价网</a></li><li>|</li></li>
+                    
+                    <li><a href="http://www.leyifan.com" target="_blank">日本转运</a></li><li>|</li></li>
+                    
+                    <li><a href="http://www.extrabux.com" target="_blank">Extrabux海淘返利网</a></li><li>|</li></li>
+                    
+                    <li><a href="http://www.geihui.com" target="_blank">给惠网</a></li><li>|</li></li>
+                    
+                    <li><a href="http://www.500wan.com/" target="_blank">500WAN体彩福彩网</a></li><li>|</li></li>
+                    
+                    <li><a href="http://www.qidian.com" target="_blank">起点小说中文网</a></li><li>|</li></li>
+                    
+                    <li><a href="http://www.iresearch.cn/" target="_blank">艾瑞网</a></li><li>|</li></li>
+                    
+                    <li><a href="http://www.bluebeebox.com" target="_blank">蓝蜂广告平台系列</a></li><li>|</li></li>
+                    
+                    <li><a href="http://www.leyifan.com" target="_blank">乐一番</a></li><li>|</li></li>
+                    
+                    <li><a href="http://www.appdriver.cn/?utm_source=chanet&utm_medium=link_en&utm_campaign=adways" target="_blank">AppDriver</a></li><li>|</li></li>
+                    
+                    <li><a href="http://www.appdriver.cn/?utm_source=chanet&utm_medium=link_cn&utm_campaign=adways" target="_blank">爱普动力</a></li><li>|</li></li>
+                    
+                    <li><a href="http://www.letsebuy.com/" target="_blank">海外E购</a></li><li>|</li></li>
+                    
+                    <li><a href="http://www.smzdm.com/" target="_blank">什么值得买</a></li><li>|</li></li>
+                    
+<!--                    <li><a href="http://hangzhou.koubei.com/cate" target="_blank">杭州美食</a></li><li>|</li>   
+                    <li><a href="http://www.gouwulian.com/" target="_blank">购物链</a></li><li>|</li>
+                    <li><a href="http://www.zhigou.com/" target="_blank">网上购物</a></li><li>|</li>
+                    <li><a href="http://www.ib100.com/" target="_blank">品讯网</a></li><li>|</li>
+                    <li><a href="http://www.wumeiwang.com/" target="_blank">物美网</a></li><li>|</li>
+                    <li><a href="http://www.qidian.com/" target="_blank">起点小说中文网</a></li><li>|</li>
+                    <li><a href="http://www.iresearch.cn/" target="_blank">艾瑞网</a></li><li>|</li>
+                    <li><a href="http://www.sasacity.com/" target="_blank">奕尚网</a></li><li>|</li>
+                    <li><a href="http://www.popovivi.com/" target="_blank">泊薇网</a></li><li>|</li>
+                    <li><a href="http://www.55bbs.com/" target="_blank">我爱打折网</a></li><li>|</li>
+-->
+                    <li><a href="links.htm">>>更多</a></li>
+                </ul>
+
+            
+                <ul  id="footer-title">
+                    <li><a href="about.htm">关于CHANet</a></li><li>|</li>
+                    <li><a href="about_adways.htm">关于爱德威</a></li><li>|</li>
+                    <li><a href="affiliate.htm">网站主</a></li><li>|</li>
+                    <li><a href="merchant.htm">广告主</a></li><li>|</li>
+                    <li><a href="help.htm">帮助中心</a></li><li>|</li>
+                    <li><a href="privacy.htm">隐私声明</a></li><li>|</li>
+                    <li><a href="security.htm">安全提示</a></li><li>|</li>
+                    <li><a href="links.htm">友情链接</a></li><li>|</li>
+                    <li><a href="contact.htm">联系我们</a></li><li>|</li>
+                    <li><a href="sitemap.htm">网站地图</a></li>
+                </ul>
+                <p id="copyright">
+                    <script>
+                        document.write("CHANet成果网广告联盟 www.chanet.com.cn © 2004-" + new Date().getFullYear() + " 版权所有");
+                    </script>
+                </p>
+		<div style="text-align:center;">
+			<a target="_blank" href="http://www.sgs.gov.cn/lz/licenseLink.do?method=licenceView&amp;entyId=20120210172831906"><img border="0" src="http://www.chanet.com.cn/image/gongshang.gif"></a><a target="_blank" href="http://www.zx110.org"><img src="http://www.chanet.com.cn/images/police.png"></a><a target="_blank" href="http://www.zx110.org"><img src="http://www.chanet.com.cn/images/zx110.png"></a>
+		</div>
+             </div>
+    </div>
+</div>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-11079840-1', 'chanet.com.cn');
+  ga('send', 'pageview');
+</script>
+
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F8a3ccf95e588f7c28f6f3595aa8d7ee2' type='text/javascript'%3E%3C/script%3E"));
+</script> 
+</body>
+</html>

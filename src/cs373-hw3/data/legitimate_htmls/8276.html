@@ -1,0 +1,862 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ko">
+<head>
+<title>국민일보</title>
+<meta http-equiv="Content-Type" content="text/html; charset=euc-kr" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="description" content="국민일보" />
+<meta name="keywords" content="국민일보, kmib" />
+<meta name="viewport" content="width=1024px" />
+<link rel="shortcut icon" href="http://www.kmib.co.kr/images/cmn/favicon.ico" />
+<link rel="icon" href="http://www.kmib.co.kr/images/cmn/favicon.png" type="image/png" />
+<script src="http://www.kmib.co.kr/js/jquery.js"></script>
+<script id="common" src="http://www.kmib.co.kr/js/common.js?m_idx=1"></script>
+<link href="http://www.kmib.co.kr/css/common.css" type="text/css" rel="stylesheet" media="all" />
+<script type="text/javascript">
+function MM_openBrWindow(theURL,winName,features) { //v2.0
+  window.open(theURL,winName,features);
+}
+/* 모바일 페이지로 이동 */
+var mobileKeyWords = new Array('iPhone', 'Android');
+for (var word in mobileKeyWords)
+{
+	if (document.referrer.indexOf('m.kmib.co.kr') == -1 && navigator.userAgent.match(mobileKeyWords[word]) != null)
+	{
+		location.href = "http://m.kmib.co.kr";
+		break;
+	}
+}
+
+var galObj, galTimer;
+var serTimer;
+var s_idx;
+s_idx = 0;
+
+var serCurIdx = 0;
+
+$(document).ready(function(){
+	var galIdx = 0;
+	var galClsname = "";
+	galObj = $("div.sthumb>p");
+	galObj.each(function(index){
+		galIdx = $(this).index()+1;
+		if (galIdx<10)
+		{
+			galClsname = "sthumb0"+galIdx;
+		}
+		else
+		{
+			galClsname = "sthumb"+galIdx;
+		}
+		$(this).addClass(galClsname);
+	});
+	if (galObj.length>0)
+	{
+		galTimer = setInterval(function(){show_large_pic(s_idx)}, 2000);
+	}
+	$("div.sthumb>p").bind("mouseover", function(index){
+		clearInterval(galTimer);
+		s_idx = $(this).index();
+		show_large_pic();
+	});
+	$("div.sthumb>p").bind("mouseout", function(index){
+		s_idx = $(this).index() + 1;
+		if (s_idx>galObj.length-1)
+		{
+			s_idx = 0;
+		}
+		galTimer = setInterval(function(){show_large_pic(s_idx)}, 2000)
+	});
+	if ($("div.sthumb>p").eq(0).html()!=null)
+	{
+		$("div.bthumb").append("<p class=\"bthumb1\">"+$("div.sthumb>p").eq(0).html()+"</p>");
+		$("div.sthumb>p").eq(0).addClass("active");
+	}
+	function show_large_pic()
+	{
+		//console.log(s_idx);
+		//s_idx = fn_idx;
+		var s_nidx = s_idx + 1;
+		galObj.eq(s_idx).addClass("active");
+		galObj.eq(s_idx).siblings().removeClass("active");
+		$("div.bthumb").html('');
+		$("div.bthumb").append("<p class=\"bthumb"+s_nidx+"\">"+galObj.eq(s_idx).html()+"</p>");
+		s_idx = s_idx + 1;
+		if (s_idx>galObj.length-1)
+		{
+			s_idx = 0;
+		}
+	}
+
+	var serObj = $("#seriallist>ul>li");
+	if (serObj.length>1)
+	{
+		serTimer = setInterval(function(){serRotate("n")}, 3000)
+	}
+	for (var num=1;num<serObj.length+1;num++)
+	{
+		$("#seriallist>span.paging_num").append("<span class=\"num_page\">"+num+"</span>");
+	}
+	$("#seriallist>span.paging_num>span").eq(0).replaceWith("<em class=\"num_page\">1</em>");
+	$("#seriallist>ul>li").mouseover(function(){clearInterval(serTimer);});
+	$("#seriallist>ul>li").mouseout(function(){serTimer = setInterval(function(){serRotate("n")}, 3000);});
+	$("#seriallist>a.btn_prev").click(function(){serRotate("p");});
+	$("#seriallist>a.btn_next").click(function(){serRotate("n");});
+	$("#seriallist>span.paging_num>.num_page").live("click",function(index){
+		//console.log($(this).index());
+		serObj.hide();
+		serObj.eq($(this).index()).show();
+		serCurIdx = $(this).index();
+		$("#seriallist>span.paging_num").html('');
+		for (var num=1;num<serObj.length+1;num++)
+		{
+			$("#seriallist>span.paging_num").append("<span class=\"num_page\">"+num+"</span>");
+		}
+		$("#seriallist>span.paging_num>span").eq(serCurIdx).replaceWith("<em class=\"num_page\">"+serCurIdx+1+"</em>");
+	});
+
+	function serRotate(way)
+	{
+		if (way=="n")
+		{
+			serCurIdx = serCurIdx + 1;
+			if (serCurIdx>serObj.length-1)
+			{
+				serCurIdx = 0;
+			}
+		}
+		else if (way=="p")
+		{
+			serCurIdx = serCurIdx-1;
+			if (serCurIdx==-1)
+			{
+				serCurIdx = serObj.length-1;
+			}
+		}
+		else
+		{
+			return false;
+		}
+		serObj.hide();
+		serObj.eq(serCurIdx).show();
+		$("#seriallist>span.paging_num").html('');
+		for (var num=1;num<serObj.length+1;num++)
+		{
+			$("#seriallist>span.paging_num").append("<span class=\"num_page\">"+num+"</span>");
+		}
+		$("#seriallist>span.paging_num>span").eq(serCurIdx).replaceWith("<em class=\"num_page\">"+serCurIdx+1+"</em>");
+	}
+	//180_60 배너 롤링
+	function RollingBanner(obj) {
+		var rb = this;
+		var banners = obj.find('li');
+		var ban_len = banners.length;
+		var b_index = 0;
+		var timer;
+		this.change = function () {
+			if (b_index==ban_len-1)
+			{
+				b_index = 0;
+			}
+			else
+			{
+				b_index = b_index + 1;
+			}
+			banners.each(function() {
+				var this_banner = $(this);
+				this_banner.removeClass('selected');
+				this_banner.css('display', 'none');
+			});
+			var selected = $(banners[b_index]);
+			selected.addClass('selected');
+			selected.css('display', '');
+		};
+		this.init = function (speed) {
+			speed = speed || 8000;
+			//rb.change();
+			timer = window.setInterval(function() {
+				rb.change();
+				b_index = banners.index(obj.find('li.selected'));
+			}, speed);
+			$(window).bind('unload', function() {
+				clearInterval(timer);
+			});
+		}
+	}
+	var top_area = new RollingBanner($('div.km_bnr'));
+	top_area.init(4000);
+	// var pop_area = new RollingBanner($('div.km_bnr02'));
+	// pop_area.init(4000);
+		var top_area = new RollingBanner($('div.km_bnr03'));
+	top_area.init(3000);
+});
+</script>
+</head>
+<body>
+<div id="wrap">
+  <!-- header -->
+  <script src="http://www.kmib.co.kr/js/header.js?v=150427"></script>
+  <!-- //header -->
+
+  <!-- container -->
+  <div id="container" style="width:960px !important;margin:0 auto">
+	<!-- content -->
+	<div id="content">
+
+	  <!-- MNwsCon -->
+	  <div id="MNwsCon">
+
+		<!-- 01 TpNws -->
+		<div class="TpNws">
+		  <h2><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010629503&code=61121111&sid1=soc">강남역 살인남 “여성 노린거냐” 기자 질문에 섬뜩 눈빛</a></h2>
+<a href="http://news.kmib.co.kr/article/view.asp?arcid=0010629503&code=61121111&sid1=soc" class="thumb"><img src="http://image.kmib.co.kr/clipImage/2016/0519/20160519151436.JPG" alt="" /></a>
+<div class="cont">
+<a href="http://news.kmib.co.kr/article/view.asp?arcid=0010629503&code=61121111&sid1=soc" class="arti">
+
+<span class="tx">'강남역 묻지마 살인사건'의 피의자인 김모(34)씨가 19일 오후 서울 서초경찰서에서 영장실질심사를 위해 서울중앙지법으로 이동하고 있다. 김씨는 흰색 마스크를 쓰고 고개를 푹 숙이고 경찰서를 빠져 나갔다.&#160;</span>
+</a>
+</div>
+		  <div class="tpnws_rel">
+			
+
+
+<!-- 연관기사 : rel / 주요기사 : nws -->
+<a href="http://news.kmib.co.kr/article/view.asp?arcid=0010628233&code=61121211&sid1=soc" class=" rel ">“여자들이 난 안 받는다” 강남 살인범이 남겼다는 글</a>
+
+
+
+
+<!-- 연관기사 : rel / 주요기사 : nws -->
+<a href="http://news.kmib.co.kr/article/view.asp?arcid=0010627282&code=61121211&sid1=soc" class="rel">강남역 묻지마 살인범 “정신질환으로 4차례 입원했다”</a>
+
+<!-- 연관기사 : rel / 주요기사 : nws -->
+<a href="http://news.kmib.co.kr/article/view.asp?arcid=0010630146&code=61111111&sid1=pol" class="nws">여권발 정계개편 논의 김무성, 유승민이 열쇠쥐고 있다</a>
+
+<!-- 연관기사 : rel / 주요기사 : nws -->
+<a href="http://news.kmib.co.kr/article/view.asp?arcid=0010630216&code=61121111&sid1=soc" class="nws"><font color="orange">[서서봐도 되는 뉴스] 93년 논문에 ‘가급기 살균제 사태’ 예고</font></a>
+
+		  </div>
+		</div>
+		<!-- //01 TpNws -->
+
+		<!-- 02 IMPNws -->
+		<div class="IMNws">
+		  <ul>
+			<li>
+<div class="Nws">
+<h2><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010629646&code=61121111&sid1=soc">박원순 “강남역 살인사건 추모 현장 보존할 것” </a></h2>
+<a href="http://news.kmib.co.kr/article/view.asp?arcid=0010629646&code=61121111&sid1=soc" class="thumb"><img src="http://image.kmib.co.kr/clipImage/2016/0519/20160519152423.JPG" alt="" /></a>
+<div class="cont">
+<a href="http://news.kmib.co.kr/article/view.asp?arcid=0010629646&code=61121111&sid1=soc" class="arti">
+
+<span class="tx">
+박원순 서울시장이 19일 강남역 묻지마 살인사건 현장을 찾아 피해자를 추모했다.&#160;박 시장은 자신의 트위터에 "분노의 물결이 일렁</span>
+</a>
+<!-- 연관기사 있을때 4번 복사해서 하단에 넣으세요! -->
+
+
+
+</div>
+</div>
+</li>
+
+
+
+<li>
+<div class="Nws">
+<h2><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010628684&code=61111111&sid1=pol">'같이 부르자' 눈빛에도 멀뚱… 황교안 총리 뻣뻣 영상</a></h2>
+<a href="http://news.kmib.co.kr/article/view.asp?arcid=0010628684&code=61111111&sid1=pol" class="thumb"><img src="http://image.kmib.co.kr/clipImage/2016/0519/20160519102235.JPG" alt="" /></a>
+<div class="cont">
+<a href="http://news.kmib.co.kr/article/view.asp?arcid=0010628684&code=61111111&sid1=pol" class="arti">
+
+<span class="tx">
+
+황교안 국무총리가 5·18민주화운동 기념식에 참석해 '임을 위한 행진곡'을 따라부르지 않는 모습을 담은 영상이 인터넷에 올라왔다. 이</span>
+</a>
+<!-- 연관기사 있을때 4번 복사해서 하단에 넣으세요! -->
+
+
+
+</div>
+</div>
+</li>
+
+
+
+
+
+
+		  </ul>
+		</div>
+		<!-- //02 IMPNws -->
+
+		<!-- 03 포토뉴스5개 -->
+		<div class="PhoNws">
+		  <ul>
+			
+
+
+<!-- 탑_5개 포토뉴스 -->
+<li><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010630251&code=61181511&sid1=ent"><img src="http://image.kmib.co.kr/clipImage/2016/0519/20160519172822.JPG" alt="" /><span class="tit">‘곡성(哭聲)’ 칸에서도 박수갈채 천우희 손키스 답례</span></a></li>
+
+
+
+<!-- 탑_5개 포토뉴스 -->
+<li><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010628528&code=61121111&sid1=soc"><img src="http://image.kmib.co.kr/clipImage/2016/0519/20160519162206.JPG" alt="" /><span class="tit">형부 성폭행으로 낳은 아들 살해한 처제는 ‘지적장애인’</span></a></li>
+
+
+<!-- 탑_5개 포토뉴스 -->
+<li><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010628193&code=61111111&sid1=pol"><img src="http://image.kmib.co.kr/clipImage/2016/0519/20160519085945.JPG" alt="" /><span class="tit">문재인 “다음 생엔 부디 남자로 태어나요”…추모 SNS 글 인용</span></a></li>
+
+
+
+
+<!-- 탑_5개 포토뉴스 -->
+<li><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010627467&code=61131111&sid1=int"><img src="http://image.kmib.co.kr/clipImage/2016/0519/20160519093813.JPG" alt="" /><span class="tit">공항 검색대 통과한 부패한 '시신'…승객들 "악!" 혼비백산</span></a></li>
+
+
+
+<!-- 탑_5개 포토뉴스 -->
+<li><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010626825&code=61121111&sid1=soc"><img src="http://image.kmib.co.kr/clipImage/2016/0519/20160519093400.JPG" alt="" /><span class="tit">"흑인 남친을 사귀는데 주변 시선이 너무…” 사연뉴스</span></a></li>
+
+
+		  </ul>
+		</div>
+		<!-- //03 포토뉴스5개 -->
+
+		<!-- MNws_List -->
+		<div class="MNws_List">
+		  <!-- 메인 좌측 배너 47060 -->
+		  <div class="bnr_47060">
+			<script type="text/javascript" src="http://adsvr.kmib.co.kr/NetInsight/js/web/news/main@105"></script>				
+		  </div>
+		  <!-- 메인 좌측 배너 47060 -->
+
+		  <!-- listNws -->
+		  <div class="listNws">				
+			<!-- 기사리스트1_관련기사는 4번 복사해서 넣기/포토뉴스는 8번 복사해서 넣기 -->
+<a href="http://news.kmib.co.kr/article/view.asp?arcid=0010630530&code=61111211&sid1=pol" class="nws">눈물흘린 청와대 수석 "안타깝고 참담하다"</a>
+
+<!-- 기사리스트1_관련기사는 4번 복사해서 넣기/포토뉴스는 8번 복사해서 넣기 -->
+<a href="http://news.kmib.co.kr/article/view.asp?arcid=0923537803&code=11131200&sid1=soc" class="nws">세월호 교훈 벌써 잊었나? 이번엔 마약 선장… 환각상태서 배 운항</a>
+
+<!-- 기사리스트1_관련기사는 4번 복사해서 넣기/포토뉴스는 8번 복사해서 넣기 -->
+<a href="http://news.kmib.co.kr/article/view.asp?arcid=0010630420&code=61121311&sid1=soc" class="nws">최유정 “후회” 홍만표 “어쩌다”… 두 전관의 뒤늦은 한탄</a>
+
+<!-- 기사리스트1_관련기사는 4번 복사해서 넣기/포토뉴스는 8번 복사해서 넣기 -->
+<a href="http://news.kmib.co.kr/article/view.asp?arcid=0010628700&code=61121211&sid1=soc" class="nws"><font color="#0D1AC6">‘소주 2병’ 경찰이 공개한 이창명의 진료기록부</font></a>
+
+<!-- 기사리스트1_관련기사는 4번 복사해서 넣기/포토뉴스는 8번 복사해서 넣기 -->
+<a href="http://news.kmib.co.kr/article/view.asp?arcid=0010626387&code=61121111&sid1=soc" class="nws"><font color="#150BAB">[단독] “가습기살균제 주성분 PHMG 20㎎만으로도 급사” 러시아 93년 논문 </font></a>
+
+
+<!-- 기사리스트1_관련기사는 4번 복사해서 넣기/포토뉴스는 8번 복사해서 넣기 -->
+<a href="http://news.kmib.co.kr/article/view.asp?arcid=0010628135&code=61111111&sid1=pol" class="nws">진중권 “조영남,본의 아니게 현대미술 대중 이해에 큰 기여한 것”</a>
+
+
+<!-- 기사리스트1_관련기사는 4번 복사해서 넣기/포토뉴스는 8번 복사해서 넣기 -->
+<a href="http://news.kmib.co.kr/article/view.asp?arcid=0010630483&code=61111111&sid1=pol" class="nws">“사라진 이집트 여객기에 한국인 탑승객 없다”</a>
+
+
+
+<!-- 기사리스트1_관련기사는 4번 복사해서 넣기/포토뉴스는 8번 복사해서 넣기 -->
+<a href="http://news.kmib.co.kr/article/view.asp?arcid=0010630232&code=61111111&sid1=pol" class="nws"><font color="#0D19A8">국회 ‘신해철법 통과’… 무쟁점 법안 129건 처리</font></a>
+
+<!-- 기사리스트1_관련기사는 4번 복사해서 넣기/포토뉴스는 8번 복사해서 넣기 -->
+<a href="http://news.kmib.co.kr/article/view.asp?arcid=0010629896&code=61121111&sid1=soc" class="nws">상주 농약 사이다 사건 항소심도 무기징역 "범인임 정황 많다"</a>
+
+
+
+
+<!-- 기사리스트1_관련기사는 4번 복사해서 넣기/포토뉴스는 8번 복사해서 넣기 -->
+<a href="http://news.kmib.co.kr/article/view.asp?arcid=0010629523&code=61121311&sid1=soc" class="nws">현직 검사 자택에서 목매 숨진 채 발견</a>
+
+
+			<div class="thumbnws3">
+			  <ul>
+				<li><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010630390&code=61161211&sid1=spo"><img src="http://image.kmib.co.kr/clipImage/2016/0519/20160519171609.JPG" alt="" /><span class="ti00">‘美 애틀랜타는 깼는데…’ 로저스 앞세운 한화, 9승 징크스 깨나</span></a></li>
+
+<li><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010630225&code=61181111&sid1=ent"><img src="http://image.kmib.co.kr/clipImage/2016/0519/20160519164026.JPG" alt="" /><span class="ti00">정우성-이정재, 20년 우정으로 사업을… 엔터사 설립</span></a></li>
+
+<li><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010628863&code=61161211&sid1=spo"><img src="http://image.kmib.co.kr/clipImage/2016/0519/20160519110205.JPG" alt="" /><span class="ti00">강정호, 홈팬들 앞에서 첫 홈런 작렬… 시즌 5호</span></a></li>
+
+
+<li><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010629246&code=61181111&sid1=ent"><img src="http://image.kmib.co.kr/clipImage/2016/0519/20160519134757.JPG" alt="" /><span class="ti00">정부행사도 예외 없는 '프로불참러' 조세호, 통일박람회 안간다</span></a></li>
+
+<li><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010629310&code=61221111&sid1=chr"><img src="http://image.kmib.co.kr/clipImage/2016/0519/20160519135325.JPG" alt="" /><span class="ti00">[말라위 소식] 폐가의 그늘을 교실 삼아 공부하는 아이들</span></a></li>
+
+
+
+
+
+<li><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010626695&code=61181111&sid1=ent"><img src="http://image.kmib.co.kr/clipImage/2016/0519/20160519095144.JPG" alt="" /><span class="ti00">클로이 모레츠 남사스러운 드레스의 정체</span></a></li>
+
+
+
+
+
+
+
+			  </ul>
+			</div>
+			
+<!-- 기사리스트1_관련기사는 4번 복사해서 넣기/포토뉴스는 8번 복사해서 넣기 -->
+<a href="http://news.kmib.co.kr/article/view.asp?arcid=0010630219&code=61111611&sid1=pol" class="nws">김정은 떨게한다는 전폭기 B-52, 괌에서 추락</a>
+
+
+<!-- 기사리스트2_관련기사는 4번 복사해서 넣기/포토뉴스는 8번 복사해서 넣기 -->
+<a href="http://news.kmib.co.kr/article/view.asp?arcid=0010630494&code=61111111&sid1=pol" class="nws">“북한, 중국에 납치조 300명 급파”…공항·호텔서 南여행객 감시</a>
+
+
+<!-- 기사리스트1_관련기사는 4번 복사해서 넣기/포토뉴스는 8번 복사해서 넣기 -->
+<a href="http://news.kmib.co.kr/article/view.asp?arcid=0010627406&code=61121111&sid1=soc" class="nws"><font color="#0913B5">[나는아빠다]</font> 항암1주차 종료, 장한 인영이!</a>
+
+
+
+<!-- 기사리스트2_관련기사는 4번 복사해서 넣기/포토뉴스는 8번 복사해서 넣기 -->
+<a href="http://news.kmib.co.kr/article/view.asp?arcid=0010630409&code=61211311&sid1=soc" class="nws">[포착]깡그리 타버린 농가…미군부대 의문의 폭발 옮겨붙어</a>
+
+
+<!-- 기사리스트1_관련기사는 4번 복사해서 넣기/포토뉴스는 8번 복사해서 넣기 -->
+<a href="http://news.kmib.co.kr/article/view.asp?arcid=0010628926&code=61171511&sid1=cul" class="nws">한강, 아무에게도 안 알리고 오전 귀국</a>
+<!-- 기사리스트2_관련기사는 4번 복사해서 넣기/포토뉴스는 8번 복사해서 넣기 -->
+<a href="http://news.kmib.co.kr/article/view.asp?arcid=0010629825&code=61121111&sid1=soc" class="nws">춘천 호텔서 50대 여성 숨진 채 발견</a>
+
+<!-- 기사리스트2_관련기사는 4번 복사해서 넣기/포토뉴스는 8번 복사해서 넣기 -->
+<a href="http://news.kmib.co.kr/article/view.asp?arcid=0010629839&code=61171111&sid1=cul" class="nws">한국 발레 유망주, 바르셀로나 콩쿠르 싹쓸이</a>
+
+<!-- 기사리스트2_관련기사는 4번 복사해서 넣기/포토뉴스는 8번 복사해서 넣기 -->
+<a href="http://news.kmib.co.kr/article/view.asp?arcid=0010629735&code=61111111&sid1=pol" class="nws">“20대 총선 후보자, 평균 1억2116만여원 지출” 총액은 1130억원</a>
+
+<!-- 기사리스트2_관련기사는 4번 복사해서 넣기/포토뉴스는 8번 복사해서 넣기 -->
+<a href="http://news.kmib.co.kr/article/view.asp?arcid=0010629716&code=61111111&sid1=pol" class="nws">“부모,미취업 자녀 위해 월 평균 78만2천원 지출”</a>
+
+<!-- 기사리스트2_관련기사는 4번 복사해서 넣기/포토뉴스는 8번 복사해서 넣기 -->
+<a href="http://news.kmib.co.kr/article/view.asp?arcid=0010629239&code=61141411&sid1=eco" class="nws"><SDF 2016> 구글X 창립자 세바스찬 스런, "알파고 승리, 과대평가하면 안된다"</a>
+
+
+<!-- 기사리스트1_관련기사는 4번 복사해서 넣기/포토뉴스는 8번 복사해서 넣기 -->
+<a href="http://news.kmib.co.kr/article/view.asp?arcid=0010628402&code=61161111&sid1=spo" class="nws">이세돌, 프로기사회 탈퇴…알파고 대결로 달아오른 바둑붐 꺼지나</a>
+
+
+<!-- 기사리스트2_관련기사는 4번 복사해서 넣기/포토뉴스는 8번 복사해서 넣기 -->
+<a href="http://news.kmib.co.kr/article/view.asp?arcid=0010629637&code=61121311&sid1=soc" class="nws">"5·18 시민군은 북한군" 주장 지만원, 법정 방청객과 몸싸움 소동</a>
+
+<!-- 기사리스트1_관련기사는 4번 복사해서 넣기/포토뉴스는 8번 복사해서 넣기 -->
+<a href="http://news.kmib.co.kr/article/view.asp?arcid=0010629408&code=61141411&sid1=eco" class="nws"><SDF 2016> 스튜어트 러셀 교수, "AI는 외계인 같은 존재"</a>
+
+<!-- 기사리스트2_관련기사는 4번 복사해서 넣기/포토뉴스는 8번 복사해서 넣기 -->
+<a href="http://news.kmib.co.kr/article/view.asp?arcid=0010629635&code=61111111&sid1=pol" class="nws">“일회용 주사기 재사용 의료인,면허 취소된다”</a>
+
+
+<!-- 기사리스트1_관련기사는 4번 복사해서 넣기/포토뉴스는 8번 복사해서 넣기 -->
+<a href="http://news.kmib.co.kr/article/view.asp?arcid=0010626646&code=61121911&sid1=soc" class="nws"><font color="#0C17B5">[손끝뉴스] </font>정부 3.0까지는 바라지 않아요</a>
+
+
+
+<!-- 기사리스트1_관련기사는 4번 복사해서 넣기/포토뉴스는 8번 복사해서 넣기 -->
+<a href="http://news.kmib.co.kr/article/view.asp?arcid=0010628848&code=61131111&sid1=int" class="nws">日 고이즈미 전 총리가 기자회견 도중 갑자기 눈물지은 이유는?</a>
+
+<!-- 기사리스트1_관련기사는 4번 복사해서 넣기/포토뉴스는 8번 복사해서 넣기 -->
+<a href="http://news.kmib.co.kr/article/view.asp?arcid=0010628764&code=61121111&sid1=soc" class="nws"><font color="#750707">손발, 입에 물집…수족구병 빠르게 확산 '주의'</font></a>
+<!-- 기사리스트1_관련기사는 4번 복사해서 넣기/포토뉴스는 8번 복사해서 넣기 -->
+<a href="http://news.kmib.co.kr/article/view.asp?arcid=0010628202&code=61131111&sid1=int" class="nws">보코하람에 납치된 여학생 생후 4개월 아기와 함께 구출</a>
+
+
+
+
+<!-- 기사리스트1_관련기사는 4번 복사해서 넣기/포토뉴스는 8번 복사해서 넣기 -->
+<a href="http://news.kmib.co.kr/article/view.asp?arcid=0010628843&code=61121111&sid1=soc" class="nws">여수 해상서 길이 5m 밍크고래 그물에 걸려 죽은 채 발견</a>
+
+
+<!-- 기사리스트1_관련기사는 4번 복사해서 넣기/포토뉴스는 8번 복사해서 넣기 -->
+<a href="http://news.kmib.co.kr/article/view.asp?arcid=0010628215&code=61111111&sid1=pol" class="nws">“가정주부 마저 박대통령 지지 돌아섰다” 50%선 무너져</a>
+
+
+
+
+
+<!-- 기사리스트1_관련기사는 4번 복사해서 넣기/포토뉴스는 8번 복사해서 넣기 -->
+<a href="http://news.kmib.co.kr/article/view.asp?arcid=0923535969&code=11121100&sid1=pol" class="nws">머릿수 적고 구심점 없고… 속만 끓는 비박</a>
+
+<!-- 기사리스트1_관련기사는 4번 복사해서 넣기/포토뉴스는 8번 복사해서 넣기 -->
+<a href="http://news.kmib.co.kr/article/view.asp?arcid=0923536379&code=11121100&sid1=pol" class="nws">사면초가 정진석 ‘칩거모드’… 친박 비토로 리더십에 상처</a>
+
+
+
+
+
+<!-- 기사리스트1_관련기사는 4번 복사해서 넣기/포토뉴스는 8번 복사해서 넣기 -->
+<a href="http://news.kmib.co.kr/article/view.asp?arcid=0010625797&code=61141611&sid1=eco" class="nws"><font color="#190C9F">[친절한 쿡기자]</font> “남양 불매운동 실패 아니다” 주식 여전히 폭락</a>
+
+
+
+
+
+
+
+		  </div>
+		  <!-- //listNws -->
+		</div>
+		<!-- //MNws_List -->
+
+		<!-- MNwsCon_mid -->
+		<div class="MNws_mid">
+
+
+		  <div class="bnr_m_m18060 km_bnr" style="overflow:hidden;">
+			<ul>
+			  
+
+
+			</ul>
+		  </div>
+		  <div class="mid_conbx">
+			
+		  </div>
+		  <div class="mid_phobx">
+			<dl>
+<dd><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010630452&code=61121111&sid1=soc"><img src="http://image.kmib.co.kr/clipImage/2016/0519/20160519173028.JPG" alt="" /></a></dd>
+<dt><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010630452&code=61121111&sid1=soc"><strong>9살짜리 이상한 나라의 앨리스</strong></a></dt>
+</dl>
+
+
+<dl>
+<dd><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010630097&code=61171711&sid1=lif"><img src="http://image.kmib.co.kr/clipImage/2016/0519/20160519162007.JPG" alt="" /></a></dd>
+<dt><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010630097&code=61171711&sid1=lif"><strong> 벨라 하디드 과감한 노출</strong></a></dt>
+</dl>
+<dl>
+<dd><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010629857&code=61121111&sid1=soc"><img src="http://image.kmib.co.kr/online_image/2016/0519/201605191525_61120010629857_1.jpg" alt="" /></a></dd>
+<dt><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010629857&code=61121111&sid1=soc"><strong>602억원짜리 반지</strong></a></dt>
+</dl>
+
+
+
+
+<dl>
+<dd><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010629408&code=61141411&sid1=eco"><img src="http://image.kmib.co.kr/clipImage/2016/0519/20160519150729.JPG" alt="" /></a></dd>
+<dt><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010629408&code=61141411&sid1=eco"><strong><SDF 2016> "AI는 외계인 같은 존재"</strong></a></dt>
+</dl>
+
+
+
+
+<dl>
+<dd><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010626624&code=61121111&sid1=soc"><img src="http://image.kmib.co.kr/online_image/2016/0519/201605190014_61120010626624_1.jpg" alt="" /></a></dd>
+<dt><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010626624&code=61121111&sid1=soc"><strong>지옥같던 조선소 물량팀</strong></a></dt>
+</dl>
+
+
+
+<dl>
+<dd><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010628168&code=61121111&sid1=soc"><img src="http://image.kmib.co.kr/clipImage/2016/0519/20160519100633.JPG" alt="" /></a></dd>
+<dt><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010628168&code=61121111&sid1=soc"><strong>프랑스 여배우의 위험한 패션 </strong></a></dt>
+</dl>
+
+
+
+<dl>
+<dd><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010628569&code=61161211&sid1=spo"><img src="http://image.kmib.co.kr/clipImage/2016/0519/20160519100207.JPG" alt="" /></a></dd>
+<dt><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010628569&code=61161211&sid1=spo"><strong>‘맏형’ 추신수가 돌아온다 </strong></a></dt>
+</dl>
+<dl>
+<dd><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010628150&code=61181111&sid1=ent"><img src="http://image.kmib.co.kr/clipImage/2016/0519/20160519092449.JPG" alt="" /></a></dd>
+<dt><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010628150&code=61181111&sid1=ent"><strong> “송송커플 열애설?”</strong></a></dt>
+</dl>
+
+
+
+<dl>
+<dd><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010628442&code=61181511&sid1=ent"><img src="http://image.kmib.co.kr/clipImage/2016/0519/20160519093928.JPG" alt="" /></a></dd>
+<dt><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010628442&code=61181511&sid1=ent"><strong>‘곡성’ 8일 만에 300만 관객 돌파</strong></a></dt>
+</dl>
+
+
+
+
+<dl>
+<dd><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010627361&code=61181511&sid1=ent"><img src="http://image.kmib.co.kr/online_image/2016/0519/201605190001_61180010627361_1.jpg" alt="" /></a></dd>
+<dt><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010627361&code=61181511&sid1=ent"><strong>김고은 “소문? 내려놨어요”</strong></a></dt>
+</dl>
+
+
+
+
+
+		  </div>
+		</div>
+		<!-- //MNws_mid -->
+
+	  </div>
+	  <!-- //MNwsCon -->
+
+	  <!-- MSideCon -->
+	  <div id="MSideCon">
+
+		<!-- 美정부 기밀해제 문서 단독 입수 -->
+		<div style="margin-bottom:10px;">
+			<a href="http://www.kmib.co.kr/feature/2016/usa/index.asp"><img src="http://www.kmib.co.kr/images/main/bnr_usakor_270_50.jpg" alt=""></a>
+		</div>
+		<!-- //美정부 기밀해제 문서 단독 입수 -->
+		
+		<div class="sidebx">
+		  <h2>사설 <a href="http://www.kmib.co.kr/opinion/"><img src="http://www.kmib.co.kr/images/main15/bu_more.gif" alt="더보기" /></a></h2>
+		  <ul>
+			<li><a href="http://news.kmib.co.kr/article/view.asp?arcid=0923537633&code=11171111&sid1=opi"> ‘강남역 살인’에 표출된 분노, 양성 평등 계기 삼아야</a></li>
+<li><a href="http://news.kmib.co.kr/article/view.asp?arcid=0923537496&code=11171111&sid1=opi"> 정진석, 親朴에 굴복해선 안 된다</a></li>
+<li><a href="http://news.kmib.co.kr/article/view.asp?arcid=0923537424&code=11171111&sid1=opi"> 규제 풀린 민간 케이블카 황금알 낳는 거위 아니다</a></li>
+
+		  </ul>
+		</div>
+
+		<div class="sidepbx">
+		  <h2>칼럼 <a href="http://news.kmib.co.kr/article/list.asp?sid1=col"><img src="http://www.kmib.co.kr/images/main15/bu_more.gif" alt="더보기" /></a></h2>
+		  <dl>
+<dt><a href="http://news.kmib.co.kr/article/view.asp?arcid=0923535707&code=11171211&sid1=col"><strong>[한마당-태원준] 베네수엘라의 화장지</strong>‘공장의 화장실 휴지 때문에 사장이 </a></dt>
+<dd><a href="http://news.kmib.co.kr/article/view.asp?arcid=0923535707&code=11171211&sid1=col"><img src="http://image.kmib.co.kr/online_image/2016/0518/201605181949_11170923535707_1.jpg" alt="" /></a><dd>
+</dl>
+		</div>
+
+		<div class="sidebx_bnr">
+		  <h2>연재/시리즈 <a href="http://www.kmib.co.kr/series/index.asp"><img src="http://www.kmib.co.kr/images/main15/bu_more.gif" alt="더보기" /></a></h2>
+		  <div class="bnr_270_50" id="seriallist">
+			<ul>
+			  
+
+
+<li>
+<a href="http://news.kmib.co.kr/article/list.asp?sid1=prj&sid2=0043" class="bnr_270_50"><img src="http://www.kmib.co.kr/images/main/bnr_father_270_50.jpg" alt="2016 나는 아빠다" /></a>
+</li>
+
+
+
+<li>
+<a href="http://news.kmib.co.kr/article/list.asp?sid1=prj&sid2=0041" class="bnr_270_50"><img src="http://www.kmib.co.kr/images/main/bnr_azang_270_50.jpg" alt="고승혁의 아장아장 정치부" /></a>
+</li>
+
+
+<li><a href="http://news.kmib.co.kr/article/list.asp?sid1=prj&sid2=0039" class="bnr_270_50"><img src="http://www.kmib.co.kr/images/main/bnr_fingertip_270_50.jpg" alt="손끝뉴스" /></a></li>
+
+
+
+
+<li>
+<a href="http://news.kmib.co.kr/article/list.asp?sid1=prj&sid2=0031" class="bnr_270_50"><img src="http://www.kmib.co.kr/images/main/bnr_usa2016_270_50.jpg" alt="2016 미국의 선택" /></a>
+</li>
+
+
+<li><a href="http://news.kmib.co.kr/article/list.asp?sid1=col&sid2=0004" class="bnr_270_50"><img src="http://www.kmib.co.kr/images/main/bnr_kuk_270_50.jpg" alt="친절한 쿡기자" /></a></li>
+
+<li><a href="http://www.kmib.co.kr/feature/2016/city/index.asp" class="bnr_270_50"><img src="http://www.kmib.co.kr/images/main/bnr_city_270_50.jpg" alt=" 도시재생 낙후지역에 숨결을" /></a></li>
+<li><a href="http://news.kmib.co.kr/article/fbchoice/index.asp" class="bnr_270_50"><img src="http://www.kmib.co.kr/images/main/bnr_fbchoice_270_50.jpg" alt="페북지기 초이스" /></a></li>
+
+<li><a href="http://news.kmib.co.kr/article/list.asp?sid1=prj&sid2=0009" class="bnr_270_50"><img src="http://www.kmib.co.kr/images/main/bnr_chistory_270_50.jpg" alt="맹경환 특파원의 차이나 스토리" /></a></li>
+
+
+<li><a href="http://www.kmib.co.kr/feature/2016/well/index.asp" class="bnr_270_50"><img src="http://www.kmib.co.kr/images/main/bnr_well_270_50.jpg" alt="웰다잉, 삶의 끝을 아름답게" /></a></li>
+
+
+<li><a href="http://www.kmib.co.kr/feature/2016/farm/index.asp" class="bnr_270_50"><img src="http://www.kmib.co.kr/images/main/bnr_farm_270_50.jpg" alt="2016 성공귀농행복귀촌박람회" /></a></li>
+
+
+<li><a href="http://news.kmib.co.kr/article/list.asp?sid1=mis&sid2=0016" class="bnr_270_50"><img src="http://www.kmib.co.kr/images/main/bnr_boy_270_50.jpg" alt="소년이 희망이다" /></a></li>
+
+<li><a href="http://www.kmib.co.kr/feature/2015/consumer/index.asp" class="bnr_270_50"><img src="http://www.kmib.co.kr/images/main/bnr_consumer_270_50.jpg" alt="컨슈머리포트" /></a></li>
+
+<li><a href="http://news.kmib.co.kr/article/list.asp?sid1=prj&sid2=0011" class="bnr_270_50"><img src="http://www.kmib.co.kr/images/main/bnr_yok_270_50.jpg" alt="영옥씨의 미술바구니" /></a></li>
+
+
+			</ul>
+			<a href="javascript:;" class="btn_prev" title="이전">이전</a>
+			<a href="javascript:;" class="btn_next" title="다음">다음</a>
+			<span class="paging_num"></span>
+		  </div>
+		</div>
+
+		<div class="phogal">
+		  <h2>포토갤러리 <a href="http://photo.kmib.co.kr/index.asp"><img src="http://www.kmib.co.kr/images/main15/bu_more.gif" alt="더보기" /></a></h2>
+		  <div class="photo">
+			<div class="sthumb">
+			  <!-- 포토갤러리_사진12개 고정!! -->
+<p><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010629689&code=61211311&sid1=soc"><img src="http://image.kmib.co.kr/clipImage/2016/0519/20160519141046.JPG" alt="" /><strong class="tit"> "왜 마스크를 쓰게 하냐" 분노  </strong></a></p>
+
+
+
+<!-- 포토갤러리_사진12개 고정!! -->
+<p><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010627467&code=61131111&sid1=int"><img src="http://image.kmib.co.kr/clipImage/2016/0519/20160519093813.JPG" alt="" /><strong class="tit">공항 검색대 통과한 부패한 시신</strong></a></p>
+
+
+
+<!-- 포토갤러리_사진12개 고정!! -->
+<p><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010620207&code=61121111&sid1=soc"><img src="http://image.kmib.co.kr/clipImage/2016/0517/20160517094914_1.gif" alt="" /><strong class="tit">얻어터지는 '옥시 전 대표' 영상 </strong></a></p>
+
+
+
+
+<!-- 포토갤러리_사진12개 고정!! -->
+<p><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010626695&code=61181111&sid1=ent"><img src="http://image.kmib.co.kr/clipImage/2016/0519/20160518172620.jpg" alt="" /><strong class="tit">클로이 모레츠 남사스러운 드레스</strong></a></p>
+
+
+
+
+<!-- 포토갤러리_사진12개 고정!! -->
+<p><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010623461&code=61121111&sid1=soc"><img src="http://image.kmib.co.kr/online_image/2016/0518/201605180001_61120010623461_1.jpg" alt="" /><strong class="tit">남해고속도로 사고 직전 사진 충격</strong></a></p>
+
+
+
+<!-- 포토갤러리_사진12개 고정!! -->
+<p><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010623588&code=61111111&sid1=pol"><img src="http://image.kmib.co.kr/online_image/2016/0518/201605180001_61110010623588_1.jpg" alt="" /><strong class="tit">[포착]“배고프셨나?”호떡 김밥 맛있게 먹는 문재인</strong></a></p>
+
+
+
+<!-- 포토갤러리_사진12개 고정!! -->
+<p><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010619616&code=61161211&sid1=spo"><img src="http://image.kmib.co.kr/online_image/2016/0517/201605170004_61160010619616_1.jpg" alt="" /><strong class="tit">” 바티스타의 태클, ‘벤클’ 시발점</strong></a></p>
+
+
+
+<!-- 포토갤러리_사진12개 고정!! -->
+<p><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010617953&code=61181111&sid1=ent"><img src="http://image.kmib.co.kr/clipImage/2016/0516/20160516101222.JPG" alt="" /><strong class="tit">이정재·임세령 카페 데이트 포착</strong></a></p>
+
+<!-- 포토갤러리_사진12개 고정!! -->
+<p><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010616933&code=61121711&sid1=soc"><img src="http://image.kmib.co.kr/online_image/2016/0515/201605152106_61120010616933_1.jpg" alt="" /><strong class="tit">싸이 다녀간 여의도 모습</strong></a></p>
+
+
+
+<!-- 포토갤러리_사진12개 고정!! -->
+<p><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010615165&code=61181111&sid1=ent"><img src="http://image.kmib.co.kr/clipImage/2016/0514/20160514180714.JPG" alt="" /><strong class="tit">김광진 의원, 설현 옹호글 </strong></a></p>
+
+
+<!-- 포토갤러리_사진12개 고정!! -->
+<p><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010613438&code=61141111&sid1=eco"><img src="http://image.kmib.co.kr/clipImage/2016/0514/20160514095316.JPG" alt="" /><strong class="tit">은행원 세워놓고... 산은노조 폭로</strong></a></p>
+
+<!-- 포토갤러리_사진12개 고정!! -->
+<p><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010612302&code=61131811&sid1=int"><img src="http://image.kmib.co.kr/online_image/2016/0513/201605131035_61130010612302_1.jpg" alt="" /><strong class="tit">하의 실종 ‘제복 셀카’ 여경 해고</strong></a></p>
+
+
+
+
+
+
+
+			</div>
+			<div class="bthumb">
+			</div>
+		  </div>
+		</div>
+
+		<!--많이본기사-->
+				<div class="bestbx">
+			<h2>많이 본 기사</h2>
+			<ul>
+<li><span class="rank"><em>1</em></span><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010628193&code=61111111&sid1=pol">“다음 생엔 부디 남자로 태어나요”문재인, ‘묻지마 살인’ 여성 추모객 사연 인용</a></li><li><span class="rank"><em>2</em></span><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010628233&code=61121211&sid1=soc">“여자들이 난 안 받는다” 강남 살인범이 남겼다는 글… 페북지기 초이스</a></li><li><span class="rank"><em>3</em></span><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010629503&code=61121111&sid1=soc">강남역 살인남 "여성 노린거냐" 기자 질문에 섬뜩 눈빛</a></li><li><span class="rank"><em>4</em></span><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010626825&code=61121111&sid1=soc">"흑인 남친을 사귀는데 주변 시선이 너무…” 사연뉴스</a></li><li><span class="rank"><em>5</em></span><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010629646&code=61121111&sid1=soc">“강남역 살인사건 추모 현장 보존할 것” 박원순 시장 트위터</a></li><li><span class="rank"><em>6</em></span><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010627467&code=61131111&sid1=int">공항 검색대 통과한 부패한 '시신'…승객들 "악!" 혼비백산</a></li><li><span class="rank"><em>7</em></span><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010628528&code=61121111&sid1=soc">형부에 성폭행 당해 낳은 아들 살해한 처제는 지적장애인, 상습 강제성폭행 진실공방</a></li><li><span class="rank"><em>8</em></span><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010628684&code=61111111&sid1=pol">'같이 부르자' 눈빛에도 멀뚱… 총리 뻣뻣 영상</a></li><li><span class="rank"><em>9</em></span><a href="http://news.kmib.co.kr/article/view.asp?arcid=0923535926&code=11142200&sid1=int">[맹경환 특파원의 차이나스토리] 월세 3600만원·생활비 9000만원… 5년간 회삿돈 900억 ‘펑펑’</a></li><li><span class="rank"><em>10</em></span><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010626314&code=61121211&sid1=soc">“강남 묻지마 살인, 내가 죽은 건 여성이기 때문이다”… 페북지기 초이스</a></li></ul>
+</div>
+
+		<!--//많이본기사-->
+
+		<div class="sidepbx">
+		  <h2>미션라이프 <a href="http://www.kmib.co.kr/mission/index.asp"><img src="http://www.kmib.co.kr/images/main15/bu_more.gif" alt="더보기" /></a></h2>
+		  <dl>
+<dt><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010627314&code=61221111&sid1=chr"><strong>[소울터치] 시한부 딸과 완전체 이룬 가족…오래 오래 행복하길</strong>세상에서 제일 행복한, 아름다운 가족</a></dt>
+<dd><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010627314&code=61221111&sid1=chr"><img src="http://image.kmib.co.kr/online_image/2016/0519/201605190001_61220010627314_1.jpg" alt="" /></a><dd>
+</dl>
+		  <ul>
+			<li><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010628904&code=61221111&sid1=chr">[손끝뉴스] 희망을 봅니다 'Hope in 에콰도르'</a></li>
+<li><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010629372&code=61221111&sid1=chr">[싱포유] ‘공기 반 소리 반’ 오은 ‘오늘도 나는 죽</a></li>
+<li><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010628614&code=61221311&sid1=mco">[포토 겨자씨] '여성 혐오 살인' 용서? 하나님, 그</a></li>
+<li><a href="http://news.kmib.co.kr/article/view.asp?arcid=0923535818&code=23111111&sid1=chr">청주 세광학원, 교계 파송 이사 축소 논란</a></li>
+<li><a href="http://news.kmib.co.kr/article/view.asp?arcid=0923535488&code=23111515&sid1=fai">[오늘의 설교] 성령으로 말미암아</a></li>
+<li><a href="http://news.kmib.co.kr/article/view.asp?arcid=0923534482&code=23111513&sid1=fai">[역경의 열매] 박부원 <2> 빠듯한 살림에도 십일조…</a></li>
+<li><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010625633&code=61221211&sid1=mcu">CBS시네마-예수 시대 사람들 2부 '질병과 치유'편</a></li>
+<li><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010622736&code=61221111&sid1=chr">[내 신앙의 나침반15] 이애리 교수 “김용재 피디의 </a></li>
+  
+		  </ul>
+		</div>
+
+		<div class="sidepbx">
+		  <h2>연예<a href="http://news.kmib.co.kr/article/list.asp?sid1=ent"><img src="http://www.kmib.co.kr/images/main15/bu_more.gif" alt="더보기" /></a></h2>
+		  <dl>
+<dt><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010628266&code=61181111&sid1=ent"><strong>‘성폭행 파문’ 유상무, 편집없이 코믹 분장 방송</strong>
+
+성폭행 논란에 휩싸인 개그맨 </a></dt>
+<dd><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010628266&code=61181111&sid1=ent"><img src="http://image.kmib.co.kr/online_image/2016/0519/201605190857_61180010628266_1.jpg" alt="" /></a><dd>
+</dl>
+		  <ul>
+			<li><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010625929&code=61181611&sid1=ent">“손호영 위해 만든 노래” 의리의 윤종신 지원사격</a></li>
+<li><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010624212&code=61181111&sid1=ent">“임수정, 5월의 신부… 동갑내기 치과의사와 결혼”</a></li>
+<li><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010621387&code=61181111&sid1=ent">조영남 “대작? 조수 먹고살게 해주려고 시킨 거다”</a></li>
+
+<li><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010619141&code=61181111&sid1=ent">김준수, 새 앨범 발매 전 '이즈 유' 선공개</a></li>
+<li><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010617573&code=61181111&sid1=ent">“박보검 피아노에 송중기 노래” 역대급 팬미팅 영상</a></li>
+<li><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010616312&code=61181111&sid1=ent">레이싱모델 주다하, 교통사고로 사망</a></li>
+<li><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010612767&code=61181111&sid1=ent">최다 참가자, 최강 라인업...'쇼미더머니5'가 시작된</a></li>
+<li><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010612035&code=61181111&sid1=ent">前 농구선수 김승현, '배틀트립' 방송서 깜짝 결혼 발</a></li>
+  
+		  </ul>
+		</div>
+
+		<div class="sidepbx">
+		  <h2>스포츠<a href="http://news.kmib.co.kr/article/list.asp?sid1=spo"><img src="http://www.kmib.co.kr/images/main15/bu_more.gif" alt="더보기" /></a></h2>
+		  <dl>
+<dt><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010629474&code=61161411&sid1=spo"><strong>[영상] NBA 명품 식스맨 인증한 이궈달라의 ‘서커스 샷</strong>안드레 이궈달라(198㎝·골든스테이트</a></dt>
+<dd><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010629474&code=61161411&sid1=spo"><img src="http://image.kmib.co.kr/clipImage/2016/0519/20160519141303.JPG" alt="" /></a><dd>
+</dl>
+		  <ul>
+			<li><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010630482&code=61161211&sid1=spo">두산, 니퍼트 교통사고로 선발투수 진야곱 대체</a></li>
+<li><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010630312&code=61161511&sid1=spo">'링거 투혼' 이상희 SK텔레콤오픈 첫날 맹타</a></li>
+<li><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010629830&code=61161311&sid1=spo">K리그 클래식 울산·광주,  FA컵 16강에서 격돌</a></li>
+<li><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010629298&code=61161211&sid1=spo">이대호, 만루 역전찬스에서 헛스윙… “아!”</a></li>
+<li><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010629193&code=61161911&sid1=spo">프로배구 삼성화재  FA 이선규, KB손해보험으로 이적</a></li>
+<li><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010628569&code=61161211&sid1=spo">‘맏형’ 추신수가 돌아온다… 21일 복귀 유력</a></li>
+<li><a href="http://news.kmib.co.kr/article/view.asp?arcid=0010628264&code=61161311&sid1=spo">UEFA, 플라티니 후임자 찾는다…9월 선출 예정</a></li>
+  
+		  </ul>
+		</div>
+
+	  </div>
+	  <!-- //MSideCon -->
+
+  </div>
+  <!-- //content -->
+
+</div>
+<!-- //container -->
+
+<!-- 중하단 기사 소셜 -->
+<div class="btm_vodsns">
+  <div class="clearfix mCnt02 mb30 vod"> 
+	<!-- 포토/영상 -->
+	<div style="float:left;width:547px/*435px;*/;position:relative;"><a href="http://news.kmib.co.kr/article/list.asp?sid1=prj&sid2=0034" class="btn_more"><strong>더보기</strong><img src="http://www.kmib.co.kr/images/main15/bu_more.gif" alt="더보기" /></a>
+	  <iframe src="http://www.kmib.co.kr/inc/phovod.asp" scrolling="no" frameborder="0" marginheight="0" marginwidth="0" style="width:547px;height:397px;"></iframe>
+	</div>
+	<!-- //포토/영상 -->
+	<!-- SNS -->
+	<div class="rW1 bt2px" style="background:#fff">
+	  <div class="socB">
+		<h3 class="h3_tit">소셜 네트워크</h3>
+		<div class="socTit"><a href="https://www.facebook.com/kukmindaily" target="_blank" class="soct02">페이스북</a><a href="https://twitter.com/TheKukminDaily" target="_blank" class="soct01">트위터</a></div>
+		<div class="tw">
+		  <iframe src="http://www.kmib.co.kr/sns/twitter_new.asp" height="330px" scrolling="auto" scrolling="auto" frameborder="0" marginheight="0" marginwidth="0"></iframe>
+		</div>
+		<div class="fb">
+		  <iframe src="http://www.kmib.co.kr/sns/facebook.asp" height="330px" scrolling="auto" scrolling="auto" frameborder="0" marginheight="0" marginwidth="0"></iframe>
+		</div>
+	  </div>
+	</div>
+  </div>
+</div>
+<!-- //중하단 소셜--> 
+
+<!-- footer -->
+<script src="http://www.kmib.co.kr/js/footer.js"></script>
+<!-- //footer -->
+
+
+
+</div>
+
+</body>
+</html>
+
+
+

@@ -1,0 +1,358 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+ <meta http-equiv="Refresh" content="5;URL=http://www.qatarairways.com/global/en/homepage.page" /> 
+<title>Qatar Airways</title>
+</head>
+<script type="text/javascript" src="http://www.qatarairways.com/jquery.js"></script>
+<script type="text/javascript">
+var jsLoaded = false;
+var trackiid=0;
+var cidparam="";
+var countryparam="";
+var hasQueryStrings = document.URL.indexOf('?');
+if (hasQueryStrings != -1)
+  {
+		var strQueryString = document.URL.substring(hasQueryStrings+1, document.URL.length);
+		var firstParams=strQueryString.split('&');
+		for(var i=0;i<firstParams.length;i++)
+		{
+			var paramNma = firstParams[i].split("=").shift();
+				if(paramNma.toUpperCase() =='CID'){
+					cidparam = firstParams[i];
+				}
+				if(paramNma =='q'){
+					countryparam =  firstParams[i];
+				}
+		}
+	}
+setTimeout("callback()", 5000);
+function callback() {
+    if (!jsLoaded) {
+//alert("GEO ip takes time to load more than 5 seconds");
+        	if(cidparam!=""){
+        	window.location="http://www.qatarairways.com/global/en/homepage.page?"+cidparam;}
+			else{
+			window.location="http://www.qatarairways.com/global/en/homepage.page";}
+    } 
+}
+</script>
+<!-- <script language="JavaScript" src="http://j.maxmind.com/app/geoip.js" onload="jsLoaded=true"></script> -->
+
+<body>
+
+<script>
+// *************** IPGEO LOCATION CODE  IMPLEMENTATION  *************  //
+/*?
+Date Created:	17/09/2011
+Author: Vengadesh S
+Description: This file find country code and browser locale then redirect the respective page
+Related files:http://www.telize.com/geoip
+*/
+
+
+
+//End the GEOIP country code 
+
+
+
+//********************************** Create Cookie ******************  //
+
+
+function createCookie(name,value,days) {
+	if (days) {
+		var date = new Date();
+		date.setTime(date.getTime()+(days*24*60*60*1000));
+		var expires = "; expires="+date.toGMTString();
+	}
+	else var expires = "";
+	document.cookie = name+"="+value+expires;
+}   
+//********************************** Read Cookie ******************  //
+function readCookie(name) {
+	var nameEQ = name + "=";
+	var ca = document.cookie.split(';');
+	for(var i=0;i < ca.length;i++) {
+		var c = ca[i];
+		while (c.charAt(0)==' ') c = c.substring(1,c.length);
+		if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+	}
+	return null;
+}
+//********************************** Erase Cookie ******************  //
+
+function eraseCookie(name){
+createCookie(name,"",-1);
+}
+
+
+//********************************** This function to return browser locale   **************************** //
+function getlocale()
+{
+var locale="";                     
+   if (navigator.language)
+   {
+   locale=navigator.language.split("-").shift();
+   }
+   else  if (navigator.browserLanguage)
+   {
+   locale=navigator.browserLanguage.split("-").shift();
+   }
+   else  if (navigator.systemLanguagee)
+   {
+   locale=navigator.systemLanguage.split("-").shift();
+ 
+   } 
+   else  if (navigator.userLanguage)
+   {
+   locale=navigator.userLanguage.split("-").shift();
+   }
+   
+return locale;
+}
+//********************************** Function For lang_validate validation   **************************** //
+ function lang_validate(langid)
+{
+var val=getlocale();     // **** call get getlocale() function
+var x=0;
+var lang_list=langid.split(",");
+var ary = lang_list[0];
+for ( x=0; x<lang_list.length; x++)
+{
+if(val == lang_list[x])
+{
+return val;
+}
+}
+return ary;
+}
+//********************************** Function For country validation   **************************** //
+function validate(lang,country_id)
+{
+var countryID =country_id; // getting country code
+//var countryID =geoip_country_code().toLowerCase();  // getting country code
+var country_code="";
+
+if(countryID == "gb")
+{
+country_code = "uk";
+}
+else
+{
+country_code =countryID;
+}
+var y=0;
+var country_list=lang.split(",");
+
+for ( y=0; y<country_list.length;y++)
+{
+if(country_code == country_list[y])
+{
+return country_code;
+break;
+}
+}
+return "global";
+}
+//********************************** Function For ipgeo location   **************************** //
+function ipgeolocation(country_id)
+{
+var country_ID=country_id;
+$.ajax({
+		type: "GET",
+		url: "labels.xml",
+		dataType: ($.browser.msie) ? "text" : "xml", //if Browser is internet explorer, the datatype is text, otherwise xml.
+		success:function(xml) 
+		{
+		   if  ($.browser.msie) 
+		    {
+             var xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
+             xmlDoc.loadXML(xml);
+             xml = xmlDoc;
+             }
+			    $(xml).find('labels').each(function()
+				{
+				cntry_code= $(this).find('countryid').text();      // ex: cntry_code= qa,ae,in,au etc..
+				    });
+					//alert("inside locate:"+country_ID);
+					label=validate(cntry_code,country_ID);        
+					
+
+						if(label != false)
+					{
+					
+					 $(xml).find(label).each(function()
+				  {
+				   browserlang =$(this).find('lang').text();
+				  		  });
+						var v =lang_validate(browserlang);
+						var a =label+"/"+v;
+					  if(label == "global")
+					  {             
+					  redirectPage(a);     // for global site No need to set the cookie
+					   }
+					  else
+					  {
+					   createCookie('country',a,1000);           //Due to sub domain issue we did not create the cookie first time
+					   redirectPage(a);
+					  
+					  }
+	  
+			} 
+			
+		  }
+	});
+	
+	}
+//********************************** Function to redirect the page either new Qr.com (OR) Old Qr.com   ******************  //
+function verifyURL(urlval)
+{
+if(urlval.length == (urlval.indexOf("?")+1)){
+urlval = urlval.split("?").shift();
+return urlval;
+}else{
+return urlval;
+}
+}
+function redirectPage(cntry)
+{
+
+if(cntry=="kr/kr")
+{
+cntry="kr/ko";
+}
+
+var x=cntry.split("/");
+var country_id=x[0];
+var locale_id=x[1];
+var st= NewSites.split(",");
+for(var a=0;a<st.length;a++)
+{
+if(country_id != st[a])         
+{
+if((locale_id == 'en') || (locale_id == 'it') || (locale_id == 'sv')|| (locale_id == 'ar')|| (locale_id == 'tr')|| (country_id == 'es') || (locale_id == 'nl') || (locale_id == 'de') || (locale_id == 'da') || (locale_id == 'fa')|| (country_id == 'fr') || (locale_id == 'ru') || (locale_id == 'pt') || (locale_id == 'ko') || (locale_id == 'cn') || (locale_id == 'jp')|| (country_id == 'be')|| (country_id == 'ma')|| (country_id == 'tn')|| (country_id == 'ch')|| (country_id == 'dz')|| (country_id == 'ca')|| (country_id == 'ar') || (country_id == 'th')|| (country_id == 'pl') || (country_id == 'gr') || (country_id == 'az')  || (country_id == 'bg') || (country_id == 'rs')|| (country_id == 'ro')|| (country_id == 'hr')|| (locale_id == 'no') || (country_id == 'lb')||(locale_id == 'ka')|| (locale_id == 'az')|| (locale_id == 'bg')|| (locale_id == 'sr')|| (locale_id == 'ro')|| (locale_id == 'hr')|| (country_id == 'cy')|| (country_id == 'ir'))// country code and locale is available in new Qr.com ----> Redirect To New Qr.com 
+{
+var dynamicurl = "/"+country_id+"/"+locale_id+"/homepage.page?"+cidparam;
+if(trackiid==1){
+window.location.href =verifyURL(dynamicurl+"&iid=ALL29109910");	}
+else{
+window.location.href =verifyURL(dynamicurl);	}
+}
+else  // country code available but locale is not available in new Qr.com ------> Redirect To Old Qr.com
+{
+window.location.href =verifyURL("/global/en/homepage.page?"+cidparam);	
+}
+}
+else  // country code is not available in new Qr.com -----> Redirect To Old Qr.com 
+{
+window.location.href =verifyURL("/global/en/homepage.page?"+cidparam);	 
+}
+}
+}
+//********************************** Document Read function   ******************  //
+//var NewSites="cn,ch,de,fr,br,jp,kr,es,ma,ru,tr";   // Sites Not available for those contries
+var NewSites="dia";
+//Adding the GEOIP country code 
+/*function getValue(){
+
+   var value= $.ajax({ 
+     type: "GET",
+	  url: 'http://www.telize.com/geoip', 
+crossDomain: true,
+      dataType: ($.browser.msie) ? 'text' : 'json',
+      async: true
+   }).responseText;
+   return value;
+}
+var data=getValue();
+var getcountry = eval("(function(){return " + data + ";})()");
+var country_id=getcountry.country_code;
+country_id= country_id.toLowerCase();*/
+
+
+
+
+
+
+
+
+$(document).ready(function(){
+
+var parentURL=document.referrer;
+if(parentURL=="")
+{
+parentURL="www.qatarairways.com";
+}
+createCookie('ref',parentURL,1000); 
+var strQueryString="";
+var hasQueryString = document.URL.indexOf('?');
+
+if (hasQueryString != -1 && cidparam == "")
+  {
+    //alert("Coming From Query string");
+		strQueryString = document.URL.substring(hasQueryString+1, document.URL.length);
+		var firstParam=strQueryString.split('&').shift();
+		var paramNmae=firstParam.split("=").shift();
+		if(paramNmae =='q')
+		{
+		var label=firstParam.split("=").pop();
+		//strQueryString=strQueryString.split("=").pop();
+		createCookie('country',label,1000); 
+		redirectPage(label);  
+		}
+		else
+		{
+		var val =readCookie('country');
+		redirectPage(val);	
+		}
+		// create cookie then call redirectPage() function         
+ }
+ else if (hasQueryString != -1 && (cidparam != "" && countryparam !="")){
+		var paramNmae=countryparam.split("=").shift();
+		if(paramNmae =='q')
+		{
+			var label=countryparam.split("=").pop();
+			//strQueryString=strQueryString.split("=").pop();
+			createCookie('country',label,1000); 
+			redirectPage(label);  
+		}
+		else
+		{
+			var val =readCookie('country');
+			redirectPage(val);	
+		}
+ }else {
+   
+    var country=readCookie('country');           // Read the cookie 
+	//alert("your Cookie vlaue:::"+country);
+	if(country!=null){
+	trackiid=0;
+	//alert("cookie true ===> redirect to last visited page");
+	redirectPage(country);  
+	}
+	else
+	{
+	var country_id;
+$.ajax({
+url:'http://www.qatarairways.com/iw-cc/qatar/dbtest.jsp',
+dataType:'json',
+success:function(json){country_id=json.Countrycode;if(country_id != null && country_id != "undefined" && country_id.length == 2){
+						country_id = country_id.toLowerCase();
+						//alert(country_id);
+						ipgeolocation(country_id);
+					}}});
+//country_id= country_id.toLowerCase();
+
+
+		
+		
+	}
+    }
+	});
+
+</script>
+
+</body>
+</html>

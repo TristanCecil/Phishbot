@@ -1,0 +1,219 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta name="robots" content="noindex" />
+<meta http-equiv="expires" content="Thu, 01 Jan 1970 00:00:01 GMT" />
+<title>Upload, store & share your files on Upstore</title>
+<link rel="shortcut icon" href="http://i.upstore.net/favicon.ico" />
+<link rel="stylesheet" type="text/css" media="all" href="http://css.upstore.net/style.css?160203" />
+<script>if(top!=self){top.location.replace(self.location.href);top.onbeforeunload=function(){};}</script>
+<script type="text/javascript" src="http://js.upstore.net/jquery.min.js?t"></script>
+<script type="text/javascript" src="http://js.upstore.net/jquery.easing.min.js?t"></script>
+<script type="text/javascript" src="http://js.upstore.net/jquery.form.min.js?t"></script>
+<script type="text/javascript" src="http://js.upstore.net/jquery.cookie.min.js?t"></script>
+<link href="http://css.upstore.net/jquery.fancybox.css?t" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="http://js.upstore.net/jquery.fancybox.min.js?t"></script>
+<script type="text/javascript" src="http://js.upstore.net/jquery.mousewheel.min.js?t"></script>
+<script type="text/javascript" src="http://js.upstore.net/custom.js?120415t"></script>
+<link rel="stylesheet" type="text/css" href="http://css.upstore.net/uploadify.css?010112t" />
+<script type="text/javascript" src="http://js.upstore.net/swfobject.js?t"></script>
+<script type="text/javascript" src="http://js.upstore.net/jquery.uploadify.v2.1.4.en.js?010112t"></script>
+</head>
+<body>
+<div id="main">
+	<div class="topArea">
+		<div class="logoArea">
+						<h1>Upstore</h1>
+					</div>
+		<div class="loginArea">
+			
+
+	<ul class="userMenu">
+	<li><a href="/premium/">Premium</a></li>
+		<li><a href="/contacts/">Support</a></li>
+		<li><a href="/account/login/" class="login">Sign in</a></li>
+	<li>
+		<img src="http://i.upstore.net/lang_en.gif" class="lang" title="Switch language" data="ru">
+	</li>
+	</ul>
+
+
+
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div class="clear"></div>
+	<div style="float: left;" class="comment">store & share your files</div>
+	<div class="clear"></div>
+
+	<div style="padding-top: 20px; min-height:300px;" id="content">
+						
+
+<div style="position: relative; width: 280px; margin: 50px auto 15px auto;z-index:1; cursor:pointer;" id="container">
+	<div style="height: 20px"><input type="file" name="uploadify" id="uploadify" style="display: none" /></div>
+	<h1 class="pseudo" style="white-space: nowrap; position: absolute; top: 0; left: 0; z-index: -1;">
+		Select files to upload	</h1>
+</div>
+<div id="qupload" style="margin: auto; margin-bottom: 20px; width: 524px;"></div>
+<div class="clear"></div>
+
+
+<div style="margin: 15px; text-align: center;">
+	<input type="button" class="submit hidden startUpload" value="Upload now!" style="font-size: 18px" onclick="doUpload()">
+</div>
+
+<script type="text/javascript">
+var errors = {
+	'error' : 'Wrong upload server',
+	'error (server)' : 'Cannot connect to upload server',
+	'error (private)' : 'Upload server is private',
+	'error (disable)' : 'Upload is temporary unavailable for free users',
+	'error (data)' : 'Incorrent file data',
+	'error (db)' : 'Database connection refused',
+	'error (size)' : 'File is too small',
+	'error (size5gb)' : 'File is too big (max. 5GB)',
+	'error (size2gb)' : 'File is too big (max. 2GB for registered, 5GB for premium)',
+	'error (size1gb)' : 'File is too big (max. 1GB for guests, 2GB for registered, 5GB for premium)'
+};
+function doUpload() {
+	$('#uploadify').uploadifyUpload();
+	$('.startUpload').hide();
+}
+$(function() {
+	$('#uploadify').uploadify({
+		uploader   : '/i/uploadify.swf',
+		script     : 'http://d20.upstore.net/upload/',
+		scriptAccess : 'always',
+		cancelImg  : '/i/cancel.png',
+		queueID    : 'qupload',
+		scriptData : {
+		},
+		queueSizeLimit : 100,
+		sizeLimit  : 1073741824,
+		//buttonText : 'Browse',
+		hideButton : true,
+		wmode      : 'transparent',
+		fileDataName : 'file',
+		fileExt    : '*.*',
+		fileDesc   : 'All files',
+		width      : 280,
+		height     : 32,
+		auto       : false,
+		multi      : true,
+		removeCompleted: false,
+		onProgress : function(k, i, j, l) {
+			$('#'+ $(k.target).attr('id') + i +'ProgressBar').css('width', l.percentage +'%');
+			if (l.percentage == 100)
+				$('#'+ $(k.target).attr('id') + i).find('.uploadifyProgress').remove();
+			$('#'+ $(k.target).attr('id') + i).find('.percentage').text(' - '+ l.percentage +'% / '+ l.speed + 'KB/s');
+			return false;
+		},
+		onSelect   : function() {
+			$('#container').css('margin', '50px auto');
+			$('.startUpload').show();
+		},
+		onQueueFull: function() {
+			alert('The queue is full (max. 100 files)');
+			return false;
+		},
+		onComplete : function(e, qId, file, data, info) {
+			data = $.parseJSON(data);
+			if (!data || data['error']) {
+				var err = data['error']||'';
+				if (err.length)
+					err = errors[err.toLowerCase()] || err;
+				$('#uploadify'+ qId +' span.percentage').html('&nbsp;Error '+ err);
+				return false;
+			}
+			var url = 'http://upstore.net/'+ data['hash'];
+			var url2 = url +'/'+ data['uname'];
+			$('#uploadify'+ qId +' span.percentage').hide();
+			$('#uploadify'+ qId).append(
+				'<table><tr><td>&nbsp;</td><td><a href="'+ url +'" target="_blank">'+ url +'</a></td></tr>'+
+				'<tr><td>Short link:</td><td><input class="text" value="'+ url +'"></td></tr>'+
+				'<tr><td valign="top">BB-code:</td><td><textarea class="text">[url='+ url +']'+ data['uname'] +'[/url]</textarea></td></tr>'+
+				'<tr><td>Long link:</td><td><input class="text" value="'+ url2 +'"></td></tr>'+
+				'<tr><td valign="top">BB-code:</td><td><textarea class="text">[url='+ url2 +']'+ data['uname'] +'[/url]</textarea></td></tr></table>'
+			).find('input,textarea').focus(function(){$(this).select()});
+			if ($('#uploadDir').length && parseInt($('#uploadDir').val()) > 0 && token) {
+				$.post('/panel/move2/', {d: $('#uploadDir').val(), hfiles: data['hash'], token: token}, function(){}, 'json');
+			}
+			return true;
+		}
+	});
+});
+</script>
+
+<div style="margin-top: 100px" class="clear">&nbsp;</div>
+<div class="center">
+	More uploading options: &nbsp; 
+	<a href="/panel/ftp/">FTP</a> &nbsp; 
+	<a href="/panel/remote/">Remote</a> 
+</div>
+	</div>
+	<div class="clear"></div>
+
+	<div class="footer">
+		<table><tr>
+			<td class="left" width="1%" nowrap>2016 &copy; Upstore</td>
+			<td class="center">
+				<a href="/faq/">FAQ</a>&nbsp;
+				<a href="/terms/">Terms</a>&nbsp;
+				<a href="/dmca/">DMCA</a>&nbsp;
+				<a href="/privacy/">Privacy</a>&nbsp;
+				<a href="/premium/">Premium</a>&nbsp;
+				<a href="/imprint/">About</a>&nbsp;
+				<a href="/contacts/">Contacts</a>
+			</td>
+			<td class="right" width="1%"><img src="http://i.upstore.net/icq.gif" title="ICQ 982350" style="margin-right: 5px"></td>
+			<td width="1%">982350</td>
+		</tr></table>
+	</div>
+</div>
+<div class="hidden modal" id="authbox">
+	<table width="95%" align="center"><tr><td valign="top" width="48%">
+		<h2>Here I am</h2>
+		<form action="/account/login/" method="post">
+		<input type="hidden" name="url" value="http%3A%2F%2Fupstore.net%2F">
+		<p><input type="text" name="email" class="text" placeholder="E-mail" value="">
+		<p><input type="password" name="password" class="text" placeholder="Password" value="">
+		<p style="line-height: 30px"><input type="submit" class="submit" name="send" value="Login" align="top"> &nbsp; 
+		<a href="/account/recover/">Forgot password?</a></p>
+		</form>
+	</td>
+	<td width="52%" valign="top" style="border-left: #999900 2px solid; padding-left: 10%;">
+		<h2>Have no any account</h2>
+		<form action="/account/registration/" method="post">
+		<input type="hidden" name="url" value="http%3A%2F%2Fupstore.net%2F">
+		<p><input type="text" name="email" class="text" placeholder="E-mail" value="">
+			<p><input type="submit" class="submit" name="send" value="Sign me up">
+		<p style="line-height:30px">Easiest 1-click registration!</p>
+		</form>
+	</td></tr>
+	<tr><td colspan="2" class="center" style="padding-top:25px"><h2 id="socform" style="line-height: 30px">Or login with</h2></td></tr>
+	</table>
+</div>
+<script>
+function authBox() {
+	$.fancybox($('#authbox'));
+	if (!$('#authbox iframe').length)
+		$('#socform').append('<iframe src="/account/soclogin/?url=http%3A%2F%2Fupstore.net%2F" style="margin-left: 20px; height: 30px; width: 140px;" scrolling="no" frameborder="0" hspace="0" align="top"></iframe>');
+}
+$(function() {
+	$('a.login').click(function(e) {
+		e.preventDefault();
+		authBox();
+	});
+});
+</script>
+<script type="text/javascript">(function (d, w, c) { (w[c] = w[c] || []).push(function() { try { w.yaCounter18057649 = new Ya.Metrika({id:18057649, enableAll: true, trackHash:true, ut:"noindex", webvisor:true}); } catch(e) { } }); var n = d.getElementsByTagName("script")[0], s = d.createElement("script"), f = function () { n.parentNode.insertBefore(s, n); }; s.type = "text/javascript"; s.async = true; s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js"; if (w.opera == "[object Opera]") { d.addEventListener("DOMContentLoaded", f, false); } else { f(); } })(document, window, "yandex_metrika_callbacks");</script><noscript><div><img src="//mc.yandex.ru/watch/18057649?ut=noindex" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<script type="text/javascript"><!--
+new Image().src = "//counter.yadro.ru/hit?r"+
+escape(document.referrer)+((typeof(screen)=="undefined")?"":
+";s"+screen.width+"*"+screen.height+"*"+(screen.colorDepth?
+screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+
+";"+Math.random();//--></script>
+</body>
+</html>

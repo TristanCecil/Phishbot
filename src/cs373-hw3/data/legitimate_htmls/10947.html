@@ -1,0 +1,453 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+
+    <title>Legendas TV</title>
+
+    <meta name="description" content="you description" />
+	<meta name="keywords" content="your keywords" />
+
+	<link href="/favicon.ico" type="image/x-icon" rel="icon" /><link href="/favicon.ico" type="image/x-icon" rel="shortcut icon" /><link href="http://legendas.tv/rss/destaques.rss" type="application/rss+xml" rel="alternate" title="Destaques - Todos" /><link href="http://legendas.tv/rss/destaques_series.rss" type="application/rss+xml" rel="alternate" title="Destaques - Séries" /><link href="http://legendas.tv/rss/destaques_filmes.rss" type="application/rss+xml" rel="alternate" title="Destaques - Filmes" /><link href="http://legendas.tv/rss/destaques_cartoons.rss" type="application/rss+xml" rel="alternate" title="Destaques - Cartoons" /><link href="http://legendas.tv/rss/ultimas_legendas.rss" type="application/rss+xml" rel="alternate" title="Últimas legendas enviadas" />
+ <!--   TO BE FILLED with the proper paths
+    <link rel="shortcut icon" href="fav icon"/>
+	<link rel="canonical" href="canonical adress" />
+    <link rel='index' title='Nettuts+' href='http://net.tutsplus.com/' />
+ end of TO BE FILLED -->
+
+    <!--[if lt IE 9]> <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+    <link rel="stylesheet" type="text/css" href="/cache_css/css-combined.css" />    <link href='http://fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
+
+	<script type="text/javascript" src="/js/jquery-1.7.1.min.js"></script>
+</head>
+<body id="">
+
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-880954-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+    <div class="container">
+
+
+    	<header>
+            <div class="upper"></div>
+
+			
+	    		    	
+
+
+            <section class="clearfix">
+                <div class="login">
+                	
+                	<a href="/login" class="js_entrar">ENTRAR</a><span>|</span><a href="/register" title="Legendas.tv - ">REGISTRAR</a><form action="/login" class="login_box" novalidate="novalidate" id="UserIndexForm" method="post" accept-charset="utf-8"><div style="display:none;"><input type="hidden" name="_method" value="POST"/></div><a class="js_close"></a><input name="data[User][username]" maxlength="255" type="text" required="required"/><input name="data[User][password]" type="password" required="required"/><div class="clearfix"><input type="submit" value="Entrar" style="float: left;" /><label style="float: left;margin:11px;"><input type="checkbox" name="data[lembrar]" checked> Lembrar</label></div><a href="/problemasdelogin">&gt; Estou com problemas para <b>logar</b></a></form>                	
+                </div> <!-- END OF LOGIN -->
+
+                <a href="/" class="logo"><img src="http://i.legendas.tv/logo.png" alt="Legendas.tv" width="301" height="71" /></a>
+                <div class="menu">
+                    <button>MENU</button>
+                	
+                    <div class="dropdown hidden">
+                        <a href="/meuperfil" title="Legendas.tv - Meu perfil">Meu perfil</a><a href="/enviar_legenda" title="Legendas.tv - Enviar Legenda">Enviar Legenda</a><a href="/meuperfil/legendas" title="Legendas.tv - Legendas enviadas">Legendas enviadas</a><a href="/meuperfil/legendas/baixadas" title="Legendas.tv - Legendas baixadas">Legendas baixadas</a><a href="/meuperfil/sugestoes" title="Legendas.tv - Sugestões">Sugestões</a>                    </div>
+                    
+                </div>
+
+		
+            	<form action="/busca" novalidate="novalidate" class="searchbar" data-url="/busca" data-autocomplete="/autocomplete" id="BuscaIndexForm" method="post" accept-charset="utf-8"><div style="display:none;"><input type="hidden" name="_method" value="POST"/></div><input type="text" value="" placeholder="Procurar" id="search-box"/><input type="submit" class="icon_zoom" value="" />
+				<div id="sugestao-legenda-box">
+				    <ul id="sugestao-legenda">
+				    </ul>
+				</div>
+				</form>		
+		<!-- header .searchbar div -->
+		<script>
+		    $(document).ready(function () {
+			$("#search-box").bind("keyup", function(){
+			    remove_caracter();
+			    sugestao();
+			});
+			    
+			$("#search-box").bind("change", function(){
+			    remove_caracter();
+			    sugestao();
+			});    
+		    });
+		    
+		    function remove_caracter() {
+			if($("#search-box").val().indexOf(':') > -1){
+			  $("#search-box").val($("#search-box").val().replace(/[:]/g, " "));
+			}
+		    }
+		    
+		    function sugestao() {
+			
+			    var busca = $("#search-box").val();
+			    
+			    if (busca != "" && busca.length > 1) {
+				$.ajax({
+				    url: "/legenda/sugestao/" + busca,
+				    success: function (response) {
+					//force hide
+					$("#sugestao-legenda-box").hide();
+					
+					var filmes = jQuery.parseJSON(response);
+					var count = 0;
+					var html = "";
+					var term = $("#search-box").val();
+					
+					
+					$.each(filmes, function(p, filme){
+					    //console.log(filme['_source']['dsc_nome'], filme['_score'])
+					    count++;
+					    
+					    
+					    if (count <= 10) {
+						var dsc_nome = filme['_source']['dsc_nome'].replace(":", "");
+						
+						html += '<li>';
+						html += '<a href="/busca/' + dsc_nome + '/'+filme['_source']['id_filme']+'">'
+						html += filme['_source']['dsc_nome']
+						
+						if (filme['_source']['temporada'] != null) {
+						    if (filme['_source']['temporada'] <= 9) {
+							html += ' S0' + filme['_source']['temporada'];	
+						    }else{
+							html += ' S' + filme['_source']['temporada'];	
+						    }   
+						}
+						
+						//descricao com nome br + ano
+						html += '<span class="desc-legenda-search" style="font-size: 10px;float: left;width: 100%;margin: 5px 0 10px;">'
+						html += filme['_source']['dsc_nome_br'];
+						if (filme['_source']['dsc_data_lancamento'] != "") {
+						    html += " - " + filme['_source']['dsc_data_lancamento']
+						}
+						html += "</span>"
+						
+						html += '</a>';
+						html += '</li>';
+					    }
+						
+					});
+					
+					if (term != "" && html != "") {
+					    $("#sugestao-legenda").html(html);
+					    $("#sugestao-legenda-box").show();
+					}
+					
+				    }
+				});
+			    }else{
+				$("#sugestao-legenda-box").hide();
+			    }
+		    }
+		</script>
+		
+            </section>
+        </header> <!-- END OF HEADER -->
+
+    	<div class="banner_728x90"><a href="http://legendas.tv/vip">
+<img src="http://i.legendas.tv/banner_vip_728x60.jpg" border="0">
+</a>
+
+<script type="text/javascript">
+    var hkn = { code: "SITEPX" };
+    (function () {
+        var h = document.createElement('script'); h.type = 'text/javascript'; h.async = true;
+        h.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'tag.hariken.co/hkn.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(h, s);
+    })();
+</script>
+<!-- Golytics - START -->
+<script type="text/javascript">
+  var _gs = {
+    site: 'LGTV'
+  };
+  (function(d, s, id){
+     var js, gs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "http://56e9af4bb89f1d73465cbd39.static-01.com/js/golytics.min.js";
+     gs.parentNode.insertBefore(js, gs);
+   }(document, 'script', 'golytics-sdk'));
+</script>
+<!-- Golytics - END --></div>
+
+        <div class="middle ">
+
+			
+			
+<!-- DESTAQUE MAIS BAIXADOS-->
+<section>
+    <h2 class="bigtitle"><a href="/destaques_mais_baixados_da_semana" style="color: #FFF;">DESTAQUES MAIS BAIXADOS DA SEMANA</a></h2>
+
+    <button class="slider_left inactive"></button>
+    <div class="slider_wrapper">
+
+        <div class="slider js_tooltip">
+        
+        	<div class="item"><a href="/download/57304eadddd9c/Game_of_Thrones/Game_of_Thrones_S06E03_HDTV_x264_KILLERS_AVS_BATV_FUM_CtrlHD_TOPKEK_DON_BS666_NTb_LoTV"><span class="selo_temp">S06E03</span><img src="http://i.legendas.tv/poster/214x317/legendas_tv_20160421161454.png" width="214" height="317" alt="" /><img src="http://i.legendas.tv/equipe/204x25/legendas_tv_20130930104626.jpg" width="204" height="25" class="img_equipe" alt="" /><span>Game of Thrones</span><p style="color: #333; font-size: 9pt; padding: 2px 0 0 5px;height: 14px; overflow: hidden;">Game of Thrones - 6a Temporada</p></a><div class="tooltip"><p>Game.of.Thrones.S06E03.HDTV.x264-KILLERS-AVS-BATV-FUM-CtrlHD-TOPKEK-DON-BS666-NTb-LoTV</p><p>68303 downloads</p><p>09/05/2016 05h47</p></div></div><div class="item"><a href="/download/572a2c56a6520/The_Flash/The_Flash_S02E20_HDTV_x264_LOL_FUM_DIMENSION_RARBG"><span class="selo_temp">S02E20</span><img src="http://i.legendas.tv/poster/214x317/legendas_tv_20150827225912.png" width="214" height="317" alt="" /><img src="http://i.legendas.tv/equipe/204x25/legendas_tv_20131010161056.png" width="204" height="25" class="img_equipe" alt="" /><span>The Flash</span><p style="color: #333; font-size: 9pt; padding: 2px 0 0 5px;height: 14px; overflow: hidden;">The Flash - 2ª Temporada</p></a><div class="tooltip"><p>The.Flash.S02E20.HDTV.x264-LOL-FUM-DIMENSION-RARBG</p><p>33244 downloads</p><p>04/05/2016 14h07</p></div></div><div class="item"><a href="/download/572beb5dd9630/Arrow/Arrow_S04E20_HDTV_x264_LOL_FUM_DIMENSION_RARBG"><span class="selo_temp">S04E20</span><img src="http://i.legendas.tv/poster/214x317/legendas_tv_20150902145034.png" width="214" height="317" alt="" /><img src="http://i.legendas.tv/equipe/204x25/legendas_tv_20131010161056.png" width="204" height="25" class="img_equipe" alt="" /><span>Arrow</span><p style="color: #333; font-size: 9pt; padding: 2px 0 0 5px;height: 14px; overflow: hidden;">Arrow - 4ª Temporada</p></a><div class="tooltip"><p>Arrow.S04E20.HDTV.x264-LOL-FUM-DIMENSION-RARBG</p><p>21941 downloads</p><p>05/05/2016 21h54</p></div></div><div class="item"><a href="/download/572d7b274c9f9/The_Big_Bang_Theory/The_Big_Bang_Theory_S09E23_HDTV_x264_LOL_FUM_DIMENSION_Oosh"><span class="selo_temp">S09E23</span><img src="http://i.legendas.tv/poster/214x317/legendas_tv_20150912223410.jpg" width="214" height="317" alt="" /><img src="http://i.legendas.tv/equipe/204x25/legendas_tv_20130930131107.png" width="204" height="25" class="img_equipe" alt="" /><span>The Big Bang Theory</span><p style="color: #333; font-size: 9pt; padding: 2px 0 0 5px;height: 14px; overflow: hidden;">The Big Bang Theory - 9ª Temporada</p></a><div class="tooltip"><p>The.Big.Bang.Theory.S09E23.HDTV.x264-LOL-FUM-DIMENSION-Oosh</p><p>17771 downloads</p><p>07/05/2016 02h20</p></div></div><div class="item"><a href="/download/5730ac4f8d25a/Fear_The_Walking_Dead/Fear_the_Walking_Dead_S02E05_HDTV_x264_FLEET_FUM_AFG_mSD_AVS_RARBG_DIMENSION_NTb"><span class="selo_temp">S02E05</span><img src="http://i.legendas.tv/poster/214x317/legendas_tv_20160310131936.jpg" width="214" height="317" alt="" /><img src="http://i.legendas.tv/equipe/204x25/legendas_tv_20130930112213.jpg" width="204" height="25" class="img_equipe" alt="" /><span>Fear The Walking Dead</span><p style="color: #333; font-size: 9pt; padding: 2px 0 0 5px;height: 14px; overflow: hidden;">Fear The Walking Dead - 2ª Temporada</p></a><div class="tooltip"><p>Fear.the.Walking.Dead.S02E05.HDTV.x264-FLEET-FUM-AFG-mSD-AVS-RARBG-DIMENSION-NTb</p><p>17681 downloads</p><p>09/05/2016 12h27</p></div></div><div class="item"><a href="/download/572a87eb15801/Agents_of_S_H_I_E_L_D/Marvels_Agents_of_S_H_I_E_L_D_S03E19_HDTV_x264_KILLERS_mSD_FUM_AFG_RARBG_RMTeam_HKD_DDLTV_MAoS"><span class="selo_temp">S03E19</span><img src="http://i.legendas.tv/poster/214x317/legendas_tv_20150918123905.jpg" width="214" height="317" alt="" /><img src="http://i.legendas.tv/equipe/204x25/legendas_tv_20131002210559.jpg" width="204" height="25" class="img_equipe" alt="" /><span>Agents of S.H.I.E.L.D</span><p style="color: #333; font-size: 9pt; padding: 2px 0 0 5px;height: 14px; overflow: hidden;">Agents of S.H.I.E.L.D. - 3ª Temporada</p></a><div class="tooltip"><p>Marvels.Agents.of.S.H.I.E.L.D.S03E19.HDTV.x264-KILLERS-mSD-FUM-AFG-RARBG-RMTeam-HKD-DDLTV-MAoS</p><p>15524 downloads</p><p>04/05/2016 20h38</p></div></div><div class="item"><a href="/download/572b7cb7811b0/Supernatural/Supernatural_S11E20_HDTV_x264_LOL_FUM_DIMENSION_x265_rmteam"><span class="selo_temp">S11E20</span><img src="http://i.legendas.tv/poster/214x317/legendas_tv_20150909143352.png" width="214" height="317" alt="" /><img src="http://i.legendas.tv/equipe/204x25/legendas_tv_20141006121646.png" width="204" height="25" class="img_equipe" alt="" /><span>Supernatural</span><p style="color: #333; font-size: 9pt; padding: 2px 0 0 5px;height: 14px; overflow: hidden;">Supernatural - 11ª Temporada</p></a><div class="tooltip"><p>Supernatural.S11E20.HDTV.x264-LOL-FUM-DIMENSION.x265.rmteam</p><p>14673 downloads</p><p>05/05/2016 14h02</p></div></div><div class="item"><a href="/download/572d6cfea0270/DCs_Legends_of_Tomorrow/DCs_Legends_of_Tomorrow_S01E14_HDTV_x264_LOL_DIMENSION_FUM_LoT"><span class="selo_temp">S01E14</span><img src="http://i.legendas.tv/poster/214x317/legendas_tv_20160120005358.jpg" width="214" height="317" alt="" /><img src="http://i.legendas.tv/equipe/204x25/legendas_tv_20131010161056.png" width="204" height="25" class="img_equipe" alt="" /><span>DCs Legends of Tomorrow</span><p style="color: #333; font-size: 9pt; padding: 2px 0 0 5px;height: 14px; overflow: hidden;">DCs Legends of Tomorrow - 1a temporada</p></a><div class="tooltip"><p>DCs.Legends.of.Tomorrow.S01E14.HDTV.x264-LOL-DIMENSION-FUM-LoT</p><p>12779 downloads</p><p>07/05/2016 01h20</p></div></div><div class="item"><a href="/download/572d6a19d3f87/The_100/The_100_S03E14_HDTV_x264_KILLERS_FUM_AFG_FLEET_PSA_RMTeam_DIMENSION_RARBG_DRACULA"><span class="selo_temp">S03E14</span><img src="http://i.legendas.tv/poster/214x317/legendas_tv_20151224113206.png" width="214" height="317" alt="" /><img src="http://i.legendas.tv/equipe/204x25/legendas_tv_20130930112213.jpg" width="204" height="25" class="img_equipe" alt="" /><span>The 100</span><p style="color: #333; font-size: 9pt; padding: 2px 0 0 5px;height: 14px; overflow: hidden;">The 100 - 3ª Temporada</p></a><div class="tooltip"><p>The.100.S03E14.HDTV.x264-KILLERS-FUM-AFG-FLEET-PSA-RMTeam-DIMENSION-RARBG-DRACULA</p><p>11841 downloads</p><p>07/05/2016 01h07</p></div></div><div class="item"><a href="/download/572da0ada5971/Grey_s_Anatomy/Greys_Anatomy_S12E22_HDTV_x264_LOL_FUM_DIMENSION"><span class="selo_temp">S12E22</span><img src="http://i.legendas.tv/poster/214x317/legendas_tv_20150917015458.png" width="214" height="317" alt="" /><img src="http://i.legendas.tv/equipe/204x25/legendas_tv_20131010161056.png" width="204" height="25" class="img_equipe" alt="" /><span>Grey's Anatomy</span><p style="color: #333; font-size: 9pt; padding: 2px 0 0 5px;height: 14px; overflow: hidden;">Greys Anatomy - 12ª Temporada</p></a><div class="tooltip"><p>Greys.Anatomy.S12E22.HDTV.x264-LOL-FUM-DIMENSION</p><p>9739 downloads</p><p>07/05/2016 05h00</p></div></div><div class="item"><a href="/download/572aa62bab70d/Person_of_Interest/Person_of_Interest_S05E01_HDTV_x264_LOL_AFG_DIMENSION_DRACULA"><span class="selo_temp">S05E01</span><img src="http://i.legendas.tv/poster/214x317/legendas_tv_20160504102113.jpg" width="214" height="317" alt="" /><img src="http://i.legendas.tv/equipe/204x25/legendas_tv_20130930131018.jpg" width="204" height="25" class="img_equipe" alt="" /><span>Person of Interest</span><p style="color: #333; font-size: 9pt; padding: 2px 0 0 5px;height: 14px; overflow: hidden;">Person of Interest - 5ª Temporada</p></a><div class="tooltip"><p>Person.of.Interest.S05E01.HDTV.x264-LOL-AFG-DIMENSION-DRACULA</p><p>8259 downloads</p><p>04/05/2016 22h47</p></div></div><div class="item"><a href="/download/572e3a24b1584/The_Vampire_Diaries/The_Vampire_Diaries_S07E21_HDTV_x264_LOL_FUM_AFG_mSD_DIMENSION_RARBG"><span class="selo_temp">S07E21</span><img src="http://i.legendas.tv/poster/214x317/legendas_tv_20150929194541.jpg" width="214" height="317" alt="" /><img src="http://i.legendas.tv/equipe/204x25/legendas_tv_20130930112213.jpg" width="204" height="25" class="img_equipe" alt="" /><span>The Vampire Diaries</span><p style="color: #333; font-size: 9pt; padding: 2px 0 0 5px;height: 14px; overflow: hidden;">The Vampire Diaries - 7ª temporada</p></a><div class="tooltip"><p>The.Vampire.Diaries.S07E21.HDTV.x264-LOL-FUM-AFG-mSD-DIMENSION-RARBG</p><p>8017 downloads</p><p>07/05/2016 15h55</p></div></div><div class="item"><a href="/download/572a110258514/Quantico/Quantico_S01E20_HDTV_x264_LOL_FUM_AFG_mSD_DIMENSION_RARBG"><span class="selo_temp">S01E20</span><img src="http://i.legendas.tv/poster/214x317/legendas_tv_20150828210821.jpg" width="214" height="317" alt="" /><img src="http://i.legendas.tv/equipe/204x25/legendas_tv_201401182125420.png" width="204" height="25" class="img_equipe" alt="" /><span>Quantico</span><p style="color: #333; font-size: 9pt; padding: 2px 0 0 5px;height: 14px; overflow: hidden;">Quantico - 1ª Temporada</p></a><div class="tooltip"><p>Quantico.S01E20.HDTV.x264-LOL-FUM-AFG-mSD-DIMENSION-RARBG</p><p>7322 downloads</p><p>04/05/2016 12h10</p></div></div><div class="item"><a href="/download/573271be0b57e/Gotham/Gotham_S02E20_HDTV_x264_LOL_AFG_FUM_DIMENSION"><span class="selo_temp">S02E20</span><img src="http://i.legendas.tv/poster/214x317/legendas_tv_20150831220226.jpg" width="214" height="317" alt="" /><img src="http://i.legendas.tv/equipe/204x25/legendas_tv_20131002210559.jpg" width="204" height="25" class="img_equipe" alt="" /><span>Gotham</span><p style="color: #333; font-size: 9pt; padding: 2px 0 0 5px;height: 14px; overflow: hidden;">Gotham - 2ª Temporada</p></a><div class="tooltip"><p>Gotham.S02E20.HDTV.x264-LOL-AFG-FUM-DIMENSION</p><p>7107 downloads</p><p>10/05/2016 20h41</p></div></div><div class="item"><a href="/download/572eb2dd7c6a9/The_Originals/The_Originals_S03E20_HDTV_x264_LOL_FUM_AFG_mSD_DIMENSION_NTb_RARBG_VietHD"><span class="selo_temp">S03E20</span><img src="http://i.legendas.tv/poster/214x317/legendas_tv_20150929193608.jpg" width="214" height="317" alt="" /><img src="http://i.legendas.tv/equipe/204x25/legendas_tv_20130930112213.jpg" width="204" height="25" class="img_equipe" alt="" /><span>The Originals</span><p style="color: #333; font-size: 9pt; padding: 2px 0 0 5px;height: 14px; overflow: hidden;">The Originals - 3ª temporada</p></a><div class="tooltip"><p>The.Originals.S03E20.HDTV.x264-LOL-FUM-AFG-mSD-DIMENSION-NTb-RARBG-VietHD</p><p>6897 downloads</p><p>08/05/2016 00h30</p></div></div><div class="item"><a href="/download/572a08062fb18/The_Blacklist/The_Blacklist_S03E20_HDTV_x264_KILLERS_FUM_AVS_RARBG_Oosh"><span class="selo_temp">S03E20</span><img src="http://i.legendas.tv/poster/214x317/legendas_tv_20151001162120.png" width="214" height="317" alt="" /><img src="http://i.legendas.tv/equipe/204x25/legendas_tv_20131010161056.png" width="204" height="25" class="img_equipe" alt="" /><span>The Blacklist</span><p style="color: #333; font-size: 9pt; padding: 2px 0 0 5px;height: 14px; overflow: hidden;">The Blacklist - 3ª Temporada</p></a><div class="tooltip"><p>The.Blacklist.S03E20.HDTV.x264-KILLERS-FUM-AVS-RARBG-Oosh</p><p>6889 downloads</p><p>04/05/2016 11h32</p></div></div><div class="item"><a href="/download/5731f1a105c14/Penny_Dreadful/Penny_Dreadful_S03E02_WEBRip_x264_FUM_MkvCage_ShAaNiG_RMTeam_DEFLATE_NTb"><span class="selo_temp">S03E02</span><img src="http://i.legendas.tv/poster/214x317/legendas_tv_20160311154302.jpg" width="214" height="317" alt="" /><img src="http://i.legendas.tv/equipe/204x25/legendas_tv_20150611124354.png" width="204" height="25" class="img_equipe" alt="" /><span>Penny Dreadful</span><p style="color: #333; font-size: 9pt; padding: 2px 0 0 5px;height: 14px; overflow: hidden;">Penny Dreadful - 3ª Temporada</p></a><div class="tooltip"><p>Penny.Dreadful.S03E02.WEBRip.x264-FUM-MkvCage-ShAaNiG-RMTeam-DEFLATE-NTb</p><p>6693 downloads</p><p>10/05/2016 11h35</p></div></div><div class="item"><a href="/download/572a9a7e3bbec/Bates_Motel/Bates_Motel_S04E08_HDTV_x264_KILLERS_FUM_RARBG_ZAKH"><span class="selo_temp">S04E08</span><img src="http://i.legendas.tv/poster/214x317/legendas_tv_20160127220633.png" width="214" height="317" alt="" /><img src="http://i.legendas.tv/equipe/204x25/legendas_tv_20150611124354.png" width="204" height="25" class="img_equipe" alt="" /><span>Bates Motel</span><p style="color: #333; font-size: 9pt; padding: 2px 0 0 5px;height: 14px; overflow: hidden;">Bates Motel - 4ª Temporada</p></a><div class="tooltip"><p>Bates.Motel.S04E08.HDTV.x264-KILLERS-FUM-RARBG-ZAKH</p><p>5860 downloads</p><p>04/05/2016 21h57</p></div></div><div class="item"><a href="/download/572d0f14bfd18/Orphan_Black/Orphan_Black_S04E04_HDTV_XviD_FUM_KILLERS_PSA_RMTeam_DEFLATE_NTb"><span class="selo_temp">S04E04</span><img src="http://i.legendas.tv/poster/214x317/legendas_tv_20160218193702.jpg" width="214" height="317" alt="" /><img src="http://i.legendas.tv/equipe/204x25/legendas_tv_20140422011538.gif" width="204" height="25" class="img_equipe" alt="" /><span>Orphan Black</span><p style="color: #333; font-size: 9pt; padding: 2px 0 0 5px;height: 14px; overflow: hidden;">Orphan Black - 4a Temporada</p></a><div class="tooltip"><p>Orphan.Black.S04E04.HDTV.XviD-FUM-KILLERS-PSA-RMTeam-DEFLATE-NTb</p><p>5655 downloads</p><p>06/05/2016 18h39</p></div></div><div class="item"><a href="/download/572d60362f2fb/Modern_Family/Modern_Family_S07E20_HDTV_x264_FLEET_AFG_KILLERS_mSD_PSA_RMTeam_KRAVE_RARBG_Oosh"><span class="selo_temp">S07E20</span><img src="http://i.legendas.tv/poster/214x317/legendas_tv_20150911143120.png" width="214" height="317" alt="" /><img src="http://i.legendas.tv/equipe/204x25/legendas_tv_201401182125420.png" width="204" height="25" class="img_equipe" alt="" /><span>Modern Family</span><p style="color: #333; font-size: 9pt; padding: 2px 0 0 5px;height: 14px; overflow: hidden;">Modern Family - 7ª Temporada</p></a><div class="tooltip"><p>Modern.Family.S07E20.HDTV.x264-FLEET-AFG-KILLERS-mSD-PSA-RMTeam-KRAVE-RARBG-Oosh</p><p>5434 downloads</p><p>07/05/2016 00h25</p></div></div><div class="item"><a href="/download/572cbf7270079/The_Finest_Hours/The_Finest_Hours_2016_1080p_WEB_DL_DD5_1_H264_RARBG"><img src="http://i.legendas.tv/poster/214x317/legendas_tv_20160115035818.jpg" width="214" height="317" alt="" /><img src="http://i.legendas.tv/equipe/204x25/legendas_tv_20130930223718.jpg" width="204" height="25" class="img_equipe" alt="" /><span>The Finest Hours</span><p style="color: #333; font-size: 9pt; padding: 2px 0 0 5px;height: 14px; overflow: hidden;">Horas Decisivas</p></a><div class="tooltip"><p>The.Finest.Hours.2016.1080p.WEB-DL.DD5.1.H264-RARBG</p><p>4655 downloads</p><p>06/05/2016 12h59</p></div></div><div class="item"><a href="/download/572c3658af4df/Elementary/Elementary_S04E23_HDTV_x264_LOL_AFG_DIMENSION_MeGusta_AAC_mSD_RARBG_FUM_VietHD_DRACULA"><span class="selo_temp">S04E23</span><img src="http://i.legendas.tv/poster/214x317/legendas_tv_20150927221747.jpg" width="214" height="317" alt="" /><img src="http://i.legendas.tv/equipe/204x25/legendas_tv_20130930131018.jpg" width="204" height="25" class="img_equipe" alt="" /><span>Elementary</span><p style="color: #333; font-size: 9pt; padding: 2px 0 0 5px;height: 14px; overflow: hidden;">Elementary - 4ª Temporada</p></a><div class="tooltip"><p>Elementary.S04E23.HDTV.x264-LOL-AFG-DIMENSION-MeGusta-AAC-mSD-RARBG-FUM-VietHD-DRACULA</p><p>4644 downloads</p><p>06/05/2016 03h14</p></div></div><div class="item"><a href="/download/573155bdd7f16/Blindspot/Blindspot_S01E20_HDTV_x264_LOL_FUM_DIMENSION_NTb"><span class="selo_temp">S01E20</span><img src="http://i.legendas.tv/poster/214x317/legendas_tv_20150810134514.jpg" width="214" height="317" alt="" /><img src="http://i.legendas.tv/equipe/204x25/legendas_tv_20131010161056.png" width="204" height="25" class="img_equipe" alt="" /><span>Blindspot</span><p style="color: #333; font-size: 9pt; padding: 2px 0 0 5px;height: 14px; overflow: hidden;">Blindspot - 1ª Temporada</p></a><div class="tooltip"><p>Blindspot.S01E20.HDTV.x264-LOL-FUM-DIMENSION-NTb</p><p>3987 downloads</p><p>10/05/2016 00h30</p></div></div><div class="item"><a href="/download/5732316a51482/Quantico/Quantico_S01E21_HDTV_x264_LOL_FUM_AFG_mSD_DIMENSION_RARBG"><span class="selo_temp">S01E21</span><img src="http://i.legendas.tv/poster/214x317/legendas_tv_20150828210821.jpg" width="214" height="317" alt="" /><img src="http://i.legendas.tv/equipe/204x25/legendas_tv_201401182125420.png" width="204" height="25" class="img_equipe" alt="" /><span>Quantico</span><p style="color: #333; font-size: 9pt; padding: 2px 0 0 5px;height: 14px; overflow: hidden;">Quantico - 1ª Temporada</p></a><div class="tooltip"><p>Quantico.S01E21.HDTV.x264-LOL-FUM-AFG-mSD-DIMENSION-RARBG</p><p>3850 downloads</p><p>10/05/2016 16h07</p></div></div>
+        </div>
+        
+    </div> <!-- END OF SLIDER -->
+    <button class="slider_right"></button>
+
+</section><!-- END DESTAQUE MAIS BAIXADOS-->
+
+<div id="banner_lateral"><!-- COMEÇO do código HTML da afiliação zanox-->
+<!-- (O código HTML não pode ser alterado para que possa funcionar corretamente. )-->
+<a href="http://ad.zanox.com/ppc/?37090239C1926571132T"><img src="http://ad.zanox.com/ppv/?37090239C1926571132" align="bottom" width="160" height="600" border="0" hspace="1" alt="160x600_zanox_Oferta da Semana"></a>
+<!-- ENDING of the zanox-affiliate HTML-Code --></div><div class="bannerpopupuol"> <!-- banner pop up--><script>
+    function jsPopunder(e,t){function d(){try{c=Math.floor(document.cookie.split(h+"Cap=")[1].split(";")[0]);}catch(e){}return l<=c||document.cookie.indexOf(h+"=")!==-1;}function v(e,t,i,s,o,u){if(d()){return;}var a="toolbar=no,scrollbars=yes,location=yes,statusbar=yes,menubar=no,resizable=1,width="+i.toString()+",height="+s.toString()+",screenX="+o+",screenY="+u;document.onclick=function(){if(d()){return;}r=n.window.open(e,t,a);if(r){var i=new Date;document.cookie=h+"=1;expires="+(new Date(i.setTime(i.getTime()+f))).toGMTString()+";path=/",i=new Date,document.cookie=h+"Cap="+(c+1)+";expires="+(new Date(i.setTime(i.getTime()+84600000))).toGMTString()+";path=/",m();}};}function m(){try{r.blur(),r.opener.window.focus(),window.self.window.blur(),window.focus(),p.firefox&&g(),p.webkit&&y();}catch(e){}}function g(){var e=window.open("about:blank");e.focus(),e.close();}function y(){var e=document.createElement("a");e.href="about:blank",e.target="PopHelper",document.getElementsByTagName("body")[0].appendChild(e),e.parentNode.removeChild(e);var t=document.createEvent("MouseEvents");t.initMouseEvent("click",!0,!0,window,0,0,0,0,0,!0,!1,!1,!0,0,null),e.dispatchEvent(t),window.open("about:blank","PopHelper").close();}var n=top!=self&&typeof top.document.location.toString()=="string"?top:self,r=null;t=t||{};var i=t.name||Math.floor(Math.random()*1000+1),s=t.width||window.innerWidth,o=t.height||window.innerHeight,u=typeof t.left!="undefined"?t.left.toString():window.screenX,a=typeof t.top!="undefined"?t.top.toString():window.screenY,f=t.wait||6600;f*=1000;var l=t.cap||1,c=0,h=t.cookie||"__.popunder",p=function(){var e=navigator.userAgent.toLowerCase(),t={webkit:/webkit/.test(e),mozilla:/mozilla/.test(e)&&!/(compatible|webkit)/.test(e),chrome:/chrome/.test(e),msie:/msie/.test(e)&&!/opera/.test(e),firefox:/firefox/.test(e),safari:/safari/.test(e)&&!/chrome/.test(e),opera:/opera/.test(e)};return t.version=t.safari?(e.match(/.+(?:ri)[\/: ]([\d.]+)/)||[])[1]:(e.match(/.+(?:ox|me|ra|ie)[\/: ]([\d.]+)/)||[])[1],t;}();if(d()){return;}v(e,i,s,o,u,a);}
+</script>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="/js/jquery.cookie.js"></script>
+
+<script type="text/javascript">
+jQuery(document).ready(function($){
+  // MENSAGEM
+  console.log("Mensagem", $.cookie('popup-mensagem'));
+  if($.cookie('popup-mensagem') != 'yes'){
+      $('#overlay').fadeIn('medium');
+      
+      $('#help-box-close').click(function(){
+          $('#overlay').stop().fadeOut('medium');
+      });
+  } else {
+    if($.cookie('popup-likebox') != 'yes'){
+      $('#fanback').fadeIn('medium');
+      $('#fanback, #exit').click(function(){
+        $('#fanback').stop().fadeOut('medium');
+      });
+    }
+    $.cookie('popup-likebox', 'yes', { path: '/', expires: 5 });
+  }
+  
+  var date = new Date();
+  var minutes = 8 * 60;
+  date.setTime(date.getTime() + (minutes * 60 * 1000));
+  $.cookie('popup-mensagem', 'yes', { path: '/', expires: date});
+  // MENSAGEM
+});
+</script>
+
+<style>
+  #fanback {
+    display:none;
+    background:rgba(0,0,0,0.8);
+    width:100%;
+    height:100%;
+    position:fixed;
+    top:0;
+    left:0;
+    z-index:99999;
+  }
+    
+  #likebox{
+    position: fixed;
+    width: 300px;
+    height: 258px;
+    top: 50%;
+    left: 50%;
+    margin-top: -130px;
+    margin-left: -150px;
+    background-color: #fff;
+    border-radius: 10px;
+  }
+    
+  #likebox-close{
+    position: absolute;
+    background-color: #3D3D3D;
+    color: #fff;
+    top: -10px;
+    right: -10px;
+    width: 30px;
+    text-align: center;
+    height: 30px;
+    line-height: 25px;
+    border: 2px solid #cecece;
+    border-radius: 15px;
+  }
+
+  #overlay {
+    display:none;
+    background:rgba(0,0,0,0.8);
+    width:100%;
+    height:100%;
+    position:fixed;
+    top:0;
+    left:0;
+    z-index:99999;
+  }
+    
+  #help-box{
+    position: fixed;
+    width: 600px;
+    height: 520px;
+    top: 50%;
+    left: 50%;
+    margin-top: -260px;
+    margin-left: -300px;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 40px 20px;
+  }
+
+  #help-box h1{
+    margin-bottom: 10px;
+  }
+
+  #help-box p{
+    margin-bottom: 10px;
+  }
+    
+  #help-box-close{
+    position: absolute;
+    background-color: #3D3D3D;
+    color: #fff;
+    top: -10px;
+    right: -10px;
+    width: 30px;
+    text-align: center;
+    height: 30px;
+    line-height: 25px;
+    border: 2px solid #cecece;
+    border-radius: 15px;
+    cursor: pointer;
+  }
+</style>
+
+<div id="fanback" style="display: none;">
+  <div id="likebox">
+    <iframe src="//www.facebook.com/plugins/likebox.php?href=https%3A%2F%2Fwww.facebook.com%2FLegendasTv&amp;width&amp;height=258&amp;colorscheme=light&amp;show_faces=true&amp;header=false&amp;stream=false&amp;show_border=false" scrolling="no" frameborder="0" style="border:none; overflow:hidden; height:258px; width:300px;" allowtransparency="true">
+    </iframe>
+    
+    <div id="likebox-close">
+        X
+    </div>
+  </div>
+</div>
+
+<div id="overlay" style="display: none;">
+  <div id="help-box">
+    <h1>AJUDE O LTV A SE MANTER NO AR</h1>
+    <p>Amigos,<br>
+    Em 2016, o Legendas.tv completa 10 anos de vida, com 280 mil legendas – incluindo-se aí 35 mil legendas exclusivas feitas por legenders e equipes parceiras do LTV para centenas de séries e milhares de filmes.</p>
+    <p>Manter tudo isso dá bastante trabalho – e agradecemos em especial a cada um dos milhares de legenders que se dedicam noite e dia à criação de legendas – e também tem um custo alto: o site é acessado mensalmente por 1,3 milhão de usuários, o que faz com que tenhamos alto custo de aluguel de infraestrutura e manutenção.</p>
+    <p>Financeiramente, o LTV depende de seus usuários para se manter no ar. Tecnicamente, o Pagseguro não permite que recebamos doações, por isso disponibilizamos a venda de 'assinaturas vip' - embora a assinatura não ofereça tantas vantagens quanto gostaríamos de dar para quem ajuda o site, acaba sendo uma forma simbólica de colaboração.</p>
+    <p>O problema é que apenas 0,02% dos 1,3 milhão de usuários colaboram mensalmente com o LTV. E, com o dólar nas alturas e o aumento de acessos ao site, a quantia recebida há muito tem sido insuficiente para o site se manter no ar.</p>
+    <p>Por isso, pedimos encarecidamente aos nossos usuários que considerem colaborar com o LTV, pois sua existência disso.</p>
+    <p>É possível realizar a aquisição de assinatura VIP em:</p>
+    <p><a href="http://legendas.tv/vip">legendas.tv/vip</a></p>
+    <p>Agradecemos sua ajuda,<br>
+    Equipe LTV</p>
+    <div id="help-box-close">
+      X
+    </div>
+  </div>
+</div></div>
+<!-- DESTAQUES -->
+<div id="pagination_target">
+	Carregando destaques...
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+	$('#pagination_target').load('/legenda/carrega_destaques');
+    });
+</script>
+<!-- END DESTAQUES -->
+
+
+
+<section>
+    <article class="js_tooltip">
+        <h2><a href="/legendas" style="color: #FFF">ÚLTIMAS LEGENDAS</a></h2>
+<div><a href="/download/5732afd80dc25/The_Last_Man_On_Earth/The_Last_Man_On_Earth_S02E17_HDTV_x264_SVA_AFG_PSA_BTN_AAC_RMTEAM_QMAN_RARGB"><img src="http://i.legendas.tv/idioma/icon_brazil.png" alt="Português-BR" title="Português-BR" /><span>The.Last.Man.On.Earth.S02E17.HDTV.x264--SVA-AFG-PSA-BTN-AAC-RMTEAM-QMAN-RARGB</span></a><div class="tooltip"><h3><a href="/usuario/inSanos">inSanos</a></h3><p>11/05/2016 01h06</p><p>Equipe inSanos
+
+THE LAST MAN ON EARTH
+S02E17 - Smart and Stupid
+__________________
+Legenda:
+Is</p></div></div><div><a href="/download/5732a16cb3ac0/El_Ministerio_del_Tiempo/El_Ministerio_del_Tiempo_02x07_Tiempo_de_valientes_I_HDTV_XviD"><img src="http://i.legendas.tv/idioma/icon_usa.png" alt="Inglês" title="Inglês" /><span>El.Ministerio.del.Tiempo.-.02x07.-.Tiempo.de.valientes.(I).HDTV.XviD</span></a><div class="tooltip"><h3><a href="/usuario/abelha_veb">abelha_veb</a></h3><p>11/05/2016 00h05</p><p></p></div></div><div><a href="/download/57329d2de2f94/Mr_Pickles/Mr_Pickles_S02E04_HDTV_x264_BATV_AFG_Mobile_mSD_MeGusta_BTN"><img src="http://i.legendas.tv/idioma/icon_brazil.png" alt="Português-BR" title="Português-BR" /><span>Mr.Pickles.S02E04.HDTV.x264-BATV-AFG-Mobile-mSD-MeGusta-BTN</span></a><div class="tooltip"><h3><a href="/usuario/WTFSubs">WTFSubs</a></h3><p>10/05/2016 23h47</p><p>WTFSubs e FamilySubs Apresentam:
+
+Mr. Pickles S02E04 - Shovenpucker
+
+Tradução:
+PedroSPJ | Yuc</p></div></div><div><a href="/download/57329c59921dc/Home_Fires/Home_Fires_UK_S02E06_HDTV_x264_ORGANiC_AFG_ORGANiC_Mobile_mSD_MeGusta_MORiTZ"><img src="http://i.legendas.tv/idioma/icon_brazil.png" alt="Português-BR" title="Português-BR" /><span>Home.Fires.UK.S02E06.HDTV.x264-ORGANiC-AFG-ORGANiC-Mobile-mSD-MeGusta-MORiTZ</span></a><div class="tooltip"><h3><a href="/usuario/EnjoyTeam">EnjoyTeam</a></h3><p>10/05/2016 23h43</p><p>EnjoyTeam
+* Enjoy it! *
+
+HOME FIRES
+[S02E06] - SEASON FINALE
+"Episode 6"
+
+Legenda:
+ViniTimm </p></div></div><div><a href="/download/57329a5c1f41f/Ghost_In_The_Shell_The_New_Movie/Ghost_in_the_Shell_The_New_Movie_2015_JAP_1080p_BluRay_x264_AC3_JYK"><img src="http://i.legendas.tv/idioma/flag_pt.gif" alt="Português-PT" title="Português-PT" /><span>Ghost.in.the.Shell.The.New.Movie.2015.JAP.1080p.BluRay.x264.AC3-JYK</span></a><div class="tooltip"><h3><a href="/usuario/orlandosimoesjr">orlandosimoesjr</a></h3><p>10/05/2016 23h35</p><p>Não conheço a origem da legenda, mas bateu quase perfeitamente com o release Ghost.in.the.Shell.Th</p></div></div><div><a href="/download/573295bbd8a35/London_Has_Fallen/London_Has_Fallen_2016_720p_HDRip_KORSUB_x264_AAC2_0_STUTTERSHIT"><img src="http://i.legendas.tv/idioma/icon_brazil.png" alt="Português-BR" title="Português-BR" /><span>London.Has.Fallen.2016.720p.HDRip.KORSUB.x264.AAC2.0-STUTTERSHIT</span></a><div class="tooltip"><h3><a href="/usuario/lesilveira">lesilveira</a></h3><p>10/05/2016 23h15</p><p>Qualidade 8. Única que encontrei para esse release KORSUB.</p></div></div><div><a href="/download/573290e2e68d6/Person_of_Interest/Person_of_Interest_S05E02_HDTV_x264_LOL_AFG_FUM_DIMENSION_RARBG_DRACULA"><img src="http://i.legendas.tv/idioma/icon_brazil.png" alt="Português-BR" title="Português-BR" /><span>Person.of.Interest.S05E02.HDTV.x264-LOL-AFG-FUM-DIMENSION-RARBG-DRACULA</span></a><div class="tooltip"><h3><a href="/usuario/LegendasEmSerie">LegendasEmSerie</a></h3><p>10/05/2016 22h54</p><p>Legendas em Série + UNITED
+Quality Fora de Série!
+
+Person of Interest S05E02 - "SNAFU"
+
+Tradu</p></div></div><div><a href="/download/57328d97b193a/Outlander/Outlander_S02E05_HDTV_x264_FLEET_DIMENSION_AFG_FUM"><img src="http://i.legendas.tv/idioma/icon_brazil.png" alt="Português-BR" title="Português-BR" /><span>Outlander.S02E05.HDTV.x264-FLEET-DIMENSION-AFG-FUM</span></a><div class="tooltip"><h3><a href="/usuario/QueensOfTheLab">QueensOfTheLab</a></h3><p>10/05/2016 22h40</p><p>- Equipe Queens Of The Lab:
+Diabolicamente Majestosas -
+
+Outlander		 
+2x05 Untimely Resurrection</p></div></div>	</article> 
+    <article class="style_1 js_tooltip">
+    	<h2><a href="/traducoes_em_andamento" style="color: inherit">TRADUÇÕES EM ANDAMENTO</a></h2>
+<div><p><b>The Story of God With Morgan Freeman</b> - musketeers</p><span class="number">94%</span><span class="bar p_94"></span><div class="tooltip"><h3><a href="/usuario/musketeers">musketeers</a></h3><p>08/05/2016 15h08</p><p>Episódio 3 - Quem é Deus?</p></div></div><div><p><b>Countdown</b> - Paranhosgomes</p><span class="number">93%</span><span class="bar p_93"></span><div class="tooltip"><h3><a href="/usuario/Paranhosgomes">Paranhosgomes</a></h3><p>29/03/2016 14h12</p><p>Produção WWE.</p></div></div><div><p><b>Kill Your Friends</b> - art_subs</p><span class="number">80%</span><span class="bar p_80"></span><div class="tooltip"><h3><a href="/usuario/art_subs">art_subs</a></h3><p>16/04/2016 13h00</p><p>Filme indie "cool" britânico. Muito legal!!!!!
+</p></div></div><div><p><b>Ettor och Nollor</b> - frederic</p><span class="number">75%</span><span class="bar p_75"></span><div class="tooltip"><h3><a href="/usuario/frederic">frederic</a></h3><p>09/05/2016 23h10</p><p></p></div></div><div><p><b>Jack Taylor</b> - frederic</p><span class="number">72%</span><span class="bar p_72"></span><div class="tooltip"><h3><a href="/usuario/frederic">frederic</a></h3><p>09/05/2016 23h08</p><p></p></div></div><div><p><b>Devil's Playground</b> - EnjoyTeam</p><span class="number">70%</span><span class="bar p_70"></span><div class="tooltip"><h3><a href="/usuario/EnjoyTeam">EnjoyTeam</a></h3><p>09/05/2016 00h34</p><p>Episódio 2 de 6</p></div></div><div><p><b>10 Cloverfield Lane</b> - Maniacs</p><span class="number">70%</span><span class="bar p_70"></span><div class="tooltip"><h3><a href="/usuario/Maniacs">Maniacs</a></h3><p>06/05/2016 15h59</p><p>revisão e ressyncs para versões HDRip e WEBRip</p></div></div><div><p><b>Precious Cargo</b> - BYGUERREIRO</p><span class="number">70%</span><span class="bar p_70"></span><div class="tooltip"><h3><a href="/usuario/BYGUERREIRO">BYGUERREIRO</a></h3><p>24/04/2016 02h47</p><p>Com Bruce Willis</p></div></div>    </article>
+</section>
+
+<div class="clear"></div>
+        </div> <!-- END OF MIDDLE -->
+
+		<div class="clear"></div>
+		
+		<div class="middle"><section><article><div class="banner_300x250">
+
+</div></article><article></article></section><div class="clear"></div></div>		
+		<div class="clear"></div>
+
+        <footer>
+
+            <div class="clear"></div>
+            <a href="https://www.facebook.com/Legendas.TV" title="Legendas.tv - Facebook" class="icon_facebook" target="_blank"></a>
+            <a href="https://twitter.com/legendas" title="Legendas.tv - Twitter" class="icon_twitter" target="_blank"></a>
+            <a href="/" class="logo"><img src="http://i.legendas.tv/logo.png" alt="Legendas.tv" width="140" height="33" /></a>
+            <div class="footer_menu">
+                <span>|</span>
+                <a href="/legendas">LEGENDAS</a>                <span>|</span>
+                <a href="/legenders">LEGENDERS</a>                <span>|</span>
+                <a href="/freshlogin" target="_blank">AJUDA</a>                <span>|</span>
+                <a href="/rss.html">RSS</a>                <span>|</span>
+		<a href="http://www.sitepx.com" target="_blank">CRIAR SITE</a>
+		<span>|</span>
+		<a href="http://legendastv.freshdesk.com/support/solutions/articles/1000150679" target="_blank">LEGAL NOTICE</a>
+		<span>|</span>
+            </div>
+            <div class="clear"></div>
+
+            <div class="footer_bg"></div>
+        </footer> <!-- END OF FOOTER -->
+</div>
+
+
+
+<div class="loading_modal"><!-- Place at bottom of page --></div>
+
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script><script type="text/javascript" src="/cache_js/js-combined.js"></script>    <!--[if lt IE 9]><script src="http://css3-mediaqueries-js.googlecode.com/files/css3-mediaqueries.js" type="text/javascript"></script><![endif]-->
+
+<!-- SERVER:  -->
+
+</body>
+</html>

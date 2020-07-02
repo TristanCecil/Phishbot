@@ -1,0 +1,1124 @@
+
+
+<!DOCTYPE html>
+<html lang="fr" xmlns:fb="http://ogp.me/ns/fb#">
+<head>
+<title>Blog photo, blog audio ou video. Creer un blog gratuit</title>
+<meta name="description" content="Plus de 1 420 000 blogs ! Créez facilement un blog ou plusieurs. Partagez vos albums photos. Personnalisez votre espace. Invitez vos amis à participer. Échangez avec vos lecteurs." />
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<meta property="fb:app_id" content="116867175007475" />
+<meta property="fb:admins" content="717607561" />
+<meta name="msvalidate.01" content="88948C74EDB67CD78BA157B20BFB92ED" />
+<link rel="shortcut icon" href="http://www.canalblog.com/favicon.ico" type="image/x-icon" />
+<link rel="canonical" href="http://www.canalblog.com" />
+<link rel="stylesheet" type="text/css" href="/sharedDocs/css/all.css?1459954800" media="all" />
+<link rel="stylesheet" type="text/css" href="/sharedDocs/css/colorbox.css?1459954800" />
+<script type="text/javascript" src="/sharedDocs/js/main.js" ></script>
+<script type="text/javascript" src="/sharedDocs/js/mobilebrowsersdetect.js" ></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript" src="/sharedDocs/js/jquery.colorbox-min.js?1459954800"></script>
+<script type="text/javascript" src="/sharedDocs/js/jquery.tools.min.js"></script>
+<!--[if lte IE 8]>
+<script type="text/javascript" src="/sharedDocs/js/roundies.js"> </script>
+<script type="text/javascript">
+DD_roundies.addRule('.btn', '5px');
+</script>
+<![endif]-->
+<script type="text/javascript" src="/sharedDocs/js/jquery.autocomplete.js"></script>
+<link type="text/css" href="/sharedDocs/css/autocomplete.css" rel="stylesheet" media="screen" />
+<script type="text/javascript">
+$(document).ready(function(){
+$('.content').on("click", "span.pluscat", function() {
+if($('#ul'+$(this).attr('id')).is(':visible')) {
+$(this).html("+");
+$('#ul'+$(this).attr('id')).slideUp();
+}
+else {
+$(this).html("-");
+$('#ul'+$(this).attr('id')).slideDown();
+}
+});
+$(".signin").click(function(e) {
+e.preventDefault();
+$("div#signin_menu").slideDown('slow', function() {
+document.getElementById('memberid').focus();
+});
+$(".signin").toggleClass("menu-open");
+});
+$("div#signin_menu").mouseup(function() {
+return false
+});
+$(document).mouseup(function(e) {
+if($(e.target).parent("a.signin").length==0) {
+$(".signin").removeClass("menu-open");
+$("div#signin_menu").slideUp();
+}
+});
+$.easing.bouncy = function (x, t, b, c, d) {
+var s = 1.70158;
+if ((t/=d/2) < 1) return c/2*(t*t*(((s*=(1.525))+1)*t - s)) + b;
+return c/2*((t-=2)*t*(((s*=(1.525))+1)*t + s) + 2) + b;
+}
+$.tools.tooltip.addEffect("bouncy",
+function(done) {
+this.getTip().animate({top: '+=15'}, 500, 'bouncy', done).show();
+},
+function(done) {
+this.getTip().animate({top: '-=15'}, 500, 'bouncy', function() {
+$(this).hide();
+done.call();
+});
+}
+);
+$("#formAddUser :input").tooltip({
+position: "top center",
+offset: [-3, 50],
+effect: "bouncy",
+opacity: 0.95
+});
+$("#qheader").autocomplete(
+"/cf/fe/remote/searchquery.cfm",
+{
+minChars:2,
+delay:200,
+autoFill:false,
+matchSubset:false,
+matchContains:1,
+cacheLength:10,
+selectOnly:1,
+scrollHeight:200,
+width:235,
+selectFirst:false,
+scroll:false
+}
+);
+});
+function FBlogin() {
+FB.getLoginStatus(function(response) {
+if (response.status === 'connected') {
+$.ajax({
+url: '/cf/fe/remote/facebook.cfm?jssdk=true',
+success: function(data) {
+if (data == "false")	{
+$.colorbox({
+href	: '/cf/fe/remote/facebook.cfm?step=2&jssdk=true',
+overlayClose: true,
+iframe:true,
+width:550,
+height:500,
+close:""
+});
+}
+else {window.location.href = '/cf/security/SessionController.cfc?method=login&loginwith=facebook&jssdk=true';}
+}
+});}
+else {
+return false;
+}
+});
+}
+function CheckFormAddUser() {
+if(document.forms['formAddUser'].blogName.value.length > 16 || document.forms['formAddUser'].blogName.value.length < 5) {
+$('#blogName').focus();
+return false;
+}
+var reg = /[^A-Za-z0-9_\.@]+/;
+if(reg.test(document.forms['formAddUser'].blogName.value)) {
+$('#blogName').focus();
+return false;
+}
+$.ajax({
+type: 'GET',
+async: false,
+url: '/cf/fe/remote/checkblogurl.cfm',
+data: {blogurl: document.forms['formAddUser'].blogName.value},
+dataType: 'json',
+error: function(erreur){
+//alert(erreur);
+},
+success: function(retour) {
+if(retour)
+document.forms['formAddUser'].submit();
+else
+$('#blogName').focus();
+}
+});
+return false;
+}
+function CheckBlogName() {
+if(document.forms['formAddUser'].blogName.value.length == 0) {
+$('#tooltipblogname').html('Entrez le nom de blog souhaité. <br/>Par exemple: http://exemple.canalblog.com');
+return false;
+}
+if(document.forms['formAddUser'].blogName.value == 'Nom de blog souhaité') {
+$('#tooltipblogname').html('Veuillez entrer un nom pour votre blog. <br/>Par exemple: http://exemple.canalblog.com');
+return false;
+}
+var reg = /[^A-Za-z0-9_\.@]+/;
+if(reg.test(document.forms['formAddUser'].blogName.value)) {
+$('#resultBlogName').empty();
+$('#tooltipblogname').html('Le nom de votre blog doit comporter que des lettres et des chiffres');
+$('#resultBlogName').append('<img src="/sharedDocs/images/dailymotion/false.png" style="margin:9px 0 0 15px;" title="Le nom de votre blog ne doit comporter que des lettres ou des chiffres">');
+return false;
+}
+if(document.forms['formAddUser'].blogName.value.length > 0 && (document.forms['formAddUser'].blogName.value.length > 16 || document.forms['formAddUser'].blogName.value.length < 5)) {
+$('#resultBlogName').empty();
+$('#tooltipblogname').html('Le nom de votre blog doit comporter entre 5 et 16 caractères.');
+$('#resultBlogName').append('<img src="/sharedDocs/images/dailymotion/false.png" style="margin:9px 0 0 15px;" title="Le nom de votre blog doit comprendre entre 5 et 16 caractères">');
+return false;
+}
+$.ajax({
+type: 'GET',
+url: '/cf/fe/remote/checkblogurl.cfm',
+data: {blogurl: document.forms['formAddUser'].blogName.value},
+dataType: 'json',
+error: function(erreur){
+//alert(erreur);
+},
+success: function(retour) {
+if(retour) {
+$('#resultBlogName').empty();
+$('#tooltipblogname').html('Ce nom de blog est libre ! Créez le dès maintenant !');
+$('#resultBlogName').append('<img src="/sharedDocs/images/dailymotion/valid.gif" style="margin:9px 0 0 15px;" title="Ce nom de blog est libre">');
+return false;
+}
+else {
+$('#resultBlogName').empty();
+$('#tooltipblogname').html('Désolé ! Ce nom de blog est déjà pris.');
+$('#resultBlogName').append('<img src="/sharedDocs/images/dailymotion/false.png" style="margin:9px 0 0 15px;" title="Ce nom de blog est déjà pris">');
+return false;
+}
+}
+});
+}
+</script>
+<script type="text/javascript">
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-12099278-1']);
+_gaq.push(['_setAllowAnchor', true]);
+_gaq.push(['_setDomainName', '.canalblog.com']);
+_gaq.push(['_setCustomVar',1,'Zone','home',3]);
+_gaq.push(['_trackPageview']);
+(function() {
+var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+<script type='text/javascript'>
+var crtg_nid = '2929';
+var crtg_cookiename = 'crtg_rta';
+var crtg_varname = 'crtg_content';
+function crtg_getCookie(c_name){ var i,x,y,ARRCookies=document.cookie.split(";");for(i=0;i<ARRCookies.length;i++){x=ARRCookies[i].substr(0,ARRCookies[i].indexOf("="));y=ARRCookies[i].substr(ARRCookies[i].indexOf("=")+1);x=x.replace(/^\s+|\s+$/g,"");if(x==c_name){return unescape(y);} }return'';}
+var crtg_content = crtg_getCookie(crtg_cookiename);
+var crtg_rnd=Math.floor(Math.random()*99999999999);
+(function(){
+var crtg_url=location.protocol+'//rtax.criteo.com/delivery/rta/rta.js?netId='+escape(crtg_nid);
+crtg_url +='&cookieName='+escape(crtg_cookiename);
+crtg_url +='&rnd='+crtg_rnd;
+crtg_url +='&varName=' + escape(crtg_varname);
+var crtg_script=document.createElement('script');crtg_script.type='text/javascript';crtg_script.src=crtg_url;crtg_script.async=true;
+if(document.getElementsByTagName("head").length>0)document.getElementsByTagName("head")[0].appendChild(crtg_script);
+else if(document.getElementsByTagName("body").length>0)document.getElementsByTagName("body")[0].appendChild(crtg_script);
+})();
+</script>
+<script type="text/javascript">
+	var googletag = googletag || {};
+	googletag.cmd = googletag.cmd || [];
+	(function() {
+	var gads = document.createElement('script');
+	gads.async = true;
+	gads.type = 'text/javascript';
+	var useSSL = 'https:' == document.location.protocol;
+	gads.src = (useSSL ? 'https:' : 'http:') + 
+	'//www.googletagservices.com/tag/js/gpt.js';
+	var node = document.getElementsByTagName('script')[0];
+	node.parentNode.insertBefore(gads, node);
+	})();
+	
+	var inDapIF=true;
+</script>
+
+			
+
+			
+			<script type="text/javascript">
+			$(document).ready(function(){
+				googletag.cmd.push(function() {
+				
+				
+					var a63971 = googletag.defineSlot('/1038167/CB_Home_PubliRedac', [1, 1], 'div-gpt-ad-63971-0').addService(googletag.pubads());								
+				
+				
+				
+				
+
+				
+				
+				a63971.set("adsense_ad_types", "text_image");	
+				
+				
+				
+					var a88658 = googletag.defineSlot('/1038167/CB_Home_300x250', [300, 250], 'div-gpt-ad-88658-0').addService(googletag.pubads());								
+				
+				
+				
+				
+					setInterval(function(){googletag.pubads().refresh([a88658]);}, 900000);
+				
+
+				
+				
+				a88658.set("adsense_ad_types", "text_image");	
+				
+				
+				
+					var a12776 = googletag.defineSlot('/1038167/CB_Home_1x1', [1, 1], 'div-gpt-ad-12776-0').addService(googletag.pubads());								
+				
+				
+				
+				
+
+				
+				
+				a12776.set("adsense_ad_types", "text_image");	
+				
+				
+				
+				if(typeof screen != "undefined" && typeof screen.width != "undefined" && screen.width >= 1280) {
+					googletag.pubads().setTargeting('wgt1280','1');
+				}
+				
+				
+				if(typeof crtg_content != "undefined") { 
+					var separatorLabel = ';';
+					var separatorKeyword = '=';
+					var crtg_split = crtg_content.split(separatorLabel);
+					for (var i=1; i<crtg_split.length; i++) {
+						googletag.pubads().setTargeting(''+(crtg_split[i-1].split(separatorKeyword))[0],''+(crtg_split[i-1].split(separatorKeyword))[1]);
+					}
+				}
+				
+				
+				
+				
+				
+				
+					
+					
+					googletag.pubads().enableSingleRequest();
+					googletag.pubads().collapseEmptyDivs();
+					googletag.enableServices();
+					
+					
+					
+				});
+			});
+			</script></head>
+<body>
+<script>
+dataLayer = [{
+'Zone': 'home'
+}];
+</script>
+<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-PXZQ89"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push(
+{'gtm.start': new Date().getTime(),event:'gtm.js'}
+);var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-PXZQ89');</script>
+<div id="fb-root"></div>
+<script type="text/javascript">
+window.fbAsyncInit = function() {
+FB.init({
+appId : '116867175007475',
+status : true,
+cookie : true,
+xfbml : true,
+oauth : true,
+version : 'v2.2'
+});
+};
+(function(d, s, id) {
+var js, fjs = d.getElementsByTagName(s)[0];
+if (d.getElementById(id)) return;
+js = d.createElement(s); js.id = id;
+js.src = "//connect.facebook.net/fr_FR/sdk.js";
+fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));
+</script>
+<div id="wrapper" class="home">
+<div id="header">
+<div class="header-holder">
+<div class="logo">
+<div class="logo-holder">
+<span><a href="/">Canalblog</a></span>
+</div>
+</div>
+<div class="tools">
+<div class="tools-holder">
+<div id="logDiv" class="row">
+<span class="label"><strong>Déjà inscrit ?</strong></span>
+<a id="loginbutton" name="loginbutton" class="btn signin" href="#" style="margin-left:69px;"><span>Connexion</span></a>
+</div>
+<div class="row row-2">
+<span class="label"><strong>Pas encore inscrit ?</strong></span>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="/cf/addUser.cfm" style="color:#25A7DE;">Créer un blog en 5 minutes !</a>
+</div>
+<div id="signin_menu">
+<form id="loginform" name="loginform" action="https://www.canalblog.com/cf/security/SessionController.cfc?method=login" method="post" enctype="application/x-www-form-urlencoded">
+<div style="width:180px; margin:0 auto;">
+<div class="label">* Identifiant</div>
+<input type="text" id="memberid" name="memberid" maxlength="16" />
+<div class="label">* Mot de passe</div>
+<input name="password" maxlength="16" type="password" />
+<br/>
+<input type="checkbox" id="rememberme" name="rememberme" value="1" checked="checked" /><label for="rememberme">Se souvenir de moi</label><br/>
+<span><a href="/cf/forgetPassword.cfm" style="font-style:italic; font-size:9px; color:white;">Identifiant ou mot de passe oublié ?</a></span>
+<a style='background: url("/sharedDocs/images/btn-02.png") no-repeat; color: #FFFFFF; cursor: pointer; float: right; margin-right:10px; font-size: 13px; line-height: 20px; padding: 0 25px 0 0; text-decoration: none;' onClick="document.forms['loginform'].submit();">
+<span style='float: left; padding: 3px 25px 3px 26px; color:white;'>Se connecter</span>
+</a>
+<br/><br/>
+<span style="display:inline-block;margin-top:15px;"><fb:login-button max_rows="1" size="medium" show_faces="false" auto_logout_link="false" scope="email" onLogin="FBlogin()">Se connecter avec Facebook</fb:login-button></span>
+<div style="clear:both;"></div>
+<input type="hidden" name="errorReturnTo" value="/cf/login.cfm" />
+<input type="hidden" name="returnTo" value="" />
+<input type="hidden" name="erroron" value="" />
+<button type="submit" style="visibility:hidden;">submit</button>
+</div>
+</form>
+</div>
+</div>
+</div>
+<div class="header-items">
+<div class="items-holder">
+<form action="/cf/search.cfm" method="get" class="search-form">
+<fieldset>
+<input class="text" name="q" id="qheader" type="text" value="" />
+<input type="hidden" value="search" name="action" />
+<input type="submit" value="search" class="btn-submit" />
+</fieldset>
+</form>
+<ul id="nav">
+<li><a href="/cf/addUser.cfm"><span>Inscription</span></a></li>
+<li><a href="/directory/"><span>Annuaire</span></a></li>
+<li><a href="http://forum.canalblog.com/jforum"><span>Forum</span></a></li>
+<li><a href="http://aide.canalblog.com"><span>Aide</span></a></li>
+<li><a href="/dmdirectory/"><span>Vidéo</span></a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div id="main">
+<div id="sessionbar">
+</div>
+<div class="main-holder">
+
+<div class="promo-block">
+<div class="block-t"></div>
+<div class="block-c">
+<div class="block-content">
+<div class="image"><img src="/sharedDocs/images/frontend/screenblogs.png" height="272" alt="Captures d'écran de blogs" /></div>
+<div class="promo-info">
+<div class="info-holder">
+<div class="info-frame">
+<div class="info-content">
+<span class="bwtitle"><strong>La communauté CanalBlog</strong></span><br/><br/>
+<span class="sub-title">Tous les jours, <strong>plus de 10.000 messages postés</strong> et <strong>1 million<br/>de visites</strong> sur vos blogs.</span>
+<div class="intro">
+<div class="intro-info">
+<p>Créez un ou plusieurs blogs Personnalisez votre espace Partagez vos albums photos Invitez vos amis à participer Échangez avec vos lecteurs</p>
+</div>
+<a href="/cf/tour.cfm" class="intro-btn">
+<em><strong>38 raisons </strong><span>de choisir CanalBlog</span></em>
+</a>
+</div>
+</div>
+<form action="/cf/addUser.cfm" method="get" name="formAddUser" id="formAddUser" class="join-form" onSubmit="return CheckFormAddUser();">
+<h2>Créez un blog,<strong>Partagez vos passions</strong></h2>
+<div class="row">
+<input class="text" maxlength="16" name="blogName" id="blogName" autocomplete="off" type="text" onFocus="if(this.value==='Nom de blog souhaité')this.value=''; CheckBlogName();" onBlur="if(this.value==='') {this.value='Nom de blog souhaité';$('#resultBlogName').empty();}" onKeyUp="CheckBlogName();" value="Nom de blog souhaité" />
+<div id="tooltipblogname" class="tooltip">
+Le nom de blog souhaité apparaîtra dans votre URL de blog. <br/>Par exemple: http://exemple.canalblog.com
+</div>
+</div>
+<div class="row-submit">
+<a class="btn-submit" onClick="CheckFormAddUser();"><span>Commencer à bloguer</span></a><span id="resultBlogName"></span>
+</div>
+<button type="submit" class="btn-submit" style="visibility:hidden;"></button>
+</form>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="block-b"></div>
+</div>
+<div class="main-content">
+<div id="twocolumns">
+<div id="content">
+<div class="block">
+<div class="holder">
+<div class="frame">
+<div class="title">
+<h2>Blog <strong>à la une</strong></h2>
+</div>
+<div class="image">
+<a onclick="window.open(this.href); return false;" href="http://pinatcreaguilea.canalblog.com"><img src="http://storage.canalblog.com/07/01/581044/110382754.jpg" alt="Pi Nat Créa Guiléa" width="388" /></a>
+</div>
+<div class="content">
+<div class="heading" style="padding-top:8px;">
+<div class="icon">
+<img src="/sharedDocs/images/frontend/ico-03.gif" width="46" height="45" alt="Pi Nat Créa Guiléa" />
+</div><span class="bluetitle" style="width:315px;"><a onclick="window.open(this.href); return false;" href="http://pinatcreaguilea.canalblog.com"><strong>Pi Nat Créa Guiléa</strong></a></span>
+</div>
+<div class="content-holder">
+<p>Un monde pinatesque déjanté rempli de doudous rigolos, personnages gentils, crochet étonnant, tissage original, couture délirante et mixed media !</p><br/>
+<div class="more"><a onclick="window.open(this.href); return false;" href="http://pinatcreaguilea.canalblog.com" title="Pi Nat Créa Guiléa">Découvrez le blog</a></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="publi_redac"><div id="div-gpt-ad-63971-0">
+<script type="text/javascript">
+$(document).ready(function(){
+googletag.cmd.push(function() { googletag.display('div-gpt-ad-63971-0'); });
+});</script>
+</div>
+</div>
+<div class="block">
+<div class="holder">
+<div class="frame">
+<div class="content">
+<div class="heading">
+<div class="icon">
+<img src="/sharedDocs/images/frontend/ico-04.gif" width="46" height="45" alt="Blogs à suivre" />
+</div><h2 class="bluetitle"><strong>Blogs à suivre</strong></h2>
+</div>
+<ul class="item-list">
+<li>
+<div class="image">
+<a onclick="window.open(this.href); return false;" href="http://jardinoscope.canalblog.com/archives/2016/05/11/33793467.html"><img src="http://storage.canalblog.com/63/73/125452/110611560_q.jpg" width="81" height="81" alt="Visite du Jardin botanique Jean-Marie Pelt à Nancy" /></a>
+</div>
+<div class="item-info">
+<span><a onclick="window.open(this.href); return false;" href="http://jardinoscope.canalblog.com/archives/2016/05/11/33793467.html" title="Visite du Jardin botanique Jean-Marie Pelt à Nancy">Visite du Jardin botanique Jean-Marie Pelt à...</a></span>
+<p>Conservatoire et Jardins Botaniques de Nancy
+Mai est le moment fort de la floraison des lilas...</p>
+<div class="more"><a onclick="window.open(this.href); return false;" href="http://jardinoscope.canalblog.com/archives/2016/05/11/33793467.html" title="Visite du Jardin botanique Jean-Marie Pelt à Nancy">Lire la suite</a></div>
+</div>
+</li>
+<li>
+<div class="image">
+<a onclick="window.open(this.href); return false;" href="http://lafeelinotte.canalblog.com/archives/2016/05/09/33787932.html"><img src="http://storage.canalblog.com/86/83/928127/110590515_q.png" width="81" height="81" alt="sals 2016 épisode 10" /></a>
+</div>
+<div class="item-info">
+<span><a onclick="window.open(this.href); return false;" href="http://lafeelinotte.canalblog.com/archives/2016/05/09/33787932.html" title="sals 2016 épisode 10">sals 2016 épisode 10</a></span>
+<p>Bonsoir les copicroinettes
+&&
+j'espère que vous avez profité du beau temps de ce week-end ...
+le...</p>
+<div class="more"><a onclick="window.open(this.href); return false;" href="http://lafeelinotte.canalblog.com/archives/2016/05/09/33787932.html" title="sals 2016 épisode 10">Lire la suite</a></div>
+</div>
+</li>
+<li>
+<div class="image">
+<a onclick="window.open(this.href); return false;" href="http://ovni66.canalblog.com/archives/2016/05/10/33790639.html"><img src="http://storage.canalblog.com/45/71/682789/110600962_q.jpg" width="81" height="81" alt="Pour en finir avec les Pléiadiens, les Orionites et les Zeta-réticuliens" /></a>
+</div>
+<div class="item-info">
+<span><a onclick="window.open(this.href); return false;" href="http://ovni66.canalblog.com/archives/2016/05/10/33790639.html" title="Pour en finir avec les Pléiadiens, les Orionites et les Zeta-réticuliens">Pour en finir avec les Pléiadiens, les...</a></span>
+<p>Tout le monde connaît plus ou moins ces fameuses constellations et amas qui nous aident à repérer...</p>
+<div class="more"><a onclick="window.open(this.href); return false;" href="http://ovni66.canalblog.com/archives/2016/05/10/33790639.html" title="Pour en finir avec les Pléiadiens, les Orionites et les Zeta-réticuliens">Lire la suite</a></div>
+</div>
+</li>
+<li>
+<div class="image">
+<a onclick="window.open(this.href); return false;" href="http://fraiseetco.canalblog.com/archives/2016/03/17/33525833.html"><img src="http://storage.canalblog.com/86/63/899662/109657057_q.jpg" width="81" height="81" alt="Mon bibi à moi" /></a>
+</div>
+<div class="item-info">
+<span><a onclick="window.open(this.href); return false;" href="http://fraiseetco.canalblog.com/archives/2016/03/17/33525833.html" title="Mon bibi à moi">Mon bibi à moi</a></span>
+<p>Ravelry est vraiment la caverne d'Ali Baba quand on veut tester de nouveaux modèles .
+Avec...</p>
+<div class="more"><a onclick="window.open(this.href); return false;" href="http://fraiseetco.canalblog.com/archives/2016/03/17/33525833.html" title="Mon bibi à moi">Lire la suite</a></div>
+</div>
+</li>
+<li>
+<div class="image">
+<a onclick="window.open(this.href); return false;" href="http://bobouest.canalblog.com/archives/2016/05/14/33813345.html"><img src="http://storage.canalblog.com/16/82/394022/110674830_q.jpg" width="81" height="81" alt="Rome Versus Carthage" /></a>
+</div>
+<div class="item-info">
+<span><a onclick="window.open(this.href); return false;" href="http://bobouest.canalblog.com/archives/2016/05/14/33813345.html" title="Rome Versus Carthage">Rome Versus Carthage</a></span>
+<p>Comme j'ai bientôt terminé mon armée Carthaginoise je l'ai positionné sur le champ de bataille face...</p>
+<div class="more"><a onclick="window.open(this.href); return false;" href="http://bobouest.canalblog.com/archives/2016/05/14/33813345.html" title="Rome Versus Carthage">Lire la suite</a></div>
+</div>
+</li>
+<li>
+<div class="image">
+<a onclick="window.open(this.href); return false;" href="http://www.tourdeclasse.com/archives/2016/05/11/33797139.html"><img src="http://storage.canalblog.com/15/78/544161/110625965_q.png" width="81" height="81" alt="Le grand grand livre de Nanoug !" /></a>
+</div>
+<div class="item-info">
+<span><a onclick="window.open(this.href); return false;" href="http://www.tourdeclasse.com/archives/2016/05/11/33797139.html" title="Le grand grand livre de Nanoug !">Le grand grand livre de Nanoug !</a></span>
+<p>Le grand grand livre de Nanoug ?
+C'est un concentré de Nanoug !
+C'est gratuit !
+C'est une...</p>
+<div class="more"><a onclick="window.open(this.href); return false;" href="http://www.tourdeclasse.com/archives/2016/05/11/33797139.html" title="Le grand grand livre de Nanoug !">Lire la suite</a></div>
+</div>
+</li>
+<li>
+<div class="image">
+<a onclick="window.open(this.href); return false;" href="http://josiane64.canalblog.com/archives/2016/04/30/33741370.html"><img src="http://storage.canalblog.com/89/42/482033/110430743_q.jpg" width="81" height="81" alt="DANS LES MONTAGNES A ITXASSOU" /></a>
+</div>
+<div class="item-info">
+<span><a onclick="window.open(this.href); return false;" href="http://josiane64.canalblog.com/archives/2016/04/30/33741370.html" title="DANS LES MONTAGNES A ITXASSOU">DANS LES MONTAGNES A ITXASSOU</a></span>
+<p>Dans la montagne vierge
+Les herbes et les fleurs, ne m’abandonne pas,
+Leur odeur suit le vent
+...</p>
+<div class="more"><a onclick="window.open(this.href); return false;" href="http://josiane64.canalblog.com/archives/2016/04/30/33741370.html" title="DANS LES MONTAGNES A ITXASSOU">Lire la suite</a></div>
+</div>
+</li>
+<li>
+<div class="image">
+<a onclick="window.open(this.href); return false;" href="http://grandkasai.canalblog.com/archives/2016/05/10/33793421.html"><img src="http://storage.canalblog.com/66/40/837061/110611220_q.jpg" width="81" height="81" alt="LE PRÉSIDENT DE L’UKE REMERCIE TOUS LES DONATEURS AU PROJET SOLIDARITÉ ET SOUTIEN À MONSIEUR L’ABBÉ BONIFACE TSHINYAMA" /></a>
+</div>
+<div class="item-info">
+<span><a onclick="window.open(this.href); return false;" href="http://grandkasai.canalblog.com/archives/2016/05/10/33793421.html" title="LE PRÉSIDENT DE L’UKE REMERCIE TOUS LES DONATEURS AU PROJET SOLIDARITÉ ET SOUTIEN À MONSIEUR L’ABBÉ BONIFACE TSHINYAMA">LE PRÉSIDENT DE L’UKE REMERCIE TOUS LES...</a></span>
+<p>Le président de l’UKE, Victor Diela, remercie tous ceux et toutes celles qui ont répondu...</p>
+<div class="more"><a onclick="window.open(this.href); return false;" href="http://grandkasai.canalblog.com/archives/2016/05/10/33793421.html" title="LE PRÉSIDENT DE L’UKE REMERCIE TOUS LES DONATEURS AU PROJET SOLIDARITÉ ET SOUTIEN À MONSIEUR L’ABBÉ BONIFACE TSHINYAMA">Lire la suite</a></div>
+</div>
+</li>
+<li>
+<div class="image">
+<a onclick="window.open(this.href); return false;" href="http://clotilde70.canalblog.com/archives/2016/05/14/33811815.html"><img src="http://storage.canalblog.com/80/03/756115/110669737_q.jpg" width="81" height="81" alt="Pour bébé" /></a>
+</div>
+<div class="item-info">
+<span><a onclick="window.open(this.href); return false;" href="http://clotilde70.canalblog.com/archives/2016/05/14/33811815.html" title="Pour bébé">Pour bébé</a></span>
+<p>Un petit short en 3 mois pour le futur... :)
+Modèle de patron gratuit imprimable de Marina.
+...</p>
+<div class="more"><a onclick="window.open(this.href); return false;" href="http://clotilde70.canalblog.com/archives/2016/05/14/33811815.html" title="Pour bébé">Lire la suite</a></div>
+</div>
+</li>
+<li>
+<div class="image">
+<a onclick="window.open(this.href); return false;" href="http://www.jardindecamille.com/archives/2016/05/11/33791511.html"><img src="http://storage.canalblog.com/24/59/849301/110602656_q.jpg" width="81" height="81" alt="en ce moment" /></a>
+</div>
+<div class="item-info">
+<span><a onclick="window.open(this.href); return false;" href="http://www.jardindecamille.com/archives/2016/05/11/33791511.html" title="en ce moment">en ce moment</a></span>
+<p>entre belles journées et petites pluies un tour du jardin
+monnaie du pape où linaria
+...</p>
+<div class="more"><a onclick="window.open(this.href); return false;" href="http://www.jardindecamille.com/archives/2016/05/11/33791511.html" title="en ce moment">Lire la suite</a></div>
+</div>
+</li>
+<li>
+<div class="image">
+<a onclick="window.open(this.href); return false;" href="http://www.debatunisie.com/archives/2016/05/09/33780443.html"><img src="http://storage.canalblog.com/21/87/346520/110559926_q.jpg" width="81" height="81" alt="Pas d'égalité dans l'héritage, parole d'Allah ! " /></a>
+</div>
+<div class="item-info">
+<span><a onclick="window.open(this.href); return false;" href="http://www.debatunisie.com/archives/2016/05/09/33780443.html" title="Pas d'égalité dans l'héritage, parole d'Allah ! ">Pas d'égalité dans l'héritage, parole d'Allah...</a></span>
+<p>Le mufti de la République l'a bien rappelé, le texte sacré, sur la question de l'héritage, est sans...</p>
+<div class="more"><a onclick="window.open(this.href); return false;" href="http://www.debatunisie.com/archives/2016/05/09/33780443.html" title="Pas d'égalité dans l'héritage, parole d'Allah ! ">Lire la suite</a></div>
+</div>
+</li>
+<li>
+<div class="image">
+<a onclick="window.open(this.href); return false;" href="http://www.saddlefitting.fr/archives/2016/02/22/33338031.html"><img src="http://storage.canalblog.com/55/16/946969/108998357_q.jpg" width="81" height="81" alt="Equiper une cavalerie de club" /></a>
+</div>
+<div class="item-info">
+<span><a onclick="window.open(this.href); return false;" href="http://www.saddlefitting.fr/archives/2016/02/22/33338031.html" title="Equiper une cavalerie de club">Equiper une cavalerie de club</a></span>
+<p>Le saddle fitting et le club hippique. Toute une histoire.
+La première réaction des gérants de...</p>
+<div class="more"><a onclick="window.open(this.href); return false;" href="http://www.saddlefitting.fr/archives/2016/02/22/33338031.html" title="Equiper une cavalerie de club">Lire la suite</a></div>
+</div>
+</li>
+<li>
+<div class="image">
+<a onclick="window.open(this.href); return false;" href="http://createliernc.canalblog.com/archives/2016/05/12/33795715.html"><img src="http://storage.canalblog.com/18/71/633506/110620352_q.jpg" width="81" height="81" alt="pour samedi 14 : scraplift d'une page de Triniti" /></a>
+</div>
+<div class="item-info">
+<span><a onclick="window.open(this.href); return false;" href="http://createliernc.canalblog.com/archives/2016/05/12/33795715.html" title="pour samedi 14 : scraplift d'une page de Triniti">pour samedi 14 : scraplift d'une page de...</a></span>
+<p>Coucou tout le monde !
+Triniti a un style pétillant et coloré bien à elle.
+Nous avons eu le...</p>
+<div class="more"><a onclick="window.open(this.href); return false;" href="http://createliernc.canalblog.com/archives/2016/05/12/33795715.html" title="pour samedi 14 : scraplift d'une page de Triniti">Lire la suite</a></div>
+</div>
+</li>
+<li>
+<div class="image">
+<a onclick="window.open(this.href); return false;" href="http://soleilentete.canalblog.com/archives/2016/03/21/33518684.html"><img src="http://storage.canalblog.com/33/18/167991/109731278_q.jpg" width="81" height="81" alt="Coeur de violoncelle" /></a>
+</div>
+<div class="item-info">
+<span><a onclick="window.open(this.href); return false;" href="http://soleilentete.canalblog.com/archives/2016/03/21/33518684.html" title="Coeur de violoncelle">Coeur de violoncelle</a></span>
+<p>Je consulte une psychologue depuis quelques semaines. Je vous l'avais dit, le mois de février a été...</p>
+<div class="more"><a onclick="window.open(this.href); return false;" href="http://soleilentete.canalblog.com/archives/2016/03/21/33518684.html" title="Coeur de violoncelle">Lire la suite</a></div>
+</div>
+</li>
+<li>
+<div class="image">
+<a onclick="window.open(this.href); return false;" href="http://education3.canalblog.com/archives/2016/05/13/33805779.html"><img src="http://storage.canalblog.com/53/08/142677/109001021_q.jpg" width="81" height="81" alt="Organisation d'éventuelles rencontres" /></a>
+</div>
+<div class="item-info">
+<span><a onclick="window.open(this.href); return false;" href="http://education3.canalblog.com/archives/2016/05/13/33805779.html" title="Organisation d'éventuelles rencontres">Organisation d'éventuelles rencontres</a></span>
+<p>Je suis souvent sollicité par des associations de parents et/ou d’enseignants pour intervenir chez...</p>
+<div class="more"><a onclick="window.open(this.href); return false;" href="http://education3.canalblog.com/archives/2016/05/13/33805779.html" title="Organisation d'éventuelles rencontres">Lire la suite</a></div>
+</div>
+</li>
+<li>
+<div class="image">
+<a onclick="window.open(this.href); return false;" href="http://creenfantin.canalblog.com/archives/2016/05/12/33798941.html"><img src="http://storage.canalblog.com/56/14/233406/110631639_q.jpg" width="81" height="81" alt="Comme une envie de couleurs ! " /></a>
+</div>
+<div class="item-info">
+<span><a onclick="window.open(this.href); return false;" href="http://creenfantin.canalblog.com/archives/2016/05/12/33798941.html" title="Comme une envie de couleurs ! ">Comme une envie de couleurs ! </a></span>
+<p>MINI -COCCI, LE RETOUR...(aussi ^^)
+Avant d'utiliser les données de ce blog, merci de lire les...</p>
+<div class="more"><a onclick="window.open(this.href); return false;" href="http://creenfantin.canalblog.com/archives/2016/05/12/33798941.html" title="Comme une envie de couleurs ! ">Lire la suite</a></div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="aside">
+<div class="box">
+<div class="holder">
+<div class="frame">
+<div class="title">
+<h1 class="bwtitle"><strong>Parcourez</strong><br/> les Blogs</h1>
+</div>
+<div class="content">
+<div class="heading">
+<div class="icon">
+<img src="/sharedDocs/images/frontend/ico-01.gif" width="46" height="45" alt="Top catégories" />
+</div><h2 class="bluetitle"><strong>Top <br/>catégories</strong></h2>
+</div>
+<ul class="category-list" style="font-size:16px; margin:8px 0;">
+<li><span class="nochildcat"></span><a href="/directory/Famille%20et%20Enfants/">Famille et Enfants</a></li>
+<li><span class="nochildcat"></span><a href="/directory/Loisirs/">Loisirs</a></li>
+<li><span id="topplus52" class="pluscat nochildcat">+</span><a href="/directory/Couture%20et%20Scrapbooking/">Couture et Scrapbooking</a><ul id="ultopplus52">
+<li><span class="nochildcat"></span><a href="/directory/Broderie/">Broderie</a></li>
+<li><span class="nochildcat"></span><a href="/directory/Couture/">Couture</a></li>
+<li><span class="nochildcat"></span><a href="/directory/Crochet/">Crochet</a></li>
+<li><span class="nochildcat"></span><a href="/directory/Scrapbooking/">Scrapbooking</a></li>
+<li><span class="nochildcat"></span><a href="/directory/Tricot/">Tricot</a></li>
+</ul></li>
+<li><span id="topplus43" class="pluscat nochildcat">+</span><a href="/directory/Bricolage%2C%20D%C3%A9co%2C%20Jardin/">Bricolage, Déco, Jardin</a><ul id="ultopplus43">
+<li><span class="nochildcat"></span><a href="/directory/Bricolage/">Bricolage</a></li>
+<li><span class="nochildcat"></span><a href="/directory/D%C3%A9coration/">Décoration</a></li>
+<li><span class="nochildcat"></span><a href="/directory/Jardin/">Jardin</a></li>
+</ul></li>
+<li><span class="nochildcat"></span><a href="/directory/Cuisine%20et%20Gastronomie/">Cuisine et Gastronomie</a></li>
+</ul>
+<ul class="category-list">
+<li><span class="nochildcat"></span><a href="/directory/Actualit%C3%A9s%20et%20M%C3%A9dias/">Actualités et Médias</a></li>
+<li><span class="nochildcat"></span><a href="/directory/Amours%20et%20Sentiments/">Amours et Sentiments</a></li>
+<li><span class="nochildcat"></span><a href="/directory/Animaux/">Animaux</a></li>
+<li><span class="nochildcat"></span><a href="/directory/Arts%20plastiques%20et%20Artistes/">Arts plastiques et Artistes</a></li>
+<li><span class="nochildcat"></span><a href="/directory/Associations/">Associations</a></li>
+<li><span class="nochildcat"></span><a href="/directory/Astrologie%20et%20Esot%C3%A9risme/">Astrologie et Esotérisme</a></li>
+<li><span id="plus45" class="pluscat nochildcat">+</span><a href="/directory/Auto%2C%20Moto/">Auto, Moto</a><ul id="ulplus45">
+<li><span class="nochildcat"></span><a href="/directory/Auto/">Auto</a></li>
+<li><span class="nochildcat"></span><a href="/directory/Moto/">Moto</a></li>
+</ul></li>
+<li><span class="nochildcat"></span><a href="/directory/Bandes%20dessin%C3%A9es/">Bandes dessinées</a></li>
+<li><span id="plus43" class="pluscat nochildcat">+</span><a href="/directory/Bricolage%2C%20D%C3%A9co%2C%20Jardin/">Bricolage, Déco, Jardin</a><ul id="ulplus43">
+<li><span class="nochildcat"></span><a href="/directory/Bricolage/">Bricolage</a></li>
+<li><span class="nochildcat"></span><a href="/directory/D%C3%A9coration/">Décoration</a></li>
+<li><span class="nochildcat"></span><a href="/directory/Jardin/">Jardin</a></li>
+</ul></li>
+<li><span id="plus4" class="pluscat nochildcat">+</span><a href="/directory/Cin%C3%A9ma%20et%20T%C3%A9l%C3%A9vision/">Cinéma et Télévision</a><ul id="ulplus4">
+<li><span class="nochildcat"></span><a href="/directory/Cin%C3%A9ma/">Cinéma</a></li>
+<li><span class="nochildcat"></span><a href="/directory/S%C3%A9ries/">Séries</a></li>
+<li><span class="nochildcat"></span><a href="/directory/T%C3%A9l%C3%A9vision/">Télévision</a></li>
+</ul></li>
+<li><span class="nochildcat"></span><a href="/directory/Commerces%20et%20Services/">Commerces et Services</a></li>
+<li><span id="plus52" class="pluscat nochildcat">+</span><a href="/directory/Couture%20et%20Scrapbooking/">Couture et Scrapbooking</a><ul id="ulplus52">
+<li><span class="nochildcat"></span><a href="/directory/Broderie/">Broderie</a></li>
+<li><span class="nochildcat"></span><a href="/directory/Couture/">Couture</a></li>
+<li><span class="nochildcat"></span><a href="/directory/Crochet/">Crochet</a></li>
+<li><span class="nochildcat"></span><a href="/directory/Scrapbooking/">Scrapbooking</a></li>
+<li><span class="nochildcat"></span><a href="/directory/Tricot/">Tricot</a></li>
+</ul></li>
+<li><span class="nochildcat"></span><a href="/directory/Cuisine%20et%20Gastronomie/">Cuisine et Gastronomie</a></li>
+<li><span id="plus5" class="pluscat nochildcat">+</span><a href="/directory/Enseignement%20et%20Emploi/">Enseignement et Emploi</a><ul id="ulplus5">
+<li><span class="nochildcat"></span><a href="/directory/Coll%C3%A8ge/">Collège</a></li>
+<li><span class="nochildcat"></span><a href="/directory/Emploi/">Emploi</a></li>
+<li><span class="nochildcat"></span><a href="/directory/Enseignement/">Enseignement</a></li>
+<li><span class="nochildcat"></span><a href="/directory/Lyc%C3%A9e/">Lycée</a></li>
+<li><span class="nochildcat"></span><a href="/directory/Maternelle/">Maternelle</a></li>
+<li><span class="nochildcat"></span><a href="/directory/Primaire/">Primaire</a></li>
+<li><span class="nochildcat"></span><a href="/directory/Sup%C3%A9rieur/">Supérieur</a></li>
+</ul></li>
+<li><span id="plus41" class="pluscat nochildcat">+</span><a href="/directory/Environnement%20et%20Humanitaire/">Environnement et Humanitaire</a><ul id="ulplus41">
+<li><span class="nochildcat"></span><a href="/directory/Ecologie/">Ecologie</a></li>
+<li><span class="nochildcat"></span><a href="/directory/Humanitaire/">Humanitaire</a></li>
+</ul></li>
+<li><span class="nochildcat"></span><a href="/directory/Famille%20et%20Enfants/">Famille et Enfants</a></li>
+<li><span class="nochildcat"></span><a href="/directory/Finance%20et%20Economie/">Finance et Economie</a></li>
+<li><span class="nochildcat"></span><a href="/directory/Gifs%20anim%C3%A9s/">Gifs animés</a></li>
+<li><span class="nochildcat"></span><a href="/directory/Guides%20d%27achat%20et%20Consommation/">Guides d'achat et Consommation</a></li>
+<li><span class="nochildcat"></span><a href="/directory/Humour/">Humour</a></li>
+<li><span class="nochildcat"></span><a href="/directory/Inclassable/">Inclassable</a></li>
+<li><span class="nochildcat"></span><a href="/directory/Informatique%2C%20Internet%2C%20Technos/">Informatique, Internet, Technos</a></li>
+<li><span class="nochildcat"></span><a href="/directory/Jeux%20et%20Consoles/">Jeux et Consoles</a></li>
+<li><span class="nochildcat"></span><a href="/directory/Journal%20intime/">Journal intime</a></li>
+<li><span class="nochildcat"></span><a href="/directory/Litt%C3%A9rature%20et%20Po%C3%A9sie/">Littérature et Poésie</a></li>
+<li><span class="nochildcat"></span><a href="/directory/Loisirs/">Loisirs</a></li>
+<li><span id="plus51" class="pluscat nochildcat">+</span><a href="/directory/Mode%20et%20Beaut%C3%A9/">Mode et Beauté</a><ul id="ulplus51">
+<li><span class="nochildcat"></span><a href="/directory/Beaut%C3%A9/">Beauté</a></li>
+<li><span class="nochildcat"></span><a href="/directory/Mode/">Mode</a></li>
+</ul></li>
+<li><span class="nochildcat"></span><a href="/directory/Musique/">Musique</a></li>
+<li><span class="nochildcat"></span><a href="/directory/Photo/">Photo</a></li>
+<li><span class="nochildcat"></span><a href="/directory/Politique/">Politique</a></li>
+<li><span class="nochildcat"></span><a href="/directory/Religions%20et%20Croyances/">Religions et Croyances</a></li>
+<li><span class="nochildcat"></span><a href="/directory/Rencontres/">Rencontres</a></li>
+<li><span class="nochildcat"></span><a href="/directory/Sant%C3%A9/">Santé</a></li>
+<li><span class="nochildcat"></span><a href="/directory/Science/">Science</a></li>
+<li><span class="nochildcat"></span><a href="/directory/Sports/">Sports</a></li>
+<li><span class="nochildcat"></span><a href="/directory/Tourisme%20et%20Voyages/">Tourisme et Voyages</a></li>
+<li><span class="nochildcat"></span><a href="/directory/Vie%20de%20quartier/">Vie de quartier</a></li>
+</ul>
+<br/><div class="more"><a href="/directory/">Toutes les catégories</a></div>
+</div>
+<div class="content content-2">
+<div class="heading">
+<div class="icon">
+<img src="/sharedDocs/images/frontend/ico-02.gif" width="46" height="45" alt="Dernières publications" />
+</div>
+<h4 class="bluetitle"><strong>Dernières <br/>publications</strong></h4>
+</div>
+<ul class="post-list">
+<li><em class="time">01:06</em> <span><a onclick="window.open(this.href); return false;" href="http://crobardures.canalblog.com/archives/2016/05/15/33814530.html" title="Pentecôte sur CROBARDURES">Pentecôte</a></span></li>
+<li><em class="time">00:59</em> <span><a onclick="window.open(this.href); return false;" href="http://critiqueselonmoi.canalblog.com/archives/2016/05/15/33814694.html" title="RADIOHEAD – A moon shaped pool (2016) sur la critique selon moi">RADIOHEAD – A moon shaped pool (2016)</a></span></li>
+<li><em class="time">00:45</em> <span><a onclick="window.open(this.href); return false;" href="http://jenairienadire.canalblog.com/archives/2016/05/15/33814684.html" title="Une fille vient d'arriver : #174135 sur Je n'ai rien à dire">Une fille vient d'arriver : #174135</a></span></li>
+<li><em class="time">00:41</em> <span><a onclick="window.open(this.href); return false;" href="http://doudouamour4.canalblog.com/archives/2016/05/15/33814681.html" title=" Doudou Peluche Ours Beige Pull Orange Broderie Abeille Maxita sur doudouamour4"> Doudou Peluche Ours Beige Pull Orange</a></span></li>
+<li><em class="time">00:19</em> <span><a onclick="window.open(this.href); return false;" href="http://scrapln83.canalblog.com/archives/2016/05/15/33664813.html" title="SKETCH DE CARTE sur SCRAP LN">SKETCH DE CARTE</a></span></li>
+<li><em class="time">00:16</em> <span><a onclick="window.open(this.href); return false;" href="http://veronique91.canalblog.com/archives/2016/05/15/33812135.html" title="Première grille prête.. sur Veronique91">Première grille prête..</a></span></li>
+<li><em class="time">00:15</em> <span><a onclick="window.open(this.href); return false;" href="http://ganjakro.canalblog.com/archives/2016/05/15/33801273.html" title="INDIAN 1811 CHIEFTAIN DARK HORSE sur MOTO CLUB PIRATE LES GANJAKRO .">INDIAN 1811 CHIEFTAIN DARK HORSE</a></span></li>
+<li><em class="time">00:14</em> <span><a onclick="window.open(this.href); return false;" href="http://scrapgemini.canalblog.com/archives/2016/05/15/33814552.html" title="Grenoble en Gold sur Scrap Gemini">Grenoble en Gold</a></span></li>
+<li><em class="time">00:12</em> <span><a onclick="window.open(this.href); return false;" href="http://clesdeschamps.canalblog.com/archives/2016/05/15/33814559.html" title="Sister Jane #1 sur La clé des champs">Sister Jane #1</a></span></li>
+<li><em class="time">00:08</em> <span><a onclick="window.open(this.href); return false;" href="http://timounette.canalblog.com/archives/2016/05/15/33814617.html" title="Guépard sur Scrap'folies de Timounette">Guépard</a></span></li>
+<li><em class="time">00:06</em> <span><a onclick="window.open(this.href); return false;" href="http://normandie.canalblog.com/archives/2016/05/15/33814570.html" title="LES NORMANDS DE SICILE: L'autre grande épopée du XIe siècle sur L'ETOILE de NORMANDIE, le webzine de l'unité normande">LES NORMANDS DE SICILE: L'autre grande</a></span></li>
+<li><em class="time">00:04</em> <span><a onclick="window.open(this.href); return false;" href="http://ericligonniere.canalblog.com/archives/2016/05/07/33774706.html" title="Mon actualité: Mai 2016 sur La e-galerie d'Eric Ligonnière">Mon actualité: Mai 2016</a></span></li>
+<li><em class="time">00:02</em> <span><a onclick="window.open(this.href); return false;" href="http://christ104.canalblog.com/archives/2016/05/15/32987541.html" title="les oiseaux sur le blog de christ">les oiseaux</a></span></li>
+<li><em class="time">00:02</em> <span><a onclick="window.open(this.href); return false;" href="http://franceboutis.canalblog.com/archives/2016/04/16/33265207.html" title="Stage sur soie sur FRANCE BOUTIS">Stage sur soie</a></span></li>
+<li><em class="time">00:01</em> <span><a onclick="window.open(this.href); return false;" href="http://elsaxelle.canalblog.com/archives/2016/05/15/33749043.html" title="Mettre sous cloche sur Visions de Voyelles">Mettre sous cloche</a></span></li>
+<li><em class="time">00:01</em> <span><a onclick="window.open(this.href); return false;" href="http://pointsdecerise.canalblog.com/archives/2016/05/15/33788446.html" title="Et ça ? sur Points de cerise violette">Et ça ? </a></span></li>
+<li><em class="time">00:00</em> <span><a onclick="window.open(this.href); return false;" href="http://blonjacky.canalblog.com/archives/2016/05/15/33682590.html" title="Combat de Lannion sur Vendée Militaire et Grand Ouest">Combat de Lannion </a></span></li>
+<li><em class="time">00:00</em> <span><a onclick="window.open(this.href); return false;" href="http://taloupes.canalblog.com/archives/2016/05/15/33802484.html" title="Lièvre sur taloupes">Lièvre</a></span></li>
+<li><em class="time">00:00</em> <span><a onclick="window.open(this.href); return false;" href="http://blogdekanadha.canalblog.com/archives/2016/05/15/33789454.html" title="Carte d'anniversaire Princesse sur La cabane de Kanadha">Carte d'anniversaire Princesse</a></span></li>
+<li><em class="time">00:00</em> <span><a onclick="window.open(this.href); return false;" href="http://ranouzarecettes.canalblog.com/archives/2016/05/15/33772598.html" title="Tarte aux fraises sur Un brin de gourmandise">Tarte aux fraises</a></span></li>
+<li><em class="time">00:00</em> <span><a onclick="window.open(this.href); return false;" href="http://michelotte07.canalblog.com/archives/2016/05/15/33766621.html" title="la FORET DE LA BRUGUIERE -gard sur le blog de michelotte">la FORET DE LA BRUGUIERE -gard</a></span></li>
+<li><em class="time">00:00</em> <span><a onclick="window.open(this.href); return false;" href="http://maevina.canalblog.com/archives/2016/05/15/33814319.html" title="le pont des camisards sur Au jour le jour">le pont des camisards</a></span></li>
+<li><em class="time">23:41</em> <span><a onclick="window.open(this.href); return false;" href="http://passiflore2.canalblog.com/archives/2016/05/14/33814441.html" title="Mon amie Béa expose... sur Passiflore">Mon amie Béa expose...</a></span></li>
+<li><em class="time">23:37</em> <span><a onclick="window.open(this.href); return false;" href="http://gyrovague.canalblog.com/archives/2016/05/14/33814564.html" title="La chasse aux rêves sur Les carnets du gyrovague">La chasse aux rêves</a></span></li>
+<li><em class="time">23:35</em> <span><a onclick="window.open(this.href); return false;" href="http://elodeco.canalblog.com/archives/2016/05/14/33814540.html" title="Une commode, plusieurs vies... sur Mon univers déco">Une commode, plusieurs vies...</a></span></li>
+<li><em class="time">23:29</em> <span><a onclick="window.open(this.href); return false;" href="http://abragazouillis.canalblog.com/archives/2016/05/14/33745247.html" title="samedi 14 mai, rediffusion sur Les gazouillis de Claudius">samedi 14 mai, rediffusion</a></span></li>
+<li><em class="time">23:25</em> <span><a onclick="window.open(this.href); return false;" href="http://lafeeetlatortue.canalblog.com/archives/2016/05/14/33814431.html" title="Nana *1 sur La Fée et la Tortue">Nana *1</a></span></li>
+<li><em class="time">23:22</em> <span><a onclick="window.open(this.href); return false;" href="http://fancitronille.canalblog.com/archives/2016/05/14/33814515.html" title="PRISCA Version blouse sur Je couds Citronille">PRISCA Version blouse</a></span></li>
+<li><em class="time">23:20</em> <span><a onclick="window.open(this.href); return false;" href="http://petitenanette.canalblog.com/archives/2016/05/14/33814493.html" title="Un grand merci à cathy40 et scrapucinette mes sur Froissement de papiers...">Un grand merci à cathy40 et</a></span></li>
+<li><em class="time">23:14</em> <span><a onclick="window.open(this.href); return false;" href="http://terretmar.canalblog.com/archives/2016/05/14/33728076.html" title="Entrée ou plat : Asperges à la sauce crème citron sur Terre et Mar">Entrée ou plat : Asperges à la sauce</a></span></li>
+</ul>
+<br/><div class="more"><a href="/message/">Plus de publications</a></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="aside">
+<div class="box">
+<div class="holder">
+<div class="frame">
+<div class="content">
+<div class="heading">
+<div class="icon">
+<img src="/sharedDocs/images/frontend/ico-06.gif" width="46" height="45" alt="Tags populaires" />
+</div><h3>Tags populaires</h3>
+</div>
+<ul class="tagclouds">
+<li><a style="font-size:86%;" href="/tag/2016" title="2016">2016</a></li>
+<li><a style="font-size:90%;" href="/tag/amour" title="Amour">Amour</a></li>
+<li><a style="font-size:116%;" href="/tag/anniversaire" title="Anniversaire">Anniversaire</a></li>
+<li><a style="font-size:112%;" href="/tag/broderie" title="Broderie">Broderie</a></li>
+<li><a style="font-size:94%;" href="/tag/bebe" title="Bebe">Bebe</a></li>
+<li><a style="font-size:88%;" href="/tag/chocolat" title="Chocolat">Chocolat</a></li>
+<li><a style="font-size:200%;" href="/tag/couture" title="Couture">Couture</a></li>
+<li><a style="font-size:142%;" href="/tag/crochet" title="Crochet">Crochet</a></li>
+<li><a style="font-size:105%;" href="/tag/enfant" title="Enfant">Enfant</a></li>
+<li><a style="font-size:88%;" href="/tag/enfants" title="Enfants">Enfants</a></li>
+<li><a style="font-size:80%;" href="/tag/exposition" title="Exposition">Exposition</a></li>
+<li><a style="font-size:99%;" href="/tag/famille" title="Famille">Famille</a></li>
+<li><a style="font-size:159%;" href="/tag/fleurs" title="Fleurs">Fleurs</a></li>
+<li><a style="font-size:82%;" href="/tag/france" title="France">France</a></li>
+<li><a style="font-size:116%;" href="/tag/jardin" title="Jardin">Jardin</a></li>
+<li><a style="font-size:86%;" href="/tag/musique" title="Musique">Musique</a></li>
+<li><a style="font-size:97%;" href="/tag/nature" title="Nature">Nature</a></li>
+<li><a style="font-size:99%;" href="/tag/printemps" title="Printemps">Printemps</a></li>
+<li><a style="font-size:84%;" href="/tag/robe" title="Robe">Robe</a></li>
+<li><a style="font-size:130%;" href="/tag/tricot" title="Tricot">Tricot</a></li>
+</ul>
+<div class="more"><a href="/tag/" title="Tous les tags sur Canalblog">Plus de tags</a></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="placeholder">
+<br/><a href="http://twitter.com/CanalBlog" class="twitter-follow-button" data-lang="fr" data-show-count="true" data-width="270px">Suivre @CanalBlog</a>
+<script src="//platform.twitter.com/widgets.js" type="text/javascript"></script>
+</div>
+<div class="placeholder">
+<p class="smallitalicfont">La communauté Canalblog :<br/><b>1 421 775</b> blogs créés<br /><b>33 449 161</b> messages publiés</p>
+</div>
+</div>
+<div id="sidebar">
+<div class="placeholder">
+<div id="div-gpt-ad-88658-0">
+<script type="text/javascript">
+$(document).ready(function(){
+googletag.cmd.push(function() { googletag.display('div-gpt-ad-88658-0'); });
+});</script>
+</div>
+</div>
+<div class="box">
+<div class="holder">
+<div class="frame">
+<div class="content">
+<div class="heading">
+<div class="icon">
+<img src="/sharedDocs/images/frontend/ico-03.gif" width="46" height="45" alt="Buzz de la semaine" />
+</div>
+<h3>Buzz de la semaine</h3>
+</div>
+<ul class="item-list">
+<li>
+<div class="image">
+<a href="http://www.famillezerodechet.com/archives/2016/05/11/33798410.html" onclick="window.open(this.href); return false;"><img width="81" height="81" alt="La bio-blague" src="http://storage.canalblog.com/25/20/1301616/110639880_q.png" style="margin:3px 0 0 0;" /></a>
+</div>
+<div class="item-info">
+<span><a href="http://www.famillezerodechet.com/archives/2016/05/11/33798410.html" onclick="window.open(this.href); return false;" title="La bio-blague">La bio-blague</a></span>
+<div class="info-holder">
+<div class="info">340 partages</div>
+<a href="/directory/Ecologie/" class="smallitalicfont">Ecologie</a>
+<p>Vla qu'on parcourt la France avec Ze Guide sous le coude. Le Mick Jagger du zéro...</p>
+<div class="more"><a href="http://www.famillezerodechet.com" onclick="window.open(this.href); return false;" title="La bio-blague">Voir le blog</a></div>
+</div>
+</div>
+</li>
+<li>
+<div class="image">
+<a href="http://www.minimandarine.com/archives/2016/05/12/33789285.html" onclick="window.open(this.href); return false;"><img width="81" height="81" alt="Mademoiselle Charlie" src="http://storage.canalblog.com/48/99/457176/110598596_q.jpg" style="margin:3px 0 0 0;" /></a>
+</div>
+<div class="item-info">
+<span><a href="http://www.minimandarine.com/archives/2016/05/12/33789285.html" onclick="window.open(this.href); return false;" title="Mademoiselle Charlie">Mademoiselle Charlie</a></span>
+<div class="info-holder">
+<div class="info">218 partages</div>
+<a href="/directory/Couture/" class="smallitalicfont">Couture</a>
+<p>... ou une bonne raison de revenir sur mon blog après plus de 3,5 mois d'absence!...</p>
+<div class="more"><a href="http://www.minimandarine.com" onclick="window.open(this.href); return false;" title="Mademoiselle Charlie">Voir le blog</a></div>
+</div>
+</div>
+</li>
+<li>
+<div class="image">
+<a href="http://www.lumieresdelombre.com/archives/2016/05/10/33788813.html" onclick="window.open(this.href); return false;"><img width="81" height="81" alt="Photographier autrement avec Carole Reboul" src="http://storage.canalblog.com/63/49/668246/110594189_q.jpg" style="margin:3px 0 0 0;" /></a>
+</div>
+<div class="item-info">
+<span><a href="http://www.lumieresdelombre.com/archives/2016/05/10/33788813.html" onclick="window.open(this.href); return false;" title="Photographier autrement avec Carole Reboul">Photographier autrement avec Carole...</a></span>
+<div class="info-holder">
+<div class="info">109 partages</div>
+<a href="/directory/Photo/" class="smallitalicfont">Photo</a>
+<p>Carole Reboul est une photographe pour qui j'ai eu un gros coup de coeur lorsque je...</p>
+<div class="more"><a href="http://www.lumieresdelombre.com" onclick="window.open(this.href); return false;" title="Photographier autrement avec Carole Reboul">Voir le blog</a></div>
+</div>
+</div>
+</li>
+<li>
+<div class="image">
+<a href="http://www.stephaniebricole.com/archives/2016/05/06/33759085.html" onclick="window.open(this.href); return false;"><img width="81" height="81" alt="Recycler un tamis de maçon en étagères déco !" src="http://storage.canalblog.com/80/79/669750/110516061_q.jpg" style="margin:3px 0 0 0;" /></a>
+</div>
+<div class="item-info">
+<span><a href="http://www.stephaniebricole.com/archives/2016/05/06/33759085.html" onclick="window.open(this.href); return false;" title="Recycler un tamis de maçon en étagères déco !">Recycler un tamis de maçon en...</a></span>
+<div class="info-holder">
+<div class="info">105 partages</div>
+<a href="/directory/Bricolage%2C%20D%C3%A9co%2C%20Jardin/" class="smallitalicfont">Bricolage, Déco, Jardin</a>
+<p>Depuis quelques mois, (sans doute les préparatifs du salon en cours … j’y suis depuis...</p>
+<div class="more"><a href="http://www.stephaniebricole.com" onclick="window.open(this.href); return false;" title="Recycler un tamis de maçon en étagères déco !">Voir le blog</a></div>
+</div>
+</div>
+</li>
+<li>
+<div class="image">
+<a href="http://www.ensemblenaturellement-leblog.com/archives/2016/05/09/33782654.html" onclick="window.open(this.href); return false;"><img width="81" height="81" alt="RÉCOLTER CE QUE L'ON SÈME " src="http://storage.canalblog.com/65/71/667384/110574291_q.jpeg" style="margin:3px 0 0 0;" /></a>
+</div>
+<div class="item-info">
+<span><a href="http://www.ensemblenaturellement-leblog.com/archives/2016/05/09/33782654.html" onclick="window.open(this.href); return false;" title="RÉCOLTER CE QUE L'ON SÈME ">RÉCOLTER CE QUE L'ON SÈME </a></span>
+<div class="info-holder">
+<div class="info">46 partages</div>
+<a href="/directory/Famille%20et%20Enfants/" class="smallitalicfont">Famille et Enfants</a>
+<p>Elever ses enfants avec bienveillance demande pas mal d'énergie, et quand je récolte...</p>
+<div class="more"><a href="http://www.ensemblenaturellement-leblog.com" onclick="window.open(this.href); return false;" title="RÉCOLTER CE QUE L'ON SÈME ">Voir le blog</a></div>
+</div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="box">
+<div class="holder">
+<div class="frame">
+<div class="content">
+<div class="heading">
+<div class="icon" style="width:25px;">
+<img src="/sharedDocs/images/frontend/ico-07.gif" width="26" height="25" alt="Anniversaires" />
+</div><h3 style="font-size:15px;">Les anniversaires</h3>
+</div>
+<ul class="info-list">
+<li>
+<a href="http://www.pausegourmandises.com/" onclick="window.open(this.href); return false;"><img width="41" height="41" alt="Pause gourmandises" src="http://storage.canalblog.com/42/69/46441/23306961_q.gif" class="smallimage" /></a>
+<span><a href="http://www.pausegourmandises.com/" onclick="window.open(this.href); return false;" title="Pause gourmandises">Pause gourmandises</a></span>
+<div class="info-item">
+<span class="smallitalicfont">
+Né il y a 11 ans | <a href="/cf/profile.cfm?mid=38992" rel="nofollow">Coco PG</a> | <a href="/directory/Cuisine et Gastronomie/">Cuisine et Gastronomie</a>
+</span><br/>
+<span class="lightblue">www.pausegourmandises.com</span>
+</div>
+</li>
+<li>
+<a href="http://countrypatch.canalblog.com/" onclick="window.open(this.href); return false;"><img width="41" height="41" alt="countrypatch" src="http://storage.canalblog.com/87/26/140450/109149653_q.png" class="smallimage" /></a>
+<span><a href="http://countrypatch.canalblog.com/" onclick="window.open(this.href); return false;" title="countrypatch">countrypatch</a></span>
+<div class="info-item">
+<span class="smallitalicfont">
+Né il y a 10 ans | <a href="/cf/profile.cfm?mid=118417" rel="nofollow">maxie84</a> | <a href="/directory/Loisirs/">Loisirs</a>
+</span><br/>
+<span class="lightblue">countrypatch.canalblog.com</span>
+</div>
+</li>
+</ul>
+<div class="more"><a href="/birthday/" title="Tous les anniversaires par catégorie">+ Tous les anniversaires</a></div><br/>
+<div class="heading">
+<div class="icon" style="width:25px;">
+<img src="/sharedDocs/images/frontend/ico-06.gif" width="26" height="25" alt="Les nouveaux blogs" />
+</div><h3 style="font-size:15px;">Les nouveaux blogs</h3>
+</div>
+<ul class="info-list">
+<li>
+<a href="http://fanmaisonprairie.canalblog.com/" onclick="window.open(this.href); return false;"><img width="41" height="41" alt="fan de la petite maison dans la prairie" src="http://storage.canalblog.com/26/86/1454601/110655170_q.jpg" class="smallimage" /></a>
+<span><a href="http://fanmaisonprairie.canalblog.com/" onclick="window.open(this.href); return false;" title="fan de la petite maison dans la prairie">fan de la petite maison dans...</a></span>
+<div class="info-item">
+<span class="smallitalicfont">
+Créé le : 12/05/2016 à 20:33
+</span><br/>
+<span class="lightblue">fanmaisonprairie.canalblog.com</span>
+</div>
+</li>
+<li>
+<a href="http://unicornglitter.canalblog.com/" onclick="window.open(this.href); return false;"><img width="41" height="41" alt="Licorne, Paillettes et ado !" src="http://storage.canalblog.com/64/99/1454581/110678957_q.jpg" class="smallimage" /></a>
+<span><a href="http://unicornglitter.canalblog.com/" onclick="window.open(this.href); return false;" title="Licorne, Paillettes et ado !">Licorne, Paillettes et ado !</a></span>
+<div class="info-item">
+<span class="smallitalicfont">
+Créé le : 12/05/2016 à 17:31
+</span><br/>
+<span class="lightblue">unicornglitter.canalblog.com</span>
+</div>
+</li>
+</ul>
+<div class="more"><a href="/new/" title="Tous les nouveaux blogs">+ Tous les nouveaux blogs</a></div><br/>
+<div class="heading">
+<div class="icon" style="width:25px;">
+<img src="/sharedDocs/images/frontend/ico-02.gif" width="26" height="25" alt="Les blogs collectifs" />
+</div><h3 style="font-size:15px;">Les blogs collectifs</h3>
+</div>
+<ul class="info-list">
+<li>
+<a href="http://choeurdemeudon.canalblog.com/" onclick="window.open(this.href); return false;"><img width="41" height="41" alt="Choeur de Meudon" src="http://storage.canalblog.com/51/87/221590/110666586_q.png" class="smallimage" /></a>
+<span><a href="http://choeurdemeudon.canalblog.com/" onclick="window.open(this.href); return false;" title="Choeur de Meudon">Choeur de Meudon</a></span>
+<div class="info-item">
+<span class="smallitalicfont">
+Mis à jour le : 14/05/2016 à 00:39
+</span><br/>
+<span class="lightblue">choeurdemeudon.canalblog.com</span>
+</div>
+</li>
+<li>
+<a href="http://samedidefi.canalblog.com/" onclick="window.open(this.href); return false;"><img width="41" height="41" alt="Le défi du samedi" src="http://storage.canalblog.com/38/45/447472/110650037_q.jpg" class="smallimage" /></a>
+<span><a href="http://samedidefi.canalblog.com/" onclick="window.open(this.href); return false;" title="Le défi du samedi">Le défi du samedi</a></span>
+<div class="info-item">
+<span class="smallitalicfont">
+Mis à jour le : 13/05/2016 à 22:05
+</span><br/>
+<span class="lightblue">samedidefi.canalblog.com</span>
+</div>
+</li>
+</ul>
+<div class="more"><a href="/collective/" title="Tous les blogs collectifs">+ Tous les blogs collectifs</a></div><br/>
+</div>
+</div>
+</div>
+</div>
+<div class="placeholder">
+<div id="fblbdiv"><fb:like-box href="http://www.facebook.com/CanalBlog" width="300" show_border="true" show_faces="true" stream="false" header="false"></fb:like-box></div>
+</div>
+<div id="div-gpt-ad-12776-0">
+<script type="text/javascript">
+$(document).ready(function(){
+googletag.cmd.push(function() { googletag.display('div-gpt-ad-12776-0'); });
+});</script>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+<div id="footer">
+<div class="bar" style="padding:0; margin:0; border:none;">
+<span style="font-size:13px">Un site du groupe</span><a href="http://www.webedia.fr/" rel="nofollow" onClick="window.open(this.href); return false;"><img src="/sharedDocs/images/webedia.png" style="width:90px;margin-left:4px;"></a>
+</div>
+<div class="bar">
+<!-- footer-nav -->
+<ul class="footer-nav">
+<li><a href="/cf/addUser.cfm">Créer un blog</a></li>
+<li><a href="http://blogdustaff.canalblog.com" onClick="window.open(this.href); return false;">Blog du Staff</a></li>
+<li><a href="/cf/tos.cfm">Conditions d'Utilisation</a></li>
+<li><a href="/cf/privacy.cfm">Vie privée</a></li>
+<li><a href="/cf/contact.cfm">Contactez Canalblog</a></li>
+<li><a href="/cf/jobs.cfm">Recrutement</a></li>
+</ul>
+</div>
+<span class="copy">&copy; 2003 - 2016 <a href="http://www.canalblog.com">CanalBlog</a><img src="/sharedDocs/images/old_logo.gif" style="height:22px; vertical-align:middle; margin:0 5px;" alt="CanalBlog" />Tous droits réservés.</span>
+</div>
+<script type="text/javascript">
+<!--
+var _eStat_Whap_loaded=0;
+//-->
+</script>
+<script type="text/javascript" src="http://w.estat.com/js/whap.js"></script>
+<script type="text/javascript">
+<!--
+if(_eStat_Whap_loaded){
+eStatWhap.serial("800000207013");
+eStatWhap.send();}
+//-->
+</script>
+<script type="text/javascript" src="//static.criteo.net/js/ld/ld.js" async="true"></script>
+<script type="text/javascript">
+window.criteo_q = window.criteo_q || [];
+window.criteo_q.push(
+{ event: "setAccount", account: 5208 },
+{ event: "setCustomerId", id: "" },
+{ event: "setSiteType", type: "d" },
+{ event: "viewHome", user_segment: 1 }
+);
+</script>
+<script type="text/javascript" src="/sharedDocs/js/disclaimerCookie.js"></script>
+</body>
+</html>

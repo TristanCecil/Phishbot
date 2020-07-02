@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="ru">
+<head>
+	<meta charset="UTF-8">
+	<meta name="interkassa-verification" content="68310bb1cab788136483f8528c1b8234" />
+	<title>Контекстная реклама</title>
+	<link rel="shortcut icon" href="/img/land/favicon.png" />
+	<!-- Latest compiled and minified CSS -->
+	<link href="/bower/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+	<!-- Optional theme -->
+	<link href="/bower/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet">
+	<!-- Language -->
+	<link href="/bower/bootstrap-formhelpers/dist/css/bootstrap-formhelpers.min.css" rel="stylesheet">
+	<!-- Latest compiled and minified JavaScript -->
+
+	<script src="/bower/jquery/dist/jquery.min.js"></script>
+	<script src="/bower/bootstrap/dist/js/bootstrap.min.js"></script>
+	<script src="/bower/df-visible/jquery.visible.min.js"></script>
+	<script src="/bower/bootstrap-formhelpers/dist/js/bootstrap-formhelpers.min.js"></script>
+	<script src="/bower/jquery.cookie/jquery.cookie.js"></script>
+
+	<script src="/js/ajaxHelper/doT.js"></script>
+	<script src="/js/ajaxHelper/jquery.ajaxHelper.js"></script>
+	<script src="/js/ajaxHelper/jquery.doT.plugin.js"></script>
+	<script src="/js/ajaxHelper/jquery.easing.1.3.min.js"></script>
+	<script src="/js/ajaxHelper/jquery.message.js"></script>
+	<script src="/js/ajaxHelper/jquery.wbox.js"></script>
+	<script src="/js/ajaxHelper/tablesorter.js"></script>
+	<script src="/js/ajaxHelper/chosen.jquery.min.js"></script>
+	<script src="/js/ajaxHelper/_init.js"></script>
+	<script src="/js/common.js"></script>
+	<script src="/js/frontendScripts.js"></script>
+
+	<script src='https://www.google.com/recaptcha/api.js'></script>
+
+	<link href="/css/jquery.message.css" rel="stylesheet">
+	<link rel="stylesheet" href="/css/land.css" />
+	<link rel="stylesheet" href="/css/retina.css" />
+</head>
+<body>
+	<header>
+
+		<div id="registrationModal" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+
+			<form method="post" action="/land/ajax?action=registration" id="formCreate">
+
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Заявка на регистрацию рекламодателя</h4>
+				</div>
+				<div class="modal-body">
+					<div class="form-group">
+						<label for="fullname">Полное имя <sup>*</sup></label>
+						<input type="text" class="form-control" name="fullname" id="fullname" placeholder="Иванов Иван" />
+					</div>
+					<div class="form-group">
+						<label for="email">Email <sup>*</sup></label>
+						<input type="text" class="form-control" name="email" id="email" placeholder="mail@example.com" />
+					</div>
+					<div class="form-group">
+						<label for="password">Пароль <sup>*</sup></label>
+						<input type="password" class="form-control" name="password" id="password" placeholder="" />
+					</div>
+					<div class="form-inline">
+						<label for="contact">Контакты <sup>*</sup></label>
+						<select id="contactType" class="form-control">
+							<option value="skype">Skype</option>
+							<option value="icq">ICQ</option>
+							<option value="telegram">Telegram</option>
+							<option value="viber">Viber</option>
+							<option value="jabber">Jabber</option>
+							<option value="vk">Вконтакте</option>
+							<option value="fb">Facebook</option>
+							<option value="other">Другое</option>
+						</select>
+						<input type="text" class="form-control" name="skype" id="contact" placeholder="ivan.ivanov" />
+					</div>
+					<div class="checkbox">
+						<label>
+							<input type="checkbox" name="agreement" value="1"> Регистрируясь, я подтверждаю, что согласен(а) с <a href='/pages/agreement' target="_blank">пользовательским соглашением</a>
+						</label>
+					</div>
+					<div class="form-group captcha">
+						<div class="g-recaptcha" data-sitekey="6LcEnhsTAAAAAH6QiO-8eKVBT3znb7AsYrbRlS8t"></div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-info">Отправить</button>
+				</div>
+			</form>
+
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	$(function () {
+		$('#formCreate').ajaxFormSender({
+			check: function (data, $form) {
+				if (data.fullname.length < 6) {
+					$.message.warn('Имя слишком короткое');
+					return false;
+				} else if (!data.email.length) {
+					$.message.warn('Email не указан');
+					return false;
+				} else if (!/^([a-zA-Z0-9\._]+)@([a-zA-Z0-9_]+)\.([a-zA-Z0-9_]+)$/.test(data.email)) {
+					$.message.warn('Email указан некорректно');
+					return false;
+				} else if (data.password.length < 5) {
+					$.message.warn('Пароль слишком короткий');
+					return false;
+				} else if (!data.agreement) {
+					$.message.warn('Подтвердите пользовательское соглашение');
+					return false;
+				} else if (!data.skype && !data.icq && !data.telegram && !data.viber &&
+						!data.jabber && !data.vk && !data.fb && !data.other) {
+					$.message.warn('Укажите свои контакты');
+					return false;
+				} else {
+					return true;
+				}
+			},
+			success: function (ret) {
+				$('#registrationModal').modal('hide');
+				notice('success', ret.data || '');
+				return true;
+			}
+		});
+
+		$('#contactType').on('change', function() {
+			console.log($(this).val());
+			$('#contact').attr('name', $(this).val());
+		});
+
+	});
+</script>
+
+		
+<script type="text/plain" id="tpl_lang">
+<div class="bfh-selectbox bfh-languages bfh-landing" data-language="{{= it.lang }}" data-available="en_US,ru_RU" data-blank="false" data-flags="true">
+	<input type="hidden" value="">
+	<a class="bfh-selectbox-toggle" role="button" data-toggle="bfh-selectbox" href="#">
+		<span class="bfh-selectbox-option input-medium" data-option=""></span>
+		<b class="caret"></b>
+	</a>
+	<div class="bfh-selectbox-options">
+		<input type="text" class="bfh-selectbox-filter">
+		<div role="listbox">
+			<ul role="option">
+			</ul>
+		</div>
+	</div>
+</div>
+</script>
+
+
+
+		<div class="header">
+			<div class="language"></div>
+			<div class="headLeft">
+				<div class="contextAdvertis">
+					<h1>Контекстная реклама</h1><br/>
+					<span>
+						без конкуренции<br/>
+						от <h1>0,3</h1>  рубля за клик
+					</span>
+				</div>
+				<div class="bidAll">
+
+						<a class="bidRegistr" data-toggle="modal" data-target="#registrationModal">Заявка на регистрацию</a>
+
+				</div>
+				<div class="betaTest">
+					<span>
+						Бета-тестирование началось!<br/> Оцените конверт нового формата SearchDirect<br/> прямо сейчас!
+					</span>
+				</div>
+			</div>
+			<div class="headRight">
+				<div class="appleHeader"></div>
+				<div class="searchSubstrate">
+					<form method="GET" class="formSubstrate" action="/search">
+						<input name="searchQuery" placeholder="Введите запрос..." type="text">
+						<span class="searchCheck">
+							<button type="submit" class="btnLink">Проверить</button>
+						</span>
+					</form>
+					<img src="/img/land/searchSubstrate.png">
+				</div>
+				<div class="clickPrice">Узнать стоимость клика. Например: <a>Мойка окон</a></div>
+			</div>
+			<div class="clear"></div>
+		</div>
+	</header>
+	<div class="contentAll">
+		<div class="content">
+			<div class="borderTopBlock">
+					<div class="borderTopBlockText">КАК ЭТО РАБОТАЕТ</div>
+			</div>
+			<div class="contentLeft">
+				<div class="otherServices">
+					<span>
+						Обычная контекстная реклама
+					</span>
+				</div>
+				<div class="otherString">
+					<span>
+						<b>П</b>ользователь вводит в поисковой строке свой запрос
+					</span>
+				</div>
+				<div class="otherSite">
+					<span>
+						<b>Д</b>алее он попадает на поисковую выдачу, где видит перечень сайтов по его запросу, ваше объявление и объявления конкурентов.
+					</span>
+				</div>
+				<div class="borderDivLeft">
+					<div class="borderTextLeft">МИНУСЫ</div>
+				</div>
+				<table class="tableIcons" cellpadding="0" cellspacing="0" border="0">
+					<tbody>
+						<tr>
+							<td>
+								<img src="/img/land/otherIcon1.png"><br/>
+								В среднем пользователь<br/>смотрит от 3 до 7 результатов
+							</td>
+							<td>
+								<img src="/img/land/otherIcon2.png"><br/>
+								Чаще всего останавливается<br/>на предложении с самой<br/>лучшей ценой.
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<img src="/img/land/otherIcon3.png"><br/>
+								Для того, чтобы получить<br/>заказы нужно держать низкую<br/>маржу и следить за<br/>конкурентами...
+							</td>
+							<td>
+								<img src="/img/land/otherIcon4.png"><br/>
+								Более половины<br/>рекламодателей работает<br/>в "ноль" или с маржой 1-2%
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="contentRight">
+				<div class="ourService">
+					<span>
+						<a>SearchDirect</a> от нашего сервиса
+					</span>
+				</div>
+				<div class="browserString">
+					<span>
+						<b>П</b>ользователь вводит в поисковой строке свой запрос
+					</span>
+				</div>
+				<div class="yourSite">
+					<span>
+						<b>И</b> попал сразу на ваш сайт! Шанс конверсии в покупку значительно выше и не нужно снижать свою маржу из-за того, что конкуренты это делают
+						<!-- Таким образом шанс конверсии в заказ/покупку/действие- на порядок выше, вам не
+						следует боятся конкуренции и снижать свою рентабельность! -->
+					</span>
+				</div>
+				<div class="borderDivRight">
+					<div class="borderTextRight">НАШИ ПРЕИМУЩЕСТВА</div>
+				</div>
+				<table class="tableIcons" cellpadding="0" cellspacing="0" border="0">
+					<tbody>
+						<tr>
+							<td>
+								<img src="/img/land/icon1.png"><br/>
+								Более 12 млн. запросов в сутки<br/>и мы очень быстро растем
+							</td>
+							<td>
+								<img src="/img/land/icon2.png"><br/>
+								Низкие ставки<br/>от 30 копеек за клик
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<img src="/img/land/icon3.png"><br/>
+								Персональный менеджер<br/>сделает всю работу за вас
+							</td>
+							<td>
+								<img src="/img/land/icon4.png"><br/>
+								Быстрая настройка<br/>рекламных кампаний
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<img src="/img/land/icon5.png"><br/>
+								Мгновенное пополнение<br/>баланса
+							</td>
+							<td>
+								<img src="/img/land/icon6.png"><br/>
+								Лояльная модерация<br/>без жестких ограничений
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="testTest">ПРОТЕСТИРУЙ ПРЯМО СЕЙЧАС</div>
+				<div class="bidAll1">
+					<a class="bidRegistr1" data-toggle="modal" data-target="#registrationModal">Заявка на регистрацию</a>
+				</div>
+			</div>
+			<div class="clear"></div>
+
+			<div class="bottomBlock">
+				<div class="borderBottomBlock">
+					<div class="borderBottomBlockText">ПРИМЕР РАБОТЫ</div>
+				</div>
+				<div class="bottomBlockSearch">
+					<form method="POST" class="bottomBlockForm" action="">
+						<input name="bottomBlockForm" placeholder="Введите запрос..." type="text">
+					</form>
+					<a class="bottomBlockBtn1">Обычный контекст</a>
+					<a class="bottomBlockBtn2"></a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		$(function () {
+			$('.clickPrice a').on('click', function () {
+				var value = $(this).text();
+				$('.searchSubstrate').find('form input[name=searchQuery]').val(value);
+			});
+
+			$('.bottomBlockBtn1').on('click', function () {
+				var q = $('.bottomBlock').find('form input[name=bottomBlockForm]').val();
+				window.open('https://www.google.com/#q=' + q, '_blank');
+			});
+
+			$('.bottomBlockBtn2').on('click', function () {
+				window.open('http://' + window.location.host + '/your-page');
+			});
+
+			$('.bottomBlockForm').on('submit', function (e) {
+				e.preventDefault();
+				window.open('http://' + window.location.host + '/your-page');
+				return false;
+			});
+		});
+	</script>
+</body>
+</html>

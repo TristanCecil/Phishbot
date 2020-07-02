@@ -1,0 +1,255 @@
+
+	<!DOCTYPE html>
+	<html>
+	<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=windows-1251" />
+	<META NAME="webmoney.attestation.label" CONTENT="webmoney attestation label#03B2713E-F871-4AC6-9FAE-5627CC8AAD6F"> 
+	<meta name="webmoney" content="BDA02B32-818A-46E8-A647-1485B7DC33B9"/>
+	<title>Linkslot - Сервис интернет-рекламы</title>
+	<link rel="icon" href="favicon.ico" type="image/x-icon">
+	<link type="text/css" rel="StyleSheet" href="css/style.css" />
+        <meta http-equiv="content-type" content="text/html; charset=windows-1251">
+	<meta name="description" content="">
+	<script src="js/jquery.min.js" type="text/javascript"></script>
+	<script src="js/jquery.cookie.js" type="text/javascript"></script>
+	<script src="js/jquery.tooltip.js" type="text/javascript"></script>
+	<script src="js/jquery.session.js" type="text/javascript"></script>
+	<script src="js/jquery.alerts.js" type="text/javascript"></script>
+
+	<link href="css/jquery.alerts.css" rel="stylesheet" type="text/css">
+	<link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:400,300,700" rel="stylesheet" type="text/css">
+	</head>
+
+	<body>
+
+	<style>
+		.top_bar {background: #d4d3d8;line-height: 30px;width:100% !important;position: fixed; z-index:9999; opacity:0.9; bottom:0; display: none; text-align: center; border-top: 1px solid #c4c2c9;}
+	</style>
+
+	<div class="top_bar"><form id="mform" method="post" action=""><span id="price"></span><input id="text2" type="hidden" name="text" value=""><input id="url2" type="hidden" name="url" value=""><input id="img2" type="hidden" name="img" value=""><input id="weeks2" type="hidden" name="weeks" value=""><input id="ids" type="hidden" name="ids" value=""><input id="specc" type="hidden" name="specc"  value=""><input id="scolor" type="hidden" name="scolor"><input style="cursor: pointer;" type="submit" value="Перейти к оплате"></form></div>
+
+	<div class="top">
+	<div class="wrapper"><a href="/index.php"><img class="logo" src="/img/logo.png"></a>
+	<div class="banner"><div id="linkslot_2"></div><script src="https://linkslot.ru/bancode.php?id=2" async></script></div>
+	</div></div>
+	<div class="menu_bg">
+	<div class="wrapper">
+	<ul class="menu">
+	<li><a width="100" href="index.php">Главная</a></li>
+	<li><a href="advertise.php">Купить рекламу</a></li>
+	<li><a href="news.php">Новости</a></li>
+	<li><a href="info.php?mode=rules">Правила</a></li>
+	<li><a href="info.php?mode=faq">Вопросы и ответы</a></li>
+	<li><a href="contact.php">Обратная связь</a></li>
+	</ul></div></div><div class="wrapper">
+
+	<div class="main">
+	<div class="main_info">
+	<h2>Немного о нас</h2>
+	
+	<p>Linkslot - это сервис интернет-рекламы, который предлагает владельцам сайтов автоматизировать работу с прямыми рекламодателями и организовать удобный прием средств за размещение графических баннеров и текстовых ссылок. Рекламодатели смогут максимально быстро и удобно разместить свои рекламные материалы с гарантией размещения и возврата средств.</p>
+	
+	<p class="home_reg"><img src="img/register.png"><a href="/user.php?mode=register">Регистрация</a></p>
+
+	</div>
+
+	<div class="auth"><div id="blok" style="border-top:1px solid #DBDADE;padding-top:12px;">
+	<b style="font-weight:normal;font-size:17px;">Авторизация</b>
+	<a href="user.php?mode=lost" style="float:right;line-height: 24px;">Забыли&nbsp;пароль?</a>
+	<form name="form0" method="post" action="user.php?mode=login" onsubmit="return validate0 ( );">
+		<table width="100%" align="center" border="0" cellspacing="0" cellpadding="0" style="max-width:1000px; padding-top: 6px;">
+			<tr>
+				<td style="color:#333; padding-top: 10px; padding-bottom: 10px;"><b>Логин:</b></td>
+				<td><input type="text" name="login" maxlength="50" value="" style="width:100%;"/></td>
+			</tr>
+			<tr>
+				<td style="color:#333; padding-top: 10px; padding-bottom: 14px;"><b>Пароль:</b></td>
+				<td><input type="password" name="pass" maxlength="50" value="" style="width:100%;"/></td>
+			</tr>
+			<tr>
+				<td align="left"><a href="user.php?mode=register">Регистрация</a></td>
+				<td align="right"><button>Вход</button></td>
+			</tr>
+		</table>
+	</form>
+</div>
+
+<script src="js/base64.js" type="text/javascript"></script>
+
+<script>
+
+function validate0 ( )
+{
+	var valid = true;
+
+	if ((document.form0.login.value == '')  && (document.form0.pass.value == '') && (valid == true))
+	{
+		jAlert ('Не заполнены поля «Логин» и «Пароль»');
+		valid = false;
+	}
+	if ((document.form0.login.value == '')  && (valid == true))
+	{
+		jAlert ('Не заполнено поле «Логин»');
+		valid = false;
+	}
+	if ((document.form0.pass.value == '')  && (valid == true))
+	{
+         	jAlert ('Не заполнено поле «Пароль»');
+		valid = false;
+	}
+
+	pass = base64_encode(document.form0.pass.value);
+	temp = $.ajax ({ url: "fetch.php", type: "POST", data:  "mode=check_auth&login=" + document.form0.login.value + "&pass=" + pass, async: false }).responseText;
+
+	if ((temp.search('wrong') != -1) && (valid == true))
+	{
+		jAlert ('Логин или пароль указан неверно');
+		valid = false;	
+	}
+	return valid;
+}
+</script></div>
+
+	<style>
+	.main_info {font-size:13px;text-align:justify;width:630px;float:left;}
+	 .ig_num {font-weight:300;font-size:22px;margin:0;font-family: "Roboto Condensed", sans-serif;}
+        .main_info h2 {font-size:22px;font-weight:300;margin:0;}
+	.auth {float:right;width:320px;}
+	.auth #blok {width:280px;float:right;}
+	.infograf {width:100%;background:#fbfbfb url("img/stripes.png");height:210px;padding: 20px 0;}
+	.ig_block {float:left;width:172px;text-align:center;margin: 0px 90px 20px 0;}
+	.ig_block p {font-size:15px;margin: 2px 0 0 0;}
+	.ig_num {margin: 15px 0 0 0;font-size:25px;color:#0092a3;}
+	.round { width:172px;height:120px;border-radius:120px; }
+	
+	.home_reg {height:20px;margin: 20px 0 0 0;}
+	.home_reg  img {float:left;display:inline-block;margin: 0 10px 0 0;height:20px;}
+	.home_reg a {float:left;font-size: 20px; display:inline-block;line-height: 19px;}
+	.home_reg a:hover {text-decoration:none;}
+	
+	.rv_block {float:left; margin: 20px 20px 0 0;}
+	.rv_block h2 {font-weight:300;font-size:22px;margin:0 0 10px 0;}
+	.rv_block ul {margin: 0;padding:0;}
+	.rv_block ul li {font-size:14px;padding: 0 0 0 22px;margin: 0 0 3px 0;line-height:18px;background: url("img/arrow.png") left center no-repeat;}
+	
+	.links {float:right;margin: 20px 0 10px 0;width:300px;overflow:hidden;}
+	.sld {width:300px; height:140px; position:relative;overflow:hidden;margin: 0; }
+	.sld a{ line-height:0; margin:0; padding:0;color:#333b45; text-decoration:none;}
+	.sld .l1{font:24px Georgia, "Times New Roman", Times, serif; position:absolute; top:18px; left:17px; }
+	.sld .l2{font:64px Georgia, "Times New Roman", Times, serif; position:absolute; top:21px; left:0px;}
+	.sld .l3{font:36px Georgia, "Times New Roman", Times, serif; position:absolute; top:72px; left:140px;}
+	.sld .l4{font:190px Georgia, "Times New Roman", Times, serif; position:absolute; right:0; top:-70px;}
+	.sld .l5{font:14px Georgia, "Times New Roman", Times, serif; position:absolute; right:10px; top:68px;}
+	
+	.left_mblocks {float:left;width:635px;}
+	#vk_groups {float:left;margin: 20px 0 0 0;}
+	</style>
+
+	</div></div>
+
+	<div class="infograf">
+	<div class="wrapper">
+
+	<div class="ig_block">
+	<div class="round"><img style="margin: 20px 0 0 0" src="img/handshake.png"></div>
+	<div class="ig_num">1 518 296</div>
+	<p>успешных сделок</p>
+	</div>
+	
+	<div class="ig_block">
+	<div class="round"><img style="margin: 20px 0 0 0" src="img/bullhorn.png"></div>
+	<div class="ig_num">12 093</div>
+	<p>рекламных места</p>
+	</div>
+
+	<div class="ig_block">
+	<div class="round"><img style="margin: 20px 0 0 0" src="img/statistics.png"></div>
+	<div class="ig_num">53 506 179</div>
+	<p>показов в сутки</p>
+	</div>
+	
+	<div class="ig_block" style="margin-right:0;">
+	<div class="round"><img style="margin: 20px 0 0 0" src="img/lifetime.png"></div>
+	<div class="ig_num">1 262</div>
+	<p>дня работы</p>
+	</div>
+	</div></div>
+
+	<div class="wrapper">
+	
+	<div class="left_mblocks">
+	<div class="rv_block" style="width:295px;">
+	<h2>Рекламодателю</h2>
+	
+	<ul>
+	<li>Большой выбор площадок для рекламы</li>
+	<li>Показ рекламы сразу после оплаты</li>
+	<li>Управление рекламой после размещения</li>
+	<li>Возврат средств в случае удаления</li>
+	</ul>
+	
+	</div>
+
+	
+	<div class="rv_block" style="margin-right:0;width:320px;">
+	<h2>Вебмастеру</h2>
+	
+	<ul>
+	<li>Простая интеграция кода рекламных блоков</li>
+	<li>Подробная статистика доходов</li>
+	<li>Выплаты на WebMoney, ЯД и Payeer</li>
+	<li>Минимальная сумма выплаты 100 рублей</li>
+	</ul>
+	
+	</div>
+	
+	</div>
+
+	<div class="links">
+
+	<div class="sld">		
+	<a href="/link.php?id=1"><span class="l1">Купить</span> <span class="l2">ссылку</span> <span class="l3">за</span> 	<span class="l4">2</span>  <span class="l5">рубля</span></a>
+	</div>
+	
+	<div id="linkslot_1"></div>
+	<script type="text/javascript" src="//linkslot.ru/lincode.php?id=1" async></script>
+	</div>
+	
+	<div style="position: absolute; bottom: 80px;">
+	<div class="m_l" style="padding-top: 20px;">
+	<!-- begin WebMoney Transfer : accept label -->
+	<a href="http://www.megastock.ru/" target="_blank"><img src="img/megastock.png" alt="www.megastock.ru" border="0"></a>
+	<!-- end WebMoney Transfer : accept label -->
+
+	<!-- begin WebMoney Transfer : attestation label --> 
+	<a href="http://passport.webmoney.ru/asp/certview.asp?wmid=108768634082" target=_blank><IMG SRC="/img/webmoney.png" title="Здесь находится аттестат нашего WM идентификатора" border="0"></a>
+	<!-- end WebMoney Transfer : attestation label -->
+
+	<a href="https://megakassa.ru/ref/link/78/" title="Платежный агрегатор МегаКасса" target="_blank"><img src="img/megakassa.jpg" alt="MegaKassa" /></a>
+
+	<a href="http://yandex.ru/cy?base=0&amp;host=linkslot.ru"><img src="https://yandex.ru/cycounter?linkslot.ru" width="88" height="31" alt="Индекс цитирования" border="0" /></a>
+
+	<!--LiveInternet counter--><script type="text/javascript">document.write("<a href='http://www.liveinternet.ru/click' target=_blank><img src='https://counter.yadro.ru/hit?t14.12;r" + escape(document.referrer) + ((typeof(screen)=="undefined")?"":";s"+screen.width+"*"+screen.height+"*"+(screen.colorDepth?screen.colorDepth:screen.pixelDepth)) + ";u" + escape(document.URL) + ";" + Math.random() + "' border=0 width=88 height=31 alt='' title='LiveInternet: показано число просмотров за 24 часа, посетителей за 24 часа и за сегодня'><\/a>")</script><!--/LiveInternet-->
+
+	</div></div>
+	
+
+
+	</div>
+
+
+		<div style="height: 80px;"></div>
+		<div class="f_content">
+		<div class="wrapper">
+		
+		<div class="f_left">В системе зарегистрировано 41 948 пользователей<br>Размещено рекламных материалов на 16 956 429 рублей</div>
+		<div class="f_right">Сервис интернет-рекламы LINKSLOT<br>© 2012-2016</div>
+		</div>
+		</div>
+		<!--
+		<div style="visibility:hidden;">235640</div>
+		-->
+
+		</body>
+		</html>
+		

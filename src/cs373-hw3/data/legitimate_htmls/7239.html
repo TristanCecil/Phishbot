@@ -1,0 +1,825 @@
+<!DOCTYPE html><html lang="en">    <head>
+      <title>Monetization Solutions - TrialPay</title>
+          <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="description" content="TrialPay is the payment and promotions platform that instantly increases sales from your current traffic. We offer monetization solutions that convert shoppers for industry-leaders in Casual Games, Online Services, Retail, Social Apps and Software." />
+    <meta name="viewport" content="width=1000">
+        <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+      <script type="text/javascript">
+    var FILESERVER_HOST = 'http://images.trialpay.com';
+    var STATIC_HOST = 'http://static.trialpay.com';
+    var USER_HOST = 'http://www.trialpay.com';
+    var USER_SECURE_HOST = 'https://www.trialpay.com';
+    var HOMEPAGE_HOST = 'http://www.trialpay.com';
+    var HOMEPAGE_STATIC_HOST = 'http://www.trialpay.com/static';
+    var $DEV_COOKIE_PREFIX = '';     var $USER_HOST = 'http://www.trialpay.com';
+    var is_in_sandbox = function() { return false; };
+    var is_on_stage = function() { return false; };
+  </script>
+      <style type="text/css">
+      .contact-form-wrapper { 
+        display: flex; 
+        display: -webkit-flex;
+        flex-direction: column;
+        -webkit-flex-direction: column;
+        align-items: center; 
+        -webkit-align-items: center; 
+        justify-content: center; 
+        -webkit-justify-content: center; 
+        margin: -50px auto 0 auto; 
+        height: 100%;
+      }
+
+      #contact-us-form { margin: 0 auto; }
+      #contact-us-form .caption { font-size: 17px; } 
+      #contact-us-form button { font-weight: normal; }
+      #contact-us-form select { background-color: #fff; }
+
+      .contact-form-wrapper .title { display: flex; display: -webkit-flex; justify-content: center; -webkit-justify-content: center; align-items: center;  -webkit-align-items: center; margin-bottom: 10px; }
+      .contact-form-wrapper .title img { width: 52px; height: 34px; margin: 0 15px 0 0; }
+      .contact-form-wrapper .title h2 { margin: 0; }
+      .contact-form-wrapper .subtitle { width: 380px; margin-bottom: 20px; }
+      .contact-form-wrapper .subtitle p { font-size: 16px; text-align: center; }
+
+      #contact-us-form .button { height: 50px; display: flex; display: -webkit-flex; justify-content: flex-end; -webkit-justify-content: flex-end; }
+      #contact-us-form .field { display: flex; display: -webkit-flex; align-items: center; -webkit-align-items: center; justify-content: flex-end; -webkit-justify-content: flex-end; margin-bottom: 8px; }
+      #contact-us-form .field input, form .field select, form .field textarea { margin: 0 0 0 15px !important; border-radius: 5px !important; }
+      #contact-us-form label { display: block; width: auto !important; align-self: flex-start; -webkit-align-self: flex-start; padding-top: 7px; }
+      #contact-us-form .caption { display: inline-block; float: left; }
+      #contact-us-form .error-msg { position: absolute; padding: 2px 0 0 9px; font-size: 15px !important; text-indent: 0 !important; margin: 0; }
+
+      #contact-support { display: flex; display: -webkit-flex; align-items: center; -webkit-align-items: center; justify-content: flex-end; -webkit-justify-content: flex-end; }
+      #contact-support a { padding: 7px 17px 7px 12px; margin: 0 0 0 15px; border: 1px solid #5cc1d6; color: #5cc1d6; text-decoration: none; border-radius: 7px; text-transform: uppercase; }
+      #contact-support a:hover { opacity: 0.8; } 
+      #contact-support .icon { width: 65px; height: 60px; background-image: url(http://www.trialpay.com/static/images/icons/icon-contact-us.png); background-size: contain; } 
+      #contact-support .title { font-size: 21px; }
+      #contact-support .arrow { display: inline-block; margin-left: 5px; border-left: 5px solid; border-bottom: 5px solid transparent; border-top: 5px solid transparent; }
+
+      #contact-us-status { display: none; width: 100%; height: auto !important; text-align: center; font-size: 15px; }
+
+      @media only all and (max-height: 750px) {
+        #contact-support { justify-content: center; -webkit-justify-content: center; }
+        .full { display: flex; display: -webkit-flex; }
+        .half { padding: 0 3%; }
+        .error-msg.bottom { margin: 42px 0 0 -296px !important; }
+      }
+
+    </style>
+        <script type="text/javascript">
+      $(function() {
+        $('#contact-us-form').on('submit', function(e) {
+          e.preventDefault();
+
+          var form = $(this);
+          var formHeight = form.height();
+          var statusEl = $('#contact-us-status');
+          var fields = ['name', 'company', 'email', 'department', 'message'];
+
+          var data = {};
+          fields.forEach(function(key) {
+            data[key] = $('#contact-us-' + key).val();
+            $('#contact-us-' + key).removeClass('error');
+            $('#contact-us-' + key).next().text('');
+          });
+          data['c'] = 1;
+
+          form.hide();
+          statusEl
+            .html('Processing...')
+            .attr('class', 'status-process-msg')
+            .height(formHeight) // this is needed for proper vertical alignment
+            .show();
+          $.post(form.attr('action'), data, function(response, status) {
+            var fatalError = function() {
+              statusEl
+                .html('Oops, seems like something went wrong. Please try again later.')
+                .attr('class', 'status-error-msg');
+            }
+            if ((status == 'success') && response) {
+              if (response.status == 'success') {
+                statusEl
+                  .html('Thank you! Your message has been sent.')
+                  .attr('class', 'status-success-msg');
+              } else if (response.errors) {
+                $.each(response.errors, function(key, value) {
+                  $('#contact-us-' + key).addClass('error');
+                  $('#contact-us-' + key).next().text(value);
+                 });
+                statusEl.hide();
+                form.show();
+              } else {
+                fatalError();
+              }
+            } else {
+              fatalError();
+            }
+          }, 'json');
+        });
+      });
+    </script>
+    <link href='http://www.trialpay.com/static/css/homepage.css?tpr=1b0c6f7913d4dd98aa1332c9e0cfd1ab' rel='stylesheet' type='text/css' />    <style type="text/css">
+      @font-face {
+        font-family: Vegur;
+        font-weight: normal;
+        font-style: normal;
+        src: url('http://www.trialpay.com/static/fonts/vegur/vegur-regular-webfont.ttf') format('opentype'),
+             url('http://www.trialpay.com/static/fonts/vegur/vegur-regular-webfont.woff') format('woff');
+      }
+
+      @font-face {
+        font-family: Vegur;
+        font-weight: bold;
+        font-style: normal;
+        src: url('http://www.trialpay.com/static/fonts/vegur/vegur-bold-webfont.ttf') format('truetype'),
+             url('http://www.trialpay.com/static/fonts/vegur/vegur-bold-webfont.woff') format('woff');
+      }
+
+      #top-logo:before { background-image: url(http://www.trialpay.com/static/images/tp-logo-sprite.png); }
+      #nav .nav-root { background-image: url(http://www.trialpay.com/static/images/icons/icon-down-arrow.png); }
+
+      .message-error .message-i { background-image: url(http://www.trialpay.com/static/images/icons/icon-stop.png); }
+
+      button, .button { background-image: url(http://www.trialpay.com/static/images/icons/icon-right-arrow-3.png); }
+
+      .collapsed { background: url(http://www.trialpay.com/static/images/icons/icon-expand-plus.png) 0px 17px no-repeat; }
+      .expanded { background: url(http://www.trialpay.com/static/images/icons/icon-expand-minus.png) 0px 17px no-repeat; }
+      .all-collapsed { background: url(http://www.trialpay.com/static/images/icons/icon-expand-down.png) right center no-repeat; }
+      .all-expanded { background: url(http://www.trialpay.com/static/images/icons/icon-expand-up.png) right center no-repeat; }
+    </style>
+    <script language="JavaScript" type="text/javascript" src="http://www.trialpay.com/static/js/main.js?tpr=1b0c6f7913d4dd98aa1332c9e0cfd1ab"></script><link href='http://www.trialpay.com/static/css/jquery.fullpage.min.css?tpr=1b0c6f7913d4dd98aa1332c9e0cfd1ab' rel='stylesheet' type='text/css' />    <style type="text/css">
+      body {
+        overflow: hidden;
+        background-color: #1c262d;
+      }
+
+      #fullpage {
+        visibility: hidden;
+      }
+
+        #fullpage._rendered {
+          visibility: visible;
+        }
+
+      .scroll-to-next {
+        position: absolute;
+        z-index: 2;
+        left: 50%;
+        bottom: 42px;
+        width: 62px;
+        height: 62px;
+        margin-left: -31px;
+        cursor: pointer;
+        background: url(http://www.trialpay.com/static/images/new-homepage/arrow-down.png);
+      }
+
+        .scroll-to-next:hover {
+          background-position: 0 bottom;
+        }
+
+      #page-wrapper {
+        padding: 0;
+      }
+
+      #header { position: fixed; top: 0; z-index: 2; left: 0; right: 0; }
+      #footer { position: fixed; display: none; bottom: 0; z-index: 2; left: 0; right: 0; }
+
+      /*#fullpage {}*/
+
+      .section {
+        overflow: hidden;
+        text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.75);
+        color: #ffffff;
+        background-size: cover;
+      }
+
+        .section h2 {
+          font-size: 36px;
+          font-weight: bold;
+          margin-bottom: 8px;
+          padding: 0;
+          color: #ffffff;
+          text-transform: uppercase;
+        }
+
+        .section p {
+          font-size: 21px;
+        }
+
+        /*.section .text {}*/
+
+        .section-aligner {
+          display: table;
+          width: 100%;
+          height: 100%;
+        }
+
+          .section-aligner-cell {
+            display: table-cell;
+            vertical-align: middle;
+          }
+
+          .section-aligner._header-compliant .section-aligner-cell {
+            padding-top: 70px;
+          }
+
+          .section-aligner._footer-compliant .section-aligner-cell {
+            padding-bottom: 175px;
+          }
+
+        .section._contact-us {
+          text-shadow: none;
+          color: #1e1e20;
+          background-color: #fff;
+        }
+
+          .section._contact-us h2 {
+            color: #1e1e20;
+          }
+
+      .object-fit-cover {
+        position: absolute;
+        left: 0;
+        top: 0;
+        -ms-transform-origin: 0 0;
+        -webkit-transform-origin: 0 0;
+        transform-origin: 0 0;
+      }
+    </style>
+    <script>
+      // make fixed header and footer kind of scrollable
+      $(function() {
+        var $elements = $('#header, #footer');
+
+        $(window).on('scroll', function() {
+          $elements.css('left', -window.pageXOffset);
+        });
+      });
+    </script>
+        <style type="text/css">
+
+      #fullpage._rendered .section._monetize-your-app {
+        background-image: url(http://www.trialpay.com/static/images/new-homepage/monetize-your-app.jpg);
+      }
+
+        .section._monetize-your-app .text {
+          position: absolute;
+          top: 250px;
+          left: 240px;
+          width: 314px;
+        }
+
+      #fullpage._first-loaded .section._offer-gallery {
+        background-image: url(http://www.trialpay.com/static/images/new-homepage/offer-gallery.jpg);
+      }
+
+        .section._offer-gallery .text {
+          position: absolute;
+          top: 234px;
+          left: 726px;
+          width: 428px;
+        }
+
+      #fullpage._first-loaded .section._native {
+        background-image: url(http://www.trialpay.com/static/images/new-homepage/native.jpg);
+      }
+
+        .section._native .text {
+          position: absolute;
+          top: 548px;
+          left: 216px;
+          width: 356px;
+        }
+
+      #fullpage._first-loaded .section._engage {
+        background-position: center 0;
+        background-image: url(http://www.trialpay.com/static/images/new-homepage/engage.jpg);
+      }
+
+        .section._engage .text {
+          position: absolute;
+          top: 163px;
+          left: 50%;
+          width: 390px;
+          margin-left: -195px;
+          text-align: center;
+        }
+
+      #fullpage._first-loaded .section._retain {
+        background-image: url(http://www.trialpay.com/static/images/new-homepage/retain.jpg);
+      }
+
+        .section._retain .text {
+          position: absolute;
+          top: 154px;
+          left: 151px;
+          width: 268px;
+        }
+
+      #fullpage._first-loaded .section._interstitial {
+        background-image: url(http://www.trialpay.com/static/images/new-homepage/interstitial.jpg);
+      }
+
+        .section._interstitial .text {
+          position: absolute;
+          top: 487px;
+          left: 211px;
+          width: 238px;
+        }
+
+      #fullpage._first-loaded .section._sdk-native-api {
+        background-position: center 0;
+        background-image: url(http://www.trialpay.com/static/images/new-homepage/sdk-native-api.jpg);
+      }
+
+        .section._sdk-native-api .text {
+          position: absolute;
+          top: 130px;
+          left: 0;
+          right: 0;
+          text-align: center;
+        }
+
+        .section._sdk-native-api .text2 {
+          position: absolute;
+          top: 356px;
+          left: 93px;
+          width: 276px;
+          text-align: right;
+        }
+
+        .section._sdk-native-api .text3 {
+          position: absolute;
+          top: 356px;
+          left: 1072px;
+          width: 204px;
+        }
+
+      /* min-aspect-ratio is 1.2 */
+      @media screen
+      and (max-aspect-ratio: 1000/780) {
+        .section._offer-gallery .text {
+          top: 194px;
+          left: 650px;
+        }
+      }
+
+      @media screen
+      and (max-aspect-ratio: 1000/721) {
+        .section._sdk-native-api .text2 {
+          left: 153px;
+          width: 226px;
+        }
+
+        .section._sdk-native-api .text3 {
+          width: 194px;
+        }
+      }
+
+      @media screen
+      and (min-aspect-ratio: 1000/556) {
+        .section._interstitial .text {
+          top: 447px;
+        }
+
+        .section._native .text {
+          top: 508px;
+        }
+      }
+
+    </style>
+        </head>
+    <body class="">
+          <div id="page-wrapper">
+          <div id="header">
+      <div class="wrapper">
+        <a href="http://www.trialpay.com/" id="top-logo"></a>
+                <ul id="nav">
+                    <li><a href="http://www.trialpay.com/" class="active">Monetization Solutions</a></li>
+                    <li><a href="http://www.trialpay.com/advertising-solutions/" >Advertising Solutions</a></li>
+                    <li><a href="http://www.trialpay.com/about/" >About</a></li>
+                    <li><a href="http://blog.trialpay.com" target="_blank">Blog</a></li>
+        </ul>
+        <ul id="nav-auth">
+          <li>
+            <div class="nav-auth-item">
+              <span class="nav-auth-root">Log In</span>
+              <ul>
+                <li><a href="https://advertiser.trialpay.com/login/">Advertiser Log In</a></li>
+                <li><a href="https://merchant.trialpay.com/login/">Developer Log In</a></li>
+              </ul>
+            </div>
+          </li>
+          <li>
+            <div class="nav-auth-item">
+              <span class="nav-auth-root">Sign Up</span>
+              <ul>
+                <li><a href="https://advertiser.trialpay.com/register/">Advertiser Sign Up</a></li>
+                <li><a href="https://merchant.trialpay.com/register/">Developer Sign Up</a></li>
+              </ul>
+            </div>
+          </li>
+        </ul>
+                <div class="clear"></div>
+      </div>
+    </div>
+    
+    <div class="scroll-to-next"></div>
+    <div id="fullpage">
+      <div class="section _monetize-your-app">
+        <div class="object-fit-cover" data-original-width="1440" data-original-height="900">
+          <div class="text fullpage-animate" data-leave-animation="" data-enter-animation="">
+            <h2>Monetize your app with TrialPay</h2>
+            <p>Create a better user experience and drive more revenue with TrialPay monetization solutions.  With a variety of opt-in and native placements through either our Evergreen SDK or Native Offers API, keep your app clutter free, and your users engaged. </p>
+          </div>
+        </div>
+      </div>
+      <div class="section _offer-gallery">
+        <div class="object-fit-cover" data-original-width="1440" data-original-height="900">
+          <div class="text fullpage-animate">
+            <h2>Offer Gallery</h2>
+            <p>There are a lot of offer walls out there: work with the best. The unique design of TrialPay’s Offer Gallery allows your users to easily discover and complete offers.  We provide access to the broadest set of categories, including our exclusive card linked offers.</p>
+          </div>
+        </div>
+      </div>
+      <div class="section _native">
+        <div class="object-fit-cover" data-original-width="1440" data-original-height="900">
+          <div class="text fullpage-animate">
+            <h2>Native</h2>
+            <p>
+              Your app looks good, the ads should too. <br />
+              Control how offers are integrated in your app and how they look.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="section _engage">
+        <div class="object-fit-cover" data-align="center" data-original-width="1440" data-original-height="900">
+          <div class="text fullpage-animate">
+            <h2>Engage</h2>
+            <p>
+              Increase engagement and LTV with new and loyal customers for all users in app. Reward actions like leveling up, or checking in with our premium coupons and deals.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="section _retain">
+        <div class="object-fit-cover" data-original-width="1440" data-original-height="900">
+          <div class="text fullpage-animate">
+            <h2>Retain</h2>
+            <p>
+              Keep your customers coming back. Subscription services dramatically increase LTV over standard IAPs. With TrialPay, users can experience their first month for free, sponsored by one of our brand advertisers.  This exposure to your service helps convert them into long term, paying customers.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="section _interstitial">
+        <div class="object-fit-cover" data-original-width="1440" data-original-height="900">
+          <div class="text fullpage-animate">
+            <h2>Interstitial</h2>
+            <p>
+              Say goodbye to banner ads. Our interstitial placements allow you to engage users at key moments without giving up real estate for your content.  
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="section _sdk-native-api">
+        <div class="object-fit-cover" data-align="center" data-original-width="1440" data-original-height="900">
+          <div class="text fullpage-animate" data-leave-up-animation="to-bottom" data-leave-bottom-animation="to-top" data-enter-animation="from-top">
+            <h2>Integrate the way that works for you</h2>
+          </div>
+          <div class="text2 fullpage-animate" data-leave-animation="to-left" data-enter-animation="from-left">
+            <h2>Evergreen SDK</h2>
+            <p>
+              Combine leading monetization tools and direct advertising partnerships with flexibility to work seamlessly with your existing ad partners.
+            </p>
+          </div>
+          <div class="text3 fullpage-animate" data-leave-animation="to-right" data-enter-animation="from-right">
+            <h2>Native Offers API</h2>
+            <p>
+              Simple integration with access to premium brand advertisers.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="section _contact-us">
+            
+        <div class="contact-form-wrapper">
+
+          <div class="contact-form-header">
+            <div class="title">
+              <img alt=""src="http://www.trialpay.com/static/images/icons/icon-email.png" />
+              <h2>Contact TrialPay</h2>
+            </div>
+            <div class="subtitle">
+              <p>Want to know more about TrialPay and how we can help grow your business? Drop us a line today!</p>
+            </div>
+          </div>
+
+          <form id="contact-us-form" action="/" method="post">
+
+            <div class="full">
+              <div class="half">
+        
+                <div class="field">
+                  <label for="contact-us-name">Name</label>
+                  <input id="contact-us-name" type="text" />
+                  <p class="error-msg"></p>
+                </div>
+        
+                <div class="field">
+                  <label for="contact-us-company">Company</label>
+                  <input id="contact-us-company" type="text" />
+                  <p class="error-msg"></p>
+                </div>
+
+                <div class="field">
+                  <label for="contact-us-email">Email</label>
+                  <input id="contact-us-email" type="text" />
+                  <p class="error-msg bottom"></p>
+                </div>
+
+              </div> 
+
+              <div class="half">
+
+                <div class="field">
+                  <label for="contact-us-department">Department</label>
+                  <select id="contact-us-department">
+                    <option value="" selected="selected">&mdash; Choose One &mdash;</option>
+                    <option value="monetization">Monetization</option>
+                    <option value="advertising">Advertising</option>
+                    <option value="press">Press</option>
+                  </select>
+                  <p class="error-msg"></p>
+                </div>
+
+                <div class="field">
+                  <label for="contact-us-message">Message</label>
+                  <textarea id="contact-us-message"></textarea>
+                  <p class="error-msg"></p>
+                </div>
+        
+                <div class="button">
+                  <button id="contact-us-submit" class="blue">Send Message</button>
+                </div>
+
+              </div>
+
+            </div>
+
+            <div id="contact-support">
+              <span class="icon"></span>
+              <a href="https://www.trialpay.com/support/contactus/">Get customer support <span class="arrow"></span></a>
+            </div>
+
+          </form>
+          
+          <div id="contact-us-status"></div>
+
+        </div>
+        
+          </div>
+    </div>
+        </div>
+      <img src="http://assets.trialpay.com/tr/?u=%2F" alt="" style="display: block; height: 1px; width: 1px; position: absolute; top: 0; left: 0; visibility: hidden;" />
+      <div id="footer">
+            <div id="backplate">
+        <div class="wrapper">
+          <ul>
+            <li><a href="https://www.trialpay.com/support/contactus/">Customer Support</a></li>
+            <li><a href="http://help.trialpay.com/">Partner Help Center</a></li>
+            <li><a href="http://www.trialpay.com/legal/terms/">Terms of Service</a></li>
+            <li><a href="http://www.trialpay.com/legal/privacy-policy/">Privacy Policy</a></li>
+          </ul>
+          <ul>
+            <li><a href="https://merchant.trialpay.com/register/">Developer Sign Up</a></li>
+            <li><a href="https://advertiser.trialpay.com/register/">Advertiser Sign Up</a></li>
+          </ul>
+          <ul>
+            <li><a href="https://merchant.trialpay.com/login/">Developer Log In</a></li>
+            <li><a href="https://advertiser.trialpay.com/login/">Advertiser Log In</a></li>
+            <li><a href="https://www.trialpay.com/login/">Customer Log In</a></li>
+          </ul>
+          <ul>
+            <li><a href="http://www.trialpay.com/about/">About</a></li>
+            <li><a href="http://www.trialpay.com/about/people/">People</a></li>
+            <li><a href="http://www.trialpay.com/about/careers/">Careers</a></li>
+          </ul>
+          <ul>
+            <li><a href="http://www.trialpay.com/">Monetization Solutions</a></li>
+            <li><a href="http://www.trialpay.com/advertising-solutions/">Advertising Solutions</a></li>
+          </ul>
+          <div class="clear"></div>
+        </div>
+      </div>
+            <div class="wrapper">
+        <div id="copyright"><p>&copy; 2016 TrialPay, Inc. All Rights Reserved</p></div>
+                <div id="social-relations">
+          <p>Stay connected with TrialPay</p>
+          <a href="http://www.facebook.com/pages/TrialPay/105863362777306" target="_blank"><img alt="" src="http://www.trialpay.com/static/images/icons/icon-facebook.png" /></a>
+          <a href="http://twitter.com/trialpay" target="_blank"><img alt="" src="http://www.trialpay.com/static/images/icons/icon-twitter.png" /></a>
+          <a href="http://www.linkedin.com/company/trialpay" target="_blank"><img alt="" src="http://www.trialpay.com/static/images/icons/icon-linkedin.png" /></a>
+        </div>
+        <div class="clfx"></div>
+      </div>
+    </div>
+    <script language="JavaScript" type="text/javascript" src="http://www.trialpay.com/static/js/tiny-pubsub.js?tpr=1b0c6f7913d4dd98aa1332c9e0cfd1ab"></script><script language="JavaScript" type="text/javascript" src="http://www.trialpay.com/static/js/jquery.slimscroll.min.js?tpr=1b0c6f7913d4dd98aa1332c9e0cfd1ab"></script><script language="JavaScript" type="text/javascript" src="http://www.trialpay.com/static/js/jquery.fullpage.min.js?tpr=1b0c6f7913d4dd98aa1332c9e0cfd1ab"></script><script language="JavaScript" type="text/javascript" src="http://www.trialpay.com/static/js/velocity.min.js?tpr=1b0c6f7913d4dd98aa1332c9e0cfd1ab"></script>    <script type="text/javascript">
+
+      $(function() {
+        // we need to store original footer height for animation
+        var footer = $('#footer');
+        var footerOriginalHeight = footer.height();
+        footer.height(0).show();
+
+        var animations = {
+          'from-top': {
+            opacity: 1,
+            translateY: [0, -200]
+          },
+          'to-top': {
+            opacity: 0,
+            translateY: -200
+          },
+          'from-bottom': {
+            opacity: 1,
+            translateY: [0, 200]
+          },
+          'to-bottom': {
+            opacity: 0,
+            translateY: 200
+          },
+          'from-left': {
+            opacity: 1,
+            translateX: [0, -200]
+          },
+          'to-left': {
+            opacity: 0,
+            translateX: -200
+          },
+          'from-right': {
+            opacity: 1,
+            translateX: [0, 200]
+          },
+          'to-right': {
+            opacity: 0,
+            translateX: 200
+          },
+          defaults: {
+            'leave-down': 'to-top',
+            'leave-up': 'to-bottom',
+            'enter-down': 'from-bottom',
+            'enter-up': 'from-top'
+          }
+        };
+
+        var animationDuration = 700;
+
+        $('#fullpage').fullpage({
+          scrollOverflow: true,
+          verticalCentered: false,
+          afterRender: function() {
+            var fullpage = this;
+
+            fullpage.addClass('_rendered');
+
+            var imgUrl = fullpage.find('.section:first').css('background-image').match(/\((["'])?([^"']+)\1\)/)[2];
+
+            // provide ability to load other images only after first has loaded
+            $('<img />', {
+              src: imgUrl
+            }).load(function() {
+              fullpage.addClass('_first-loaded');
+            });
+
+            var elsToAnimate = $('.section').eq(0).find('.fullpage-animate');
+
+            elsToAnimate
+              .css({
+                opacity: 0,
+                transform: 'translateY(-200px)'
+              })
+              .velocity(animations['from-top'], {
+                duration: animationDuration
+              });
+          },
+          afterResize: function() {
+            $.publish('fullpage:afterResize');
+          },
+          onLeave: function(index, nextIndex, direction) {
+            // we couldn't use "stop() + sliderUp/sliderDown" b/c footer stucks in transition if previous animation wasn't finished
+            if (nextIndex == $('.section').length) {
+              footer.stop().animate({'height': footerOriginalHeight});
+            } else if (index == $('.section').length) {
+              footer.stop().animate({'height': 0});
+            }
+
+            var onlyEnterAnimations = true;
+
+            $(this).addClass('once-viewed');
+
+            if ($('.section').eq(nextIndex - 1).hasClass('once-viewed')) return;
+
+            var currentElsToAnimate = $(this).find('.fullpage-animate');
+            var nextElsToAnimate = $('.section').eq(nextIndex - 1).find('.fullpage-animate');
+
+            nextElsToAnimate.each(function(i, el) {
+              var enterAnimationName = $(el).data('enter-animation');
+
+              if (!enterAnimationName) {
+                enterAnimationName = $(el).data('enter-' + direction + '-animation');
+              }
+
+              if (!enterAnimationName) {
+                enterAnimationName = animations['defaults']['enter-' + direction];
+              }
+
+              var animation = animations[enterAnimationName];
+
+              $(el).velocity(animation, {
+                duration: animationDuration
+              });
+            });
+
+            if (onlyEnterAnimations) return;
+
+            currentElsToAnimate.each(function(i, el) {
+              var leaveAnimationName = $(el).data('leave-animation');
+
+              if (!leaveAnimationName) {
+                leaveAnimationName = $(el).data('leave-' + direction + '-animation');
+              }
+
+              if (!leaveAnimationName) {
+                leaveAnimationName = animations['defaults']['leave-' + direction];
+              }
+
+              var animation = animations[leaveAnimationName];
+
+              $(el).velocity(animation, {
+                duration: animationDuration
+              });
+            });
+          }
+        });
+
+        $('.scroll-to-next').on('click', function() {
+          $.fn.fullpage.moveSectionDown();
+        });
+
+        $('.object-fit-cover').each(function() {
+          var el = $(this);
+          var container = el.parent();
+
+          // todo: do calculation only if object is visible
+
+          var originalWidth = parseInt(el.data('original-width'));
+          var originalHeight = parseInt(el.data('original-height'));
+          var isCentered = el.data('align') && el.data('align') == 'center';
+
+          el.width(originalWidth);
+          el.height(originalHeight);
+
+          var scale;
+
+          var fit = function() {
+            scale = Math.max(container.height() / originalHeight, container.width() / originalWidth);
+
+            el.css('transform', 'scale(' + scale + ')');
+            el.css('-webkit-transform', 'scale(' + scale + ')');            
+
+            if (isCentered) {
+              el.css('left', (container.width() - originalWidth * scale) / 2);
+            }
+          };
+
+          $(window).on('resize', fit);
+          $.subscribe('fullpage:afterResize', fit);
+          fit();
+        });
+
+      });
+    </script>
+      <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-55318807-1']);
+  _gaq.push(['_setDomainName', '.trialpay.com']);
+    _gaq.push(['_trackPageview' ]);
+  
+    if (typeof($)=='function') {         (typeof(MooTools) == 'undefined' ? $(document.links) : $A(document.links)).each(function(link) {
+      if (/\.pdf$/.test(link.pathname)) {
+        link.addEvent('click', function(event) {
+          _gaq.push(['_trackPageview', link.pathname + '?host=' + link.hostname]);
+        });
+      }
+    });
+  }
+  
+            (function() {       var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+       
+      ga.src = (('https:' == document.location.protocol) ? 'https://ssl.google-analytics.com/ga.js' : 'http://www.google-analytics.com/ga.js');
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+    </body>
+    </html>
+  

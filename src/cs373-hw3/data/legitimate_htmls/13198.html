@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+
+	<title>BitShare.com - Free File Hosting and Cloud Storage</title>
+
+	<meta name="description" content="BitShare.com - Free File Hosting and Cloud Storage" />
+	<meta http-equiv="language" content="en" />
+	<meta http-equiv="content-language" content="en" />
+
+	<meta name='revisit-after' content="3 days" />
+	<meta name="robots" content="index, follow, all" />
+
+	<link rel="stylesheet" href="http://bitshare.com/other/css/style.css" type="text/css" media="screen" charset="utf-8" />
+	<link rel="shortcut icon" href="http://bitshare.com/other/images/favicon.ico" type="image/x-icon"  />
+    <!--<script type="text/javascript" language="javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>-->
+	<script type="text/javascript" language="javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+	<script type="text/javascript" language="javascript" src="http://bitshare.com/other/javascript/jquery.MultiFile.js"></script><script type="text/javascript" language="javascript" src="http://bitshare.com/other/javascript/jquery.validate.js"></script>
+	
+		<script type="text/javascript" language="JavaScript">
+			<!--
+
+
+
+				var uploadBegin = 0;
+var filecount = 0;
+var uuid;
+
+function switchTab(id) {
+    if(id == 'file') { $('#tabcontent_import').removeClass('selected'); $('#tab_remote').removeClass('selected'); $('#tab_ftp').removeClass('selected');
+    $('#tabcontent_remote').slideUp('fast'); $('#tabcontent_ftp').slideUp('fast');$('#tabcontent_import').slideUp('fast');
+    } else if (id == 'remote') { $('#tabcontent_import').removeClass('selected'); $('#tab_file').removeClass('selected');    $('#tab_ftp').removeClass('selected'); $('#tabcontent_file').slideUp('fast'); $('#tabcontent_ftp').slideUp('fast');$('#tabcontent_import').slideUp('fast');
+    } else if (id == 'import') { $('#tab_remote').removeClass('selected'); $('#tab_file').removeClass('selected');	$('#tab_ftp').removeClass('selected'); $('#tabcontent_file').slideUp('fast'); $('#tabcontent_ftp').slideUp('fast');$('#tabcontent_remote').slideUp('fast');
+    } else { $('#tab_remote').removeClass('selected'); $('#tab_file').removeClass('selected'); $('#tabcontent_remote').slideUp('fast');	$('#tabcontent_file').slideUp('fast');$('#tabcontent_import').slideUp('fast');
+    }
+    $('#tab_' + id).addClass('selected'); $('#tabcontent_' + id).slideDown('fast'); }
+function round(x, n) { if (n < 1 || n > 14) return false; var e = Math.pow(10, n); var k = (Math.round(x * e) / e).toString();	if (k.indexOf('.') == -1) k += '.'; 	k += e.toString().substring(1);  	return k.substring(0, k.indexOf('.') + n+1); }
+function formatTime(sec){ sec = parseInt(sec);  var std = parseInt(sec/3600); var min = parseInt(((sec)-(std*3600))/60); var sek = sec -(std*3600)-(min*60);  var output = ''; if(std == 0) { if(min == 0) { output = sek + ' Seconds'; } else { output = min +' Minutes, '+sek+' Seconds'; } } else { output = std+' Hours, '+ min +' Minutes, '+sek+' Seconds'; } return output; }
+function FormatFilesize(bytes) { if(bytes < 1024) { return bytes + ' Byte'; } else if (bytes < 1024*1024) { return round((bytes/1024), 1) + 'Kbyte'; } else { return round((bytes/1024/1024), 1) + 'Mbyte'; } }
+
+function StartRemoteUpload() { if($('#checkedTOS_RU').attr('checked') != true) { alert('Please agree to our Terms of Service and Privacy Police first!'); return false; } var tmp = jQuery.trim($('#files1').val()); if(tmp == '' || tmp.length < 5) { return false; } return true; }
+function StartRemoteUpload2() { if($('#checkedTOS_RU2').attr('checked') != true) { alert('Please agree to our Terms of Service and Privacy Police first!'); return false; } var tmp = jQuery.trim($('#files2').val()); if(tmp == '' || tmp.length < 5) { return false; } return true; }
+function StartUpload() {
+	if($('#checkedTOS').attr('checked') != true) { alert('Please agree to our Terms of Service and Privacy Police first!'); return false; } if(filecount == 0) { alert('Please select a file to upload first!'); return false; }
+    for (i = 0; i < 32; i++) { uuid += Math.floor(Math.random() * 16).toString(16); }
+    document.getElementById("uploadform").action = document.getElementById("uploadform").action + "?X-Progress-ID=" + uuid;
+	uploadBegin = Date.parse(new Date()); interval = window.setInterval("UpdateProgress()", 2500); $('#progressbar_container_pending').show('slow'); $('#submitlayer').hide('slow'); $('#fileupload').hide('slow'); $('#T7-list').hide('slow'); $('#tabchoose').hide('slow');
+	return true;
+}
+function UpdateProgress() {
+	var d = new Date(); var requestkey = d.getTime() + "-" + Math.random()*1000000;
+	$.getJSON("http://bitshare.com/request/jsonreq.php?url=&XProgressID=" + uuid + "&requestkey="+requestkey, function(data){ $('#progressbar_container').fadeIn('slow'); $('#progressbar_container_pending').fadeOut('slow'); var timediff = (Date.parse(new Date()) - uploadBegin)/1000; x = (parseInt(data['received']) / 1024 / timediff);	var speed = Math.round(x); var timeleft = Math.round((parseInt(data['size']) - parseInt(data['received'])) /1024 / speed); percentage = Math.round(parseInt(data['received'])*100/parseInt(data['size'])); if(percentage > 100) { percentage = 100; } if(percentage > 48) { $('#progressvalue').css("color","#ffffff"); } var width = Math.round(percentage*4.4);	$("#progress").css("width", width+"px"); $("#progressvalue").html(percentage+'%'); $("#speed").html(speed + 'Kbyte/s'); $("#current").html(FormatFilesize(data['received'])); $("#total").html(FormatFilesize(data['size'])); $("#time").html(formatTime(timeleft)); });
+}
+$(function(){
+    $('#files2').keyup(function(){ limitLines('files2', 'notice2'); });
+	$('#files1').keyup(function(){ limitLines('files1', 'notice'); });
+    $('#T7').MultiFile({ list: '#T7-list', STRING: {	file: '$file', remove:'<img src="http://bitshare.com/other/images/remove.png" alt="[x]" title="Remove" style="vertical-align:bottom;" />' } });
+    $("#notification").change(function() { $("#notification_form").toggle(); });$("#notification2").change(function() { $("#notification_form2").toggle(); });
+});
+			//-->
+		</script>
+	
+	<script type="text/javascript">
+		if (self != top) { top.location.href = self.location.href; }
+	</script>
+</head>
+    <body>
+
+
+
+    	<div id="nav">
+
+			<div id="tabs">
+				<div id="logo">
+					<a href="http://bitshare.com/">
+						<img src="http://bitshare.com/other/images/logo.gif" alt="Bitshare - Free File Sharing and Storage" />
+					</a>
+				</div>
+				
+					<div class="tab_mid_next_yellow"
+						style="z-index:1;background-image:url(http://bitshare.com/other/images/nav2_last_rollover.gif);"
+						>
+							<div class="tab_first" style="background-image:url(http://bitshare.com/other/images/nav2_first_rollover.gif);"></div>
+							<a href="http://bitshare.com/" style="font-size:12px;margin-left:-2px;"><b>Upload</b></a>
+					</div>
+					<div class="tab_mid_yellow"
+						
+						>
+						<a href="http://bitshare.com/premium.html" style="font-size:12px;margin-left:-2px;"><b>Premium</b></a>
+					</div>
+					<div class="tab_mid"
+						
+						>
+						<a href="http://bitshare.com/tool.html" style="font-size:12px;margin-left:-2px;"><b>Tool</b></a>
+					</div>
+					<div class="tab_mid"
+						
+						>
+						<a href="http://bitshare.com/tour.html" style="font-size:12px;margin-left:-2px;"><b>Tour</b></a>
+					</div>
+					<div class="tab_mid"
+						
+						>
+						<a href="http://bitshare.com/faq.html" style="font-size:12px;margin-left:-2px;"><b>FAQ</b></a>
+					</div>
+					<div class="tab_last_without_yellow"
+						>
+						<a href="http://bitshare.com/signup.html" style="font-size:12px;margin-left:-2px;"><b>Sign Up</b></a>
+					</div>
+				
+
+
+
+				<div id="lang2">
+
+					<div id="lang2_selected" onclick="toggleLangmenu();">
+						<img src="http://bitshare.com/other/images/flag/gb.gif" /> English
+					</div>
+
+					<div id="lang2_extend" style="display: none;">
+						<div id="EN" onclick="selectLang(this);" class="lang_menu_selected_item"><img src="http://bitshare.com/other/images/flag/gb.gif" /> English</div>
+						<div id="DE" onclick="selectLang(this);" ><img src="http://bitshare.com/other/images/flag/de.gif" /> German</div>
+						<div id="NL" onclick="selectLang(this);" ><img src="http://bitshare.com/other/images/flag/nl.gif" /> Dutch</div>
+						<div id="FR" onclick="selectLang(this);" ><img src="http://bitshare.com/other/images/flag/fr.gif" /> French</div>
+						<div id="ES" onclick="selectLang(this);" ><img src="http://bitshare.com/other/images/flag/es.gif" /> Spanish</div>
+						<div id="PT" onclick="selectLang(this);" ><img src="http://bitshare.com/other/images/flag/pt.gif" /> Portuguese</div>
+						<div id="IT" onclick="selectLang(this);" ><img src="http://bitshare.com/other/images/flag/it.gif" /> Italian</div>
+						<div id="TR" onclick="selectLang(this);" ><img src="http://bitshare.com/other/images/flag/tr.gif" /> Turkish</div>
+						<div id="RU" onclick="selectLang(this);" ><img src="http://bitshare.com/other/images/flag/ru.gif" /> Russian</div>
+						<div id="PL" onclick="selectLang(this);" ><img src="http://bitshare.com/other/images/flag/pl.gif" /> Polish</div>
+						<div id="BA" onclick="selectLang(this);" ><img src="http://bitshare.com/other/images/flag/ba.gif" /> Bosnian</div>
+						<div id="RO" onclick="selectLang(this);" ><img src="http://bitshare.com/other/images/flag/ro.gif" /> Romanian</div>
+						<div id="VN" onclick="selectLang(this);" ><img src="http://bitshare.com/other/images/flag/vn.gif" /> Vietnamese</div>
+						<div id="MN" onclick="selectLang(this);" ><img src="http://bitshare.com/other/images/flag/mn.gif" /> Mongolian</div>
+						<div id="SA" onclick="selectLang(this);" ><img src="http://bitshare.com/other/images/flag/sa.gif" /> Arabian</div>
+						<div id="ID" onclick="selectLang(this);" ><img src="http://bitshare.com/other/images/flag/id.gif" /> Indonesian</div>
+						<div id="KR" onclick="selectLang(this);" ><img src="http://bitshare.com/other/images/flag/kr.gif" /> Korean</div>
+						<div id="CN" onclick="selectLang(this);" ><img src="http://bitshare.com/other/images/flag/cn.gif" /> Chinese</div>
+						<div id="TW" onclick="selectLang(this);" ><img src="http://bitshare.com/other/images/flag/tw.gif" /> Chinese Tw</div>
+					</div>
+				</div>
+
+				<script type="text/javascript">
+					function sleep(ms){
+						var zeit=(new Date()).getTime();
+						var stoppZeit=zeit+ms;
+						while((new Date()).getTime()<stoppZeit){};
+					}
+
+					function showLogin() {
+						$('#loginbox').show();
+					}
+					function hideLogin() {
+						$('#loginbox').hide();
+					}
+					function removeleadingtrailingblanks(fld) {
+						fld.replace(/\n|\r/g, '');
+
+						var res = "";
+						var c = 0;
+						for (i=0; i<fld.length; i++) {
+						  if (fld.charAt(i) != " " || c > 0) {
+						    res += fld.charAt(i);
+						    if (fld.charAt(i) != " ") c = res.length;
+						    }
+						  }
+						return res.substr(0,c);
+					}
+					function RemoveBlanks() {
+						$('#logintopuser').attr('value', removeleadingtrailingblanks($('#logintopuser').attr('value')));
+						$('#logintoppass').attr('value', removeleadingtrailingblanks($('#logintoppass').attr('value')));
+						return true;
+					}
+
+
+
+					function toggleLangmenu() {
+						if($('#lang2_selected').css("background-image") == "url(\"http://bitshare.com/other/images/lang_drop.gif\")" || $('#lang2_selected').css("background-image") == "url(http://bitshare.com/other/images/lang_drop.gif)") {
+							$('#lang2_selected').css("background-image", "url(http://bitshare.com/other/images/lang_drop_top.gif)");
+							$('#lang2_extend').slideDown(200);
+						} else {
+							hideLangmenu();
+						}
+					}
+					function hideLangmenu() {
+							$('#lang2_extend').slideUp(400);
+							setTimeout(hide_lang_drop, 400);
+					}
+
+					function hide_lang_drop() {
+						$('#lang2_selected').css("background-image", "url(http://bitshare.com/other/images/lang_drop.gif)");
+					}
+
+					function selectLang(id) {
+						top.location.href = 'http://bitshare.com/?language=' + id.id;
+					}
+
+					$('#lang2_selected').html($(".lang_menu_selected_item").html());
+
+					window.document.onmousedown = function(e) {
+						if(!e) e = window.event;
+						var obj = e.target || e.srcElement;
+
+						if(obj.id != 'lang2_selected' && obj.parentNode.id != 'lang2_extend') {
+							hideLangmenu();
+						}
+
+						if(obj.className.search('loginbox') < 0) {
+							hideLogin();
+						}
+					};
+
+				</script>
+
+				<div id="subnav">
+
+					
+     <div style="float:left;">
+<div style="position:absolute;margin-left:200px;">
+	<iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.facebook.com%2FBitShare&amp;layout=button_count&amp;show_faces=true&amp;width=450&amp;action=like&amp;font=arial&amp;colorscheme=light&amp;height=80" scrolling="no" frameborder="0" style="padding-bottom:-3px;" height=20 width=120 gravity="e" frameborder=0 noresize></iframe>
+
+</div>
+            </div>
+						<a href="javascript:showLogin();"><b>Click here to login</b></a>
+
+						<div style="float:right;display:none;z-index:9999;" id="loginbox" class="loginbox">
+							<div class="bluebox loginbox" style="position:absolute;margin-left:-245px;margin-top:25px;">
+								<div class="mid loginbox">
+									<div class="inner loginbox">
+										<div class="corner loginbox" style="text-align:center;">
+											<form action="http://bitshare.com/login.html" method="post" id="LoginFormTop" class="loginbox" onsubmit="RemoveBlanks();">
+												<table style="border:none;" id="login" class="loginbox">
+														<tr>
+														<td style="text-align:left;padding:4px;padding-top:4px;font-size:15px"><b>Login</b></td>
+														<td style="text-align:left;padding:4px;"></td>
+													</tr>
+
+													<tr>
+														<td style="text-align:right;padding:4px;" class="loginbox">Username:</td>
+														<td style="text-align:left;padding:4px;" class="loginbox"><input type="text" name="user" value=""  id="logintopuser" style="width:145px;z-index:9999;" class="loginbox required" minlength="3" title=" " /></td>
+													</tr>
+													<tr>
+														<td style="text-align:right;padding:4px;" class="loginbox">Password:</td>
+														<td style="text-align:left;padding:4px;" class="loginbox"><input type="password" name="password" value="" id="logintoppass" style="width:145px;z-index:9999;" class="loginbox required" minlength="3" title=" "  /></td>
+													</tr>
+													<tr>
+														<td style="text-align:right;padding:4px;" class="loginbox"></td>
+														<td style="text-align:left;padding:4px;" class="loginbox"><input type="checkbox" name="rememberlogin" value="" style="z-index:99999;" class="loginbox" checked="checked" /> Remember Login</td>
+													</tr>
+													<tr>
+														<td style="text-align:right;padding:4px;" colspan="2" class="loginbox">
+
+															<div style="float:left;padding-top:4px;text-align:left;" class="loginbox">
+																<a class="loginbox" href="http://bitshare.com/lostpassword.html" style="color:#000000;font-size:10px;">Forgot password?</a><br />
+																<a class="loginbox" href="http://bitshare.com/retrieve_premium.html" style="margin-top:3px;color:#000000;font-size:10px;">Lost premium account?</a>
+															</div>
+															<input type="submit" value="Login" name="submit" class="blue_mid loginbox" style="margin-top:6px;"  />
+														</td>
+													</tr>
+												</table>
+
+											</form>
+											<script type="text/javascript">
+												$("#LoginFormTop").validate();
+											</script>
+
+										</div>
+									</div>
+								</div>
+							</div>
+
+						</div>
+
+					
+
+				</div>
+
+				
+
+			</div>
+
+
+    	</div>
+
+
+		<div id="content">
+               
+        
+			<noscript>
+				<div class="error" style="font-size:16px;">JavaScript is deactivated. Please activate Javascript!</div>
+			</noscript>
+
+			<br /><br />
+	
+<div class="welcome" style="text-align:center;padding-top:20px;">
+<b>Welcome to BitShare - Free File Hosting and Storage</b><br />
+BitShare is the easy way to host and share any files like documents, presentations, videos or images.<br/><br/>
+
+Share files with your friends safely and securely. <br />
+Just select a file, hit the <b>Upload</b> button and share your file with anyone you know!<br />
+</div>
+
+		</div>
+
+
+
+
+	<div style="clear:both;padding-top:60px;"></div>
+<div style="height:3px;background-image:url(http://bitshare.com/other/images/border_bottom.gif);"></div>
+
+<div align="center" style="width:800px;position:relative;margin:auto;text-align:left;padding-top:10px;margin-top:10px;margin-bottom:10px;font-size:11px;position: relative;">
+
+<div style="float:left;width: 170px;border-right:1px solid #cce6ff;;">
+<div style="font-size:12px;font-weight:bold;color:#4d7eb9;"> Site </div>
+<div class="footer_links" style="padding-top:2px;line-height:16px;">
+<a href="/">Upload</a> <br/>
+	
+<a href="/tool.html">Desktop Tool</a><br/>
+<a href="/premium.html">Become Premium</a><br/>
+<a href="/signup.html">Signup as Free User</a><br/>
+
+	
+<a href="/linkcheck.html">Link Checker</a><br/>
+<a href="/resellers.html">Resellers</a><br/>
+</div>
+</div>
+<div style="float:left;width:170px;padding-left:20px;border-right:1px solid #cce6ff;;">
+<div style="font-size:12px;font-weight:bold;color:#4d7eb9;"> About BitShare </div>
+<div class="footer_links" style="padding-top:2px;line-height:16px;">
+<a href="/news.html">News</a> <br/>
+<a href="/tour.html">Tour</a><br/>
+<a href="/about.html">Imprint</a><br/>
+<a href="/abuse.html">Report Abuse</a><br/>
+<a href="/linktous.html">Link to Us</a><br/>
+<a href="/reseller_application.html">Become Reseller</a><br/>
+</div>
+</div>
+<div style="float:left;width:170px;padding-left:20px;border-right:1px solid #cce6ff;">
+<div style="font-size:12px;font-weight:bold;color:#4d7eb9;"> Help & Support </div>
+<div class="footer_links" style="padding-top:2px;line-height:16px;">
+<a href="/contact.html">Contact Us</a><br/>
+<a href="/faq.html">General FAQ</a><br/>
+<a href="/faq-25.html">Premium FAQ</a><br/>
+<a href="/faq-21.html">Uploading FAQ</a><br/>
+<a href="/faq-20.html">Downloading FAQ</a><br/>
+<a href="/openAPI.html">Developers API</a><br/>
+</div>
+</div>
+<div style="float:left;width:200px;padding-left:20px;">
+<div style="font-size:12px;font-weight:bold;color:#4d7eb9;"></div>
+<div class="footer_links" style="padding-top:2px;line-height:16px;">
+<script type="text/javascript" language="JavaScript">
+<!--
+function footerimg(img, url)
+   {
+   document[img].src = url;
+   }
+//-->
+</script>
+<a href="/tool.html" onmouseover="footerimg('switch', 'http://bitshare.com/other/images/bitsharefooter.png')"
+onmouseout="footerimg('switch', 'http://bitshare.com/other/images/bitsharefootergray.png')">
+<img src="http://bitshare.com/other/images/bitsharefootergray.png" name="switch"></a>
+<div style="text-align:center;font-size:15px;color:#4d7eb9;"> <a href="/tool.html">BitShare Manager</a></div><br />
+<div style="text-align:center;font-size:13px;">
+<a href="http://twitter.com/bitsharecom" target="_blank"  title="Follow us on Twitter"><img src="http://bitshare.com/other/images/twitter.png" alt="Twitter"> Twitter</a>
+  <a href="http://www.facebook.com/BitShare" target="_blank" title="Find us on Facebook"><img src="http://bitshare.com/other/images/facebook.png" alt="Facebook"> Facebook</a>
+ </div>
+</div>
+</div>
+</div>
+	<div style="clear:both;padding-top:10px;"></div>
+<div style="height:3px;background-image:url(http://bitshare.com/other/images/border_bottom.gif);"></div>
+
+	<div class="copyright" style="text-align:left;margin-bottom:15px;">
+		<div style="float:right;-size:11px;">
+					<a href="http://bitshare.com/privacy-policy.html">Privacy Policy</a> |
+		                 <!-- <a href="http://bitshare.com/policy.html">Child Porn Policy</a> | -->
+					<a href="http://bitshare.com/ippolicy.html">Intellectual Property Policy</a> |
+					<a href="http://bitshare.com/terms-of-service.html">Terms of Service</a>
+		</div>
+		Copyright &copy; 2013 BitShare.com, All Rights Reserved.
+	</div>
+
+	
+
+    <!--<div id="top100_badge">
+        <a href="http://bitshare.com/challenge.html"><img src="http://bitshare.com/other/images/challenge_right.png" /></a>
+    </div>-->
+
+    
+
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-18796811-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+
+</body>
+</html>

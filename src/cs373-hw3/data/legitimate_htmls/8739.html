@@ -1,0 +1,645 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja"> 
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><script type="text/javascript">(window.NREUM||(NREUM={})).loader_config={xpid:"Vw4GWVVTGwEBV1ZbBwA="};window.NREUM||(NREUM={}),__nr_require=function(t,e,n){function r(n){if(!e[n]){var o=e[n]={exports:{}};t[n][0].call(o.exports,function(e){var o=t[n][1][e];return r(o||e)},o,o.exports)}return e[n].exports}if("function"==typeof __nr_require)return __nr_require;for(var o=0;o<n.length;o++)r(n[o]);return r}({1:[function(t,e,n){function r(t){try{s.console&&console.log(t)}catch(e){}}var o,i=t("ee"),a=t(11),s={};try{o=localStorage.getItem("__nr_flags").split(","),console&&"function"==typeof console.log&&(s.console=!0,-1!==o.indexOf("dev")&&(s.dev=!0),-1!==o.indexOf("nr_dev")&&(s.nrDev=!0))}catch(c){}s.nrDev&&i.on("internal-error",function(t){r(t.stack)}),s.dev&&i.on("fn-err",function(t,e,n){r(n.stack)}),s.dev&&(r("NR AGENT IN DEVELOPMENT MODE"),r("flags: "+a(s,function(t,e){return t}).join(", ")))},{}],2:[function(t,e,n){function r(t,e,n,r,o){try{d?d-=1:i("err",[o||new UncaughtException(t,e,n)])}catch(s){try{i("ierr",[s,(new Date).getTime(),!0])}catch(c){}}return"function"==typeof f?f.apply(this,a(arguments)):!1}function UncaughtException(t,e,n){this.message=t||"Uncaught error with no additional information",this.sourceURL=e,this.line=n}function o(t){i("err",[t,(new Date).getTime()])}var i=t("handle"),a=t(12),s=t("ee"),c=t("loader"),f=window.onerror,u=!1,d=0;c.features.err=!0,t(1),window.onerror=r;try{throw new Error}catch(l){"stack"in l&&(t(5),t(4),"addEventListener"in window&&t(3),c.xhrWrappable&&t(6),u=!0)}s.on("fn-start",function(t,e,n){u&&(d+=1)}),s.on("fn-err",function(t,e,n){u&&(this.thrown=!0,o(n))}),s.on("fn-end",function(){u&&!this.thrown&&d>0&&(d-=1)}),s.on("internal-error",function(t){i("ierr",[t,(new Date).getTime(),!0])})},{}],3:[function(t,e,n){function r(t){for(var e=t;e&&!e.hasOwnProperty(u);)e=Object.getPrototypeOf(e);e&&o(e)}function o(t){s.inPlace(t,[u,d],"-",i)}function i(t,e){return t[1]}var a=t("ee").get("events"),s=t(13)(a),c=t("gos"),f=XMLHttpRequest,u="addEventListener",d="removeEventListener";e.exports=a,"getPrototypeOf"in Object?(r(document),r(window),r(f.prototype)):f.prototype.hasOwnProperty(u)&&(o(window),o(f.prototype)),a.on(u+"-start",function(t,e){if(t[1]){var n=t[1];if("function"==typeof n){var r=c(n,"nr@wrapped",function(){return s(n,"fn-",null,n.name||"anonymous")});this.wrapped=t[1]=r}else"function"==typeof n.handleEvent&&s.inPlace(n,["handleEvent"],"fn-")}}),a.on(d+"-start",function(t){var e=this.wrapped;e&&(t[1]=e)})},{}],4:[function(t,e,n){var r=t("ee").get("raf"),o=t(13)(r);e.exports=r,o.inPlace(window,["requestAnimationFrame","mozRequestAnimationFrame","webkitRequestAnimationFrame","msRequestAnimationFrame"],"raf-"),r.on("raf-start",function(t){t[0]=o(t[0],"fn-")})},{}],5:[function(t,e,n){function r(t,e,n){t[0]=a(t[0],"fn-",null,n)}function o(t,e,n){this.method=n,this.timerDuration="number"==typeof t[1]?t[1]:0,t[0]=a(t[0],"fn-",this,n)}var i=t("ee").get("timer"),a=t(13)(i);e.exports=i,a.inPlace(window,["setTimeout","setImmediate"],"setTimer-"),a.inPlace(window,["setInterval"],"setInterval-"),a.inPlace(window,["clearTimeout","clearImmediate"],"clearTimeout-"),i.on("setInterval-start",r),i.on("setTimer-start",o)},{}],6:[function(t,e,n){function r(t,e){d.inPlace(e,["onreadystatechange"],"fn-",s)}function o(){var t=this,e=u.context(t);t.readyState>3&&!e.resolved&&(e.resolved=!0,u.emit("xhr-resolved",[],t)),d.inPlace(t,v,"fn-",s)}function i(t){y.push(t),h&&(g=-g,x.data=g)}function a(){for(var t=0;t<y.length;t++)r([],y[t]);y.length&&(y=[])}function s(t,e){return e}function c(t,e){for(var n in t)e[n]=t[n];return e}t(3);var f=t("ee"),u=f.get("xhr"),d=t(13)(u),l=NREUM.o,p=l.XHR,h=l.MO,m="readystatechange",v=["onload","onerror","onabort","onloadstart","onloadend","onprogress","ontimeout"],y=[];e.exports=u;var w=window.XMLHttpRequest=function(t){var e=new p(t);try{u.emit("new-xhr",[e],e),e.addEventListener(m,o,!1)}catch(n){try{u.emit("internal-error",[n])}catch(r){}}return e};if(c(p,w),w.prototype=p.prototype,d.inPlace(w.prototype,["open","send"],"-xhr-",s),u.on("send-xhr-start",function(t,e){r(t,e),i(e)}),u.on("open-xhr-start",r),h){var g=1,x=document.createTextNode(g);new h(a).observe(x,{characterData:!0})}else f.on("fn-end",function(t){t[0]&&t[0].type===m||a()})},{}],7:[function(t,e,n){function r(t){var e=this.params,n=this.metrics;if(!this.ended){this.ended=!0;for(var r=0;l>r;r++)t.removeEventListener(d[r],this.listener,!1);if(!e.aborted){if(n.duration=(new Date).getTime()-this.startTime,4===t.readyState){e.status=t.status;var i=o(t,this.lastSize);if(i&&(n.rxSize=i),this.sameOrigin){var a=t.getResponseHeader("X-NewRelic-App-Data");a&&(e.cat=a.split(", ").pop())}}else e.status=0;n.cbTime=this.cbTime,u.emit("xhr-done",[t],t),c("xhr",[e,n,this.startTime])}}}function o(t,e){var n=t.responseType;if("json"===n&&null!==e)return e;var r="arraybuffer"===n||"blob"===n||"json"===n?t.response:t.responseText;return i(r)}function i(t){if("string"==typeof t&&t.length)return t.length;if("object"==typeof t){if("undefined"!=typeof ArrayBuffer&&t instanceof ArrayBuffer&&t.byteLength)return t.byteLength;if("undefined"!=typeof Blob&&t instanceof Blob&&t.size)return t.size;if(!("undefined"!=typeof FormData&&t instanceof FormData))try{return JSON.stringify(t).length}catch(e){return}}}function a(t,e){var n=f(e),r=t.params;r.host=n.hostname+":"+n.port,r.pathname=n.pathname,t.sameOrigin=n.sameOrigin}var s=t("loader");if(s.xhrWrappable){var c=t("handle"),f=t(8),u=t("ee"),d=["load","error","abort","timeout"],l=d.length,p=t("id"),h=t(10),m=window.XMLHttpRequest;s.features.xhr=!0,t(6),u.on("new-xhr",function(t){var e=this;e.totalCbs=0,e.called=0,e.cbTime=0,e.end=r,e.ended=!1,e.xhrGuids={},e.lastSize=null,h&&(h>34||10>h)||window.opera||t.addEventListener("progress",function(t){e.lastSize=t.loaded},!1)}),u.on("open-xhr-start",function(t){this.params={method:t[0]},a(this,t[1]),this.metrics={}}),u.on("open-xhr-end",function(t,e){"loader_config"in NREUM&&"xpid"in NREUM.loader_config&&this.sameOrigin&&e.setRequestHeader("X-NewRelic-ID",NREUM.loader_config.xpid)}),u.on("send-xhr-start",function(t,e){var n=this.metrics,r=t[0],o=this;if(n&&r){var a=i(r);a&&(n.txSize=a)}this.startTime=(new Date).getTime(),this.listener=function(t){try{"abort"===t.type&&(o.params.aborted=!0),("load"!==t.type||o.called===o.totalCbs&&(o.onloadCalled||"function"!=typeof e.onload))&&o.end(e)}catch(n){try{u.emit("internal-error",[n])}catch(r){}}};for(var s=0;l>s;s++)e.addEventListener(d[s],this.listener,!1)}),u.on("xhr-cb-time",function(t,e,n){this.cbTime+=t,e?this.onloadCalled=!0:this.called+=1,this.called!==this.totalCbs||!this.onloadCalled&&"function"==typeof n.onload||this.end(n)}),u.on("xhr-load-added",function(t,e){var n=""+p(t)+!!e;this.xhrGuids&&!this.xhrGuids[n]&&(this.xhrGuids[n]=!0,this.totalCbs+=1)}),u.on("xhr-load-removed",function(t,e){var n=""+p(t)+!!e;this.xhrGuids&&this.xhrGuids[n]&&(delete this.xhrGuids[n],this.totalCbs-=1)}),u.on("addEventListener-end",function(t,e){e instanceof m&&"load"===t[0]&&u.emit("xhr-load-added",[t[1],t[2]],e)}),u.on("removeEventListener-end",function(t,e){e instanceof m&&"load"===t[0]&&u.emit("xhr-load-removed",[t[1],t[2]],e)}),u.on("fn-start",function(t,e,n){e instanceof m&&("onload"===n&&(this.onload=!0),("load"===(t[0]&&t[0].type)||this.onload)&&(this.xhrCbStart=(new Date).getTime()))}),u.on("fn-end",function(t,e){this.xhrCbStart&&u.emit("xhr-cb-time",[(new Date).getTime()-this.xhrCbStart,this.onload,e],e)})}},{}],8:[function(t,e,n){e.exports=function(t){var e=document.createElement("a"),n=window.location,r={};e.href=t,r.port=e.port;var o=e.href.split("://");!r.port&&o[1]&&(r.port=o[1].split("/")[0].split("@").pop().split(":")[1]),r.port&&"0"!==r.port||(r.port="https"===o[0]?"443":"80"),r.hostname=e.hostname||n.hostname,r.pathname=e.pathname,r.protocol=o[0],"/"!==r.pathname.charAt(0)&&(r.pathname="/"+r.pathname);var i=!e.protocol||":"===e.protocol||e.protocol===n.protocol,a=e.hostname===document.domain&&e.port===n.port;return r.sameOrigin=i&&(!e.hostname||a),r}},{}],9:[function(t,e,n){function r(t,e){return function(){o(t,[(new Date).getTime()].concat(a(arguments)),null,e)}}var o=t("handle"),i=t(11),a=t(12);"undefined"==typeof window.newrelic&&(newrelic=NREUM);var s=["setPageViewName","addPageAction","setCustomAttribute","finished","addToTrace","inlineHit"],c=["addPageAction"],f="api-";i(s,function(t,e){newrelic[e]=r(f+e,"api")}),i(c,function(t,e){newrelic[e]=r(f+e)}),e.exports=newrelic,newrelic.noticeError=function(t){"string"==typeof t&&(t=new Error(t)),o("err",[t,(new Date).getTime()])}},{}],10:[function(t,e,n){var r=0,o=navigator.userAgent.match(/Firefox[\/\s](\d+\.\d+)/);o&&(r=+o[1]),e.exports=r},{}],11:[function(t,e,n){function r(t,e){var n=[],r="",i=0;for(r in t)o.call(t,r)&&(n[i]=e(r,t[r]),i+=1);return n}var o=Object.prototype.hasOwnProperty;e.exports=r},{}],12:[function(t,e,n){function r(t,e,n){e||(e=0),"undefined"==typeof n&&(n=t?t.length:0);for(var r=-1,o=n-e||0,i=Array(0>o?0:o);++r<o;)i[r]=t[e+r];return i}e.exports=r},{}],13:[function(t,e,n){function r(t){return!(t&&"function"==typeof t&&t.apply&&!t[a])}var o=t("ee"),i=t(12),a="nr@original",s=Object.prototype.hasOwnProperty,c=!1;e.exports=function(t){function e(t,e,n,o){function nrWrapper(){var r,a,s,c;try{a=this,r=i(arguments),s="function"==typeof n?n(r,a):n||{}}catch(u){d([u,"",[r,a,o],s])}f(e+"start",[r,a,o],s);try{return c=t.apply(a,r)}catch(l){throw f(e+"err",[r,a,l],s),l}finally{f(e+"end",[r,a,c],s)}}return r(t)?t:(e||(e=""),nrWrapper[a]=t,u(t,nrWrapper),nrWrapper)}function n(t,n,o,i){o||(o="");var a,s,c,f="-"===o.charAt(0);for(c=0;c<n.length;c++)s=n[c],a=t[s],r(a)||(t[s]=e(a,f?s+o:o,i,s))}function f(e,n,r){if(!c){c=!0;try{t.emit(e,n,r)}catch(o){d([o,e,n,r])}c=!1}}function u(t,e){if(Object.defineProperty&&Object.keys)try{var n=Object.keys(t);return n.forEach(function(n){Object.defineProperty(e,n,{get:function(){return t[n]},set:function(e){return t[n]=e,e}})}),e}catch(r){d([r])}for(var o in t)s.call(t,o)&&(e[o]=t[o]);return e}function d(e){try{t.emit("internal-error",e)}catch(n){}}return t||(t=o),e.inPlace=n,e.flag=a,e}},{}],ee:[function(t,e,n){function r(){}function o(t){function e(t){return t&&t instanceof r?t:t?s(t,a,i):i()}function n(n,r,o){t&&t(n,r,o);for(var i=e(o),a=l(n),s=a.length,c=0;s>c;c++)a[c].apply(i,r);var u=f[v[n]];return u&&u.push([y,n,r,i]),i}function d(t,e){m[t]=l(t).concat(e)}function l(t){return m[t]||[]}function p(t){return u[t]=u[t]||o(n)}function h(t,e){c(t,function(t,n){e=e||"feature",v[n]=e,e in f||(f[e]=[])})}var m={},v={},y={on:d,emit:n,get:p,listeners:l,context:e,buffer:h};return y}function i(){return new r}var a="nr@context",s=t("gos"),c=t(11),f={},u={},d=e.exports=o();d.backlog=f},{}],gos:[function(t,e,n){function r(t,e,n){if(o.call(t,e))return t[e];var r=n();if(Object.defineProperty&&Object.keys)try{return Object.defineProperty(t,e,{value:r,writable:!0,enumerable:!1}),r}catch(i){}return t[e]=r,r}var o=Object.prototype.hasOwnProperty;e.exports=r},{}],handle:[function(t,e,n){function r(t,e,n,r){o.buffer([t],r),o.emit(t,e,n)}var o=t("ee").get("handle");e.exports=r,r.ee=o},{}],id:[function(t,e,n){function r(t){var e=typeof t;return!t||"object"!==e&&"function"!==e?-1:t===window?0:a(t,i,function(){return o++})}var o=1,i="nr@id",a=t("gos");e.exports=r},{}],loader:[function(t,e,n){function r(){if(!m++){var t=h.info=NREUM.info,e=u.getElementsByTagName("script")[0];if(t&&t.licenseKey&&t.applicationID&&e){c(l,function(e,n){t[e]||(t[e]=n)});var n="https"===d.split(":")[0]||t.sslForHttp;h.proto=n?"https://":"http://",s("mark",["onload",a()],null,"api");var r=u.createElement("script");r.src=h.proto+t.agent,e.parentNode.insertBefore(r,e)}}}function o(){"complete"===u.readyState&&i()}function i(){s("mark",["domContent",a()],null,"api")}function a(){return(new Date).getTime()}var s=t("handle"),c=t(11),f=window,u=f.document;NREUM.o={ST:setTimeout,CT:clearTimeout,XHR:f.XMLHttpRequest,REQ:f.Request,EV:f.Event,PR:f.Promise,MO:f.MutationObserver},t(9);var d=""+location,l={beacon:"bam.nr-data.net",errorBeacon:"bam.nr-data.net",agent:"js-agent.newrelic.com/nr-918.min.js"},p=window.XMLHttpRequest&&XMLHttpRequest.prototype&&XMLHttpRequest.prototype.addEventListener&&!/CriOS/.test(navigator.userAgent),h=e.exports={offset:a(),origin:d,features:{},xhrWrappable:p};u.addEventListener?(u.addEventListener("DOMContentLoaded",i,!1),f.addEventListener("load",r,!1)):(u.attachEvent("onreadystatechange",o),f.attachEvent("onload",r)),s("mark",["firstbyte",a()],null,"api");var m=0},{}]},{},["loader",2,7]);</script>
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+
+	<title>スキンケア大学～お肌の正しい知識を医師が解説します～</title>
+	<meta name="description" content="10年後も美しくありたいと願う女性にとってお肌の悩みはつきないもの、たくさんある情報の中でどれを選んで良いかわからないという方のも多いのでは？そんな方のためにスキンケア大学ではドクターがお肌のお手入れについて正しい情報を発信します。" />
+	<meta name="keywords" content="スキンケア,皮膚科,ニキビ,毛穴,シミ" />
+	<meta property="fb:app_id" content="1434027640199531" />
+	<link rel="canonical" href="http://www.skincare-univ.com/" />
+	<link rel="stylesheet" type="text/css" media="screen,print" href="/assets/css/top.css" />
+	<link rel="shortcut icon" href="/common/images/favicon.ico" />
+
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript" src="/common/js/common.js"></script>
+<script type="text/javascript" src="/common/js/heightLine.js"></script>
+<!--[if lt IE 7]><script src="//ie7-js.googlecode.com/svn/version/2.1(beta4)/IE7.js"></script><![endif]-->
+
+	<meta property="og:site_name" content="スキンケア大学" />
+<meta property="og:locale" content="ja_JP" />
+<meta property="og:image" content="http://www.skincare-univ.com/common/images/logo_1024_white.png">
+<meta property="og:type" content="website" />
+<meta property="og:title" content ="スキンケア大学" />
+<meta property="og:description" content ="10年後も美しくありたいと願う女性にとってお肌の悩みはつきないもの、たくさんある情報の中でどれを選んで良いかわからないという方のも多いのでは？そんな方のためにスキンケア大学ではドクターがお肌のお手入れについて正しい情報を発信します。">
+
+	<!-- GAカテゴリ設定 -->
+	      <link rel="alternate" media="only screen and (max-width: 640px)" href="http://sp.skincare-univ.com/">
+  
+<script type="text/javascript">
+var _ap={
+  "c1e":"top",  "c1j":"",  "c2e":"",  "c2j":"",  "c3e":"",  "c3j":"",  "c4e":"",  "c4j":"",  "ad":"",  "ad_type":"",  "ab_test_type":"",  "ad_category_id":"91"};
+</script>
+
+<script type="text/javascript" src="/inc/js/jquery/jquery.cookie.js"></script>
+
+<script type="text/javascript">
+  if ($.cookie('ad_tracking_category') === undefined) {
+    if (!_ap.ad) _ap.ad = '-';
+    $.cookie('ad_tracking_category', _ap.ad, { path: '/' });
+    $.cookie('ad_tracking_category_id', (_ap.category2_id ? _ap.category2_id : ''), { path: '/' });
+  }
+</script>
+
+</head>
+<body>
+<!-- 共通ヘッダー（最上部） -->
+<div id="header1"><div class="inner980 clearFix">
+<div id="headerTxt">
+  <p>817名のドクターが所属するスキンケア情報サイト</p>
+  <p>&nbsp;｜&nbsp;スキンケア大学をフォロー</p>
+  <ul id="headerSocial">
+  <li><a href="https://twitter.com/skincare_univ" target="_blank"><img src="/assets/images/top/icon-twitter-01.png" width="20" height="20" alt="Twitter" /></a></li>
+  <li><a href="https://www.facebook.com/skincare.univ" target="_blank"><img src="/assets/images/top/icon-facebook-01.png" width="20" height="20" alt="Facebook" /></a></li>
+  </ul><!-- /headerSocial -->
+</div><!-- /headerTxt -->
+
+<ul id="headerLink">
+<li><a href="/about/">スキンケア大学とは？</a></li>
+<li id="login-text"><a href="/member/login/" id="log_url"></a>&nbsp;|&nbsp;</li>
+<li id="user_name"><a href="/member/register/" id="member_url"></a>&nbsp;|&nbsp;</li>
+</ul><!-- /headerLink -->
+
+</div></div><!-- /header1 -->
+
+<!-- 共通ヘッダー（ロゴ部分） -->
+<div id="header2"><div class="inner980 clearFix">
+
+<h1 id="headerLogo"><a href="/"><img src="/assets/images/top/header-logo.png" width="221" height="36" alt="スキンケア大学" /></a></h1>
+
+<ul id="headerDoctor">
+
+<li class="clearFix">
+  <ul>
+    <li class="title"><a href="/nature/sensitive/">敏感肌</a></li>
+    <li class="job">大井町皮フ科形成外科 院長</li>
+    <li class="name"><a href="/profile/000029/">千代倉友博先生</a></li>
+  </ul>
+  <p><a href="/profile/000029/"><img src="/images/advisers/29/teacher_100x100.jpg" alt="" width="60" height="60" /></a></p>
+</li>
+<li>
+  <ul>
+    <li class="title"><a href="/nature/combi/">混合肌</a></li>
+    <li class="job">西麻布ヒフ・形成外科 院長</li>
+    <li class="name"><a href="/profile/000031/">藤井佳苗先生</a></li>
+  </ul>
+  <p><a href="/profile/000031/"><img src="/images/advisers/31/teacher_100x100.jpg" alt="" width="60" height="60" /></a></p>
+</li>
+
+</ul><!-- /headerDoctor -->
+
+
+<div id="searchArea">
+<div class="inner">
+<form method="get" action="/search/">
+<input type="text" class="txt" name="q" placeholder="スキンケア大学内検索" />
+<input type="image" class="btn" src="/assets/images/top/btn-search-01.png" alt="検索" />
+</form>
+</div><!-- /inner -->
+<p><a href="/trouble/whitening/">シミ・そばかす</a>、<a href="/trouble/bodycare/">バストケア・性のお悩み</a>、<a href="/nature/oily/">脂性肌</a>、<a href="/trouble/wrinkle/">シワ</a>、<a href="/trouble/dark/">美白・くすみ・目の下のくま</a></p>
+
+</div><!-- /searchArea -->
+
+
+</div></div><!-- /header2 -->
+
+<!-- グロナビ -->
+<div id="gnavi"><div class="inner980 clearFix">
+<ul class="clearFix">
+<li id="gnavi-01"><a href="/category/">スキンケア講座</a></li>
+<li id="gnavi-02"><a href="/selfcheck/">セルフチェック</a></li>
+<li id="gnavi-03"><a href="/daily/">美ログ</a></li>
+<li id="gnavi-05"><a href="/recipe/">美肌レシピ</a></li>
+<li id="gnavi-06"><a href="/prdsearch/">商品検索</a></li>
+<li id="gnavi-07"><a href="http://mens-skincare-univ.com/">メンズスキンケア大学</a></li>
+<li id="gnavi-08"><a href="/healthcare/">ヘルスケア大学</a></li>
+</ul>
+
+
+
+</div></div><!-- /gnavi -->
+
+<div id="wrapper" class="clearFix">
+	<div id="main">
+		<div id="topArea">
+			<div class="title"><h2>編集部Pick Up！</h2><p>春のデリケートなお悩み解消特集！心も体も晴れやかに！</p></div>
+			<div class="clearFix">
+				<div class="inner1">
+					<p><a href="http://www.skincare-univ.com/article/005911/?utm_source=SU&amp;utm_medium=sutop_besp&amp;utm_campaign=10797-4_5911" data-tracking="pc_top_pick_up,2016-01-26,メイン画像">
+						<img src="/images/site_submissions/4376/main.jpg" alt="" width="300" height="200" />
+						外的刺激が多いこの季節。キメを整えふっくら肌へ
+					</a></p>
+				</div><!-- /inner1 -->
+				<div class="inner2">
+					<ul class="photoLink clearFix">
+						<li><a href="http://www.skincare-univ.com/article/002746/?utm_source=SU&amp;utm_medium=sutop_besp&amp;utm_campaign=10325-3_2746" data-tracking="pc_top_pick_up,2016-01-26,サブ左画像"><img src="/images/site_submissions/4376/sub-left.jpg" alt="" width="150" height="100" />残念と悩む前に！ブツブツケアで二の腕に自信を</a></li>
+						<li><a href="http://www.skincare-univ.com/article/006829/?utm_source=SU&amp;utm_medium=sutop_besp&amp;utm_campaign=10345-2_6829" data-tracking="pc_top_pick_up,2016-01-26,サブ右画像"><img src="/images/site_submissions/4376/sub-right.jpg" alt="" width="150" height="100" />水虫は治せる！簡単にできる自宅ケアとは</a></li>
+					</ul><!-- /photoLink -->
+					<ul class="linkList1 clear">
+						<li><a href="http://www.skincare-univ.com/article/005861/?utm_source=SU&amp;utm_medium=sutop_besp&amp;utm_campaign=10137-2_5861" data-tracking="pc_top_pick_up,2016-01-26,縦リスト１">EGF・FGFを上手にスキンケアに取り入れたい</a></li>
+						<li><a href="http://www.skincare-univ.com/article/011406/?utm_source=SU&amp;utm_medium=sutop_besp&amp;utm_campaign=10324-3_11406" data-tracking="pc_top_pick_up,2016-01-26,縦リスト２">ダイエットの近道?痩せるには脂肪別の対策がカギ</a></li>
+						<li><a href="http://www.skincare-univ.com/article/007179/?utm_source=SU&amp;utm_medium=sutop_besp&amp;utm_campaign=10679-2_7179" data-tracking="pc_top_pick_up,2016-01-26,縦リスト３">ナマ足の季節到来！むくみ解消には何が効く？</a></li>
+						<li><a href="http://www.skincare-univ.com/article/004593/?utm_source=SU&amp;utm_medium=sutop_besp&amp;utm_campaign=10999-2_4593" data-tracking="pc_top_pick_up,2016-01-26,縦リスト４">薄着になると臭い気になる…今すぐセルフチェック</a></li>
+					</ul>
+				</div><!-- /inner2 -->
+			</div><!-- /clearFix -->
+			<ul id="lectureList" class="clearFix">
+				<li><a href="/nature/dry/">乾燥肌対策</a>|</li>
+				<li><a href="/trouble/acne/">ニキビのケア方法</a>|</li>
+				<li><a href="/trouble/slack/">たるみ・ほうれい線の対処法</a>|</li>
+				<li><a href="/trouble/pores/">いちご鼻・毛穴の悩み</a>|</li>
+				<li><a href="/trouble/uv/">紫外線対策</a>|</li>
+			</ul><!-- /lectureList -->
+		</div><!-- /topArea -->
+		<div id="special" class="sectionType1" data-zone="ad_tieup_top">
+			<div class="sectionTitle clearFix"><h2>特集<span>[PR]</span></h2><p>編集部が選ぶ！今月のおすすめスキンケア特集</p></div>
+			<ul id="specialImgLink" class="clearFix">
+								<li data-submission-id="4882" class="clear"><a href="/t/proteoglycan/?utm_source=PC&amp;utm_medium=ad_tieup_top&amp;utm_campaign=91" data-tracking="special_count,A,1"><img src="/images/site_submissions/4882/tieup-thumbnail.jpg" alt="" width="140" height="105" />今お使いの保湿化粧品に満足していますか？</a></li>
+								<li data-submission-id="3834"><a href="/t/c1269-sensitiveskin/?utm_source=PC&amp;utm_medium=ad_tieup_top&amp;utm_campaign=91" data-tracking="special_count,A,2"><img src="/images/site_submissions/3834/tieup-thumbnail.jpg" alt="" width="140" height="105" />肌のことを真剣に考えた理想的な４ステップ</a></li>
+								<li data-submission-id="3462"><a href="/t/1018-uv?utm_source=PC&amp;utm_medium=ad_tieup_top&amp;utm_campaign=91" data-tracking="special_count,A,3"><img src="/images/site_submissions/3462/tieup-thumbnail.jpg" alt="" width="140" height="105" />敏感肌さんが気をつけたい紫外線ケアとは？</a></li>
+							</ul><!-- /imgLink -->
+			<ul id="specialTxtLink" class="linkList1 clearFix">
+							</ul><!-- /txtLink -->
+			<p class="textAlignR"><a href="/t/" class="arrowLink1">特集一覧</a></p>
+		</div><!-- /special -->
+				<div class="sectionType1" data-zone="">
+			<div class="sectionTitle clearFix"><h2>VOCEおすすめトレンドコスメ</h2><p>キレイになるって、面白い！</p></div>
+			<ul class="imageText01 clearFix">
+								<li class="imageText01-child imageText01-child-column3">
+					<a href="/daily/column/015239/" class="imageText01-img">
+												<img src="/images/articles/15239/thumbnail.jpg" alt="" width="80" height="60">
+											</a>
+					<p class="imageText01-title">
+						<a href="/daily/column/015239/">うっかり日焼けの頼れる味方！浸透力抜群のメナードの美白美容液</a>
+						<span class="imageText01-sub">2016/04/27</span>
+					</p>
+				</li>
+								<li class="imageText01-child imageText01-child-column3">
+					<a href="/daily/column/015238/" class="imageText01-img">
+												<img src="/images/articles/15238/thumbnail.jpg" alt="" width="80" height="60">
+											</a>
+					<p class="imageText01-title">
+						<a href="/daily/column/015238/">摩擦の心配ご無用！後肌ふかふかなRMKの新登場クレンジングバーム</a>
+						<span class="imageText01-sub">2016/04/20</span>
+					</p>
+				</li>
+								<li class="imageText01-child imageText01-child-column3">
+					<a href="/daily/column/015237/" class="imageText01-img">
+												<img src="/images/articles/15237/thumbnail.jpg" alt="" width="80" height="60">
+											</a>
+					<p class="imageText01-title">
+						<a href="/daily/column/015237/">形成外科医 草野先生も驚いた！医療用？と見まごうシャネルの新・敏感肌ケア</a>
+						<span class="imageText01-sub">2016/04/13</span>
+					</p>
+				</li>
+							</ul><!-- /bilogList1 -->
+			<p class="imageText01-logo"><img src="/assets/images/logo/logo-voce.png" alt="VOCEロゴ" width="85" height="40" /></p>
+			<p class="textAlignR">
+				<a href="/daily/column/voce/" class="arrowLink1">VOCE記事一覧</a>
+			</p>
+		</div><!--voce-->
+				<div id="bilog" class="sectionType1">
+			<div class="sectionTitle clearFix"><h2>美ログ</h2><p>美のスペシャリストによる連載コラム</p></div>
+			<ul id="bilogList1" class="photoLinkList autoHeightColumn3 clearFix">
+								<li class="clear">
+				<a href="/daily/column/016135/" class="photo"><img src="/images/advisers/395/teacher_100x100.jpg" alt="大森由紀子" width="60" height="60" /></a>
+				<p><a href="/daily/column/016135/">抜け毛の数増えていませんか？　頭皮クレンジングで解決！</a></p>
+				スキンケアプロデューサー、日本アロマ環境協会認定アロマセラピスト / <a href="/profile/000395/" class="name">大森由紀子</a>
+				</li>
+								<li>
+				<a href="/daily/column/016124/" class="photo"><img src="/images/advisers/303/teacher_100x100.jpg" alt="天野聖志" width="60" height="60" /></a>
+				<p><a href="/daily/column/016124/">この対策は、口臭にはきかない？口臭対策のウソ・ホント</a></p>
+				天野歯科医院 院長 / <a href="/profile/000303/" class="name">天野聖志</a>
+				</li>
+								<li>
+				<a href="/daily/column/016123/" class="photo"><img src="/images/advisers/122/teacher_100x100.jpg" alt="加藤智一" width="60" height="60" /></a>
+				<p><a href="/daily/column/016123/">オトナ肌の毛穴ケア！睡眠ジェルパックと朝のSOSマスク</a></p>
+				美容ジャーナリスト / <a href="/profile/000122/" class="name">加藤智一</a>
+				</li>
+								<li class="clear">
+				<a href="/daily/column/016094/" class="photo"><img src="/images/advisers/107/teacher_100x100.jpg" alt="吉川みつこ" width="60" height="60" /></a>
+				<p><a href="/daily/column/016094/">そのクレンジング、まつげを傷めていませんか？</a></p>
+				アイラッシュアーティスト / <a href="/profile/000107/" class="name">吉川みつこ</a>
+				</li>
+								<li>
+				<a href="/daily/column/016121/" class="photo"><img src="/images/advisers/110/teacher_100x100.jpg" alt="茂田正和" width="60" height="60" /></a>
+				<p><a href="/daily/column/016121/">肌老化をストップ！オリゴ糖で肌の善玉菌を増しましょう。</a></p>
+				スキンケアアドバイザー・化粧品開発者 / <a href="/profile/000110/" class="name">茂田正和</a>
+				</li>
+								<li>
+				<a href="/daily/column/016120/" class="photo"><img src="/images/advisers/889/teacher_100x100.jpg" alt="二松 まゆみ" width="60" height="60" /></a>
+				<p><a href="/daily/column/016120/">夫の誘いを断り続けると陥る負のスパイラル≪後編≫</a></p>
+				恋人・夫婦仲相談所　所長 / <a href="/profile/000889/" class="name">二松 まゆみ</a>
+				</li>
+							</ul><!-- /bilogList1 -->
+			<h3 class="sectionInnerTitle">注目のコラムニスト</h3>
+			<ul id="bilogList2" class="photoLinkList clearFix">
+				<li>
+					<a href="/daily/column/erica_angyal/" class="photo"><img src="/images/advisers/112/teacher_100x100.jpg" alt="エリカ・アンギャル" width="75" height="75" /></a>
+					栄養コンサルタント<a href="/daily/column/erica_angyal/" class="block">エリカ・アンギャル</a>
+				</li>
+				<li>
+					<a href="/daily/column/hasegawa_r/" class="photo"><img src="/images/advisers/111/teacher_100x100.jpg" alt="長谷川理恵" width="75" height="75" /></a>
+					モデル・ベジフルティーチャー<a href="/daily/column/hasegawa_r/" class="block">長谷川理恵</a>
+				</li>
+				<li>
+					<a href="/daily/column/tomori_a/" class="photo"><img src="/images/advisers/118/teacher_100x100.jpg" alt="友利新" width="75" height="75" /></a>
+					医師<a href="/daily/column/tomori_a/" class="block">友利新</a>
+				</li>
+				<li>
+					<a href="/daily/column/yamaguchi_moe/" class="photo"><img src="/images/advisers/154/teacher_100x100.jpg" alt="山口もえ" width="75" height="75" /></a>
+					野菜ソムリエ<a href="/daily/column/yamaguchi_moe/" class="block">山口もえ</a>
+				</li>
+			</ul><!-- /bilogList2 -->
+			<p class="textAlignR"><a href="/daily/" class="arrowLink1">新着コラム一覧</a></p>
+		</div><!-- /bilog -->
+				<!--▼▼ライフスタイル削除に伴う改修20140922▼▼-->
+		<div class="sectionType1">
+			<div class="sectionTitle clearFix"><h2>美肌レシピ</h2><p>キレイの素は、食事のなかに。</p></div><!--/sectionTitle-->
+			<div class="recipeBox clearFix">
+				<div class="recipe recipeBox-left floatL">
+					<h3 class="sectionInnerTitle">美肌講座</h3>
+					<ul class="photoLinkList clearFix">
+												<li><a href="/recipe/bihada/article/012008/" class="photo"><img src="/images/articles/12008/thumbnail.jpg" alt="" width="160" height="120" /></a>
+							<a href="/recipe/bihada/article/012008/" class="block font16">あなたはエクオールが作れる体？ソイチェックとは</a>
+							エクオールは、美容や健康を保つ効果が期待でき、女性から注目を集めています。しかし...
+						</li>
+											</ul><!-- /photoLinkList -->
+					<ul class="linkList1">
+												<li><a href="/recipe/bihada/article/011943/">エストロゲンは増やすより効率的に補うべき</a></li>
+												<li><a href="/recipe/bihada/article/011942/">更年期うつ病の症状と前向きに乗り切るヒント</a></li>
+											</ul><!-- /txtLink -->
+					<p class="linkTxtRight01"><a href="/recipe/bihada/" class="arrowLink1">美肌講座一覧</a></p>
+				</div><!--/left-->
+				<div class="recipe floatR">
+					<h3 class="sectionInnerTitle mB5"><span class="label">毎週更新&nbsp;!</span>今週のピックアップレシピ</h3>
+										<p class="subTitle"><a href="/recipe/pickup/000582/">マンゴーは女性に嬉しい果物です！</a></p>
+										<ul class="photoLink clearFix">
+												<li><a href="/recipe/detail/004460/"><img src="/images/recipes/2/4792-thumbnail-120x120.jpg" alt="" width="94" height="94" />豆腐とマンゴーの絹どけムース☆</a></li>
+												<li><a href="/recipe/detail/006641/"><img src="/images/recipes/2/7087-thumbnail-120x120.jpg" alt="" width="94" height="94" />ベジタブル美肌ビビンバ【Korea】</a></li>
+												<li><a href="/recipe/detail/006344/"><img src="/images/recipes/2/6774-thumbnail-120x120.jpg" alt="" width="94" height="94" />セロリの葉とベーコンのミルクスープ</a></li>
+											</ul><!-- /photoLink -->
+					<p class="toContentsList"><a href="/recipe/pickup/" class="arrowLink1">ピックアップレシピ一覧</a></p>
+				</div><!--/right-->
+			</div><!--/recipe-->
+		</div><!--/sectionType1-->
+		<!--▲▲ライフスタイル削除に伴う改修20140922▲▲-->
+				
+						
+				<div id="clinic" class="sectionType1" data-zone="ad_clinic">
+			<div class="sectionTitle clearFix"><h2>編集部おすすめクリニック<span>[PR]</span></h2></div>
+			
+			<ul class="photoLinkList autoHeightColumn3 clearFix">
+								<li data-submission-id="1978" class="clear">
+				<a href="http://www.skincare-univ.com/t/1223-zits/" class="photo" data-tracking="a_pc_clinic_list,フェミークリニック,[url]"><img src="/images/site_submissions/1978/clinic-thumbnail-160x120.jpg" alt="フェミークリニック" width="100" height="75" /></a>
+				<a href="http://www.skincare-univ.com/t/1223-zits/" class="block" data-tracking="a_pc_clinic_list,フェミークリニック,[url]">フェミークリニック</a>
+				繰り返すニキビを治療！素肌に自信を取り戻...
+				</li>
+								<li data-submission-id="3453">
+				<a href="/clinic/000008/" class="photo" data-tracking="a_pc_clinic_list,四谷三丁目皮膚科,[url]"><img src="/images/site_submissions/3453/clinic-thumbnail-160x120.jpg" alt="四谷三丁目皮膚科" width="100" height="75" /></a>
+				<a href="/clinic/000008/" class="block" data-tracking="a_pc_clinic_list,四谷三丁目皮膚科,[url]">四谷三丁目皮膚科</a>
+				美容皮膚科だけではなく、一般皮膚科病診療に...
+				</li>
+							</ul><!-- /photoLinkList -->
+			
+			<p class="textAlignR"><a href="/clinic/" class="arrowLink1">クリニック訪問一覧</a></p>
+		</div><!-- /clinic -->
+				<div class="tieUpAreaType3" data-zone="ad_tieup_top">
+			<ul class="linkList1 clearFix">
+							</ul><!-- /txtLink -->
+			<ul class="photoLinkList clearFix">
+							</ul><!-- /photoLinkList -->
+		</div><!-- /tieUpAreaType3 -->
+	</div><!-- /main -->
+	<div id="side">
+		<!--/未ログイン-->
+		<div class="box-member box-signup">
+			<div class="has-borderBtm-dot">
+				<p class="fontBold mB10 textAlignC">会員になって更に便利な機能を使おう&nbsp;!</p>
+				<p><a href="/member/register/" class="member-touroku has-orange-grad">新規会員登録(無料)</a></p>
+			</div>
+			<div>
+				<p class="side-btn-login"><a href="/member/login/" class="member-login has-gray-grad">ログイン</a></p>
+			</div>
+		</div><!--/box-memberlogin-before-->
+		<!--/ログイン-->
+		<div class="box-member box-mypage">
+			<div>
+				<p class="textAlignC mB10 fontBold"><span id="user_name">あなた</span>のページを今すぐチェック</p>
+				<p><a href="/member/mypage/" class="member-touroku has-gray-grad">マイページ</a></p>
+			</div>
+		</div><!--/box-memberlogin-after-->
+		<div id="sideDoctor" class="sideSection">
+			<div class="sideTitle-1"><h2>所属ドクター&nbsp;<span class="font13">817名</span></h2></div>
+			<div class="inner">
+				<p class="mB10">お肌のことを知りつくし、医学的な観点から正しいスキンケアをレクチャーしてくれるドクターをご紹介します。</p>
+				<ul class="clearFix">
+										<li><a href="/profile/000115/"><img src="/images/advisers/115/teacher_100x100.jpg" alt="松下博明" width="60" height="60" /></a></li>
+										<li><a href="/profile/000334/"><img src="/images/advisers/334/teacher_100x100.jpg" alt="辻直樹" width="60" height="60" /></a></li>
+										<li><a href="/profile/001301/"><img src="/images/advisers/1301/teacher_100x100.jpg" alt="笠井敬一郎" width="60" height="60" /></a></li>
+										<li><a href="/profile/000364/"><img src="/images/advisers/364/teacher_100x100.jpg" alt="東海陽介" width="60" height="60" /></a></li>
+										<li><a href="/profile/000312/"><img src="/images/advisers/312/teacher_100x100.jpg" alt="加藤雄大" width="60" height="60" /></a></li>
+										<li><a href="/profile/001093/"><img src="/images/advisers/1093/teacher_100x100.jpg" alt="起田桂志" width="60" height="60" /></a></li>
+										<li><a href="/profile/000393/"><img src="/images/advisers/393/teacher_100x100.jpg" alt="丸茂恒二" width="60" height="60" /></a></li>
+										<li><a href="/profile/000421/"><img src="/images/advisers/421/teacher_100x100.jpg" alt="田中正一" width="60" height="60" /></a></li>
+									</ul>
+				<p class="textAlignR"><a href="/profile/doctor.html" class="arrowLink1">所属ドクター一覧</a></p>
+			</div><!-- /inner -->
+		</div><!-- /sideDoctor -->
+		<!-- レクタングル -->
+		<script type="text/javascript" src="/inc/js/jquery/jquery.cookie.js"></script>
+
+<script>
+	document.write('<script src="/delivery/ad_rectangle/'+$.cookie('ad_tracking_category')+'?ad_category_id='+_ap.ad_category_id+'&ad_type='+_ap.ad_type+'"></scr'+'ipt>');
+</script>
+
+<p class="PrTitle01">[PR]</p>
+
+		<div id="sideBS" class="sideSection">
+			<div class="sideTitle-1"><h2>ビューティーサポーターズ</h2></div>
+			<div class="inner">
+				<h2>参加企業</h2>
+				<ul class="autoHeightColumn3 clearFix">
+										<li class="clear"><a href="/beautysupport/oisix/"><img src="/images/beautysupport_companies/3/logo.jpg" alt="オイシックス" width="84" height="84" />オイシックス</a>安心・安全な食材をお届け</li>
+										<li><a href="/beautysupport/nihonryoko/"><img src="/images/beautysupport_companies/5/logo.jpg" alt="日本旅行" width="84" height="84" />日本旅行</a>アンチストレスな旅行をあなたに</li>
+										<li><a href="/beautysupport/gunze/"><img src="/images/beautysupport_companies/16/logo.jpg" alt="GUNZE" width="84" height="84" />GUNZE</a>オトナ思春期世代の下着</li>
+									</ul>
+												<h2>参加ブランド</h2>
+					<ul class="autoHeightColumn3 clearFix">
+												<li class="clear"><a href="/beautysupport/shouyo/"><img src="/images/beautysupport_companies/30/logo.jpg" alt="生葉" width="84" height="84" />生葉</a>歯槽膿漏には生葉</li>
+											</ul>
+					<p class="textAlignR"><a href="/beautysupport/" class="arrowLink1">ビューティーサポーターズ</a></p>
+								</div><!-- /inner -->
+		</div><!-- /sideBS -->
+		<div id="sideTool" class="sideSection">
+			<div class="sideTitle-1"><h2>公式アプリ</h2></div>
+			<div class="inner">
+				<ul class="clearFix">
+					<li class="last">
+						<span class="icon"><img src="/assets/images/side/tool-icon-03.png" width="60" height="60" alt="fem." /></span>
+						<span class="fontBold">fem.</span><br />
+						医師監修のヘルスケア情報サイト「ヘルスケア大学」のまとめアプリ<br>
+						生活習慣を少し見直すTIPSで”ためになる気づき”を毎日お届け！
+						<a href="https://itunes.apple.com/us/app/apple-store/id698554118?pt=608375&ct=pc-top-side&mt=8" class="arrowLink1 mR10" target="_blank">App Store</a>&nbsp;<a href="https://play.google.com/store/apps/details?id=jp.co.rich.android.pca&referrer=utm_source%3Dwww.skincare-univ.com%26utm_medium%3Dpc-top-side" class="arrowLink1" target="_blank">Google Play</a>
+					</li>
+				</ul>
+			</div><!-- /inner -->
+		</div><!-- /sideBS -->
+		<div id="sideRecommend" class="sideSection">
+			<div class="sideTitle-1"><h2>おすすめ情報<span>[PR]</span></h2></div>
+			<div class="inner">
+				<ul class="clearFix" data-zone="ad_tieup_top">
+										<li data-submission-id="3459" class="clear"><a href="/t/1015-sensitiveskin?utm_source=PC&amp;utm_medium=ad_tieup_top&amp;utm_campaign=91" data-tracking="special_count,J,1"><img src="/images/site_submissions/3459/tieup-thumbnail.jpg" alt="" width="160" height="120" />肌のことを真剣に考えた理想的な４ステップ</a></li>
+										<li data-submission-id="1312"><a href="/t/skincarestylist/?utm_source=PC&amp;utm_medium=ad_tieup_top&amp;utm_campaign=91" data-tracking="special_count,J,2"><img src="/images/site_submissions/1312/tieup-thumbnail.jpg" alt="" width="160" height="120" />なんでも相談できる、あなた専属の肌専門家</a></li>
+										<li data-submission-id="4069"><a href="http://www.skincare-univ.com/t/1087-cystitis/?utm_source=PC&amp;utm_medium=ad_tieup_top&amp;utm_campaign=91" data-tracking="special_count,J,3"><img src="/images/site_submissions/4069/tieup-thumbnail.jpg" alt="" width="160" height="120" />膀胱炎を防ぐ適切なケア方法とは？</a></li>
+										<li data-submission-id="3460"><a href="/t/1016-acne?utm_source=PC&amp;utm_medium=ad_tieup_top&amp;utm_campaign=91" data-tracking="special_count,J,4"><img src="/images/site_submissions/3460/tieup-thumbnail.jpg" alt="" width="160" height="120" />くり返さないための“根本的”な解決を知る！</a></li>
+										<li data-submission-id="3829" class="clear"><a href="/t/c9999-cosmetics/?utm_source=PC&amp;utm_medium=ad_tieup_top&amp;utm_campaign=91" data-tracking="special_count,J,5"><img src="/images/site_submissions/3829/tieup-thumbnail.jpg" alt="" width="160" height="120" />敏感肌の方が化粧品で失敗しないたったひとつのポイント</a></li>
+									</ul>
+			</div><!-- /inner -->
+		</div><!-- /sideRecommend -->
+		<div class="sideBnr">
+			<p class="mB10"><a href="/scu-mark/"><img src="/assets/images/side/bnr-scumark.jpg" alt="スキンケア大学マーク" width="300" height="100" /></a></p>
+			<p class="mB5"><a href="/deploma/"><img src="/assets/images/side/bnr-deploma.png" alt="スキンケア大学認定コスメディプロマ｜登録商品はこちら" width="300" height="100" /></a></p>
+			<p><a href="/deploma/" class="arrowLink1">ドクターの協力のもと優秀な化粧品を認定	</a></p>
+		</div><!-- /sideBnr -->
+		
+		<div class="sideBnr">
+			
+			<!--/* VASCO Javascript Tag v */-->
+			<script type='text/javascript'><!--//<![CDATA[
+			document.MAX_ct0 ='INSERT_CLICKURL_HERE';
+			if (location.protocol=='https:') {
+			} else {
+				var m3_u = 'http://vsc.send.microad.jp/delivery/ajs.php';
+				var m3_r = Math.floor(Math.random()*99999999999);
+				if (!document.MAX_used) document.MAX_used = ',';
+				document.write ("<scr"+"ipt type='text/javascript' src='"+m3_u);
+				document.write ("?zoneid=8537");
+				document.write ('&amp;snr=2&amp;cb=' + m3_r);
+				if (document.MAX_used != ',') document.write ("&amp;exclude=" + document.MAX_used);
+				document.write (document.charset ? '&amp;charset='+document.charset : (document.characterSet ? '&amp;charset='+document.characterSet : ''));
+				document.write ("&amp;loc=" + encodeURIComponent(window.location));
+				if (document.referrer) document.write ("&amp;referer=" + encodeURIComponent(document.referrer));
+				if (document.context) document.write ("&context=" + encodeURIComponent(document.context));
+				if ((typeof(document.MAX_ct0) != 'undefined') && (document.MAX_ct0.substring(0,4) == 'http')) {
+					document.write ("&amp;ct0=" + encodeURIComponent(document.MAX_ct0));
+				}
+				if (document.mmm_fo) document.write ("&amp;mmm_fo=1");
+				document.write ("'><\/scr"+"ipt>");
+			}
+			//]]>--></script><noscript><a href='http://vsc.send.microad.jp/delivery/ck.php?n=a5339f07&amp;cb=INSERT_RANDOM_NUMBER_HERE' target='_blank'><img src='http://vsc.send.microad.jp/delivery/avw.php?zoneid=8537&amp;cb=INSERT_RANDOM_NUMBER_HERE&amp;n=a5339f07&amp;ct0=INSERT_CLICKURL_HERE&amp;snr=2' border='0' alt='' /></a></noscript>
+			
+		</div><!-- /sideBnr -->
+		<div id="sideTwitter" class="sideSection">
+			<div class="sideTitle-1"><h2>公式ツイート</h2></div>
+			<div class="inner">
+				<a class="twitter-timeline"  href="https://twitter.com/skincare_univ"  data-widget-id="309191258872610816">@skincare_univ からのツイート</a>
+				<script type="text/javascript">
+					!function(d,s,id){
+						var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){
+							js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);
+						}
+					}(document,"script","twitter-wjs");
+				</script>
+			</div></div><!-- /twitter -->
+		<!-- FB Page Plugin -->
+		<div class="sideSection" id="sideFacebook">
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/ja_JP/sdk.js#xfbml=1&version=v2.3&appId=1434027640199531";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+<div class="fb-page" data-href="https://www.facebook.com/skincare.univ" data-width="300" data-height="360" data-hide-cover="false" data-show-facepile="true" data-show-posts="true"><div class="fb-xfbml-parse-ignore"><blockquote cite="https://www.facebook.com/skincare.univ"><a href="https://www.facebook.com/skincare.univ">スキンケア大学</a></blockquote></div></div>
+</div>
+
+		<!-- hikari -->
+		<div class="sideBnrRect02">
+
+
+
+<!--/* VASCO Javascript Tag v */-->
+
+<script type='text/javascript'><!--//<![CDATA[
+   document.MAX_ct0 ='INSERT_CLICKURL_HERE';
+
+if (location.protocol=='https:') {
+} else {
+   var m3_u = 'http://vsc.send.microad.jp/delivery/ajs.php';
+   var m3_r = Math.floor(Math.random()*99999999999);
+   if (!document.MAX_used) document.MAX_used = ',';
+   document.write ("<scr"+"ipt type='text/javascript' src='"+m3_u);
+   document.write ("?zoneid=8601");
+   document.write ('&amp;snr=2&amp;cb=' + m3_r);
+   if (document.MAX_used != ',') document.write ("&amp;exclude=" + document.MAX_used);
+   document.write (document.charset ? '&amp;charset='+document.charset : (document.characterSet ? '&amp;charset='+document.characterSet : ''));
+   document.write ("&amp;loc=" + encodeURIComponent(window.location));
+   if (document.referrer) document.write ("&amp;referer=" + encodeURIComponent(document.referrer));
+   if (document.context) document.write ("&context=" + encodeURIComponent(document.context));
+   if ((typeof(document.MAX_ct0) != 'undefined') && (document.MAX_ct0.substring(0,4) == 'http')) {
+       document.write ("&amp;ct0=" + encodeURIComponent(document.MAX_ct0));
+   }
+   if (document.mmm_fo) document.write ("&amp;mmm_fo=1");
+   document.write ("'><\/scr"+"ipt>");
+}
+//]]>--></script><noscript><a href='http://vsc.send.microad.jp/delivery/ck.php?n=a85ee9a7&amp;cb=INSERT_RANDOM_NUMBER_HERE' target='_blank'><img src='http://vsc.send.microad.jp/delivery/avw.php?zoneid=8601&amp;cb=INSERT_RANDOM_NUMBER_HERE&amp;n=a85ee9a7&amp;ct0=INSERT_CLICKURL_HERE&amp;snr=2' border='0' alt='' /></a></noscript>
+
+
+</div><!-- /sideBnr -->
+<p class="PrTitle01">[PR]</p>
+
+	</div><!-- /side -->
+</div><!-- /wrapper -->
+<div id="footer"><div class="inner980 clearFix">
+	<ul class="footerLink clearFix">
+		<li><span><a href="/category/">スキンケア講座</a></span>
+			<ul>
+				<li>└<a href="/general/">スキンケア基礎講座</a></li>
+				<li>└<a href="/nature/">肌タイプ別講座</a></li>
+				<li>└<a href="/trouble/">悩み別講座</a></li>
+				<li>└<a href="/maternity-baby/">マタニティ&amp;ベビー講座</a></li>
+				<li>└<a href="/mens/">男の美容講座</a></li>
+				<li>└<a href="/word/">用語集</a></li>
+			</ul>
+		</li>
+		<li><span><a href="/selfcheck/">セルフチェック</a></span>
+			<ul>
+				<li>└<a href="/selfcheck/">セルフチェック一覧</a></li>
+			</ul>
+		</li>
+		<li><span><a href="/t/">特集</a></span>
+			<ul>
+				<li>└<a href="/t/">特集一覧</a></li>
+			</ul>
+		</li>
+		<li><span><a href="/daily/">美ログ</a></span>
+			<ul>
+				<li>└<a href="/daily/column/">COLUMN</a></li>
+				<li>└<a href="/daily/news/">NEWS</a></li>
+				<li>└<a href="/daily/prrelease/">プレスリリース</a></li>
+				<li>└<a href="/daily/tips/">TIPS</a></li>
+				<li>└<a href="/daily/be-word/">美ワード</a></li>
+				<li>└<a href="/profile/columnist.html">コラムニスト</a></li>
+			</ul>
+		</li>
+		<li><span><a href="/recipe/">美肌レシピ</a></span>
+			<ul>
+				<li>└<a href="/recipe/search/">レシピを探す</a></li>
+				<li>└<a href="/recipe/pickup/">ピックアップレシピ</a></li>
+				<li>└<a href="/recipe/beautyfood/">美肌食材</a></li>
+				<li>└<a href="/recipe/bihada/">美肌講座</a></li>
+				<li>└<a href="/recipe/food-tips/">TIPS</a></li>
+				<li>└<a href="/profile/nutritionist.html">管理栄養士</a></li>
+				<li>└<a href="/profile/recipier.html">レシピ提供者</a></li>
+			</ul>
+		</li>
+	</ul><!-- /footerLink -->
+	<ul class="footerLink borderDotted clearFix">
+		<li><span><a href="/beautysupport/">ビューティサポーターズ</a></span>
+			<ul>
+				<li>└<a href="/beautysupport/list/">参加企業一覧</a></li>
+				<li>└<a href="/beautysupport/brandlist/">参加ブランド一覧</a></li>
+			</ul>
+		</li>
+		<li><span><a href="/profile/doctor.html">先生紹介</a></span>
+			<ul>
+				<li>└<a href="/profile/doctor.html">ドクター一覧</a></li>
+				<li>└<a href="/profile/columnist.html">コラムニスト一覧</a></li>
+				<li>└<a href="/profile/adviser.html">アドバイザー一覧</a></li>
+			</ul>
+		</li>
+		<li><span><a href="/prdsearch/">商品検索</a></span>
+			<ul>
+				<li>└<a href="/cosme/">コスメ検索</a></li>
+				<li>└<a href="/supplement/search/">サプリ検索</a></li>
+				<li>└<a href="/cosme/brand/">コスメブランド検索</a></li>
+				<li>└<a href="/deploma/">コスメディプロマ</a></li>
+			</ul>
+		</li>
+		<li><span>訪問レポート</span>
+			<ul>
+				<li>└<a href="/brand/">ブランド訪問一覧</a></li>
+				<li>└<a href="/clinic/">クリニック訪問一覧</a></li>
+			</ul>
+		</li>
+	</ul><!-- /footerLink -->
+	<div id="footerBottom">
+		<ul><!--
+--><li><a href="/">スキンケア大学TOP</a></li><!--
+--><li>|<a href="/about/">スキンケア大学とは</a></li><!--
+--><li>|<a href="http://www.rich.co.jp/company" target="_blank">運営会社</a></li><!--
+--><li>|<a href="/contact/">お問い合わせ</a></li><!--
+--><li>|<a href="/doctors-wanted/">ドクター募集</a></li><!--
+--><li>|<a href="http://www.rich.co.jp/recruit/" target="_blank">採用情報</a></li><!--
+--><li>|<a href="/member/register/">会員登録</a></li><!--
+--><li>|<a href="/privacy/">プライバシーポリシー</a></li><!--
+--><li>|<a href="/adguidelines/adguidelines.pdf" target="_blank">広告掲載基準</a></li><!--
+--></ul>
+		<ul><!--
+--><li><a href="/disclaimer/">免責事項・知的財産権</a></li><!--
+--><li>|<a href="/sitemap/">サイトマップ</a></li><!--
+--></ul>
+		<div id="footerQR">
+			<p>スマートフォンでも<img src="/common201306/images/img-qr.png" width="64" height="64" alt="QRコード" /></p>
+		</div><!-- /footerQR -->
+	</div><!-- /footerBottom -->
+</div><!-- /inner980 -->
+	<p id="copyright">&copy; 2009 - 2016 Rich Media Co., LTD.
+</p>
+</div><!-- /footer -->
+<!-- footerでのみ読み込むjs群 -->
+<script type="text/javascript" src="/common/js/heightLine.js"></script>
+<script type="text/javascript" src="/common/js/jQueryAutoHeight.js"></script>
+
+<!-- analyticsなど -->
+<script>
+	_ap = (typeof(_ap) == 'object') ? _ap : {};
+	_ap.site_id = 1;
+	if (!$.cookie) {
+		document.write('<script type="text/javascript" src="/inc/js/jquery/jquery.cookie.js"></scr'+'ipt>');
+	}
+</script>
+
+<script>
+	_ap = (typeof(_ap) == 'object') ? _ap : {};
+	_ap.site_id = 1;
+	_ap.analytics = 'ga';
+	_ap.ga_profile_id = 'UA-21184276-1';
+</script>
+
+<script src="/global/js/count.js"></script>
+
+<!-- Google Tag Manager -->
+<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-S9DHH"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-S9DHH');</script>
+<!-- End Google Tag Manager -->
+
+<!-- Yahoo! Tag Manager -->
+<script type="text/javascript">
+  (function () {
+    var tagjs = document.createElement("script");
+    var s = document.getElementsByTagName("script")[0];
+    tagjs.async = true;
+    tagjs.src = "//s.yjtag.jp/tag.js#site=zO3RUCa";
+    s.parentNode.insertBefore(tagjs, s);
+  }());
+</script>
+<noscript>
+  <iframe src="//b.yjtag.jp/iframe?c=zO3RUCa" width="1" height="1" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+</noscript>
+<!-- End Yahoo! Tag Manager -->
+
+
+<script type="text/javascript">window.NREUM||(NREUM={});NREUM.info={"beacon":"bam.nr-data.net","licenseKey":"920aed4889","applicationID":"2137901","transactionName":"ZlIHZURRCxdTWxBeDl8YMENfHxUWW04FQwQeURdeWEQAClVRClJOQl8KRhhADRQ=","queueTime":0,"applicationTime":116,"ttGuid":"","agentToken":"","atts":"ShUEEwxLGBk=","errorBeacon":"bam.nr-data.net","agent":""}</script></body>
+</html>

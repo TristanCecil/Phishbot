@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="pl">
+  <head>
+    <meta charset="utf-8">
+    <title>CATI - CRM</title>
+	
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="Szymon Blakala - vsemak@gmail.com">
+	
+	<link rel="shortcut icon" href="/favicon.ico">
+	
+	<link href="/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+	<link href="/assets/css/bootstrap-datepicker.css" rel="stylesheet" type="text/css" />
+	<link href="/assets/css/bootstrap-timepicker.css" rel="stylesheet" type="text/css" />
+	<link href="/assets/css/chosen.css" rel="stylesheet" type="text/css" />
+	<link href="/assets/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+	<link href="/include/tpl/style_admin.css?time=12345" rel="stylesheet" type="text/css" />
+
+		
+	<script type="text/javascript" src="/js/jquery.js"></script>
+	<script type="text/javascript" src="/assets/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="/assets/js/bootstrap-datepicker.js"></script>
+	<script type="text/javascript" src="/assets/js/bootstrap-timepicker.js"></script>
+	<script type="text/javascript" src="/assets/js/chosen.jquery.min.js"></script>
+	<script type="text/javascript" src="/js/scripts.js"></script>
+	<script type="text/javascript" src="/js/jquery.form.validation_new.js"></script>
+	<script type="text/javascript" src="/js/jquery.maskedinput.min.js"></script>
+	<!--script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-throttle-debounce/1.1/jquery.ba-throttle-debounce.min.js"></script>
+	<script type="text/javascript" src="/js/jquery.stickyheader.js"></script-->
+	<script type="text/javascript" src="/js/jquery.floatThead.js"></script>
+
+
+		
+	<script type="text/javascript">
+		
+	$(document).ready(function(){
+		
+		$('.tip').tooltip({placement:'right'});
+		$('.tip-left').tooltip({placement:'left'});
+		$('.tip-top').tooltip({placement:'top'});
+		
+		$('.modal-trigger').live('click',function(e){
+			
+			e.preventDefault();
+			
+			var modal = $($(this).attr('data-modal'));
+			modal.modal();
+			
+			modal.find('.modal-body').html('<p>Trwa ładowanie strony...</p>');
+			
+			var href = $(this).attr('href') || $(this).data('href');
+			
+			$.get(href,function(d){
+				modal.find('.modal-body').html(d);
+				modal.find('.modal-body input[type="text"]:first').focus().select();
+			});
+			
+			modal.find('.btn-primary').click(function(e){
+				e.preventDefault();
+				modal.find('form').submit();
+			});
+		});
+		
+		$('.elastic-textarea textarea').live('keyup change cut paste update',function(){
+			$(this).prev().html($(this).val()+'<span> </span>');
+		});
+		
+		$(".chzn-select").live('liszt:ready',function(){
+			console.log('lol');
+			console.log(this);
+			$('.chzn-container,.chzn-drop,.search-field input').css('width','100%');
+			$('.chzn-search input').css('width','80%');
+		});
+		
+		$(".chzn-select").live("liszt:showing_dropdown", function () { 
+			$(this).parents("div").css("overflow", "visible");
+		});
+		$(".chzn-select").live("liszt:hiding_dropdown", function () {
+			$(this).parents("div").css("overflow", "");
+		});
+		
+		$(".chzn-select").chosen();
+	});
+
+	</script>
+	
+</head>
+<body>
+
+		
+	<div class="navbar navbar-inverse navbar-fixed-top">
+		<div class="navbar-inner">
+			<div class="container-fluid">
+				<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</a>
+				<a class="brand" href="http://biostatd.home.net.pl/">CATI - CRM</a>
+			</div>
+		</div>
+	</div>
+
+	
+		
+	
+<div class="container">
+	<div class="hero-unit" style="margin: 100px auto; width: 600px;">
+		
+		<form action="http://biostatd.home.net.pl/login/" method="post" class="form-vertical row-fluid">
+			
+			<input type="hidden" name="auth_action" value="login" />
+			
+			<p>Formularz logowania</p>
+			
+			<div class="control-group">
+				<input type="text" name="auth_login" value="" class="span12 input-huge" placeholder="Adres e-mail" />
+			</div>
+			
+			<div class="control-group">
+				<input type="password" name="auth_password" value="" class="span12 input-huge" placeholder="Hasło" />
+			</div>
+			
+			<div class="control-group hidden">
+				<label class="checkbox">
+					<input type="checkbox" name="__session_remember__" checked="checked" value="1" /> Zapamiętaj mnie na tym komputerze				</label>
+			</div>
+		
+			<div class="control-group">
+				<input type="submit" value="Zaloguj się" class="btn btn-large btn-primary" />
+				<!--<a href="http://biostatd.home.net.pl/user/register" class="btn btn-large btn-success"><i class="icon icon-plus icon-white"></i> Nowe konto</a>-->
+				<a href="#password-reset-modal" role="button" data-toggle="modal">Reset hasła</a>
+			</div>
+		</form>
+	</div>
+</div>
+
+<div class="modal hide fade" id="password-reset-modal">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		<h3>Reset hasła</h3>
+	</div>
+	<div class="modal-body">
+		<form action="" method="post" id="password-reset-form">
+			<input type="hidden" name="page_action" value="75bd39725d6ab__VXNlcnN8cGFzc3dvcmRfcmVzZXQ%3D__a68233fc66f9d029ec91c2f1320" />
+			<div class="control-group">
+				<label class="control-label">Adres e-mail</label>
+				<div class="controls">
+					<input type="text" name="email" value="" class="input-block-level" />
+				</div>
+			</div>
+		</form>
+	</div>
+	<div class="modal-footer">
+		<a href="javascript:$('#password-reset-modal').modal('hide');" class="btn">Anuluj</a>
+		<a href="javascript:$('#password-reset-form').submit();" class="btn btn-primary">Wyślij nowe hasło</a>
+	</div>
+</div>	
+		
+	<script type="text/javascript">
+
+	var leftNav = $('.sidebar-nav:first');
+
+	function navHeightFit() {
+		var height = $('body')[0].clientHeight < window.innerHeight ? window.innerHeight : $('body')[0].clientHeight;
+		if (leftNav.offset()) {
+			leftNav.height(height - leftNav.offset().top - parseInt(leftNav.css('paddingTop')) - parseInt(leftNav.css('paddingBottom')));
+		}
+	}
+
+	$(window).resize(function() {
+		//navHeightFit();
+	});
+	
+	$(document).ready(function(){
+		//navHeightFit();
+	});
+
+	</script>
+	
+</body>
+</html>

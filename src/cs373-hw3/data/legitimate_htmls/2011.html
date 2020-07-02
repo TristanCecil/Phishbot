@@ -1,0 +1,692 @@
+<!--[if i]><![endif]-->
+<!DOCTYPE html>
+<!--[if lt IE 9 & !IEMobile]><html  id="ng-app" data-ng-app="homePage" class="ie" lang="en" data-placeholder-focus="false"><![endif]-->
+<!--[if IE 9 & !IEMobile]><html  id="ng-app" data-ng-app="homePage" class="ie9" lang="en" data-placeholder-focus="false"><![endif]-->
+<!--[if gt IE 9 | IEMobile]><!--><html  id="ng-app" data-ng-app="homePage" lang="en" data-placeholder-focus="false"><!--<![endif]-->
+<head>
+  <title cc-prefix="{{'Charter.net '}}" cc-backfill-bind="title">
+      Charter.net
+    Home
+  </title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="/assets/images/favicon.ico" type="image/x-icon" />
+  <script>
+    // this object will be populated across a page with CMS values and is consumed
+    // by the charterConfiguration module
+    window.charterConfigurationValues = {};
+  </script>
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:700" rel="stylesheet">
+  <!--[if lte IE 9]>
+  <![endif]-->
+  <!--[if (IE 9)]>
+<link rel="stylesheet" href="//d1ff979u6gd5fc.cloudfront.net/api/static-assets/assets/2.14.3/380/assets/css/charter-net-pages-ie9.css" media="all">
+  <![endif]-->
+  <![if !(IE 9)]>
+<link rel="stylesheet" href="//d1ff979u6gd5fc.cloudfront.net/api/static-assets/assets/2.14.3/380/assets/css/charter-net-pages.css" media="all">
+  <![endif]>
+<link rel="stylesheet" href="//d1ff979u6gd5fc.cloudfront.net/api/static-assets/assets/2.14.3/380/home/home.css" media="all">
+<script src="//d1ff979u6gd5fc.cloudfront.net/api/static-assets/assets/2.14.3/380/assets/js/head.min.js"></script>
+</head>
+<body class="loading" ng-controller="loginCtrl" cc-idle>
+  <div>
+<!--{{==}}-->
+<header
+  class="global-header"
+  ng-controller="navigationCtrl"
+  id="page-header"
+  webview-cloak>
+
+  <div ng-controller="loginCtrl">
+    <div class="main-nav">
+      <div class="container">
+
+        <div class="header-utility hidden-xs" ng-cloak>
+          <ul class="list-unstyled list-inline main-utility-list" ng-if="account.isAuthenticated()" ng-controller="btmCtrl as btm">
+            <li>
+              <span class="user-account-id">
+                <a tabindex="1" href="/user-preferences/">{{account.user.Id|stripEmailDomain}}</a>
+              </span>
+            </li>
+            <li>
+              <form method="POST" action="/api/pub/loginedge/login/v1/net/logout">
+                <button
+                  tabindex="2"
+                  ng-click="preLogout()"
+                  type="submit"
+                  id="logout-header-btn"
+                  class="logout-cta-link"
+                  cc-link="{name: 'Logout', prop25: 'Header'}"
+                  >
+                  Sign Out
+                </button>
+              </form>
+            </li>
+            <li ng-include src=" '/assets/templates/features/email/email-tmpl.html' ">
+            </li>
+            <li ng-include src=" '/assets/templates/features/voicemail/voicemail-tmpl.html' ">
+            </li>
+            <li class="out-of-home" ng-if="btm.isBehindTheModem === false">
+              <div cc-overlay=".dropdown" class="item">
+                <button tabindex="5" class="header-out-button" title="Out of Network" aria-label="Out of Network" aria-describedby="out-of-network"></button>
+                <div class="at-home-overlay dropdown">
+                  <p role="tooltip" id="out-of-network" class="msg-3026">
+                      <b>You are currently outside of your home network.</b> Streaming live content is now available from outside the home, via "Watch Online" section but the channel lineup is limited due to restrictions from our programming partners. You can still sign in to Charter.net to manage your Account, set recordings, stream online content and access Support sections of Charter.net
+                  </p>
+                </div>
+              </div>
+            </li>
+          </ul>
+
+          <ul class="list-unstyled list-inline unauth" ng-show="!account.isAuthenticated()">
+            <li>
+              <a
+                class="btn primary-btn"
+                ng-href="{{loginUrl}}"
+                tabindex="4"
+                cc-link="{name:'Sign In', prop25:'Header'}">
+                Sign In
+              </a>
+            </li>
+          </ul>
+
+        </div>
+
+        <div class="spectrum-header-navigation" ng-controller="searchCtrl">
+          <nav class="navbar navbar-spectrum-theme" role="navigation">
+
+            <div class="navbar-header">
+              <a tabindex="7" href="#side-bar-menu" class="header-mobile-btn ccicon ccicon-menu" title="Menu" aria-label="Menu" ng-cloak>&nbsp;</a>
+              <button tabindex="5" class="btn btn-link header-mobile-btn ccicon ccicon-search-alt" data-toggle="collapse"
+                 data-target=".header-search-collapse" title="Search" aria-label="Search" ng-cloak>
+              </button>
+              <a tabindex="4" class="navbar-brand" href="/" title="Charter.net Home" aria-label="Charter.net Home" cc-crumb="{pageSection: 'Header', linkText: 'Logo'}"></a>
+            </div>
+
+            <accessible-mega-menu ng-cloak>
+              <amm-menu>
+                <amm-item id="subnav-account-tab">
+                  <a ng-class="{'current-section': '' == 'my-account'}"
+                    tabindex="0"
+                    ng-href="{{checkLogin('/my-account/')}}">My Account</a>
+                  <amm-panel>
+                    <amm-panel-group>
+                      <li aria-describedby="amm-my-account-overview">
+                        <a tabindex="0"
+                          ng-href="{{checkLogin('/my-account/')}}">Overview</a>
+                        <div class="subnav-category" background-image="'/assets/images/features/navigation/images/mega/4.0_mega_nav_My_Account_Overview.png'">
+                          <div id="amm-my-account-overview" class="subnav-description">
+                           <h3>Overview</h3>
+                           <p>View details about your bills, services and account settings.</p>
+                          </div>
+                        </div>
+                      </li>
+                      <li ng-if="isBillingLinkEnabled()" aria-describedby="amm-my-account-billing">
+                        <a tabindex="0"
+                          ng-href="{{checkLogin('/billing-and-transactions/')}}">Billing</a>
+                        <div class="subnav-category" background-image="'/assets/images/features/navigation/images/mega/4.0_mega_nav_My_Account_Billing.png'">
+                          <div id="amm-my-account-billing" class="subnav-description">
+                            <h3>Billing</h3>
+                            <p>Pay your bill, view billing statements, sign up for Auto Pay and more.</p>
+                          </div>
+                        </div>
+                      </li>
+                      <li aria-describedby="amm-my-account-tv">
+                        <a tabindex="0"
+                          ng-href="{{checkLogin('/my-tv-services/')}}">TV</a>
+                        <div class="subnav-category" background-image="'/assets/images/features/navigation/images/mega/4.0_mega_nav_My_account_TV.png'">
+                          <div id="amm-my-account-tv" class="subnav-description">
+                            <h3>TV</h3>
+                            <p>Activate or nickname your digital receiver, refresh your device and more.</p>
+                          </div>
+                        </div>
+                      </li>
+                      <li aria-describedby="amm-my-account-internet">
+                        <a tabindex="0"
+                          ng-href="{{checkLogin('/my-internet-services/')}}">Internet</a>
+                        <div class="subnav-category" background-image="'/assets/images/features/navigation/images/mega/4.0_mega_nav_My_Account_internet.png'">
+                          <div id="amm-my-account-internet" class="subnav-description">
+                            <h3>Internet</h3>
+                            <p>Access your email, Security Suite, Cloud Drive and more.</p>
+                          </div>
+                        </div>
+                      </li>
+                      <li aria-describedby="amm-my-account-voice">
+                        <a tabindex="0"
+                          ng-href="{{checkLogin('/my-voice-services/')}}">Voice</a>
+                        <div class="subnav-category" background-image="'/assets/images/features/navigation/images/mega/4.0_mega_nav_My_Account_Voice.png'">
+                          <div id="amm-my-account-voice" class="subnav-description">
+                            <h3>Voice</h3>
+                            <p>Manage your voice service, check voicemails and more.</p>
+                          </div>
+                        </div>
+                      </li>
+                      <li aria-describedby="amm-my-account-settings">
+                        <a tabindex="0"
+                          ng-href="{{checkLogin('/user-preferences/')}}">Settings</a>
+                        <div class="subnav-category" background-image="'/assets/images/features/navigation/images/mega/4.0_mega_nav_My-Account_Settings.png'">
+                          <div id="amm-my-account-settings" class="subnav-description">
+                            <h3>Settings</h3>
+                            <p>Create new users, set parental controls, update your account info and more.</p>
+                          </div>
+                        </div>
+                      </li>
+                    </amm-panel-group>
+                </amm-panel>
+                </amm-item>
+                <amm-item id="subnav-tv-tab">
+                  <a ng-class="{'current-section': '' == 'watch-tv'}"
+                    tabindex="0"
+                    ng-href="/tv/">Watch TV</a>
+                  <amm-panel>
+                    <amm-panel-group>
+                      <li aria-describedby="amm-tv-overview">
+                        <a tabindex="0"
+                          ng-href="/tv/">Overview</a>
+                        <div class="subnav-category" background-image="'/assets/images/features/navigation/images/mega/4.0_mega_nav_Watch_TV_Overview.png'">
+                          <div id="amm-tv-overview" class="subnav-description">
+                            <h3>Overview</h3>
+                            <p>Watch live and On Demand TV, or browse online TV listings.</p>
+                          </div>
+                        </div>
+                      </li>
+                      <li aria-describedby="amm-tv-guide">
+                        <a tabindex="0"
+                          ng-href="/tv/guide/">Guide</a>
+                        <div class="subnav-category" background-image="'/assets/images/features/navigation/images/mega/4.0_mega_nav_Watch_TV_Guide.png'">
+                          <div id="amm-tv-guide" class="subnav-description">
+                            <h3>Guide</h3>
+                            <p>Browse online TV listings to find your favorite sports, news, movies, kids shows and more.</p>
+                          </div>
+                        </div>
+                      </li>
+                      <li aria-describedby="amm-tv-live-tv">
+                        <a tabindex="0"
+                          ng-href="/tv/live/">Live TV</a>
+                        <div class="subnav-category" background-image="'/assets/images/features/navigation/images/mega/4.0_mega_nav_Watch_TV_Live_TV.png'">
+                          <div id="amm-tv-live-tv" class="subnav-description">
+                            <h3>Live TV</h3>
+                            <p>Watch live TV anywhere in your home or take popular channels like ESPN and Disney on the go.</p>
+                          </div>
+                        </div>
+                      </li>
+                      <li aria-describedby="amm-tv-on-demand">
+                        <a tabindex="0"
+                          ng-href="/tv/on-demand/">On Demand</a>
+                        <div class="subnav-category" background-image="'/assets/images/features/navigation/images/mega/4.0_mega_nav_Watch_TV_On_Demand.png'">
+                          <div id="amm-tv-on-demand" class="subnav-description">
+                            <h3>On Demand</h3>
+                            <p>Choose from thousands of On Demand movies and TV shows to watch anywhere.</p>
+                          </div>
+                        </div>
+                      </li>
+                    </amm-panel-group>
+                  </amm-panel>
+                </amm-item>
+                <amm-item id="subnav-support-tab">
+                  <a ng-class="{'current-section': '' == 'support'}"
+                    tabindex="0"
+                    ng-href="/support/">Support</a>
+                  <amm-panel navigation-side-class="support">
+                    <amm-panel-group>
+                      <li aria-describedby="amm-support-overview">
+                        <a tabindex="0"
+                          ng-href="/support/">Overview</a>
+                        <div class="subnav-category" background-image="'/assets/images/features/navigation/images/mega/4.0_mega_nav_Support_Overview.png'">
+                          <div id="amm-support-overview" class="subnav-description">
+                            <h3>Overview</h3>
+                            <p>Got questions? Your virtual assistant has answers.</p>
+                          </div>
+                        </div>
+                      </li>
+                      <li aria-describedby="amm-support-tv">
+                        <a tabindex="0"
+                          ng-href="/support/category/tv/">TV</a>
+                        <div class="subnav-category" background-image="'/assets/images/features/navigation/images/mega/4.0_Mega_Nav_Support_TV.png'">
+                          <div id="amm-support-tv" class="subnav-description">
+                            <h3>TV</h3>
+                            <p>Get help and find answers to your questions about your Spectrum TV service.</p>
+                          </div>
+                        </div>
+                      </li>
+                      <li aria-describedby="amm-support-internet">
+                        <a tabindex="0"
+                          ng-href="/support/category/internet/">Internet</a>
+                        <div class="subnav-category" background-image="'/assets/images/features/navigation/images/mega/4.0_mega_nav_Support_Internet.png'">
+                          <div id="amm-support-internet" class="subnav-description">
+                            <h3>Internet</h3>
+                            <p>Get help and find answers to your questions about your Spectrum Internet service.</p>
+                          </div>
+                        </div>
+                      </li>
+                      <li aria-describedby="amm-support-voice">
+                        <a tabindex="0"
+                          ng-href="/support/category/voice/">Voice</a>
+                        <div class="subnav-category" background-image="'/assets/images/features/navigation/images/mega/4.0_mega_nav_Support_Voice.png'">
+                          <div id="amm-support-voice" class="subnav-description">
+                            <h3>Voice</h3>
+                            <p>Get help and find answers to your questions about your Spectrum Voice service.</p>
+                          </div>
+                        </div>
+                      </li>
+                      <li aria-describedby="amm-support-my-account">
+                        <a tabindex="0"
+                          ng-href="/support/category/my-account/">My Account</a>
+                        <div class="subnav-category" background-image="'/assets/images/features/navigation/images/mega/4.0_mega_nav_Support_My_Account.png'">
+                          <div id="amm-support-my-account" class="subnav-description">
+                            <h3>My Account</h3>
+                            <p>Get help and find answers to your questions about your Charter account.</p>
+                          </div>
+                        </div>
+                      </li>
+                      <li aria-describedby="amm-support-locations">
+                        <a tabindex="0"
+                          ng-href="/support/locations/">Locations</a>
+                        <div class="subnav-category" background-image="'/assets/images/features/navigation/images/mega/4.0_mega_nav_Support_Locations.png'">
+                          <div id="amm-support-locations" class="subnav-description">
+                            <h3>Locations</h3>
+                            <p>Find your nearest Charter store location.</p>
+                          </div>
+                        </div>
+                      </li>
+                    </amm-panel-group>
+                  </amm-panel>
+                </amm-item>
+              </amm-menu>
+            </accessible-mega-menu>
+
+            <div ng-if="isMobileView()" class="amm-search">
+              <div class="item ps-dropdown" cc-hide-search show-search-bar="predictiveSearch.showPredictiveSearch">
+                <div ng-include src=" '/assets/templates/features/predictive-search/predictive-search-tmpl.html' "
+                     class="charter-ui-component predictive-search-dropdown"></div>
+              </div>
+            </div>
+
+            <div class="visible-xs">
+              <div class="collapse navbar-collapse header-search-collapse" ng-if="!isMobileView()">
+                <ul class="nav navbar-nav">
+                  <li ng-if="hideHeaderSearchDropdown">
+                    <div class="searchbox-wrapper">
+                      <form ng-submit="predictiveSearch.submitSearch()">
+                        <input tabindex="6"
+                          type="text"
+                          class="header-search-bar inherit"
+                          ng-model="predictiveSearch.searchTerm"
+                          ng-keyup="predictiveSearch.keyup($event)"
+                          placeholder="{{predictiveSearch.searchPlaceholder}}"
+                          title="Predictive Search Bar" />
+                      </form>
+                    </div>
+                  </li>
+                  <li ng-if="!hideHeaderSearchDropdown">
+                    <div class="item" cc-hide-search show-search-bar="predictiveSearch.showPredictiveSearch">
+                      <div class="searchbox-wrapper">
+                        <input tabindex="6"
+                          type="text"
+                          class="header-search-bar inherit"
+                          ng-model="predictiveSearch.searchTerm"
+                          ng-keyup="predictiveSearch.keyup($event)"
+                          placeholder="{{predictiveSearch.searchPlaceholder}}"
+                          title="Predictive Search Bar">
+                      </div>
+                      <div ng-if="predictiveSearch.showPredictiveSearch"
+                        ng-include src=" '/assets/templates/features/predictive-search/predictive-search-mobile-tmpl.html' "
+                        class="charter-ui-component predictive-search-dropdown"></div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+<script>
+  if (/^f/.test(typeof define)) {
+    require('webview').revealById('page-header');
+  }
+</script>
+
+    <section class="page">
+<script>
+  window.charterConfigurationValues.vam = Object({"network":{"all":[{"Title":"Adult Swim","LogoImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/charter-network-import/logo/5c1b5fc6281b2da0d3e2375283e224366377c5c9.jpeg","BannerImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/charter-network-import/banner/f0c6094d280e2ee98f28529f3dfe4aa9cc722a3a.jpeg","CustomImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/19_Grid_Adult-Swim_2.png","NetworkLogo":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/19_Grid_Adult-Swim_1.png","TitleCard":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/1_TitleCard_AdultSwim.png","FeedKey":"turner/adult_swim","Id":"7383876","ProviderId":"trnr","ResourceName":"Adult Swim","Path":"/tv/on-demand/watch-online/networks/adult-swim/","WebsiteUrl":"http://www.cartoonnetwork.com/video/index.html?atclk_gn=gn_watch","IosUrl":"https://itunes.apple.com/us/app/adult-swim/id417871100?mt=8","AndroidUrl":"https://play.google.com/store/apps/details?id=com.adultswim.videoapp.android&hl=en","AmazonUrl":null},{"Title":"Bravo","LogoImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/charter-network-import/logo/5e697bfeb436c90328ebf6c77eb59b747118e753.jpeg","BannerImage":null,"CustomImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/18_Grid_Bravo.png","NetworkLogo":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/18_Grid_Bravo.png","TitleCard":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/2_TitleCard_Bravo.png","FeedKey":"nbcu/bravo","Id":"5706624","ProviderId":"nbcu","ResourceName":"Bravo","Path":"/tv/on-demand/watch-online/networks/bravo/","WebsiteUrl":"http://www.bravotv.com/now/","IosUrl":"https://itunes.apple.com/us/app/bravo-now/id383925190?mt=8","AndroidUrl":null,"AmazonUrl":null},{"Title":"Cartoon Network","LogoImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/charter-network-import/logo/3ae5e5b8e9255615f3b07ddfb50b74fd771e9c3d.jpeg","BannerImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/charter-network-import/banner/56fc771bf6440b9e05545b19992b37dee9348d8b.jpeg","CustomImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/15_Grid_CN.png","NetworkLogo":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/15_Grid_CN.png","TitleCard":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/5_TitleCard_CN.png","FeedKey":"turner/cartoon_network","Id":"7383640","ProviderId":"trnr","ResourceName":"Cartoon Network","Path":"/tv/on-demand/watch-online/networks/cartoon-network/","WebsiteUrl":"http://www.cartoonnetwork.com/video/index.html?atclk_gn=gn_watch","IosUrl":"https://itunes.apple.com/us/app/cartoon-network/id404593641?mt=8","AndroidUrl":"https://play.google.com/store/apps/details?id=com.turner.cnvideoapp","AmazonUrl":null},{"Title":"Cinemax","LogoImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/charter-network-import/logo/bb699f5cb464e7e8d1ae922b9af827e5db43b8ec.png","BannerImage":null,"CustomImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/16_Grid_Cinemax.png","NetworkLogo":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/16_Grid_Cinemax.png","TitleCard":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/4_TitleCard_Cinemax.png","FeedKey":"cinemax/afterdark","Id":"7391824","ProviderId":"cnmx","ResourceName":"Cinemax","Path":"/tv/on-demand/watch-online/networks/cinemax/","WebsiteUrl":"http://www.maxgo.com/","IosUrl":"https://itunes.apple.com/us/app/max-go/id453560335?mt=8https://itunes.apple.com/us/app/max-go/id453560335?mt=8","AndroidUrl":"https://play.google.com/store/apps/details?id=com.MAXGo","AmazonUrl":null},{"Title":"CNBC","LogoImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/charter-network-import/logo/2efd6cab0452f183a050cdedeeb8a7112e1b82af.jpeg","BannerImage":null,"CustomImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/34_Grid_CNBC.png","NetworkLogo":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/34_Grid_CNBC.png","TitleCard":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/34_TitleCard_cnbc.png","FeedKey":"nbcu/cnbc","Id":"10012","ProviderId":"nbcu","ResourceName":"CNBC","Path":"/tv/on-demand/watch-online/networks/cnbc/","WebsiteUrl":"http://www.cnbc.com/live-tv/","IosUrl":"https://itunes.apple.com/us/app/cnbc/id334125582?mt=8","AndroidUrl":"https://play.google.com/store/apps/details?id=com.cnbc.client","AmazonUrl":null},{"Title":"Disney Channel","LogoImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/charter-network-import/logo/3eee23f7dd4162550b56aba3bad3d02671b78fc7","BannerImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/charter-network-import/banner/b3214f2ef80299dd111f8e8ea63b52f0ee3837eb","CustomImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/14_Grid_Disney.png","NetworkLogo":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/14_Grid_Disney.png","TitleCard":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/6_TitleCard_Disney.png","FeedKey":"disney/disneychannel","Id":"7502620","ProviderId":"disney","ResourceName":"Disney Channel","Path":"/tv/on-demand/watch-online/networks/disney-channel/","WebsiteUrl":"http://watchdisneychannel.go.com/","IosUrl":"https://itunes.apple.com/us/app/watch-disney-channel/id529997671","AndroidUrl":null,"AmazonUrl":null},{"Title":"Disney Junior","LogoImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/charter-network-import/logo/da829138ebd4d3779fda31fe1eabb88070644439","BannerImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/charter-network-import/banner/89e856515a0b2600ec31236eab8b0fdfc3637776","CustomImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/13_Grid_Disney-Jr.png","NetworkLogo":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/13_Grid_Disney-Jr.png","TitleCard":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/7_TitleCard_DisneyJr.png","FeedKey":"disney/disneyjr","Id":"7502122","ProviderId":"disney","ResourceName":"Disney Junior","Path":"/tv/on-demand/watch-online/networks/disney-junior/","WebsiteUrl":"https://watchdisneyjunior.go.com/","IosUrl":"https://itunes.apple.com/us/app/watch-disney-junior/id530001625","AndroidUrl":null,"AmazonUrl":null},{"Title":"Disney XD","LogoImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/charter-network-import/logo/761286693f9f3bb254b21568a73e42a444687d4a","BannerImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/charter-network-import/banner/7df9783d9d2344df7eaadcc8872f5ea80c219bf3_0","CustomImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/90_Grid_DisneyXD-1434486039.png","NetworkLogo":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/90_Grid_DisneyXD-1434486039.png","TitleCard":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/73_TitleCard_DisneyXD-1434486058.png","FeedKey":"disney/disneyxd","Id":"7501690","ProviderId":"disney","ResourceName":"Disney XD","Path":"/tv/on-demand/watch-online/networks/disney-xd/","WebsiteUrl":"http://watchdisneyxd.go.com/","IosUrl":"https://itunes.apple.com/us/app/watch-disney-xd/id530003802","AndroidUrl":null,"AmazonUrl":null},{"Title":"E! Pop of Culture","LogoImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/charter-network-import/logo/356ecc786a8f105658cee0f313288d6004aa0d9c.jpeg","BannerImage":null,"CustomImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/29_Grid_E%21.png","NetworkLogo":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/29_Grid_E%21.png","TitleCard":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/39_TitleCard_e.png","FeedKey":"nbcu/e","Id":"5459213","ProviderId":"nbcu","ResourceName":"E! Pop of Culture","Path":"/tv/on-demand/watch-online/networks/e-pop-culture/","WebsiteUrl":"http://www.eonline.com/now/","IosUrl":"https://itunes.apple.com/us/app/e!-online/id313624917?mt=8","AndroidUrl":"https://play.google.com/store/apps/details?id=com.rhythmnewmedia.android.e","AmazonUrl":null},{"Title":"Esquire Network","LogoImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/charter-network-import/logo/1cf78b6b0a198b8873169a9ded34917dd682d766.jpeg","BannerImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/charter-network-import/banner/Esquire_960x300.jpeg","CustomImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/31_Grid_Esquiire.png","NetworkLogo":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/31_Grid_Esquiire.png","TitleCard":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/37_TitleCard_esquire_network.png","FeedKey":"nbcu/esquire_network","Id":"5662371","ProviderId":"nbcu","ResourceName":"Esquire Network","Path":"/tv/on-demand/watch-online/networks/esquire-network/","WebsiteUrl":"http://tv.esquire.com/now/","IosUrl":null,"AndroidUrl":null,"AmazonUrl":null},{"Title":"Golf Channel","LogoImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/charter-network-import/logo/d78b25ffff1d1c25ad5720508c161f28f06f50f7","BannerImage":null,"CustomImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/6_Grid_Golf.png","NetworkLogo":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/6_Grid_Golf.png","TitleCard":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/14_TitleCard_Golf.png","FeedKey":"nbcu/golf_channel","Id":"5608017","ProviderId":"nbcu","ResourceName":"Golf Channel","Path":"/tv/on-demand/watch-online/networks/golf-channel/","WebsiteUrl":"http://stream.golfchannel.com/index_golf-live-from.html?pid=142","IosUrl":"https://itunes.apple.com/us/app/golf-channel/id466053027?mt=8","AndroidUrl":"https://play.google.com/store/apps/details?id=com.myleaderboard.GolfChannel","AmazonUrl":null},{"Title":"HBO","LogoImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/charter-network-import/logo/687d5aafe12ca234860e4821dacad902bb757d3d.png","BannerImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/charter-network-import/banner/586a5e5a21fb92d48bdb1935e0960417a53a2a45.png","CustomImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/5_Grid_HBO.png","NetworkLogo":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/5_Grid_HBO.png","TitleCard":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/15_TitleCard_HBO.png","FeedKey":"hbo/latenight","Id":"7436246","ProviderId":"hbo","ResourceName":"HBO","Path":"/tv/on-demand/watch-online/networks/hbo/","WebsiteUrl":"http://www.hbogo.com/","IosUrl":"https://itunes.apple.com/us/app/hbo-go/id429775439?mt=8","AndroidUrl":"https://play.google.com/store/apps/details?id=com.HBO","AmazonUrl":null},{"Title":"MSNBC","LogoImage":null,"BannerImage":null,"CustomImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/32_Grid_msnbc.png","NetworkLogo":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/32_Grid_msnbc_0.png","TitleCard":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/36_TitleCard_msnbc.png","FeedKey":"nbcu/msnbc","Id":"5668051","ProviderId":"nbcu","ResourceName":"MSNBC","Path":"/tv/on-demand/watch-online/networks/msnbc/","WebsiteUrl":"http://www.msnbc.com/msnbc-live","IosUrl":"https://itunes.apple.com/us/app/msnbc/id396885309?mt=8","AndroidUrl":null,"AmazonUrl":null},{"Title":"NBC","LogoImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/charter-network-import/logo/af1a5afa4ceafd85091302025682df64e6a7c183.jpeg","BannerImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/charter-network-import/banner/45fe6eaf1419914b69eac6dedde9bfe7f36b1ed9.jpeg","CustomImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/3_Grid_NBC.png","NetworkLogo":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/3_Grid_NBC.png","TitleCard":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/17_TitleCard_NBC.png","FeedKey":"nbcu/nbc","Id":"5698810","ProviderId":"nbcu","ResourceName":"NBC","Path":"/tv/on-demand/watch-online/networks/nbc/","WebsiteUrl":"http://www.nbc.com/go-on","IosUrl":"https://itunes.apple.com/us/app/nbc/id442839435?mt=8","AndroidUrl":"https://play.google.com/store/apps/details?id=com.nbcuni.nbc&hl=en","AmazonUrl":null},{"Title":"NBC News","LogoImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/charter-network-import/logo/34bb5b9ab5d4ca77baa73b14c524547781986fea.jpeg","BannerImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/charter-network-import/banner/35471f21e229110e8c0f3d5d89086c2847ed7ab2.jpeg","CustomImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/21_Grid_NBC_News.png","NetworkLogo":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/21_Grid_NBC_News.png","TitleCard":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/47_TitleCard_nbc_news.png","FeedKey":"nbcu/nbc_news","Id":"5607201","ProviderId":"nbcu","ResourceName":"NBC News","Path":"/tv/on-demand/watch-online/networks/nbc-news/","WebsiteUrl":"http://tve-nbcnews.nbcuni.com/tve/","IosUrl":"https://itunes.apple.com/us/app/nbc-news/id319740707?mt=8","AndroidUrl":"https://play.google.com/store/apps/details?id=com.zumobi.msnbc","AmazonUrl":null},{"Title":"NBC Sports Network","LogoImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/charter-network-import/logo/2194f52a1249d0a13a3a0f5e4583b9a16155d657.jpeg","BannerImage":null,"CustomImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/54_Grid_NBCSN-1423779618.png","NetworkLogo":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/54_Grid_NBCSN-1423779618.png","TitleCard":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/53_TitleCard_NBCSN-1423779630.png","FeedKey":"nbcu/nbc_sports_network","Id":"5642344","ProviderId":"nbcu","ResourceName":"NBC Sports Network","Path":"/tv/on-demand/watch-online/networks/nbc-sports-network/","WebsiteUrl":"http://stream.nbcsports.com/liveextra/","IosUrl":"https://itunes.apple.com/us/app/nbc-sports-live-extra/id542511686?mt=8","AndroidUrl":"https://play.google.com/store/apps/details?id=air.com.nbcuni.com.nbcsports.liveextra","AmazonUrl":null},{"Title":"Oxygen","LogoImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/charter-network-import/logo/0e9869023c5f6a3f6059e6e14a5477698c780f01_0","BannerImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/charter-network-import/banner/9d6b5343cf16a7608539ab232368904a99c5a656_1.jpeg","CustomImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/48_Grid_Oxygen_1.png","NetworkLogo":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/48_Grid_Oxygen_0.png","TitleCard":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/46_TitleCard_oxygen_0.png","FeedKey":"nbcu/oxygen","Id":"5688013","ProviderId":"nbcu","ResourceName":"Oxygen","Path":"/tv/on-demand/watch-online/networks/oxygen/","WebsiteUrl":"http://now.oxygen.com/","IosUrl":"https://itunes.apple.com/us/app/oxygen-now/id700797306?mt=8","AndroidUrl":null,"AmazonUrl":null},{"Title":"Sprout","LogoImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/charter-network-import/logo/5b4922477cd8605cfef6c07589c0f655b834a36d.jpeg","BannerImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/charter-network-import/banner/3ca612fbe8c4b4a4cb048adb0bb7c6b42a72f89c.jpeg","CustomImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/23_Grid_Sprout.png","NetworkLogo":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/23_Grid_Sprout.png","TitleCard":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/45_TitleCard_sprout.png","FeedKey":"nbcu/sprout","Id":"5616717","ProviderId":"nbcu","ResourceName":"Sprout","Path":"/tv/on-demand/watch-online/networks/sprout/","WebsiteUrl":"http://www.sproutonline.com/now/","IosUrl":null,"AndroidUrl":null,"AmazonUrl":null},{"Title":"Syfy","LogoImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/charter-network-import/logo/a3ba3b2117b4c81ecd8e068dfbf6ebb46e852a53.jpeg","BannerImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/charter-network-import/banner/a09c106cf93fba9a6e2d8fb1e1af2f92958623f8.jpeg","CustomImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/24_Grid_SYFY.png","NetworkLogo":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/24_Grid_SYFY.png","TitleCard":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/44_TitleCard_syfy.png","FeedKey":"nbcu/syfy","Id":"5460912","ProviderId":"nbcu","ResourceName":"Syfy","Path":"/tv/on-demand/watch-online/networks/syfy/","WebsiteUrl":"http://www.syfy.com/now/","IosUrl":"https://itunes.apple.com/us/app/syfy-now/id378092432?mt=8","AndroidUrl":"https://play.google.com/store/apps/details?id=com.nbcuni.syfy.syfyforandroidtablet","AmazonUrl":null},{"Title":"TBS","LogoImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/charter-network-import/logo/1fa106f97be5d5c38f4042ce2eeb923a99658d54.jpeg","BannerImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/charter-network-import/banner/3cb8501220dd8860a10011136612059a8d2a76f9.jpeg","CustomImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/26_Grid_TBS-1445970151.png","NetworkLogo":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/26_Grid_TBS-1445970151.png","TitleCard":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/42_TitleCard_tbs-1445970166.png","FeedKey":"turner/tbs","Id":"7382442","ProviderId":"trnr","ResourceName":"TBS","Path":"/tv/on-demand/watch-online/networks/tbs/","WebsiteUrl":"http://www.tbs.com/watchtbs/","IosUrl":"https://itunes.apple.com/us/app/watch-tbs/id385618916?mt=8","AndroidUrl":"https://play.google.com/store/apps/details?id=com.turner.tbs.android.networkapp","AmazonUrl":null},{"Title":"TCM","LogoImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/charter-network-import/logo/94cc73615702c82c00e9e3733238f990331a91b8.jpeg","BannerImage":null,"CustomImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/25_Grid_TCM.png","NetworkLogo":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/25_Grid_TCM.png","TitleCard":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/43_TitleCard_tcm.png","FeedKey":"turner/tcm","Id":"7381971","ProviderId":"trnr","ResourceName":"TCM","Path":"/tv/on-demand/watch-online/networks/tcm/","WebsiteUrl":"http://www.tcm.com/watchtcm/","IosUrl":"https://itunes.apple.com/us/app/watch-tcm/id341161319?mt=8","AndroidUrl":"https://play.google.com/store/apps/details?id=com.tcm.tcm","AmazonUrl":null},{"Title":"Telemundo","LogoImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/charter-network-import/logo/35e3f33b6042cfeaf2e35b92835353db91ed8f91.jpeg","BannerImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/charter-network-import/banner/e7017a6e4298e530e3628ece9e4e6b76e9599481.jpeg","CustomImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/1_Grid_Telemundo.png","NetworkLogo":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/1_Grid_Telemundo.png","TitleCard":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/19_TitleCard_Telemundo.png","FeedKey":"nbcu/telemundo","Id":"5529850","ProviderId":"nbcu","ResourceName":"Telemundo","Path":"/tv/on-demand/watch-online/networks/telemundo/","WebsiteUrl":"http://now.telemundo.com/","IosUrl":"https://itunes.apple.com/us/app/telemundo-now/id680595680?mt=8","AndroidUrl":"https://play.google.com/store/apps/details?id=com.telemundo.awe","AmazonUrl":null},{"Title":"TNT","LogoImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/charter-network-import/logo/77d5d6ae9692ad8cd55372064926df4a402f9269.jpeg","BannerImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/charter-network-import/banner/83aa9905c9a87d56dc78c42bffe6b6fb240ad577.jpeg","CustomImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/0_Grid_TNT-1454346678.png","NetworkLogo":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/0_Grid_TNT-1454346678.png","TitleCard":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/20_TitleCard_TNT-1454346692.png","FeedKey":"turner/tnt","Id":"7382815","ProviderId":"trnr","ResourceName":"TNT","Path":"/tv/on-demand/watch-online/networks/tnt/","WebsiteUrl":"http://www.tntdrama.com/watchtnt/","IosUrl":"https://itunes.apple.com/us/app/watch-tnt/id385621762?mt=8","AndroidUrl":"https://play.google.com/store/apps/details?id=com.turner.tnt.android.networkapp","AmazonUrl":null},{"Title":"truTV","LogoImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/charter-network-import/logo/f13c4214c91f3d7080ea8643badc5000cece7c0f","BannerImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/charter-network-import/banner/a3952e739c7760d158a68b86a3443ef0e015f8ff_0.jpeg","CustomImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/27_Grid_TrueTV-1426802129.png","NetworkLogo":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/27_Grid_TrueTV-1426802129.png","TitleCard":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/26_TitleCard_Rgn_TrueTV-1426802147.png","FeedKey":"turner/trutv","Id":"7385053","ProviderId":"trnr","ResourceName":"truTV","Path":"/tv/on-demand/watch-online/networks/trutv/","WebsiteUrl":"http://www.trutv.com/index.html","IosUrl":"https://itunes.apple.com/us/app/watch-trutv/id396972659?mt=8","AndroidUrl":"https://play.google.com/store/apps/details?id=com.turner.trutv","AmazonUrl":null},{"Title":"USA Network","LogoImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/charter-network-import/logo/b7140551488cce69dfd1d0781153eef88b5fe6bb.png","BannerImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/charter-network-import/banner/64c3e3efd07760b62cb9f99388bfb13f9b52c945.jpeg","CustomImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/55_Grid_USA-1423779880.png","NetworkLogo":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/55_Grid_USA-1423779880.png","TitleCard":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/52_TitleCard_USA-1423779895.png","FeedKey":"nbcu/usa_network","Id":"5683708","ProviderId":"nbcu","ResourceName":"USA Network","Path":"/tv/on-demand/watch-online/networks/usa-network/","WebsiteUrl":"http://www.usanetwork.com/now/","IosUrl":"https://itunes.apple.com/us/app/usa-now/id661695783?mt=8","AndroidUrl":"https://play.google.com/store/apps/details?id=com.usanetwork.watcher","AmazonUrl":null},{"Title":"ABC","LogoImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/charter-network-import/logo/b573ecec8dbd37c18f2487fa039f994d0f3a376e.png","BannerImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/charter-network-import/banner/a0cefa88b6059804ac7c1c085ca768c61864ac86.png","CustomImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/20_Grid_ABC.png","NetworkLogo":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/20_Grid_ABC.png","TitleCard":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/0_TitleCard_ABC.png","FeedKey":"abc/abc","Id":"11165922","ProviderId":"abc","ResourceName":"ABC","Path":"/tv/on-demand/watch-online/networks/abc/","WebsiteUrl":"http://abc.go.com/","IosUrl":"https://itunes.apple.com/us/app/watch-abc/id364191819?mt=8","AndroidUrl":"https://play.google.com/store/apps/details?id=com.disney.datg.videoplatforms.android.abc","AmazonUrl":null},{"Title":"Freeform","LogoImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/charter-network-import/logo/bb4d9f79f4a293858c2edcd5c17646725c666b1e.png","BannerImage":null,"CustomImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/93_Grid_Freeform-1452524329.png","NetworkLogo":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/93_Grid_Freeform-1452524329.png","TitleCard":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/75_TitleCard_Freeform-1452524344.png","FeedKey":"abc/abcfamily","Id":"PlaceholderID","ProviderId":"abc","ResourceName":"Freeform","Path":"/tv/on-demand/watch-online/networks/freeform/","WebsiteUrl":"http://freeform.go.com/","IosUrl":"https://itunes.apple.com/us/app/freeform-vector-drawing-app/id364875544?mt=8","AndroidUrl":"https://play.google.com/store/apps/details?id=com.disney.datg.videoplatforms.android.abcf","AmazonUrl":"http://www.amazon.com/ABC-Family-Kindle-Tablet-Edition/dp/B00CZUZ5MG/ref=sr_1_1?s=mobile-apps&ie=UTF8&qid=1371835459&sr=1-1&keywords=abc+family"},{"Title":"Epix","LogoImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/charter-network-import/logo/0e2d36acc7ef73c92119fddc227f9fb533bff163","BannerImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/charter-network-import/banner/f16a93fb3dbd936c7a6d0f37df0908481ede6014_1.png","CustomImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/12_Grid_Epix_1.png","NetworkLogo":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/12_Grid_Epix_0.png","TitleCard":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/8_TitleCard_Epix_0.png","FeedKey":"epix/iframe","Id":"7436347","ProviderId":"epix","ResourceName":"EPIX","Path":"/tv/on-demand/watch-online/networks/epix/","WebsiteUrl":"http://www.epixhd.com/","IosUrl":"https://itunes.apple.com/us/app/epix/id430018488?mt=8","AndroidUrl":"https://play.google.com/store/apps/details?id=com.epix.epix","AmazonUrl":null},{"Title":"NBC Universo","LogoImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/charter-network-import/logo/025ccfffa83fa3025d502cfebaf92dab4b19c5aa_0","BannerImage":null,"CustomImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/NBC%20UNIVERSO%20LOGO%20146x100-1423236041.png","NetworkLogo":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/NBC%20UNIVERSO%20LOGO%20146x100-1423236041.png","TitleCard":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/NBC%20UNIVERSO%20LOGO%20510X381-1423235995.png","FeedKey":"nbcu/nbc_universo","Id":"33561366","ProviderId":"nbcu","ResourceName":"NBC Universo","Path":"/tv/on-demand/watch-online/networks/nbc-universo/","WebsiteUrl":null,"IosUrl":null,"AndroidUrl":null,"AmazonUrl":null},{"Title":"FOX","LogoImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/charter-network-import/logo/f402b8f7dbf4f04433a5a4b88e0bba598c5ebf7b_0.png","BannerImage":null,"CustomImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/60_Grid_FOX-1434491605.png","NetworkLogo":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/60_Grid_FOX-1434491605.png","TitleCard":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/59_TitleCard_FOX-1434492149.png","FeedKey":"fox/fox","Id":"6326385","ProviderId":"fox","ResourceName":"FOX","Path":"/tv/on-demand/watch-online/networks/fox/","WebsiteUrl":null,"IosUrl":null,"AndroidUrl":null,"AmazonUrl":null},{"Title":"FX","LogoImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/charter-network-import/logo/bcbf14fe39a0b23eb89017477e6dc6de481f554d_0.png","BannerImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/charter-network-import/banner/08980d233c005b6060eaa818101f669572e5a05a_0.jpeg","CustomImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/61_Grid_FX-1434496975.png","NetworkLogo":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/61_Grid_FX-1434496975.png","TitleCard":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/60_TitleCard_FX-1434496994.png","FeedKey":"fx/fx","Id":"6328957","ProviderId":"fx","ResourceName":"FX","Path":"/tv/on-demand/watch-online/networks/fx/","WebsiteUrl":null,"IosUrl":null,"AndroidUrl":null,"AmazonUrl":null},{"Title":"FXM","LogoImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/charter-network-import/logo/1ca79b0fa1d212a906141ea60fb46b4aba903e52","BannerImage":null,"CustomImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/62_Grid_FXM-1434485228.png","NetworkLogo":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/62_Grid_FXM-1434485228.png","TitleCard":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/61_TitleCard_FXM-1434485162.png","FeedKey":"fx/fxm","Id":"12777201","ProviderId":"fx","ResourceName":"FXM","Path":"/tv/on-demand/watch-online/networks/fxm/","WebsiteUrl":null,"IosUrl":null,"AndroidUrl":null,"AmazonUrl":null},{"Title":"FXX","LogoImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/charter-network-import/logo/339b035491ddcd5918cdaf76116f1233a1e8159e","BannerImage":null,"CustomImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/66_Grid_FXX-1434497152.png","NetworkLogo":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/66_Grid_FXX-1434497152.png","TitleCard":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/62_TitleCard_FXX-1434497177.png","FeedKey":"fx/fxx","Id":"12777119","ProviderId":"fx","ResourceName":"FXX","Path":"/tv/on-demand/watch-online/networks/fxx/","WebsiteUrl":null,"IosUrl":null,"AndroidUrl":null,"AmazonUrl":null},{"Title":"Nat Geo Wild","LogoImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/charter-network-import/logo/0cebc662a8a60bf6fc8afe9ead0fa2b1e76df9b5.png","BannerImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/charter-network-import/banner/dd1e3c6e306917538a9b5cf6876aa8327205dbb1.jpeg","CustomImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/63_Grid_NGW-1434485630.png","NetworkLogo":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/63_Grid_NGW-1434485630.png","TitleCard":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/63_TitleCard_NGW-1434485605.png","FeedKey":"natgeo/ngwild","Id":"5895037","ProviderId":"natgeo","ResourceName":"Nat Geo Wild","Path":"/tv/on-demand/watch-online/networks/nat-geo-wild/","WebsiteUrl":"http://channel.nationalgeographic.com/wild/","IosUrl":null,"AndroidUrl":null,"AmazonUrl":null},{"Title":"National Geographic Channel","LogoImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/charter-network-import/logo/5ed39398752415c3bea3d455cd83438b08b0df07.png","BannerImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/charter-network-import/banner/69aadd92c9b61de87a6a5666dce6b70a52caeacb.jpeg","CustomImage":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/42_Grid_Nat-Geo-1434485704.png","NetworkLogo":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/42_Grid_Nat-Geo-1434485704.png","TitleCard":"//d15yx0mnc9teae.cloudfront.net/sites/default/files/64_TitleCard_NG-1434485661.png","FeedKey":"natgeo/ngc","Id":"5845856","ProviderId":"natgeo","ResourceName":"National Geographic Channel","Path":"/tv/on-demand/watch-online/networks/national-geographic-channel/","WebsiteUrl":null,"IosUrl":null,"AndroidUrl":null,"AmazonUrl":null}]}});
+</script>
+<div class="page-home">
+
+  <section class="hero-wrapper area-dark">
+  <div class="container hero-nav" ng-if="slidesList.length > 1">
+    <i class="ccicon ccicon-chevron-left-fill hero-nav-left" ng-click="swipe(-1)"></i>
+    <i class="ccicon ccicon-chevron-right-fill hero-nav-right" ng-click="swipe(1)"></i>
+  </div>
+
+  <ul cc-fade interval=6000 class="hero-slider" class="unstyled">
+    <li class="hero-slide" ng-swipe-left="swipe(1)" ng-swipe-right="swipe(-1)">
+      <div class="hero-bg-container">
+        <a target="_blank"
+          href="/support/tv/spectrum-tv-app/#/kidz?cmp=ban-resp-hp-0516"
+          cc-link="{name: 'Promo Click', prop23: 'Home', prop24: 'Home Main', prop25: 'Hero-Wrapper', prop26: 'Spectrum TV App Kid Zone'}"
+          cc-crumb="{pageSection: 'Promo', linkText: 'Spectrum TV App Kid Zone'}">
+          <picture>
+            <source media="(max-width: 767px)" srcset="//d15yx0mnc9teae.cloudfront.net/sites/default/files/CHA_1404_charter-1462196667.netbanners_Homepage_KidZone_Mobile_640x200.jpg 640w">
+            <source media="(max-width: 959px)" srcset="//d15yx0mnc9teae.cloudfront.net/sites/default/files/CHA_1404_charter-1462196656.netbanners_Homepage_KidZone_Tablet_1536x740.jpg 1536w">
+            <img src="//d15yx0mnc9teae.cloudfront.net/sites/default/files/CHA_1404_charter-1462196642.netbanners_Homepage_KidZone_2560x740_R2_2x.jpg"
+                class="hero-background-image"
+                alt="Spectrum TV App Kid Zone">
+          </picture>
+        </a>
+      </div>
+    </li>
+    <li class="hero-slide" ng-swipe-left="swipe(1)" ng-swipe-right="swipe(-1)">
+      <div class="hero-bg-container">
+        <a target="_blank"
+          href="/support/general/charter-mover-resource-moving-and-relocation/?cmp=ban-resp-hp-0516"
+          cc-link="{name: 'Promo Click', prop23: 'Home', prop24: 'Home Main', prop25: 'Hero-Wrapper', prop26: 'Tip of the Month- Movers'}"
+          cc-crumb="{pageSection: 'Promo', linkText: 'Tip of the Month- Movers'}">
+          <picture>
+            <source media="(max-width: 767px)" srcset="//d15yx0mnc9teae.cloudfront.net/sites/default/files/CHA_1404_charter-1462196754.netbanners_Homepage_Moving_Mobile_640x200.png 640w">
+            <source media="(max-width: 959px)" srcset="//d15yx0mnc9teae.cloudfront.net/sites/default/files/CHA_1404_charter-1462196744.netbanners_Homepage_Moving_Tablet_1536x740.jpg 1536w">
+            <img src="//d15yx0mnc9teae.cloudfront.net/sites/default/files/CHA_1404_charter-1462196733.netbanners_Homepage_Movers_2560x740_R2.jpg"
+                class="hero-background-image"
+                alt="Tip of the Month- Movers">
+          </picture>
+        </a>
+      </div>
+    </li>
+    <li class="hero-slide" ng-swipe-left="swipe(1)" ng-swipe-right="swipe(-1)">
+      <div class="hero-bg-container">
+        <a target="_blank"
+          href="/support/my-account/manage-service-appointments-online/?cid=ban-svc-cbm-0416"
+          cc-link="{name: 'Promo Click', prop23: 'Home', prop24: 'Home Main', prop25: 'Hero-Wrapper', prop26: 'Service Appointment'}"
+          cc-crumb="{pageSection: 'Promo', linkText: 'Service Appointment'}">
+          <picture>
+            <source media="(max-width: 767px)" srcset="//d15yx0mnc9teae.cloudfront.net/sites/default/files/service_appt_homepage_slider_banner_final_mobile-1452268772.jpg 640w">
+            <source media="(max-width: 959px)" srcset="//d15yx0mnc9teae.cloudfront.net/sites/default/files/service_appt_homepage_slider_banner_final_tablet-1452268762.jpg 768w">
+            <img src="//d15yx0mnc9teae.cloudfront.net/sites/default/files/service_appt_homepage_slider_banner_final_desktop-1452268753.jpg"
+                class="hero-background-image"
+                alt="Service Appointment">
+          </picture>
+        </a>
+      </div>
+    </li>
+  </ul>
+
+  <div class="container hidden-xs" ng-if="slidesList.length > 1">
+    <div class="hero-bullets-cont">
+      <i class="ccicon ccicon-circle-fill hero-bullet" ng-repeat="slide in slidesList track by $index" ng-class="{active: slide.active === true}" ng-click="goToSlide($index);"></i>
+    </div>
+  </div>
+</section>
+
+
+  <div class="home-background"></div>
+
+  <div ng-include src=" '/home/widget-shelf/widget-shelf-tmpl.html' "></div>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12">
+
+        <div ng-include src=" '/home/tv-widgets/tv-everywhere/tv-everywhere-tmpl.html' "></div>
+
+        <div ng-include src=" '/home/tv-widgets/primetime-tonight/primetime-tonight-tmpl.html' "></div>
+
+        <div ng-include src=" '/assets/templates/features/featured-recommendations/featured-recommendations-tmpl.html' "></div>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+    </section>
+
+<!--{{==}}-->
+<footer
+  ng-controller="assistanceBarCtrl"
+  id="page-footer"
+  webview-cloak>
+  <div class="assist-bar" ng-cloak ng-if="assistanceBar.shouldShowAssistanceBar()">
+    <div class="container">
+      <div class="assist-list">
+        <div class="assist-list-left">
+          <div class="assist-item-mobile fade-in vcentered-container" ng-if="assistanceBar.hasWeather()">
+            <div class="weather-widget vcentered-content">
+              <div class="assist-link-content">
+                <span class="assist-weather-temp">{{weatherInfo.observed.obs}}&deg;</span>
+                <img
+                  class="assist-weather-icon"
+                  ng-src="//d1ff979u6gd5fc.cloudfront.net/api/static-assets/assets/2.14.3/380/assets/images/footer/weather/{{weatherInfo.observed.conditions.code}}.png"
+                  alt="{{weatherInfo.observed.conditions.text}}"
+                >
+                <span class="assist-weather-location" title="{{weatherInfo.location.city}}, {{weatherInfo.location.stateAbbr}}">
+                  {{weatherInfo.location.city}}, {{weatherInfo.location.stateAbbr}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div><!-- /assist-bar -->
+  <div class="superfooter">
+    <div class="container">
+      <div class="footer-smallmenu visible-xs">
+        <ul class="list-unstyled list-inline list-smallmenu">
+          <li>
+            <a href="/">Home</a>
+          </li>
+          <li>
+            <a href="/my-account/">My Account</a>
+          </li>
+          <li>
+            <a href="/tv/">Watch TV</a>
+          </li>
+          <li class="support">
+            <a href="/support/">Support</a>
+          </li>
+        </ul>
+      </div>
+      <div class="footer-menu hidden-xs">
+
+        <div class="footer-submenu footer-submenu-charter">
+
+          <div class="footer-submenu-account">
+            <a href="/my-account/" class="footer-menu-heading nav-font" cc-crumb="{pageSection: 'Footer', linkText: 'My Account'}">My Account</a>
+            <ul class="list-unstyled">
+              <li>
+                  <a ng-href="{{checkLogin('/my-account/')}}"
+                     cc-crumb="{pageSection: 'Footer', linkText: 'Overview'}">Overview</a>
+              </li>
+              <li ng-if="!account.isAuthenticated() || (account.isAuthenticated() && !account.isStandard())">
+                  <a ng-href="{{checkLogin('/billing-and-transactions/')}}"
+                     cc-crumb="{pageSection: 'Footer', linkText: 'Billing}">Billing</a>
+              </li>
+              <li>
+                  <a ng-href="{{checkLogin('/my-tv-services/')}}"
+                     cc-crumb="{pageSection: 'Footer', linkText: 'TV'}">TV</a>
+              </li>
+              <li>
+                  <a ng-href="{{checkLogin('/my-internet-services/')}}"
+                     cc-crumb="{pageSection: 'Footer', linkText: 'Internet'}">Internet</a>
+              </li>
+              <li>
+                  <a ng-href="{{checkLogin('/my-voice-services/')}}"
+                     cc-crumb="{pageSection: 'Footer', linkText: 'Voice'}">Voice</a>
+              </li>
+              <li>
+                  <a ng-href="{{checkLogin('/user-preferences/')}}"
+                     cc-crumb="{pageSection: 'Footer', linkText: 'Settings'}"
+                     id="user-preferences-footer-link">Settings</a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="footer-submenu-tv">
+            <a href="/tv/" class="footer-menu-heading nav-font" cc-crumb="{pageSection: 'Footer', linkText: 'Watch TV'}">Watch TV</a>
+            <ul class="list-unstyled">
+              <li><a href="/tv/" cc-crumb="{pageSection: 'Footer', linkText: 'Overview'}">Overview</a></li>
+              <li><a href="/tv/guide/" cc-crumb="{pageSection: 'Footer', linkText: 'Guide'}">Guide</a></li>
+              <li><a href="/tv/live/" cc-crumb="{pageSection: 'Footer', linkText: 'Live TV'}">Live TV</a></li>
+              <li><a href="/tv/on-demand/" cc-crumb="{pageSection: 'Footer', linkText: 'On Demand'}">On Demand</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-submenu-support">
+            <a href="/support/" class="footer-menu-heading nav-font" cc-crumb="{pageSection: 'Footer', linkText: 'Support'}">Support</a>
+            <ul class="list-unstyled">
+              <li><a href="/support/" cc-crumb="{pageSection: 'Footer', linkText: 'Overview'}">Overview</a></li>
+              <li><a href="/support/category/tv/" cc-crumb="{pageSection: 'Footer', linkText: 'TV'}">TV</a></li>
+              <li><a href="/support/category/internet/" cc-crumb="{pageSection: 'Footer', linkText: 'Internet'}">Internet</a></li>
+              <li><a href="/support/category/voice/" cc-crumb="{pageSection: 'Footer', linkText: 'Voice'}">Voice</a></li>
+              <li><a href="/support/category/my-account/" cc-crumb="{pageSection: 'Footer', linkText: 'Billing and Account'}">My Account</a></li>
+              <li><a href="/support/locations/" cc-crumb="{pageSection: 'Footer', linkText: 'Locations'}" cc-track-click="global.footer.locations">Locations</a></li>
+            </ul>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="ng-cloak" ng-if="!''" cc-track-click="global.footer.banner">
+        	<div class="footer-promo hidden-xs with-divider">
+                <a href="/support/tv/tv-channel-apps/?cmp=ban-resp-hp-0516">
+			<img src="//d15yx0mnc9teae.cloudfront.net/sites/default/files/CHA_1277_charter-1462197114.netbanners_Footer_TVeverywhere_FINAL_1.png" alt="TV Everywhere" />
+                </a>
+			<p>TV Everywhere</p>
+	</div>
+
+      </div>
+      <div class="ng-cloak" ng-if="''" cc-track-click="global.footer.banner">
+        	<div class="footer-promo hidden-xs with-divider">
+                <a href="/support/tv/tv-channel-apps/?cmp=ban-resp-hp-0516">
+			<img src="//d15yx0mnc9teae.cloudfront.net/sites/default/files/CHA_1277_charter-1462197114.netbanners_Footer_TVeverywhere_FINAL_1.png" alt="TV Everywhere" />
+                </a>
+			<p>TV Everywhere</p>
+	</div>
+
+      </div>
+
+    </div>
+  </div><!-- /superfooter -->
+
+  <div class="container">
+    <div class="service-center-block">
+      <a href="/find-your-charter-location" cc-track-click="global.footer.locations"><i class="ccicon ccicon-location-fill"></i>Find a Location</a>
+      <a href="/support/general/contact-us/" cc-link="{name:'Contact', prop23:'Footer', prop24:'Footer'}"><i class="ccicon ccicon-contact-us"></i>Contact Us</a>
+    </div>
+  </div>
+
+  <div class="footer-bottom-bar">
+    <div class="container">
+      <ul class="list-unstyled footer-legal">
+        <li class="charter-logo-footer"><a href="/"></a></li>
+        <li ng-cloak>&copy; {{copyrightYear}} Charter Communications</li>
+        <li class="privacy"><a href="https://www.charter.com/browse/content/your-privacy-rights" cc-link="{name:'Privacy Rights', prop23:'Footer', prop24:'Footer', prop26:'Footer'}">Your Privacy Rights</a></li>
+        <li class="policies"><a href="https://www.charter.com/browse/content/services" cc-link="{name:'Policies', prop23:'Footer', prop24:'Footer', prop26:'Footer'}">Policies</a></li>
+        <li class="gotoassist"><a href="http://helpmecharter.com/" cc-link="{name:'Go to Assist', prop23:'Footer', prop24:'Footer', prop26:'Footer'}">GoToAssist</a></li>
+      </ul>
+      <ul class="list-unstyled social-icons">
+        <li>
+          <a href="http://twitter.com/CharterCom" target="_blank" cc-link="{name:'Twitter', prop23:'Footer', prop24:'Footer', prop26:'Footer'}">
+            <i class="ccicon ccicon-twitter"></i>
+          </a>
+        </li>
+        <li>
+          <a href="http://www.facebook.com/chartercom" target="_blank" cc-link="{name:'Facebook', prop23:'Footer', prop24:'Footer', prop26:'Footer'}">
+            <i class="ccicon ccicon-facebook"></i>
+          </a>
+        </li>
+        <li>
+          <a href="http://www.youtube.com/user/chartercom" target="_blank" cc-link="{name:'Youtube', prop23:'Footer', prop24:'Footer', prop26:'Footer'}">
+            <i class="ccicon ccicon-youtube-alt"></i>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</footer>
+<script>
+  if (/^f/.test(typeof define)) {
+    require('webview').revealById('page-footer');
+  }
+</script>
+<div modal></div>
+
+  </div>
+
+<!--{{==}}-->
+  <nav id="side-bar-menu" class="ng-cloak" ng-controller="navigationCtrl">
+    <ul ng-controller="SidebarMenuCtrl as sidebarMenu">
+      <li>
+      <div class="nav-header" ng-controller="btmCtrl as btm" ng-swipe-left="false">
+          <a class="side-bar-logo" href="/" title="Charter.net Home" aria-label="Charter.net Home"></a>
+          <a cc-overlay=".dropdown" click-only href="" class="pull-right" ng-if="btm.isBehindTheModem === false">
+            <span class="ccicon ccicon-out-of-home"></span>
+            <div class="at-home-overlay dropdown">
+              <p class="msg-3026" ><b>You are currently outside of your home network.</b> Streaming live content is now available from outside the home, via "Watch Online" section but the channel lineup is limited due to restrictions from our programming partners. You can still sign in to Charter.net to manage your Account, set recordings, stream online content and access Support sections of Charter.net</p>
+            </div>
+          </a>
+        </div>
+      </li>
+      <li>
+        <div class="main-link" ng-click="sidebarMenu.toggle('accountMenu');" ng-class="{'active': sidebarMenu.show.accountMenu}" ng-swipe-left="false"><span class="ccicon ccicon-avatar"></span> My Account <span class="ccicon ccicon-plus-thin pull-right" ng-class="{'ccicon-minus-thin': sidebarMenu.show.accountMenu}"></span></div>
+        <div class="mmenu-super-submenu" ng-show="sidebarMenu.show.accountMenu" ng-swipe-left="false">
+            <a ng-href="{{checkLogin('/my-account/')}}">Overview</a>
+            <a ng-if="isBillingLinkEnabled()" ng-href="{{checkLogin('/billing-and-transactions/')}}">Billing</a>
+            <a ng-href="{{checkLogin('/my-tv-services/')}}">TV</a>
+            <a ng-href="{{checkLogin('/my-internet-services/')}}">Internet</a>
+            <a ng-href="{{checkLogin('/my-voice-services/')}}">Voice</a>
+            <a ng-href="{{checkLogin('/user-preferences/')}}">Settings</a>
+        </div>
+      </li>
+      <li>
+        <div class="main-link" ng-click="sidebarMenu.toggle('tvMenu');" ng-class="{'active': sidebarMenu.show.tvMenu}" ng-swipe-left="false"><span class="ccicon ccicon-tv"></span> Watch TV <span class="ccicon ccicon-plus-thin pull-right" ng-class="{'ccicon-minus-thin': sidebarMenu.show.tvMenu}"></span></div>
+        <div class="mmenu-super-submenu" ng-show="sidebarMenu.show.tvMenu" ng-swipe-left="false">
+            <a href="/tv/">Overview</a>
+            <a href="/tv/guide/">Guide</a>
+            <a href="/tv/live/">Live TV</a>
+            <a href="/tv/on-demand/watch-on-tv/">On Demand</a>
+        </div>
+      </li>
+      <li>
+        <div class="main-link" ng-click="sidebarMenu.toggle('supportMenu');" ng-class="{'active': sidebarMenu.show.supportMenu}" ng-swipe-left="false"><span class="ccicon ccicon-tools"></span> Support <span class="ccicon ccicon-plus-thin pull-right" ng-class="{'ccicon-minus-thin': sidebarMenu.show.supportMenu}"></span></div>
+        <div class="mmenu-super-submenu" ng-show="sidebarMenu.show.supportMenu" ng-swipe-left="false">
+            <a href="/support/">Overview</a>
+            <a href="/support/category/tv/">TV</a>
+            <a href="/support/category/internet/">Internet</a>
+            <a href="/support/category/voice/">Voice</a>
+            <a href="/support/category/my-account/">My Account</a>
+            <a href="/support/locations/">Locations</a>
+        </div>
+      </li>
+    </ul>
+    <ul class="side-bar-btm">
+      <li class="auth" ng-if="account.isAuthenticated()">
+        <div class="cc-username">
+            <a href="/user-preferences/" class="btn">
+              <span>{{account.user.Id | stripEmailDomain | limitCharsTo:25 }}</span>
+            </a>
+        </div>
+        <div class="cc-sign-out">
+          <form method="POST" action="/api/pub/loginedge/login/v1/net/logout">
+            <button ng-click="preLogout()" type="submit">SIGN OUT</button>
+          </form>
+        </div>
+      </li>
+      <li ng-if="!account.isAuthenticated()">
+        <div class="cc-sign-in">
+          <button ng-click="loginAndReturn()">Sign In</button>
+        </div>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- /.navbar-collapse -->
+<script src="//d1ff979u6gd5fc.cloudfront.net/api/static-assets/assets/2.14.3/380/assets/js/core.min.js"></script>
+<script src="//d1ff979u6gd5fc.cloudfront.net/api/static-assets/assets/2.14.3/380/home/home-dist.js"></script>
+  <script src="//d1ff979u6gd5fc.cloudfront.net/api/static-assets/assets/2.14.3/380/assets/js/features/browser-update/browser-update.js"></script>
+  <script src="//d1ff979u6gd5fc.cloudfront.net/api/static-assets/assets/2.14.3/380/assets/js/services/snippets/force-www-domain.js"></script>
+</body>
+</html>

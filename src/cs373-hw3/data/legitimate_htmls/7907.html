@@ -1,0 +1,722 @@
+
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>ARMSLIST - Firearms Classifieds </title>
+        <link href="https://s3.amazonaws.com/mgm-content/sites/armslist/content/system/favicon.ico" rel="shortcut icon"/>
+        <link rel="stylesheet" href="https://s3.amazonaws.com/mgm-content/static/r131903/native/shared/css/bootstrap.css">
+        <link rel="stylesheet" href="https://s3.amazonaws.com/mgm-content/static/r131903/native/shared/css/all.css">
+        <link href='//fonts.googleapis.com/css?family=Oswald:400,300%7CLato:400,700' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="https://s3.amazonaws.com/mgm-content/static/r131903/native/shared/js/jquery.main.js"></script>
+
+        
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+        
+        <script type="text/javascript" src="https://s3.amazonaws.com/mgm-content/static/r131903/native/shared/scripts/lib/jquery-cookie.js"></script>
+
+        <script type="text/javascript" src="https://s3.amazonaws.com/mgm-content/static/r131903/native/shared/scripts/listmill-app.js"></script>
+        <script type="text/javascript" src="https://s3.amazonaws.com/mgm-content/static/r131903/native/shared/scripts/jquery-listmill.js"></script>
+        
+
+
+        <script type="text/javascript">
+            var appOptions = {
+                showTermsOnLoad: "true" == "true" ? true : false,
+                showTermsOnLoadTimeout: 0};
+        
+
+            $(function () {
+                if(appOptions.showTermsOnLoad) {
+                    //listmill.app.checkTerms();
+                    //alert("show terms");
+                    checkTerms();
+                    
+                }
+                //listmill.app.themePreview();
+                //listmill.datatations.initialize();
+            });
+            function checkTerms() {
+                if ((document.cookie.length == 0 || document.cookie.indexOf("terms=agreed") == -1)
+                    && window.location.href.indexOf("/info/terms") == -1
+                    && document.cookie.indexOf("listmill_auth") == -1) {
+                    showTerms();
+                } else
+                    acceptTerms();
+            }
+            function acceptTerms() {
+                var dateStr = "";
+                if (appOptions.showTermsOnLoadTimeout > 0) {
+                    date = new Date();
+                    date.setHours(date.getHours() + appOptions.showTermsOnLoadTimeout);
+                    dateStr = "; expires=" + date.toUTCString();
+                };
+                document.cookie = "terms=agreed" + dateStr + "; path=/";
+
+                $('#termsModal').modal('hide');
+            }
+
+            function showTerms() {
+                //termsModalContainer
+                $.ajax({
+                    url: "/info/termsagreement",
+                    dataType: "html",
+                    success: function (data) {
+                        $("#termsModalContainer").html(data);
+                        /*$("#termsagreement")
+                                .html("<h2>TERMS OF USE</h2>" + data + "<p style='font-size: 7pt; margin-top: 2em;'>* COOKIES MUST BE ENABLED FOR THIS SITE TO WORK.<br />&nbsp;&nbsp;&nbsp;We recommend the use of Google Chrome, Firefox 3.0+, or Internet Explorer 7.0+ for the best browsing experience.</p>")
+                                .dialog({
+                                    closeOnEscape: false,
+                                    modal: true,
+                                    title: "Please read and agree to our Terms of Use:",
+                                    width: Math.min(800, $(window).width() - 30),
+                                    height: Math.min(400, $(window).height() - 30),
+                                    buttons: {
+                                        "I Agree": function () { agreeTerms(); $(this).dialog("close"); },
+                                        "I Do Not Agree": function () { window.location = "http://www.google.com" }
+                                    }
+                                });*/
+                        //$(".ui-dialog-titlebar-close").hide();
+                        $('#termsModal').modal({
+                            backdrop: 'static',
+                            keyboard: false
+                        });
+
+                        $('#termsModal').modal('show');
+                    }});
+                
+            }
+        </script>
+
+        
+    <meta name="description" content="Gun Classifieds, Guns for Sale, No Fees, 45000 guns for sale. The largest free gun classifieds on the web.  Buy guns, sell guns, trade guns." />
+    <meta name="keywords" content="gun classifieds, guns for sale, local gun classifieds, free gun classifieds, classifieds for guns, firearms classifieds, firearms marketplace, shotgun for sale, pistol for sale, rifle for sale, ar15 for sale, molon labe, second amendment, freedom, liberty, NRA, patriots, America" />       
+    
+    
+
+
+        <!-- -->
+
+        <!--                <style type="text/css">
+        .footer-social {  width: 100px;  margin-right: 0px !important;}
+        </style>
+-->
+        <style type="text/css">
+            #h3Overrides h3 {
+                margin-top: 0px;
+                color: #000000;
+            }
+        </style>
+    </head>
+
+
+    <body style="-webkit-overflow-scrolling: touch;">
+        <div id="termsModal" class="modal fade" role="dialog" style="color: #655D5B !important;">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 style="color: #655d5b">TERMS OF USE</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div id="termsModalContainer"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" onclick="acceptTerms()">Accept</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div id="filterByModal" class="modal fade" role="dialog" style="color: #655D5B !important;">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 style="color: #655d5b">Filter By</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="filterByContainer"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="contactSellerEmailModal" class="modal fade" role="dialog" style="color: #655D5B !important;">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 style="color: #655d5b">Contact Seller</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="messageSellerContainer"></div>
+                </div>
+                <div class="modal-footer">
+                    <button id="contactFormSubmitBtn" type="button" class="pull-left btn btn-default" onclick="doMessageSend()">Send</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div id="searchAlertModal" class="modal fade" role="dialog" style="color: #655D5B !important;">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 style="color: #655d5b">Search Alert</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="searchAlertContainer"></div>
+                </div>
+                <div class="modal-footer">
+                    <button id="searchAlertFormSubmitBtn" type="button" class="pull-left btn btn-default" onclick="createSearchAlert()">Create</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div id="wrapper">
+        <header id="header" class="navbar-default text-uppercase" role="navigation">
+            <div class="top-holder">
+                <div class="container-fluid">
+                    <button type="button" class="navbar-toggle text-uppercase pull-left" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" id="popoverMobileViewMainMenu">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="text">Menu</span>
+                    </button>
+                    <div id="popovercontentMobileViewMainMenu" style="display: none;">
+                        <div class="container-fluid">
+                            <div class="row" id="h3Overrides">
+                                <div class="col-md-3 col-sm-6 col-lg-offset-1 col-md-offset-0">
+    <h3 class="text-uppercase">ACCOUNT &amp; LISTINGS </h3>
+    <ul class="nav-footer">
+        <li><a href="//www.armslist.com/accountlogin/new">Account Login</a></li>
+        <li><a href="//www.armslist.com/account/new">New Account</a></li>
+        <li><a href="//www.armslist.com/posts/new">Create a New Listing</a></li>
+        <li><a href="//www.armslist.com/posts/resendactivation">Edit or Remove a Listing</a></li>
+    </ul>
+</div>
+<div class="col-lg-2 col-md-3 col-sm-6">
+    <h3 class="text-uppercase">ABOUT &amp; HELP</h3>
+    <ul class="nav-footer">
+        <li><a href="//www.armslist.com/info/faqs">FAQs</a></li>
+        <li><a href="//www.armslist.com/info/contact">Contact Armslist</a></li>
+        <li><a href="//www.armslist.com/info/privacy">Privacy Policy</a></li>
+        <li><a href="//www.armslist.com/info/terms">Terms of Use</a></li>
+    </ul>
+</div>
+<div class="col-md-3 col-sm-6">
+    <h3 class="text-uppercase">MORE ARMSLIST LINKS </h3>
+    <ul class="nav-footer">
+        <li><a href="http://forum.armslist.com/">Armslist Discussion Forum</a></li>
+        <li><a href="http://armslist.spreadshirt.com/">Armslist T-Shirt Shop</a></li>
+        <li><a href="http://www.armslistlegaldefensefund.com/">Armslist Legal Defense Fund</a></li>
+        <li><a href="//www.armslist.com/info/advertise">Advertising with Armslist</a></li>
+    </ul>
+</div>
+<div class="col-md-3 col-sm-6">
+    <h3 class="text-uppercase">PARTNER SITES</h3>
+    <ul class="nav-footer">
+        <li><a href="http://www.torquelist.com/">Torquelist Vehicle Trader</a></li>
+        <li><a href="http://www.rangemonkey.com/">Range Monkey</a></li>
+        <li><a href="http://www.invictusgearcompany.com/">Invictus Gear </a></li>
+    </ul>
+</div>
+                            </div>
+                        </div>
+                    </div>
+                    <script type="text/javascript">
+                        $(document).ready(function () {
+
+                            $("#popoverMobileViewMainMenu").popover({
+                                html: true,
+                                container: 'body',
+                                content: function () {
+                                    return $('#popovercontentMobileViewMainMenu').html();
+                                }
+                            });
+
+                            $('html').on('click', function (e) {
+                                if (typeof $(e.target).data('original-title') == 'undefined' &&
+                                    !$(e.target).parents().is('.popover.in') &&
+                                    $(e.target).parent().attr("id") !== "popoverMobileViewMainMenu") {
+                                    $('[data-original-title]').popover('hide');
+                                }
+                            });
+                        });
+
+                    </script>
+
+                    <div class="pull-right align-right">
+<form action="/classifieds/search" class="search-form navbar-form hidden-xs" method="get" role="search">                            <fieldset>
+                                <div class="form-group">
+
+                                    <input type="text" name="search" class="form-control" placeholder="Search listings" value="">
+                                    <input type="hidden" name="location" value="usa" />
+                                    <input type="hidden" name="category" value="all" />
+                                    <input type="hidden" name="posttype" value="7" />
+                                    <input type="hidden" name="ships" value="False" />
+                                </div>
+                                <button type="submit" class="btn btn-default icon-search"></button>
+                            </fieldset>
+</form>                        
+                        <a href="/posts/new" class="btn btn-warning create-btn text-uppercase"><span class="hidden-sm hidden-xs">CREATE A LISTING</span> <i class="icon-pencil"></i> <span class="visible-sm visible-xs">list</span></a>
+
+                        
+<ul class="users-list hidden-xs">
+
+        <li><a href="/account/new">CREATE AN ACCOUNT</a></li>
+        <li><a href="/accountlogin">LOGIN</a></li>
+</ul>
+
+
+                        <button type="button" class="btn btn-warning create-btn text-uppercase visible-xs" onclick="showHideSearchMobile()"><i class="icon-search"></i> <span class="visible-xs">search</span></button>
+                        <script type="text/javascript">
+                            function showHideSearchMobile() {
+                                $("#searchMobileView").fadeToggle();
+                            }
+                        </script>
+                    </div>
+                    <div id="logo" class="pull-left">
+                        <a href="/" title="ARMSLIST - Firearms Classifieds">
+                            <picture>
+                                    <!--[if IE 9]><video style="display: none;"><![endif]-->
+                                    <source srcset="https://s3.amazonaws.com/mgm-content/static/r131903/native/shared/images/logo-mobile.png, https://s3.amazonaws.com/mgm-content/static/r131903/native/shared/images/logo-mobile@2x.png 2x" media="(max-width: 767px)" />
+                                    <source srcset="https://s3.amazonaws.com/mgm-content/static/r131903/native/shared/images/logo-desktop.png, https://s3.amazonaws.com/mgm-content/static/r131903/native/shared/images/logo-desktop@2x.png 2x" />
+                                    <!--[if IE 9]></video><![endif]-->
+                                    <img src="https://s3.amazonaws.com/mgm-content/static/r131903/native/shared/images/logo-desktop.png" alt="armslist firearms marketplace" width="260" height="66" />
+                            </picture>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="alert " id="mainMessageContainer" style="display: none; margin-bottom: 0px;">
+                
+                <div id="mainMessageContainer_Message" style="text-align: center;"></div>
+            </div>
+            
+            <div style="padding: 20px 10px 10px 20px; text-align: center; display: none;" class="hidden-sm hidden-md hidden-lg" id="searchMobileView">
+
+<form action="/classifieds/search" class="search-form" method="get" role="search" style="width: 75% !important;">                    <fieldset>
+                        <div class="form-group">
+                            <input type="text" name="search" class="form-control" placeholder="Search listings" value="">
+                            <input type="hidden" name="location" value="usa" />
+                            <input type="hidden" name="category" value="all" />
+                            <input type="hidden" name="posttype" value="7" />
+                            <input type="hidden" name="ships" value="False" />
+                        </div>
+                        <button type="submit" class="btn btn-default icon-search"></button>
+                    </fieldset>
+</form>                <br />
+
+                <div id="myCarousel" class="carousel slide" data-ride="carousel" style="padding-top: 20px;">
+
+
+                    <!-- Wrapper for slides -->
+                    <div class="carousel-inner" role="listbox">
+                        <div class="item active">
+                            <div style='text-align: center; font: 300 16px/19px "Oswald", "Arial", "Helvetica", sans-serif; text-decoration: none; text-transform: uppercase;'>
+                                <a style="color: #e5e0bf; padding-right: 10px; display: inline-block;" href="/classifieds/search?category=handguns&amp;location=usa&amp;posttype=7&amp;ships=False">HANDGUNS <br><i class="icon-handguns"></i></a>
+                                <a style="color: #e5e0bf; padding-right: 10px; display: inline-block;" href="/classifieds/search?category=shotguns&amp;location=usa&amp;posttype=7&amp;ships=False">SHOTGUNS <br><i class="icon-shotguns"></i></a>
+                                <a style="color: #e5e0bf; display: inline-block;" href="/classifieds/search?category=rifles&amp;location=usa&amp;posttype=7&amp;ships=False">RIFLES <br><i class="icon-rifles"></i></a>
+                            </div>
+                        </div>
+
+                        <div class="item">
+                            <div style='text-align: center; font: 300 16px/19px "Oswald", "Arial", "Helvetica", sans-serif; text-decoration: none; text-transform: uppercase;'>
+                                <a style="color: #e5e0bf; padding-right: 10px; display: inline-block;" href="/classifieds/search?category=firearm-accessories&amp;location=usa&amp;posttype=7&amp;ships=False">ACCESSORIES <br><i class="icon-scope"></i></a>
+                                <a style="color: #e5e0bf; display: inline-block;" href="/classifieds/search?category=outdoors&amp;location=usa&amp;posttype=7&amp;ships=False">GEAR + MORE <br><i class="icon-gear"></i></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Left and right controls -->
+                    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+                        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+                        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
+                <style type="text/css">
+                    .carousel-control.left, .carousel-control.right {
+                        background-image: none;
+                    }
+                </style>
+            </div>
+                <div class="hidden-xs" id="">
+                    <nav class="container-fluid nav-holder">
+                        <ul id="nav">
+                            <li><a href="/classifieds/search?category=handguns&amp;location=usa&amp;posttype=7&amp;ships=False">HANDGUNS <br><i class="icon-handguns"></i></a></li>
+                            <li><a href="/classifieds/search?category=shotguns&amp;location=usa&amp;posttype=7&amp;ships=False">SHOTGUNS <br><i class="icon-shotguns"></i></a></li>
+                            <li><a href="/classifieds/search?category=rifles&amp;location=usa&amp;posttype=7&amp;ships=False">RIFLES <br><i class="icon-rifles"></i></a></li>
+                            <li><a href="/classifieds/search?category=firearm-accessories&amp;location=usa&amp;posttype=7&amp;ships=False">ACCESSORIES <br><i class="icon-scope"></i></a></li>
+                            <li><a href="/classifieds/search?category=outdoors&amp;location=usa&amp;posttype=7&amp;ships=False">GEAR + MORE <br><i class="icon-gear"></i></a></li>
+                        </ul>
+                    </nav>
+                </div>
+        </header>
+        
+
+            <div class="banner">
+                <div class="picture-holder">
+                    <picture>
+                        <!--[if IE 9]><video style="display: none;"><![endif]-->
+                        <source srcset="https://s3.amazonaws.com/mgm-content/static/r131903/native/shared/images/img1-desktop.jpg, https://s3.amazonaws.com/mgm-content/static/r131903/native/shared/images/img1-desktop@2x.jpg 2x" />
+                        <!--[if IE 9]></video><![endif]-->
+                        <img src="https://s3.amazonaws.com/mgm-content/static/r131903/native/shared/images/img1-desktop.jpg" alt="image description" width="1440" height="300" />
+                    </picture>
+                </div>
+                <div class="container-fluid">
+                    <h1>
+                        
+                        World's <b>best</b> firearm classifieds
+                    </h1>
+                    <p class="hidden-xs">
+                        Armslist is a <b>FREE</b>, simple, and easy to use marketplace. <br>No fees. No auctions.
+                    </p>
+                    <div class="btn-group">
+                        <a href="#collapse-state-list" class="btn btn-warning text-uppercase">SEARCH YOUR STATE</a>
+                        <button type="button" class="btn btn-warning text-uppercase" onclick="window.location = '/posts/new'">START LISTING FOR FREE NOW</button>
+                    </div>
+                </div>
+            </div>
+        
+            <main id="main" role="main">
+                <div class="container-fluid" style="color: #655D5B;">
+                               
+
+
+
+
+
+<ul class="visual-list">
+        <li>
+            <div style="width: 300px;">
+                <!--/*
+  *
+  * Revive Adserver Javascript Tag
+  * - Generated with Revive Adserver v3.2.2
+  *
+  */-->
+
+<!--/*
+  * The backup image section of this tag has been generated for use on a
+  * non-SSL page. If this tag is to be placed on an SSL page, change the
+  *   'http://revive.armslist.com/revive/www/delivery/...'
+  * to
+  *   'https://revive.armslist.com/revive/www/delivery/...'
+  *
+  * This noscript section of this tag only shows image banners. There
+  * is no width or height in these banners, so if you want these tags to
+  * allocate space for the ad before it shows, you will need to add this
+  * information to the <img> tag.
+  *
+  * If you do not want to deal with the intricities of the noscript
+  * section, delete the tag (from <noscript>... to </noscript>). On
+  * average, the noscript tag is called from less than 1% of internet
+  * users.
+  */-->
+
+<script type='text/javascript'><!--//<![CDATA[
+   var m3_u = (location.protocol=='https:'?'https://revive.armslist.com/revive/www/delivery/ajs.php':'http://revive.armslist.com/revive/www/delivery/ajs.php');
+var m3_r = Math.floor(Math.random()*99999999999);
+if (!document.MAX_used) document.MAX_used = ',';
+document.write ("<scr"+"ipt type='text/javascript' src='"+m3_u);
+document.write ("?zoneid=39");
+document.write ('&amp;cb=' + m3_r);
+if (document.MAX_used != ',') document.write ("&amp;exclude=" + document.MAX_used);
+document.write (document.charset ? '&amp;charset='+document.charset : (document.characterSet ? '&amp;charset='+document.characterSet : ''));
+document.write ("&amp;loc=" + escape(window.location));
+if (document.referrer) document.write ("&amp;referer=" + escape(document.referrer));
+if (document.context) document.write ("&context=" + escape(document.context));
+if (document.mmm_fo) document.write ("&amp;mmm_fo=1");
+document.write ("'><\/scr"+"ipt>");
+//]]>--></script><noscript><a href='http://revive.armslist.com/revive/www/delivery/ck.php?n=aac3d9a9&amp;cb=INSERT_RANDOM_NUMBER_HERE' target='_blank'><img src='http://revive.armslist.com/revive/www/delivery/avw.php?zoneid=39&amp;cb=INSERT_RANDOM_NUMBER_HERE&amp;n=aac3d9a9' border='0' alt='' /></a></noscript>
+
+            </div>
+        </li>
+        <li class="video">
+            <iframe width="300" height="250" src="https://www.youtube.com/embed/xHSID4dRS0o?list=PLzqsZpHd186cv0K-61vYKzRGv9PYIqNmb" frameborder="0" allowfullscreen></iframe>
+        </li>
+        <li>
+            <div style="width: 300px;">
+                <!--/*
+  *
+  * Revive Adserver Javascript Tag
+  * - Generated with Revive Adserver v3.2.2
+  *
+  */-->
+
+<!--/*
+  * The backup image section of this tag has been generated for use on a
+  * non-SSL page. If this tag is to be placed on an SSL page, change the
+  *   'http://revive.armslist.com/revive/www/delivery/...'
+  * to
+  *   'https://revive.armslist.com/revive/www/delivery/...'
+  *
+  * This noscript section of this tag only shows image banners. There
+  * is no width or height in these banners, so if you want these tags to
+  * allocate space for the ad before it shows, you will need to add this
+  * information to the <img> tag.
+  *
+  * If you do not want to deal with the intricities of the noscript
+  * section, delete the tag (from <noscript>... to </noscript>). On
+  * average, the noscript tag is called from less than 1% of internet
+  * users.
+  */-->
+
+<script type='text/javascript'><!--//<![CDATA[
+   var m3_u = (location.protocol=='https:'?'https://revive.armslist.com/revive/www/delivery/ajs.php':'http://revive.armslist.com/revive/www/delivery/ajs.php');
+var m3_r = Math.floor(Math.random()*99999999999);
+if (!document.MAX_used) document.MAX_used = ',';
+document.write ("<scr"+"ipt type='text/javascript' src='"+m3_u);
+document.write ("?zoneid=40");
+document.write ('&amp;cb=' + m3_r);
+if (document.MAX_used != ',') document.write ("&amp;exclude=" + document.MAX_used);
+document.write (document.charset ? '&amp;charset='+document.charset : (document.characterSet ? '&amp;charset='+document.characterSet : ''));
+document.write ("&amp;loc=" + escape(window.location));
+if (document.referrer) document.write ("&amp;referer=" + escape(document.referrer));
+if (document.context) document.write ("&context=" + escape(document.context));
+if (document.mmm_fo) document.write ("&amp;mmm_fo=1");
+document.write ("'><\/scr"+"ipt>");
+//]]>--></script><noscript><a href='http://revive.armslist.com/revive/www/delivery/ck.php?n=ad17fde2&amp;cb=INSERT_RANDOM_NUMBER_HERE' target='_blank'><img src='http://revive.armslist.com/revive/www/delivery/avw.php?zoneid=40&amp;cb=INSERT_RANDOM_NUMBER_HERE&amp;n=ad17fde2' border='0' alt='' /></a></noscript>
+
+            </div>
+        </li>
+</ul>
+        <div class="panel-default">
+            
+
+
+<div class="state-hold" id="accordion">
+    <div class="bg-stretch hidden-xs">
+        <picture>
+            <!--[if IE 9]><video style="display: none;"><![endif]-->
+            <source srcset="https://s3.amazonaws.com/mgm-content/static/r131903/native/shared/images/map.png, https://s3.amazonaws.com/mgm-content/static/r131903/native/shared/images/map@2x.png 2x" />
+            <!--[if IE 9]></video><![endif]-->
+            <img class="img-responsive" src="https://s3.amazonaws.com/mgm-content/static/r131903/native/shared/images/map.png" alt="image description" width="1042" height="447" />
+        </picture>
+    </div>
+    <div class="panel-default">
+        <h2 class="text-uppercase">
+            <a>Select your location:</a>
+        </h2>
+        <div id="collapse-state-list" class="">
+            <div class="panel-body">
+
+                <ul class="state-list">
+                            <li><a href="/classifieds/alabama/all?posttype=7&ships=False" title="Alabama Firearms Classifieds">Alabama</a></li>
+                            <li><a href="/classifieds/alaska/all?posttype=7&ships=False" title="Alaska Firearms Classifieds">Alaska</a></li>
+                            <li><a href="/classifieds/arizona/all?posttype=7&ships=False" title="Arizona Firearms Classifieds">Arizona</a></li>
+                            <li><a href="/classifieds/arkansas/all?posttype=7&ships=False" title="Arkansas Firearms Classifieds">Arkansas</a></li>
+                            <li><a href="/classifieds/california/all?posttype=7&ships=False" title="California Firearms Classifieds">California</a></li>
+                            <li><a href="/classifieds/colorado/all?posttype=7&ships=False" title="Colorado Firearms Classifieds">Colorado</a></li>
+                            <li><a href="/classifieds/connecticut/all?posttype=7&ships=False" title="Connecticut Firearms Classifieds">Connecticut</a></li>
+                            <li><a href="/classifieds/delaware/all?posttype=7&ships=False" title="Delaware Firearms Classifieds">Delaware</a></li>
+                            <li><a href="/classifieds/florida/all?posttype=7&ships=False" title="Florida Firearms Classifieds">Florida</a></li>
+                            <li><a href="/classifieds/georgia/all?posttype=7&ships=False" title="Georgia Firearms Classifieds">Georgia</a></li>
+                            <li><a href="/classifieds/guam-usa/all?posttype=7&ships=False" title="Guam Firearms Classifieds">Guam</a></li>
+                            <li><a href="/classifieds/hawaii/all?posttype=7&ships=False" title="Hawaii Firearms Classifieds">Hawaii</a></li>
+                            <li><a href="/classifieds/idaho/all?posttype=7&ships=False" title="Idaho Firearms Classifieds">Idaho</a></li>
+                            <li><a href="/classifieds/illinois/all?posttype=7&ships=False" title="Illinois Firearms Classifieds">Illinois</a></li>
+                            <li><a href="/classifieds/indiana/all?posttype=7&ships=False" title="Indiana Firearms Classifieds">Indiana</a></li>
+                            <li><a href="/classifieds/iowa/all?posttype=7&ships=False" title="Iowa Firearms Classifieds">Iowa</a></li>
+                            <li><a href="/classifieds/kansas/all?posttype=7&ships=False" title="Kansas Firearms Classifieds">Kansas</a></li>
+                            <li><a href="/classifieds/kentucky/all?posttype=7&ships=False" title="Kentucky Firearms Classifieds">Kentucky</a></li>
+                            <li><a href="/classifieds/louisiana/all?posttype=7&ships=False" title="Louisiana Firearms Classifieds">Louisiana</a></li>
+                            <li><a href="/classifieds/maine/all?posttype=7&ships=False" title="Maine Firearms Classifieds">Maine</a></li>
+                            <li><a href="/classifieds/maryland/all?posttype=7&ships=False" title="Maryland Firearms Classifieds">Maryland</a></li>
+                            <li><a href="/classifieds/massachusetts/all?posttype=7&ships=False" title="Massachusetts Firearms Classifieds">Massachusetts</a></li>
+                            <li><a href="/classifieds/michigan/all?posttype=7&ships=False" title="Michigan Firearms Classifieds">Michigan</a></li>
+                            <li><a href="/classifieds/minnesota/all?posttype=7&ships=False" title="Minnesota Firearms Classifieds">Minnesota</a></li>
+                            <li><a href="/classifieds/mississippi/all?posttype=7&ships=False" title="Mississippi Firearms Classifieds">Mississippi</a></li>
+                            <li><a href="/classifieds/missouri/all?posttype=7&ships=False" title="Missouri Firearms Classifieds">Missouri</a></li>
+                            <li><a href="/classifieds/montana/all?posttype=7&ships=False" title="Montana Firearms Classifieds">Montana</a></li>
+                            <li><a href="/classifieds/nebraska/all?posttype=7&ships=False" title="Nebraska Firearms Classifieds">Nebraska</a></li>
+                            <li><a href="/classifieds/nevada/all?posttype=7&ships=False" title="Nevada Firearms Classifieds">Nevada</a></li>
+                            <li><a href="/classifieds/new-hampshire/all?posttype=7&ships=False" title="New Hampshire Firearms Classifieds">New Hampshire</a></li>
+                            <li><a href="/classifieds/nj/all?posttype=7&ships=False" title="New Jersey Firearms Classifieds">New Jersey</a></li>
+                            <li><a href="/classifieds/new-mexico/all?posttype=7&ships=False" title="New Mexico Firearms Classifieds">New Mexico</a></li>
+                            <li><a href="/classifieds/new-york/all?posttype=7&ships=False" title="New York Firearms Classifieds">New York</a></li>
+                            <li><a href="/classifieds/north-carolina/all?posttype=7&ships=False" title="North Carolina Firearms Classifieds">North Carolina</a></li>
+                            <li><a href="/classifieds/north-dakota/all?posttype=7&ships=False" title="North Dakota Firearms Classifieds">North Dakota</a></li>
+                            <li><a href="/classifieds/ohio/all?posttype=7&ships=False" title="Ohio Firearms Classifieds">Ohio</a></li>
+                            <li><a href="/classifieds/oklahoma/all?posttype=7&ships=False" title="Oklahoma Firearms Classifieds">Oklahoma</a></li>
+                            <li><a href="/classifieds/oregon/all?posttype=7&ships=False" title="Oregon Firearms Classifieds">Oregon</a></li>
+                            <li><a href="/classifieds/pennsylvania/all?posttype=7&ships=False" title="Pennsylvania Firearms Classifieds">Pennsylvania</a></li>
+                            <li><a href="/classifieds/puerto-rico-usa/all?posttype=7&ships=False" title="Puerto Rico Firearms Classifieds">Puerto Rico</a></li>
+                            <li><a href="/classifieds/rhode-island/all?posttype=7&ships=False" title="Rhode Island Firearms Classifieds">Rhode Island</a></li>
+                            <li><a href="/classifieds/south-carolina/all?posttype=7&ships=False" title="South Carolina Firearms Classifieds">South Carolina</a></li>
+                            <li><a href="/classifieds/south-dakota/all?posttype=7&ships=False" title="South Dakota Firearms Classifieds">South Dakota</a></li>
+                            <li><a href="/classifieds/tennessee/all?posttype=7&ships=False" title="Tennessee Firearms Classifieds">Tennessee</a></li>
+                            <li><a href="/classifieds/texas/all?posttype=7&ships=False" title="Texas Firearms Classifieds">Texas</a></li>
+                            <li><a href="/classifieds/utah/all?posttype=7&ships=False" title="Utah Firearms Classifieds">Utah</a></li>
+                            <li><a href="/classifieds/vermont/all?posttype=7&ships=False" title="Vermont Firearms Classifieds">Vermont</a></li>
+                            <li><a href="/classifieds/virginia/all?posttype=7&ships=False" title="Virginia Firearms Classifieds">Virginia</a></li>
+                            <li><a href="/classifieds/washington/all?posttype=7&ships=False" title="Washington Firearms Classifieds">Washington</a></li>
+                            <li><a href="/classifieds/west-virginia/all?posttype=7&ships=False" title="West Virginia Firearms Classifieds">West Virginia</a></li>
+                            <li><a href="/classifieds/wisconsin/all?posttype=7&ships=False" title="Wisconsin Firearms Classifieds">Wisconsin</a></li>
+                            <li><a href="/classifieds/wyoming/all?posttype=7&ships=False" title="Wyoming Firearms Classifieds">Wyoming</a></li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+        </div>
+
+
+
+<script>
+    $(document).ready(function () {
+        // cache the window object
+        $window = $(window);
+
+        $('section[data-type="background"]').each(function () {
+            // declare the variable to affect the defined data-type
+            var $scroll = $(this);
+
+            $(window).scroll(function () {
+                // HTML5 proves useful for helping with creating JS functions!
+                // also, negative value because we're scrolling upwards
+                var yPos = -($window.scrollTop() / $scroll.data('speed'));
+
+                // background position
+                var coords = '50% ' + yPos + 'px';
+
+                // move the background
+                $scroll.css({ backgroundPosition: coords });
+            }); // end window scroll
+        });  // end section function
+    }); // close out script
+
+    /* Create HTML5 element for IE */
+    document.createElement("section");
+</script>
+
+                </div>
+            </main>
+
+
+
+
+        
+
+        <footer id="footer" style="display: table;">
+            <div class="top-hold hidden-xs">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-3 col-sm-6 col-lg-offset-1 col-md-offset-0">
+    <h3 class="text-uppercase">ACCOUNT &amp; LISTINGS </h3>
+    <ul class="nav-footer">
+        <li><a href="//www.armslist.com/accountlogin/new">Account Login</a></li>
+        <li><a href="//www.armslist.com/account/new">New Account</a></li>
+        <li><a href="//www.armslist.com/posts/new">Create a New Listing</a></li>
+        <li><a href="//www.armslist.com/posts/resendactivation">Edit or Remove a Listing</a></li>
+    </ul>
+</div>
+<div class="col-lg-2 col-md-3 col-sm-6">
+    <h3 class="text-uppercase">ABOUT &amp; HELP</h3>
+    <ul class="nav-footer">
+        <li><a href="//www.armslist.com/info/faqs">FAQs</a></li>
+        <li><a href="//www.armslist.com/info/contact">Contact Armslist</a></li>
+        <li><a href="//www.armslist.com/info/privacy">Privacy Policy</a></li>
+        <li><a href="//www.armslist.com/info/terms">Terms of Use</a></li>
+    </ul>
+</div>
+<div class="col-md-3 col-sm-6">
+    <h3 class="text-uppercase">MORE ARMSLIST LINKS </h3>
+    <ul class="nav-footer">
+        <li><a href="http://forum.armslist.com/">Armslist Discussion Forum</a></li>
+        <li><a href="http://armslist.spreadshirt.com/">Armslist T-Shirt Shop</a></li>
+        <li><a href="http://www.armslistlegaldefensefund.com/">Armslist Legal Defense Fund</a></li>
+        <li><a href="//www.armslist.com/info/advertise">Advertising with Armslist</a></li>
+    </ul>
+</div>
+<div class="col-md-3 col-sm-6">
+    <h3 class="text-uppercase">PARTNER SITES</h3>
+    <ul class="nav-footer">
+        <li><a href="http://www.torquelist.com/">Torquelist Vehicle Trader</a></li>
+        <li><a href="http://www.rangemonkey.com/">Range Monkey</a></li>
+        <li><a href="http://www.invictusgearcompany.com/">Invictus Gear </a></li>
+    </ul>
+</div>
+                    </div>
+                </div>
+            </div>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+                        <ul class="social-list">
+                            <li>
+                                    <a target="_blank" href="http://www.youtube.com/user/armslistmedia?sub_confirmation=1" title="Armslist Youtube channel" class="icon-youtube"></a>
+                            </li>
+                            <li>
+                                    <a target="_blank" href="https://instagram.com/armslist/" title="Armslist on Instagram" class="icon-instagram"></a>
+                            </li>
+                            <li>
+                                    <a target="_blank" href="https://www.facebook.com/armslist" title="Armslist on Facebook" class="icon-facebook"></a>
+                            </li>
+                            <li>
+                                    <a target="_blank" href="https://twitter.com/armslist" title="Armslist Twitter page" class="icon-twitter"></a>
+                            </li>
+                            <li>
+                                    <a target="_blank" href="https://plus.google.com/103978926144598391141/posts" title="Armslist on Google+" class="icon-google-plus"></a>
+                            </li>
+                        </ul>
+                        <div class="text-block">
+                            <p>Always comply with local, state, federal, and international law.
+ARMSLIST does not become involved in transactions between parties. Review our 
+<a href="/info/privacy">privacy policy</a> and <a href="/info/terms">terms of use</a> for more
+information. Report Illegal Firearms Activity to 1-800-ATF-GUNS.  </p>
+
+                        </div>
+                        <span class="copy">
+                            Copyright &copy; 2016 Armslist, LLC |
+                            | Version: 15.0.2
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+
+
+
+    </div>
+    <div class="loader-box">
+        <img src="https://s3.amazonaws.com/mgm-content/static/r131903/native/shared/images/loader.gif" height="64" width="64" alt="loader">
+    </div>
+
+    <script>   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)   })(window,document,'script','//www.google-analytics.com/analytics.js','ga');    ga('create', 'UA-5138407-1', 'auto');   ga('send', 'pageview');  </script>
+
+</body>
+</html>
+
+

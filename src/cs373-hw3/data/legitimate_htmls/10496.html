@@ -1,0 +1,147 @@
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login | Epom Ad Server</title>
+    <link rel="stylesheet" type="text/css" href="sign-up.css"/>
+    <script type="text/javascript" src="/extjs-4.2.1/ext-all.js"></script>
+    <script>
+        function rememberClick() {
+            var el = document.getElementById('rememberFlag');
+            if (el.value == '') el.value = 'on'; else el.value = '';
+            if (el.value == 'on') {
+                document.getElementById("remember_me").className = "remember active"
+            } else {
+                document.getElementById("remember_me").className = "remember"
+            }
+        }
+
+        loginFailure = function () {
+            var status, i;
+            var statusText = "Unknown";
+            for (i in arguments) {
+                if (arguments[i].status) {
+                    status = arguments[i].status
+                }
+                if (arguments[i].error) {
+                    status = arguments[i].error.status;
+                    statusText = arguments[i].error.statusText;
+                }
+                if (arguments[i].failureType) {
+                    status = arguments[i].response.status;
+                    if (!status && arguments[i].response.responseText) {
+                        status = 200;
+                    }
+                }
+            }
+            if (!status || status == 200 || status == 0) {
+            } else if (status == 403) {
+                document.location = '/login.do'; // CSRF likely rejected
+            } else if (status == 500) {
+                alert('Internal server error (' + status + ':' + statusText + ').');
+            } else if (status == 503) {
+                alert('Server is temporary unavailable (' + status + ':' + statusText + ').');
+            } else {
+                alert('We have some technical problems (' + status + ':' + statusText + ').');
+            }
+        };
+
+
+        function submitIt() {
+            var username = document.getElementById('username').value;
+            var password = document.getElementById('password').value;
+            var rememberFlag = document.getElementById('rememberFlag').value;
+            Ext.Ajax.request({
+                url: '/j_spring_security_check.do',
+                method: 'POST',
+                params: {
+                    j_username: username,
+                    j_password: password,
+                    remember_me: rememberFlag,
+                    "_csrf": "0fb6ca89-faf9-4987-9e2a-e6d8811f2943"
+                },
+                failure: loginFailure,
+                success: function (response, request) {
+                    var json = Ext.JSON.decode(response.responseText);
+                    if (json.success == true) {
+                        /** reset analytics filters, all selections in tabs and items in clipboard */
+                        (function resetOnLogin() {
+                            localStorage.removeItem("reportAdvertiserTree");
+                            localStorage.removeItem("reportSitesTree");
+                            localStorage.removeItem("EpomClipboardStorage");
+                        })();
+
+                        document.getElementById('loginForm').submit();
+                        location.href = '/index.do';
+                    } else {
+                        document.getElementById('signin_error').style.display = 'block';
+                    }
+                }
+            });
+
+            return false;
+        }
+
+    </script>
+</head>
+<body>
+<div class="wrapper">
+    <div class="up"></div>
+    <div class="down"></div>
+
+    <div class="login-container ">
+        <div class="logo-container">
+            <a href="http://epom.com/" class="logo" target="_blank"><img
+                    src="/img/dynamic/login_logo.svg" title="Epom Ad Server"/></a>
+        </div>
+
+
+
+
+        
+        <!--if DYNAMIC LOGO-->
+        <!--<div class="sign-in-with-google">-->
+        <!--<img src="img/sign-in.png"/>-->
+        <!--<div class="or">-->
+        <!--<span>or</span>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--if end-->
+
+        
+        <div class="form-wrap">
+            <form id="loginForm" action="/j_spring_security_check.do" onsubmit="return submitIt();" method="POST">
+                <input type="hidden" name="_csrf" value="0fb6ca89-faf9-4987-9e2a-e6d8811f2943"/>
+                <label for="username">Username</label>
+                <input type="text" class="field" id="username" name="j_username" placeholder="Enter username"
+                       tabindex="1">
+                <label for="password">Password</label>
+                <input type="password" class="field" id="password" name="j_password" placeholder="Enter password"
+                       tabindex="2">
+                <span class="error" id="signin_error">The username or password is incorrect</span>
+
+                <div class="left">
+                    <span class="remember" id="remember_me" onclick="rememberClick()"
+                          onkeydown="if (event.keyCode == 13 || event.keyCode == 32) rememberClick()" tabindex="3">
+                        <input type="hidden" id="rememberFlag" name="remember_me" value=""/>
+                    </span>
+                    <span class="remember-label" onclick="rememberClick()">Remember me</span>
+                </div>
+                
+                <a class="right" href="/forgot.do">Forgot password?</a>
+
+                <div class="clear"></div>
+                <button type="submit" tabindex="4">Sign In</button>
+            </form>
+            <div class="account">
+                
+                <a href="/signUp.do">Don't have an account?</a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

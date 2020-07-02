@@ -1,0 +1,348 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <title>Magento Installation Wizard</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+    <link type="image/x-icon" href="/downloader/favicon.ico" rel="icon"/>
+    <link type="image/x-icon" href="/downloader/favicon.ico" rel="shortcut icon"/>
+
+    <script type="text/javascript" src="/downloader/js/prototype.js" ></script>
+
+    <link rel="stylesheet" href="/downloader/skin/install/reset.css" type="text/css" media="all"/>
+    <link rel="stylesheet" href="/downloader/skin/install/boxes.css" type="text/css" media="all"/>
+    <link rel="stylesheet" href="/downloader/skin/install/clears.css" type="text/css" media="all"/>
+
+    <!--[if IE]><link rel="stylesheet" href="/downloader/skin/install/iestyles.css" type="text/css" media="all"/><![endif]-->
+    <!--[if lt IE 7]><link rel="stylesheet" href="/downloader/skin/install/ie7minus.css" type="text/css" media="all"/><![endif]-->
+</head>
+
+<body>
+<!-- [start] header -->
+    <div class="header">
+        <div class="header-top-container">
+            <div class="header-top">
+                <h1 id="logo">
+                    <a href="/downloader"><img src="/downloader/skin/install/images/logo.gif" alt="Magento"/></a>
+                </h1>
+            </div>
+        </div>
+            </div>
+<!-- [end] header -->
+
+        <!-- [start] middle -->
+           <div class="middle-container">
+        <div class="middle col-2-left-layout">
+
+
+
+            <!-- [start] left -->
+
+            <div class="col-left side-col">
+                <div style="border:1px solid #ccc; background:#f6f6f6;">
+    <h2 style="margin-bottom:0; border-bottom:1px solid #ccc; padding:4px 10px; color:#3c5974; font-size:1.4em;">Installation</h2>
+<ol style="padding:10px; border-top:1px solid #fff;">
+    <li>Welcome</li>
+    <li>Validation</li>
+    <li>Magento Connect Manager Deployment</li>
+        <li style="color:green; font-weight:bold; ">Download</li>
+    <li >License Agreement</li>
+    <li >Localization</li>
+    <li >Configuration</li>
+
+    <li >Create Admin Account</li>
+    <li >You're All Set!</li>
+</ol>
+</div>
+
+<br/>
+<p>
+    Having trouble installing Magento?    Check out our <a href="http://www.magentocommerce.com/knowledge-base/entry/magento-installation-cheat-sheet" id="installation_guide_link">Installation Guide</a>
+    <script type="text/javascript">
+        $('installation_guide_link').target = "installation_guide";
+    </script>
+
+</p>
+&nbsp;
+            </div>
+            <div id="main" class="col-main">
+            <!-- [start] global messages -->
+                            <!-- [end] global messages -->
+            <!-- [start] content -->
+
+<div class="page-head">
+    <h3>Welcome to Magento's Installation Wizard!</h3>
+</div>
+
+    <p>You are now ready to continue the installation process by downloading the most up-to-date copy of the Magento software.</p>
+      <form id="install_all" method="post" action="/downloader/index.php?A=connectInstallAll" target="connect_iframe" onsubmit="return installAll()">
+        <fieldset class="fieldset-download">
+
+            <table cellspacing="0" class="form-list">
+                <tr>
+                    <td class="label">Magento Connect Channel Protocol:</td>
+                    <td class="value">
+                        <select id="protocol" name="protocol">
+                            <option value="http" >Http</option>
+                            <option value="ftp" >Ftp</option>
+                        </select>
+                    </td>
+                </tr>
+                                <tr>
+                    <td class="label">Magento Version Stability:</td>
+                    <td class="value">
+                        <select id="preferred_state" name="preferred_state">
+                            <option value="stable" >stable</option>
+                            <option value="beta" >beta</option>
+                            <option value="alpha" >alpha</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label">Use Custom Permissions:</td>
+                    <td class="value">
+                        <select onchange="togglePanel(this)" id="use_custom_permissions_mode" name="use_custom_permissions_mode">
+                            <option value="1" >Yes</option>
+                            <option value="0" selected="selected">No</option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+            <table cellspacing="0" cellpadding="0" class="form-list" id="use_custom_permissions_mode_panel" style="display:none;" >
+                <tr>
+                    <td class="label">Folders:</td>
+                    <td class="value">
+                        <input id="mkdir_mode" name="mkdir_mode" value="777" type="text" class="input-text"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label">Files:</td>
+                    <td class="value">
+                        <input id="chmod_file_mode" name="chmod_file_mode" value="666" type="text" class="input-text"/>
+                    </td>
+                </tr>
+            </table>
+            <table cellspacing="0" cellpadding="0" class="form-list">
+                <tr>
+                    <td class="label">Deployment Type:</td>
+                    <td class="value">
+                        <select id="inst_protocol" onchange="togglePanel(this)" name="inst_protocol">
+                            <option value="0">Local Filesystem</option>
+                            <option value="1">FTP Connection</option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+            <table cellspacing="0" cellpadding="0" class="form-list" id="inst_protocol_panel">
+                <tr>
+                    <td class="label">Host:</td>
+                    <td class="value">
+                        <input type="text" class="input-text" id="ftp_host" value="" name="ftp_host" />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="label">User:</td>
+                    <td class="value">
+                        <input type="text" class="input-text" id="ftp_login" value="" name="ftp_login" />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="label">Password:</td>
+                    <td class="value">
+                        <input type="password" id="ftp_password" value="" name="ftp_password" class="input-text" />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="label">Installation Path:</td>
+                    <td class="value">
+                        <input id="ftp_path" name="ftp_path" value="" type="text" class="input-text" />
+                    </td>
+                </tr>
+            </table>
+
+            <button class="form-button" type="submit">Start the download process</button>
+        </fieldset>
+    </form>
+
+<br/>
+<a name="connect_iframe"></a>
+
+<div id="connect_iframe_container" style="display:none;">
+    <input id="connect_iframe_scroll" type="checkbox" checked="checked"/> <label for="connect_iframe_scroll">Auto-scroll console contents</label><br/>
+    <iframe id="connect_iframe" name="connect_iframe" src="/downloader/index.php?A=empty" style="width:100%; height:300px;" frameborder="no"></iframe>
+</div>
+
+<script type="text/javascript">
+function disableInputs(flag)
+{
+    top.$$('input, select, button').each(function(el){
+        if (el.id!='connect_iframe_scroll') el.disabled = flag;
+    });
+    if (flag) {
+        window.onbeforeunload = confirmExit;
+    } else {
+        window.onbeforeunload = null;
+    }
+}
+
+function confirmExit()
+{
+    return "There are Connect processes running.\nIf you will close the window or navigate away from the page, installation will be interrupted.";
+}
+
+function onSubmit(formObj)
+{
+    if(formObj){
+        formObj.action = addParamToUrl(formObj.action, 'maintenance', (top.$('maintenance').checked === true ? '1' : '0'));
+        formObj.action = addParamToUrl(formObj.action, 'archive_type', top.$('is_backup').checked === true ? top.$('archive_type').value:0);
+        formObj.action = addParamToUrl(formObj.action, 'backup_name', top.$('backup_name').value);
+    }
+    top.$('connect_iframe_success').style.display = 'none';
+    top.$('connect_iframe_failure').style.display = 'none';
+    top.$('connect_iframe_container').style.display = '';
+    top.location.href = '#connect_iframe';
+    return true;
+}
+
+function onSuccess()
+{
+    var div = top.$('connect_iframe_success');
+    if (div) {
+        top.location.href = top.location.href.replace(/#.*$/, '')+'#connect_iframe_result';
+        div.style.display = '';
+    }
+}
+
+function onFailure()
+{
+    var div = top.$('connect_iframe_failure');
+    if (div) {
+        top.location.href = top.location.href.replace(/#.*$/, '')+'#connect_iframe_result';
+        div.style.display = '';
+    }
+}
+
+function checkForUpdateClick()
+{
+    url = addParamToUrl(location.href, 'maintenance', (top.$('maintenance').checked === true ? '1' : '0'));
+    url = addParamToUrl(url, 'updates', 'yes');
+    location.href = url;
+}
+
+function addParamToUrl(url, param, value)
+{
+    var anchor = null, params = {};
+    var anchorPos = url.search(/#/);
+    if (anchorPos != -1) {
+        anchor = url.substr(anchorPos + 1);
+        url = url.substr(0, anchorPos);
+    }
+    getPos = url.search(/\?/);
+    if (getPos != -1) {
+        url.substr(getPos + 1).split('&').each(function(pv){
+            if (pv != 'loggedin') {
+                pv = pv.split('=');
+                params[pv[0]] = pv[1];
+            }
+        });
+        url = url.substr(0, getPos);
+    }
+
+    params[param] = value;
+
+    if (params) {
+        url += '?';
+        for (k in params) {
+            url += k + '=' + params[k] + '&';
+        }
+        url = url.substr(0, url.length - 1);
+    }
+    if (anchor) {
+        url = url + '#' + anchor;
+    }
+
+    return url;
+}
+</script>
+
+<a name="connect_iframe_result"></a>
+<div id="connect_iframe_success" style="display:none">
+        <ul class="msgs">
+    <li>
+        <ul class="success-msg">
+                    <li>Download completed. You can proceed with installation</li>
+                </ul>
+    </li>
+</ul>
+
+    <button class="form-button" type="button" onclick="location.href='/'"><span>Continue Magento installation</span></button>
+</div>
+
+<div id="connect_iframe_failure" style="display:none">
+        <ul class="msgs">
+    <li>
+        <ul class="error-msg">
+                    <li>There was a problem during downloading of Magento packages. Please check the output frame for errors information and refresh the page to retry again.</li>
+                </ul>
+    </li>
+</ul>
+    <button class="form-button" type="button" onclick="location.reload()"><span>Refresh</span></button>
+</div>
+
+<script type="text/javascript">
+function togglePanel (element)
+{
+    if (element.value == '1') {
+        disabledMode = '';
+    } else {
+        disabledMode = 'none';
+    }
+    document.getElementById(element.id+'_panel').style.display = disabledMode;
+}
+togglePanel(document.getElementById('use_custom_permissions_mode'));
+togglePanel(document.getElementById('inst_protocol'));
+</script>
+
+<script type="text/javascript">
+function installAll(force)
+{
+    if (force) {
+        if (!confirm("This will delete all files from core packages.\n\nAre you sure you wish to force re-install all Magento files?")) {
+            return false;
+        }
+    }
+    /**
+     * @TODO: create validation of directory/file permission fields
+     */
+
+    return onSubmit();
+}
+</script>
+
+            <!-- [end] content -->
+            </div>
+        </div>
+
+            <!-- [end] center -->
+    </div>
+        <!-- [end] middle -->
+
+        <!-- [start] footer -->
+    <div class="footer-container">
+        <div class="footer">
+        <p class="legality">
+            Help Us to Keep Magento Healthy - <a href="http://www.magentocommerce.com/bug-tracking" id="bug_tracking_link"><strong>Report All Bugs</strong></a> (Downloader ver. 1.9.0.1)<br/>
+
+<script type="text/javascript">
+    $('bug_tracking_link').target = "varien_external";
+</script>
+            Magento is a trademark of Magento, Inc. Copyright &copy; 2014 Magento Inc.</p>
+        </div>
+    </div>
+        <!-- [end] footer -->
+    </body>
+</html>

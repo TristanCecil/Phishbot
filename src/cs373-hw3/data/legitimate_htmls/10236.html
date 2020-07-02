@@ -1,0 +1,625 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8" http-equiv="Content-Type" />
+    <title>Lentainform - Эффективная система рекомендации контента</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,300&subset=latin,cyrillic' rel='stylesheet' type='text/css' />
+    <script type="text/javascript" src="/js/jquery-1.12.1.min.js"></script>
+    <script type="text/javascript" src="/js/masonry.pkgd.min.js"></script>
+    <script type="text/javascript" src="/js/imagesloaded.pkgd.min.js"></script>
+    <script type="text/javascript" src="/js/jquery.main.js"></script>
+    <script type="text/javascript" src="/js/scripts.js"></script>
+    <script type="text/javascript" src="//cdn.lentainform.com/js/doT.min.js"></script>
+    <script type="text/javascript" src="/js/share42.js"></script>
+    <link rel="manifest" href="/js/manifest.json" />
+    </head>
+<body>
+<script lang="javascript">
+    helper.user = 0;
+    helper.search = 0;
+    helper.userCategories = [];
+    helper.userSources = [];
+    helper.userCountry = 0;
+    loadingNews.targetNews = 0;
+    loadingNews.categories = {"1":"politics","2":"society","3":"sport","4":"economics","5":"showbiz","6":"realty","7":"beauty","8":"auto","9":"cooking","10":"fashion","11":"science","12":"parenting","13":"travel","14":"lifestyle"};
+    loadingNews.categoriesRu = {"1":"\u041f\u043e\u043b\u0438\u0442\u0438\u043a\u0430","2":"\u041e\u0431\u0449\u0435\u0441\u0442\u0432\u043e","3":"\u0421\u043f\u043e\u0440\u0442","4":"\u042d\u043a\u043e\u043d\u043e\u043c\u0438\u043a\u0430","5":"\u0428\u043e\u0443-\u0431\u0438\u0437\u043d\u0435\u0441","6":"\u041d\u0435\u0434\u0432\u0438\u0436\u0438\u043c\u043e\u0441\u0442\u044c","7":"\u0417\u0434\u043e\u0440\u043e\u0432\u044c\u0435 \u0438 \u043a\u0440\u0430\u0441\u043e\u0442\u0430","8":"\u0410\u0432\u0442\u043e","9":"\u041a\u0443\u043b\u0438\u043d\u0430\u0440\u0438\u044f","10":"\u041c\u043e\u0434\u0430 \u0438 \u0441\u0442\u0438\u043b\u044c","11":"\u041d\u0430\u0443\u043a\u0430 \u0438 \u0422\u0435\u0445\u043d\u043e\u043b\u043e\u0433\u0438\u0438","12":"\u0414\u0435\u0442\u0438 \u0438 \u0420\u043e\u0434\u0438\u0442\u0435\u043b\u0438","13":"\u0422\u0443\u0440\u0438\u0437\u043c","14":"\u041e\u0431\u0440\u0430\u0437 \u0436\u0438\u0437\u043d\u0438"};
+    loadingNews.category = 0;
+</script>
+<!--register popup start-->
+    <div class="popup_register none">
+        <div class="close"></div>
+        <p><strong>Присоединяйтесь</strong> и получите еще больше интересных новостей</p>
+        <div class="btns">
+            <a id="open-reg-block" href="javascript:;" class="login">Войти</a>
+        </div>
+    </div>
+<!--register popup end-->
+<!--reg popup start-->
+<div class="popup fixed none" id="reg">
+    <div class="logo">
+        <img src="/img/svg/logo_lenta.svg" alt="" class="logotype">
+        <div class="close"></div>
+    </div>
+    <div class="poptitle">
+        <div class="popreg">
+            <div class="numbactive"><span>1</span></div>
+            <div class="blockactive">Регистрация</div>
+            <div class="icon-arrow-right"></div>
+            <div class="numbnoactive"><span>2</span></div>
+            <div class="blocknoactive">Персонализация</div>
+        </div>
+    </div>
+    <div class="socnetwork">
+        <h1>войдите через социальные сети</h1>
+        <div class="socpic">
+            <a id="vkLink" data-vk-url="" data-type="vk" href="javascript:" class="auth_link">
+                <img src="/img/svg/vk_big.svg" alt="" width="73" height="73">
+            </a>
+            <a id="fbLink" data-fb-url="" data-type="fb" href="javascript:" class="auth_link">
+                <img src="/img/svg/fb_big.svg" alt="" width="73" height="73">
+            </a>
+            <a id="twLink" data-tw-url="" data-type="tw" href="javascript:" class="auth_link">
+                <img src="/img/svg/tw_big.svg" alt="" width="73" height="73">
+            </a>
+            <a id="okLink" data-ok-url="" data-type="ok" href="javascript:" class="auth_link">
+                <img src="/img/svg/ok_big.svg" alt="" width="73" height="73">
+            </a>
+            <a id="glLink" data-gl-url="" data-type="gl" href="javascript:" class="auth_link">
+                <img src="/img/svg/G_big.svg" alt="" width="73" height="73">
+            </a>
+        </div>
+    </div>
+</div>
+<!--reg popup end-->
+<!--about popup start-->
+<div class="popup none" id="about">
+    <div class="logo">
+        <img src="/img/svg/logo_lenta.svg" alt="" class="logotype">
+        <div class="close"></div>
+    </div>
+    <div class="poptitle">
+        <span>о проекте</span>
+    </div>
+    <div class="textabout">
+        <div class="subtext">
+            <span>1. О рейтинге:</span>
+            <p>Lentainform.com — рейтинг актуальных и популярных новостей интернет СМИ. Новости выводятся в наш рейтинг согласно их популярности среди аудитории сайта. </p>
+            <p>Вы можете просмотреть ленту за час, за сутки или за неделю, а также выбрать конкретные тематики и получить выборку новостей по ним. Блок "Картина дня" - формируется по самым актуальным новостям за последние 24 часа в хронологическом порядке. Кликнув на заголовок Вы попадаете на полный текст новости на сайте издания.</p>
+        </div>
+        <div class="subtext">
+            <span>2. Для вебмастеров/владельцев сайтов:</span>
+            <p>Участие в рейтинге, так же как и в обменной сети Lentainform.com бесплатно. Зарегистрироваться в программе обмена посетителями вы можете на этой странице <a target="_blank" href="http://partner.lentainform.com/">http://partner.lentainform.com/</a>.
+                <br>
+                Для попадания вашего контента в новостной агрегатор Lentainform стоит только разместить код новостного блока на ваш сайт. По всем вопросам данного сотрудничества обращайтесь на <a href="mailto:support@lentainform.com" class="nounderline">support@lentainform.com</a>.</p>
+        </div>
+        <div class="subtext">
+            <span>3. Регистрация (для читателей):</span>
+            <p>Читатель может настроить персонализированную ленту новостей. Для этого нужно нажать кнопку "Войти". Присоединиться можно через социальные сети:  facebook, odnoklassniki, vk, twitter, google+. Следующим шагом является персонализация ленты новостей -  выбор страны, источников и тематик новостей. Также есть возможность подписаться на E-mail рассылку самых популярных новостей. Нажав на кнопку "сохранить" применяются все выбранные настройки.</p>
+        </div>
+    </div>
+</div>
+<!--about popup end-->
+<!--setting popup start-->
+<div class="popup none fixed" id="disableSource">
+    <div class="logo">
+        <img src="/img/svg/logo_lenta.svg" alt="" class="logotype">
+        <div class="close"></div>
+    </div>
+    <form action="/auth/disable-source" method="post">
+        <div class="setting">
+            <span>Вы действительно хотите исключить сайт “<span id="placeholderSource"></span>” из своей ленты новостей?</span>
+        </div>
+        <input type="hidden" id="filter_sources_popup" name="filter_sources" value="" />
+        <div class="save">
+            <input type="reset" value="Нет" class="close">
+            <input type="submit" value="Да">
+        </div>
+    </form>
+</div>
+<!--setting popup end-->
+<!--profile popup start-->
+<!--profile popup end-->
+<!--person popup start-->
+<div class="popup none" id="person">
+    <div class="logo">
+        <img src="/img/svg/logo_lenta.svg" alt="" class="logotype">
+        <div class="close"></div>
+    </div>
+    <div class="poptitle">
+        <div class="popreg">
+            <div class="numbnoactive"><img src="/img/checkcolor.png" alt=""></div>
+            <div class="blocknoactive">Регистрация</div>
+            <img class="popup_arrow_right" src="/img/svg/arrow_right.svg" width="7" height="11" alt="">
+            <div class="numbactive"><span>2</span></div>
+            <div class="blockactive">Персонализация</div>
+        </div>
+    </div>
+    <form id='settings-form' action="/auth/save-settings" method="post">
+        <div class="forminner">
+            <h1>Персонализируй свою ленту новостей</h1>
+            <div class="country">
+                <div class="choose">
+                    <img src="/img/check.png" alt="">
+                    <span>шаг 1.</span>
+                    <p>Выберите страну</p>
+                </div>
+                <span>Страна</span>
+                <select name="filter_country">
+                                            <option  value='2'>Россия</option>
+                                            <option  value='1'>Украина</option>
+                                            <option  value='7'>Беларусь</option>
+                                            <option  value='5'>Казахстан</option>
+                                            <option selected value=''>В мире</option>
+                                    </select>
+            </div>
+            <div class="subjecttitle">
+                <div class="choose">
+                    <img src="/img/check.png" alt="">
+                    <span>шаг 2.</span>
+                    <p>Выберите тематики новостей</p>
+                </div>
+                <span>Выбор тематики</span>
+                <div class="subject" id="subject">
+                                            <div class="active" data-category-id="1">
+                            <span class="hover"></span><img src="/img/cat_1.png" alt=""> <p>Политика</p>
+                        </div>
+                                            <div class="active" data-category-id="2">
+                            <span class="hover"></span><img src="/img/cat_2.png" alt=""> <p>Общество</p>
+                        </div>
+                                            <div class="active" data-category-id="3">
+                            <span class="hover"></span><img src="/img/cat_3.png" alt=""> <p>Спорт</p>
+                        </div>
+                                            <div class="active" data-category-id="4">
+                            <span class="hover"></span><img src="/img/cat_4.png" alt=""> <p>Экономика</p>
+                        </div>
+                                            <div class="active" data-category-id="5">
+                            <span class="hover"></span><img src="/img/cat_5.png" alt=""> <p>Шоу-бизнес</p>
+                        </div>
+                                            <div class="active" data-category-id="6">
+                            <span class="hover"></span><img src="/img/cat_6.png" alt=""> <p>Недвижимость</p>
+                        </div>
+                                            <div class="active" data-category-id="7">
+                            <span class="hover"></span><img src="/img/cat_7.png" alt=""> <p>Здоровье и красота</p>
+                        </div>
+                                            <div class="active" data-category-id="8">
+                            <span class="hover"></span><img src="/img/cat_8.png" alt=""> <p>Авто</p>
+                        </div>
+                                            <div class="active" data-category-id="9">
+                            <span class="hover"></span><img src="/img/cat_9.png" alt=""> <p>Кулинария</p>
+                        </div>
+                                            <div class="active" data-category-id="10">
+                            <span class="hover"></span><img src="/img/cat_10.png" alt=""> <p>Мода и стиль</p>
+                        </div>
+                                            <div class="active" data-category-id="11">
+                            <span class="hover"></span><img src="/img/cat_11.png" alt=""> <p>Наука и Технологии</p>
+                        </div>
+                                            <div class="active" data-category-id="12">
+                            <span class="hover"></span><img src="/img/cat_12.png" alt=""> <p>Дети и Родители</p>
+                        </div>
+                                            <div class="active" data-category-id="13">
+                            <span class="hover"></span><img src="/img/cat_13.png" alt=""> <p>Туризм</p>
+                        </div>
+                                            <div class="active" data-category-id="14">
+                            <span class="hover"></span><img src="/img/cat_14.png" alt=""> <p>Образ жизни</p>
+                        </div>
+                                        <input id='categories-input' type="hidden" name="filter_categories" value=""/>
+                </div>
+            </div>
+                        <span class="emailtitle">Введите E-mail</span>
+            <input class="emailinput" id='emailInput' name="email" type="email" value="" />
+            <br /><span id='badEmail' class="none">Email должен быть заполнен в виде example@domain!</span><br />
+        </div>
+        <div class="save">
+            <div class="delivery">
+                <input name="notification" id="notification" value="1" type="checkbox" ><label for="notification">Подписка на email-рассылку новостей</label>
+            </div>
+            <input type="submit" id="save-settings" value="Сохранить">
+        </div>
+    </form>
+</div>
+<!--person popup end-->
+<!--newperson popup start-->
+<div class="popup none" id="new">
+    <div class="logo">
+        <img src="/img/svg/logo_lenta.svg" alt="" class="logotype">
+        <div class="close"></div>
+    </div>
+    <div class="poptitle"><h1>Персонализация ленты новостей</h1></div>
+    <form id='personalization-form' action="/auth/save-settings" method="post">
+        <div class="forminner">
+            <div class="country">
+                <span>Страна</span>
+                <select name="filter_country">
+                                            <option  value='2'>Россия</option>
+                                            <option  value='1'>Украина</option>
+                                            <option  value='7'>Беларусь</option>
+                                            <option  value='5'>Казахстан</option>
+                                            <option selected value=''>В мире</option>
+                                    </select>
+            </div>
+            <div class="subjecttitle">
+                <span>Выбор тематики</span>
+                <div class="subject" id="personalization-subject">
+                                            <div  data-category-id="1">
+                            <span class="hover"></span><img src="/img/cat_1.png" alt=""> <p>Политика</p>
+                        </div>
+                                            <div  data-category-id="2">
+                            <span class="hover"></span><img src="/img/cat_2.png" alt=""> <p>Общество</p>
+                        </div>
+                                            <div  data-category-id="3">
+                            <span class="hover"></span><img src="/img/cat_3.png" alt=""> <p>Спорт</p>
+                        </div>
+                                            <div  data-category-id="4">
+                            <span class="hover"></span><img src="/img/cat_4.png" alt=""> <p>Экономика</p>
+                        </div>
+                                            <div  data-category-id="5">
+                            <span class="hover"></span><img src="/img/cat_5.png" alt=""> <p>Шоу-бизнес</p>
+                        </div>
+                                            <div  data-category-id="6">
+                            <span class="hover"></span><img src="/img/cat_6.png" alt=""> <p>Недвижимость</p>
+                        </div>
+                                            <div  data-category-id="7">
+                            <span class="hover"></span><img src="/img/cat_7.png" alt=""> <p>Здоровье и красота</p>
+                        </div>
+                                            <div  data-category-id="8">
+                            <span class="hover"></span><img src="/img/cat_8.png" alt=""> <p>Авто</p>
+                        </div>
+                                            <div  data-category-id="9">
+                            <span class="hover"></span><img src="/img/cat_9.png" alt=""> <p>Кулинария</p>
+                        </div>
+                                            <div  data-category-id="10">
+                            <span class="hover"></span><img src="/img/cat_10.png" alt=""> <p>Мода и стиль</p>
+                        </div>
+                                            <div  data-category-id="11">
+                            <span class="hover"></span><img src="/img/cat_11.png" alt=""> <p>Наука и Технологии</p>
+                        </div>
+                                            <div  data-category-id="12">
+                            <span class="hover"></span><img src="/img/cat_12.png" alt=""> <p>Дети и Родители</p>
+                        </div>
+                                            <div  data-category-id="13">
+                            <span class="hover"></span><img src="/img/cat_13.png" alt=""> <p>Туризм</p>
+                        </div>
+                                            <div  data-category-id="14">
+                            <span class="hover"></span><img src="/img/cat_14.png" alt=""> <p>Образ жизни</p>
+                        </div>
+                                        <input id='personalization-categories-input' type="hidden" name="filter_categories" value=""/>
+                </div>
+            </div>
+                        <span class="emailtitle">Ваш E-mail</span>
+            <input class="emailinput" id='personalization-emailInput' name="email" type="email" value="" />
+            <br /><span id='personalization-badEmail' class="none">Email должен быть заполнен в виде example@domain!</span><br />
+        </div>
+        <div class="save">
+            <div class="delivery">
+                <input name="notification" id="personalization-notification" value="1"  type="checkbox"><label for="personalization-notification">Подписка на email-рассылку новостей</label>
+            </div>
+            <input type="submit" id="personalization-save-settings" value="Сохранить">
+        </div>
+    </form>
+</div>
+<!--newperson popup end-->
+<header>
+    <div class="wrap">
+        <div class="top">
+            <div class="logo"><a href="/"></a></div>
+			<nav class="menu-category">
+				<div class="wrap-hd-menu">
+					<ul class="list" id="mCategory">
+                                                    <li class="categoryMenu1">
+                                <a href="/category/politics">
+                                    <span class="m-item">Политика</span>
+                                </a>
+                            </li>
+                                                    <li class="categoryMenu2">
+                                <a href="/category/society">
+                                    <span class="m-item">Общество</span>
+                                </a>
+                            </li>
+                                                    <li class="categoryMenu3">
+                                <a href="/category/sport">
+                                    <span class="m-item">Спорт</span>
+                                </a>
+                            </li>
+                                                    <li class="categoryMenu4">
+                                <a href="/category/economics">
+                                    <span class="m-item">Экономика</span>
+                                </a>
+                            </li>
+                                                    <li class="categoryMenu5">
+                                <a href="/category/showbiz">
+                                    <span class="m-item">Шоу-бизнес</span>
+                                </a>
+                            </li>
+                                                    <li class="categoryMenu6">
+                                <a href="/category/realty">
+                                    <span class="m-item">Недвижимость</span>
+                                </a>
+                            </li>
+                                                    <li class="categoryMenu7">
+                                <a href="/category/beauty">
+                                    <span class="m-item">Здоровье и красота</span>
+                                </a>
+                            </li>
+                                                    <li class="categoryMenu8">
+                                <a href="/category/auto">
+                                    <span class="m-item">Авто</span>
+                                </a>
+                            </li>
+                                                    <li class="categoryMenu9">
+                                <a href="/category/cooking">
+                                    <span class="m-item">Кулинария</span>
+                                </a>
+                            </li>
+                                                    <li class="categoryMenu10">
+                                <a href="/category/fashion">
+                                    <span class="m-item">Мода и стиль</span>
+                                </a>
+                            </li>
+                                                    <li class="categoryMenu11">
+                                <a href="/category/science">
+                                    <span class="m-item">Наука и Технологии</span>
+                                </a>
+                            </li>
+                                                    <li class="categoryMenu12">
+                                <a href="/category/parenting">
+                                    <span class="m-item">Дети и Родители</span>
+                                </a>
+                            </li>
+                                                    <li class="categoryMenu13">
+                                <a href="/category/travel">
+                                    <span class="m-item">Туризм</span>
+                                </a>
+                            </li>
+                                                    <li class="categoryMenu14">
+                                <a href="/category/lifestyle">
+                                    <span class="m-item">Образ жизни</span>
+                                </a>
+                            </li>
+                        					</ul>
+					<div class="wrap-second-menu">
+						<span class="wr">eщё</span>
+						<ul class="secondMenu">
+						</ul>
+					</div>	
+				</div>	
+			</nav>
+            <div class="header_block reg">	
+                                    <div id="open-reg">войти</div>
+                                <form action="/" method="post" autocomplete="on" id="searchform">
+                    <input id="search" name="search" type="text" placeholder="Поиск...">
+                    <input id="search_submit" value="" type="submit">
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="bottom">
+        <div class="wrap">
+                        <div class="period">
+                <a class="hour" data-period="hour" href="javascript:;">час</a>
+                <a class="day active" data-period="day" href="javascript:;">день</a>
+                <a class="week" data-period="week" href="javascript:;">неделя</a>
+            </div>
+                        <div class="date"></div>
+                                                        <div class="temperature"><span>Саравак: +30&deg;C</span></div>
+            
+            <ul class="soc_net">
+                <li class="fb"><a target="_blank" href="https://www.facebook.com/lentainform"></a></li>
+                <li class="vk"><a target="_blank" href="https://vk.com/lentainform"></a></li>
+                <li class="ok"><a target="_blank" href="http://ok.ru/group/52967321764066"></a></li>
+                <li class="tw"><a target="_blank" href="https://twitter.com/Lentainform"></a></li>
+            </ul>
+            <div class="about">О проекте</div>
+        </div>
+    </div>
+</header>
+<div class="wrap">
+    <div class="content">
+                    <div class="main">
+                <h1>главные новости</h1>
+                <div id="MasonryNews" class="MasonryContent"></div>
+            </div>
+                <div class="sidebar">
+            <h1>картина дня</h1>
+            <div id="box"></div>
+        </div>
+    </div>
+</div>
+<div id="news-template" class="none">{{var i = 0; }}
+{{~it : news}}
+{{?(i==0 && loadingNews.pageNews == 1)}}
+{{?loadingNews.targetNews == 0}}
+<div class="part item w_2">
+    <div class="topnews">
+        {{?news.categoryId}}
+            <a href="/category/{{=loadingNews.categories[news.categoryId]}}" class="category">{{=loadingNews.categoriesRu[news.categoryId]}}</a>
+        {{?}}
+        <div class="img">
+            <a href="{{=loadingNews.getRedirectUrl(news.campaignId, news.url)}}" target='_blank'><img src="{{=news.img_link}}" alt=""></a>
+            <div class="counter"><span class="eye"></span>{{=news.clicks}}</div>
+        </div>
+        <div class="share_popup">
+            <div class="share_pic none"></div>
+            <div id="social_hendler_{{=news.id}}"  class="sharesoc none"></div>
+        </div>
+        <a href="{{=loadingNews.getRedirectUrl(news.campaignId, news.url)}}" target="_blank" class="title">{{=news.title}}</a>
+        {{?news.description}}
+            <p>{{=news.description}}...</p>
+        {{?}}
+        <div data-source='{{=news.domain}}' class="subnetwork{{? helper.user}} confirm{{?}}">{{=news.domain}} <div class="close"></div></div>
+        <div class="sub_popup none">
+            Если Вы хотите заблокировать все новости данного источника, пожалуйста <a class="open-auth" data-source='{{=news.domain}}' href="javascript:;">Зарегистрируйтесь</a>
+        </div>
+        <div class="time"><span>{{=news.createdAt}}</span></div>
+        {{?news.similarNews}}
+            <div class="more">
+                <span>ещё</span>
+            </div>
+            <div class="more_block">
+                {{~news.similarNews : similar}}
+                <div class="daynews">
+                    <div class="source">
+                        <img src="{{=loadingNews.getIcon(similar.domain)}}" alt="">
+                        <a target="_blank" href="http://{{=similar.domain}}">{{=similar.domain}}</a>
+                    </div>
+                    <div class="timeside">
+                        <span>{{=similar.createdAt}}</span>
+                    </div>
+                    <a target="_blank" href="{{=loadingNews.getRedirectUrl(similar.campaignId, similar.url)}}" class="titleside">{{=similar.title}}</a>
+                </div>
+                {{~}}
+            </div>
+        {{?}}
+    </div>
+</div>
+{{??}}
+<div class="part item w_2">
+    <div class="targetnews">
+        <div class="bg">
+            {{?news.categoryId}}
+                <a href="/category/{{=loadingNews.categories[news.categoryId]}}" class="category">{{=loadingNews.categoriesRu[news.categoryId]}}</a>
+            {{?}}
+            <div class="img">
+                <a target="_blank" href="{{=loadingNews.getRedirectUrl(news.campaignId, news.url)}}"><img src="{{=news.img_link}}" alt=""></a>
+                <div class="abs">
+                    <div class="subnetwork">{{=news.domain}}</div>
+                    <div class="time">
+                        {{var datetime = news.createdAt.split(' '); }}
+                        <span>{{=datetime[0]}}</span> <span class="inTime">{{=datetime[1]}}</span>
+                    </div>
+                    <div class="counter"><span class="eye"></span>{{=news.clicks}}</div>
+                </div>
+            </div>
+            <div class="text-block">
+                <a target="_blank" href="{{=loadingNews.getRedirectUrl(news.campaignId, news.url)}}" class="title">{{=news.title}}</a>
+                {{?news.description}}
+                    <p>{{=news.description}}...</p>
+                {{?}}
+                <a target="_blank" href="{{=loadingNews.getRedirectUrl(news.campaignId, news.url)}}" class="readmore">Читать далее</a>
+                <div id="socTarget" class="soctarget"></div>
+            </div>
+            <div style="clear:both;"></div>
+        </div>
+    </div>
+</div>
+{{?}}
+{{??}}
+{{?(loadingNews.targetNews != news.id)}}
+<div class="item">
+    <div class="news">
+        {{?news.categoryId}}
+            <a href="/category/{{=loadingNews.categories[news.categoryId]}}" class="category">{{=loadingNews.categoriesRu[news.categoryId]}}</a>
+        {{?}}
+        <div class="img">
+            <a href="{{=loadingNews.getRedirectUrl(news.campaignId, news.url)}}" target='_blank' ><img src="{{=news.img_link}}" alt=""></a>
+            <div class="counter"><span class="eye"></span>{{=news.clicks}}</div>
+        </div>
+        <div class="share_popup">
+            <div class="share_pic none"></div>
+            <div id="social_hendler_{{=news.id}}"  class="sharesoc none"></div>
+        </div>
+        <a href="{{=loadingNews.getRedirectUrl(news.campaignId, news.url)}}" class="title" target='_blank'>{{=news.title}}</a>
+        {{?news.description}}
+            <p>{{=news.description}}...</p>
+        {{?}}
+        <div data-source='{{=news.domain}}' class="subnetwork{{? helper.user}} confirm{{?}}">{{=news.domain}} <div class="close"></div></div>
+        <div class="sub_popup none">
+            Если Вы хотите заблокировать все новости данного источника, пожалуйста <a class="open-auth" data-source='{{=news.domain}}' href="javascript:;">Зарегистрируйтесь</a>
+        </div>
+        <div class="time"><span>{{=news.createdAt}}</span></div>
+        {{?news.similarNews}}
+            <div class="more">
+                <span>ещё</span>
+            </div>
+            <div class="more_block">
+                {{~news.similarNews : similar}}
+                    <div class="daynews">
+                        <div class="source">
+                            <img src="{{=loadingNews.getIcon(similar.domain)}}" alt="">
+                            <a target="_blank" href="http://{{=similar.domain}}">{{=similar.domain}}</a>
+                        </div>
+                        <div class="timeside">
+                            <span>{{=similar.createdAt}}</span>
+                        </div>
+                        <a target="_blank" href="{{=loadingNews.getRedirectUrl(similar.campaignId, similar.url)}}" class="titleside">{{=similar.title}}</a>
+                    </div>
+                {{~}}
+            </div>
+        {{?}}
+    </div>
+</div>
+{{?}}
+{{?}}
+{{i++;}}
+{{~}}</div>
+<div id="hot-template" class="none">{{~it : hot}}
+<div class="daynews">
+    <div class="source">
+        <img src="{{=loadingNews.getIcon(hot.domain)}}" alt="">
+        <a target="_blank" href="http://{{=hot.domain}}">{{=hot.domain}}</a>
+    </div>
+    <div class="timeside">
+        <span>{{=hot.createdAt}}</span>
+    </div>
+    <a target="_blank" href="{{=loadingNews.getRedirectUrl(hot.campaignId, hot.url)}}" class="titleside">{{=hot.title}}</a>
+</div>
+{{~}}</div>
+<div id="search-template" class="none">{{~it : search}}
+<div class="main search">
+    <div class="line">
+        <img src="{{=loadingNews.getIcon(search.domain)}}" alt="">
+        <div class="timeline">{{=search.createdAt}}</div>
+        <span><a target="_blank" href="{{=loadingNews.getRedirectUrl(search.campaignId, search.url)}}" class="titleside">{{=loadingNews.highlightTitle(search.title)}}</a></span>
+        <div class="countline">{{=search.clicks}}</div>
+    </div>
+</div>
+{{~}}</div>
+
+<!LiveInternet counter><script type="text/javascript">new
+        Image().src = "//counter.yadro.ru/hit;Lentainform?r" +
+        escape(document.referrer) + ((typeof(screen)=="undefined")?"" :
+        ";s"+screen.width+"*"+screen.height+"*" +
+        (screen.colorDepth?screen.colorDepth:screen.pixelDepth)) +
+        ";u"+escape(document.URL) + ";"
+        +Math.random();</script><!/LiveInternet>
+
+<!Google Analitics>
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-35438815-1', 'auto');
+    ga('send', 'pageview');
+</script>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function (d, w, c) {
+        (w[c] = w[c] || []).push(function() {
+            try {
+                w.yaCounter33331333 = new Ya.Metrika({
+                    id:33331333,
+                    clickmap:true,
+                    trackLinks:true,
+                    accurateTrackBounce:true
+                });
+            } catch(e) { }
+        });
+
+        var n = d.getElementsByTagName("script")[0],
+            s = d.createElement("script"),
+            f = function () { n.parentNode.insertBefore(s, n); };
+        s.type = "text/javascript";
+        s.async = true;
+        s.src = "https://mc.yandex.ru/metrika/watch.js";
+
+        if (w.opera == "[object Opera]") {
+            d.addEventListener("DOMContentLoaded", f, false);
+        } else { f(); }
+    })(document, window, "yandex_metrika_callbacks");
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/33331333" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+</body>
+</html>

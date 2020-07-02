@@ -1,0 +1,1552 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+<title>КОНТ | Платформа для социальной журналистики</title>
+<meta name="Description" content="" />
+<!--<script src="https://code.jquery.com/jquery.min.js"></script>-->
+
+<!-- SCRIPTS -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script src='https://www.google.com/recaptcha/api.js'></script>
+<!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>-->
+<script type="text/javascript" src="//vk.com/js/api/openapi.js?121"></script>
+
+<link href="/bootstrap/css/bootstrap.css" rel="stylesheet" />
+<!--<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" >-->
+<script src="/bootstrap/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+<link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500&subset=latin,cyrillic-ext' rel='stylesheet' type='text/css' />
+
+<link rel="stylesheet" type="text/css" href="/style.css?698380" />
+<link rel="stylesheet" type="text/css" href="/css/temp/style.css?970274" />
+<link rel="shortcut icon" href="/favicon.ico" />
+<script type="text/javascript" src="//vk.com/js/api/openapi.js?121"></script>
+</head>
+<body>
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/ru_RU/sdk.js#xfbml=1&version=v2.5&appId=1504679583182529";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+<div id="overlay"></div>
+<div class="black" id="headline">
+<div class="header">
+
+<a href="https://cont.ws/" class="logo"><img src="https://cont.ws/images/logo.png" alt=""></a>
+
+<div style="float: left;" class="header_menu">
+
+	<a href="https://cont.ws/" class="mr20 active">ЛЕНТА</a>
+	<a href="https://cont.ws/best" class="mr20">ЛУЧШЕЕ</a>
+	<a href="https://cont.ws/bookmarks" class="mr20 newreg">ЗАКЛАДКИ</a>
+	<a href="#" id="sub-menu-link" class="mr20">БОЛЬШЕ</a>
+	<a href="#" id="sub-menu4-link" class="mr20"><span class="glyphicon glyphicon-search" style="font-size: 12px;"></span></a>
+
+</div>
+<script>
+$(document).ready(function() {
+    var tmp1=$(window).scrollTop()-50;
+    var tmp2=$(window).scrollTop()+50;
+    $(window).scroll(function(){
+        if($(window).scrollTop()>=tmp2){
+            tmp1=$(window).scrollTop()-50;
+            tmp2=$(window).scrollTop()+50;
+            $('#headline').fadeOut(100);
+        }else if($(window).scrollTop()<=tmp1){
+            tmp1=$(window).scrollTop()-50;
+            tmp2=$(window).scrollTop()+50;
+            $('#headline').fadeIn(100);
+        }
+    });
+
+if($('div').is('#_mt_fs_div')){
+    $.ajax({
+        type: "POST",
+        global: false,
+        url: "/ajax.php",
+        data: ({
+            type: 43
+        }),
+        dataType: "html"
+    });
+}
+$('[data-toggle="tooltip"]').tooltip();
+});
+$('#sub-menu2-link').click(function(event){
+   event.stopPropagation();
+   event.preventDefault();
+   $('#sub-menu').hide();
+   $('#sub-menu2').toggle();
+});
+$('#sub-menu-link').click(function(event){
+   event.stopPropagation();
+   event.preventDefault();
+   $('#sub-menu2').hide();
+   $('#sub-menu').toggle();
+});
+$('#sub-menu4-link').click(function(event){
+   event.stopPropagation();
+   event.preventDefault();
+   $('#sub-menu4').toggle();
+});
+$(document).click(function(e){
+    var elem = $("#sub-menu");
+    if(e.target!=elem[0]&&!elem.has(e.target).length) elem.hide();
+    var elem = $("#sub-menu2");
+    if(e.target!=elem[0]&&!elem.has(e.target).length) elem.hide();
+})
+</script>
+
+<div id="sub-menu4">
+<link rel="stylesheet" href="/js/jquery-ui.css" />
+<script src="/js/jquery-ui.js"></script>
+<div class="menu3">
+<form action="https://cont.ws/search" method="post">
+<input type="text" placeholder="Что ищем?" value="" name="s" style="width: 40%; margin-bottom: 10px; text-align: left;" class="frm_line" />
+<div>
+<a href="#" id="a" class="chb"><input type="hidden" name="a" /><span class="chb1">Да</span><span class="chb0">Нет</span></a>
+Ищу автора
+</div>
+
+<div style="margin: 10px 0; height: 24px;">
+<a href="#" id="s_d" class="chb"><span class="chb1">Да</span><span class="chb0">Нет</span></a>
+Выбрать диапазон дат
+<span id="s_dd" style="display: none;">
+<input type="text" name="from" id="from" style="width: 65px; vertical-align: middle;" class="frm_line" placeholder="2015-01-01" /> &ndash; <input type="text" name="to" id="to" style="width: 65px; vertical-align: middle;" class="frm_line" placeholder="2015-06-01" />
+</span>
+</div>
+<input type="submit" value="Найти" class="tag" style="width: 60px;" />
+</form>
+</div>
+<script>
+$('#a').click(function(event){
+    event.preventDefault();
+    $(this).toggleClass('chb_check');
+    if($(this).children('input').val()==1) $(this).children('input').val(0);
+    else $(this).children('input').val(1);
+});
+$('#s_d').click(function(event){
+    event.preventDefault();
+    $(this).toggleClass('chb_check');
+    $('#s_dd').toggle();
+});
+$("#from").datepicker({
+    dateFormat: "yy-mm-dd",
+    onClose: function(selectedDate) {
+        $("#to").datepicker("option", "minDate", selectedDate);
+    }
+});
+$("#to").datepicker({
+    dateFormat: "yy-mm-dd",
+    onClose: function( selectedDate ) {
+        $("#from").datepicker("option", "maxDate", selectedDate);
+    }
+});
+</script>
+</div>
+
+<ul id="sub-menu" style="z-index: 999;">
+<div class="sm1">
+<div class="sm11">
+<h3>КОТИРОВКИ</h3>
+<div class="quote">
+<span>USD<br />
+<strong>65.06</strong></span>
+</div>
+<div class="quote">
+<span>EUR<br />
+<strong>73.31</strong></span>
+</div>
+<div class="quote">
+<span>НЕФТЬ<br />
+<strong>48.12</strong></span>
+</div>
+<div class="clear"></div>
+<div class="sm111">
+<h3>ОБЩИЕ ССЫЛКИ</h3>
+<a href="http://cont.ws/lenta-article">Все статьи</a>
+<a href="http://cont.ws/tag/198">Все новости</a>
+</div>
+</div>
+
+<div class="sm12">
+<h3>КЛАСТЕРЫ</h3>
+<a href="http://cont.ws/clusters/geopoliticy"><img src="/images/c1.png" />Геополитика <span>Большая политика, экономика и др.</span></a>
+<a href="http://cont.ws/clusters/science"><img src="/images/c2.png" />Край будущего <span>Наука, космос, технологии</span></a>
+<a href="http://cont.ws/clusters/military"><img src="/images/c5.png" />Ратное дело <span>Армия, вооружение, техника</span></a>
+<a href="http://cont.ws/clusters/history"><img src="/images/c4.png" />История <span>Официальная и альтернативная</span></a>
+<a href="http://cont.ws/clusters/motor"><img src="/images/c3.png" />Мотор <span>Авто и мото</span></a>
+<a href="http://cont.ws/clusters/social"><img src="/images/c8.png" />Социум <span>Местная политика, жизнь</span></a>
+
+<a href="http://cont.ws/clusters/sport"><img src="/images/c9.png" />Спорт <span>Спорт, спорт, спорт</span></a>
+<a href="http://cont.ws/clusters/psychology"><img src="/images/c10.png" />Психология <span>Отношения, проблемы, общество</span></a>
+<a href="http://cont.ws/clusters/kti"><img src="/images/c11.png" />К.Т.И. <span>Креатив, творчество и искусство</span></a>
+</div>
+
+<div class="sm13">
+<h3>СПРАВОЧНОЕ</h3>
+<a href="http://cont.ws/faq">Частые вопросы</a>
+<a href="http://cont.ws/help">Полезные статьи</a>
+<a href="http://leffet.cont.ws">Блог проекта</a>
+</div>
+
+<div class="clear"></div>
+</div>
+</ul>
+
+<ul id="sub-search" style="z-index: 999;">
+<form action="https://cont.ws/search" method="post">
+<input type="search" name="s" style="width: 100%; font-size: 14px; line-height: 22px; padding: 0 10px; border: solid 1px #eee; color: #000;" placeholder="ПОИСК" />
+</form>
+</ul>
+<div class="sy">
+
+
+
+
+<script src="//ulogin.ru/js/ulogin.js"></script>
+
+<!-- Auth Modal -->
+<div class="modal fade" id="authModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      </div>
+      
+      
+      <div id="authModalContainer">
+      <div id="email-body" class="modal-body">
+        	
+        	
+        	<div class="modalLogo">
+        		<img src="/images/cont-logo.png" alt="КОНТ" width="110" height="26" />
+        	</div>
+        	
+	        <div class="form-group">
+	        	<p> Введите данные, указанные при регистрации</p>
+	        	<section style="margin-bottom:5px;">
+	        		
+						<input id="enter-login" type="text" name="text-893" placeholder="Логин или e-mail" value="" size="40" class="form-control text-center input-md" id="feedbackModalYourName" aria-required="true" aria-invalid="false">
+	        		
+				</section>
+				
+				<section>
+					<div class="form-group">
+						<input id="enter-pass" type="password" name="text-893" placeholder="Пароль" value="" size="40" class="form-control text-center input-md" id="feedbackModalYourName" aria-required="true" aria-invalid="false">
+					</div>
+				</section>
+				
+			</div>
+				<section style="margin-bottom:40px">
+					<button id="enter_button" type="button" class="btn btn-default btn-md btn-block">Войти</button>
+					<div style="color: #b60000;" id="error-enter"></div>
+				</section>
+
+	      <p>Или авторизируйтесь через соцсети</p>
+	      <div class=" social-icons">
+	      		<section>
+		      		<a href="http://oauth.vk.com/authorize?client_id=5168741&display=page&redirect_uri=https://cont.ws/vk_auth.php&scope=email&response_type=code" class="vk-icon"><i class="fa fa-vk fa-fw"></i> Войти через ВКонтакте</a>
+			      	<a href="https://www.facebook.com/dialog/oauth?client_id=397527567054344&redirect_uri=https://cont.ws/fb.php&response_type=code&scope=email&auth_type=rerequest" class="facebook-icon"><i class="fa fa-facebook-official fa-fw"></i> Войти через Facebook</a>
+			      	<a href="https://api.twitter.com/oauth/authorize?oauth_token=KVXeqwAAAAAAjzc5AAABVMdejs4" class="twitter-icon"><i class="fa fa-twitter fa-fw"></i> Войти через Twitter</a>
+					<!--<a href="http://www.odnoklassniki.ru/oauth/authorize?client_id=1246662912&response_type=code&redirect_uri=https://cont.ws/auth/ok.php" class="odnoklassniki-icon"><i class="fa fa-odnoklassniki fa-fw"></i> Войти через Одноклассники</a>-->
+      				<div data-ulogin="display=buttons;fields=first_name,last_name;optional=email,photo;redirect_uri=https%3A%2F%2Fcont.ws%2Fvk.php">
+						<a href="#" class="odnoklassniki-icon" data-uloginbutton="odnoklassniki"><i class="fa fa-odnoklassniki fa-fw"></i> Войти через Одноклассники</a>
+					</div>
+	      		</section>
+	      </div>
+      </div>
+
+      
+       <div class="modal-footer">
+
+	      <p>Если вы еще не регистрировались на сайте и у вас нет учетной записи в социальных сетях, вы можете <button type="button" data-dismiss="modal" data-toggle="modal" data-target="#registrationModal">зарегистрироваться</button>.</p>
+      </div>
+      
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Registration Modal -->
+<div class="modal fade" id="registrationModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+    
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Закрыть"><span aria-hidden="true">&times;</span></button>
+      </div>
+      
+      
+      <div id="registrationModalContainer">
+      
+      <div id="email-body" class="modal-body">
+        	
+        	
+        	
+        	<div class="modalLogo">
+        		<img src="/images/cont-logo.png" alt="" width="110" height="26" />
+        	</div>
+			
+			<div id="reg-by-email">
+			
+			<section style="margin-bottom:40px;display: none" id="captcha-field">
+				<div class='g-recaptcha' data-sitekey='6LdKYxUTAAAAAO095-PjZUWhnP4vELdiPY33qCQe'></div>
+				<button id="continue-button" type="button" class="btn btn-default btn-md btn-block">Продолжить</button>
+			</section>
+				
+			<div id='email-field'>
+	        <div class="form-group">
+	        
+				<label for="feedbackModalYourName">Введите адрес своей эл. почты</label>
+				<section>
+					<input id="email-reg" type="text" name="text-893" size="40" class="form-control input-md" id="feedbackModalYourName" aria-required="true" aria-invalid="false">
+				</section>
+			</div>
+				<section style="margin-bottom:40px">
+					<button id="email-reg-button" type="button" class="btn btn-default btn-md btn-block">Зарегистрироваться</button>
+					<div style="color: #b60000" id="error-reg"></div>
+				</section>
+			</div>
+			
+			</div>
+			
+	      <p>Или авторизируйтесь через соцсети</p>
+	      <div class=" social-icons">
+	      		<section>
+		      		<a href="http://oauth.vk.com/authorize?client_id=5168741&display=page&redirect_uri=https://cont.ws/vk_auth.php&scope=email&response_type=code" class="vk-icon"><i class="fa fa-vk fa-fw"></i> Войти через ВКонтакте</a>
+			      	<a href="https://www.facebook.com/dialog/oauth?client_id=397527567054344&redirect_uri=https://cont.ws/fb.php&response_type=code&scope=email&auth_type=rerequest" class="facebook-icon"><i class="fa fa-facebook-official fa-fw"></i> Войти через Facebook</a>
+			      	<a href="https://api.twitter.com/oauth/authorize?oauth_token=mH7nhgAAAAAAjzc5AAABVMdekR0" class="twitter-icon"><i class="fa fa-twitter fa-fw"></i> Войти через Twitter</a>
+					<div data-ulogin="display=buttons;fields=first_name,last_name;optional=email,photo;redirect_uri=https%3A%2F%2Fcont.ws%2Fvk.php">
+						<a href="#" class="odnoklassniki-icon" data-uloginbutton="odnoklassniki"><i class="fa fa-odnoklassniki fa-fw"></i> Войти через Одноклассники</a>
+					</div>
+	      		</section>
+	      </div>
+      </div>
+
+      
+      <div class="modal-footer">
+	      <p>Если вы уже зарегистрированы на Конте, то вам необходимо <button type="button" data-dismiss="modal" data-toggle="modal" data-target="#authModal">войти</button> в свой аккаунт.</p>
+	      <p>Регистрируясь на Конте, вы присоединяетесь к десяткам тысяч авторов, писателей и читателей, теоретиков и практиков, профессионалов и любителей. Вы получаете возможность делиться своими идеями, мыслями, фантазиями с огромной аудиторией. Ведь хорошая статья заслуживает большой аудитории.</p>
+      </div>
+      
+      
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+
+
+<script>
+$(document).ready(function() {
+	var enterButton = function() {
+		$.ajax({
+			type: "POST",
+			global: false,
+			url: "/ajax.php",
+			data: ({ 
+				type: 2, 
+				login: $('#enter-login').val(), 
+				pass: $('#enter-pass').val()
+			}),
+			dataType: "html",
+			success: function(data) {                        
+				 if(data=='ok') document.location.href='/profile/';
+				 else if(data.indexOf('id') + 1) window.location.href = data;
+				 else $('#error-enter').html(data);  
+			}
+		});  
+	}
+
+	var emailRegButton = function() {
+		$.ajax({
+			type: "POST",
+			global: false,
+			url: "/ajax.php",
+			data: ({  
+				type: 1, 
+				 
+				email: $('#email-reg').val()
+			}),
+			dataType: "html",
+			success: function(data) {
+				if(data=='captcha') {
+					$('#email-field').hide();
+					$('#captcha-field').fadeIn(300);
+				}
+				if(data.indexOf('reg') + 1) window.location.href = data;
+				else $('#error-reg').hide().html(data).fadeIn(300);
+			}
+		});    
+	}
+
+	$("#enter_button").click(enterButton);
+	$("#enter-login, #enter-pass").keypress(function(e) {
+		if(e.which == 13) enterButton();
+	});
+
+	$("#email-reg-button").click(emailRegButton);
+	$("#email-reg").keypress(function(e) {
+		if(e.which == 13) emailRegButton();
+	});
+
+	$("#continue-button").click(function(event){
+		event.preventDefault();
+		$.ajax({
+			type: "POST",
+			global: false,
+			url: "/ajax.php",
+			data: ({  
+				captcha: grecaptcha.getResponse(),
+				 
+				email: $('#email-reg').val()
+			}),
+			success: function(data) {
+				if(data.indexOf('reg') + 1) window.location.href = data //$('#reg-by-email').html('Спасибо. На Вашу почту было отправлено письмо с дальнейшими инструкциями').fadeIn(300);
+			}
+		});    
+	});
+});
+</script>
+<button id="top-login" class="login" data-toggle="modal" data-target="#authModal">ВОЙТИ</button>
+<a class="m_login" href="/auth">ВХОД</a>
+<button id="top-newreg" class="newreg bl" data-toggle="modal" data-target="#registrationModal">ЗАРЕГИСТРИРОВАТЬСЯ</button>
+<a class="m_newreg bl" href="/registration">РЕГИСТРАЦИЯ</a>
+
+<a href="#" class="fa fa-ellipsis-v" onclick="$('.user_all').toggle(); return false;"></a>
+<div class="user_all">
+<a href="https://cont.ws/details">О проекте</a>
+<a href="http://leffet.cont.ws/">Блог</a>
+<a href="https://cont.ws/agreement">Соглашение</a>
+<a href="https://cont.ws/top">Рейтинг</a>
+<a href="https://cont.ws/feedback">Помощь</a>
+<hr />
+<a href="https://vk.com/continentalist" target="_blank"><i class="fa fa-vk fa-fw"></i> Вконтакте</a>
+<a href="https://www.facebook.com/rucontinental" target="_blank"><i class="fa fa-facebook-official fa-fw"></i> Facebook </a>
+<a href="https://twitter.com/rucontinental" target="_blank"><i class="fa fa-twitter fa-fw"></i> Twitter</a>
+<a href="http://ok.ru/rucontinental" target="_blank"><i class="fa fa-odnoklassniki fa-fw"></i> Одноклассники</a>
+</div>
+</div>
+
+</div>
+
+</div>
+
+
+<script>
+$(document).ready(function() {
+    $('body').on('click', '.new-reg', function(event){
+        event.preventDefault();
+        $("#overlay").height($(document).height());
+    	$('#overlay, #mod_reg2').show();
+        var place=$(this).attr('id');
+        if(place==undefined) place=10;
+        $.ajax({
+            type: "POST",
+            url: "/m_reg.php",
+            data: ({
+                place: place
+            }),
+            cache: false,
+            success: function(html){
+                $("#new").html(html);
+                $("html,body").animate({scrollTop: 0}, "slow");
+            }
+        });
+    });
+    $('body').on('click', '.login', function(event){
+        event.preventDefault();
+        $("#overlay").height($(document).height());
+    	$('#overlay, #mod_reg2').show();
+        $.ajax({
+            url: "/login2.php",
+            cache: false,
+            success: function(html){
+                $("#new").html(html);
+                $("html,body").animate({scrollTop: 0}, "slow");
+            }
+        });
+    });
+});
+$(".close, #overlay").click(function(event){
+    event.preventDefault();
+    $('#overlay, #mod_login, #mod_reg, #mod_reg2').hide();
+});
+</script>
+<div id="mod_reg2">
+<div id="new"></div>
+</div>
+
+
+<div class="content">
+</div>
+
+<script src = "/js/jquery.visible.min.js" type="text/javascript" charset="utf-8"></script>
+<script src = "/js/feed v.1.0.js?ver=1" type="text/javascript" charset="utf-8"></script>
+<script src='/js/nprogress.js'></script>
+<script src="/js/jquery-ui.js"></script>
+<link rel='stylesheet' href='/css/nprogress.css'/>
+<link rel='stylesheet' href='/css/feed.css'/>
+<div style="height: 4px;position: fixed;left: 0;top: 0;z-index: 999999999;width: 100%;" id="load-strip"></div>
+<script>
+NProgress.configure({parent:'#load-strip'});
+NProgress.configure({ showSpinner: false });
+NProgress.start();
+$(document).ready(function() {
+	$('.loading_box').fadeOut(1000,function() {
+					$('.lenta').eq(1).fadeIn(1000);
+					NProgress.done();
+	});
+});
+</script>
+
+<div class="content">
+
+<div class="content">
+
+
+<div class="clear"></div>
+
+<div class="post">
+
+
+    
+    
+
+<div class="inviteBox3">
+<h2>Первый раз на Конте?</h2>
+Войдите, чтобы читать, писать статьи, и обсуждать всё, что происходит в мире. А также, чтобы настроить ленту исключительно под себя.<br />
+<a class="newreg ib1" id="3" data-toggle="modal" data-target="#registrationModal">Зарегистрироваться</a>
+<a class="newreg ib2" id="4" data-toggle="modal" data-target="#registrationModal">Войти, используя соцсети</a>
+<div class="clear"></div>
+</div>
+<div style="margin-top: -20px;" class="feed-tags-container">
+<div data-feed = "0" data-id = "" class= "feed-tag feed-tag-active">Рекомендации <span class="feed-tag-counter">0</span></div>
+		<div data-feed = "3" data-id ="198" class= "feed-tag"><i style ="margin-right:7px;" class="fa fa-tag"></i>Новости <span class="feed-tag-counter">0</span></div>
+				<div data-feed = "3" data-id ="275" class= "feed-tag"><i style ="margin-right:7px;" class="fa fa-tag"></i>Евровидение <span class="feed-tag-counter">0</span></div>
+		</div> 
+<div class="clear"></div>
+<div class="loading_box">
+</div>
+
+<div data-feed = "0" data-id = "" class = "lenta">
+    <div post-id="273670" recom-id="6839381" recom-user="" author="18084" class="post_prv " >
+	    <div class="author-bar">
+    
+        <a href="http://Maski-Shou.cont.ws" class="m_author"><img src="/uploads/users/18084.jpg" class="ava40" /> Maski-Shou</a>
+        <span class="m_first">Вчера 23:25</span>
+        <span class="glyphicon glyphicon-eye-open"></span> 2526        <span class="glyphicon glyphicon-signal"></span> 13.02
+        </div>
+    	<a href="/post/273670" class="pic"><img src="/uploads/posts/273670.jpg" /></a>
+	<h3><a href="/post/273670">Захватчик заложников в столичном банке убит, сотрудники освобождены</a></h3>
+	<div class="mm10">Вооружённый мужчина сегодня захватил заложников в Московском кредитном банке. Как сообщили в МВД, неизвестный ликвидирован в ходе штурма, заложники освобождены.
+
+
+
+
+	RT
+
+
+Сегодня появились сообщения&nbsp;о захвате&nbsp;сотрудников Московского кредитного банка.&nbsp;В ходе переговоров сотрудникам правоохранительных органов удалось&nbsp; договориться об освобожд...</div>
+    <div class="mm10">
+	<a href="/post/273670" class="read">Читать полностью</a>
+    <a href="#" class=" read3" post="273670" onclick="return false;" data-toggle="tooltip" data-placement="bottom" title="В закладки"><span class="glyphicon glyphicon-bookmark"></span></a>
+    <a href="/post/273670#comments" class="read3"><span class="glyphicon glyphicon-comment"></span> 17</a>
+	    </div>
+</div>
+<div class="post_prv" post_prv="272760">
+<a href="/spend" class="promo2"><i class="fa fa-rub fa-fw"></i> ПРОМО</a><div class="author-bar">
+
+
+<a href="https://alex-haldey.cont.ws" class="m_author"><img src="/uploads/users/48104.jpg" class="ava40 original" /> Александр Халдей</a>
+<span class="m_first">17 мая  22:40</span>
+<span class="glyphicon glyphicon-eye-open"></span> 19317<span class="glyphicon glyphicon-signal"></span> 258.18
+</div>
+<a href="http://cont.ws/post/272760" class="pic"><img src="/uploads/posts/272760.jpg" /></a><h3><a href="https://cont.ws/post/272760">КАК ПОГИБЛА ВИЗАНТИЯ.</a></h3>
+<div class="mm10">
+
+    
+        
+Этого почти никто сейчас не знает. А Византия погибла очень многозначительно.&nbsp;Гадко погибла. Турки-османы осадили Константинополь. Их было сто тысяч.Жителей Константинополя было миллион. Захоти они все вместе выйти на защиту города - и турок просто бы затоптали в поле. Но он не захотели. На стены Константинополя вышло... 40 человек. Из личной гвард...
+</div>
+<div class="mm10">
+<a href="https://cont.ws/post/272760" class="read">Читать полностью</a>
+<a href="/post/272760#comments" class="read3"><span class="glyphicon glyphicon-comment"></span> 156</a>
+
+</div>
+</div>
+<div style="margin:65px 0 40px -40px" class="nomob">
+<!-- 728*90 Advertur.ru start -->
+<script type="text/javascript" src="//ddnk.advertur.ru/v1/code.js?id=66614"></script>
+<!-- 728*90 Advertur.ru end --></div>
+
+    <div post-id="273680" recom-id="6839373" recom-user="" author="151602" class="post_prv " >
+	    <div class="author-bar">
+    
+        <a href="http://Nyka.cont.ws" class="m_author"><img src="/uploads/users/151602.jpg" class="ava40" /> Nyka</a>
+        <span class="m_first">Сегодня 00:04</span>
+        <span class="glyphicon glyphicon-eye-open"></span> 5720        <span class="glyphicon glyphicon-signal"></span> 61.71
+        </div>
+    	<a href="/post/273680" class="pic"><img src="/uploads/posts/273680.jpg" /></a>
+	<h3><a href="/post/273680">Чё попало</a></h3>
+	<div class="mm10">
+    
+        
+
+    
+        
+
+    
+        
+
+    
+        
+
+    
+        
+
+    
+        
+
+    
+        
+
+    
+        
+
+    
+        
+
+    
+        
+
+    
+        
+...</div>
+    <div class="mm10">
+	<a href="/post/273680" class="read">Читать полностью</a>
+    <a href="#" class=" read3" post="273680" onclick="return false;" data-toggle="tooltip" data-placement="bottom" title="В закладки"><span class="glyphicon glyphicon-bookmark"></span></a>
+    <a href="/post/273680#comments" class="read3"><span class="glyphicon glyphicon-comment"></span> 12</a>
+	    </div>
+</div>
+
+    <div post-id="273669" recom-id="6836880" recom-user="" author="18084" class="post_prv no_pic" >
+	    <div class="author-bar">
+    
+        <a href="http://Maski-Shou.cont.ws" class="m_author"><img src="/uploads/users/18084.jpg" class="ava40" /> Maski-Shou</a>
+        <span class="m_first">Вчера 23:24</span>
+        <span class="glyphicon glyphicon-eye-open"></span> 1100        <span class="glyphicon glyphicon-signal"></span> 1.00
+        </div>
+    	<h3><a href="/post/273669">Источник: Предмет, похожий на бомбу, обнаружен на теле захватчика заложников в Москве</a></h3>
+	<div class="mm10">На теле убитого мужчины, захватившего заложников в отделении столичного банка, был обнаружен предмет, похожий на взрывное устройство. Об этом сообщает РИА Новости со ссылкой на источник. &nbsp; &nbsp;
+
+RT
+...</div>
+    <div class="mm10">
+	<a href="/post/273669" class="read">Читать полностью</a>
+    <a href="#" class=" read3" post="273669" onclick="return false;" data-toggle="tooltip" data-placement="bottom" title="В закладки"><span class="glyphicon glyphicon-bookmark"></span></a>
+    <a href="/post/273669#comments" class="read3"><span class="glyphicon glyphicon-comment"></span> 4</a>
+	    </div>
+</div>
+<div class="inviteBox">
+<span>Хотите формировать свою ленту статей на Конте?<br />Просто зарегистрируйтесь →</span><br />
+<button class="newreg" id="5" data-toggle="modal" data-target="#registrationModal">Да, я хочу</button>
+</div>
+    <div post-id="273637" recom-id="6836389" recom-user="" author="71793" class="post_prv " >
+	    <div class="author-bar">
+    
+        <a href="http://chestno.cont.ws" class="m_author"><img src="/uploads/users/71793.jpg" class="ava40" /> Честно </a>
+        <span class="m_first">Вчера 22:23</span>
+        <span class="glyphicon glyphicon-eye-open"></span> 4243        <span class="glyphicon glyphicon-signal"></span> 7.00
+        </div>
+    	<a href="/post/273637" class="pic"><img src="/uploads/posts/273637.jpg" /></a>
+	<h3><a href="/post/273637">Посол ЕС в России: Что делать с майданом во Франции 18.05.2016</a></h3>
+	<div class="mm10">Следуя вашей логике, Европейский союз совершенно нормально отнесется к ситуации, если, не дай бог, вдруг, например, что-то произойдет во Франции? Ну, можно ведь сказать и так, что Олланд-то обманул свой народ. Он не услышал свой народ, когда принимались о законы об однополых браках, он сейчас не хочет слышать свой народ, когда принимаются изменения в трудовое законода...</div>
+    <div class="mm10">
+	<a href="/post/273637" class="read">Читать полностью</a>
+    <a href="#" class=" read3" post="273637" onclick="return false;" data-toggle="tooltip" data-placement="bottom" title="В закладки"><span class="glyphicon glyphicon-bookmark"></span></a>
+    <a href="/post/273637#comments" class="read3"><span class="glyphicon glyphicon-comment"></span> 1</a>
+	    </div>
+</div>
+<div class='steel-banner post_prv'><a href='http://celado.ru/catalog/william_engdahl_holy_war/' target='_blank'><img class='img-responsive' src='images/celado.jpg' /></a></div>
+    <div post-id="273657" recom-id="6836371" recom-user="" author="69039" class="post_prv " >
+	    <div class="author-bar">
+    
+        <a href="http://azovchanin77.cont.ws" class="m_author"><img src="/uploads/users/69039.jpg" class="ava40 original" /> Алексей Зотьев</a>
+        <span class="m_first">Вчера 22:55</span>
+        <span class="glyphicon glyphicon-eye-open"></span> 7063        <span class="glyphicon glyphicon-signal"></span> 49.50
+        </div>
+    	<a href="/post/273657" class="pic"><img src="/uploads/posts/273657.jpg" /></a>
+	<h3><a href="/post/273657">Абсурдные новости. 18 мая 2016 года
+ 
+</a></h3>
+	<div class="mm10">Добрый вечер. Спешу порадовать Вас очередным выпуском своей ежедневной авторской рубрики, рассказывающей о событиях уходящего дня. Разумеется это не те события, информация о которых не вызовет у Вас никаких эмоций. Только самое злободневное и резонансное. Начнем?
+    
+        
+Первое место. Не могу не сообщить Вам об одной потрясающей новости, которая вряд ли оставит ...</div>
+    <div class="mm10">
+	<a href="/post/273657" class="read">Читать полностью</a>
+    <a href="#" class=" read3" post="273657" onclick="return false;" data-toggle="tooltip" data-placement="bottom" title="В закладки"><span class="glyphicon glyphicon-bookmark"></span></a>
+    <a href="/post/273657#comments" class="read3"><span class="glyphicon glyphicon-comment"></span> 17</a>
+	    </div>
+</div>
+
+    <div post-id="273339" recom-id="6835586" recom-user="" author="15329" class="post_prv " >
+	    <div class="author-bar">
+    
+        <a href="http://alone.cont.ws" class="m_author"><img src="/uploads/users/15329.jpg" class="ava40" /> alone</a>
+        <span class="m_first">Вчера 16:29</span>
+        <span class="glyphicon glyphicon-eye-open"></span> 5263        <span class="glyphicon glyphicon-signal"></span> 67.93
+        </div>
+    	<a href="/post/273339" class="pic"><img src="/uploads/posts/273339.jpg" /></a>
+	<h3><a href="/post/273339">Чубайс: настоящая история России – это власовцы</a></h3>
+	<div class="mm10">Вот и свершилось. Начатая как борьба с советской партийной номенклатурой (действительно актуальной на тот момент) "борьба с тоталитаризмом" сбросила маску демократии, и там оказалась обычная фашистская морда. Что будем делать, люди?Во время перестройки, которая закончилась развалом СССР, важное место в механизме уничтожения государства занимала развернувшаяся при Горб...</div>
+    <div class="mm10">
+	<a href="/post/273339" class="read">Читать полностью</a>
+    <a href="#" class=" read3" post="273339" onclick="return false;" data-toggle="tooltip" data-placement="bottom" title="В закладки"><span class="glyphicon glyphicon-bookmark"></span></a>
+    <a href="/post/273339#comments" class="read3"><span class="glyphicon glyphicon-comment"></span> 113</a>
+	    </div>
+</div>
+<div class="nomob">
+<script type="text/javascript">
+yandex_partner_id = 141569;
+yandex_site_bg_color = 'FFFFFF';
+yandex_stat_id = 4;
+yandex_ad_format = 'direct';
+yandex_font_family = 'arial';
+yandex_direct_type = 'posterHorizontal';
+yandex_direct_border_type = 'block';
+yandex_direct_limit = 2;
+yandex_direct_title_font_size = 2;
+yandex_direct_border_radius = true;
+yandex_direct_links_underline = true;
+yandex_direct_border_color = 'CCCCCC';
+yandex_direct_title_color = '0000CC';
+yandex_direct_url_color = '006600';
+yandex_direct_text_color = '000000';
+yandex_direct_hover_color = '0066FF';
+yandex_direct_sitelinks_color = '0000CC';
+yandex_direct_favicon = true;
+yandex_no_sitelinks = false;
+document.write('<scr'+'ipt type="text/javascript" src="//an.yandex.ru/system/context.js"></scr'+'ipt>');
+</script>
+</div><div class="mob">
+<!-- Яндекс.Директ -->
+<script type="text/javascript">
+yandex_partner_id = 141569;
+yandex_site_bg_color = 'FFFFFF';
+yandex_stat_id = 9;
+yandex_ad_format = 'direct';
+yandex_font_size = 1;
+yandex_font_family = 'arial';
+yandex_direct_type = 'horizontal';
+yandex_direct_limit = 1;
+yandex_direct_title_font_size = 2;
+yandex_direct_links_underline = true;
+yandex_direct_bg_color = 'EEEEEE';
+yandex_direct_title_color = '0000CC';
+yandex_direct_url_color = '006600';
+yandex_direct_text_color = '000000';
+yandex_direct_hover_color = '0066FF';
+yandex_direct_sitelinks_color = '0000CC';
+yandex_direct_favicon = true;
+yandex_no_sitelinks = false;
+document.write('<scr'+'ipt type="text/javascript" src="//an.yandex.ru/system/context.js"></scr'+'ipt>');
+</script>
+</div>
+    <div post-id="273510" recom-id="6835500" recom-user="" author="38234" class="post_prv " >
+	    <div class="author-bar">
+    
+        <a href="http://RaRus.cont.ws" class="m_author"><img src="/uploads/users/38234.jpg" class="ava40" /> blogoved.net</a>
+        <span class="m_first">Вчера 19:40</span>
+        <span class="glyphicon glyphicon-eye-open"></span> 1954        <span class="glyphicon glyphicon-signal"></span> 19.00
+        </div>
+    	<a href="/post/273510" class="pic"><img src="/uploads/posts/273510.jpg" /></a>
+	<h3><a href="/post/273510">Светлана Жарникова - культуре Русов многие тысячи лет! </a></h3>
+	<div class="mm10">Часто можно услышать, что русские –  это не народ, а некая сборная солянка. Что это молодой этнос, неизвестно откуда взявшийся. Это ложь, а правда в том, что культура русов, славяно-ариев послужила колыбелью для большинства остальных цивилизаций.+Мой сегодняшний доклад вызван той суровой необходимостью, которую диктует нам наше время. Дело в том, что в СМИ все больше ...</div>
+    <div class="mm10">
+	<a href="/post/273510" class="read">Читать полностью</a>
+    <a href="#" class=" read3" post="273510" onclick="return false;" data-toggle="tooltip" data-placement="bottom" title="В закладки"><span class="glyphicon glyphicon-bookmark"></span></a>
+    <a href="/post/273510#comments" class="read3"><span class="glyphicon glyphicon-comment"></span> 9</a>
+	    </div>
+</div>
+
+    <div post-id="273181" recom-id="6835453" recom-user="" author="15792" class="post_prv no_pic" >
+	    <div class="author-bar">
+    
+        <a href="http://gavrilov.cont.ws" class="m_author"><img src="/uploads/users/15792.jpg" class="ava40" /> Egor Trubnikov</a>
+        <span class="m_first">Вчера 20:44</span>
+        <span class="glyphicon glyphicon-eye-open"></span> 2109        <span class="glyphicon glyphicon-signal"></span> 18.79
+        </div>
+    	<h3><a href="/post/273181">ВОУ-НОУ или “Мегатонны в мегаватты”. Часть № 0</a></h3>
+	<div class="mm10">Ага, я и сам не ожидал такого порядкового номера. Но, разговаривая  разговоры с однокурсниками, я буквально пару дней назад получил  "наводку" на одну историю, которая показалась весьма занимательной.  Судьбы и люди, так сказать... В приснопамятном 1991 неназванными  активистами была основана замечательная организация - Центр по изучению  проблем разоружения при МФТИ....</div>
+    <div class="mm10">
+	<a href="/post/273181" class="read">Читать полностью</a>
+    <a href="#" class=" read3" post="273181" onclick="return false;" data-toggle="tooltip" data-placement="bottom" title="В закладки"><span class="glyphicon glyphicon-bookmark"></span></a>
+    <a href="/post/273181#comments" class="read3"><span class="glyphicon glyphicon-comment"></span> 5</a>
+	    </div>
+</div>
+
+    <div post-id="273622" recom-id="6835303" recom-user="" author="15792" class="post_prv " >
+	    <div class="author-bar">
+    
+        <a href="http://gavrilov.cont.ws" class="m_author"><img src="/uploads/users/15792.jpg" class="ava40" /> Egor Trubnikov</a>
+        <span class="m_first">Вчера 21:59</span>
+        <span class="glyphicon glyphicon-eye-open"></span> 4730        <span class="glyphicon glyphicon-signal"></span> 46.73
+        </div>
+    	<a href="/post/273622" class="pic"><img src="/uploads/posts/273622.jpg" /></a>
+	<h3><a href="/post/273622">О характере разных родов войск! (юмор)</a></h3>
+	<div class="mm10">
+    
+        
+ДесантникГлавная черта - нахальство. "Главное - ввязаться в драку, а там посмотрим". Индивидуалист, хотя и не чрез меры, но привык к тому что "если чо" - разбираться придется самому. такая привычка воспитывает в душе десантника некоторый похренизм - с аналогичным кол-вом людей и близким набором техники оставленный "сторожить" без прямого соприкосновения...</div>
+    <div class="mm10">
+	<a href="/post/273622" class="read">Читать полностью</a>
+    <a href="#" class=" read3" post="273622" onclick="return false;" data-toggle="tooltip" data-placement="bottom" title="В закладки"><span class="glyphicon glyphicon-bookmark"></span></a>
+    <a href="/post/273622#comments" class="read3"><span class="glyphicon glyphicon-comment"></span> 18</a>
+	    </div>
+</div>
+
+    <div post-id="273513" recom-id="6835168" recom-user="" author="76428" class="post_prv " >
+	    <div class="author-bar">
+    
+        <a href="http://qazxsw21.cont.ws" class="m_author"><img src="/uploads/users/76428.jpg" class="ava40" /> Юстас</a>
+        <span class="m_first">Вчера 19:40</span>
+        <span class="glyphicon glyphicon-eye-open"></span> 4572        <span class="glyphicon glyphicon-signal"></span> 20.00
+        </div>
+    	<a href="/post/273513" class="pic"><img src="/uploads/posts/273513.jpg" /></a>
+	<h3><a href="/post/273513">Индустриально развитая цивилизация существует на Земле десятки тысяч лет
+</a></h3>
+	<div class="mm10">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs...</div>
+    <div class="mm10">
+	<a href="/post/273513" class="read">Читать полностью</a>
+    <a href="#" class=" read3" post="273513" onclick="return false;" data-toggle="tooltip" data-placement="bottom" title="В закладки"><span class="glyphicon glyphicon-bookmark"></span></a>
+    <a href="/post/273513#comments" class="read3"><span class="glyphicon glyphicon-comment"></span> 27</a>
+	    </div>
+</div>
+<div class="post_prv" post_prv="272963">
+<a href="/spend" class="promo2"><i class="fa fa-rub fa-fw"></i> ПРОМО</a><div class="author-bar">
+
+
+<a href="https://Zergulio.cont.ws" class="m_author"><img src="/uploads/users/34436.jpg" class="ava40" /> Сергей Колясников</a>
+<span class="m_first">Вчера 09:21</span>
+<span class="glyphicon glyphicon-eye-open"></span> 11688<span class="glyphicon glyphicon-signal"></span> 250.49
+</div>
+<a href="http://cont.ws/post/272963" class="pic"><img src="/uploads/posts/272963.jpg" /></a><h3><a href="https://cont.ws/post/272963">Утренний кофе 18/05/2016: Остап Бендер из космоса, длинные руки Путина, российские банки на Украине.</a></h3>
+<div class="mm10">
+
+    
+        
+1. Новости науки. Вернувшаяся ступень Falcon 9 от SpaceX оказалась непригодной к использованию. То бишь речи не идет даже о просто повторном запуске. Как написал в своем твиттере Элон Маск, мастер по освоению бюджетных американских миллиардов, это произошло из-за слишком большого ускорения при входе в атмосферу. https://aftershock.news/?q=node/401231Ува...
+</div>
+<div class="mm10">
+<a href="https://cont.ws/post/272963" class="read">Читать полностью</a>
+<a href="/post/272963#comments" class="read3"><span class="glyphicon glyphicon-comment"></span> 49</a>
+
+</div>
+</div>
+
+    <div post-id="273400" recom-id="6834899" recom-user="" author="16848" class="post_prv " >
+	    <div class="author-bar">
+    
+        <a href="http://strannik2061.cont.ws" class="m_author"><img src="/uploads/users/16848.jpg" class="ava40" /> Sergey Strannik</a>
+        <span class="m_first">Вчера 17:57</span>
+        <span class="glyphicon glyphicon-eye-open"></span> 2471        <span class="glyphicon glyphicon-signal"></span> 15.33
+        </div>
+    	<a href="/post/273400" class="pic"><img src="/uploads/posts/273400.jpg" /></a>
+	<h3><a href="/post/273400">Британский генерал заявил о возможности ядерной войны с РФ в течение года
+
+</a></h3>
+	<div class="mm10">МОСКВА, 18 мая — РИА Новости. Между НАТО и Россией в течение года может начаться ядерная война, если западный альянс не усилит свою обороноспособность в Прибалтике, заявил британский генерал в отставке сэр Ричард Ширрефф.По мнению Ширреффа, "высока вероятность", что целью "атаки" могут стать Эстония, Литва или Латвия, и Западу необходимо "предотвратить возможную катас...</div>
+    <div class="mm10">
+	<a href="/post/273400" class="read">Читать полностью</a>
+    <a href="#" class=" read3" post="273400" onclick="return false;" data-toggle="tooltip" data-placement="bottom" title="В закладки"><span class="glyphicon glyphicon-bookmark"></span></a>
+    <a href="/post/273400#comments" class="read3"><span class="glyphicon glyphicon-comment"></span> 30</a>
+	    </div>
+</div>
+
+    <div post-id="273597" recom-id="6834097" recom-user="" author="18084" class="post_prv " >
+	    <div class="author-bar">
+    
+        <a href="http://Maski-Shou.cont.ws" class="m_author"><img src="/uploads/users/18084.jpg" class="ava40" /> Maski-Shou</a>
+        <span class="m_first">Вчера 21:27</span>
+        <span class="glyphicon glyphicon-eye-open"></span> 1601        <span class="glyphicon glyphicon-signal"></span> 6.00
+        </div>
+    	<a href="/post/273597" class="pic"><img src="/uploads/posts/273597.jpg" /></a>
+	<h3><a href="/post/273597">Бойцы СОБРа выдвинулись для освобождения заложников, захваченных в офисе МКБ</a></h3>
+	<div class="mm10">В Москве бойцы спецотряда быстрого реагирования выдвинулись к месту захвата заложников неизвестным на улице Первомайская, 5 в районе парка Измайлово. Мужчина удерживает в офисе &quot;Московского&nbsp;кредитного банка&quot;двух его сотрудников и четырёх клиентов.&nbsp;
+
+По сообщениями источника в правоохранительных органах, мужчина&nbsp;вооружён огнестрельным оружием...</div>
+    <div class="mm10">
+	<a href="/post/273597" class="read">Читать полностью</a>
+    <a href="#" class=" read3" post="273597" onclick="return false;" data-toggle="tooltip" data-placement="bottom" title="В закладки"><span class="glyphicon glyphicon-bookmark"></span></a>
+    <a href="/post/273597#comments" class="read3"><span class="glyphicon glyphicon-comment"></span> 16</a>
+	    </div>
+</div>
+
+    <div post-id="273600" recom-id="6834093" recom-user="" author="13810" class="post_prv " >
+	    <div class="author-bar">
+    
+        <a href="http://Douglas.cont.ws" class="m_author"><img src="/uploads/users/13810.jpg" class="ava40 original" /> Ехидный Douglas</a>
+        <span class="m_first">Вчера 21:32</span>
+        <span class="glyphicon glyphicon-eye-open"></span> 7719        <span class="glyphicon glyphicon-signal"></span> 81.27
+        </div>
+    	<a href="/post/273600" class="pic"><img src="/uploads/posts/273600.jpg" /></a>
+	<h3><a href="/post/273600"> По поводу статьи Р.В. Ищенко о возможной войне.
+</a></h3>
+	<div class="mm10">Для того, чтобы реально оценить шансы на термоядерный конфликт между Россией и США, вовсе не нужно скрупулёзно высчитывать количество ракет и противоракет, сопоставлять подлётное время и эффективность ПРО и вообще - оперировать сугубо военными, техническими категориями здесь не надо. Потому что вовсе не они определяют вероятность конфликта.Ничто не даёт более верного ...</div>
+    <div class="mm10">
+	<a href="/post/273600" class="read">Читать полностью</a>
+    <a href="#" class=" read3" post="273600" onclick="return false;" data-toggle="tooltip" data-placement="bottom" title="В закладки"><span class="glyphicon glyphicon-bookmark"></span></a>
+    <a href="/post/273600#comments" class="read3"><span class="glyphicon glyphicon-comment"></span> 137</a>
+	    </div>
+</div>
+
+    <div post-id="273610" recom-id="6834087" recom-user="" author="3256" class="post_prv " >
+	    <div class="author-bar">
+    
+        <a href="http://dimanapozitive.cont.ws" class="m_author"><img src="/uploads/users/3256.jpg" class="ava40" /> dimanapozitive</a>
+        <span class="m_first">Вчера 21:45</span>
+        <span class="glyphicon glyphicon-eye-open"></span> 1470        <span class="glyphicon glyphicon-signal"></span> 16.03
+        </div>
+    	<a href="/post/273610" class="pic"><img src="/uploads/posts/273610.jpg" /></a>
+	<h3><a href="/post/273610">Пузырь на рынке акций США сильно зависим от печатного станка ФРС. </a></h3>
+	<div class="mm10">Протоколы заседания ФРС: Руководители ФРС не исключают возможность повышения процентных ставок в июне.Руководители ФРС пытаются изменить рыночные ожидания относительно возможности повышения ставок в июнеНекоторые руководители ФРС считают, что рыночные ожидания относительно повышения ставок в июне "необоснованно низкие"В ходе апрельского заседания руководители ФРС хоте...</div>
+    <div class="mm10">
+	<a href="/post/273610" class="read">Читать полностью</a>
+    <a href="#" class=" read3" post="273610" onclick="return false;" data-toggle="tooltip" data-placement="bottom" title="В закладки"><span class="glyphicon glyphicon-bookmark"></span></a>
+    <a href="/post/273610#comments" class="read3"><span class="glyphicon glyphicon-comment"></span> 3</a>
+	    </div>
+</div>
+
+    <div post-id="273613" recom-id="6834080" recom-user="" author="139370" class="post_prv " >
+	    <div class="author-bar">
+    
+        <a href="http://Alexanrtsarev.cont.ws" class="m_author"><img src="/uploads/users/139370.jpg" class="ava40" /> Alexandr  Tsarev</a>
+        <span class="m_first">Вчера 21:53</span>
+        <span class="glyphicon glyphicon-eye-open"></span> 2508        <span class="glyphicon glyphicon-signal"></span> 14.02
+        </div>
+    	<a href="/post/273613" class="pic"><img src="/uploads/posts/273613.jpg" /></a>
+	<h3><a href="/post/273613">Малоизвестные факты об "атаке мертвецов". Герой возглавивший атаку и воспоминания немецкого солдата</a></h3>
+	<div class="mm10">Пожалуй каждый из нас слышал о подвиге легендарных героев- защитников Брестской крепости, однако судьба сложилась так, что другие защитники другой крепости оказались практически полностью забыты. Ведь воевали они в другую, несколько более раннюю войну, Первую мировую, о которой, как и подвигах ее героев, долгие годы было не принято упоминать по идеологическим соображе...</div>
+    <div class="mm10">
+	<a href="/post/273613" class="read">Читать полностью</a>
+    <a href="#" class=" read3" post="273613" onclick="return false;" data-toggle="tooltip" data-placement="bottom" title="В закладки"><span class="glyphicon glyphicon-bookmark"></span></a>
+    <a href="/post/273613#comments" class="read3"><span class="glyphicon glyphicon-comment"></span> 7</a>
+	    </div>
+</div>
+
+    <div post-id="273617" recom-id="6834075" recom-user="" author="152611" class="post_prv " >
+	    <div class="author-bar">
+    
+        <a href="http://tavrinfopress.cont.ws" class="m_author"><img src="/uploads/users/152611.jpg" class="ava40" /> ТаврИнфо</a>
+        <span class="m_first">Вчера 21:55</span>
+        <span class="glyphicon glyphicon-eye-open"></span> 3860        <span class="glyphicon glyphicon-signal"></span> 13.03
+        </div>
+    	<a href="/post/273617" class="pic"><img src="/uploads/posts/273617.jpg" /></a>
+	<h3><a href="/post/273617">Ростислав Ищенко: И преступление, и ошибка</a></h3>
+	<div class="mm10">
+    
+        
+Если бы дети ясельного возраста интересовались политикой, то даже они выдавали бы безошибочные прогнозы относительно очередного раунда переговоров в минском формате. Начиная с прошлогоднего Парижа, где Меркель и Олланд сурово указали Порошенко на правильность российской позиции относительно необходимости исполнять подписанные договоренности, а не изобре...</div>
+    <div class="mm10">
+	<a href="/post/273617" class="read">Читать полностью</a>
+    <a href="#" class=" read3" post="273617" onclick="return false;" data-toggle="tooltip" data-placement="bottom" title="В закладки"><span class="glyphicon glyphicon-bookmark"></span></a>
+    <a href="/post/273617#comments" class="read3"><span class="glyphicon glyphicon-comment"></span> 4</a>
+	    </div>
+</div>
+
+    <div post-id="273621" recom-id="6834073" recom-user="" author="16551" class="post_prv no_pic" >
+	    <div class="author-bar">
+    
+        <a href="http://nibelung86.cont.ws" class="m_author"><img src="/uploads/users/16551.jpg" class="ava40" /> nibelung86</a>
+        <span class="m_first">Вчера 21:59</span>
+        <span class="glyphicon glyphicon-eye-open"></span> 3085        <span class="glyphicon glyphicon-signal"></span> 7.03
+        </div>
+    	<h3><a href="/post/273621">Ростислав Ищенко Украина сидит на растяжке</a></h3>
+	<div class="mm10">Ростислав Ищенко что случилось на Украине в 2013-2014 году.Что делать с Украиной
+	
+		
+			
+		
+	
+	
+...</div>
+    <div class="mm10">
+	<a href="/post/273621" class="read">Читать полностью</a>
+    <a href="#" class=" read3" post="273621" onclick="return false;" data-toggle="tooltip" data-placement="bottom" title="В закладки"><span class="glyphicon glyphicon-bookmark"></span></a>
+    <a href="/post/273621#comments" class="read3"><span class="glyphicon glyphicon-comment"></span> 5</a>
+	    </div>
+</div>
+
+    <div post-id="273618" recom-id="6834070" recom-user="" author="15672" class="post_prv " >
+	    <div class="author-bar">
+    
+        <a href="http://Aleksandr88.cont.ws" class="m_author"><img src="/uploads/users/15672.jpg" class="ava40" /> Aleksandr88</a>
+        <span class="m_first">Вчера 22:02</span>
+        <span class="glyphicon glyphicon-eye-open"></span> 5160        <span class="glyphicon glyphicon-signal"></span> 22.94
+        </div>
+    	<a href="/post/273618" class="pic"><img src="/uploads/posts/273618.jpg" /></a>
+	<h3><a href="/post/273618">Сергей Глазьев. Москва бросила вызов Вашингтону </a></h3>
+	<div class="mm10">
+	
+		
+			
+		
+	
+	
+западная англо-саксонская элита раскручивает войну в Европе, для этой цели они фактически оккупировали Украину, причём, &nbsp;руководствуются в этой политике геополитическими абстракциями 19 века.&nbsp; Вся эта геополитическая школа немецко-английская заточенная против России у них сегодня в голове. Они скатились на 200 лет назад по уровню своего поли...</div>
+    <div class="mm10">
+	<a href="/post/273618" class="read">Читать полностью</a>
+    <a href="#" class=" read3" post="273618" onclick="return false;" data-toggle="tooltip" data-placement="bottom" title="В закладки"><span class="glyphicon glyphicon-bookmark"></span></a>
+    <a href="/post/273618#comments" class="read3"><span class="glyphicon glyphicon-comment"></span> 31</a>
+	    </div>
+</div>
+
+    <div post-id="273608" recom-id="6833448" recom-user="" author="1649" class="post_prv " >
+	    <div class="author-bar">
+    
+        <a href="http://alexandr-rogers.cont.ws" class="m_author"><img src="/uploads/users/1649.jpg" class="ava40" /> Александр Роджерс</a>
+        <span class="m_first">Вчера 21:42</span>
+        <span class="glyphicon glyphicon-eye-open"></span> 4544        <span class="glyphicon glyphicon-signal"></span> 89.07
+        </div>
+    	<a href="/post/273608" class="pic"><img src="/uploads/posts/273608.jpg" /></a>
+	<h3><a href="/post/273608">История не о лошади...</a></h3>
+	<div class="mm10">Однажды цыган почти научил лошадь жить без еды, а она взяла и сдохла.
+Однажды Порошенко почти научил украинцев платить за коммуналку больше зарплаты&hellip;
+
+
+
+На этом, собственно, можно было бы и завершить статью. Но подвергнутые экспериментам над мозгом на майдане небраться ведь снова заверещат &laquo;вывсёврёти&raquo; и &laquo;киселёвскаяпропаганда&raquo;, поэ...</div>
+    <div class="mm10">
+	<a href="/post/273608" class="read">Читать полностью</a>
+    <a href="#" class=" read3" post="273608" onclick="return false;" data-toggle="tooltip" data-placement="bottom" title="В закладки"><span class="glyphicon glyphicon-bookmark"></span></a>
+    <a href="/post/273608#comments" class="read3"><span class="glyphicon glyphicon-comment"></span> 8</a>
+	    </div>
+</div>
+
+    <div post-id="273605" recom-id="6833256" recom-user="" author="12" class="post_prv " >
+	    <div class="author-bar">
+    
+        <a href="http://alexman.cont.ws" class="m_author"><img src="/uploads/users/12.jpg" class="ava40" /> alexman</a>
+        <span class="m_first">Вчера 21:35</span>
+        <span class="glyphicon glyphicon-eye-open"></span> 2493        <span class="glyphicon glyphicon-signal"></span> 10.92
+        </div>
+    	<a href="/post/273605" class="pic"><img src="/uploads/posts/273605.jpg" /></a>
+	<h3><a href="/post/273605">Часть россиян лишат пенсий от государства</a></h3>
+	<div class="mm10">
+
+Новая пенсионная система России, концепцию которой разрабатывают Минфин и ЦБ, будет аналогична той, что существует в Австралии и Новой Зеландии: граждане с высокими зарплатами должны будут думать о пенсии сами
+О&nbsp;том, какой&nbsp;будет новая пенсионная система, рассказал заместитель министра финансов Алексей Моисеев на&nbsp;форуме Credit Suisse в среду, 18&nbs...</div>
+    <div class="mm10">
+	<a href="/post/273605" class="read">Читать полностью</a>
+    <a href="#" class=" read3" post="273605" onclick="return false;" data-toggle="tooltip" data-placement="bottom" title="В закладки"><span class="glyphicon glyphicon-bookmark"></span></a>
+    <a href="/post/273605#comments" class="read3"><span class="glyphicon glyphicon-comment"></span> 33</a>
+	    </div>
+</div>
+
+<!-- Яндекс.Директ -->
+<script type="text/javascript">
+yandex_partner_id = 141569;
+yandex_site_bg_color = 'FFFFFF';
+yandex_stat_id = 6;
+yandex_ad_format = 'direct';
+yandex_font_size = 1;
+yandex_font_family = 'arial';
+yandex_direct_type = 'horizontal';
+yandex_direct_limit = 2;
+yandex_direct_title_font_size = 2;
+yandex_direct_links_underline = true;
+yandex_direct_bg_color = 'EEEEEE';
+yandex_direct_title_color = '0000CC';
+yandex_direct_url_color = '006600';
+yandex_direct_text_color = '000000';
+yandex_direct_hover_color = '0066FF';
+yandex_direct_sitelinks_color = '0000CC';
+yandex_direct_favicon = true;
+yandex_no_sitelinks = false;
+document.write('<scr'+'ipt type="text/javascript" src="//an.yandex.ru/system/context.js"></scr'+'ipt>');
+</script>
+    
+    <div post-id="273601" recom-id="6833196" recom-user="" author="1046" class="post_prv " >
+	    <div class="author-bar">
+    
+        <a href="http://Artemon.cont.ws" class="m_author"><img src="/uploads/users/1046.jpg" class="ava40" /> Artemon</a>
+        <span class="m_first">Вчера 21:31</span>
+        <span class="glyphicon glyphicon-eye-open"></span> 2708        <span class="glyphicon glyphicon-signal"></span> 14.02
+        </div>
+    	<a href="/post/273601" class="pic"><img src="/uploads/posts/273601.jpg" /></a>
+	<h3><a href="/post/273601">Евросоюз отреагировал на резолюцию Венето по Крыму</a></h3>
+	<div class="mm10">Посол Евросоюза в Москве Вигаудас Ушацкас прокомментировал резолюцию Совета итальянской области Венето, принятую в среду, 18 марта. Депутаты парламента одного из самых развитых регионов Италии фактически признали Крым частью России и высказались за отмену антироссийских санкций.
+
+
+
+Ушацкас сообщил, что резолюция носит рекомендательный характер и необязательна к ис...</div>
+    <div class="mm10">
+	<a href="/post/273601" class="read">Читать полностью</a>
+    <a href="#" class=" read3" post="273601" onclick="return false;" data-toggle="tooltip" data-placement="bottom" title="В закладки"><span class="glyphicon glyphicon-bookmark"></span></a>
+    <a href="/post/273601#comments" class="read3"><span class="glyphicon glyphicon-comment"></span> 14</a>
+	    </div>
+</div>
+
+    <div post-id="273592" recom-id="6832971" recom-user="" author="1061" class="post_prv " >
+	    <div class="author-bar">
+    
+        <a href="http://Mao.cont.ws" class="m_author"><img src="/uploads/users/1061.jpg" class="ava40" /> Mao</a>
+        <span class="m_first">Вчера 21:23</span>
+        <span class="glyphicon glyphicon-eye-open"></span> 2812        <span class="glyphicon glyphicon-signal"></span> 26.25
+        </div>
+    	<a href="/post/273592" class="pic"><img src="/uploads/posts/273592.jpg" /></a>
+	<h3><a href="/post/273592">Вьетнам пригласил Россию вернуться в Камрань</a></h3>
+	<div class="mm10">Воспользуется&nbsp;ли Москва моментом, чтобы закрепиться в Азии?
+
+
+
+
+Вьетнам не&nbsp;против возвращения России на&nbsp;военную базу в&nbsp;Камрани, но&nbsp;это сотрудничество не&nbsp;должно быть направлено против третьих стран, заявил 17&nbsp;мая&nbsp;посол Вьетнама в&nbsp;России Нгуен Тхань Шон.
+
+&mdash;&nbsp;Политика Вьетнама заключается в&nbsp;том, чтобы не&...</div>
+    <div class="mm10">
+	<a href="/post/273592" class="read">Читать полностью</a>
+    <a href="#" class=" read3" post="273592" onclick="return false;" data-toggle="tooltip" data-placement="bottom" title="В закладки"><span class="glyphicon glyphicon-bookmark"></span></a>
+    <a href="/post/273592#comments" class="read3"><span class="glyphicon glyphicon-comment"></span> 17</a>
+	    </div>
+</div>
+
+    <div post-id="273585" recom-id="6832796" recom-user="" author="998" class="post_prv " >
+	    <div class="author-bar">
+    
+        <a href="http://mikle1.cont.ws" class="m_author"><img src="/uploads/users/998.jpg" class="ava40" /> Михаил</a>
+        <span class="m_first">Вчера 21:15</span>
+        <span class="glyphicon glyphicon-eye-open"></span> 1415        <span class="glyphicon glyphicon-signal"></span> 5.00
+        </div>
+    	<a href="/post/273585" class="pic"><img src="/uploads/posts/273585.jpg" /></a>
+	<h3><a href="/post/273585">Невероятные приключения русского аса в Австралии</a></h3>
+	<div class="mm10">Лётная история Ивана Смирнова началась на курсах авиаторов в России в 1915 году, продолжалась на фронтах Первой мировой войны, затем в роли пилота компании KLM в Голландии, Индонезии и Австралии, где его именем назван один из пустынных пляжей Западной Австралии, связанный с таинственным исчезновением бриллиантов, стоимостью 10 миллионов долларов.
+
+Третьего марта 194...</div>
+    <div class="mm10">
+	<a href="/post/273585" class="read">Читать полностью</a>
+    <a href="#" class=" read3" post="273585" onclick="return false;" data-toggle="tooltip" data-placement="bottom" title="В закладки"><span class="glyphicon glyphicon-bookmark"></span></a>
+    <a href="/post/273585#comments" class="read3"><span class="glyphicon glyphicon-comment"></span> 2</a>
+	    </div>
+</div>
+
+    <div post-id="273582" recom-id="6832750" recom-user="" author="17208" class="post_prv " >
+	    <div class="author-bar">
+    
+        <a href="http://Grubz.cont.ws" class="m_author"><img src="/uploads/users/17208.jpg" class="ava40" /> Михаил Руднев</a>
+        <span class="m_first">Вчера 21:11</span>
+        <span class="glyphicon glyphicon-eye-open"></span> 2160        <span class="glyphicon glyphicon-signal"></span> 23.46
+        </div>
+    	<a href="/post/273582" class="pic"><img src="/uploads/posts/273582.jpg" /></a>
+	<h3><a href="/post/273582">Из истории концлагерей и депортации народов: Канадский ГУЛАГ для украинцев </a></h3>
+	<div class="mm10">Очень интересный материал и фотоподборка. Особенно актуален на фоне воя о депортации и заключения в ГУЛАГ советских немцев в годы Великой Отечественной войны. &nbsp;Это было обычной практикой во многих странах - граждан, принадлежащих к этносу противника во время войны, интернировать в лагеря. Такое было в США годы Второй Мировой в отношении граждан японского происхож...</div>
+    <div class="mm10">
+	<a href="/post/273582" class="read">Читать полностью</a>
+    <a href="#" class=" read3" post="273582" onclick="return false;" data-toggle="tooltip" data-placement="bottom" title="В закладки"><span class="glyphicon glyphicon-bookmark"></span></a>
+    <a href="/post/273582#comments" class="read3"><span class="glyphicon glyphicon-comment"></span> 5</a>
+	    </div>
+</div>
+
+    <div post-id="273578" recom-id="6832607" recom-user="" author="972" class="post_prv " >
+	    <div class="author-bar">
+    
+        <a href="http://Andersen.cont.ws" class="m_author"><img src="/uploads/users/972.jpg" class="ava40" /> andersen</a>
+        <span class="m_first">Вчера 20:59</span>
+        <span class="glyphicon glyphicon-eye-open"></span> 4471        <span class="glyphicon glyphicon-signal"></span> 30.09
+        </div>
+    	<a href="/post/273578" class="pic"><img src="/uploads/posts/273578.jpg" /></a>
+	<h3><a href="/post/273578">«Я полагаю, ЦРУ убьёт Трампа» — экс-советник правительства США  </a></h3>
+	<div class="mm10">Бывший советник министра финансов в&nbsp;администрации Рональда Рейгана Пол Крейг Робертс заявил, что в&nbsp;стране начата программа по политическому уничтожению кандидата на&nbsp;пост президента США от&nbsp;Республиканской партии Дональда Трампа.
+
+
+
+И это только начало, в случае вероятного поражения Хиллари Клинтон спецслужбы могут убить Трампа.
+
+По&nbsp;словам...</div>
+    <div class="mm10">
+	<a href="/post/273578" class="read">Читать полностью</a>
+    <a href="#" class=" read3" post="273578" onclick="return false;" data-toggle="tooltip" data-placement="bottom" title="В закладки"><span class="glyphicon glyphicon-bookmark"></span></a>
+    <a href="/post/273578#comments" class="read3"><span class="glyphicon glyphicon-comment"></span> 16</a>
+	    </div>
+</div>
+<div class="inviteBox" style="background-image: url(/images/bnr91.jpg);">
+<span>Каждый раз, когда кто-то регистрируется на Конте,<br />Обама съедает бургер →</span><br />
+<button class="newreg" id="6" data-toggle="modal" data-target="#registrationModal">Покормить Обаму</button>
+</div>
+    <div post-id="273572" recom-id="6832438" recom-user="" author="1061" class="post_prv " >
+	    <div class="author-bar">
+    
+        <a href="http://Mao.cont.ws" class="m_author"><img src="/uploads/users/1061.jpg" class="ava40" /> Mao</a>
+        <span class="m_first">Вчера 20:52</span>
+        <span class="glyphicon glyphicon-eye-open"></span> 1827        <span class="glyphicon glyphicon-signal"></span> 5.52
+        </div>
+    	<a href="/post/273572" class="pic"><img src="/uploads/posts/273572.jpg" /></a>
+	<h3><a href="/post/273572">Красные каннибалы</a></h3>
+	<div class="mm10">В споре о&nbsp;хунвейбинах-людоедах до&nbsp;сих пор не&nbsp;поставлена точка
+
+
+
+В понедельник, 16 мая, исполнилось 50 лет с начала Великой пролетарской культурной революции в Китае. 10 лет буйства молодежных банд &mdash; хунвейбинов (студентов-&laquo;красногвардейцев&raquo;) и цзаофаней (молодых рабочих-&laquo;бунтарей&raquo;) &mdash; стоили стране 100 миллионов п...</div>
+    <div class="mm10">
+	<a href="/post/273572" class="read">Читать полностью</a>
+    <a href="#" class=" read3" post="273572" onclick="return false;" data-toggle="tooltip" data-placement="bottom" title="В закладки"><span class="glyphicon glyphicon-bookmark"></span></a>
+    <a href="/post/273572#comments" class="read3"><span class="glyphicon glyphicon-comment"></span> 5</a>
+	    </div>
+</div>
+
+    <div post-id="273563" recom-id="6832206" recom-user="" author="17208" class="post_prv " >
+	    <div class="author-bar">
+    
+        <a href="http://Grubz.cont.ws" class="m_author"><img src="/uploads/users/17208.jpg" class="ava40" /> Михаил Руднев</a>
+        <span class="m_first">Вчера 20:54</span>
+        <span class="glyphicon glyphicon-eye-open"></span> 1327        <span class="glyphicon glyphicon-signal"></span> 2.39
+        </div>
+    	<a href="/post/273563" class="pic"><img src="/uploads/posts/273563.jpg" /></a>
+	<h3><a href="/post/273563">Агрессия и фрустрация – символы перемен в России</a></h3>
+	<div class="mm10">
+
+Уровень самоубийств, убийств и общей преступности отражают степень недовольства, фрустрации и агрессии, и следует признать: в конце XIX &mdash; начале XX века, при сломе общины и переходу к капитализму интеллигенция и рабочие являлись самыми неудовлетворёнными социальными группами. Вторая такая волна настигла Россию в 1990-е.
+
+Российский историк Борис Миронов в ...</div>
+    <div class="mm10">
+	<a href="/post/273563" class="read">Читать полностью</a>
+    <a href="#" class=" read3" post="273563" onclick="return false;" data-toggle="tooltip" data-placement="bottom" title="В закладки"><span class="glyphicon glyphicon-bookmark"></span></a>
+    <a href="/post/273563#comments" class="read3"><span class="glyphicon glyphicon-comment"></span> 4</a>
+	    </div>
+</div>
+
+    <div post-id="273561" recom-id="6832046" recom-user="" author="17209" class="post_prv " >
+	    <div class="author-bar">
+    
+        <a href="http://Zimin.cont.ws" class="m_author"><img src="/uploads/users/17209.jpg" class="ava40" /> Zimin</a>
+        <span class="m_first">Вчера 20:50</span>
+        <span class="glyphicon glyphicon-eye-open"></span> 789        <span class="glyphicon glyphicon-signal"></span> 3.00
+        </div>
+    	<a href="/post/273561" class="pic"><img src="/uploads/posts/273561.jpg" /></a>
+	<h3><a href="/post/273561">Бенеш передает руководству СССР проект переселения немцев из Чехословакии. 1943 г.</a></h3>
+	<div class="mm10">
+
+
+
+
+
+Источник
+...</div>
+    <div class="mm10">
+	<a href="/post/273561" class="read">Читать полностью</a>
+    <a href="#" class=" read3" post="273561" onclick="return false;" data-toggle="tooltip" data-placement="bottom" title="В закладки"><span class="glyphicon glyphicon-bookmark"></span></a>
+    <a href="/post/273561#comments" class="read3"><span class="glyphicon glyphicon-comment"></span> 2</a>
+	    </div>
+</div>
+
+    <div post-id="273464" recom-id="6831973" recom-user="" author="63379" class="post_prv " >
+	    <div class="author-bar">
+    
+        <a href="http://zaraza.cont.ws" class="m_author"><img src="/uploads/users/63379.jpg" class="ava40" /> Огонь</a>
+        <span class="m_first">Вчера 18:59</span>
+        <span class="glyphicon glyphicon-eye-open"></span> 4464        <span class="glyphicon glyphicon-signal"></span> 58.47
+        </div>
+    	<a href="/post/273464" class="pic"><img src="/uploads/posts/273464.jpg" /></a>
+	<h3><a href="/post/273464">Выборы в Думу - 2016. Путину не нужен выбор народа. (аналитика)</a></h3>
+	<div class="mm10">Интересное наблюдение. Пару дней назад я написал эту статью, являющуюся некой отдалённой попыткой аналитики, а паче моими собственными рассуждениями. С тех пор статью неоднократно исправлял, хотя и выложил её на ресурс. Сделав достаточно спорным заголовок, я конечно ожидал от читателей каких то суждений, или хотя бы оценок. Но судя по количеству прочтений, совсем незн...</div>
+    <div class="mm10">
+	<a href="/post/273464" class="read">Читать полностью</a>
+    <a href="#" class=" read3" post="273464" onclick="return false;" data-toggle="tooltip" data-placement="bottom" title="В закладки"><span class="glyphicon glyphicon-bookmark"></span></a>
+    <a href="/post/273464#comments" class="read3"><span class="glyphicon glyphicon-comment"></span> 131</a>
+	    </div>
+</div>
+
+    <div post-id="273525" recom-id="6831968" recom-user="" author="3265" class="post_prv " >
+	    <div class="author-bar">
+    
+        <a href="http://fanC.cont.ws" class="m_author"><img src="/uploads/users/3265.jpg" class="ava40" /> fanC</a>
+        <span class="m_first">Вчера 19:56</span>
+        <span class="glyphicon glyphicon-eye-open"></span> 6578        <span class="glyphicon glyphicon-signal"></span> 61.93
+        </div>
+    	<a href="/post/273525" class="pic"><img src="/uploads/posts/273525.jpg" /></a>
+	<h3><a href="/post/273525">Ядерное возмездие России сотрет ЕвроПРО вместе с Европой</a></h3>
+	<div class="mm10">
+    
+        
+Виктор Сокирко пишет на "Звезде":В силе американского оружия никто особо не сомневается: все-таки одна из лучших армий мира, как ни крути. Россия тоже не сомневается, но особо и не боится, потому как на всякую заокеанскую хитрость найдет свой винт.Нынешний ажиотаж вокруг американской системы ПРО в Европе, которая якобы способна не только сорвать пуски р...</div>
+    <div class="mm10">
+	<a href="/post/273525" class="read">Читать полностью</a>
+    <a href="#" class=" read3" post="273525" onclick="return false;" data-toggle="tooltip" data-placement="bottom" title="В закладки"><span class="glyphicon glyphicon-bookmark"></span></a>
+    <a href="/post/273525#comments" class="read3"><span class="glyphicon glyphicon-comment"></span> 53</a>
+	    </div>
+</div>
+
+<div class="loading_box" style = "display:none" ></div>
+<input data-feed = "0" data-id="" type="button" value="Еще больше статей" class="big get_more" /> 
+</div>    
+<script>
+$(document).ready(function() {
+	
+	
+	$('#content').feedStart(1463633744224);
+});
+
+</script> 
+    </div>   
+<div class="new-posts-notifier">
+<span style="font-size:24px;">0</span>
+</br>
+<span style="font-size: 12px;">новых</span>
+<span style="font-size: 12px;">статей</span>
+</div>
+</div>
+<div class="sidebar">
+<h5 style="margin-bottom:20px;">ЧИТАЙТЕ ПРО</h5>
+<div style ="text-align:left;">
+<a style="color:#222;" href ="/tag/198">
+<div class ="tag" >Новости</div>
+</a>
+<a style="color:#222;" href ="/tag/172">
+<div class ="tag" >Украина</div>
+</a>
+<a style="color:#222;" href ="/tag/36">
+<div class ="tag" >Россия-Запад</div>
+</a>
+<a style="color:#222;" href ="/tag/24">
+<div class ="tag" >Идеология и патриотизм</div>
+</a>
+<a style="color:#222;" href ="/tag/5">
+<div class ="tag" >Новороссия</div>
+</a>
+<a style="color:#222;" href ="/tag/35">
+<div class ="tag" >Проблемы России</div>
+</a>
+<a style="color:#222;" href ="/tag/156">
+<div class ="tag" >Гражданское общество</div>
+</a>
+<a style="color:#222;" href ="/tag/158">
+<div class ="tag" >Жизнь</div>
+</a>
+<a style="color:#222;" href ="/tag/130">
+<div class ="tag" >Операция РФ в Сирии</div>
+</a>
+<a style="color:#222;" href ="/tag/22">
+<div class ="tag" >ИГИЛ и терроризм</div>
+</a>
+<a style="color:#222;" href ="/tag/107">
+<div class ="tag" >Ближний Восток</div>
+</a>
+<a style="color:#222;" href ="/tag/151">
+<div class ="tag" >Идеология и патриотизм</div>
+</a>
+<a style="color:#222;" href ="/tag/26">
+<div class ="tag" >Многополярный мир</div>
+</a>
+<a style="color:#222;" href ="/tag/178">
+<div class ="tag" >Экономика</div>
+</a>
+<a style="color:#222;" href ="/tag/152">
+<div class ="tag" >Здоровье нации</div>
+</a>
+<a style="color:#222;" href ="/tag/13">
+<div class ="tag" >Кризис Еврозоны</div>
+</a>
+<a style="color:#222;" href ="/tag/14">
+<div class ="tag" >Проблемы в США</div>
+</a>
+</div>
+<hr />
+<h5 style="margin-bottom:20px;">Лучшие статьи за сутки</h5>
+<div class="post_prv2">
+<div class="author-bar"  style="font-size: 12px;">
+<span class="glyphicon glyphicon-user first"></span> Сергей Колясников<span class="glyphicon glyphicon-comment"></span> 49</div>
+<a href="/post/272963">Утренний кофе 18/05/2016: Остап Бендер из космоса, длинные руки Путина, российские банки на Украине.</a>
+</div>
+<div class="post_prv2">
+<div class="author-bar"  style="font-size: 12px;">
+<span class="glyphicon glyphicon-user first"></span> Юлия Витязева<span class="glyphicon glyphicon-comment"></span> 40</div>
+<a href="/post/273308">«Предвестники Апокалипсиса» или «Агония» Русского мира</a>
+</div>
+<div class="post_prv2">
+<div class="author-bar"  style="font-size: 12px;">
+<span class="glyphicon glyphicon-user first"></span> Nikkuro<span class="glyphicon glyphicon-comment"></span> 68</div>
+<a href="/post/273112">Поговорим о наперсточниках</a>
+</div>
+<div class="post_prv2">
+<div class="author-bar"  style="font-size: 12px;">
+<span class="glyphicon glyphicon-user first"></span> Фриц Морген<span class="glyphicon glyphicon-comment"></span> 48</div>
+<a href="/post/273041">Нефть продолжает дорожать</a>
+</div>
+<div class="post_prv2">
+<div class="author-bar"  style="font-size: 12px;">
+<span class="glyphicon glyphicon-user first"></span> Rare Man<span class="glyphicon glyphicon-comment"></span> 462</div>
+<a href="/post/272942">Античный Питер - OBEXION - 4 - (СОБОР)</a>
+</div>
+<hr />
+<script>
+$( document ).ready(function() {
+    $('#top1').click(function(event){
+        event.preventDefault();
+        $('#allday2').show();
+        $('#allday1').hide();
+        $('#top2').removeClass('active');
+        $('#top1').addClass('active');
+    });
+    $('#top2').click(function(event){
+        event.preventDefault();
+        $('#allday1').show();
+        $('#allday2').hide();
+        $('#top1').removeClass('active');
+        $('#top2').addClass('active');
+    });
+});
+</script>
+<div class="topblogs">
+<h5>ТОП БЛОГЕРОВ</h5>
+<p>
+<a href="/top">Cмотреть весь рейтинг</a>
+</div>
+<hr />
+<div style="margin-bottom: 20px; text-align: center;">
+<!— R-131434-4 Яндекс.RTB-блок —>
+<div id="yandex_ad_R-131434-4"></div>
+<script type="text/javascript">
+(function(w, d, n, s, t) {
+w[n] = w[n] || [];
+w[n].push(function() {
+Ya.Context.AdvManager.render({
+blockId: "R-131434-4",
+renderTo: "yandex_ad_R-131434-4",
+async: true
+});
+});
+t = d.getElementsByTagName("script")[0];
+s = d.createElement("script");
+s.type = "text/javascript";
+s.src = "//an.yandex.ru/system/context.js";
+s.async = true;
+t.parentNode.insertBefore(s, t);
+})(this, this.document, "yandexContextAsyncCallbacks");
+</script></div>
+</div>
+</div> 
+
+
+<div style="clear: both;"></div>
+</div>
+<div style="height: 100px;"></div>
+<div class="black dn">
+<div class="footer2">
+
+<div class="col">
+<a href="http://cont.ws/login" style="margin-right: 20px;">Войти</a><br />
+<a href="http://cont.ws/login/reg">Регистрация</a>
+</div>
+
+<div class="col">
+<a href="http://cont.ws/lenta-article">Все статьи</a><br />
+<a href="http://cont.ws/lenta-news">Новости</a><br />
+<a href="http://cont.ws/arhive">Архив</a><br />
+<a href="http://cont.ws/top">Рейтинг</a><br />
+</div>
+
+<div class="col">
+<a href="http://cont.ws/tutorial">Руководство для блогеров</a><br />
+<a href="http://cont.ws/zakon">Закон о блогерах</a><br />
+<a href="http://cont.ws/reviews">Отзывы</a><br />
+<a href="http://cont.ws/karma">Что такое карма</a><br />
+<a href="http://cont.ws/agreement">Соглашение</a> <br />
+<a href="http://cont.ws/details">О проекте</a>
+</div>
+
+<div class="col">
+<a href="http://cont.ws/">Главная</a><br />
+<a href="http://cont.ws/profile">Мой профиль</a><br />
+<a href="http://cont.ws/addpost">Написать статью</a><br />
+<a href="http://cont.ws/sms">Мои сообщения</a><br />
+</div>
+
+<div class="col" style="font-size: 18px; width: 150px;">
+<a href="https://vk.com/continentalist" target="_blank"><i class="fa fa-vk ml10"></i></a>
+<a href="https://www.facebook.com/rucontinental" target="_blank"><i class="fa fa-facebook ml10"></i></a>
+<a href="https://twitter.com/rucontinental" target="_blank"><i class="fa fa-twitter ml10"></i></a>
+<a href="https://plus.google.com/u/0/114845036782898788463/posts" target="_blank"><i class="fa fa-google-plus ml10"></i></a>
+<a href="http://ok.ru/rucontinental" target="_blank" style="margin-left: 5px;"><img src="/images/odn.png" /></a>
+</div>
+
+<div class="col" style="float: right; text-align: right;">
+<a href="http://cont.ws/feedback">Служба поддержи</a><br />
+<br />
+
+<!-- Yandex.Metrika informer -->
+<a href="https://metrika.yandex.ru/stat/?id=22420882&amp;from=informer"
+target="_blank" rel="nofollow"><img src="//bs.yandex.ru/informer/22420882/3_0_FFFFFFFF_FFFFFFFF_0_pageviews"
+style="width:88px; height:31px; border:0;" alt="Яндекс.Метрика" title="Яндекс.Метрика: данные за сегодня (просмотры, визиты и уникальные посетители)" onclick="try{Ya.Metrika.informer({i:this,id:22420882,lang:'ru'});return false}catch(e){}"/></a>
+<!-- /Yandex.Metrika informer -->
+
+<!--LiveInternet counter--><script type="text/javascript"><!--
+document.write("<a href='http://www.liveinternet.ru/click' "+
+"target=_blank><img src='//counter.yadro.ru/hit?t40.6;r"+
+escape(document.referrer)+((typeof(screen)=="undefined")?"":
+";s"+screen.width+"*"+screen.height+"*"+(screen.colorDepth?
+screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+
+";"+Math.random()+
+"' alt='' title='LiveInternet' "+
+"border='0' width='31' height='31'><\/a>")
+//--></script><!--/LiveInternet-->
+</div>
+
+</div>
+</div>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+(function (d, w, c) {
+    (w[c] = w[c] || []).push(function() {
+        try {
+            w.yaCounter22420882 = new Ya.Metrika({id:22420882,
+                    clickmap:true,
+                    trackLinks:true,
+                    accurateTrackBounce:true});
+        } catch(e) { }
+    });
+
+    var n = d.getElementsByTagName("script")[0],
+        s = d.createElement("script"),
+        f = function () { n.parentNode.insertBefore(s, n); };
+    s.type = "text/javascript";
+    s.async = true;
+    s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js";
+
+    if (w.opera == "[object Opera]") {
+        d.addEventListener("DOMContentLoaded", f, false);
+    } else { f(); }
+})(document, window, "yandex_metrika_callbacks");
+</script>
+<noscript><div><img src="//mc.yandex.ru/watch/22420882" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+
+<!-- Index.ru -->
+<script type="text/javascript">
+var indexru = { counter : 1, next : indexru };
+(function( d, t, p ){
+var j = d.createElement( t );j.async = true;j.type = "text/javascript";
+j.src = ("https:" == p ? "https:" : "http:") + "//c.index.ru/cnt.js";
+var s = d.getElementsByTagName( t )[0];
+s.parentNode.insertBefore( j, s );
+})( document, "script", document.location.protocol );
+</script>
+<!-- /Index.ru -->
+
+</body>
+</html>
+

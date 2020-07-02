@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <script src="/home/js/jquery-1.11.3.min.js"></script>
+    <script src="/home/js/common.js"></script>
+    <script src="/home/js/cdn/um.js"></script>
+</head>
+<body>
+<div id="_umfp" style="width:0px;height:0px;overflow:hidden">
+    <img src="https://ynuf.alipay.com/service/clear.png?xt=Tbcc492aebc8267d6f68476e371150a77&xa=buc"/>
+</div>
+<form method="post" id="form"  >
+    <input type="hidden" name="action" value="PreLoginAction" />
+	<input type="hidden" name="event_submit_do_PreLogin" value="false" />
+    <input type="hidden" id="deviceIp" name="deviceIp"  value=""/>
+    <input type="hidden" name="caLoginKey" value=""/>
+    <input type="hidden" name="umidTokenId" value="Tbcc492aebc8267d6f68476e371150a77" >
+    <!-- <input type="hidden" name="domain" value="" > -->
+</form>
+<script type="text/javascript">
+
+
+    var getIpComplete = false;
+	function onJSONPCallback(data) {
+	    getIpComplete=true;
+		$('#deviceIp').val(data.x_forwarded_for);
+	}
+	
+	GetDeviceIp("https://buc-office.alibaba-inc.com/ip.js");	
+    var pageLoadTimestamp = Date.parse(new Date());
+	var iIntervalId =setInterval(function(){
+	    var currentTimestamp = Date.parse(new Date());
+		if((currentTimestamp-pageLoadTimestamp) > 1000*2 || getIpComplete){
+		    clearInterval(iIntervalId);
+		    document.getElementById('form').submit();
+		}
+	},800);
+	
+
+</script> 
+</body>
+</html>
+<script type="text/javascript">
+    //UMID的功能
+    var container = document.getElementById('_umfp');
+    um.init({
+        timeout: 3000,
+        timestamp: '40906815555C504057416478',
+        token: 'Tbcc492aebc8267d6f68476e371150a77',
+        serviceUrl: 'https://ynuf.alipay.com/service/um.json',
+        appName: 'buc',
+        containers: {flash: container, dcp: container}
+    });
+</script>

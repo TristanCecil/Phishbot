@@ -1,0 +1,1668 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="ctl00_ctl00_Head1">
+    <style type="text/css">
+        .BordoRosso {
+            border: 1px solid red;
+        }
+
+        .hiddenButtonNavigationRenewExit {
+            display: none;
+        }
+
+        .change-password-overlay {
+            top: 0px;
+            left: 0px;
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            background-color: rgba(0, 0, 0, 0.4);
+            z-index: 50;
+        }
+
+        .change-password-modal {
+            width: 350px;
+            height: 184px;
+            margin: 80px auto 0px auto;
+            position: relative;
+            background-color: #FFFFFF;
+            z-index: 51;
+        }
+
+        .change-password-modal-title {
+            width: 310px;
+            text-align: left;
+            margin: 20px 20px 0px 20px;
+            font-size: 12px;
+            font-weight: bold;
+            position: absolute;
+        }
+
+        .change-password-modal-text {
+            width: 310px;
+            text-align: left;
+            margin: 48px 20px 0px 20px;
+            font-size: 11px;
+            position: absolute;
+        }
+
+        .change-password-modal-confirm {
+            width: 310px;
+            text-align: center;
+            margin: 134px 20px 0px 20px;
+            position: absolute;
+        }
+
+        .change-password-modal-error {
+            width: 100%;
+            font-size: 9px;
+            text-align: left;
+            margin: 160px 0 0 0;
+            ;
+            position: absolute;
+        }
+
+        .change-password-modal-close {
+            width: 330px;
+            text-align: right;
+            margin: 10px 10px 0px 10px;
+            position: absolute;
+        }
+
+        div#container {
+            width: 100%;
+        }
+
+        #DivConvenzione {
+            width: 1255px;
+            margin: 0 auto;
+        }
+
+        .convenzioneSi {
+            float: right;
+            height: 30px;
+            background-color: #1C9713;
+            margin: 10px 0px 0px 10px;
+            padding: 6px 10px 0px 10px;
+            text-align: center;
+            font-size: 12px;
+        }
+
+        .convenzioneNo {
+            float: right;
+            height: 30px;
+            background-color: #FCA738;
+            margin-top: 10px;
+            text-align: center;
+            font-size: 11px;
+            padding: 6px 10px 0px 10px;
+            vertical-align: middle;
+        }
+
+        .RadToolBar .rtbMid .rtbIn {
+            overflow: hidden;
+            padding: 0px;
+        }
+
+        .RadToolBar .rtbMid {
+            padding-left: 3px !important;
+        }
+
+        .RadToolBar, .RadToolBar .rtbUL, .RadToolBar .rtbItem, .RadToolBar .rtbTemplate, .RadToolBar .rtbWrap, .RadToolBar .rtbOut, .RadToolBar .rtbMid, .RadToolBar .rtbIn {
+            height: 20px;
+        }
+
+        .RadToolBar_Tema1 .rtbSplBtnFocused .rtbWrap, .RadToolBar_Tema1 .rtbSplBtnFocused .rtbOut, .RadToolBar_Tema1 .rtbSplBtnFocused .rtbMid, .RadToolBar_Tema1 .rtbSplBtnFocused .rtbIn,
+        .RadToolBar_Tema1 .rtbItemFocused .rtbWrap, .RadToolBar_Tema1 .rtbItemFocused .rtbOut, .RadToolBar_Tema1 .rtbItemFocused .rtbMid, .RadToolBar_Tema1 .rtbItemFocused .rtbIn,
+        .RadToolBar_Tema1 .rtbItemHovered .rtbWrap, .RadToolBar_Tema1 .rtbItemHovered .rtbOut, .RadToolBar_Tema1 .rtbItemHovered .rtbMid, .RadToolBar_Tema1 .rtbItemHovered .rtbIn {
+            color: #ffffff !important;
+        }
+
+        @-moz-document url-prefix() {
+            .RadToolBar .rtbIn, .RadToolBar .rtbIn * {
+                vertical-align: baseline !important;
+            }
+        }
+
+        .HideCollapse .rpOut .rpExpandHandle
+        {
+          visibility: hidden;
+        }
+    </style>
+    <link href="App_Themes/Tema1/ToolBar.Tema1.css" rel="stylesheet" type="text/css" /><link href="App_Themes/Tema1/PanelBar.Tema1.css" rel="stylesheet" type="text/css" /><link rel="stylesheet" href="Basket/js/jquery-ui-accordion/jquery-ui.css" /><link href="App_Themes/RowAssistenza.css" rel="stylesheet" type="text/css" />
+    
+    <script src="/Scripts/jquery-1.10.2.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="/Scripts/jquery.cookiesdirective.js"></script>
+    <script type="text/javascript">
+        var $J = jQuery.noConflict();
+
+        function SchedaOrdine(IDArticoloFunzione) {
+            window.open("DettagliServizio.aspx?IDArticolo=" + IDArticoloFunzione, "finestra", "toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=650,height=570,top=50,left=100")
+        }
+        function DettaglioPec(IDArticoloFunzione) {
+            window.open("Dettagli_Pec.aspx?IDDettaglio=" + IDArticoloFunzione, "finestra", "toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=650,height=570,top=50,left=100")
+        }
+
+        function ShowHideChat() {
+            //funzioni interne dichiarate nello user control LiveChat.ascx
+            if ($J('.chatslider-tab-up').is(':visible')) {
+                ShowChat();
+            } else {
+                HideChat();
+            }
+        }
+
+
+        function showUpperRowAssistenza() {
+            if (!($J("#RowAssistenza").is(':visible'))) {
+                $J("#RowAssistenza").slideDown(500);
+                return;
+            } else {
+                $J("#RowAssistenza").slideUp(500);
+            }
+        }
+
+        function scrollToElement() {
+            var scrollToTop = window.setInterval(function () {
+                var pos = window.pageYOffset;
+                if (pos > 0) {
+                    window.scrollTo(0, pos - 20); // how far to scroll on each step
+                } else {
+                    window.clearInterval(scrollToTop);
+                }
+            }, 16); // how fast to scroll (this equals roughly 60 fps)
+        }
+
+    </script>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><meta http-equiv="Content-Style-Type" content="text/css" /><meta http-equiv="Content-Script-Type" content="type" /><title>
+	Posta Elettronica Certificata - Firma Digitale - Aruba | Pec.it
+</title><meta id="ctl00_ctl00_pageDescription" http-equiv="Description" name="Description" content="Pec.it: la tua casella di posta elettronica certificata a partire da 5€ + IVA all&#39;anno. Scegli la casella @pec.it!" /><meta name="keywords" content="pec,p.e.c.,casella pec,casella pec.it,posta certificata,posta elettronica certificata,firma digitale,posta certificata,Aruba pec,firma remota,arubakey,marca temporale,smart card,token" /><meta name="distribution" content="Global" /><meta http-equiv="Content-Style-Type" content="text/css" /><meta http-equiv="Content-Script-Type" content="type" /><link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" /><link href="/KitFirmaDigitale/Stile_KFD.css" type="text/css" rel="stylesheet" /><link rel="Stylesheet" type="text/css" href="App_Themes/Tema1/style.css" />
+    
+    <script type="text/javascript">
+
+
+        function ManageTextLogin(txt, evt) {
+            var defaultTextLogin = "login (anche la tua PEC)";
+
+            if (txt.value.length == 0 && evt.type == "blur") {
+                txt.style.color = "gray";
+                txt.value = defaultTextLogin;
+            }
+            if (txt.value == defaultTextLogin && evt.type == "focus") {
+                txt.style.color = "black";
+                txt.value = "";
+            }
+
+        }
+        function ManageTextPWD(txt, evt) {
+            var defaultTextPwd = "password";
+            if (txt.value.length == 0 && evt.type == "blur") {
+                txt.style.color = "gray";
+                txt.value = defaultTextPwd;
+                txt.removeAttribute('type');
+            }
+            if (txt.value == defaultTextPwd && evt.type == "focus") {
+                txt.style.color = "black";
+                txt.value = "";
+                txt.setAttribute('type', 'password');
+            }
+        }
+        function ValidaCampi(source, arguments) {
+            var defaultTextLogin = "login (anche la tua PEC)";
+            var defaultTextPwd = "password";
+            var curUser = document.getElementById('UserName');
+            var curPwd = document.getElementById('Password');
+            if (!curUser || !curPwd || curUser.value == '' || curPwd.value == '' || curUser.value == defaultTextLogin || curPwd.value == defaultTextPwd) {
+                arguments.IsValid = false;
+            }
+            else {
+                arguments.IsValid = true;
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function (event) {
+            var defaultTextLogin = "login (anche la tua PEC)";
+            var defaultTextPwd = "password";
+            var curUser = document.getElementById('UserName');
+            var curPwd = document.getElementById('Password');
+            if ((curUser.value != '') && curUser.value != defaultTextLogin) {
+                curUser.style.color = "black";
+
+            }
+            if ((curPwd.value != '') && curPwd.value != defaultTextPwd) {
+
+                curPwd.style.color = "black";
+                curPwd.setAttribute('type', 'password');
+            }
+        });
+    </script>
+
+    <link href="App_Themes/RowAssistenza.css" rel="stylesheet" type="text/css" />
+
+<link href="App_Themes/Default/Default.css" type="text/css" rel="stylesheet" /><link href="App_Themes/Default/FDTabellacomparativa.css" type="text/css" rel="stylesheet" /><link href="/WebResource.axd?d=kqNpCKaJIdi3j-bacVy5TpKqwbIQSJ02NkN2gLjWGiURGX3jzk4kV1Iv-4l2E7m99dix45Z5FuRHOBiwTa5uE8usPjj7opF6SH7xzk_Gqwj33pM5ipHnBVz7KBhcN2rNE33BNiIPDNtSJydM1vT3Lm4AOiI1&amp;t=635975434520000000" type="text/css" rel="stylesheet" class="Telerik_stylesheet" /><link href="/WebResource.axd?d=IkzwhdzkbhSUyrhSp-gQVC8wAdhlfgAAO94iBaijf7oIDKQ1oZL6pzr0m1RJiWMqUFdDxIclB7u9xyrz6Ntm_hJ-l7b5Q5zCWGFdkkXhc8ncX4Ap6J2gRYJQ6IJCxYv5_CCt4knxSBJDw9zNiXUfl2igj6E1&amp;t=635975434520000000" type="text/css" rel="stylesheet" class="Telerik_stylesheet" /><link href="/WebResource.axd?d=OAkqRfz2OAZzDEdd5UuU2yOtdZODfe_dE3L1Y1bBnbFyND3LYujqYrc3vBwDlhVvZlN5ghg20SVscLR8vZ4lmDk8iVKR-l-157qxnUC8z6YwFawqTCOsBGGeC7xfUlNPfn1-xQ2&amp;t=635975434520000000" type="text/css" rel="stylesheet" class="Telerik_stylesheet" /><link href="/WebResource.axd?d=0cXyMreDUjY-fn2TkxX_9jA9GtzWVloDUVbY4AirwTSdCdIX0LMc-mqn8xg9TrwD0HMmyk_XlCzl4lTF3Psbi3FnqHi5LenSCKH1J5K6iCi_SQoE0xU5PLHHIpqtVMpZxVFQucIKmGRAfZCpV2N6rMlQjyo1&amp;t=635975434520000000" type="text/css" rel="stylesheet" class="Telerik_stylesheet" /></head>
+<body>
+    <div id="container">
+        <form method="post" action="/" onsubmit="javascript:return WebForm_OnSubmit();" id="aspnetForm">
+<div>
+<input type="hidden" name="ctl00_ctl00_RadScriptManager_TSM" id="ctl00_ctl00_RadScriptManager_TSM" value="" />
+<input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" value="" />
+<input type="hidden" name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="" />
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUIMzk2OTIwNTUPZBYCZg9kFgJmD2QWCGYPZBYCAgoPFgIeB2NvbnRlbnQFdFBlYy5pdDogbGEgdHVhIGNhc2VsbGEgZGkgcG9zdGEgZWxldHRyb25pY2EgY2VydGlmaWNhdGEgYSBwYXJ0aXJlIGRhIDXigqwgKyBJVkEgYWxsJ2Fubm8uIFNjZWdsaSBsYSBjYXNlbGxhIEBwZWMuaXQhZAIBEGRkFgYCAg8UKwACDxYCHhdFbmFibGVBamF4U2tpblJlbmRlcmluZ2hkEBYLZgIBAgICAwIEAgUCBgIHAggCCQIKFgsUKwACDxYCHgtOYXZpZ2F0ZVVybAUmaHR0cHM6Ly93d3cucGVjLml0L01haWxCb3hSZXF1ZXN0LmFzcHgWAh4FT3duZXIFCnJ0YlRvcE1lbnVkFCsAAmRkFCsAAg8WAh8CBSVodHRwczovL3d3dy5wZWMuaXQvRmlybWFEaWdpdGFsZS5hc3B4FgIfAwUKcnRiVG9wTWVudWQUKwACZGQUKwACDxYCHwIFJ2h0dHBzOi8vd3d3LnBlYy5pdC9NYXJjaGVUZW1wb3JhbGkuYXNweBYEHwMFCnJ0YlRvcE1lbnUeAmlkBQlUb3BNZW51TVRkFCsAAmRkFCsAAg8WAh8CBTpodHRwczovL3d3dy5wZWMuaXQvRmF0dHVyYXppb25lRWxldHRyb25pY2FQQV9MYW5kUGFnZS5hc3B4FgQfAwUKcnRiVG9wTWVudR8EBQlUb3BNZW51UEFkFCsAAmRkFCsAAg8WAh8CBSxodHRwczovL3d3dy5wZWMuaXQvQmFza2V0L1R1dHRpUHJvZG90dGkuYXNweBYCHwMFCnJ0YlRvcE1lbnVkFCsAAmRkFCsAAg8WAh8CBSNodHRwczovL3d3dy5wZWMuaXQvQ29udmVuemlvbmkuYXNweBYCHwMFCnJ0YlRvcE1lbnVkDxYLZmZmZmZmZmZmZmYWAQV5VGVsZXJpay5XZWIuVUkuUmFkVG9vbEJhckJ1dHRvbiwgVGVsZXJpay5XZWIuVUksIFZlcnNpb249MjAxMi4zLjEyMDUuNDAsIEN1bHR1cmU9bmV1dHJhbCwgUHVibGljS2V5VG9rZW49MTIxZmFlNzgxNjViYTNkNBYMZg8PFgIfAgUmaHR0cHM6Ly93d3cucGVjLml0L01haWxCb3hSZXF1ZXN0LmFzcHgWAh8DBQpydGJUb3BNZW51ZAICDw8WAh8CBSVodHRwczovL3d3dy5wZWMuaXQvRmlybWFEaWdpdGFsZS5hc3B4FgIfAwUKcnRiVG9wTWVudWQCBA8PFgIfAgUnaHR0cHM6Ly93d3cucGVjLml0L01hcmNoZVRlbXBvcmFsaS5hc3B4FgQfAwUKcnRiVG9wTWVudR8EBQlUb3BNZW51TVRkAgYPDxYCHwIFOmh0dHBzOi8vd3d3LnBlYy5pdC9GYXR0dXJhemlvbmVFbGV0dHJvbmljYVBBX0xhbmRQYWdlLmFzcHgWBB8DBQpydGJUb3BNZW51HwQFCVRvcE1lbnVQQWQCCA8PFgIfAgUsaHR0cHM6Ly93d3cucGVjLml0L0Jhc2tldC9UdXR0aVByb2RvdHRpLmFzcHgWAh8DBQpydGJUb3BNZW51ZAIKDw8WAh8CBSNodHRwczovL3d3dy5wZWMuaXQvQ29udmVuemlvbmkuYXNweBYCHwMFCnJ0YlRvcE1lbnVkAgUPZBYEAgEPFCsAAhQrAAIPFgIfAWhkEBYPZgIBAgICAwIEAgUCBgIHAggCCQIKAgsCDAINAg4WDxQrAAIPFggeCEV4cGFuZGVkaB4IQ3NzQ2xhc3MFFG15LWl0ZW0gSGlkZUNvbGxhcHNlHgdFbmFibGVkaB4EXyFTQgICFgIfAwUJcnBiU3hNZW51ZBQrAAIPFgIfBWcWAh8DBQlycGJTeE1lbnUQFgFmFgEUKwACZGQPFgFmFgEFdVRlbGVyaWsuV2ViLlVJLlJhZFBhbmVsSXRlbSwgVGVsZXJpay5XZWIuVUksIFZlcnNpb249MjAxMi4zLjEyMDUuNDAsIEN1bHR1cmU9bmV1dHJhbCwgUHVibGljS2V5VG9rZW49MTIxZmFlNzgxNjViYTNkNBQrAAIPFhAeB1Zpc2libGVoHwYFDm9yYW5nZSBteS1pdGVtHwVoHghQb3N0QmFja2geEEV4cGFuZGVkQ3NzQ2xhc3MFBm9yYW5nZR4PQ2xpY2tlZENzc0NsYXNzBQZvcmFuZ2UeEFNlbGVjdGVkQ3NzQ2xhc3MFBm9yYW5nZR8IAgIWAh8DBQlycGJTeE1lbnUQFgFmFgEUKwACZGQPFgFmFgEFdVRlbGVyaWsuV2ViLlVJLlJhZFBhbmVsSXRlbSwgVGVsZXJpay5XZWIuVUksIFZlcnNpb249MjAxMi4zLjEyMDUuNDAsIEN1bHR1cmU9bmV1dHJhbCwgUHVibGljS2V5VG9rZW49MTIxZmFlNzgxNjViYTNkNBQrAAIPZBYCHwMFCXJwYlN4TWVudRAWAmYCARYCFCsAAg8WAh8CBSJodHRwczovL3d3dy5wZWMuaXQvUmlubm92YVBlYy5hc3B4FgIeBUdyb3VwBQdtZW51c3gyZBQrAAIPFgIfAgUwaHR0cHM6Ly93d3cucGVjLml0L0tpdEZpcm1hRGlnaXRhbGUvUmlubm92by5hc3B4FgIfDgUHbWVudXN4MmQPFgJmZhYBBXVUZWxlcmlrLldlYi5VSS5SYWRQYW5lbEl0ZW0sIFRlbGVyaWsuV2ViLlVJLCBWZXJzaW9uPTIwMTIuMy4xMjA1LjQwLCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPTEyMWZhZTc4MTY1YmEzZDQUKwACDxYCHwVoFgIfAwUJcnBiU3hNZW51EBYNZgIBAgICAwIEAgUCBgIHAggCCQIKAgsCDBYNFCsAAg8WAh8CBRxodHRwczovL3d3dy5wZWMuaXQvQ29zYS5hc3B4FgIfDgUHbWVudXN4MmQUKwACDxYCHwIFJmh0dHBzOi8vd3d3LnBlYy5pdC9NYWlsQm94UmVxdWVzdC5hc3B4FgIfDgUHbWVudXN4MmQUKwACDxYCHwIFImh0dHBzOi8vd3d3LnBlYy5pdC9SaW5ub3ZhUGVjLmFzcHgWAh8OBQdtZW51c3gyZBQrAAIPFgIfAgUjaHR0cHM6Ly93d3cucGVjLml0L1V0aWxpenphUGVjLmFzcHgWAh8OBQdtZW51c3gyZBQrAAIPFgIfAgUkaHR0cHM6Ly93d3cucGVjLml0L1BlY01vYmlsZUFwcC5hc3B4FgIfDgUHbWVudXN4MmQUKwACZGQUKwACZGQUKwACDxYCHwIFJWh0dHBzOi8vd3d3LnBlYy5pdC9Bc3Npc3RlbnphUGVjLmFzcHgWAh8OBQdtZW51c3gyZBQrAAIPFgIfAgUmaHR0cHM6Ly93d3cucGVjLml0L0RvY3VtZW50YXppb25lLmFzcHgWAh8OBQdtZW51c3gyZBQrAAIPFgQfAgUhaHR0cHM6Ly93d3cucGVjLml0L1V0ZW50aVBlYy5hc3B4HwloFgIfDgUHbWVudXN4MmQUKwACDxYEHwIFIGh0dHBzOi8vd3d3LnBlYy5pdC9WYW50YWdnaS5hc3B4HwloFgIfDgUHbWVudXN4MmQUKwACDxYEHwIFJGh0dHBzOi8vd3d3LnBlYy5pdC9Db21lRnVuemlvbmEuYXNweB8JaBYCHw4FB21lbnVzeDJkFCsAAg8WBB8CBSdodHRwczovL3d3dy5wZWMuaXQvQ29tcGFyYXppb25lUGVjLmFzcHgfCWgWAh8OBQdtZW51c3gyZA8WDWZmZmZmZmZmZmZmZmYWAQV1VGVsZXJpay5XZWIuVUkuUmFkUGFuZWxJdGVtLCBUZWxlcmlrLldlYi5VSSwgVmVyc2lvbj0yMDEyLjMuMTIwNS40MCwgQ3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj0xMjFmYWU3ODE2NWJhM2Q0FCsAAg8WAh8FaBYCHwMFCXJwYlN4TWVudRAWCGYCAQICAgMCBAIFAgYCBxYIFCsAAg8WAh8CBSlodHRwczovL3d3dy5wZWMuaXQvQ29zYUZpcm1hRGlnaXRhbGUuYXNweBYCHw4FB21lbnVzeDNkFCsAAg8WAh8CBSVodHRwczovL3d3dy5wZWMuaXQvRmlybWFEaWdpdGFsZS5hc3B4FgIfDgUHbWVudXN4M2QUKwACDxYCHwIFNGh0dHBzOi8vd3d3LnBlYy5pdC9LaXRGaXJtYURpZ2l0YWxlL0F0dGl2YXppb25lLmFzcHgWAh8OBQdtZW51c3gzZBQrAAIPFgIfAgUwaHR0cHM6Ly93d3cucGVjLml0L0tpdEZpcm1hRGlnaXRhbGUvUmlubm92by5hc3B4FgIfDgUHbWVudXN4M2QUKwACD2QWAh8OBQdtZW51c3gzZBQrAAJkZBQrAAIPFgIfAgUzaHR0cHM6Ly93d3cucGVjLml0L0RvY3VtZW50YXppb25lRmlybWFEaWdpdGFsZS5hc3B4FgIfDgUHbWVudXN4M2QUKwACDxYCHwIFIGh0dHBzOi8vd3d3LnBlYy5pdC9Eb3dubG9hZC5hc3B4FgIfDgUHbWVudXN4M2QPFghmZmZmZmZmZhYBBXVUZWxlcmlrLldlYi5VSS5SYWRQYW5lbEl0ZW0sIFRlbGVyaWsuV2ViLlVJLCBWZXJzaW9uPTIwMTIuMy4xMjA1LjQwLCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPTEyMWZhZTc4MTY1YmEzZDQUKwACDxYCHwVoFgQfAwUJcnBiU3hNZW51HwQFCHN4TWVudU1UEBYEZgIBAgICAxYEFCsAAg8WAh8CBStodHRwczovL3d3dy5wZWMuaXQvQ29zYU1hcmNoZVRlbXBvcmFsaS5hc3B4FgIfDgUHbWVudXN4NGQUKwACDxYCHwIFJ2h0dHBzOi8vd3d3LnBlYy5pdC9NYXJjaGVUZW1wb3JhbGkuYXNweBYCHw4FB21lbnVzeDRkFCsAAmRkFCsAAg8WAh8CBTVodHRwczovL3d3dy5wZWMuaXQvRG9jdW1lbnRhemlvbmVNYXJjaGVUZW1wb3JhbGkuYXNweBYCHw4FB21lbnVzeDRkDxYEZmZmZhYBBXVUZWxlcmlrLldlYi5VSS5SYWRQYW5lbEl0ZW0sIFRlbGVyaWsuV2ViLlVJLCBWZXJzaW9uPTIwMTIuMy4xMjA1LjQwLCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPTEyMWZhZTc4MTY1YmEzZDQUKwACDxYCHwVoFgIfAwUJcnBiU3hNZW51EBYGZgIBAgICAwIEAgUWBhQrAAIPFgIfAgU1aHR0cHM6Ly93d3cucGVjLml0L0Nvc2FGYXR0dXJhemlvbmVFbGV0dHJvbmljYVBBLmFzcHgWAh8OBQdtZW51c3g3ZBQrAAIPFgIfAgUxaHR0cHM6Ly93d3cucGVjLml0L0ZhdHR1cmF6aW9uZUVsZXR0cm9uaWNhUEEuYXNweBYCHw4FB21lbnVzeDdkFCsAAg8WAh8CBTpodHRwczovL3d3dy5wZWMuaXQvRmF0dHVyYXppb25lRWxldHRyb25pY2FQQV9MYW5kUGFnZS5hc3B4FgIfDgUHbWVudXN4N2QUKwACDxYCHwIFLmh0dHBzOi8vd3d3LnBlYy5pdC9Eb2NGbHlfRmF0dHVyYXppb25lX1BBLmFzcHgWAh8OBQdtZW51c3g3ZBQrAAIPFgIfAgUwaHR0cHM6Ly93d3cucGVjLml0L0Fzc2lzdGVuemFGYXR0dXJhemlvbmVQQS5hc3B4FgIfDgUHbWVudXN4MmQUKwACDxYCHwIFNGh0dHBzOi8vd3d3LnBlYy5pdC9Eb2N1bWVudGF6aW9uZUZhdHR1cmF6aW9uZVBBLmFzcHgWAh8OBQdtZW51c3g3ZA8WBmZmZmZmZhYBBXVUZWxlcmlrLldlYi5VSS5SYWRQYW5lbEl0ZW0sIFRlbGVyaWsuV2ViLlVJLCBWZXJzaW9uPTIwMTIuMy4xMjA1LjQwLCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPTEyMWZhZTc4MTY1YmEzZDQUKwACDxYCHwIFNWh0dHBzOi8vd3d3LnBlYy5pdC9Eb2NGbHlfQ29uc2VydmF6aW9uZV9EaWdpdGFsZS5hc3B4FgIfAwUJcnBiU3hNZW51ZBQrAAIPFgIfAgUvaHR0cHM6Ly93d3cucGVjLml0L1NvbHV6aW9uaVBlcnNvbmFsaXp6YXRlLmFzcHgWAh8DBQlycGJTeE1lbnVkFCsAAg8WBB8FaB8CBSNodHRwczovL3d3dy5wZWMuaXQvQ29udmVuemlvbmkuYXNweBYCHwMFCXJwYlN4TWVudWQUKwACDxYCHwVoFgIfAwUJcnBiU3hNZW51EBYLZgIBAgICAwIEAgUCBgIHAggCCQIKFgsUKwACDxYCHwIFH2h0dHBzOi8vd3d3LnBlYy5pdC9QYXJ0bmVyLmFzcHgWAh8OBQdtZW51c3g1ZBQrAAIPFgIfAgUpaHR0cHM6Ly93d3cucGVjLml0L1BhcnRuZXJTZXJ2aXppUGVjLmFzcHgWAh8OBQdtZW51c3g1ZBQrAAIPFgIfAgUsaHR0cHM6Ly93d3cucGVjLml0L1BhcnRuZXJGaXJtYURpZ2l0YWxlLmFzcHgWAh8OBQdtZW51c3g1ZBQrAAIPFgIfAgUlaHR0cHM6Ly93d3cucGVjLml0L1BhcnRuZXJEb2NmbHkuYXNweBYCHw4FB21lbnVzeDVkFCsAAg8WAh8CBS1odHRwczovL3d3dy5wZWMuaXQvUGFydG5lckNlcnRpZmljYXRpU1NMLmFzcHgWAh8OBQdtZW51c3g1ZBQrAAIPFgIfAgUjaHR0cHM6Ly93d3cucGVjLml0L1BhcnRuZXJDRFJMLmFzcHgWAh8OBQdtZW51c3gzZBQrAAJkZBQrAAJkZBQrAAJkZBQrAAIPFgIfAgUtaHR0cHM6Ly93d3cucGVjLml0L1BhcnRuZXJEb2N1bWVudGF6aW9uZS5hc3B4FgIfDgUHbWVudXN4NWQUKwACDxYCHwIFKWh0dHBzOi8vd3d3LnBlYy5pdC9QYXJ0bmVyQXNzaXN0ZW56YS5hc3B4FgIfDgUHbWVudXN4NWQPFgtmZmZmZmZmZmZmZhYBBXVUZWxlcmlrLldlYi5VSS5SYWRQYW5lbEl0ZW0sIFRlbGVyaWsuV2ViLlVJLCBWZXJzaW9uPTIwMTIuMy4xMjA1LjQwLCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPTEyMWZhZTc4MTY1YmEzZDQUKwACD2QWAh8DBQlycGJTeE1lbnUQFgVmAgECAgIDAgQWBRQrAAIPFgIfAgUsaHR0cHM6Ly93d3cucGVjLml0L0RvY3VtZW50YXppb25lLmFzcHg/dGFiPTAWAh8OBQdtZW51c3gyZBQrAAIPFgIfAgUzaHR0cHM6Ly93d3cucGVjLml0L0RvY3VtZW50YXppb25lRmlybWFEaWdpdGFsZS5hc3B4FgIfDgUHbWVudXN4MmQUKwACDxYCHwIFNWh0dHBzOi8vd3d3LnBlYy5pdC9Eb2N1bWVudGF6aW9uZU1hcmNoZVRlbXBvcmFsaS5hc3B4FgIfDgUHbWVudXN4MmQUKwACDxYCHwIFNGh0dHBzOi8vd3d3LnBlYy5pdC9Eb2N1bWVudGF6aW9uZUZhdHR1cmF6aW9uZVBBLmFzcHgWAh8OBQdtZW51c3gyZBQrAAIPFgIfAgUtaHR0cHM6Ly93d3cucGVjLml0L1BhcnRuZXJEb2N1bWVudGF6aW9uZS5hc3B4FgIfDgUHbWVudXN4MmQPFgVmZmZmZhYBBXVUZWxlcmlrLldlYi5VSS5SYWRQYW5lbEl0ZW0sIFRlbGVyaWsuV2ViLlVJLCBWZXJzaW9uPTIwMTIuMy4xMjA1LjQwLCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPTEyMWZhZTc4MTY1YmEzZDQUKwACDxYCHwIFIGh0dHBzOi8vd3d3LnBlYy5pdC9DaGlTaWFtby5hc3B4FgIfAwUJcnBiU3hNZW51ZBQrAAIPFgIfAgUgaHR0cHM6Ly93d3cucGVjLml0L0NvbnRhY3RzLmFzcHgWAh8DBQlycGJTeE1lbnVkDxYPZmZmZmZmZmZmZmZmZmZmFgEFdVRlbGVyaWsuV2ViLlVJLlJhZFBhbmVsSXRlbSwgVGVsZXJpay5XZWIuVUksIFZlcnNpb249MjAxMi4zLjEyMDUuNDAsIEN1bHR1cmU9bmV1dHJhbCwgUHVibGljS2V5VG9rZW49MTIxZmFlNzgxNjViYTNkNGQWHmYPDxYIHwVoHwYFFG15LWl0ZW0gSGlkZUNvbGxhcHNlHwdoHwgCAhYCHwMFCXJwYlN4TWVudRYCAgEPZBYGAgMPDxYCHgRUZXh0BQEwZGQCCw8PFgIfDwUEMCwwMGRkAg0PDxYCHwloZGQCAQ8PFgIfBWcWAh8DBQlycGJTeE1lbnUWAmYPZBYEAgEPZBYCAgEPZBYCZg9kFgICAQ9kFgICAw8PFgIfDwUYbG9naW4gKGFuY2hlIGxhIHR1YSBQRUMpZGQCAw8PFgIfCWhkZAICDw8WEB8JaB8GBQ5vcmFuZ2UgbXktaXRlbR8FaB8KaB8LBQZvcmFuZ2UfDAUGb3JhbmdlHw0FBm9yYW5nZR8IAgIWAh8DBQlycGJTeE1lbnVkAgMPD2QWAh8DBQlycGJTeE1lbnUWBGYPDxYCHwIFImh0dHBzOi8vd3d3LnBlYy5pdC9SaW5ub3ZhUGVjLmFzcHgWAh8OBQdtZW51c3gyZAIBDw8WAh8CBTBodHRwczovL3d3dy5wZWMuaXQvS2l0RmlybWFEaWdpdGFsZS9SaW5ub3ZvLmFzcHgWAh8OBQdtZW51c3gyZAIEDw8WAh8FaBYCHwMFCXJwYlN4TWVudRYYZg8PFgIfAgUcaHR0cHM6Ly93d3cucGVjLml0L0Nvc2EuYXNweBYCHw4FB21lbnVzeDJkAgEPDxYCHwIFJmh0dHBzOi8vd3d3LnBlYy5pdC9NYWlsQm94UmVxdWVzdC5hc3B4FgIfDgUHbWVudXN4MmQCAg8PFgIfAgUiaHR0cHM6Ly93d3cucGVjLml0L1Jpbm5vdmFQZWMuYXNweBYCHw4FB21lbnVzeDJkAgMPDxYCHwIFI2h0dHBzOi8vd3d3LnBlYy5pdC9VdGlsaXp6YVBlYy5hc3B4FgIfDgUHbWVudXN4MmQCBA8PFgIfAgUkaHR0cHM6Ly93d3cucGVjLml0L1BlY01vYmlsZUFwcC5hc3B4FgIfDgUHbWVudXN4MmQCBQ9kFgICAQ8PFgQfAgUwaHR0cHM6Ly9nZXN0aW9uZW1haWwucGVjLml0L3Jlc2V0X3Bhc3N3b3JkL2luZGV4HgZUYXJnZXQFBl9ibGFua2RkAgcPDxYCHwIFJWh0dHBzOi8vd3d3LnBlYy5pdC9Bc3Npc3RlbnphUGVjLmFzcHgWAh8OBQdtZW51c3gyZAIIDw8WAh8CBSZodHRwczovL3d3dy5wZWMuaXQvRG9jdW1lbnRhemlvbmUuYXNweBYCHw4FB21lbnVzeDJkAgkPDxYEHwIFIWh0dHBzOi8vd3d3LnBlYy5pdC9VdGVudGlQZWMuYXNweB8JaBYCHw4FB21lbnVzeDJkAgoPDxYEHwIFIGh0dHBzOi8vd3d3LnBlYy5pdC9WYW50YWdnaS5hc3B4HwloFgIfDgUHbWVudXN4MmQCCw8PFgQfAgUkaHR0cHM6Ly93d3cucGVjLml0L0NvbWVGdW56aW9uYS5hc3B4HwloFgIfDgUHbWVudXN4MmQCDA8PFgQfAgUnaHR0cHM6Ly93d3cucGVjLml0L0NvbXBhcmF6aW9uZVBlYy5hc3B4HwloFgIfDgUHbWVudXN4MmQCBQ8PFgIfBWgWAh8DBQlycGJTeE1lbnUWEGYPDxYCHwIFKWh0dHBzOi8vd3d3LnBlYy5pdC9Db3NhRmlybWFEaWdpdGFsZS5hc3B4FgIfDgUHbWVudXN4M2QCAQ8PFgIfAgUlaHR0cHM6Ly93d3cucGVjLml0L0Zpcm1hRGlnaXRhbGUuYXNweBYCHw4FB21lbnVzeDNkAgIPDxYCHwIFNGh0dHBzOi8vd3d3LnBlYy5pdC9LaXRGaXJtYURpZ2l0YWxlL0F0dGl2YXppb25lLmFzcHgWAh8OBQdtZW51c3gzZAIDDw8WAh8CBTBodHRwczovL3d3dy5wZWMuaXQvS2l0RmlybWFEaWdpdGFsZS9SaW5ub3ZvLmFzcHgWAh8OBQdtZW51c3gzZAIEDw9kFgIfDgUHbWVudXN4MxYCAgEPDxYEHwIFLmh0dHBzOi8vYXR0aXZhemlvbmkuZmlybWEtcmVtb3RhLml0L2FzbW9uaXRvci8fEAUGX2JsYW5rZGQCBQ9kFgICAQ8PFgQfAgUxaHR0cHM6Ly9rYi5hcnViYS5pdC9LQi9jNjM0LzA0ZmlybWEtZGlnaXRhbGUuYXNweB8QBQZfYmxhbmtkZAIGDw8WAh8CBTNodHRwczovL3d3dy5wZWMuaXQvRG9jdW1lbnRhemlvbmVGaXJtYURpZ2l0YWxlLmFzcHgWAh8OBQdtZW51c3gzZAIHDw8WAh8CBSBodHRwczovL3d3dy5wZWMuaXQvRG93bmxvYWQuYXNweBYCHw4FB21lbnVzeDNkAgYPDxYCHwVoFgQfAwUJcnBiU3hNZW51HwQFCHN4TWVudU1UFghmDw8WAh8CBStodHRwczovL3d3dy5wZWMuaXQvQ29zYU1hcmNoZVRlbXBvcmFsaS5hc3B4FgIfDgUHbWVudXN4NGQCAQ8PFgIfAgUnaHR0cHM6Ly93d3cucGVjLml0L01hcmNoZVRlbXBvcmFsaS5hc3B4FgIfDgUHbWVudXN4NGQCAg9kFgICAQ8PFgQfAgUcaHR0cHM6Ly9hc3Npc3RlbnphLmFydWJhLml0Lx8QBQZfYmxhbmtkZAIDDw8WAh8CBTVodHRwczovL3d3dy5wZWMuaXQvRG9jdW1lbnRhemlvbmVNYXJjaGVUZW1wb3JhbGkuYXNweBYCHw4FB21lbnVzeDRkAgcPDxYCHwVoFgIfAwUJcnBiU3hNZW51FgxmDw8WAh8CBTVodHRwczovL3d3dy5wZWMuaXQvQ29zYUZhdHR1cmF6aW9uZUVsZXR0cm9uaWNhUEEuYXNweBYCHw4FB21lbnVzeDdkAgEPDxYCHwIFMWh0dHBzOi8vd3d3LnBlYy5pdC9GYXR0dXJhemlvbmVFbGV0dHJvbmljYVBBLmFzcHgWAh8OBQdtZW51c3g3ZAICDw8WAh8CBTpodHRwczovL3d3dy5wZWMuaXQvRmF0dHVyYXppb25lRWxldHRyb25pY2FQQV9MYW5kUGFnZS5hc3B4FgIfDgUHbWVudXN4N2QCAw8PFgIfAgUuaHR0cHM6Ly93d3cucGVjLml0L0RvY0ZseV9GYXR0dXJhemlvbmVfUEEuYXNweBYCHw4FB21lbnVzeDdkAgQPDxYCHwIFMGh0dHBzOi8vd3d3LnBlYy5pdC9Bc3Npc3RlbnphRmF0dHVyYXppb25lUEEuYXNweBYCHw4FB21lbnVzeDJkAgUPDxYCHwIFNGh0dHBzOi8vd3d3LnBlYy5pdC9Eb2N1bWVudGF6aW9uZUZhdHR1cmF6aW9uZVBBLmFzcHgWAh8OBQdtZW51c3g3ZAIIDw8WAh8CBTVodHRwczovL3d3dy5wZWMuaXQvRG9jRmx5X0NvbnNlcnZhemlvbmVfRGlnaXRhbGUuYXNweBYCHwMFCXJwYlN4TWVudWQCCQ8PFgIfAgUvaHR0cHM6Ly93d3cucGVjLml0L1NvbHV6aW9uaVBlcnNvbmFsaXp6YXRlLmFzcHgWAh8DBQlycGJTeE1lbnVkAgoPDxYEHwVoHwIFI2h0dHBzOi8vd3d3LnBlYy5pdC9Db252ZW56aW9uaS5hc3B4FgIfAwUJcnBiU3hNZW51ZAILDw8WAh8FaBYCHwMFCXJwYlN4TWVudRYWZg8PFgIfAgUfaHR0cHM6Ly93d3cucGVjLml0L1BhcnRuZXIuYXNweBYCHw4FB21lbnVzeDVkAgEPDxYCHwIFKWh0dHBzOi8vd3d3LnBlYy5pdC9QYXJ0bmVyU2Vydml6aVBlYy5hc3B4FgIfDgUHbWVudXN4NWQCAg8PFgIfAgUsaHR0cHM6Ly93d3cucGVjLml0L1BhcnRuZXJGaXJtYURpZ2l0YWxlLmFzcHgWAh8OBQdtZW51c3g1ZAIDDw8WAh8CBSVodHRwczovL3d3dy5wZWMuaXQvUGFydG5lckRvY2ZseS5hc3B4FgIfDgUHbWVudXN4NWQCBA8PFgIfAgUtaHR0cHM6Ly93d3cucGVjLml0L1BhcnRuZXJDZXJ0aWZpY2F0aVNTTC5hc3B4FgIfDgUHbWVudXN4NWQCBQ8PFgIfAgUjaHR0cHM6Ly93d3cucGVjLml0L1BhcnRuZXJDRFJMLmFzcHgWAh8OBQdtZW51c3gzZAIGD2QWAgIBDw8WBB8CBSZodHRwOi8vcmlubm92b2NkcmwucGVjLml0L1Jpbm5vdm8uYXNweB8QBQZfYmxhbmtkZAIHD2QWAgIBDw8WBB8CBTZodHRwOi8vcmlubm92b2NkcmwucGVjLml0L1Jpbm5vdm9DZXJ0aWZpY2F0b0NoZWNrLmFzcHgfEAUGX2JsYW5rZGQCCA9kFgICAQ8PFgQfAgU9aHR0cHM6Ly93d3cucGVjLml0L2xpbmthc3Npc3RlbnphL01lbnVTWEl0ZW1fUEFGQVFQYXJ0bmVyLmFzcB8QBQZfYmxhbmtkZAIJDw8WAh8CBS1odHRwczovL3d3dy5wZWMuaXQvUGFydG5lckRvY3VtZW50YXppb25lLmFzcHgWAh8OBQdtZW51c3g1ZAIKDw8WAh8CBSlodHRwczovL3d3dy5wZWMuaXQvUGFydG5lckFzc2lzdGVuemEuYXNweBYCHw4FB21lbnVzeDVkAgwPD2QWAh8DBQlycGJTeE1lbnUWCmYPDxYCHwIFLGh0dHBzOi8vd3d3LnBlYy5pdC9Eb2N1bWVudGF6aW9uZS5hc3B4P3RhYj0wFgIfDgUHbWVudXN4MmQCAQ8PFgIfAgUzaHR0cHM6Ly93d3cucGVjLml0L0RvY3VtZW50YXppb25lRmlybWFEaWdpdGFsZS5hc3B4FgIfDgUHbWVudXN4MmQCAg8PFgIfAgU1aHR0cHM6Ly93d3cucGVjLml0L0RvY3VtZW50YXppb25lTWFyY2hlVGVtcG9yYWxpLmFzcHgWAh8OBQdtZW51c3gyZAIDDw8WAh8CBTRodHRwczovL3d3dy5wZWMuaXQvRG9jdW1lbnRhemlvbmVGYXR0dXJhemlvbmVQQS5hc3B4FgIfDgUHbWVudXN4MmQCBA8PFgIfAgUtaHR0cHM6Ly93d3cucGVjLml0L1BhcnRuZXJEb2N1bWVudGF6aW9uZS5hc3B4FgIfDgUHbWVudXN4MmQCDQ8PFgIfAgUgaHR0cHM6Ly93d3cucGVjLml0L0NoaVNpYW1vLmFzcHgWAh8DBQlycGJTeE1lbnVkAg4PDxYCHwIFIGh0dHBzOi8vd3d3LnBlYy5pdC9Db250YWN0cy5hc3B4FgIfAwUJcnBiU3hNZW51ZAIFD2QWFAIDDw8WAh8CBSZodHRwczovL3d3dy5wZWMuaXQvTWFpbEJveFJlcXVlc3QuYXNweGRkAgUPDxYCHw8FAjI1ZGQCBw8PFgIfDwUCMDBkZAIJDw8WAh8CBSVodHRwczovL3d3dy5wZWMuaXQvRmlybWFEaWdpdGFsZS5hc3B4ZGQCCw8WAh8JaBYGAgEPFgIeBGhyZWYFH2phdmFzY3JpcHQ6YWxlcnQoJ21hbmNhIGxpbmsnKTtkAgMPFgIfEQUfamF2YXNjcmlwdDphbGVydCgnbWFuY2EgbGluaycpO2QCBQ8WAh8RBR9qYXZhc2NyaXB0OmFsZXJ0KCdtYW5jYSBsaW5rJyk7ZAIND2QWAgIBDw8WAh8CBSdodHRwczovL3d3dy5wZWMuaXQvTWFyY2hlVGVtcG9yYWxpLmFzcHhkZAIPDxYCHglpbm5lcmh0bWwFAjI1ZAIRDxYCHxIFAy4wMGQCFQ9kFggCAQ8PFgIfAgUeaHR0cHM6Ly93d3cucGVjLml0L0RvY0ZseS5hc3B4ZGQCAw8PFgIfAgUfaHR0cHM6Ly93d3cucGVjLml0L1BhcnRuZXIuYXNweGRkAgUPDxYCHwIFI2h0dHBzOi8vd3d3LnBlYy5pdC9Db252ZW56aW9uaS5hc3B4ZGQCBw8PFgIfAgUvaHR0cHM6Ly93d3cucGVjLml0L1NvbHV6aW9uaVBlcnNvbmFsaXp6YXRlLmFzcHhkZAIXDw8WAh8JaGRkAggPFCsAAhQrAAMPFgIfAWhkZGQQFgFmFgEUKwADDxYCHwFoZGRkDxYBZhYBBXJUZWxlcmlrLldlYi5VSS5SYWRXaW5kb3csIFRlbGVyaWsuV2ViLlVJLCBWZXJzaW9uPTIwMTIuMy4xMjA1LjQwLCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPTEyMWZhZTc4MTY1YmEzZDQWAmYPFCsAAw8WAh8BaGRkZGQCAg9kFgJmDxYCHwloZAIDDw8WAh8JaGRkGAEFHl9fQ29udHJvbHNSZXF1aXJlUG9zdEJhY2tLZXlfXxYHBRZjdGwwMCRjdGwwMCRydGJUb3BNZW51BSVjdGwwMCRjdGwwMCRtYWluUGxhY2VIb2xkZXIkcnBiU3hNZW51BUhjdGwwMCRjdGwwMCRtYWluUGxhY2VIb2xkZXIkcnBiU3hNZW51JGkwJGJveENhcnJlbGxvJEltYWdlQnV0dG9uR29Ub0NhcnQFO2N0bDAwJGN0bDAwJG1haW5QbGFjZUhvbGRlciRycGJTeE1lbnUkaTEkaTAkTG9naW5Gb3JtJExvZ2luBSVjdGwwMCRjdGwwMCRCdXR0b25OYXZpZ2F0aW9uUmVuZXdFeGl0BShjdGwwMCRjdGwwMCRSYWRXaW5kb3dNYW5hZ2VyUmVuZXdBYmFuZG9uBSZjdGwwMCRjdGwwMCRSYWRXaW5kb3dNb2RhbFJlbmV3QWJhbmRvboDkbrpKUYSx9LbIf/gdFEHUWEAZ" />
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+var theForm = document.forms['aspnetForm'];
+if (!theForm) {
+    theForm = document.aspnetForm;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+//]]>
+</script>
+
+
+<script src="/WebResource.axd?d=WFbUPoJvMVFOIwIwyHnwxc4ke892KjEKqqwx5k7ekiBCdRy2dXcA6re6doD70d08IJ_DktwimD68BMpDmSkABuFf6NU1&amp;t=635647613138817722" type="text/javascript"></script>
+
+
+<script src="/ScriptResource.axd?d=DodheELoK5sgHGqkRc-GdDH62uTrJQPFBjthMyAuOfXEep4sTFiH9rt0JnKL-G4x8dlW-zM96vCAIXZkDAfkg5cR-ODtDE9EmBf5qBTM_pvCVEnb3ca2dCJvrYmqjHUvs-5iMyR3eX2pt4cVT17UgJudaXY1&amp;t=ffffffffb3aa5c5a" type="text/javascript"></script>
+<script src="/Telerik.Web.UI.WebResource.axd?_TSM_HiddenField_=ctl00_ctl00_RadScriptManager_TSM&amp;compress=1&amp;_TSM_CombinedScripts_=%3b%3bAjaxControlToolkit%2c+Version%3d4.1.7.123%2c+Culture%3dneutral%2c+PublicKeyToken%3d28f01b0e84b6d53e%3ait-IT%3a44981e4a-f654-4c69-b806-cb922fc13d56%3aea597d4b%3ab25378d2%3bTelerik.Web.UI%2c+Version%3d2012.3.1205.40%2c+Culture%3dneutral%2c+PublicKeyToken%3d121fae78165ba3d4%3ait-IT%3af18b91a4-0e6c-41d1-af11-dfb338738b79%3a16e4e7cd%3af7645509%3a24ee1bba%3a1e771326%3aa7e79140%3af46195d3%3a4cacbc31%3a874f8ea2%3a19620875%3a490a9d4e%3abd8f85e4" type="text/javascript"></script>
+<script type="text/javascript">
+//<![CDATA[
+if (typeof(Sys) === 'undefined') throw new Error('ASP.NET Ajax client-side framework failed to load.');
+function WebForm_OnSubmit() {
+if (typeof(ValidatorOnSubmit) == "function" && ValidatorOnSubmit() == false) return false;
+return true;
+}
+//]]>
+</script>
+
+<div>
+
+	<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="CA0B0334" />
+	<input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="/wEWCQLa2YmbCwKt+M+CBgLCroyLAgKXn97GBgKn9NT+CwLIsK+lBwLp9vfABgKAgZ65DQKgvpegARbICG303ELPXM3KTTR0yfKrhvpC" />
+</div>
+            <script type="text/javascript">
+//<![CDATA[
+Sys.WebForms.PageRequestManager._initialize('ctl00$ctl00$RadScriptManager', 'aspnetForm', [], [], [], 90, 'ctl00$ctl00');
+//]]>
+</script>
+
+            <div id="RowAssistenza" style="display: none">
+                <div class="box-assistenza-home">
+                    <img src="../images/home_telefono.png" alt="." class="row-assistenza-images" />
+                    <span class="assistenza-description">Informazioni prevendita 0575/05077</span>
+                </div>
+                <div class="box-assistenza-home">
+                    <img src="../images/home_chat.png" alt="." class="row-assistenza-images" />
+                    <a href="javascript:ShowHideChat();" class="assistenza-description">Avvia una chat per informazioni prevendita</a>
+                </div>
+                <div class="box-assistenza-home">
+                    <img src="../images/home_ticket.png" alt="." class="row-assistenza-images" />
+                    <a href="http://commerciale.aruba.it/Main/frmNewTicket.aspx" class="assistenza-description" target="_blank">Apri un ticket per informazioni prevendita</a>
+                </div>
+            </div>
+            <div class="black-row-container">
+
+                <div id="navcontainer">
+                    <ul>
+                        <li><a href="https://webmail.pec.it/" target="_blank">webmail</a></li>
+                        <li><a href="https://gestionemail.pec.it/" class="row-assistenza-separator-left" target="_blank">gestione caselle PEC</a></li>
+                        <li class="row-assistenza-green-li">
+                            <a href="http://www.pec.it/contacts.aspx " id="rowLinkAssistenza">
+                                <img src="../images/home_cuffie.png" alt="." class="row-assistenza-ico" />assistenza h24</a>
+                        </li>
+                        <li class="row-assistenza-lightblack-li">
+                            <a href="javascript:showUpperRowAssistenza();" id="rowLinkTicket">
+                                <img src="../images/home_interrogativo.png" alt="." class="row-assistenza-ico" />prevendita</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="headerMenuPEC_container">
+                <div class="headerMenuPEC">
+                    <a href="./" id="ctl00_ctl00_logo" class="BoxRight" style="display: block; float: left; margin: 5px; margin-left: 15px;">
+                        <img src="/images/main_logo.png" alt="logopec" />
+                    </a>
+                    <div style="float: right; margin-top: 30px" id="DivMenuTop">
+                        
+                        <div id="ctl00_ctl00_rtbTopMenu" class="RadToolBar RadToolBar_Horizontal RadToolBar_Tema1 RadToolBar_Tema1_Horizontal" style="width:100%;z-index:9000;">
+	<!-- 2012.3.1205.40 --><div class="rtbOuter">
+		<div class="rtbMiddle">
+			<div class="rtbInner">
+				<ul class="rtbUL">
+					<li class="rtbItem rtbBtn"><a class="rtbWrap" href="https://www.pec.it/MailBoxRequest.aspx"><span class="rtbOut"><span class="rtbMid"><span class="rtbIn"><span class="rtbText">POSTA CERTIFICATA</span></span></span></span></a></li><li class="rtbSeparator"><span class="rtbText"></span></li><li class="rtbItem rtbBtn"><a class="rtbWrap" href="https://www.pec.it/FirmaDigitale.aspx"><span class="rtbOut"><span class="rtbMid"><span class="rtbIn"><span class="rtbText">FIRMA DIGITALE</span></span></span></span></a></li><li class="rtbSeparator"><span class="rtbText"></span></li><li class="rtbItem rtbBtn"><a class="rtbWrap" id="TopMenuMT" href="https://www.pec.it/MarcheTemporali.aspx"><span class="rtbOut"><span class="rtbMid"><span class="rtbIn"><span class="rtbText">MARCA TEMPORALE</span></span></span></span></a></li><li class="rtbSeparator"><span class="rtbText"></span></li><li class="rtbItem rtbBtn"><a class="rtbWrap" id="TopMenuPA" href="https://www.pec.it/FatturazioneElettronicaPA_LandPage.aspx"><span class="rtbOut"><span class="rtbMid"><span class="rtbIn"><span class="rtbText">FATTURAZIONE PA</span></span></span></span></a></li><li class="rtbSeparator"><span class="rtbText"></span></li><li class="rtbItem rtbBtn"><a class="rtbWrap" href="https://www.pec.it/Basket/TuttiProdotti.aspx"><span class="rtbOut"><span class="rtbMid"><span class="rtbIn"><span class="rtbText">TUTTI I PRODOTTI</span></span></span></span></a></li><li class="rtbSeparator"><span class="rtbText"></span></li><li class="rtbItem rtbBtn"><a class="rtbWrap" href="https://www.pec.it/Convenzioni.aspx"><span class="rtbOut"><span class="rtbMid"><span class="rtbIn"><span class="rtbText">CONVENZIONI</span></span></span></span></a></li>
+				</ul>
+			</div>
+		</div>
+	</div><input id="ctl00_ctl00_rtbTopMenu_ClientState" name="ctl00_ctl00_rtbTopMenu_ClientState" type="hidden" />
+</div>
+                    </div>
+                </div>
+            </div>
+            <div style="clear: both;" id="DivConvenzione">
+                
+                
+                <div style="clear: both">
+                </div>
+            </div>
+
+            <div style="width: 1260px; margin: 0 auto; padding-top: 20px;">
+                
+    <div id="DivMenuSx" style="vertical-align: top;">
+        <div style="margin-right: 15px; margin-left: 11px; margin-top: 11px; float: left;">
+            <a id="ctl00_ctl00_mainPlaceHolder_HyperLink1"></a>
+            <!-- INIT OW CU-PEF Aggiunto box per riepilogo prodotti carrello -->
+            <div id="ctl00_ctl00_mainPlaceHolder_rpbSxMenu" class="RadPanelBar RadPanelBar_Tema1" style="width:200px;">
+	<ul class="rpRootGroup">
+		<li class="rpItem rpFirst"><a href="#" class="rpLink my-item HideCollapse rpExpandable rpDisabled" style="color:Black;"><span class="rpOut"><span class="rpExpandHandle"></span><span class="rpText">Carrello</span></span></a><div class="rpSlide">
+			<div class="rpTemplate">
+				
+                            
+<style type="text/css">
+    .boxCartContainer
+    {
+        width: 95%;
+        margin: 0px auto 0px auto;
+        position: relative;
+        height: 112px;
+    }
+    .boxCartProductInfo
+    {
+        font-size: 10px;
+        font-family: Verdana, Sans Serif;
+        padding: 4px 12px 7px;
+        position: relative;
+    }
+    .boxCartTotal
+    {
+        height: 35px;
+        position: relative;
+        /*top: 25px;*/
+    }
+    .boxCartTotalLeft
+    {
+        top: 2px;
+        font-size: 8px;
+        left: 41px;
+        font-family: Verdana, Sans Serif;
+        position: absolute;
+    }
+    .boxCartTotalRight
+    {
+        top: 1px;
+        right: 21px;
+        font-size: 8px;
+        font-family: Verdana, Sans Serif;
+        position: absolute;
+    }
+    .boxCartButton
+    {
+        padding: 0px 0px 5px 0px;
+        text-align: right;
+        position: relative;
+       /* top: 21px;*/
+    }
+    .labelTotalCost
+    {
+        font-size: 12px;
+        font-weight: bold;
+    }
+    .bold
+    {
+        font-weight: bold;
+    }
+    
+    .carrello
+    {
+        background-image: url('../Basket/Images/cart.png');
+        width: 18px;
+        height: 18px;
+        background-repeat: no-repeat;
+        float: left;
+    }
+    
+    .carrello-right
+    {
+        width: 145px;
+        text-align: center;
+    }
+</style>
+<div class="boxCartContainer">
+    <div class="boxCartProductInfo">
+        
+        <div class="carrello">
+        </div>
+        <div class="carrello-right">
+            <span id="ctl00_ctl00_mainPlaceHolder_rpbSxMenu_i0_boxCarrello_labelProductInfoNumber" class="bold">0</span>
+            <span id="ctl00_ctl00_mainPlaceHolder_rpbSxMenu_i0_boxCarrello_labelProductInfoEnd"> prodotti nel carrello</span>
+        </div>
+    </div>
+    <div class="boxCartTotal">
+        <div class="boxCartTotalLeft">
+            <span id="ctl00_ctl00_mainPlaceHolder_rpbSxMenu_i0_boxCarrello_labelTotalDescription" class="bold">Totale:</span>
+        </div>
+        <div class="boxCartTotalRight">
+            <span id="ctl00_ctl00_mainPlaceHolder_rpbSxMenu_i0_boxCarrello_labelTotalStart" class="bold" style="font-size:8pt;">€</span>
+            <span id="ctl00_ctl00_mainPlaceHolder_rpbSxMenu_i0_boxCarrello_labelTotalCost" class="labelTotalCost" style="font-size:8pt;">0,00</span>
+            
+        </div>
+    </div>
+    <div class="boxCartButton">
+        <input type="image" name="ctl00$ctl00$mainPlaceHolder$rpbSxMenu$i0$boxCarrello$ImageButtonGoToCart" disabled="disabled" id="ctl00_ctl00_mainPlaceHolder_rpbSxMenu_i0_boxCarrello_ImageButtonGoToCart" src="Basket/Images/but_vai_carrello.png" style="border-width:0px;" />
+    </div>
+</div>
+
+                        
+			</div>
+		</div></li><li class="rpItem"><a href="#" class="rpLink my-item rpExpandable rpExpanded"><span class="rpOut"><span class="rpExpandHandle"></span><span class="rpText">Area Clienti</span></span></a><div class="rpSlide" style="display:block;">
+			<ul class="rpGroup rpLevel1 " style="display:block;">
+				<li class="rpItem rpFirst rpLast"><div class="rpTemplate">
+					
+                                    <div id="ctl00_ctl00_mainPlaceHolder_rpbSxMenu_i1_i0_AnonymousPanel" style="z-index: 1000">
+						
+                                        <table id="ctl00_ctl00_mainPlaceHolder_rpbSxMenu_i1_i0_LoginForm" cellspacing="0" cellpadding="0" border="0" style="border-collapse:collapse;">
+							<tr>
+								<td>
+                                                <div id="ctl00_ctl00_mainPlaceHolder_rpbSxMenu_i1_i0_LoginForm_pnlLogin">
+									
+                                                    
+                                                    <table border="0" style="width: 200px; margin-top: 10px">
+                                                        <tr>
+                                                            <td align='center'>
+                                                                <table border="0" cellspacing="0" cellpadding="0">
+                                                                    <tr align="left" valign="top">
+                                                                        <td style="width: 40px; text-align: right; padding: 4px">
+                                                                            <img src="images/user.png" alt="login" style="border-width:0px;" />
+                                                                        </td>
+                                                                        <td style="padding-left: 5px;">
+                                                                            <input name="ctl00$ctl00$mainPlaceHolder$rpbSxMenu$i1$i0$LoginForm$UserName" type="text" value="login (anche la tua PEC)" id="UserName" onblur="ManageTextLogin(this, event);" onfocus="ManageTextLogin(this, event);" style="color:Gray;font-size:8pt;width:125px;" />&nbsp;
+                                                                            
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr align="left" valign="top" style="margin-top: 5px;">
+                                                                        <td style="width: 40px; text-align: right;">
+                                                                            <img id="ctl00_ctl00_mainPlaceHolder_rpbSxMenu_i1_i0_LoginForm_Image5" src="images/password.png" alt="login" style="border-width:0px;" />
+                                                                        </td>
+                                                                        <td style="padding-left: 5px;">
+                                                                            <input name="ctl00$ctl00$mainPlaceHolder$rpbSxMenu$i1$i0$LoginForm$Password" type="text" value="password" id="Password" onblur="ManageTextPWD(this, event);" onfocus="ManageTextPWD(this, event);" style="color:Gray;font-size:8pt;width:125px;" />&nbsp;
+                                                                            
+                                                                          
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr align="left" valign="top">
+                                                                    </tr>
+                                                                </table>
+                                                                
+                                                            </td>
+                                                            <td valign="middle"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="2" style="text-align: right">
+                                                                <input type="image" name="ctl00$ctl00$mainPlaceHolder$rpbSxMenu$i1$i0$LoginForm$Login" id="ctl00_ctl00_mainPlaceHolder_rpbSxMenu_i1_i0_LoginForm_Login" class="login-button" src="images/but_accedi.png" onclick="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$ctl00$mainPlaceHolder$rpbSxMenu$i1$i0$LoginForm$Login&quot;, &quot;&quot;, true, &quot;vgAreaClienti&quot;, &quot;&quot;, false, false))" style="border-width:0px;" />
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td align="right" colspan="2">
+                                                                <a id="ctl00_ctl00_mainPlaceHolder_rpbSxMenu_i1_i0_LoginForm_linkAreaClientiRecuperaPassword" href="javascript:__doPostBack(&#39;ctl00$ctl00$mainPlaceHolder$rpbSxMenu$i1$i0$LoginForm$linkAreaClientiRecuperaPassword&#39;,&#39;&#39;)" style="font-size:7pt;margin-right: 14px;">Recupera dati di accesso</a>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="2" align="center">
+                                                                
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                
+								</div>
+                                            </td>
+							</tr>
+						</table>
+                                    
+					</div>
+                                    
+                                    <div style="text-align: center">
+                                        
+                                        
+                                        <span id="ctl00_ctl00_mainPlaceHolder_rpbSxMenu_i1_i0_CFv" style="color:Red;font-size:7pt;font-weight:bold;display:none;">Login e Password obbligatori</span>
+                                    </div>
+                                
+				</div></li>
+			</ul>
+		</div></li><li class="rpItem"><a href="#" class="rpLink my-item rpExpandable"><span class="rpOut"><span class="rpExpandHandle"></span><span class="rpText">Rinnova</span></span></a><div class="rpSlide">
+			<ul class="rpGroup rpLevel1 ">
+				<li class="rpItem rpFirst"><a href="https://www.pec.it/RinnovaPec.aspx" class="rpLink blankLink"><span class="rpOut rpNavigation"><span class="rpExpandHandle"></span><span class="rpText">Pec</span></span></a></li><li class="rpItem rpLast"><a href="https://www.pec.it/KitFirmaDigitale/Rinnovo.aspx" class="rpLink blankLink"><span class="rpOut rpNavigation"><span class="rpExpandHandle"></span><span class="rpText">Firma Digitale</span></span></a></li>
+			</ul>
+		</div></li><li class="rpItem"><a href="#" class="rpLink my-item rpExpandable"><span class="rpOut"><span class="rpExpandHandle"></span><span class="rpText">Posta Certificata</span></span></a><div class="rpSlide">
+			<ul class="rpGroup rpLevel1 ">
+				<li class="rpItem rpFirst"><a href="https://www.pec.it/Cosa.aspx" class="rpLink blankLink"><span class="rpOut rpNavigation"><span class="rpExpandHandle"></span><span class="rpText">Cos'è</span></span></a></li><li class="rpItem"><a href="https://www.pec.it/MailBoxRequest.aspx" class="rpLink blankLink"><span class="rpOut rpNavigation"><span class="rpExpandHandle"></span><span class="rpText">Acquista</span></span></a></li><li class="rpItem"><a href="https://www.pec.it/RinnovaPec.aspx" class="rpLink blankLink"><span class="rpOut rpNavigation"><span class="rpExpandHandle"></span><span class="rpText">Rinnova</span></span></a></li><li class="rpItem"><a href="https://www.pec.it/UtilizzaPec.aspx" class="rpLink blankLink"><span class="rpOut rpNavigation"><span class="rpExpandHandle"></span><span class="rpText">Utilizza la tua PEC</span></span></a></li><li class="rpItem"><a href="https://www.pec.it/PecMobileApp.aspx" class="rpLink blankLink"><span class="rpOut rpNavigation"><span class="rpExpandHandle"></span><span class="rpText">Aruba PEC Mobile</span></span></a></li><li class="rpItem"><div class="rpTemplate">
+					
+                                    <a id="ctl00_ctl00_mainPlaceHolder_rpbSxMenu_i4_i5_linkEsterno213" class="blankLink" href="https://gestionemail.pec.it/reset_password/index" target="_blank">Recupera Password</a>
+                                
+				</div></li><li class="rpItem"></li><li class="rpItem"><a href="https://www.pec.it/AssistenzaPec.aspx" class="rpLink blankLink"><span class="rpOut rpNavigation"><span class="rpExpandHandle"></span><span class="rpText">FAQ e Assistenza h24</span></span></a></li><li class="rpItem rpLast"><a href="https://www.pec.it/Documentazione.aspx" class="rpLink blankLink"><span class="rpOut rpNavigation"><span class="rpExpandHandle"></span><span class="rpText">Documentazione</span></span></a></li>
+			</ul>
+		</div></li><li class="rpItem"><a href="#" class="rpLink my-item rpExpandable"><span class="rpOut"><span class="rpExpandHandle"></span><span class="rpText">Firma Digitale</span></span></a><div class="rpSlide">
+			<ul class="rpGroup rpLevel1 ">
+				<li class="rpItem rpFirst"><a href="https://www.pec.it/CosaFirmaDigitale.aspx" class="rpLink blankLink"><span class="rpOut rpNavigation"><span class="rpExpandHandle"></span><span class="rpText">Cos'è</span></span></a></li><li class="rpItem"><a href="https://www.pec.it/FirmaDigitale.aspx" class="rpLink blankLink"><span class="rpOut rpNavigation"><span class="rpExpandHandle"></span><span class="rpText">Acquista</span></span></a></li><li class="rpItem"><a href="https://www.pec.it/KitFirmaDigitale/Attivazione.aspx" class="rpLink blankLink"><span class="rpOut rpNavigation"><span class="rpExpandHandle"></span><span class="rpText">Attivazione KIT</span></span></a></li><li class="rpItem"><a href="https://www.pec.it/KitFirmaDigitale/Rinnovo.aspx" class="rpLink blankLink"><span class="rpOut rpNavigation"><span class="rpExpandHandle"></span><span class="rpText">Rinnova</span></span></a></li><li class="rpItem"><div class="rpTemplate">
+					
+                                    <a id="ctl00_ctl00_mainPlaceHolder_rpbSxMenu_i5_i4_linkEsterno314" class="blankLink" href="https://attivazioni.firma-remota.it/asmonitor/" target="_blank">Gestione Firma Remota</a>
+                                
+				</div></li><li class="rpItem"><div class="rpTemplate">
+					
+                                    <a id="ctl00_ctl00_mainPlaceHolder_rpbSxMenu_i5_i5_linkEsterno308" class="blankLink" href="https://kb.aruba.it/KB/c634/04firma-digitale.aspx" target="_blank">FAQ e Assistenza h24</a>
+                                
+				</div></li><li class="rpItem"><a href="https://www.pec.it/DocumentazioneFirmaDigitale.aspx" class="rpLink blankLink"><span class="rpOut rpNavigation"><span class="rpExpandHandle"></span><span class="rpText">Documentazione</span></span></a></li><li class="rpItem rpLast"><a href="https://www.pec.it/Download.aspx" class="rpLink blankLink"><span class="rpOut rpNavigation"><span class="rpExpandHandle"></span><span class="rpText">Download</span></span></a></li>
+			</ul>
+		</div></li><li class="rpItem"><a href="#" class="rpLink my-item rpExpandable" id="sxMenuMT"><span class="rpOut"><span class="rpExpandHandle"></span><span class="rpText">Marca Temporale</span></span></a><div class="rpSlide">
+			<ul class="rpGroup rpLevel1 ">
+				<li class="rpItem rpFirst"><a href="https://www.pec.it/CosaMarcheTemporali.aspx" class="rpLink blankLink"><span class="rpOut rpNavigation"><span class="rpExpandHandle"></span><span class="rpText">Cos'è</span></span></a></li><li class="rpItem"><a href="https://www.pec.it/MarcheTemporali.aspx" class="rpLink blankLink"><span class="rpOut rpNavigation"><span class="rpExpandHandle"></span><span class="rpText">Acquista</span></span></a></li><li class="rpItem"><div class="rpTemplate">
+					
+                                    <a id="ctl00_ctl00_mainPlaceHolder_rpbSxMenu_i6_i2_linkEsterno407" class="blankLink" href="https://assistenza.aruba.it/" target="_blank">FAQ e Assistenza h24</a>
+                                
+				</div></li><li class="rpItem rpLast"><a href="https://www.pec.it/DocumentazioneMarcheTemporali.aspx" class="rpLink blankLink"><span class="rpOut rpNavigation"><span class="rpExpandHandle"></span><span class="rpText">Documentazione</span></span></a></li>
+			</ul>
+		</div></li><li class="rpItem"><a href="#" class="rpLink my-item rpExpandable"><span class="rpOut"><span class="rpExpandHandle"></span><span class="rpText">Fatturazione PA</span></span></a><div class="rpSlide">
+			<ul class="rpGroup rpLevel1 ">
+				<li class="rpItem rpFirst"><a href="https://www.pec.it/CosaFatturazioneElettronicaPA.aspx" class="rpLink blankLink"><span class="rpOut rpNavigation"><span class="rpExpandHandle"></span><span class="rpText">Cos'è</span></span></a></li><li class="rpItem"><a href="https://www.pec.it/FatturazioneElettronicaPA.aspx" class="rpLink blankLink"><span class="rpOut rpNavigation"><span class="rpExpandHandle"></span><span class="rpText">Acquista</span></span></a></li><li class="rpItem"><a href="https://www.pec.it/FatturazioneElettronicaPA_LandPage.aspx" class="rpLink blankLink"><span class="rpOut rpNavigation"><span class="rpExpandHandle"></span><span class="rpText">Soluzioni di Fatturazione</span></span></a></li><li class="rpItem"><a href="https://www.pec.it/DocFly_Fatturazione_PA.aspx" class="rpLink blankLink"><span class="rpOut rpNavigation"><span class="rpExpandHandle"></span><span class="rpText">Soluzioni Enterprise</span></span></a></li><li class="rpItem"><a href="https://www.pec.it/AssistenzaFatturazionePA.aspx" class="rpLink blankLink"><span class="rpOut rpNavigation"><span class="rpExpandHandle"></span><span class="rpText">FAQ e Assistenza h24</span></span></a></li><li class="rpItem rpLast"><a href="https://www.pec.it/DocumentazioneFatturazionePA.aspx" class="rpLink blankLink"><span class="rpOut rpNavigation"><span class="rpExpandHandle"></span><span class="rpText">Documentazione</span></span></a></li>
+			</ul>
+		</div></li><li class="rpItem"><a href="https://www.pec.it/DocFly_Conservazione_Digitale.aspx" class="rpLink my-item"><span class="rpOut rpNavigation"><span class="rpExpandHandle"></span><span class="rpText">Conservazione Digitale</span></span></a></li><li class="rpItem"><a href="https://www.pec.it/SoluzioniPersonalizzate.aspx" class="rpLink my-item"><span class="rpOut rpNavigation"><span class="rpExpandHandle"></span><span class="rpText">Soluzioni Personalizzate</span></span></a></li><li class="rpItem"><a href="https://www.pec.it/Convenzioni.aspx" class="rpLink  my-item"><span class="rpOut rpNavigation"><span class="rpExpandHandle"></span><span class="rpText">Acquisto Convenzioni</span></span></a></li><li class="rpItem"><a href="#" class="rpLink my-item rpExpandable"><span class="rpOut"><span class="rpExpandHandle"></span><span class="rpText">Partner Aruba Pec</span></span></a><div class="rpSlide">
+			<ul class="rpGroup rpLevel1 ">
+				<li class="rpItem rpFirst"><a href="https://www.pec.it/Partner.aspx" class="rpLink blankLink"><span class="rpOut rpNavigation"><span class="rpExpandHandle"></span><span class="rpText">Programma Partner</span></span></a></li><li class="rpItem"><a href="https://www.pec.it/PartnerServiziPec.aspx" class="rpLink blankLink"><span class="rpOut rpNavigation"><span class="rpExpandHandle"></span><span class="rpText">Servizi Pec</span></span></a></li><li class="rpItem"><a href="https://www.pec.it/PartnerFirmaDigitale.aspx" class="rpLink blankLink"><span class="rpOut rpNavigation"><span class="rpExpandHandle"></span><span class="rpText">Firma Digitale</span></span></a></li><li class="rpItem"><a href="https://www.pec.it/PartnerDocfly.aspx" class="rpLink blankLink"><span class="rpOut rpNavigation"><span class="rpExpandHandle"></span><span class="rpText">Servizi Docfly</span></span></a></li><li class="rpItem"><a href="https://www.pec.it/PartnerCertificatiSSL.aspx" class="rpLink blankLink"><span class="rpOut rpNavigation"><span class="rpExpandHandle"></span><span class="rpText">Certificati SSL</span></span></a></li><li class="rpItem"><a href="https://www.pec.it/PartnerCDRL.aspx" class="rpLink blankLink"><span class="rpOut rpNavigation"><span class="rpExpandHandle"></span><span class="rpText">Partner (CDRL)</span></span></a></li><li class="rpItem"><div class="rpTemplate">
+					
+                                    <a id="ctl00_ctl00_mainPlaceHolder_rpbSxMenu_i11_i6_linkEsterno316" class="blankLink gray-hover" href="http://rinnovocdrl.pec.it/Rinnovo.aspx" target="_blank">Rinnovi Firma CDRL</a>
+                                
+				</div></li><li class="rpItem"><div class="rpTemplate">
+					
+                                    <a id="ctl00_ctl00_mainPlaceHolder_rpbSxMenu_i11_i7_linkEsterno317" class="blankLink gray-hover" href="http://rinnovocdrl.pec.it/RinnovoCertificatoCheck.aspx" target="_blank">Attivazione KIT CDRL</a>
+                                
+				</div></li><li class="rpItem"><div class="rpTemplate">
+					
+                                    <a id="ctl00_ctl00_mainPlaceHolder_rpbSxMenu_i11_i8_linkEsterno502" class="blankLink gray-hover" href="https://www.pec.it/linkassistenza/MenuSXItem_PAFAQPartner.asp" target="_blank">FAQ e Assistenza</a>
+                                
+				</div></li><li class="rpItem"><a href="https://www.pec.it/PartnerDocumentazione.aspx" class="rpLink blankLink"><span class="rpOut rpNavigation"><span class="rpExpandHandle"></span><span class="rpText">Documentazione</span></span></a></li><li class="rpItem rpLast"><a href="https://www.pec.it/PartnerAssistenza.aspx" class="rpLink blankLink"><span class="rpOut rpNavigation"><span class="rpExpandHandle"></span><span class="rpText">Assistenza dedicata</span></span></a></li>
+			</ul>
+		</div></li><li class="rpItem"><a href="#" class="rpLink my-item rpExpandable"><span class="rpOut"><span class="rpExpandHandle"></span><span class="rpText">Documentazione</span></span></a><div class="rpSlide">
+			<ul class="rpGroup rpLevel1 ">
+				<li class="rpItem rpFirst"><a href="https://www.pec.it/Documentazione.aspx?tab=0" class="rpLink blankLink"><span class="rpOut rpNavigation"><span class="rpExpandHandle"></span><span class="rpText">Posta Certificata</span></span></a></li><li class="rpItem"><a href="https://www.pec.it/DocumentazioneFirmaDigitale.aspx" class="rpLink blankLink"><span class="rpOut rpNavigation"><span class="rpExpandHandle"></span><span class="rpText">Firma Digitale</span></span></a></li><li class="rpItem"><a href="https://www.pec.it/DocumentazioneMarcheTemporali.aspx" class="rpLink blankLink"><span class="rpOut rpNavigation"><span class="rpExpandHandle"></span><span class="rpText">Marca Temporale</span></span></a></li><li class="rpItem"><a href="https://www.pec.it/DocumentazioneFatturazionePA.aspx" class="rpLink blankLink"><span class="rpOut rpNavigation"><span class="rpExpandHandle"></span><span class="rpText">Fatturazione PA</span></span></a></li><li class="rpItem rpLast"><a href="https://www.pec.it/PartnerDocumentazione.aspx" class="rpLink blankLink"><span class="rpOut rpNavigation"><span class="rpExpandHandle"></span><span class="rpText">Partner</span></span></a></li>
+			</ul>
+		</div></li><li class="rpItem"><a href="https://www.pec.it/ChiSiamo.aspx" class="rpLink my-item"><span class="rpOut rpNavigation"><span class="rpExpandHandle"></span><span class="rpText">Chi Siamo</span></span></a></li><li class="rpItem rpLast"><a href="https://www.pec.it/Contacts.aspx" class="rpLink my-item"><span class="rpOut rpNavigation"><span class="rpExpandHandle"></span><span class="rpText">Supporto e contatti</span></span></a></li>
+	</ul><input id="ctl00_ctl00_mainPlaceHolder_rpbSxMenu_ClientState" name="ctl00_ctl00_mainPlaceHolder_rpbSxMenu_ClientState" type="hidden" />
+</div>
+            <!-- END OW CU-PEF Aggiunto box per riepilogo prodotti carrello -->
+            <div style="width: 199px; top: 10px;">
+                <table align="center">
+                    <tr>
+                        <td colspan="4">
+                            <div style="text-align: center; font-family: Tahoma; font-size: 12px;">
+                                Segui Aruba
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <a href="https://www.facebook.com/aruba.it" target="_blank">
+                                <img id="Image1" alt="Facebook" src="/images/icona_fb.png" style="border-width:0px;border: none" />
+                            </a>
+                        </td>
+                        <td>
+                            <a href="https://twitter.com/Arubait"
+                                target="_blank">
+                                <img id="ctl00_ctl00_mainPlaceHolder_Image2" alt="Twitter" src="images/icona_tw.png" style="border-width:0px;border: none" />
+                            </a>
+                        </td>
+                        <td>
+                            <a href="http://www.linkedin.com/company/aruba-s-p-a-"
+                                target="_blank">
+                                <img id="ctl00_ctl00_mainPlaceHolder_Image3" alt="LinkedIn" src="images/icona_li.png" style="border-width:0px;border: none" />
+                            </a>
+                        </td>
+                        <td>
+                            <a href="https://www.youtube.com/user/ArubaWebTV"
+                                target="_blank">
+                                <img id="ctl00_ctl00_mainPlaceHolder_Image4" alt="YouTube" src="images/icona_yt.png" style="border-width:0px;border: none" />
+                            </a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div id="CPH1" style="z-index: -1000; width: 1030px; margin: 5px auto 0px 0px; vertical-align: top;
+            float: left;">
+            
+    <style type="text/css">
+        .fd-ul {
+            list-style: none;
+            padding: 0px 0px 0px 0px;
+            margin: 0px;
+        }
+
+        .fd-li {
+            margin: 0;
+            padding: 0;
+            padding-left: 15px;
+            background-image: url('immagini/check.jpg');
+            background-repeat: no-repeat;
+            background-position: 0px 3px;
+            line-height: 15px;
+        }
+
+            .fd-li:before {
+                content: none;
+            }
+
+        .act-button {
+            margin: 0 0 0 15px;
+            padding-top: 15px;
+        }
+
+        .final-text-container {
+            height: 58px;
+        }
+
+        .bollinoh24 {
+            width: 40px;
+            height: 40px;
+            background-image: url('images/bollinoh24.png');
+            left: 159px;
+            position: relative;
+            top: -15px;
+        }
+
+        .clickable {
+            cursor: pointer;
+            width: 199px;
+            height: 343px;
+        }
+
+        .promo-fatpa {
+            background-image: url('images/TmpPromoFatPa/prezzo_barrato_home.png');
+            background-repeat: no-repeat;
+        }
+    </style>
+    <script type="text/javascript" src="/RinnoviGratuite/Scripts/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="js/xfade2.js"></script>
+    <script type="text/javascript" src="js/ClickHeat.js"></script>   
+    <map id="map1">
+        <area shape="rect" coords="31,120,500,180" href="Offerta.aspx" title="STANDARD" alt="" />
+    </map>
+    <map id="map2">
+        <area shape="rect" coords="31,120,500,180" href="Offerta.aspx" title="STANDARD" alt="" />
+    </map>
+    <div style="width: 1033px; position: relative;">
+        <div id="mainContent">
+            <div style="width: 787px;">
+                <div id="rotator">
+                    <!-- Begin -  Site: Default Site Zone: Pec.it - Homepage Slider 1 -->
+                    <a href="https://banner.technorail.com/a.aspx?ZoneID=71&Task=Click&Mode=HTML&SiteID=1&SubscriberID=##SubscriberID####RND##&PageID=84484"
+                        target="_blank">
+                        <img src="https://banner.technorail.com/a.aspx?ZoneID=71&Task=Get&Mode=HTML&SiteID=1&SubscriberID=##SubscriberID####RND##&PageID=84484"
+                            width="785" height="222" border="0" alt=""></a>
+                    <!-- End -  Site: Default Site Zone: Pec.it - Homepage Slider 1 -->
+                    <!-- Begin -  Site: Default Site Zone: Pec.it - Homepage Slider 2 -->
+                    <a href="https://banner.technorail.com/a.aspx?ZoneID=72&Task=Click&Mode=HTML&SiteID=1&SubscriberID=##SubscriberID####RND##&PageID=58146"
+                        target="_blank">
+                        <img src="https://banner.technorail.com/a.aspx?ZoneID=72&Task=Get&Mode=HTML&SiteID=1&SubscriberID=##SubscriberID####RND##&PageID=58146"
+                            width="785" height="222" border="0" alt=""></a>
+                    <!-- End -  Site: Default Site Zone: Pec.it - Homepage Slider 2 -->
+                    <!-- Begin -  Site: Default Site Zone: Pec.it - Homepage Slider 3 -->
+                    <a href="https://banner.technorail.com/a.aspx?ZoneID=73&Task=Click&Mode=HTML&SiteID=1&SubscriberID=##SubscriberID####RND##&PageID=58146"
+                        target="_blank">
+                        <img src="https://banner.technorail.com/a.aspx?ZoneID=73&Task=Get&Mode=HTML&SiteID=1&SubscriberID=##SubscriberID####RND##&PageID=58146"
+                            width="785" height="222" border="0" alt=""></a>
+                    <!-- End -  Site: Default Site Zone: Pec.it - Homepage Slider 3 -->
+
+
+                    <!-- Begin -  Site: Default Site Zone: Pec.it - Homepage Slider 4 -->
+
+                    <a href="https://banner.technorail.com/a.aspx?ZoneID=89&amp;Task=Click&amp;Mode=HTML&amp;SiteID=1&amp;PageID=86794" target="_blank">
+                        <img src="https://banner.technorail.com/a.aspx?ZoneID=89&amp;Task=Get&amp;Mode=HTML&amp;SiteID=1&amp;PageID=86794" width="758" height="222" border="0" alt=""></a>
+
+                    <!-- End -  Site: Default Site Zone: Pec.it - Homepage Slider 4 -->
+
+
+                </div>
+            </div>
+            <script type="text/javascript">
+                so_init();
+            </script>
+            <div style="clear: both;">
+                &nbsp;
+            </div>
+            <div id="column-container">
+                
+                <div id="divArubaPec" class="clickable" onclick="location.href='MailBoxRequest.aspx';">
+                    <div class="bollinoh24">
+                    </div>
+                    <div class="prezziHomeTextWrapper">
+                        <div class="prezziHomeTestoPec">
+                            A partire da Euro
+                        </div>
+                        <div class="priceEuro">
+                            <span id="euroPec">5</span>
+                        </div>
+                        <div style="float: left;">
+                            <div class="priceEuroCentPec">
+                                <span id="centPec">.00</span>
+                            </div>
+                            <div class="priceIVAPec">
+                                + IVA annui
+                            </div>
+                        </div>
+                        <div style="clear: both;">
+                        </div>
+                    </div>
+                    <div class="act-button">
+                        <a id="ctl00_ctl00_mainPlaceHolder_ContentPlaceHolder1_LbAcquistPec" href="https://www.pec.it/MailBoxRequest.aspx"><img src="images/but_scopri_pec.png" style="border-width:0px;" /></a>
+                    </div>
+                    <div class="homePageColumnText">
+                        <p class="testoHome" style="margin-top: 4px;">
+                            Scegli la tua casella di Posta Elettronica Certificata tra le nostre offerte.
+                        </p>
+                    </div>
+                </div>
+                <div id="divFirmaDigitale" class="clickable" onclick="location.href='FirmaDigitale.aspx';">
+                    <div class="bollinoh24">
+                    </div>
+                    <div class="prezziHomeTextWrapper">
+                        <div class="prezziHomeTestoFD">
+                            A partire da Euro
+                        </div>
+                        <div class="priceEuroFD">
+                            <span id="euroFirmaDigitale">
+                                <span id="ctl00_ctl00_mainPlaceHolder_ContentPlaceHolder1_IntPriceKfd">25</span></span>
+                        </div>
+                        <div style="float: left;">
+                            <div class="priceEuroCentFD">
+                                <span id="centFirmaDigitale">.<span id="ctl00_ctl00_mainPlaceHolder_ContentPlaceHolder1_DecimalPriceKfd">00</span></span>
+                            </div>
+                            <div class="priceIVAFD">
+                                + IVA
+                            </div>
+                        </div>
+                        <div style="clear: both;">
+                        </div>
+                        <div class="spesespedizioneFD">
+                            + spese spedizione
+                        </div>
+                        <div style="clear: both;">
+                        </div>
+                    </div>
+                    <div class="act-button">
+                        <a id="ctl00_ctl00_mainPlaceHolder_ContentPlaceHolder1_lbAcquistaFD" href="https://www.pec.it/FirmaDigitale.aspx"><img id="ctl00_ctl00_mainPlaceHolder_ContentPlaceHolder1_Image1" src="images/but_scopri_firma.png" style="border-width:0px;" /></a>
+                    </div>
+                    <div class="homePageColumnText">
+                        <a href="UtentiFirmaDigitale.aspx">
+                            <img src="immagini/promo_devisu_small.png" class="promo-DeVisu" alt="Promo De Visu" style="margin-left: -14px" />
+                        </a>
+                        
+                    </div>
+                </div>
+                
+                <div id="divMarcheTemporali" class="clickable" onclick="location.href=&#39;MarcheTemporali.aspx&#39;;">
+                    <div class="bollinoh24">
+                    </div>
+                    <div class="prezziHomeTextWrapper">
+                        <div class="prezziHomeTestoMT">
+                            Pacchetti da 50 Marche
+                        </div>
+                        <div class="prezziHomeTestoMT">
+                            a partire da Euro
+                        </div>
+                        <div class="priceEuroMT">
+                            <span id="euroMarcheTemporali">12</span>
+                        </div>
+                        <div style="float: left;">
+                            <div class="priceEuroCentMT">
+                                <span id="centMarcheTemporali">.50</span>
+                            </div>
+                            <div class="priceIVAMT">
+                                + IVA
+                            </div>
+                        </div>
+                        <div style="clear: both;">
+                        </div>
+                    </div>
+                    <div class="act-button">
+                        <a id="ctl00_ctl00_mainPlaceHolder_ContentPlaceHolder1_lbAcquistaMT" href="https://www.pec.it/MarcheTemporali.aspx"><img id="ctl00_ctl00_mainPlaceHolder_ContentPlaceHolder1_Image2" src="images/but_scopri_marche.png" style="border-width:0px;" /></a>
+                    </div>
+                    <div class="homePageColumnText">
+                        <p class="testoHome" style="margin-top: 4px;">
+                            Scegli il pacchetto di marche temporali più adatto alle tue esigenze.
+                        </p>
+                    </div>
+                </div>
+                <div id="divFatturazionePA" class="clickable" onclick="location.href='FatturazioneElettronicaPA.aspx';">
+                    <div class="bollinoh24">
+                    </div>
+                    <div class="prezziHomeTextWrapper text-greenFatPA">
+                        <div class="prezziHomeTestoFatPA">
+                            Euro
+                        </div>
+                        <div class="priceEuroFatPA">
+                            <span id="ctl00_ctl00_mainPlaceHolder_ContentPlaceHolder1_euroFpa">25</span>
+                        </div>
+                        <div style="float: left;">
+                            <div class="priceEuroCentFatPa ">
+                                <span id="ctl00_ctl00_mainPlaceHolder_ContentPlaceHolder1_centFpa">.00</span>
+                            </div>
+                            <div class="priceIVAFatPA">+ IVA annui</div>
+                        </div>
+                        <div style="clear: both;">
+                        </div>
+                    </div>
+                    <div class="act-button">
+                        <a id="ctl00_ctl00_mainPlaceHolder_ContentPlaceHolder1_lbAcquistaFatPA" href="FatturazioneElettronicaPA_LandPage.aspx"><img id="ctl00_ctl00_mainPlaceHolder_ContentPlaceHolder1_Image3" src="images/but_scopri_fatturazione.png" style="border-width:0px;" /></a>
+                    </div>
+                    <div class="homePageColumnText">
+                        <p class="testoHome" style="margin-top: 4px;">
+                            Semplifica l’invio e la gestione delle fatture verso la Pubblica Amministrazione con Fatturazione PA.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="right-column" style="float: left; width: 225px; position: relative; margin-left: 9px;">
+            
+<style type="text/css">
+    .right-box
+    {
+        position: relative;
+        margin-top: 5px;
+        cursor: pointer;
+    }
+    
+    .text-inbox
+    {
+        font-size: 12px;
+        top: 0;
+        text-align: center;
+        position: absolute;
+        padding: 3px;
+        left: 10px;
+        color: #666;
+        text-align: left;
+    }
+    .text-bold
+    {
+        font-weight: bold;
+    }
+    
+    .box-title
+    {
+        font-size: 13px;
+    }
+</style>
+<div style="margin-top: 8px">
+    <a id="ctl00_ctl00_mainPlaceHolder_ContentPlaceHolder1_ucRB_linkDocFlyDS" href="https://www.pec.it/DocFly.aspx">
+    <div id="Div3" class="right-box">
+        <div style="font-size: 11px; margin: 0; padding-top: 0px; padding-left: 0px; color: #666;
+            text-align: center;">
+                   
+                <img src="/images/bg_boxdocflycs_hp.png" alt="boxsoluzioni" />
+        </div>
+    </div>
+    </a>
+    <a id="ctl00_ctl00_mainPlaceHolder_ContentPlaceHolder1_ucRB_linkDiventaPartner" href="https://www.pec.it/Partner.aspx">
+    <div id="Div1" class="right-box">
+        <div style="font-size: 11px; margin: 0px; padding-top: 0px; padding-left: 0px; color: #666;
+            text-align: center;">
+                <img src="/images/bg_boxpartner_hp.png" alt="boxpartner" />
+        </div>
+    </div>
+    </a>
+    <a id="ctl00_ctl00_mainPlaceHolder_ContentPlaceHolder1_ucRB_linkConvenzioni" href="https://www.pec.it/Convenzioni.aspx">
+    <div id="Div2" class="right-box">
+        <div style="font-size: 11px; margin: 0px; padding-top: 0px; padding-left: 0px; color: #666;
+            text-align: center;">           
+                <img src="/images/bg_boxconvenzioni_hp.png" alt="boxconvenzioni" />
+        </div>
+    </div>
+    </a>
+    <a id="ctl00_ctl00_mainPlaceHolder_ContentPlaceHolder1_ucRB_linkSolPersonalizzate" href="https://www.pec.it/SoluzioniPersonalizzate.aspx">    
+    <div id="DivSP" class="right-box">
+        <div style="font-size: 11px; margin: 0px; padding-top: 0px; padding-left: 0px; color: #666; text-align:center">                    
+            <img src="/images/bg_boxsoluzioni_hp.png" alt="Soluzioni Personalizzate" /> 
+        </div>
+    </div>
+    </a>
+</div>
+
+        </div>
+        <div style="clear: both;">
+            &nbsp;
+        </div>
+        
+    </div>
+
+        </div>
+        <div style="clear: both;">
+        </div>
+    </div>
+    <div style="clear: both;">
+    </div>
+    <div style="z-index: 1">
+    </div>
+    <script type="text/javascript">
+
+        // ALLA PRESSIONE DI UN TEB SELEZIONA LA VOCE DEL MENU DI SINISTRA CORRELATA
+        function onTabSelected(sender, args) {
+            var tabSelezionato = args.get_tab().get_value();
+            var panelbar = $find("ctl00_ctl00_mainPlaceHolder_rpbSxMenu");
+
+            // seleziona item scelto
+            var item = panelbar._findItemByValue(tabSelezionato);
+            if (item != null) {
+                item.set_selected(true);
+                item.expand();
+            }
+
+        }
+
+        // NON USATO MA MANTENUTO
+        function onTabSelectedCross(sender, args) {
+            var tabSelezionato = args.get_tab().get_value();
+            var panelbar1 = $find("ctl00_ctl00_mainPlaceHolder_rpbSxMenu");
+
+            // collasso tutto
+            panelbar1._findItemByValue("2").collapse();
+            panelbar1._findItemByValue("3").collapse();
+            panelbar1._findItemByValue("4").collapse();
+            panelbar1._findItemByValue("5").collapse();
+            panelbar1._findItemByValue("6").collapse();
+            panelbar1._findItemByValue("7").collapse();
+
+            // espandi item scelto
+            var item = panelbar1._findItemByValue(tabSelezionato);
+            if (item != null) {
+                if (item.get_level() != 0) {
+                    var parent = item.get_parent();
+                    if (parent != null) {
+                        if (parent.get_level() != 0) {
+                            var parent2 = item.get_parent();
+                            if (parent2 != null)
+                                parent2.expand();
+                        }
+                        parent.expand();
+
+                    }
+                }
+                item.set_selected(true);
+                item.expand();
+            }
+
+            // seleziona menu top correlato
+            menuSelect(tabSelezionato.substring(0, 1));
+        }
+
+        // APRE LA DESTINAZIONE IN UN POPUP DIMENSIONATO
+        function openPopup(destinationUrl, height, width, showStatusBar, showToolBar, showMenuBar, showLocation) {
+            window.open(destinationUrl, null, "height=" + height + ",width=" + width + ",status=" + (showStatusBar ? "yes" : "no") + ",toolbar=" + (showToolBar ? "yes" : "no") + ",menubar=" + (showMenuBar ? "yes" : "no") + ",location=" + (showLocation ? "yes" : "no"));
+        }
+
+    </script>
+
+            </div>
+
+            
+            <div class="hiddenButtonNavigationRenewExit">
+                <input type="hidden" name="ctl00$ctl00$NavigationRenewPressedLink" id="NavigationRenewPressedLink" />
+                <input type="image" name="ctl00$ctl00$ButtonNavigationRenewExit" id="ctl00_ctl00_ButtonNavigationRenewExit" src="./RinnoviGratuite/Images/ButtonYes.png" style="border-width:0px;" />
+            </div>
+            <div id="ctl00_ctl00_RadWindowManagerRenewAbandon" style="display:none;">
+	<div id="ctl00_ctl00_RadWindowModalRenewAbandon" style="display:none;">
+		<div id="ctl00_ctl00_RadWindowModalRenewAbandon_C" style="display:none;">
+
+		</div><input id="ctl00_ctl00_RadWindowModalRenewAbandon_ClientState" name="ctl00_ctl00_RadWindowModalRenewAbandon_ClientState" type="hidden" />
+	</div><div id="ctl00_ctl00_RadWindowManagerRenewAbandon_alerttemplate" style="display:none;">
+		<div class="rwDialogPopup radalert">			
+			<div class="rwDialogText">
+			{1}				
+			</div>
+			
+			<div>
+				<a  onclick="$find('{0}').close(true);"
+				class="rwPopupButton" href="javascript:void(0);">
+					<span class="rwOuterSpan">
+						<span class="rwInnerSpan">##LOC[OK]##</span>
+					</span>
+				</a>				
+			</div>
+		</div>
+		</div><div id="ctl00_ctl00_RadWindowManagerRenewAbandon_prompttemplate" style="display:none;">
+		 <div class="rwDialogPopup radprompt">			
+			    <div class="rwDialogText">
+			    {1}				
+			    </div>		
+			    <div>
+				    <script type="text/javascript">
+				    function RadWindowprompt_detectenter(id, ev, input)
+				    {							
+					    if (!ev) ev = window.event;                
+					    if (ev.keyCode == 13)
+					    {															        
+					        var but = input.parentNode.parentNode.getElementsByTagName("A")[0];					        
+					        if (but)
+						    {							
+							    if (but.click) but.click();
+							    else if (but.onclick)
+							    {
+							        but.focus(); var click = but.onclick; but.onclick = null; if (click) click.call(but);							 
+							    }
+						    }
+					       return false;
+					    } 
+					    else return true;
+				    }	 
+				    </script>
+				    <input title="Enter Value" onkeydown="return RadWindowprompt_detectenter('{0}', event, this);" type="text"  class="rwDialogInput" value="{2}" />
+			    </div>
+			    <div>
+				    <a onclick="$find('{0}').close(this.parentNode.parentNode.getElementsByTagName('input')[0].value);"				
+					    class="rwPopupButton" href="javascript:void(0);" ><span class="rwOuterSpan"><span class="rwInnerSpan">##LOC[OK]##</span></span></a>
+				    <a onclick="$find('{0}').close(null);" class="rwPopupButton"  href="javascript:void(0);"><span class="rwOuterSpan"><span class="rwInnerSpan">##LOC[Cancel]##</span></span></a>
+			    </div>
+		    </div>				       
+		</div><div id="ctl00_ctl00_RadWindowManagerRenewAbandon_confirmtemplate" style="display:none;">
+		<div class="rwDialogPopup radconfirm">			
+			<div class="rwDialogText">
+			{1}				
+			</div>						
+			<div>
+				<a onclick="$find('{0}').close(true);"  class="rwPopupButton" href="javascript:void(0);" ><span class="rwOuterSpan"><span class="rwInnerSpan">##LOC[OK]##</span></span></a>
+				<a onclick="$find('{0}').close(false);" class="rwPopupButton"  href="javascript:void(0);"><span class="rwOuterSpan"><span class="rwInnerSpan">##LOC[Cancel]##</span></span></a>
+			</div>
+		</div>		
+		</div><input id="ctl00_ctl00_RadWindowManagerRenewAbandon_ClientState" name="ctl00_ctl00_RadWindowManagerRenewAbandon_ClientState" type="hidden" />
+</div>
+            <script type="text/javascript">
+                try {
+                    $(document).ready(function () {
+                        $("#NavigationRenewPressedLink").val("");
+                        $("#RowAssistenza").hide();
+
+                    });
+                }
+                catch (ex) {
+                }
+                function navigationConfirmDialogOpen(link) {
+                    $("#NavigationRenewPressedLink").val(link);
+                    var modaAbandon = $find("ctl00_ctl00_RadWindowModalRenewAbandon");
+                    modaAbandon.show();
+                }
+                function onModalRenewAbandonClose(sender, args) {
+                    var arg = args.get_argument();
+                    if (arg[0] !== undefined && arg[0] == 'true')
+                        $("#ctl00_ctl00_ButtonNavigationRenewExit").click();
+                    else
+                        $("#NavigationRenewPressedLink").val("");
+                }
+            
+                $J(document).ready(function () {
+                    if ($J("#ModalChangePasswordShow").val() == "False")
+                        $J("#ModalChangePassword").hide();
+                    $J("#ModalChangePasswordShow").val("True");
+                });
+
+                function SetModalChangePasswordShowFalse(changeAction) {
+                    if (changeAction) {
+                        document.getElementsByTagName('form')[0].action = '';
+                    }
+                    $J("#ModalChangePasswordShow").val("False");
+
+                }
+
+            </script>
+            
+            <input type="hidden" name="ctl00$ctl00$ModalChangePasswordShow" id="ModalChangePasswordShow" value="False" />
+            
+        
+<script type="text/javascript">
+//<![CDATA[
+var Page_Validators =  new Array(document.getElementById("ctl00_ctl00_mainPlaceHolder_rpbSxMenu_i1_i0_CFv"));
+//]]>
+</script>
+
+<script type="text/javascript">
+//<![CDATA[
+var ctl00_ctl00_mainPlaceHolder_rpbSxMenu_i1_i0_CFv = document.all ? document.all["ctl00_ctl00_mainPlaceHolder_rpbSxMenu_i1_i0_CFv"] : document.getElementById("ctl00_ctl00_mainPlaceHolder_rpbSxMenu_i1_i0_CFv");
+ctl00_ctl00_mainPlaceHolder_rpbSxMenu_i1_i0_CFv.display = "Dynamic";
+ctl00_ctl00_mainPlaceHolder_rpbSxMenu_i1_i0_CFv.validationGroup = "vgAreaClienti";
+ctl00_ctl00_mainPlaceHolder_rpbSxMenu_i1_i0_CFv.evaluationfunction = "CustomValidatorEvaluateIsValid";
+ctl00_ctl00_mainPlaceHolder_rpbSxMenu_i1_i0_CFv.clientvalidationfunction = "ValidaCampi";
+//]]>
+</script>
+
+
+<script type="text/javascript">
+//<![CDATA[
+ActivateClickHeat('homepage-pecit');
+var Page_ValidationActive = false;
+if (typeof(ValidatorOnLoad) == "function") {
+    ValidatorOnLoad();
+}
+
+function ValidatorOnSubmit() {
+    if (Page_ValidationActive) {
+        return ValidatorCommonOnSubmit();
+    }
+    else {
+        return true;
+    }
+}
+        Sys.Application.add_init(function() {
+    $create(Telerik.Web.UI.RadToolBar, {"_cssClass":"","_skin":"Tema1","attributes":{},"clientStateFieldID":"ctl00_ctl00_rtbTopMenu_ClientState","collapseAnimation":"{\"duration\":450}","expandAnimation":"{\"duration\":450}","itemData":[{"attributes":{"Owner":"rtbTopMenu"},"value":"2","causesValidation":false,"checkOnClick":true,"group":"menutop","checkedCssClass":"tabRed","allowSelfUnCheck":true,"cssClass":"rtbWrap","hoveredCssClass":"tabRed","focusedCssClass":"tabRed"},{"isSeparator":true,"cssClass":"rtbSeparator"},{"attributes":{"Owner":"rtbTopMenu"},"value":"3","causesValidation":false,"checkOnClick":true,"group":"menutop","checkedCssClass":"tabBlue","allowSelfUnCheck":true,"cssClass":"rtbWrap","hoveredCssClass":"tabBlue","focusedCssClass":"tabBlue"},{"isSeparator":true,"cssClass":"rtbSeparator"},{"attributes":{"Owner":"rtbTopMenu"},"value":"4","causesValidation":false,"checkOnClick":true,"group":"menutop","checkedCssClass":"tabLightBlue","allowSelfUnCheck":true,"cssClass":"rtbWrap","hoveredCssClass":"tabLightBlue","focusedCssClass":"tabLightBlue"},{"isSeparator":true,"cssClass":"rtbSeparator"},{"attributes":{"Owner":"rtbTopMenu"},"value":"11","causesValidation":false,"checkOnClick":true,"group":"menutop","checkedCssClass":"tabGreen","allowSelfUnCheck":true,"cssClass":"rtbWrap","hoveredCssClass":"tabGreen","focusedCssClass":"tabGreen"},{"isSeparator":true,"cssClass":"rtbSeparator"},{"attributes":{"Owner":"rtbTopMenu"},"value":"1","causesValidation":false,"checkOnClick":true,"group":"menutop","checkedCssClass":"tabGrey","allowSelfUnCheck":true,"cssClass":"rtbWrap","hoveredCssClass":"tabGrey","focusedCssClass":"tabGrey"},{"isSeparator":true,"cssClass":"rtbSeparator"},{"attributes":{"Owner":"rtbTopMenu"},"value":"6","causesValidation":false,"checkOnClick":true,"group":"menutop","checkedCssClass":"tabGrey","allowSelfUnCheck":true,"cssClass":"rtbWrap","hoveredCssClass":"tabGrey","focusedCssClass":"tabGrey"}]}, null, null, $get("ctl00_ctl00_rtbTopMenu"));
+});
+
+document.getElementById('ctl00_ctl00_mainPlaceHolder_rpbSxMenu_i1_i0_CFv').dispose = function() {
+    Array.remove(Page_Validators, document.getElementById('ctl00_ctl00_mainPlaceHolder_rpbSxMenu_i1_i0_CFv'));
+}
+Sys.Application.add_init(function() {
+    $create(Telerik.Web.UI.RadPanelBar, {"_skin":"Tema1","allowCollapseAllItems":true,"clientStateFieldID":"ctl00_ctl00_mainPlaceHolder_rpbSxMenu_ClientState","collapseAnimation":"{\"duration\":450}","expandAnimation":"{\"duration\":450}","itemData":[{"attributes":{"Owner":"rpbSxMenu"},"postBack":0,"text":"Carrello","value":"230","enabled":false,"cssClass":"my-item HideCollapse","templated":true,"hasContentTemplate":true},{"attributes":{"Owner":"rpbSxMenu"},"items":[{"templated":true,"hasContentTemplate":true}],"postBack":0,"value":"0","expanded":true,"cssClass":"my-item"},{"attributes":{"Owner":"rpbSxMenu"},"items":[{"attributes":{"Group":"menusx2"},"value":"801","cssClass":"blankLink"},{"attributes":{"Group":"menusx2"},"value":"802","cssClass":"blankLink"}],"postBack":0,"cssClass":"my-item"},{"attributes":{"Owner":"rpbSxMenu"},"items":[{"attributes":{"Group":"menusx2"},"value":"201","cssClass":"blankLink"},{"attributes":{"Group":"menusx2"},"value":"205","cssClass":"blankLink"},{"attributes":{"Group":"menusx2"},"value":"215","cssClass":"blankLink"},{"attributes":{"Group":"menusx2"},"value":"217","cssClass":"blankLink"},{"attributes":{"Group":"menusx2"},"value":"219","cssClass":"blankLink"},{"value":"213","cssClass":"blankLink","templated":true},{"value":"218","cssClass":"blankLink"},{"attributes":{"Group":"menusx2"},"value":"207","cssClass":"blankLink"},{"attributes":{"Group":"menusx2"},"value":"214","cssClass":"blankLink"}],"postBack":0,"value":"2","cssClass":"my-item"},{"attributes":{"Owner":"rpbSxMenu"},"items":[{"attributes":{"Group":"menusx3"},"value":"301","cssClass":"blankLink"},{"attributes":{"Group":"menusx3"},"value":"305","cssClass":"blankLink"},{"attributes":{"Group":"menusx3"},"value":"311","cssClass":"blankLink"},{"attributes":{"Group":"menusx3"},"value":"315","cssClass":"blankLink"},{"attributes":{"Group":"menusx3"},"value":"314","cssClass":"blankLink","templated":true},{"postBack":0,"value":"308","cssClass":"blankLink","templated":true},{"attributes":{"Group":"menusx3"},"value":"310","cssClass":"blankLink"},{"attributes":{"Group":"menusx3"},"value":"313","cssClass":"blankLink"}],"postBack":0,"value":"3","cssClass":"my-item"},{"attributes":{"Owner":"rpbSxMenu"},"items":[{"attributes":{"Group":"menusx4"},"value":"401","cssClass":"blankLink"},{"attributes":{"Group":"menusx4"},"value":"405","cssClass":"blankLink"},{"postBack":0,"value":"407","cssClass":"blankLink","templated":true},{"attributes":{"Group":"menusx4"},"value":"412","cssClass":"blankLink"}],"postBack":0,"value":"4","cssClass":"my-item"},{"attributes":{"Owner":"rpbSxMenu"},"items":[{"attributes":{"Group":"menusx7"},"value":"1201","cssClass":"blankLink"},{"attributes":{"Group":"menusx7"},"value":"1202","cssClass":"blankLink"},{"attributes":{"Group":"menusx7"},"value":"1212","cssClass":"blankLink"},{"attributes":{"Group":"menusx7"},"value":"1203","cssClass":"blankLink"},{"attributes":{"Group":"menusx2"},"value":"1208","cssClass":"blankLink"},{"attributes":{"Group":"menusx7"},"value":"1204","cssClass":"blankLink"}],"postBack":0,"value":"12","cssClass":"my-item"},{"attributes":{"Owner":"rpbSxMenu"},"postBack":0,"value":"10","cssClass":"my-item"},{"attributes":{"Owner":"rpbSxMenu"},"postBack":0,"value":"8","cssClass":"my-item"},{"attributes":{"Owner":"rpbSxMenu"},"postBack":0,"value":"6","cssClass":" my-item"},{"attributes":{"Owner":"rpbSxMenu"},"items":[{"attributes":{"Group":"menusx5"},"value":"501","cssClass":"blankLink"},{"attributes":{"Group":"menusx5"},"value":"508","cssClass":"blankLink"},{"attributes":{"Group":"menusx5"},"value":"509","cssClass":"blankLink"},{"attributes":{"Group":"menusx5"},"value":"510","cssClass":"blankLink"},{"attributes":{"Group":"menusx5"},"value":"511","cssClass":"blankLink"},{"attributes":{"Group":"menusx3"},"value":"513","cssClass":"blankLink"},{"postBack":0,"value":"316","cssClass":"blankLink","templated":true},{"postBack":0,"value":"317","cssClass":"blankLink","templated":true},{"postBack":0,"value":"502","cssClass":"blankLink","templated":true},{"attributes":{"Group":"menusx5"},"value":"504","cssClass":"blankLink"},{"attributes":{"Group":"menusx5"},"value":"512","cssClass":"blankLink"}],"postBack":0,"value":"5","cssClass":"my-item"},{"attributes":{"Owner":"rpbSxMenu"},"items":[{"attributes":{"Group":"menusx2"},"value":"701","cssClass":"blankLink"},{"attributes":{"Group":"menusx2"},"value":"702","cssClass":"blankLink"},{"attributes":{"Group":"menusx2"},"value":"703","cssClass":"blankLink"},{"attributes":{"Group":"menusx2"},"value":"705","cssClass":"blankLink"},{"attributes":{"Group":"menusx2"},"value":"704","cssClass":"blankLink"}],"postBack":0,"value":"7","cssClass":"my-item"},{"attributes":{"Owner":"rpbSxMenu"},"postBack":0,"value":"11","cssClass":"my-item"},{"attributes":{"Owner":"rpbSxMenu"},"postBack":0,"value":"13","cssClass":"my-item"}]}, null, null, $get("ctl00_ctl00_mainPlaceHolder_rpbSxMenu"));
+});
+Sys.Application.add_init(function() {
+    $create(Telerik.Web.UI.RadWindow, {"_dockMode":false,"behaviors":4,"clientStateFieldID":"ctl00_ctl00_RadWindowModalRenewAbandon_ClientState","enableShadow":true,"formID":"aspnetForm","height":"255px","iconUrl":"","minimizeIconUrl":"","modal":true,"name":"RadWindowModalRenewAbandon","navigateUrl":"RinnoviGratuite/Modals/ModalRenewAbandon.aspx","overlay":true,"reloadOnShow":true,"showContentDuringLoad":false,"skin":"Default","visibleStatusbar":false,"width":"560px"}, {"close":onModalRenewAbandonClose}, null, $get("ctl00_ctl00_RadWindowModalRenewAbandon"));
+});
+Sys.Application.add_init(function() {
+    $create(Telerik.Web.UI.RadWindowManager, {"clientStateFieldID":"ctl00_ctl00_RadWindowManagerRenewAbandon_ClientState","formID":"aspnetForm","iconUrl":"","minimizeIconUrl":"","name":"RadWindowManagerRenewAbandon","skin":"Default","windowControls":"['ctl00_ctl00_RadWindowModalRenewAbandon']"}, null, {"child":"ctl00_ctl00_RadWindowModalRenewAbandon"}, $get("ctl00_ctl00_RadWindowManagerRenewAbandon"));
+});
+//]]>
+</script>
+</form>
+    </div>
+    <div style="clear: both;">&nbsp;</div>
+    
+    <div id="DivAruba" style="height: 0px;">
+        
+
+        <!-- Google Code per il tag di remarketing -->
+        <script type="text/javascript">
+            /* <![CDATA[ */
+            var google_conversion_id = 998818064;
+            var google_custom_params = window.google_tag_params;
+            var google_remarketing_only = true;
+            /* ]]> */
+        </script>
+        <script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js">
+        </script>
+        <noscript>
+            <div style="display: inline;">
+                <img height="1" width="1" style="border-style: none;" alt="" src="//googleads.g.doubleclick.net/pagead/viewthroughconversion/998818064/?value=0&amp;guid=ON&amp;script=0" />
+            </div>
+        </noscript>
+        <!-- End Google Code -->
+
+        <!-- Google Universal Analytics -->
+        <script>
+            (function (i, s, o, g, r, a, m) {
+                i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                    (i[r].q = i[r].q || []).push(arguments)
+                }, i[r].l = 1 * new Date(); a = s.createElement(o),
+		            m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+            })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+            ga('create', 'UA-47997651-3', 'pec.it');
+            ga('require', 'displayfeatures');
+            ga('send', 'pageview');
+
+        </script>
+        <!-- Fine Codice Google -->
+
+        <!-- Piwik -->
+        <script type="text/javascript">
+            var _paq = _paq || [];
+            _paq.push(["setDocumentTitle", document.domain + "/" + document.title]);
+            _paq.push(["setCookieDomain", "*.pec.it"]);
+            _paq.push(['trackPageView']);
+            _paq.push(['enableLinkTracking']);
+            (function () {
+                var u = (("https:" == document.location.protocol) ? "https" : "http") + "://wa.aruba.it/";
+                _paq.push(['setTrackerUrl', u + 'piwik.php']);
+                _paq.push(['setSiteId', 14]);
+                var d = document, g = d.createElement('script'), s = d.getElementsByTagName('script')[0]; g.type = 'text/javascript';
+                g.defer = true; g.async = true; g.src = u + 'piwik.js'; s.parentNode.insertBefore(g, s);
+            })();
+        </script>
+        <noscript>
+            <p>
+                <img src="http://wa.aruba.it/piwik.php?idsite=14" style="border: 0;" alt="" />
+            </p>
+        </noscript>
+        <!-- End Piwik Code -->
+
+
+    </div>
+    <div style="width: 100%; margin-top: 100px;">
+        <div class="footerAruba">
+            <div id="ctl00_ctl00_DefaultFooter" class="footerArubaContainer">
+	
+                <div style="width: 100%; height: 30px">
+                    <div class="ToTheTop"><a title="Torna su" onclick="scrollToElement();">Torna su </a></div>
+                </div>
+
+                <div style="width: 100%; text-align: left">
+
+                    <div class="footerSection footerBorderR" style="width: 180px">
+                        <div style="background-image: url(/images/logo_pixelperfect_home.png); background-repeat: no-repeat; width: 120px; height: 30px">
+                        </div>
+
+                        <h3>CORPORATE</h3>
+                        <ul>
+                            <li>
+                                <a href="http://www.aruba.it/chisiamo.asp" target="_blank">Gruppo Aruba</a>
+                            </li>
+                            <li>
+                                <a href="http://datacenter.aruba.it" target="_blank">Data Center</a>
+                            </li>
+                            <li>
+                                <a href="https://business.aruba.it/home.aspx" target="_blank">Programma Rivenditori</a>
+                            </li>
+                            <li>
+                                <a href="http://affiliazione.aruba.it/" target="_blank">Affiliazione</a>
+                            </li>
+                            <li>
+                                <a href="http://www.aruba.it/certificazioni.asp" target="_blank">Certificazioni</a>
+                            </li>
+                            <li>
+                                <a href="http://www.aruba.it/press-kit.asp" target="_blank">Press</a>
+                            </li>
+                        </ul>
+                        <ul>
+                            <li>
+                                <a href="http://kb.aruba.it/KB/a1084/modalit-pagamento-e-tempistiche-di-accredito-e-registrazione.aspx" target="_blank">Pagamenti</a>
+                            </li>
+                            <li>
+                                <a href="https://hosting.aruba.it/documents/tc-files/it/8_informativaarubaspahostingcart.pdf" target="_blank">Privacy</a>
+                            </li>
+                            <li>
+                                <a href="http://www.aruba.it/lavora.asp" target="_blank">Lavora con noi</a>
+                            </li>
+                            <li>
+                                <a href="https://www.aruba.it/listino-pec.aspx" target="_blank">Listino prezzi</a>
+                            </li>
+                        </ul>
+                        
+                        <ul>
+                            <li>© 2016 Aruba PEC S.p.A.<br />
+                                Società con socio unico<br />
+                                P.IVA: 01879020517
+                            </li>
+                        </ul>
+                    </div>
+
+                    
+                    <div class="footerSection">
+                        <div style="height: 35px">
+                            <h3>HOSTING E
+                                <br />
+                                DOMINI</h3>
+                        </div>
+                        <ul id="menuElem">
+                            <li><a href="http://www.hosting.it/hosting.aspx" target="_blank">Hosting</a></li>
+                            <li><a href="http://www.hosting.it/domini.aspx" target="_blank">Domini</a></li>
+                            <li><a href="http://www.hosting.it/email.aspx" target="_blank">Email</a></li>
+                            <li><a href="https://hosting.aruba.it/supersite/soluzioni.aspx" target="_blank">Sito Web</a></li>
+                            <li><a href="http://www.hosting.it/e-commerce.aspx" target="_blank">e-Commerce</a></li>
+                            <li><a href="http://keyposition.aruba.it" target="_blank">Web Marketing</a></li>
+                            <li class="hidemenu" style="margin-top: 10px;"><a style="margin-top: 10px;" href="http://www.hosting.it/termini-condizioni.aspx" target="_blank">Termini e Condizioni</a></li>
+                        </ul>
+                    </div>
+
+                    
+                    <div class="footerSection">
+                        <div style="height: 35px">
+                            <h3>CLOUD</h3>
+                        </div>
+                        <ul>
+                            <li>
+                                <a href="http://www.cloud.it/cloud-computing/caratteristiche.aspx" target="_blank">Cloud Computing</a>
+                            </li>
+                            <li>
+                                <a href="http://www.cloud.it/vps/offerta-tipologie-virtual-private-server.aspx" target="_blank">Server VPS</a>
+                            </li>
+                            <li>
+                                <a href="http://www.cloud.it/private-cloud/caratteristiche.aspx" target="_blank">Private Cloud</a>
+                            </li>
+                            <li>
+                                <a href="http://www.cloud.it/cloud-backup/caratteristiche.aspx" target="_blank">Cloud Backup</a>
+                            </li>
+                            <li>
+                                <a href="http://www.cloud.it/object-storage/object-storage-aruba.aspx" target="_blank">Cloud Object Storage</a>
+                            </li>
+                            <li>
+                                <a href="http://www.cloud.it/cloud-monitoring/caratteristiche.aspx" target="_blank">Cloud Monitoring</a>
+                            </li>
+                            <li>
+                                <a href="http://www.cloud.it/domain-center/caratteristiche.aspx" target="_blank">Domain Center</a>
+                            </li>
+                            <li>
+                                <a href="https://www.cloud.it/termini-condizioni.aspx" target="_blank">Termini e Condizioni</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    
+                    <div class="footerSection">
+                        <div style="height: 35px">
+                            <h3>E-SECURITY</h3>
+                        </div>
+                        <ul>
+                            <li>
+                                <a href="http://www.pec.it">PEC</a>
+                            </li>
+                            <li>
+                                <a href="http://www.pec.it/FirmaDigitale.aspx">Firma Digitale</a>
+                            </li>
+                            <li>
+                                <a href="http://www.pec.it/MarcheTemporali.aspx">Marche Temporali</a>
+                            </li>
+                            <li>
+                                <a href="http://www.pec.it/FatturazioneElettronicaPA_LandPage.aspx">Fatturazione PA</a>
+                            </li>
+                            <li>
+                                <a href="http://www.pec.it/DocFly_Conservazione_Digitale.aspx">Conservazione Sostitutiva</a>
+                            </li>
+                            <li>
+                                <a href="http://www.pec.it/SoluzioniPersonalizzate.aspx">Soluzioni personalizzate</a>
+                            </li>
+                            <li>
+                                <a href="http://www.pec.it/Partner.aspx">Partner e Rivenditori</a>
+                            </li>
+                            <li>
+                                <a href="http://www.pec.it/Documentazione.aspx">Termini e Condizioni</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    
+                    <div class="footerSection">
+                        <div style="height: 35px">
+                            <h3>SOLUZIONI
+                                <br />
+                                DATA CENTER</h3>
+                        </div>
+                        <ul>
+                            <li>
+                                <a href="https://serverdedicati.aruba.it/server-dedicati/" target="_blank">Server dedicati</a>
+                            </li>
+                            <li>
+                                <a href="https://serverdedicati.aruba.it/soluzioni-housing/" target="_blank">Housing e colocation</a>
+                            </li>
+                            <li>
+                                <a href="https://serverdedicati.aruba.it/soluzioni-managed.aspx" target="_blank">Soluzioni personalizzate</a>
+                            </li>
+                            <li>
+                                <a href="https://serverdedicati.aruba.it/contatti.aspx" target="_blank">Contatti</a>
+                            </li>
+                            <li>
+                                <a href="https://serverdedicati.aruba.it/termini-condizioni.aspx" target="_blank">Termini e Condizioni</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    
+                    <div class="footerSection">
+                        <div style="height: 35px">
+                            <h3>CONNETTIVITA'</h3>
+                        </div>
+                        <ul>
+                            <li>
+                                <a href="http://adsl.aruba.it" target="_blank">ADSL</a>
+                            </li>
+                            <li>
+                                <a href="http://hdsl.aruba.it" target="_blank">HDSL</a>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footerSection">
+                        <div style="height: 35px">
+                            <h3>SERVIZI</h3>
+                        </div>
+                        <ul>
+                            <li>
+                                <a href="http://www.fotoaruba.it" target="_blank">FotoAruba</a>
+                            </li>
+                            <li>
+                                <a href="https://hosting.aruba.it/servizio-sms.aspx" target="_blank">SMS</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    
+                    <div class="footerSection footerBorderL" style="width: 180px">
+                        <h3>ASSISTENZA</h3>
+                        <u>Servizio clienti attivo h24</u>
+                        <div style="height: 4px;">
+                            &nbsp;
+                        </div>
+                        <ul style="margin-bottom: 0px; margin-top: 0px;">
+                            <li>
+                                <a style="padding: 3px 0px;" href="http://ticket.aruba.it/KB/a4928/assistenza-telefonica.aspx" target="_blank">Contatti telefonici Assistenza</a>
+                            </li>
+                        </ul>
+                        <div style="height: 4px;">&nbsp;</div>
+                        <ul style="margin-bottom: 0px; margin-top: 0px;">
+                            <li>
+                                <a href="http://kb.aruba.it/kb/a5836/informazioni-di-prevendita-per-lacquisto-di-servizi-aruba.aspx?translation-detect=false" target="_blank">Contatti telefonici Prevendita</a>
+                            </li>
+                            <li>
+                                <a href="http://ticket.aruba.it/kb/a5852/guide-aruba.aspx" target="_blank">Guide Aruba</a>
+                            </li>
+                        </ul>
+                        <div style="height: 10px;">&nbsp;</div>
+
+                        <div style="height: 100px;">&nbsp;</div>
+                        <div class="social">
+                            <a title="facebook" class="facebook" href="https://www.facebook.com/aruba.it" target="_blank" rel="nofollow">Facebook</a>
+                            <a title="twitter" class="twitter" href="https://twitter.com/arubait" target="_blank" rel="nofollow">Twitter</a>
+                            <a title="linkedin" class="linkedin" href="http://www.linkedin.com/company/aruba-s-p-a-" target="_blank" rel="nofollow">Linkedin</a>
+                            <a title="youtube" class="youtube" href="http://www.youtube.com/user/ArubaWebTV" target="_blank" rel="nofollow">Youtube</a>
+                            <a title="pinterest" class="pinterest" href="http://www.pinterest.com/arubaspa/" target="_blank" rel="nofollow">Pinterest</a>
+                            <a title="slideshare" class="slideshare" href="http://www.slideshare.net/Aruba-spa/" target="_blank" rel="nofollow">SlideShare</a>
+                        </div>
+                    </div>
+
+                </div>
+            
+</div>
+            
+        </div>
+        <div style="height: 40px; clear: both"></div>
+    </div>
+
+    
+
+<style type="text/css">
+    #chatslider {
+        background: url("../images/LiveChat/chat-on.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+        height: 224px;
+        right: 10px;
+        margin-bottom: -174px;
+        position: fixed;
+        bottom: 0px;
+        width: 225px;
+        z-index: 3500;
+        font-size: 14px;
+        color: #000000;
+	    font-family: 'Lato', sans-serif;
+    }
+    #chatslider .chatslider-tab-up {
+        cursor: pointer;
+        float: right;
+        height: 50px;
+        width: 225px;
+        background: url("../images/LiveChat/arrow-up.png") no-repeat scroll top left rgba(0, 0, 0, 0);
+    }
+    #chatslider .chatslider-tab-down {
+        cursor: pointer;
+        float: right;
+        height: 50px;
+        width: 225px;
+	    display:none;
+        background: url("../images/LiveChat/arrow-down.png") no-repeat scroll top left rgba(0, 0, 0, 0);
+    }
+    .chatslider_it #chatslider-text-it {
+        color: #000000;
+        margin: 60px 0 0 20px;
+        padding: 0 20px 0 0;
+        text-align: left;
+	    height: 120px;
+    }
+    .chatslider_it #chatslider-text-en {
+	    display: none;
+        color: #000000;
+        margin: 60px 0 0 20px;
+        padding: 0 20px 0 0;
+        text-align: left;
+	    height: 120px;
+    }
+    #chatslider-text-it .header {
+        color: #000000;
+        display: block;
+        font-size: 24px;
+        margin-bottom: 5px;
+        text-decoration: none;
+    }
+    #chatslider-text-it .line {
+        display: block;
+        margin-bottom: 10px;
+        text-decoration: none;
+    }
+    #chatslider-smartbutton {
+        cursor: pointer;
+        float: right;
+        height: 31px;
+        width: 225px;
+        background: url("../images/LiveChat/available-it.gif") no-repeat scroll top left rgba(0, 0, 0, 0);
+    }
+    #chatslider-smartbutton .text-form {
+	    color:#333333;
+	    font-size:12px;
+	    position: absolute;
+	    text-align: left;bottom: 21px;
+	    left: 20px;
+	    width: 125px;
+	    overflow: hidden;
+	    height: 15px;
+    }
+    #chatslider-smartbutton .text-button {
+	    font-weight: bold;
+	    color:#456000;
+	    padding: 6px 16px 0 154px;
+	    text-align: center;
+    }
+    /* Chat Offline */
+    #chatslider-linkbutton {
+        cursor: pointer;
+        float: right;
+        height: 31px;
+        width: 225px;
+    }
+    #chatslider-linkbutton a,
+    #chatslider-linkbutton a:visited,
+    #chatslider-linkbutton a:link {
+        color: #0024ff;
+        text-decoration: none;
+    }
+    #aControlIDon a,
+    #aControlIDon a:link,
+    #aControlIDon a:visited,
+    #aControlIDon a:focus,
+    #aControlIDon a:hover {
+	text-decoration:none;
+}
+    #chatslider p { font-size: 14px;}
+</style>
+
+<link href='https://fonts.googleapis.com/css?family=Lato:400,700,300,300italic,700italic,400italic' rel='stylesheet' type='text/css'>
+
+<!-- Chat online -->
+<div  id="aControlIDon">
+    <div class="chatslider chatslider_it" id="chatslider" style="">
+	    <div class="chatslider-tab-up"></div>
+	    <div class="chatslider-tab-down"></div>
+        <!-- Chat online -->
+        <a id="aControlIDon" onclick="newWindow = window.open('https://commerciale.aruba.it/Chat/frmClientPreChat.aspx?config=7', 'LiveChat7','toolbar=0,scrollbars=1,location=0,statusbar=0,menubar=0,resizable=1,width=560,height=520'); if (newWindow) { newWindow.focus(); newWindow.opener=window; } return false;" title="Cliccare per aprire un Ticket." target="_blank" href="https://commerciale.aruba.it/Chat/frmClientPreChat.aspx?config=7">	
+            <p id="chatslider-text-it">			
+                <span class="header"><strong>Ciao!</strong></span>		
+                <span class="line">› Hai domande su prodotti o procedure?</span>			
+                <span class="line">› Sono qui per aiutarti.</span>
+            </p>	
+            <p id="chatslider-text-en">			
+                <span class="header"><strong>Hello!</strong></span>		
+                <span class="line">› Have question about products or procedures?</span>			
+                <span class="line">› I'm here to help.</span>
+            </p>	
+            <div id="chatslider-smartbutton">			
+                <div class="text-form">Clicca qui per chattare</div>
+                <div class="text-button">Invia</div>		
+            </div>		
+
+	    </a>
+    </div>
+</div>
+
+<!-- Chat offline -->
+<div id="aControlIDoff">
+    <div class="chatslider chatslider_it" id="chatslider" style="display: none;">
+	    <div class="chatslider-tab-up"></div>
+	    <div class="chatslider-tab-down"></div>
+        <!-- Chat online -->
+	    <a title="Non ci sono operatori attualmente disponibili. Cliccare per aprire un Ticket." target="_blank" href="https://commerciale.aruba.it/Main/frmNewTicket.aspx" id="aControlIDoff">
+	        <p id="chatslider-text-it">			
+                <span class="header"><strong>Ciao!</strong></span>		
+                <span class="line">La chat non è attiva al momento.</span>			
+                <span class="line">Puoi contattarci all'indirizzo:</span>
+            </p>	
+        </a>			
+        <div id="chatslider-linkbutton">
+            <a href="http://assistenza.aruba.it" target="_blank" title="Assistenza Aruba">http://assistenza.aruba.it</a>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $J(".chatslider-tab-up").click(function () {
+        ShowChat();
+    });
+    $J(".chatslider-tab-down").click(function () {
+        HideChat();
+    });
+
+    function ShowChat() {
+        $J(".chatslider").animate({
+            marginBottom: "+=174"
+        }, 500, function () {
+            $J(".chatslider-tab-up").hide();
+            $J(".chatslider-tab-down").show();
+        });
+
+    }
+
+    function HideChat() {
+        $J(".chatslider").animate({
+            marginBottom: "-=174"
+        }, 500, function () {
+            $J(".chatslider-tab-down").hide();
+            $J(".chatslider-tab-up").show();
+        });
+        
+    }
+</script>
+
+
+    <script type="text/javascript">
+        $J(document).ready(function () {
+            var lang = "it-IT";
+            $J.cookiesDirective({ privacylang: lang });			
+        });
+    </script>
+</body>
+</html>

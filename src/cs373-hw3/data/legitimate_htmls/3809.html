@@ -1,0 +1,111 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1">
+<title></title>
+<script src="/INTERSHOP/static/WFS/next-WWW-Site/-/-/en_GB/js/jquery-1.8.2.min.js" type="text/javascript"></script>
+<script src="/INTERSHOP/static/WFS/next-WWW-Site/-/-/en_GB/js/jquery.xdomainrequest.min.js" type="text/javascript"></script>
+<script>
+var GoogleAnalyticsEnabled = false;
+var GoogleAnalyticsAccount
+var _gaq = _gaq || [];
+var LogEnabled = false;
+function ConsoleLog(msg) {
+if(LogEnabled) {
+console.log(msg);
+}
+}
+function GoogleAnalytics(AccountNumber) {
+GoogleAnalyticsEnabled = true;
+GoogleAnalyticsAccount = AccountNumber;
+_gaq.push(['_setAccount', AccountNumber]);
+_gaq.push(['_setDomainName', 'nextdirect.com']);
+_gaq.push(['_setAllowLinker', true]);
+TrackGAPageView('nextdirect.com/CountrySelect');
+(function () {
+var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+ConsoleLog("GAInit");
+}
+function TrackGAEvent(Category, Action, Label, Value) {
+if (GoogleAnalyticsEnabled == true) {
+_gaq.push(['_trackEvent', Category, Action, Label, Value]);
+ConsoleLog("GAEvent - " + Category + " - " + Action); 
+}
+}
+function TrackGAPageView(Path) {
+if (GoogleAnalyticsEnabled == true) {
+if (Path != "") {
+_gaq.push(['_trackPageview', Path]);
+} else {
+_gaq.push(['_trackPageview']);
+}
+ConsoleLog("GAPage - " + Path);
+}
+}
+</script><script type="text/javascript">GoogleAnalytics('UA-64468889-1');</script></head>
+<body>
+<input type="hidden" name="CountrySwitchURL" id="CountrySwitchURL" value="http://www.nextdirect.com/INTERSHOP/web/WFS/next-WWW-Site/en_GB/-/GBP/Default-SelectCountry"/>
+<input type="hidden" name="CountrySelectURL" id="CountrySelectURL" value="http://www.nextdirect.com:80/CountrySelect"/>
+<input type="hidden" name="CookieDomain" id="CookieDomain" value=".nextdirect.com"/><input type="hidden" name="ServiceURL" id="ServiceURL" value="http://www.next.co.uk/geolocation-svc/NX/CountryRedirect"/><script type="text/javascript">
+var cookieDomain = document.getElementById('CookieDomain').value;
+var cookie = getCookie('NextVStoreShared');
+if (cookie.CountryCode && querystring("ignorecookie") === null) {
+var countrySwitchURL = document.getElementById('CountrySwitchURL').value;
+window.location.href = countrySwitchURL + "?CountryCode=" + cookie.CountryCode + "&LanguageCode=" + cookie.LanguageCode;
+} else {
+var countrySelectURL = document.getElementById('CountrySelectURL').value;
+if (document.getElementById('ServiceURL')) {
+var queryip = querystring("ipaddress");
+var serviceUrl = document.getElementById('ServiceURL').value;
+var data = {};
+if (queryip) {
+data.ipaddress = queryip;
+}
+$.ajax({
+url: serviceUrl,
+data: data,
+timeout: 2000,
+success: function(data) {
+if(data.ISOCountryCode){
+window.location.href = countrySelectURL+"?countryCode="+data.ISOCountryCode;
+} else {
+window.location.href = countrySelectURL;
+}
+},
+error: function() {
+window.location.href = countrySelectURL;
+}
+});
+} else {
+window.location.href = countrySelectURL;
+}
+}
+function getCookie(name) {
+var cookies = document.cookie.split(";");
+for (var i=0; i<cookies.length; i++) {
+if (getKey(cookies[i]) == name) {
+var cookie = {};
+var pairs = getValue(cookies[i]).split("&");
+for (var j=0; j<pairs.length; j++) {
+cookie[getKey(pairs[j])] = getValue(pairs[j]);
+}
+return cookie;
+}
+}
+return {};
+function getKey(pair) { return pair.substr(0, pair.indexOf("=")).replace(/^\s+|\s+$/g,""); }
+function getValue(pair) { return pair.substr(pair.indexOf("=") + 1); }
+}
+function querystring(key) {
+var re=new RegExp('(?:\\?|&)'+key+'(=(.*?))?(?=&|$)','gi');
+var m = re.exec(window.location.search);
+if (m) { return m[2]; }
+return null;
+}
+</script>
+</body>

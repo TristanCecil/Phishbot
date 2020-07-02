@@ -1,0 +1,886 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+
+    
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>FREE App Creator. Create Apps for Android. No Coding Required.</title>
+    <meta property="og:type" content="website">
+
+    <meta property="og:url" content="http://www.appsgeyser.com">
+    <meta name='yandex-verification' content='619081675b891750' />
+    <meta property="og:title" content="FREE App Creator. Create Apps for Android. No Coding Required.">
+    <meta property="og:description" content="Convert any web content into an Android App using AppsGeyser - The Free Android App Maker. Build Your Own App for Free and Make Money.">
+    <meta property="og:image" content="http://www.appsgeyser.com/img/logo_for_fb.png">
+    <meta property="fb:admins" content="100007737949008" />
+    <meta name="description" content="Convert any web content into an Android App using AppsGeyser - The Free Android App Maker. Build Your Own App for Free and Make Money."/>
+    <meta name="keywords" content="android app maker,create android app,android app creator,make android app, android app builder,make your own android app,app maker android,make mobile app,create mobile app"/>
+    <meta name="geo.region" content="US-VA" />
+    <meta name="geo.placename" content="Alexandria" />
+    <meta name="geo.position" content="38.799972;-77.05069" />
+    <meta name="ICBM" content="38.799972, -77.05069" />
+    <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon"/>
+    <!--[if lt IE 9]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!-- гугл аналитика   -->
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-179316-6', 'auto');
+        ga('send', 'pageview');
+
+    </script>
+    <!-- гугл аналитика   -->
+    <link rel="stylesheet" href="/css/layout.css?3" type="text/css">
+
+    
+    <script type="text/javascript" src="/js/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="/js/jquery-ui-1.10.3.custom.min.js"></script>
+    <script type="text/javascript" src="/js/jquery.cookie.js"></script>
+    <script type="text/javascript" src="/js/underscore-min.js"></script>
+
+
+</head>
+<body>
+
+
+    
+    <style>
+        #overflowForBanner{
+            position: absolute;
+            background-color: #000000;
+            opacity: 0.3;
+            z-index: 800;
+            display: none;
+        }
+
+        #ctaBanner, #ctaBannerThankYou{
+            font-family: pfhandbookproregular, sans-serif;
+            position: fixed;
+            width: 800px;
+            left: 50%;
+            top: 25%;
+            margin-left: -400px;
+            height: 290px;
+            background-color: #F4FCE4 ;
+            z-index: 900;
+            border-radius: 30px;
+            display: none;
+        }
+
+        #ctaBannerThankYou{
+            height: 130px;
+        }
+
+        .ctaBannerHeader{
+            font-size: 45px;
+            font-weight: bold;
+            text-align: center;
+            padding: 5px;
+            color: #666;
+        }
+
+        .ctaBannerText{
+            font-size: 22px;
+            font-weight: bold;
+            text-align: center;
+            padding: 10px;
+            color: #666;
+        }
+
+        .ctaBannerForm{
+            text-align: center;
+            padding: 20px;
+            background-color: #fff;
+            width: 500px;
+            margin: 0px auto;
+            margin-top: 20px;
+            border-radius: 20px;
+        }
+
+        .ctaBannerForm input[type=submit]{
+            background-color: #7FCD00;
+            font-size: 30px;
+            font-weight: lighter;
+            color: #FFF;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            text-transform: uppercase;
+            padding: 2.5px 20px;
+            border-radius: 5px;
+            border: none;
+            vertical-align: middle;
+            margin-left: 10px;
+        }
+
+        .ctaBannerForm input[type=text]{
+            font-size: 25px;
+            font-weight: lighter;
+            color: #666;
+            text-decoration: none;
+            display: inline-block;
+            vertical-align: middle;
+            padding: 5px 20px;
+            border: 2px solid #68655F;
+            border-radius: 5px;
+            width: 320px;
+        }
+
+        .ctaBannerTextSmall{
+            text-align: center;
+            width: 400px;
+            background-color: #fff;
+            margin: auto;
+            padding-bottom: 10px;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            font-size: 16px;
+        }
+
+        .ctaClose{
+            position: absolute;
+            width: 30px;
+            right: 10px;
+            top: 10px;
+            cursor: pointer;
+        }
+
+        .ctaLock{
+            vertical-align: sub;
+            width: 15px;
+        }
+
+        .emailError{
+            text-align: center;
+            color: #BE311B;
+            font-size: 16px;
+            margin-top: -16px;
+            display: none;
+        }
+
+        .error{
+            border-color: #BE311B !important;
+        }
+    </style>
+    <script type="text/javascript" src="/js/jquery.cookie.js"></script>
+    <script>
+        jQuery(function ($) {
+
+            function neverShowCTA() {
+                $.cookie("subscribed", 1, { expires : 7 });
+                closeCTA();
+            }
+
+            function closeCTA(){
+                $("#ctaBannerThankYou").hide();
+                $("#overflowForBanner").hide();
+                $("#ctaBanner").hide();
+            }
+
+            function showCTA(){
+                $("#overflowForBanner").css("height",$('body').height());
+                $("#overflowForBanner").css("width",$('body').width());
+                $("#overflowForBanner").fadeIn('slow');
+                $("#ctaBanner").fadeIn('slow');
+            }
+
+            function showThankYou(){
+                $("#ctaBanner").hide();
+                $("#overflowForBanner").css("height",$('body').height());
+                $("#overflowForBanner").css("width",$('body').width());
+                $("#overflowForBanner").show();
+                $("#ctaBannerThankYou").show();
+            }
+
+            $('.ctaClose').on('click', function(){
+                neverShowCTA();
+            });
+
+            $('.forceCtaClose').on('click', function(){
+                neverShowCTA();
+            });
+
+
+            if(!$.cookie("subscribed")){
+                setTimeout(function () {
+                    showCTA();
+                }, 20000)
+            }
+
+            
+            function isValidEmailAddress(emailAddress) {
+                var pattern = /^([a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+(\.[a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+)*|"((([ \t]*\r\n)?[ \t]+)?([\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|\\[\x01-\x09\x0b\x0c\x0d-\x7f\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))*(([ \t]*\r\n)?[ \t]+)?")@(([a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.)+([a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.?$/i;
+                return pattern.test(emailAddress);
+            };
+
+            $('#ctaBanner input[type=submit]').on('click',function(e){
+                e.preventDefault();
+                var email=$.trim($('input[type=text]').val());
+                if(!isValidEmailAddress(email)){
+                    $('.emailError').show();
+                    $('input[type=text]').addClass('error');
+                }else{
+                    $('.emailError').hide();
+                    $('input[type=text]').removeClass('error');
+                    $.cookie("subscribed", 1, { expires : 7 });
+                    $('#ctaForm').submit();
+                }
+            })
+
+        });
+
+    </script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <div id="overflowForBanner"></div>
+
+            <div id="ctaBanner">
+            <img src="/img/ic_close_black_24dp_2x.png" class="ctaClose">
+            <div class="ctaBannerBlock">
+                <div class="ctaBannerHeader">
+                    Learn how to Make money with Apps!
+                </div>
+                <div class="ctaBannerText">
+                    Get fresh News, Offers, Creation Tips, Publishing Advices and a lot more information about creating your own App Empire!
+                </div>
+                <div class="ctaBannerForm">
+                    <div class="emailError">
+                        Invalid email
+                    </div>
+                    <form method="post" id="ctaForm">
+                        <input type="text" name="cta_email" placeholder="Enter your e-mail" />
+                        <input type="hidden" name="cta_submit" id="action" />
+                        <input type="submit" name="cta_submit_button" class="grow" value="&#10004;" />
+                    </form>
+                </div>
+                <div class="ctaBannerTextSmall">
+                    <img src="/img/ic_lock_black_24dp_1x.png" class="ctaLock">
+                    Your Information will never be shared with any third party
+                </div>
+            </div>
+        </div>
+    
+
+<div class="header" style="background-color: #ffffff">
+    <div class="section section-login">
+
+        <div class="pad">
+
+            <div class="container"
+                 style="font-family: pfhandbookproregular, sans-serif; width: 100%; text-align: right;font-size: 16px">
+
+
+                <script>
+
+                    $(document).ready(function(){
+                        $('#English').attr('href','/');
+                    })
+                </script>
+
+                <div style="display: inline-block;">
+<span class="right">
+                    <a href="/create/start" title="" class="createApp" style="text-decoration: none; font-weight:normal;text-transform: uppercase; background-color: #ffb400  ; padding: 10px; color: white;
+font-size: 18px;
+border-bottom-left-radius: 8px;
+border-bottom-right-radius: 8px;">CREATE APP</a>
+                </span>
+                                <span id="login" class="right">
+                                <a style="cursor: pointer; text-decoration: none;"
+                                   href="/login"><img
+                                        src="/img/zoom_16.gif"
+                                        alt="Android app builder login"
+                                        title="Android app builder login" class="middle"/>&nbsp;
+                                    login                                </a>
+                            </span>
+                                    </div>
+
+
+
+                
+                            </div>
+        </div>
+    </div>
+
+    <nav class="nav-header" style="">
+        <div class="row-main" style="width: 90%; margin: auto;color: #666666; font-family: PFHandbookProRegular, sans-serif;">
+
+            <div class="logo-img" style="z-index: 5">
+                <a class="" href="/"><img alt="App Maker – App Creation FREE Software" title="App Maker – App Creation FREE Software" src="/img/new_mainpage/logo.png"></a>
+            </div>
+            <div class="top-menu" style="">
+
+                <script>
+                    $(function() {
+                        $( "#menu" ).menu({
+                            position: { my: "left top", at: "left top+67"}
+                        });
+
+                        $( "#menu" ).menu("focus", null, $( "#menu" ).menu().find( ".ui-menu-item:last" ));
+                        $( "#menu" ).mouseleave(function () {
+                            $( "#menu" ).menu('collapseAll');
+                        });
+
+                    });
+                </script>
+
+
+                <ul id="menu">
+                    <li class=" ">
+                        <a href="/" title="App Maker – App Creation FREE Software"
+                           alt="App Maker – App Creation FREE Software"
+                           style="text-decoration: none;">HOME</a>
+                    </li>
+                    <li class=" ">
+                        <a href="/create/start" title="App Maker – App Creation FREE Software"
+                           alt="App Maker – App Creation FREE Software"
+                           style="text-decoration: none;">BUILD APP</a>
+                        <ul class="menu-parent animated fadeIn">
+                            <div class="btnsblock">
+                                <li class="child">
+                                    <a href="/create-business-app">Business</a>
+                                </li>
+                                <li class="child">
+                                    <a href="/create-messenger-app">Messenger</a>
+                                </li>
+                                <li class="child">
+                                    <a href="/create-url-app">Website</a>
+                                </li>
+                                <li class="child">
+                                    <a href="/create-browser-app">Browser</a>
+                                </li>
+                            </div>
+
+                            <div class="btnsblock">
+
+                                <li class="child">
+                                    <a href="/create-youtube-app">YouTube</a>
+                                </li>
+                                <li class="child">
+                                    <a href="/create-mobileTv-app">TV</a>
+                                </li>
+                                <li class="child">
+                                    <a href="/create-facebookPage-app">Facebook</a>
+                                </li>
+                                <li class="child">
+                                    <a href="/gamemaker">Gamemaker</a>
+                                </li>
+                            </div>
+                            <li class="child more">
+                                <a href="/create/start/#all-templates" style="text-transform: lowercase;">more</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class=" ">
+                        <a href="/gamemaker" title="App Maker – App Creation FREE Software"
+                           alt="App Maker – App Creation FREE Software"
+                           style="text-decoration: none;">GAMEMAKER</a>
+                    </li>
+                    <li class=" ">
+                        <a href="/showcase" title="App Maker – App Creation FREE Software"
+                           alt="App Maker – App Creation FREE Software"
+                           style="text-decoration: none;">SHOWCASE</a>
+                    </li>
+                    <li class=" ">
+                        <a href="http://www.appsgeyser.com/blog" title="App Maker – App Creation FREE Software"
+                           alt="App Maker – App Creation FREE Software"
+                           style="text-decoration: none;">BLOG</a>
+                        <ul class="menu-parent animated fadeIn">
+                            <li class="child">
+                                <a href="http://www.appsgeyser.com/blog/category/app-ideas/">App Ideas</a>
+                            </li>
+                            <li class="child">
+                                <a href="http://www.appsgeyser.com/blog/category/how-to-make-an-app/">App Creation</a>
+                            </li>
+                            <li class="child">
+                                <a href="http://www.appsgeyser.com/blog/category/app-marketing/">App Marketing</a>
+                            </li>
+                            <li class="child">
+                                <a href="http://www.appsgeyser.com/blog/category/app-monetization/">App Monetization</a>
+                            </li>
+                            <li class="child more">
+                                <a href="http://www.appsgeyser.com/blog/" style="text-transform: lowercase;">more</a>
+                            </li>
+                        </ul>
+
+                    </li>
+
+                    <li class=" ">
+                        <a href="/support" title="App Maker – App Creation FREE Software"
+                           alt="App Maker – App Creation FREE Software"
+                           style="text-decoration: none;">SUPPORT</a>
+                    </li>
+
+                </ul>
+
+
+            </div>
+
+
+        </div>
+    </nav>
+
+</div>
+<style>
+    .amazonPromo{
+        width: 100%;
+        background-color: #ffb400;
+        height: 50px;
+        text-align: center;
+    }
+
+    .amazonPromo a{
+        font-family: "pfhandbookproregular";
+        line-height: 50px;
+        color: #fff;
+        font-size: 30px;
+        text-decoration: none;
+        position: absolute;
+        width: 800px;
+        left: 50%;
+        margin-left: -400px;
+    }
+
+    .amazonPromo a:hover{
+        color: #fff;
+    }
+
+    .amazonPromo span{
+        text-decoration: underline;
+    }
+</style>
+<div class="amazonPromo">
+    <a href="/amazon">
+        Win up to $70 and a tablet from Amazon! <span>Apply Now!</span>
+    </a>
+</div>
+<link rel="stylesheet" href="/css/homepage.css" type="text/css">
+<link rel="stylesheet" href="/css/ab/v1.css" type="text/css">
+<link rel="stylesheet" type="text/css" href="/css/slick.css"/>
+<script type="text/javascript" src="/js/slick.min.js"></script>
+<div class="content">
+
+    <div class="page-container" style="height: auto">
+
+        <section class="section section-main" id="" style="min-height: 450px;">
+
+            <div class="backgroundImage" style="">
+                <img  src="/img/homepage/pic1.jpg" width="100%">
+                <img  src="/img/homepage/pic2.jpg" width="100%">
+                <img  src="/img/homepage/pic3.jpg" width="100%">
+            </div>
+            <style>
+
+                #h_img1:before {
+                    content: url('/img/homepage/pic1.jpg');
+                    width:0;
+                    height:0;
+                    visibility:hidden;
+                    display: none;
+                }
+                #h_img2:before {
+                    content: url('/img/homepage/pic2.jpg');
+                    width:0;
+                    height:0;
+                    visibility:hidden;
+                    display: none;
+                }
+                #h_img3:before {
+                    content: url('/img/homepage/pic3.jpg');
+                    width:0;
+                    height:0;
+                    visibility:hidden;
+                    display: none;
+                }
+            </style>
+            <div id='h_img1'></div>
+            <div id='h_img2'></div>
+            <div id='h_img3'></div>
+            <script>
+                $(document).ready(function(){
+
+                    $('.slick-track').css('width',window.innerWidth+'px');
+                    $('.backgroundImage').slick({
+                        dots: false,
+                        infinite: true,
+                        speed: 350,
+                        fade: true,
+                        cssEase: 'linear',
+                        autoplay: true,
+                        arrows: false,
+                        autoplaySpeed: 10000
+                    });
+                });
+            </script>
+
+            <div>
+                <div class="row-main" style="float: right;width: 60%;position: relative">
+
+                    <div class="main-text" style="padding-top: 10px">
+
+                        <div style="text-align: center">
+
+                            <h1 style="position: relative;line-height: 80px;font-size: 4.5em !important;width: 100%">Create an Android App for FREE!</h1>
+                                                        <script type="text/javascript">
+
+                                $(document).ready(function () {
+                                    increaseCountsTimer = setInterval(increaseCounts, 5000);
+                                });
+
+                                var formatNumber = function (num) {
+                                    var array = num.toString().split('');
+                                    var index = -3;
+                                    while (array.length + index > 0) {
+                                        array.splice(index, 0, ',');
+                                        // Decrement by 4 since we just added another unit to the array.
+                                        index -= 4;
+                                    }
+                                    return array.join('');
+                                };
+
+                                installscount = 1337943970;
+                                appscount = 3030020;
+                                adscount = 4147483647;
+                                function increaseCounts() {
+                                    installscount += 4;
+                                    adscount += 167;
+                                    if (Math.random() < 0.1)
+                                        appscount += 1;
+                                    $("#installscount").html(formatNumber(installscount));
+                                    $("#appscount").html(formatNumber(appscount));
+                                    $("#adscount").html(formatNumber(adscount));
+                                }
+                            </script>
+
+                            <div class="create-block" style="margin-top: 80px">
+
+                                <a id="create-button" class="grow"
+                                   title="App Maker - How to make an app."
+                                   alt="App Builder - How to create an app."
+                                   style="font-size: 55px;
+                                   padding: 20px 60px;
+                                    border-radius: 10px"
+                                   href="/create/start" target="_parent">CREATE NOW!</a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+            <div class='free' style="font-size: 35px;margin:40px auto;">
+                <div>
+                    Create an UNLIMITED number of apps for FREE
+                </div>
+                <div>
+                    Publish your apps without any restrictions
+                </div>
+                <div>
+                    Get 50% revenue share from app monetization
+                </div>
+            </div>
+
+            <div class='quotes' style="position: absolute;
+  bottom: 0px;">
+                <div id="quote">
+                    <span id="quote-text">Now AppsGeyser is turning app development into something that literally anyone can do" - The Next Web</span>
+                </div>
+            </div>
+        </section>
+
+
+
+        <script>
+            $(document).ready(function () {
+                var text = ['"You can create nice, functioning apps that can offer a steamlined mobile version of your website" - AppScout',
+                    '"Tools like the AppsGeyser may come in handy for a company looking to stay up-to-date with emerging technologies and platforms" - CMSWire',
+                    '"AppsGeyser is a ludicrously simple Android app-creation tool" - Eurodroid',
+                    '"Now AppsGeyser is turning app development into something that literally anyone can do" - The Next Web'];
+                var counter = 0;
+                var counter2 = 0;
+
+                var img = [
+                    '/img/homepagePic4.jpg',
+                    '/img/homepagePic5.jpg',
+                    '/img/homepagePic3rsz1.jpg'
+                ];
+
+                setInterval(change, 5000);
+                setInterval(buzz, 13370);
+                setInterval(changeImage, 10000);
+
+                function changeImage() {
+                    $('#image-carousel').hide();
+                    $('#image-carousel').attr('src', img[counter2]);
+                    $('#image-carousel').fadeIn('slow');
+                    counter2++;
+                    if (counter2 >= img.length) {
+                        counter2 = 0;
+                    }
+                }
+
+                function change() {
+
+                    $('#quote').fadeOut('500', function(){
+                        $('#quote').text(text[counter]);
+                    });
+                    $('#quote').fadeIn('500');
+
+                    counter++;
+                    if (counter >= text.length) {
+                        counter = 0;
+                    }
+                }
+
+                function buzz() {
+                    $('#create-button').css({
+                            '-webkit-animation-name': 'buzz',
+                            'animation-name': 'buzz',
+                            '-webkit-animation-duration': '0.15s',
+                            'animation-duration': '0.15s',
+                            '-webkit-animation-timing-function': 'linear',
+                            'animation-timing-function': 'linear',
+                            'webkit-animation-iteration-count': '2',
+                            'animation-iteration-count': '2'
+                        }
+                    );
+                    setTimeout(function () {
+                        $('#create-button').css({
+                                '-webkit-animation': '',
+                                'animation': ''
+                            }
+                        );
+                    }, 2000);
+                }
+
+            })
+        </script>
+
+    </div>
+
+    <section class="section section-buttons">
+        <div class="container">
+            <div id="appCounts1">
+                We have <b
+                    id="installscount">1,337,943,970</b> installed Apps &                <b id="appscount">3,030,020</b> created Apps                ,
+                <br/><b
+                    id="adscount">4,147,483,647</b> ads served            </div>
+        </div>
+    </section>
+    <section class="section section-steps">
+        <div style="color: #666666; font-size: 27px">CREATE AN APP IN 3 SIMPLE STEPS!</div>
+        <div class="stepsBlock">
+            <div class="steps">
+                <a href="/en/create/start" alt="App Maker - How to make an app." title="App Builder - How to create an app.">
+                    <div id="step1" class="stepImage grow"></div>
+                </a>
+                Select a Template
+            </div>
+            <div class="steps">
+                <a href="/en/create/start" alt="App Maker - How to make an app." title="App Builder - How to create an app.">
+                    <div id="step2" class="stepImage grow"></div>
+                </a>
+                Create an App
+            </div>
+            <div class="steps">
+                <a href="/monetize" alt="App Maker - How to make an app." title="App Builder - How to create an app.">
+                    <div id="step3" class="stepImage grow"></div>
+                </a>
+                Publish & Monetize
+            </div>
+        </div>
+    </section>
+
+
+    <div style="width: 100%; margin: 0 auto;">
+        <section class="section section-features" id="section-features">
+            <div class="pad">
+                <h2 style="font-family: PFHandbookProRegular, sans-serif; color: #666666; font-size: 27px">APPSGEYSER FEATURES</h2>
+
+                <div class="wrap">
+                    <div class="row-main">
+
+                        <div class="btnsblock">
+
+                            <div class="sp">
+                                <h3>Free Distribution</h3>
+
+                                <div class="sets-image">
+                                    <img src="/img/new_mainpage/img/distribute_icon.gif" border="0">
+
+                                </div>
+                                <p>Distribute your App through our network for Free.</p>
+                            </div>
+                            <div class="sp">
+                                <h3>HTML5 Support</h3>
+
+                                <div class="sets-image">
+                                    <img src="/img/new_mainpage/img/html5.gif" border="0">
+                                </div>
+                                <p>Use HTML 5 to add advanced features and enhance user experience.</p>
+                            </div>
+                        </div>
+
+                        <div class="btnsblock">
+                            <div class="sp">
+                                <h3>Handly Notifications</h3>
+
+                                <div class="sets-image">
+                                    <img src="/img/new_mainpage/img/messages.png" border="0">
+                                </div>
+                                <p>Send pop-up notifications right to your apps.</p>
+                            </div>
+                            <div class="sp">
+                                <h3>Easy Monetization</h3>
+
+                                <div class="sets-image">
+                                    <img src="/img/new_mainpage/img/monetization.png" border="0">
+                                </div>
+                                <p>Earn money. Sell apps or get paid every time someone clicks ads in your apps.</p>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div
+            style="color: #666666; font-family: pfhandbookproregular, sans-serif; padding-bottom: 20px; text-align: center;background-color: #fff">
+            AppsGeyser is a FREE service that converts your content into an App and makes you money.<br>
+        Your app will have all you need including messaging, social sharing, tabs and full support for HTML5 enhancements.<br>
+        But forget about the app, we help you build a business and profit from mobile! We help you monetize your content succesfully.        </div>
+    </div>
+
+    <div style="background-color: #494949; width: 100%">
+    <div style="
+    margin: 0 auto;
+    width: 100%;
+">
+        <div class="container sitemap" style="width: 100%">
+            <div style="text-align: center">
+                <div class="lists">
+                    <h5 class="appsg_style">APPSGEYSER</h5>
+                    <ul>
+                        <li><a href="http://www.appsgeyser.com/why" title="App Maker - How to make an app." alt="App Builder - How to create an app."
+                               class="appsg_style"> Why?</a></li>
+                        <li><a href="http://www.appsgeyser.com/create/start/" title="App Maker - How to make an app."
+                               class="appsg_style" alt="App Builder - How to create an app."> Create</a></li>
+                        <li><a href="http://www.appsgeyser.com/create-template/" title="App Maker - How to make an app."
+                               class="appsg_style" alt="App Builder - How to create an app.">Create Template</a></li>
+
+                        <li><a href="http://www.appsgeyser.com/monetize" title="App Maker - How to make an app."
+                               class="appsg_style" alt="App Builder - How to create an app."> Monetize</a></li>
+                        <li><a href="http://app.appsgeyser.com/" class="appsg_style">Apps</a></li>
+                    </ul>
+                </div>
+                <div class="lists">
+                    <h5 class="appsg_style"
+                        style="text-transform: uppercase"> Support</h5>
+                    <ul style="width: 0px">
+                        <li><a alt="App Builder - How to create an app." class="appsg_style" href="http://www.appsgeyser.com/support" title="App Maker - How to make an app.">FAQ</a></li>
+                        <li><a alt="App Builder - How to create an app." class="appsg_style" href="http://www.appsgeyser.com/free_resources"
+                               title="App Maker - How to make an app.">Tutorials</a></li>
+                        <li><a alt="App Builder - How to create an app." class="appsg_style" href="http://getsatisfaction.com/appsgeyser"
+                               title="App Maker - How to make an app.">Community</a></li>
+                    </ul>
+                </div>
+
+                <div class="lists">
+                    <h5 class="appsg_style">COMPANY</h5>
+                    <ul style="width: 110px;">
+                        <li><a alt="App Builder - How to create an app." class="appsg_style" href="http://www.appsgeyser.com/about"
+                               title="App Maker - How to make an app.">About</a></li>
+                        <li><a alt="App Builder - How to create an app." class="appsg_style" href="http://www.appsgeyser.com/custom"
+                               title="App Maker - How to make an app.">Custom Development</a></li>
+                        <li><a alt="App Builder - How to create an app." class="appsg_style" href="http://www.appsgeyser.com/about/testimonials/"
+                               title="App Maker - How to make an app.">Testimonials</a></li>
+                    </ul>
+                </div>
+
+                <div class="lists">
+                    <h5 class="appsg_style">FOLLOW US</h5>
+                    <ul style="width: 0px">
+                        <li><a alt="App Builder - How to create an app." class="appsg_style" href="http://www.facebook.com/#!/pages/AppsGeyser/167531533267957"
+                               target="_blank" title="App Maker - How to make an app.">Facebook</a></li>
+                        <li><a alt="App Builder - How to create an app." class="appsg_style" href="http://twitter.com/appsgeyser" target="_blank"
+                               title="App Maker - How to make an app.">Twitter</a></li>
+                        <li><a alt="App Builder - How to create an app." class="appsg_style" href="http://www.appsgeyser.com/blog" title="App Maker - How to make an app.">Blog</a></li>
+                        <li><a alt="App Builder - How to create an app." class="appsg_style"
+                               href="http://appsgeyser.us2.list-manage.com/subscribe?u=c0bfac433b3370568ec982aee&id=c3c040ff1c"
+                               title="App Maker - How to make an app.">Newsletter</a></li>
+                        <li><a alt="App Builder - How to create an app." class="appsg_style" href="https://www.youtube.com/channel/UCLEr8ccBCfPVV_MylmzI_Lg" title="App Maker - How to make an app.">YouTube</a>
+                        </li>
+                        <li><a alt="App Builder - How to create an app." class="appsg_style" href="https://plus.google.com/110545245797583733042"
+                               title="App Maker - How to make an app.">Google+</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container copyright-info" style="text-align: center; padding-top: 10px; color: #FFFFFF">
+            Copyright © 2011-2016 <a href="http://www.besttoolbars.net/" target="_blank" style="color: #FFFFFF">Besttoolbars</a>,
+            2016            <ul class="infolinks">
+                <li><a href="/privacy" class="firstelement">Privacy Policy</a></li>
+                <li><a href="/tos" class="">Terms of Service</a></li>
+                <li><a href="/legal" class="">Legal Info</a></li>
+                <li class="lastli"><a href="/dmca" class="">DMCA</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function (d, w, c) {
+        (w[c] = w[c] || []).push(function() {
+            try {
+                w.yaCounter22613605 = new Ya.Metrika({id:22613605,
+                    webvisor:true,
+                    clickmap:true,
+                    trackLinks:true,
+                    accurateTrackBounce:true});
+            } catch(e) { }
+        });
+
+        var n = d.getElementsByTagName("script")[0],
+            s = d.createElement("script"),
+            f = function () { n.parentNode.insertBefore(s, n); };
+        s.type = "text/javascript";
+        s.async = true;
+        s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js";
+
+        if (w.opera == "[object Opera]") {
+            d.addEventListener("DOMContentLoaded", f, false);
+        } else { f(); }
+    })(document, window, "yandex_metrika_callbacks");
+</script>
+<noscript><div><img src="//mc.yandex.ru/watch/22613605" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+<script src="/js/custom-text-iframe-feedback.js"></script>
+
+<script type="text/javascript">
+    var is_ssl = ("https:" == document.location.protocol);
+    var asset_host = is_ssl ? "https://s3.amazonaws.com/getsatisfaction.com/" : "http://s3.amazonaws.com/getsatisfaction.com/";
+    document.write(unescape("%3Cscript src='" + asset_host + "javascripts/feedback-v2.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+
+<script type="text/javascript">
+    var feedback_widget_options = {};
+    feedback_widget_options.display = "overlay";
+    feedback_widget_options.company = "appsgeyser";
+    feedback_widget_options.placement = "left";
+    feedback_widget_options.color = "#f89c21";
+    feedback_widget_options.style = "question";
+    var feedback_widget = new GSFN.feedback_widget(feedback_widget_options);
+</script>
+</body>
+</html>

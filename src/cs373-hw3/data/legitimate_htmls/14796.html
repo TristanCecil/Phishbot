@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;  charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="shortcut icon" type="image/gif" href="http://www.noelshack.com/favicon.gif" />
+<meta name="Description" content="Vous avez des images? Envoyez-les et partagez-les super rapidement avec NoelShack!" />
+<meta name="Keywords" content="hébergement d&#039;images gratuit, hébergeur images, hébergement images,  photos, upload gratuit, upload images, noelshack, noelshack.com" />
+<title>NoelShack - Héberger puis partager vos images et photos en un clic - Upload gratuit</title>
+<link rel="stylesheet" type="text/css" href="/css/defaut.css" />
+<script charset="utf-8" src="js/jquery.js"></script>
+<script charset="utf-8" src="js/jquery.ui.widget.js"></script>
+<script charset="utf-8" src="js/base.js"></script>
+<script charset="utf-8" src="js/modal.js"></script>
+<script charset="utf-8" src="/js/jquery.iframe-transport.js"></script>
+<script charset="utf-8" src="/js/jquery.fileupload.js"></script>
+<script charset="utf-8" src="/js/tmpl.js"></script>
+<script charset="utf-8" src="/js/noelshack.js"></script>
+</head>
+<body>
+<script id="wads_init"><!--
+(function() {
+    function addClass(elem, name) {
+        if (elem) {
+            var e = elem.className.split(/\s+/);if (e.indexOf(name) <= -1) {e.push(name);}
+            elem.className = e.join(" ");
+        }
+    }
+    var wads = {
+        // config
+        callUrl : 'http://wbdds.jeuxvideo.com/p-c-async',
+        includeUrl : 'http://wbdds.jeuxvideo.com/include/async',
+        sitePage : 'noelshack_com/noelshack',
+        query : '',
+        mode : 'async',
+
+     // can't touch this
+     getRandom:function() {
+         return Math.round(Math.random()*1000000000);
+     },
+     loadAsync: function(d, src, id) {
+         var dv; dv = d.getElementById('wads_' + id); if(dv) dv.parentNode.removeChild(dv);
+         var a = d.createElement('script'); a.async = "async"; a.src = src;
+         if(id) { a.id = 'wads_' + id; }
+         if(id=='fetchAll') {
+             if(typeof wads.callback=='function') {
+                 var loaded = false;
+                 a.onreadystatechange = function (callback) {
+                     if (a.readyState === "loaded" || a.readyState === "complete") {
+                         a.onreadystatechange = null;
+                         loaded = true;
+                         wads.callback();
+                     }
+                 };
+                 a.onload = function () {
+                     if (!loaded) {
+                         wads.callback();
+                     }
+                 };
+             }
+         }
+         var s = d.getElementsByTagName('script')[0]; s.parentNode.insertBefore(a, s);
+     },
+     setSitePage:function(sp) {
+         this.sitePage=sp;
+     },
+     setQuery: function(q) {
+         this.query=q;
+     },
+     fetchAll:function() {
+         this.loadAsync(top.document, this.callUrl + '/' + this.sitePage + '/r' + this.getRandom() + '/' + this.query, 'fetchAll');
+     },
+     refreshAll: function() {
+         this.cleanAllPositions();
+         this.creativeAndCallMasterInit();
+         this.fetchAll();
+     },
+     setAsyncCallback: function(callback) {
+         this.callback = callback;
+     },
+     unsetAsyncCallback: function() {
+         this.callback = null;
+     }
+    }
+    top.wads=wads;
+    wads.loadAsync(top.document, wads.includeUrl, 'include');
+})();
+// --></script>
+
+<div id="en_tete">
+    <div class="bloc980 slogan">
+        <a href="http://www.noelshack.com/" id="lien_img_accueil"><img src="http://www.noelshack.com/pics/header_logo.png" alt="Accueil NoelShack.com" /></a>
+        <div id="bloc_slogan"><span>Le service d'hébergement d'images en ligne<br/>pour envoyer et partager vos images et photos</span></div>
+        <a href="http://www.noelshack.com/" id="bloc_envoi"><span>Envoyer des images</span></a>
+    </div>
+</div>
+
+<div id="content">
+<div class="bloc980">
+    <div class="col1">
+        <div id="bloc_telechargement" class="bloc_center">
+            <h1>Vos téléchargements <span id="progress_all" style="font-size: 0.6em;float: right"></span></h1>
+            <div id="nocookies" class="cacher">
+                <strong>Cookies non actifs.</strong> La fonction de mémorisation des envois est donc inactive.
+            </div>
+            <noscript>
+                <div >
+                <h2>Upload image</h2>
+                <div class="hint"><strong>JavaScript inactif.</strong> Veuillez l'activer .</div>
+                </div>
+            </noscript>
+
+            <ul id="liste_img_upload"></ul>
+
+            <div id="actions_liens_img">
+                <span>Vous n'avez aucune image.</span>
+                <a href="#all_liens" class="button cacher" data-modal="afficher">Voir tous les liens</a>
+                <a href="#save_all_liens" class="button cacher" id="btn_save_all_liens" data-modal="afficher">Sauvegarder tous les liens</a>
+                <a href="#reset" class="button button_icon cacher" id="btn_reset" data-modal="afficher"><span></span>Reset</a>
+            </div>
+            <div class="clear"></div>
+        </div>
+
+        <div id="bloc_erreur" class="bloc_center cacher">
+            <h2>Les fichiers suivants n'ont pu être uploadés</h2>
+            <div id="ligne_fermeture"><a href="#" class="button button_icon btn_close"><span></span>Fermer</a></div>
+        </div>
+
+        <div id="bloc_upload" class="bloc_center">
+            <h1>Envoyer des images</h1>
+            <p id="format_autorise">Formats autorisés : PNG, JPEG, GIF, SVG, BMP, TIFF, PSD - Taille maxi : 20 Mo.</p>
+            <ul id="bloc_btn_envoi_img">
+                <li id="upload_pc"><input type="file" id="input_envoi_image" class="input_envoi_image" name="fichier[]" multiple="multiple"/><span>Upload depuis votre ordinateur</span></li>
+            </ul>
+            <a id="upload_web" href="#send_from_web" data-modal="afficher"><span>Upload depuis une adresse internet</span></a>
+            <p id="publication">Publication en mode <span>privé</span> <a href="#mode_publication" data-modal="afficher">Modifier</a></p>
+        </div>
+
+    </div>
+    <div class="col2">
+            <div id="content_pub_carre"><div id="bloc_pub_carre">
+            <div id="wads_po_middle"></div>        </div></div>
+    </div>
+    <div class="clear"></div>
+</div>
+
+
+<script id="template-standard" type="text/html">
+    <li style="z-index: {%=(500 - o.index)%};" class="select"> </li>
+</script>
+
+<script id="template-envoi" type="text/html">
+    <li style="z-index: {%=(500 - o.index)%};" class="progress">
+     <div class="infos_upload">
+        <div class="txt_upload">{%=o.fichier.nom%}</div>
+        <div class="progress_bar"><div style="width:0px;"></div></div>
+        <div class="pourcent">0%</div>
+    </div>
+    </li>
+</script>
+
+<script id="template-fichier" type="text/html">
+    <li style="z-index: {%=(500 - o.index)%};" class="fichier">
+        <a class="btn_lien_fermer btn_lien" href="#"><span></span>Liens</a>
+        <div class="bloc_infos_liens cacher">
+            <div class="bloc_liste_liens">
+                <div><span>Chats :</span><input type="text" value="{%=o.fichier.chats%}" readonly="readonly"><a class="button" href="#">Sélectionner</a></div>
+                <div><span>Forums :</span><input type="text" value="{%=o.fichier.forums%}" readonly="readonly"><a class="button" href="#">Sélectionner</a></div>
+                <div><span>Blogs :</span><input type="text" value="{%=o.fichier.blogs%}" readonly="readonly"><a class="button" href="#">Sélectionner</a></div>
+                <div><span>URL :</span><input type="text" value="{%=o.fichier.url%}" readonly="readonly"><a class="button" href="#">Sélectionner</a></div>
+            </div>
+        </div>
+        <a href="{%=o.fichier.chats%}" target="_blank">
+        <img alt="" src="{%=o.fichier.mini%}">
+        </a>
+    </li>
+</script>
+
+<script id="template-erreur" type="text/html">
+    <div class="ligne_error"><div class="a_gauche nom_fichier">{%=o.nom%}</div><div class="a_droite">{%=o.msg%}</div></div>
+</script>
+
+<!-- modal -->
+
+<!-- BLOC MODE PUBLICATION -->
+<div class="popup greybox_generic"  id="mode_publication">
+<div class="conteneur_grey">
+    <div class="bloc_center">
+        <h1>Mode de publication</h1>
+        <a class="button button_icon btn_close" href="#" data-modal="fermer"><span></span>Fermer</a>
+        <div class="content_grey">
+            <p><span class="highlight gras">Lisez attentivement le message suivant :</span></p>
+            <p>Toutes les images seront hébergées <span class="highlight">par défaut en mode "public"</span>. Cela signifie qu'elles seront visibles dans la galerie.</p>
+            <p>Si toutefois, vous ne souhaitez pas voir vos images apparaître dans la galerie, changez le mode de publication en choisissant le mode "privé".</p>
+            <p>Vous pouvez basculer entre les deux modes à tout moment.</p>
+            <div id="bloc_mode_publi">
+                <p class="highlight gras">Sélectionnez le mode de publication :</p>
+                <div><input type="radio" name="m_publi" value="1" id="m_public" checked="checked" tabindex="1" /><label for="m_public">Mode public (attention, images visibles dans la galerie)</label></div>
+                <div><input type="radio" name="m_publi" value="0" id="m_prive" tabindex="2" /><label for="m_prive">Mode privé</label></div>
+                <button class="btn_envoi" tabindex="3" id="BtnValidePubli">Valider</button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<!-- BLOC ENVOYER DEPUIS UNE ADRESSE WEB -->
+<div class="popup greybox_generic" id="send_from_web">
+<div  class="conteneur_grey">
+    <div class="bloc_center">
+        <h1>Envoyer depuis une adresse Internet</h1>
+        <a class="button button_icon btn_close" href="#" data-modal="fermer"><span></span>Fermer</a>
+        <div class="content_grey">
+            <form>
+                <label for="urls_img">Saisissez les URLs des images (une par ligne)</label>
+                <textarea tabindex="1" id="urls_img" name="urls_img"></textarea>
+                <button tabindex="2" class="btn_envoi" id="telecharger_image">Envoyer</button>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+
+<!-- BLOC SAUVEGARDER TOUS LES LIENS -->
+<div class="popup greybox_generic" id="save_all_liens">
+<div  class="conteneur_grey">
+    <div class="bloc_center">
+        <h1>Sauvegarder tous les liens</h1>
+        <a class="button button_icon btn_close" href="#" data-modal="fermer"><span></span>Fermer</a>
+        <div class="content_grey">
+                        <p>Vous pouvez recevoir un e-mail contenant tous les liens de ces images.</p>
+            <p>Entrez l'adresse d'une autre personne pour lui envoyer la liste des liens.</p>
+            <form  data-modal="formulaire" method="get" action="http://www.noelshack.com/recevoir.php">
+                <label for="adresse_mail">Saisir une adresse de courrier électronique :</label>
+                <input type="hidden" name="signature" value="2036cd9c2433ca10644107234b67b7ab" >
+                <input type="text" id="adresse_mail" name="adresse_mail" tabindex="1" value=""/>
+                <button tabindex="2" class="btn_envoi" id="btn_sauvegarde_mail">Envoyer par mail</button>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+
+<!-- BLOC RESET -->
+<div class="popup greybox_generic" id="reset">
+<div  class="conteneur_grey">
+    <div class="bloc_center">
+        <h1>Reset</h1>
+        <a class="button button_icon btn_close" href="#" data-modal="fermer"><span></span>Fermer</a>
+        <div class="content_grey">
+            <img src="/css/images/commun/stop.png" alt="Stop" width="74" height="74" id="img_stop" />
+            <p>Attention ! Vous êtes sur le point d'effacer votre liste d'images.</p>
+            <p>Tous les liens vers vos images seront perdus.<br/>Avez-vous pensé à les copier ou à les sauvegarder ?</p>
+            <div id="bloc_erase">
+                <p class="gras">Effacer cette liste d'images ?</p>
+                <button class="btn_envoi" id="reset_oui">OUI</button><button class="btn_envoi" id="reset_non" data-modal="fermer">NON</button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<!-- BLOC TOUS LES LIENS -->
+<div class="popup greybox_generic"  id="all_liens" >
+<div class="conteneur_grey">
+    <div class="bloc_center">
+        <h1>Tous les liens</h1>
+        <a class="button button_icon btn_close" href="#" data-modal="fermer"><span></span>Fermer</a>
+        <div class="content_grey">
+            <p class="highlight" for="listeUrl">Partager via email ou messagerie (JVC)</p>
+                <textarea rows="5" readonly="readonly" id="listeUrl"></textarea>
+            <p class="highlight" for="listeForums">Poster sur les forums (bbcode)</p>
+                <textarea rows="5" readonly="readonly" id="listeForums"></textarea>
+            <p class="highlight" for="listeBlogs">Publier sur les sites et blogs (html)</p>
+                <textarea rows="5" readonly="readonly" id="listeBlogs"></textarea>
+            <p class="highlight" for="listeUrls">URL des images</p>
+                <textarea rows="5" readonly="readonly"  id="listeUrls"></textarea>
+        </div>
+    </div>
+</div>
+</div>
+
+<!-- modal fin -->
+
+<script id="data" type="application/json">
+</script>
+<script type="text/javascript">
+    (function () {
+        if (!navigator.cookieEnabled) {
+            $("#nocookies").show();
+        }
+        $("#liste_img_upload").envoi({signature:'bd70d2aad0240bc5480315fd9c300d6d'});
+        modal();
+    })(jQuery);
+</script>
+
+
+</div>
+<div id="pub_banner">
+<div class="bloc980"><div id="content_banner"><div id="bloc_banner"><div id="wads_po_header-top"></div></div></div></div>
+</div>
+<div id="utility">
+    <div class="bloc980">
+        <div id="liens_utiles" class="bloc_lien1">
+            <h3>Liens utiles</h3>
+            <ul id="utile_first_col">
+                <li><a href="http://www.noelshack.com/faq.php">Questions fréquentes</a></li>
+                <li><a href="http://www.noelshack.com/tos.php">Conditions générales d'utilisation</a></li>
+            </ul>
+            <ul id="utile_second_col">
+                <li><a href="http://www.noelshack.com/contact.php">Contacter NoelShack</a></li>
+                <li><a href="mailto:moderation@noelshack.com">moderation@noelshack.com</a></li>
+            </ul>
+        </div>
+        <div id="mobile">
+            <h3>NoelShack sur votre mobile</h3>
+            <a id="app_store" href="http://itunes.apple.com/fr/app/noelshack.com/id496492878?mt=8"><span>Disponible sur App Store</span></a>
+            <a id="google_play" href="https://play.google.com/store/apps/details?id=com.jeuxvideo.noelshack"><span>Disponible sur Android Market</span></a>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="//www.jeuxvideo.com/js/notifier.js"></script>
+<div id="pied">
+    <div class="bloc980">© 2012-2015 NoelShack. Tous droits réservés. Créé initialement par David Phan.</div>
+</div>
+
+        <script type="text/javascript">
+        // <![CDATA[
+        function udm_(e){var t="comScore=",n=document,r=n.cookie,i="",s="indexOf",o="substring",u="length",a=2048,f,l="&ns_",c="&",h,p,d,v,m=window,g=m.encodeURIComponent||escape;if(r[s](t)+1)for(d=0,p=r.split(";"),v=p[u];d<v;d++)h=p[d][s](t),h+1&&(i=c+unescape(p[d][o](h+t[u])));e+=l+"_t="+ +(new Date)+l+"c="+(n.characterSet||n.defaultCharset||"")+"&c8="+g(n.title)+i+"&c7="+g(n.URL)+"&c9="+g(n.referrer),e[u]>a&&e[s](c)>0&&(f=e[o](0,a-8).lastIndexOf(c),e=(e[o](0,f)+l+"cut="+g(e[o](f+1)))[o](0,a)),n.images?(h=new Image,m.ns_p||(ns_p=h),h.src=e):n.write("<","p","><",'img src="',e,'" height="1" width="1" alt="*"',"><","/p",">")};
+        udm_('http'+(document.location.href.charAt(4)=='s'?'s://sb':'://b')+'.scorecardresearch.com/b?c1=2&c2=8823104');
+        // ]]>
+        </script>
+        <noscript><p><img src="http://b.scorecardresearch.com/p?c1=2&amp;c2=8823104" height="1" width="1" alt="*" /></p></noscript>
+        <script type="text/javascript" language="JavaScript1.3" src="http://b.scorecardresearch.com/c2/8823104/cs.js"></script>
+        <script type="text/javascript">
+            var _gaq = _gaq || [];
+            _gaq.push(['_setAccount', 'UA-27746222-1']);
+            _gaq.push(['_setDomainName', 'noelshack.com']);
+            _gaq.push(['_trackPageview']);
+
+            (function() {
+                var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+                ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+            })();
+        </script></body>
+</html>

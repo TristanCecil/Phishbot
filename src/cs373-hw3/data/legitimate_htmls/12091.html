@@ -1,0 +1,1340 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" xml:lang="en" lang="en">
+<head><script type="text/javascript" src="/CFIDE/scripts/cfform.js"></script>
+<script type="text/javascript" src="/CFIDE/scripts/masks.js"></script>
+
+
+<!-- Website developed using Adobe ColdFusion //-->
+
+
+	<title>Metro - Home page</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+	<meta name="description" content="Washington Metropolitan Area Transit Authority (Washington DC)" />
+    <meta name="keywords" content="WMATA, Washington Metropolitan Area Transit Authority, Washington, Metro, Transit, Public Transportation, Subway, Bus, Train, Farecard, SmarTrip, Trip Planner, TripPlanner, RideGuide, MetroAccess, Commuter, Metro Station, Bus Stop, MetroAlerts, Riders' Advisory Council, Timetables">
+	<meta http-equiv="cache-control" content="no-cache" />
+	<meta http-equiv="pragma" content="no-cache" />
+
+		<link rel="stylesheet" href="/css/main_new4.css?v1" type="text/css" />
+
+	<link rel="stylesheet" href="css/datepicker.css" type="text/css" />
+	<link rel="stylesheet" href="css/superfish.css" type="text/css" />
+	<link rel="stylesheet" href="css/wick.css" type="text/css" />
+	<link rel="stylesheet" href="css/print.css" type="text/css" media="print" />
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js"></script>
+	<script type="text/javascript" src="js/sample_data10.js"></script>
+	<script type="text/javascript" src="js/wick.js"></script>
+	<script type="text/javascript" src="js/rotator.js"></script>
+	<script type="text/javascript" src="js/mptoggle.js"></script>
+	
+
+
+
+<script language=javascript>
+<!--
+if (
+(navigator.userAgent.match(/iPhone/i)) || (navigator.userAgent.match(/iPod/i))
+|| (navigator.userAgent.match(/Android/i)) || (navigator.userAgent.match(/Blackberry/i)) || (navigator.userAgent.match(/iemobile/i))
+
+)
+
+ {
+   location.replace("/mobile_new/index.cfm?mobileredirect");
+}
+-->
+</script>
+
+
+<script>
+<!--
+var _prum = [['id', '5171963fabe53ddb45000000'],
+             ['mark', 'firstbyte', (new Date()).getTime()]];
+(function() {
+    var s = document.getElementsByTagName('script')[0]
+      , p = document.createElement('script');
+    p.async = 'async';
+    p.src = '//rum-static.pingdom.net/prum.min.js';
+    s.parentNode.insertBefore(p, s);
+})();
+//-->
+</script>
+
+
+<style type="text/css">
+<!--
+
+/*
+
+ set the width and height to match your images
+*/
+
+
+#slideshow IMG {
+    position:absolute;
+    top:0;
+    left:0;
+    z-index:8;
+    opacity:0.0;
+}
+
+#slideshow IMG.active {
+    z-index:10;
+    opacity:0.0;
+}
+
+#slideshow {
+    position:relative;
+    height:350px;
+	position:absolute;
+	width:399px;
+	height:339px;
+	z-index:100;
+	left: 305px;
+
+
+
+
+	top: 159px;
+}
+
+#slideshow IMG {
+    position:absolute;
+    top:0;
+    left:0;
+    z-index:8;
+    opacity:0.0;
+}
+
+#slideshow IMG.active {
+    z-index:10;
+    opacity:1.0;
+}
+
+#slideshow IMG.last-active {
+    z-index:9;
+}
+
+
+
+#centerImgRotator {
+	position:absolute;
+	width:399px;
+	height:339px;
+	z-index:100;
+	left: 305px;
+	
+
+	top: 70px;
+	/*background-color:#62c3f1;*/
+	border: d7d7d7 2px groove;
+}
+
+
+-->
+</style>
+
+
+
+
+<Script type="text/javascript"> 
+// uses JQuery framework...
+
+function animSlide() {
+
+    var $ImageActive = $('#slideshow IMG.active');
+	
+    if ( $ImageActive.length == 0 ) $ImageActive = $('#slideshow IMG:last');
+
+    var $ImageNext =  $ImageActive.next().length ? $ImageActive.next()
+        : $('#slideshow IMG:first');
+ 
+ 
+
+
+    $ImageActive.addClass('last-active');
+
+    $ImageNext.css({opacity: 0.0})
+        .addClass('active')
+        .animate({opacity: 1.0}, 1000, function() {
+            $ImageActive.removeClass('active last-active');
+			
+        });
+}
+ 
+ 
+   var timerId = null;    
+   
+   function startRotation() {         
+	   if (timerId) {             return;         }       
+	   timerId = setInterval('animSlide()', 6000);   
+   }   
+   
+   /*
+   function reStartRotation() {         
+	   if (timerId) {             return;         }       
+	   timerId = setInterval('animSlide()', 2000);   
+   }   
+   */
+   
+   function stopRotation() {         
+	   if (!timerId) {             return;         }    
+	   clearInterval(timerId);       
+   	   timerId = null;     
+   } 
+
+
+$(function() {
+	startRotation(); 
+	$('#slideshow IMG').hover(stopRotation,startRotation); });
+
+</Script>
+
+
+<script type="text/javascript">/* <![CDATA[ */
+	if (window.ColdFusion) ColdFusion.required['StreetAddressFrom']=true;
+/* ]]> */</script>
+
+<script type="text/javascript">/* <![CDATA[ */
+	if (window.ColdFusion) ColdFusion.required['StreetAddressTo']=true;
+/* ]]> */</script>
+
+<script type="text/javascript">/* <![CDATA[ */
+	if (window.ColdFusion) ColdFusion.required['Time']=true;
+/* ]]> */</script>
+
+<script type="text/javascript">/* <![CDATA[ */
+	if (window.ColdFusion) ColdFusion.required['datepicker']=true;
+/* ]]> */</script>
+<script type="text/javascript">
+<!--
+    _CF_checkLocateCall = function(_CF_this)
+    {
+        //reset on submit
+        _CF_error_exists = false;
+        _CF_error_messages = new Array();
+        _CF_error_fields = new Object();
+        _CF_FirstErrorField = null;
+
+        //form element StreetAddressFrom required check
+        if( !_CF_hasValue(_CF_this['StreetAddressFrom'], "TEXT", false ) )
+        {
+            _CF_onError(_CF_this, "StreetAddressFrom", _CF_this['StreetAddressFrom'].value, "The Travel From field is required and should only contain letters, numbers, periods and ampersands");
+            _CF_error_exists = true;
+        }
+
+        //form element StreetAddressTo required check
+        if( !_CF_hasValue(_CF_this['StreetAddressTo'], "TEXT", false ) )
+        {
+            _CF_onError(_CF_this, "StreetAddressTo", _CF_this['StreetAddressTo'].value, "The Travel To field is required and should only contain letters, numbers, periods and ampersands");
+            _CF_error_exists = true;
+        }
+
+        //form element Time required check
+        if( _CF_hasValue(_CF_this['Time'], "TEXT", false ) )
+        {
+            //form element Time 'REGEX' validation checks
+            if (!_CF_checkregex(_CF_this['Time'].value, /^(0[1-9]|1[012]|[0-9]):([0-5][0-9])$/, true))
+            {
+                _CF_onError(_CF_this, "Time", _CF_this['Time'].value, "You must enter a time in the following format i.e. 08:42");
+                _CF_error_exists = true;
+            }
+
+        }else {
+            _CF_onError(_CF_this, "Time", _CF_this['Time'].value, "You must enter a time in the following format i.e. 08:42");
+            _CF_error_exists = true;
+        }
+
+        //form element datepicker required check
+        if( _CF_hasValue(_CF_this['datepicker'], "TEXT", false ) )
+        {
+            //form element datepicker 'DATE' validation checks
+            if (!_CF_checkdate(_CF_this['datepicker'].value, true))
+            {
+                _CF_onError(_CF_this, "datepicker", _CF_this['datepicker'].value, "Date is required and must be properly formatted");
+                _CF_error_exists = true;
+            }
+
+        }else {
+            _CF_onError(_CF_this, "datepicker", _CF_this['datepicker'].value, "Date is required and must be properly formatted");
+            _CF_error_exists = true;
+        }
+
+
+        //display error messages and return success
+        if( _CF_error_exists )
+        {
+            if( _CF_error_messages.length > 0 )
+            {
+                // show alert() message
+                _CF_onErrorAlert(_CF_error_messages);
+                // set focus to first form error, if the field supports js focus().
+                if( _CF_this[_CF_FirstErrorField].type == "text" )
+                { _CF_this[_CF_FirstErrorField].focus(); }
+
+            }
+            return false;
+        }else {
+            // run userdefined onSubmit javascript. 
+            return checkForm()
+            return true;
+        }
+    }
+//-->
+</script>
+</head>
+
+
+<body>
+<div id="container-outer">
+<div id="container">
+	<div id="header">
+		<div id="headerlogo_NEW"><a href="index.cfm?"><img src="img/header_NewMLogo.png?vvss" id="logo1" alt="Metro logo" title="Metro logo" border="0" /></a></div>
+		<div class="headstyle1_new">
+			<div class="headstyle-left">
+			</div>
+			<div class="headstyle-right">
+        <form method="get" id="searchform" id="searchbox_011505794790865434056:2hudabiewdy" action="/search/search_results.cfm">
+<div>
+<input value="011505794790865434056:2hudabiewdy" name="cx" type="hidden"/>
+<input value="FORID:11" name="cof" type="hidden"/>
+<input type="text" id="searchbox" value="search" name="s" id="s" onclick="if(this.value=='search'){this.value=''}" onblur="if(this.value==''){this.value='search'}">
+<input type="image" src="/img/button_go.png" alt="Go">
+</div>
+</form>
+        
+        
+         
+			</div>
+		</div>
+        
+        	<div class="skiplinks">
+				<a href="#maincontent">Skip to main content</a>
+			</div>
+
+		
+		<div class="headstyle2" >
+			
+
+<ul class="header-nav" style="padding:6px 0 0 17px;">
+	<li class="top">
+		<a href="/index.cfm?forcedesktop=1" class="fixTopNav"><img src="/img/hb-home-on.gif" alt="" /><span>Home--</span></a>	</li>
+
+	<li class="top multi" style="padding:0 0 0 20px;">
+		<a href="/rail/?forcedesktop=1" class="fixTopNav"><img src="/img/hb-rail-off.gif" alt="" /><span>Rail</span></a>
+		<ul>
+        	<li><a href="/rail/?">Introduction</a></li>
+			<li><a href="/rail/maps/map.cfm?">Maps</a></li>
+            <li><a href="/rider_tools/metro_service_status/rail_Bus.cfm?">Alerts &amp; Advisories</a></li>   
+			<li><a href="/rail/stations.cfm">Stations</a></li>     
+			
+			<li><a href="/rail/parking/">Parking</a></li>
+			<li><a href="/rail/service_reports/viewPage_update.cfm">Daily Service Reports</a></li>
+			<li><a href="/rail/elevators_escalators/">Elevators &amp; Escalators </a></li>
+			<li><a href="/rail/trackwork.cfm">Planned Track Work </a></li>			
+		</ul>
+	</li>
+	
+	<li class="top multi" style="padding:0 0 0 20px;">
+		<a href="/bus/?forcedesktop=1" class="fixTopNav"><img src="/img/hb-bus-off.gif" alt="" /><span>Bus</span></a>
+		<ul>
+       		 <li><a href="/bus/?">Introduction</a></li>
+			 <li><a href="/bus/maps/">Maps</a></li>
+			 <li><a href="/bus/timetables/">Timetables</a></li>
+             <li><a href="/rider_tools/metro_service_status/rail_bus.cfm?#bus">Alerts &amp; Advisories</a></li> 
+			 
+		  <li><a href="/bus/transfers.cfm">Transfers</a></li>
+		</ul>
+	</li>
+
+	<li class="top multi" style="padding:0 0 0 20px;">
+		<a href="/accessibility/?forcedesktop=1" class="fixTopNav"><img src="/img/hb-access-off.gif" alt="" /><span>Accessibility</span></a>
+		<ul>
+        	<li><a href="/accessibility/?">Introduction</a></li>
+			<li><a href="/accessibility/metrorail.cfm">Metrorail</a></li>
+			<li><a href="/accessibility/metrobus.cfm">Metrobus</a></li>
+			<li><a href="/accessibility/advocacy_policy/metro_accessible.cfm">Learn How to Use Metro</a></li>
+			<li><a href="/accessibility/metroaccess_service/">MetroAccess</a></li>
+            <li><a href="/accessibility/transit_accessibility.cfm">Transit Accessibility Center</a></li>
+			
+			<li><a href="/accessibility/free_resources.cfm">Accessibility Resources</a></li>
+			<li><a href="/accessibility/advocacy_policy/">Accessibility Advisory Committee</a></li>
+		</ul>
+	</li>
+	
+	<li class="top multi" style="padding:0 0 0 20px;">
+		<a href="/getting_around/?forcedesktop=1" class="fixTopNav"><img src="/img/hb-ga-off.gif" alt="" /><span>Getting Around</span></a>
+		<ul>
+        	<li><a href="/getting_around/?">Introduction</a></li>
+			<li><a href="/getting_around/new_metro/">Getting to Metro</a></li>											            
+			<li><a href="/getting_around/visitor_info/">Visitor Information</a></li>
+            <li><a href="/getting_around/language_assistance.cfm">Language Assistance</a></li>
+            <li><a href="/getting_around/faregates.cfm">Faregates</a></li>
+			<li><a href="/getting_around/metro_events/venues.cfm">Metro to Events</a></li>
+			<li><a href="/getting_around/commuter_tips/">Commuter Tips</a></li>
+			<li><a href="/getting_around/regional_transit.cfm">Regional Transportation</a></li>
+			<li><a href="/getting_around/alt_trans/">Alternate Transportation</a></li>
+			<li><a href="/getting_around/snow.cfm">Severe Weather</a></li>
+			<li><a href="/getting_around/safety_security/">Safety &amp; Security</a></li>
+			<li><a href="/getting_around/bike_ride/">Bikes and Metro</a></li>
+		</ul>
+	</li>
+
+	<li class="top multi" style="padding:0 0 0 20px;">
+		<a href="/fares/?forcedesktop=1" class="fixTopNav"><img src="/img/hb-fares-off.gif" alt="" /><span>Fares</span></a>
+		<ul>
+        	<li><a href="/fares/?">Introduction</a></li>
+			<li><a href="/fares/metrorail.cfm">Metrorail</a></li>
+			<li><a href="/fares/metrobus.cfm">Metrobus</a></li>
+			<li><a href="/fares/smartrip/">SmarTrip&reg;</a></li>
+			<li><a href="/fares/promotions/">Deals &amp; Discounts</a></li>
+			<li><a href="/fares/reduced.cfm">Reduced Fare Program</a></li>
+			<li><a href="/fares/purchase/passes.cfm">SmarTrip&reg; &amp; Pass Options</a></li>
+			<li><a href="/fares/purchase/store/">Online Fare Purchases</a></li>
+			<li><a href="/fares/purchase/vending.cfm">Vending Machines</a></li>
+			<li><a href="/fares/purchase/where.cfm">Sales Locations</a></li>
+			<li><a href="/fares/purchase/refunds.cfm">Card Replacement & Refunds</a></li>
+		</ul>
+	</li>
+
+	<li class="top multi" style="padding:0 0 0 20px;">
+		<a href="/rider_tools/?forcedesktop=1" class="fixTopNav"><img src="/img/hb-ridertools-off.gif" alt="" /><span>Rider Tools</span></a>
+		<ul>
+        	<li><a href="/rider_tools/?">Introduction</a></li>
+			<li><a href="/rider_tools/tripplanner/tripplanner_form_solo.cfm">Trip Planner</a></li>
+			
+            <li><a href="/rider_tools/metro_service_status/rail_Bus.cfm?">Alerts &amp; Advisories</a></li>    
+			<li><a href="https://elstat.wmata.com">ELstat</a></li>
+			<li><a href="/rider_tools/metro_service_status/elevator_escalator.cfm">Elevator/Escalator Status</a></li>		
+			<li><a href="/rider_tools/pids/real_time_arrivals.cfm">Next Train Arrivals</a></li>
+            <li><a href="http://buseta.wmata.com/">BusETA Bus Arrivals</a></li>
+			<li><a href="/rider_tools/servicenearby/index.cfm">Service Nearby</a></li>
+			<li><a href="/rider_tools/ealerts/">MetroAlerts</a></li>
+			
+			<li><a href="/rider_tools/calculator/calculator.cfm">Savings Calculator</a></li>
+            <li><a href="/rider_tools/developer_resources.cfm">Developer Resources</a></li>
+		</ul>
+  </li>
+
+	<li class="top multi" style="padding:0 0 0 20px;">
+		<a href="/about_metro/?forcedesktop=1" class="fixTopNav"><img src="/img/hb-about-off.gif" alt="" /><span>About Metro</span></a>
+		<ul>	
+        	<li><a href="/about_metro/?">Introduction</a></li>		
+			<li><a href="/about_metro/board_of_directors/">Board of Directors</a></li>
+			<li><a href="/about_metro/general_manager/index.cfm?">General Manager</a></li>
+			
+			
+			<li><a href="/momentum/index.cfm">Strategic Plan</a></li>
+			<li><a href="/about_metro/scorecard/index.cfm?">Scorecard</a></li>
+			<li><a href="/about_metro/inspector_general/">Inspector General</a></li>
+			<li><a href="/careers/index.cfm?">Careers</a></li>
+			<li><a href="/about_metro/transit_police/">Transit Police</a></li>
+            <li><a href="/about_metro/news/newsroom.cfm">Newsroom</a></li>
+			
+			
+			<li><a href="/about_metro/faqs.cfm">Questions & Answers</a></li>
+			<li><a href="/about_metro/riders_advisory_council/">Riders' Advisory Council</a></li>
+			<li><a href="/about_metro/public_rr.cfm?">Public Records &amp; Reports</a></li>			
+			<li><a href="/about_metro/planning_dev.cfm">Planning &amp; Development</a></li>
+            
+			
+			<li><a href="/about_metro/civil_rights.cfm">Civil Rights - Title VI</a></li>
+			<li><a href="/about_metro/lost_found">Lost &amp; Found</a></li>
+			<li><a href="/about_metro/contact.cfm">Contact Metro</a></li>						
+		</ul>
+		
+</ul>
+
+		</div>
+		
+        <a name="maincontent" id="maincontent"></a>
+
+
+	</div>
+
+
+
+
+
+    
+
+<DIV style=" background-image:url(img/bg_bar_red.png); height:35px; color:#FFF; font-weight:bold; font-size:12px; margin-top:6px; padding-left:6px; padding-right:6px;  padding-top:2px; padding-bottom:2px; overflow:hidden; background-repeat:no-repeat">
+
+<TABLE border="0" height="36" align="center"><TR><TD>
+<A href="http://wmata.com/about_metro/news/PressReleaseDetail.cfm?ReleaseID=6143" style="color:#FFF;"> Orange/Silver: No train service between W Falls Church/McLean & Ballston due to derailment at East Falls Church. Use alternate travel modes if possible. Shuttle buses operating between affected stations. </A>
+</TD></TR></TABLE>
+</DIV>
+
+
+
+
+
+
+
+	<div id="sandbox">
+
+		<div id="homepage-col1">
+			<div id="homepage-box1">
+				<div id="homepage-box1-inner">
+
+				<!-- start: trip planner form -->
+				<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<style>
+.ui-datepicker {font-size:64%; }
+</style>
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script>
+  $(function() {
+    function monkeyPatchAutocomplete() {
+      // http://stackoverflow.com/a/2436493
+      var oldFn = $.ui.autocomplete.prototype._renderItem;
+      var spanStart = "<span style='font-weight:bold;color:Black;'>";
+      var spanStop = "</span>";
+      $.ui.autocomplete.prototype._renderItem = function(ul, item) {
+				var re = $.ui.autocomplete.escapeRegex(this.term);
+				var matcher = new RegExp("\\b" + re, "i");
+				var matchResults = matcher.exec(item.label);
+				var startIndex = matchResults.index;
+				var matchLength = matchResults[0].length;
+				var stopIndex = startIndex + matchLength;
+				var t = item.label.substr(0, startIndex) + spanStart + item.label.substr(startIndex, matchLength) + spanStop + item.label.substr(stopIndex, item.label.length - stopIndex);
+        return $("<li style='font-size:12px'></li>")
+          .data("item.autocomplete", item)
+          .append("<a>" + t + "</a>")
+          .appendTo(ul);
+      };
+    }
+    
+    monkeyPatchAutocomplete();
+    var availableTags = [
+		'Addison Road',
+		'Anacostia',
+		'Archives',
+		'Arlington Cemetery Metro',
+		'Ballston',
+		'Benning Road', 
+		'Bethesda', 
+		'Braddock Road', 
+		'Branch Ave', 
+		'Brookland' ,
+		'Capitol Heights M', 
+		'Capitol South' ,
+		'Cheverly' ,
+		'Clarendon',
+		'Cleveland Park' ,
+		'College Park' ,
+		'Columbia Heights' ,
+		'Congress Heights' ,
+		'Court House Metro' ,
+		'Crystal City' ,
+		'Deanwood' ,
+		'Dunn Loring',
+		'Dupont Circle' ,
+		'East Falls Church' ,
+		'Eastern Market' ,
+		'Eisenhower Avenue' ,
+		'Farragut North' ,
+		'Farragut West' ,
+		'Federal Center SW' ,
+		'Federal Triangle' ,
+		'Foggy Bottom' ,
+		'Forest Glen' ,
+		'Fort Totten' ,
+		'Springfield' ,
+		'Friendship Heights' ,
+		'Franconia Springfield' ,
+		'Gallery Place' ,
+		'Georgia Ave' ,
+		'Glenmont' ,
+		'Greenbelt' ,
+		'Greensboro' ,
+		'Grosvenor' ,
+		'Huntington' ,
+		'Judiciary Square', 
+		'King Street' ,
+		"L'Enfant Plaza",
+		'Landover' ,
+		'Largo Town Center' ,
+		'McLean' ,
+		'McPherson Square' ,
+		'Medical Center' ,
+		'Metro Center' ,
+		'Minnesota Ave' ,
+		'Morgan Boulevard' ,
+		'Mount Vernon Square Metro Station' ,
+		'Navy Yard' ,
+		'Naylor Road', 
+		'New Carrollton' ,
+		'New York Ave Metro',
+		'NoMa-Gallaudet U (New York Ave)',
+		'Pentagon' ,
+		'Pentagon City' ,
+		'Potomac Ave' ,
+		"Prince George's Plaza" ,
+		'Rhode Island',
+		'Rockville',
+		'Reagan Airport' ,
+		'Rosslyn' ,
+		'Shady Grove' ,
+		'Shaw' ,
+		'Silver Spring' ,
+		'Smithsonian Metro' ,
+		'Southern Avenue Metro' ,
+		'Spring Hill' ,
+		'Stadium-Armory Metro Station' ,
+		'Suitland' ,
+		'Takoma' ,
+		'Tenleytown' ,
+		'Twinbrook',
+		'Tysons Corner',
+		'Tysons Corner Metro Station',
+		'U Street',
+		'Union Station',
+		'Van Dorn Street',
+		'Van Ness',
+		'Vienna',
+		'Virginia Square',
+		'Waterfront',
+		'West Falls Church',
+		'West Hyattsville',
+		'Wheaton',
+		'White Flint M',
+		'Wiehle-Reston East',
+		'Woodley Park-Zoo'
+    ];
+        $( "#StreetAddressFrom" ).autocomplete({
+		source: function(req, responseFn) {
+				var re = $.ui.autocomplete.escapeRegex(req.term);
+				var matcher = new RegExp( "\\b" + re, "i" );
+				var a = $.grep( availableTags, function(item,index){
+					return matcher.test(item);
+				});
+				responseFn(a);
+			}
+    }).data('autocomplete');
+    $( "#StreetAddressTo" ).autocomplete({
+      source: function(req, responseFn) {
+				var re = $.ui.autocomplete.escapeRegex(req.term);
+				var matcher = new RegExp( "\\b" + re, "i" );
+				var a = $.grep( availableTags, function(item,index){
+					return matcher.test(item);
+				});
+				responseFn(a);
+			}
+    }).data('autocomplete');
+	$(".datepicker").datepicker();
+	  });
+</script>
+  
+<form name="LocateCall" id="LocateCall" action="/rider_tools/tripplanner/tripplanner.cfm" method="post" title="Trip Planner Form. When planning a trip, please do not enter a city, state or zip code." onsubmit="return _CF_checkLocateCall(this)">
+<h1><a href="/rider_tools/tripplanner/tripplanner_form_solo.cfm">Trip Planner</a></h1>
+<div class="twocol">
+    <div class="top-left" id="tripplanner">
+        <h2><label for="StreetAddressFrom">From:</label></h2>
+        <input type="hidden" name="show_email" value="on" />
+        <input type="hidden" name="Minimize" value="T" />
+        
+        <input type="hidden" name="WalkDistance" value="0.75" />
+        <input type="hidden" name="COOKIES_ALLOWED" value="yes" />
+        
+		<input name="StreetAddressFrom" type="text" maxlength="40"  tabindex="1"  id="StreetAddressFrom"  autocomplete="off"  title="Do not use city, state or zip"  />
+       
+        <br />
+        <table id="MYCUSTOMFLOATER1" class="myCustomFloater" onclick="handleFocus(event)">
+        <tr><td><div class="myCustomFloaterContent">&nbsp;</div></td></tr>
+        </table>
+        
+        <h2><label for="StreetAddressTo">To:</label></h2>
+        
+       
+	<input name="StreetAddressTo" id="StreetAddressTo"  type="text" maxlength="40"  tabindex="2"  autocomplete="off"  title="Do not use city, state or zip"  />
+      
+        
+        <br />
+        <table id="MYCUSTOMFLOATER2" class="myCustomFloater" onclick="handleFocus(event)">
+        <tr><td><div class="myCustomFloaterContent">&nbsp;</div></td></tr>
+
+        </table>
+    </div>
+    <div class="top-right">
+        <h2>Using:</h2>
+        <ul>
+            <li><input type="radio" name="Mode" value="B" tabindex="3" id="bus" title="Using bus" alt="Using bus"/>
+            <label for="bus">Bus only</label></li>
+            <li><input type="radio" name="Mode" value="R" tabindex="4" id="rail" title="Using rail" alt="Using rail"/> 
+            <label for="rail">Rail only</label></li>
+
+            <li><input type="radio" name="Mode" value="A" tabindex="5" checked="checked" id="both" title="Using bus and rail" alt="Using bus and rail" /> 
+            <label for="both">Both</label></li>
+        </ul>
+    </div>
+</div>
+<div class="departures">
+    <ul>
+        <li> <label for="ArrDep"><span class="skip">Are you leaving after or arriving by?</span></label>
+            <select name="ArrDep" id="ArrDep" style="height:20px; font-size:88%; width:104px;" tabindex="6" title="Are you Leaving after or Arriving by?">
+                <option value="D">Leaving after</option>
+                <option value="A">Arriving by</option>
+            </select>
+           
+        </li>
+    
+    </ul>
+</div>
+<div id="time-hours-mins">
+
+<input name="Time" type="text" value="07:17" maxlength="5"  class="datepicker2"  alt="Enter travel time i.e. 08:42"  tabindex="8"  id="Time"  title="Time defaults to the current time.  If you will be travelling at another time, you can enter that time here. It should be in the following format i.e. 08:42"  />
+
+	<label for="Time"><span class="skip">enter a time if travelling later than now</span></label>
+
+		<select name="AMPM" id="AMPM" class="ampm" tabindex="10" 
+		onchange="document.all.AutoSuggest_Layer.style.display='none';" title="Select A M or P M">
+			<option value="AM" title="AM" 
+			>AM</option>
+			<option value="PM"  title="PM"
+			SELECTED>PM</option>
+		</select>
+		<label for="AMPM"><span class="skip">select A M or P M</span></label>
+			</div>
+			
+			<div class="rightlinks"><h2><label for="datepicker">Date:</label></h2>
+			
+			<input name="datepicker" type="text" style="z-index: 100000; position: relative"  class="datepicker"  tabindex="11"  id="datepicker"  autocomplete="on"  title="07/29/2016"  />
+			
+			<!--a href="#datepicker" class="pickdate" id="pickdate" tabindex="14">Pick a date</a--><br /></div>
+			
+			<input type="image" src="/images/submit_btn_blue.gif" class="submit" alt="Submit" tabindex="12" /><br />
+
+			<h2 class="rightlinks2"><a href="/rider_tools/tripplanner/tripplanner_form_solo.cfm?" tabindex="14">Advanced</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="/rider_tools/tripplanner/help.cfm" tabindex="13">Help / Tips</a></h2>
+			</form>
+
+				<!-- end: trip planner form -->
+				</div>
+				<div id="homepage-box1-foot"></div>
+			</div>
+
+			<div class="clear"></div>
+
+			<div id="homepage-box1">
+
+				<div id="homepage-box-inner" >
+					<h3><a href="/rider_tools/metro_service_status/rail_Bus.cfm?">Service Status</a></h3>
+
+                        
+
+						<!-- start: Rail tab -->
+						<div class="status-table-outer short" >
+							<div class="status-table short">
+								
+
+									
+    
+    
+   
+    <table width="250">
+    
+			<tr>
+                <td class="first" width="15%"><img src="img/silver/Red_icon.gif" alt="Red Line status" title="Red Line status" /></td>
+                <td class="first" width="40%">Red Line</td>
+                <td class="first" width="2%"><img src="img/box-3-divider-1.gif" alt="" /></td>
+                <td class="first" width="43%">	
+                
+                        On Time
+                    
+                </td>
+			</tr>
+			<tr>
+                <td colspan="4"><div class="tableline"></div></td>
+			</tr>
+        
+			<tr>
+                <td class="first" width="15%"><img src="img/silver/Orange_icon.gif" alt="Orange Line status" title="Orange Line status" /></td>
+                <td class="first" width="40%">Orange Line</td>
+                <td class="first" width="2%"><img src="img/box-3-divider-1.gif" alt="" /></td>
+                <td class="first" width="43%">	
+                 
+                         <span class="dropt_rail"><span>
+                        Orange/Silver customers west of Ballston encouraged to use alternate travel options due to derailment at East Falls Church.<br /><br />Orange Line: No train service btwn W Falls Church & Ballston due to a train derailment at E Falls Church. Bus shuttle established.<br /><br />East Falls Church Station is closed. Bus service available.<br /><br /></span>
+                      <b style="color:#fe0000;"><a href="/rider_tools/metro_service_status/rail_Bus.cfm?">Alert</a></b></span>
+                    
+                </td>
+			</tr>
+			<tr>
+                <td colspan="4"><div class="tableline"></div></td>
+			</tr>
+        
+			<tr>
+                <td class="first" width="15%"><img src="img/silver/Silver_icon.gif" alt="Silver Line status" title="Silver Line status" /></td>
+                <td class="first" width="40%">Silver Line</td>
+                <td class="first" width="2%"><img src="img/box-3-divider-1.gif" alt="" /></td>
+                <td class="first" width="43%">	
+                 
+                         <span class="dropt_rail"><span>
+                        Orange/Silver customers west of Ballston encouraged to use alternate travel options due to derailment at East Falls Church.<br /><br />Silver Line: No train service btwn McLean & Ballston due to derailment at E Falls Church. Bus shuttles established.<br /><br />East Falls Church Station is closed. Bus service available.<br /><br /></span>
+                      <b style="color:#fe0000;"><a href="/rider_tools/metro_service_status/rail_Bus.cfm?">Alert</a></b></span>
+                    
+                </td>
+			</tr>
+			<tr>
+                <td colspan="4"><div class="tableline"></div></td>
+			</tr>
+        
+			<tr>
+                <td class="first" width="15%"><img src="img/silver/Blue_icon.gif" alt="Blue Line status" title="Blue Line status" /></td>
+                <td class="first" width="40%">Blue Line</td>
+                <td class="first" width="2%"><img src="img/box-3-divider-1.gif" alt="" /></td>
+                <td class="first" width="43%">	
+                
+                        On Time
+                    
+                </td>
+			</tr>
+			<tr>
+                <td colspan="4"><div class="tableline"></div></td>
+			</tr>
+        
+			<tr>
+                <td class="first" width="15%"><img src="img/silver/Yellow_icon.gif" alt="Yellow Line status" title="Yellow Line status" /></td>
+                <td class="first" width="40%">Yellow Line</td>
+                <td class="first" width="2%"><img src="img/box-3-divider-1.gif" alt="" /></td>
+                <td class="first" width="43%">	
+                
+                        On Time
+                    
+                </td>
+			</tr>
+			<tr>
+                <td colspan="4"><div class="tableline"></div></td>
+			</tr>
+        
+			<tr>
+                <td class="first" width="15%"><img src="img/silver/Green_icon.gif" alt="Green Line status" title="Green Line status" /></td>
+                <td class="first" width="40%">Green Line</td>
+                <td class="first" width="2%"><img src="img/box-3-divider-1.gif" alt="" /></td>
+                <td class="first" width="43%">	
+                
+                        On Time
+                    
+                </td>
+			</tr>
+			<tr>
+                <td colspan="4"><div class="tableline"></div></td>
+			</tr>
+        
+    </table>
+            </div>
+        
+        </div>
+    </div>
+    
+ 
+</tbody>
+</table> 
+
+
+
+				 
+			  
+					<!-- end: Rail tab -->
+
+					<!-- start: Bus tab -->
+				
+
+					<div id="homepage-box1"><br />
+                    <img src="img/silver/bus_status_icon_gr.gif" alt="Metrobus" title="Metrobus" style="margin:0 5px 2px 18px;" />
+						<div class="status-table-outer short">
+							<div class="status-table short" style="padding-left:10px; width:250px; ">
+                            <!-- mp_trans_schedule_disable_start -->
+								<div class="status-table-inner" style="height:70px; text-wrap:normal"; font-size:13px;  >
+
+									
+                                          <span style="margin:0 2px 2px 0;">
+
+                                            
+                                              <span class="dropt_bus"><span>15K: Due to traffic congestion at N Westmoreland & Williamsburg Blvd, buses are experiencing up to 20-min delays.</span><a href="/rider_tools/metro_service_status/rail_bus.cfm?#bus">15K</a> <img src="img/box-3-divider-1.gif" alt="" style="vertical-align:middle" /></span>
+                                              
+                                              
+                                              <span class="dropt_bus"><span>16Y: Due to operational issues, buses may experience delays.</span><a href="/rider_tools/metro_service_status/rail_bus.cfm?#bus">16Y</a> <img src="img/box-3-divider-1.gif" alt="" style="vertical-align:middle" /></span>
+                                              
+                                              
+                                              <span class="dropt_bus"><span>23T: Due to traffic congestion at N Glebe & N Woodstock St, buses are experiencing up to 20-min delays.</span><a href="/rider_tools/metro_service_status/rail_bus.cfm?#bus">23T</a> <img src="img/box-3-divider-1.gif" alt="" style="vertical-align:middle" /></span>
+                                              
+                                              
+                                              <span class="dropt_bus"><span>70: Due to construction at 700 Fairmont St NW, buses may experience delays & route changes.</span><a href="/rider_tools/metro_service_status/rail_bus.cfm?#bus">70</a> <img src="img/box-3-divider-1.gif" alt="" style="vertical-align:middle" /></span>
+                                              
+                                              
+                                              <span class="dropt_bus"><span>80,90,92,P6,X2: Due to traffic congestion at North Capitol St & Florida Ave NE, buses are experiencing up to 35-min delays.</span><a href="/rider_tools/metro_service_status/rail_bus.cfm?#bus">80</a> <img src="img/box-3-divider-1.gif" alt="" style="vertical-align:middle" /></span>
+                                              
+                                              
+                                              <span class="dropt_bus"><span>83, 86, C2: Due to traffic congestion at Baltimore Ave & Metzerott Rd, buses are experiencing up to 30-min delays.</span><a href="/rider_tools/metro_service_status/rail_bus.cfm?#bus">83</a> <img src="img/box-3-divider-1.gif" alt="" style="vertical-align:middle" /></span>
+                                              
+                                              
+                                              <span class="dropt_bus"><span>83, 86, C2: Due to traffic congestion at Baltimore Ave & Metzerott Rd, buses are experiencing up to 30-min delays.</span><a href="/rider_tools/metro_service_status/rail_bus.cfm?#bus">86</a> <img src="img/box-3-divider-1.gif" alt="" style="vertical-align:middle" /></span>
+                                              
+                                              
+                                              <span class="dropt_bus"><span>89: Due to an accident near Sunnyside Ave & Tucker St, buses are experiencing up to 25-min delays.</span><a href="/rider_tools/metro_service_status/rail_bus.cfm?#bus">89</a> <img src="img/box-3-divider-1.gif" alt="" style="vertical-align:middle" /></span>
+                                              
+                                              <br />
+                                                
+                                              <span class="dropt_bus"><span>80,90,92,P6,X2: Due to traffic congestion at North Capitol St & Florida Ave NE, buses are experiencing up to 35-min delays.</span><a href="/rider_tools/metro_service_status/rail_bus.cfm?#bus">90</a> <img src="img/box-3-divider-1.gif" alt="" style="vertical-align:middle" /></span>
+                                              
+                                              
+                                              <span class="dropt_bus"><span>80,90,92,P6,X2: Due to traffic congestion at North Capitol St & Florida Ave NE, buses are experiencing up to 35-min delays.</span><a href="/rider_tools/metro_service_status/rail_bus.cfm?#bus">92</a> <img src="img/box-3-divider-1.gif" alt="" style="vertical-align:middle" /></span>
+                                              
+                                              
+                                              <span class="dropt_bus"><span>A4: Due to fire dept activity on MLK Jr Ave btwn Galveston St & Blue Plain Dr SW, buses may experience delays.</span><a href="/rider_tools/metro_service_status/rail_bus.cfm?#bus">A4</a> <img src="img/box-3-divider-1.gif" alt="" style="vertical-align:middle" /></span>
+                                              
+                                              
+                                              <span class="dropt_bus"><span>B30: Due to traffic congestion along Baltimore Washington Parkway, buses are experiencing up to 20-min delays.</span><a href="/rider_tools/metro_service_status/rail_bus.cfm?#bus">B30</a> <img src="img/box-3-divider-1.gif" alt="" style="vertical-align:middle" /></span>
+                                              
+                                              
+                                              <span class="dropt_bus"><span>83, 86, C2: Due to traffic congestion at Baltimore Ave & Metzerott Rd, buses are experiencing up to 30-min delays.</span><a href="/rider_tools/metro_service_status/rail_bus.cfm?#bus">C2</a> <img src="img/box-3-divider-1.gif" alt="" style="vertical-align:middle" /></span>
+                                              
+                                              
+                                              <span class="dropt_bus"><span>C4,F4,F6,R2: Due to traffic congestion at East-West Hwy & Riggs Rd, buses are experiencing up to 25-min delays.</span><a href="/rider_tools/metro_service_status/rail_bus.cfm?#bus">C4</a> <img src="img/box-3-divider-1.gif" alt="" style="vertical-align:middle" /></span>
+                                              
+                                              
+                                              <span class="dropt_bus"><span>D8, G8: Due to traffic congestion on 4th St & Rhode Island Ave NE, buses are experiencing up to 30-min delays.</span><a href="/rider_tools/metro_service_status/rail_bus.cfm?#bus">D8</a> <img src="img/box-3-divider-1.gif" alt="" style="vertical-align:middle" /></span>
+                                              
+                                              
+                                              <span class="dropt_bus"><span>E4: Due to traffic congestion along Missouri Ave NW, buses are experiencing up to 25-min delays.</span><a href="/rider_tools/metro_service_status/rail_bus.cfm?#bus">E4</a> <img src="img/box-3-divider-1.gif" alt="" style="vertical-align:middle" /></span>
+                                              
+                                              <br />
+                                                
+                                              <span class="dropt_bus"><span>C4,F4,F6,R2: Due to traffic congestion at East-West Hwy & Riggs Rd, buses are experiencing up to 25-min delays.</span><a href="/rider_tools/metro_service_status/rail_bus.cfm?#bus">F4</a> <img src="img/box-3-divider-1.gif" alt="" style="vertical-align:middle" /></span>
+                                              
+                                              
+                                              <span class="dropt_bus"><span>C4,F4,F6,R2: Due to traffic congestion at East-West Hwy & Riggs Rd, buses are experiencing up to 25-min delays.</span><a href="/rider_tools/metro_service_status/rail_bus.cfm?#bus">F6</a> <img src="img/box-3-divider-1.gif" alt="" style="vertical-align:middle" /></span>
+                                              
+                                              
+                                              <span class="dropt_bus"><span>D8, G8: Due to traffic congestion on 4th St & Rhode Island Ave NE, buses are experiencing up to 30-min delays.</span><a href="/rider_tools/metro_service_status/rail_bus.cfm?#bus">G8</a> <img src="img/box-3-divider-1.gif" alt="" style="vertical-align:middle" /></span>
+                                              
+                                              
+                                              <span class="dropt_bus"><span>80,90,92,P6,X2: Due to traffic congestion at North Capitol St & Florida Ave NE, buses are experiencing up to 35-min delays.</span><a href="/rider_tools/metro_service_status/rail_bus.cfm?#bus">P6</a> <img src="img/box-3-divider-1.gif" alt="" style="vertical-align:middle" /></span>
+                                              
+                                              
+                                              <span class="dropt_bus"><span>C4,F4,F6,R2: Due to traffic congestion at East-West Hwy & Riggs Rd, buses are experiencing up to 25-min delays.</span><a href="/rider_tools/metro_service_status/rail_bus.cfm?#bus">R2</a> <img src="img/box-3-divider-1.gif" alt="" style="vertical-align:middle" /></span>
+                                              
+                                              
+                                              <span class="dropt_bus"><span>80,90,92,P6,X2: Due to traffic congestion at North Capitol St & Florida Ave NE, buses are experiencing up to 35-min delays.</span><a href="/rider_tools/metro_service_status/rail_bus.cfm?#bus">X2</a> <img src="img/box-3-divider-1.gif" alt="" style="vertical-align:middle" /></span>
+                                              
+                                              
+                                          </span>
+                                       
+									
+								</div>
+                                
+                                <!-- mp_trans_schedule_disable_end -->
+                                
+								<div class="status-table-inner-foot"></div>
+							</div>
+                            
+                            
+						</div>
+					</div>
+					<!-- end: Bus tab -->
+			<div class="clear"></div>
+
+					<!-- start: Elevators tab -->
+					<div id="metro-status-tab1">
+						<div class="status-table-outer">
+						 
+                        	<div class="status-table" font-size:12px; style="height:56px;">
+                        <div style="font-size:11px;" class="links">
+<table border="0" width="250">
+  <tr>
+  <td> <img src="img/silver/rail_advisories_icon_gr.gif" alt="Rail Advisories" title="Rail Advisories" style="margin:0 4px 2px 0;" /></td>
+  <td> <a href="/rider_tools/metro_service_status/rail_bus.cfm?#rail">Rail advisories</a>&nbsp;
+</td>
+<td> <img src="img/silver/elevator_status_icon_gr.gif" alt="Elevator Status" title="Elevator Status" style="margin:0 2px 2px 2px;" /></td>
+<td> <a href="/rider_tools/metro_service_status/elevator_escalator.cfm">Elevator status</a>
+</td>
+</tr>
+ <tr>
+ <td> <img src="img/silver/bus_advisories_icon_gr.gif" alt="Bus Advisories" title="Bus Advisories" style="margin:0 4px 2px 0;" /></td>
+ <td> <a href="/rider_tools/metro_service_status/rail_bus.cfm?#bus">Bus advisories</a>&nbsp;
+ </td>
+<td> <img src="img/silver/signup_icon_gr.gif" alt="Sign Up for MetroAlerts" title="Sign Up for MetroAlerts" style="margin:0 2px 2px 2px;" /></td>
+<td> <a href="/rider_tools/ealerts/">Sign up for MetroAlerts</a>
+</td>
+</tr>
+</table>
+</div>								
+							</div>
+						</div>
+					</div>
+				<!-- end: Elevators tab -->
+
+
+
+
+			 
+              
+              	<IMG Src="img/s.gif?" alt="" height="16" width="1">
+			  
+
+
+
+             	<div id="homepage-box1-foot"></div>
+
+            </div>
+
+		</div>
+
+		<!-- start: top sections (maps, next train, new) -->
+
+<div id="homepage-col2" >
+			<div class="homepage-longbox_new box1" >
+				<div class="homepage-longbox-inner_new"  >
+					<div class="pane1" >
+						
+						<div class="fixed" >
+						
+						</div>
+					</div>
+					<div class="pane2" >
+						
+						<div class="fixed">
+						
+						</div>
+					</div>
+
+
+
+
+
+
+
+
+					<div class="pane3">
+					
+
+
+
+
+
+                    <h1><a name="tgt_news" href="/about_metro/news/" class="news_hp">News</a></h1>
+
+                <TABLE border="0" cellspacing="0" cellpadding="2" >
+
+
+
+							<!-- start: News -->
+							
+							
+                                    <TR ><TD valign="top">
+								     
+                                <IMG src="../img/circle-arrow9-on.gif" alt="bullet" ></TD><TD>
+										<a href="/about_metro/news/PressReleaseDetail.cfm?ReleaseID=6135" style="color:#484742; font-size:12px; font-family:arial,helvetica,sans-serif;line-height:16px;">
+										SafeTrack Surge #5 affects Orange, Silver lines July 20-31</a>
+                                        
+
+                                        </TD>	</TR><TR><TD></TD></TR> 
+                                    <TR ><TD valign="top">
+								     
+                                <IMG src="../img/circle-arrow9-on.gif" alt="bullet" ></TD><TD>
+										<A href="http://www.wmata.com/rider_tools/metro_service_status/advisories.cfm?AID=5697" style="color:#484742; font-size:12px; font-family:arial,helvetica,sans-serif;line-height:17px;">Metrorail weekend service adjustments July 29-31</A> 
+
+                                        </TD>	</TR><TR><TD></TD></TR> 
+                                    <TR ><TD valign="top">
+								     
+                                <IMG src="../img/circle-arrow9-on.gif" alt="bullet" ></TD><TD>
+										<a href="/about_metro/news/PressReleaseDetail.cfm?ReleaseID=6129" style="color:#484742; font-size:12px; font-family:arial,helvetica,sans-serif;line-height:16px;">
+										Metro customers now have 15-minute grace period to exit at same stat ...</a>
+                                        
+
+                                        </TD>	</TR><TR><TD></TD></TR> 
+                                    <TR ><TD valign="top">
+								     
+                                <IMG src="../img/circle-arrow9-on.gif" alt="bullet" ></TD><TD>
+										<a href="/about_metro/news/PressReleaseDetail.cfm?ReleaseID=6136" style="color:#484742; font-size:12px; font-family:arial,helvetica,sans-serif;line-height:16px;">
+										Metro provides real-time train data to app developers</a>
+                                        
+
+                                        </TD>	</TR><TR><TD></TD></TR> 
+                                    <TR ><TD valign="top">
+								     
+                                <IMG src="../img/circle-arrow9-on.gif" alt="bullet" ></TD><TD>
+										<a href="/about_metro/news/PressReleaseDetail.cfm?ReleaseID=6140" style="color:#484742; font-size:12px; font-family:arial,helvetica,sans-serif;line-height:16px;">
+										Metro GM to propose closing earlier rail system closings on permanen ...</a>
+                                        
+
+                                        </TD>	</TR><TR><TD></TD></TR> 
+                            </TABLE>
+							<!-- end: News -->
+
+
+
+
+
+
+
+
+
+				</div></div>
+				
+                <div class="homepage-longbox-foot_new" ></div>
+			</div>
+			<!-- end: top sections (maps, next train, new) -->
+
+
+
+
+
+
+
+
+
+<div id="slideshow">
+<A href="#">
+	
+        <img src="http://www.wmata.com/about_metro/image_upload/uploaded-images/newwmata.jpg" alt="Preview Metro's new website" title="Preview Metro's new website" 
+        onClick="javascript:window.location='http://www.wmata.com/about_metro/news/PressReleaseDetail.cfm?ReleaseID=6137';" class="active" />
+    
+        <img src="http://www.wmata.com/about_metro/image_upload/uploaded-images/safetrack-marq.jpg" alt="SafeTrack" title="SafeTrack" 
+        onClick="javascript:window.location='http://www.wmata.com/safetrack';"  />
+    
+        <img src="http://www.wmata.com/about_metro/image_upload/uploaded-images/gm-plans2.jpg" alt="GM Plan" title="GM Plan" 
+        onClick="javascript:window.location='http://www.wmata.com/about_metro/general_manager/gm_plan.cfm ';"  />
+    
+</A>
+</div>
+
+
+
+            
+
+			<div class="homepage-longbox2" >
+		  <div id="homepage-box4_new">
+
+			  </div>
+
+
+                
+
+			</div>
+
+
+
+			<!-- start: bottom sections (smartrip, smartbenefits, business) -->
+
+
+			
+			<div class="homepage-longbox">
+				<div class="homepage-longbox-inner">
+
+                    <div class="pane1">
+
+										<a href="/nextBus" class="h1new">Real-Time Arrivals</a><br /><br />
+						<div class="fixed">
+						 <p class="go-link"><a href="/rider_tools/pids/real_time_arrivals.cfm">Rail</a> | <a href="/nextBus">Bus</a></p>
+						<a href="/nextBus"><img src="img/icon_clock_sm.png?" alt="Clock icon" align="left" /></a>
+						<p>Find out when your train or bus will arrive.</p>
+						</div>
+					</div>
+					<div class="pane2">
+				<a href="/rail/maps/map.cfm" class="h1new">Maps</a><br /><br />
+
+						<div class="fixed" >
+						 <p class="go-link"><a href="/rail/maps/map.cfm">Rail</a> | <a href="/bus/maps/">Bus</a></p>
+						<a href="/rail/maps/map.cfm"><img src="/img/icon-ealerts.png" alt="Maps icon" align="left" /></a>
+						<p>Find your way on Metrorail or Metrobus.</p>
+						</div>
+					</div>
+
+                    <div class="pane3">
+
+						<a href="/rail/stations.cfm" class="h1new">Stations & Stops</a><br /><br />
+
+						<div class="fixed" >
+						 <p class="go-link"><a href="/rail/stations.cfm">Rail</a> | <a href="/rider_tools/servicenearby/index.cfm">Bus</a></p>
+						<a href="/rail/maps/map.cfm"><img src="img/icon-metro.gif" alt="Maps & Stations icon" align="left" /></a>
+						<p>Get station information or find a bus stop.</p>
+						</div>
+					</div>
+				</div>
+				<div class="homepage-longbox-foot"></div>
+			</div>
+
+
+
+
+			
+
+
+			<div class="homepage-longbox" style="margin-top:8px;">
+				<div class="homepage-longbox-inner">
+					
+					<div class="pane1">
+						<a href="/business/index.cfm" class="h1new">Business with Metro</a><br /><br />
+
+						<div class="fixed" >
+						 <p class="go-link"><a href="/business/index.cfm">Learn more</a></p>
+						<a href="/business/index.cfm"><img src="img/business_icon.png?" alt="Business with Metro icon" align="left" /></a>
+						<p>Learn about business opportunities at Metro.</p>
+
+						</div>
+					</div>
+
+					<div class="pane2">
+
+						<a href="/fares/smartrip/" class="h1new">SmarTrip<sup>&reg;</sup> Card</a><br /><br />
+						<div class="fixed">
+						<p class="go-link"><a href="https://smartrip.wmata.com/Account/AccountLogin.aspx">Log In</a></p>
+						<a href="/fares/smartrip/"><img src="img/icon-smarttrip.gif" alt="SmartTrip&reg; Card icon" align="left" /></a>
+						<p>The faster, safer, smarter way to pay.</p>
+						</div>
+					</div>
+
+                    <div class="pane3">
+	<a href="/business/employer_fare_program/" class="h1new">SmartBenefits</a><br /><br />
+						<div class="fixed">
+						<p class="go-link"><a href="/business/employer_fare_program/">Learn more</a></p>
+						<a href="/business/employer_fare_program/"><img src="img/icon-dollarsign.png" alt="Dollar sign icon" align="left" /></a>
+						<p>Save money on your
+commute by using
+pre-tax benefits.</p>
+						</div>
+					</div>
+				</div>
+				<div class="homepage-longbox-foot"></div>
+			</div>
+
+
+
+
+
+
+
+
+
+
+			
+
+            
+
+
+		<div class="clear"></div>
+
+	</div>
+	<!-- end: bottom sections (smartrip, smartbenefits, business) -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<!-- start: footer -->
+	<div id="footer" style="background-image:url('/img/bg.png');">
+		<div class="row1"  >
+			  
+
+
+			<p class="inside-left" >&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="/about_metro/contact.cfm?" style="color:#FFFFFF">Contact</a> &nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="/about_metro/lost_found/" style="color:#FFFFFF">Lost &amp; Found</a> &nbsp;&nbsp;&nbsp;&nbsp;
+             <a href="/about_metro/transit_police/" style="color:#FFFFFF">Transit Police</a> &nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="/about_metro/news/newsroom.cfm"style="color:#FFFFFF" >Newsroom</a> &nbsp;&nbsp;&nbsp;&nbsp;
+            
+           
+             <a href="/getting_around/safety_security/" style="color:#FFFFFF">Safety</a> &nbsp;&nbsp;&nbsp;&nbsp;
+             <a href="/community_outreach" style="color:#FFFFFF">Community</a> &nbsp;&nbsp;&nbsp;&nbsp;
+             <a href="/careers" style="color:#FFFFFF">Careers</a> &nbsp;&nbsp;&nbsp;&nbsp;
+             <a href="/about_metro/calendar/index.cfm?" style="color:#FFFFFF">Calendar</a> &nbsp;&nbsp;&nbsp;&nbsp;
+             <A href="http://www.dcmetrostore.com?utm_source=wmata&utm_medium=website&utm_campaign=wmata-home" target="_new" style="color:#FFFFFF">Metro Gifts</a>
+			 
+     
+</p>
+
+		<p class="inside-right">&nbsp;<img name="socialicons" src="/img/socialicons1.png?2" width="70" height="35" border="0" id="socialicons" usemap="#m_socialicons" alt="" /><map name="m_socialicons" id="m_socialicons">
+<area shape="rect" coords="35,0,70,35" href="/rider_tools/metro_service_status/connect_with_twitter.cfm" title="Twitter" alt="Twitter" />
+<area shape="rect" coords="0,0,35,35" href="http://www.facebook.com/metroforward" target="_blank" title="Facebook" alt="Facebook" />
+  </map>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+           
+
+
+
+            </p>
+
+            
+		</div>
+	</div>
+</div>
+
+</div>
+<img src="img/footer-long-2.gif" alt="" /><br>
+<div id="footer2">
+	<div class="row2">
+		<p class="inside-left">&copy; 2016 WMATA &nbsp; &nbsp; &nbsp; <a href="/about_metro/privacy.cfm?">Privacy Policy and Legal Disclaimer</A>
+
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="employees/index.cfm?">Employee Alerts</a>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="https://www.volgistics.com/ex/portal.dll/?from=256484">MVP Login</a>
+
+        </p>
+        <div style="float:right;"><p class="inside-right" style="font-size:12px;font-weight:normal;">
+
+            
+
+            <Script language="JavaScript">
+            <!--
+                function goto(form) { var index=form.select.selectedIndex
+                if (form.select.options[index].value != "0") {
+                location=form.select.options[index].value;}}
+
+
+            //-->
+            </SCRIPT>
+
+            <FORM NAME="form1" >
+           
+                <SELECT NAME="select" ONCHANGE="goto(this.form)" SIZE="1" style="height: 21px; font-size:75%; background-color:#f2f1f0; border:1px solid #d0d0d0;" >
+                <OPTION VALUE="" style="font-size:75%;">Languages</OPTION>
+                <OPTION VALUE="http://es.wmata.com/index.cfm">Espa&ntilde;ol</OPTION>
+                <OPTION VALUE="http://fr.wmata.com/index.cfm">Fran&ccedil;ais</OPTION>
+                <OPTION VALUE="http://ko.wmata.com/index.cfm">Korean</OPTION>
+                <OPTION VALUE="http://zs.wmata.com/index.cfm">Chinese</OPTION>
+                <OPTION VALUE="http://vi.wmata.com/index.cfm">Vietnamese</OPTION>
+                <OPTION mpdisurl VALUE="http://www.wmata.com/index.cfm">English</OPTION>
+                </SELECT> &nbsp;
+
+                                         &nbsp;<a href="/accessibility/browse_aloud.cfm?"><img src="/img/speaker1.png?"  align="top" title="Browse Aloud Support" alt="BrowseAloud icon"></a> &nbsp;
+            </FORM>
+
+
+
+        </p></div>
+	</div>
+</div>
+<!-- end: footer -->
+
+<script type="text/javascript" src="/js/mpel.js"></script>
+<script type="text/javascript" src="/js/superfish.js"></script>
+<script type="text/javascript" src="/js/date.js"></script>
+<script type="text/javascript" src="/js/jquery.datePicker.js"></script>
+<script type="text/javascript" src="/js/main3.js"></script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+var pageTracker = _gat._getTracker("UA-3504190-1");
+pageTracker._trackPageview();
+</script>
+
+</body>
+</html>
+

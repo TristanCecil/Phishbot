@@ -1,0 +1,425 @@
+<html> <head> <title>Login | MailChimp - email marketing made easy</title> <link rel="canonical" href="https://login.mailchimp.com/">  <meta name="apple-itunes-app" content="app-id=366794783"> <meta charset="utf-8"> <meta name="copyright" content="Copyright (c) 2016 MailChimp. All Rights Reserved."> <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"> <meta name="apple-mobile-web-app-capable" content="yes"> <meta name="apple-mobile-web-app-status-bar-style" content="black"> <meta content="//mailchimp.com/browserconfig.xml" name="msapplication-config"> <meta content="#52BAD5" name="msapplication-TileColor"> <meta content="//static.mailchimp.com/web/favicon.png" name="msapplication-TileImage"> <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:400,600|Open+Sans:300italic,400italic,600italic,700italic,700,300,600,400" rel="stylesheet" type="text/css"> <link rel="stylesheet" type="text/css" href="/release/11.1.11/css/less/theone.css"> <link rel="stylesheet" type="text/css" href="/release/11.1.11/css/less/pages.css"> <link href="/images/apple-touch-icon-180x180.png" rel="apple-touch-icon" sizes="180x180"> <link href="/images/touch-icon-192x192.png" rel="icon" sizes="192x192"> <link rel="shortcut icon" href="/favicon.ico"> <script type="text/javascript">
+var xhr_open = XMLHttpRequest.prototype.open;
+XMLHttpRequest.prototype.open = function(method, url, async, user, password) {
+    xhr_open.call(this, method, url, async, user, password);
+    if (async === true && url.match(/^\/(?!\/)+/)) {
+        this.setRequestHeader('X-CSRF-Token', '84a2f91242517554f48b06f979e5cab13ee7e00e');
+    }
+}
+</script>  <script src="/release/11.1.11/js/dojo/dojo.js" data-dojo-config="parseOnLoad: true, usePlainJson: true, isDebug: false"></script> <script src="/release/11.1.11/js/dojo/mccommon.js"></script> <script type="text/javascript">
+    dojo.require("mojo.utils");
+    require(["mojo/widgets/Dialog"]);
+    // Leaving it globally since we used it around
+    var rootUrl = '/';
+
+    require([
+        "dojo/_base/lang",
+        "mojo/user",
+        "mojo/context"
+    ], function(lang, user, context) {
+        // Add defaults to the actual modules.
+
+        lang.mixin(context, {
+            'rootUrl': '/',
+
+            'proxyBaseUrl': "https:\/\/d2q0qd5iz04n9u.cloudfront.net\/_ssl\/proxy.php",
+
+            'listManageDomain': "list-manage.com",
+
+            'pusherKey': "74d7188a67461f12439a",
+
+            'cdnImagesDomain': "cdn-images.mailchimp.com",
+
+            'galleryDomain': "gallery.mailchimp.com",
+
+            'avestaEnvironment': "prod"        });
+
+            });
+</script>   <script>
+    (function() {
+        var walkme = document.createElement('script');
+        walkme.type = 'text/javascript';
+        walkme.async = true;
+        walkme.src = 'https://d3b3ehuo35wzeh.cloudfront.net/users/3e9c932948f04940bcfc74037784ce4b/walkme_3e9c932948f04940bcfc74037784ce4b_https.js';
+
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(walkme, s);
+    })();
+</script>  <script type="text/javascript">
+    dojo.registerModulePath('mailchimp', '../mailchimp');
+    dojo.require('dojo.parser');
+    dojo.require("dojo.NodeList-traverse");
+    dojo.require('dojo.cookie');
+    dojo.require('dijit.form.CheckBox');
+
+    dojo.addOnLoad(function() {
+        // Show password code that works for more than one password field in the page.
+        if(dojo.query('[name="show-password"]').length > 0) {
+            var input_password_arr = dojo.query('input[type="password"]');
+            dojo.forEach(dojo.query('[name="show-password"]'),function(el, i){
+                    el.index = i;
+                    dojo.connect(el, "click", function(evt){
+                        showPass(input_password_arr, evt);
+                    });//eo onclick evt;
+            });
+        }
+
+        //If more than one password field is in the page this function
+        // allows to keep the behaviors of the show password tick separate from one another
+        function showPass(input_password, ev){
+            var el = ev.target;
+            dojo.forEach(input_password, function(pwdinput, i){
+                if(i===el.index) {
+                    if(el.checked){
+                        dojo.attr(pwdinput,"type","text");
+                        dojo.attr(pwdinput,"autocomplete","off");
+                        dojo.attr(pwdinput,"autocorrect","off");
+                        dojo.attr(pwdinput,"autocapitalize","off");
+                        dojo.attr(pwdinput,"spellcheck","false");
+                        pwdinput.focus();
+                    }
+                    else{ dojo.attr(pwdinput,"type","password"); pwdinput.focus(); }
+                }
+            }); //eo forEach
+        }
+
+                
+        require(["dojo/cookie"], function(cookie){
+            if ( !cookie.isSupported() )  dojo.byId('no-cookies').style.display = '';
+            if(dojo.byId('account-form')){dojo.byId('no-cookies').style.display="none";}
+        });
+        
+        document.onkeypress=function(e){
+            var keycode = (e==null) ? keycode = event.keyCode : ((keycode = e.which));
+            var targetEl;
+            var shift_status = false;
+            if(dojo.isIE){
+                targetEl = event.srcElement;
+                shift_status = event.shiftKey;
+            }else{
+                if(e.target){
+                    targetEl = e.target;
+                }else if(e.srcElement){
+                    targetEl = e.srcElement;
+                }
+
+                if(e.shiftKey){
+                    shift_status = e.shiftKey;
+                }else if(e.modifiers){
+                    shift_status = !!(e.modifiers & 4);
+                }
+            }
+            if((keycode >= 65 && keycode <= 90 ) || (keycode >= 97 && keycode <= 122) && shift_status){
+                dojo.addClass(targetEl, 'caps');
+            }else{
+                dojo.removeClass(targetEl, 'caps');
+            }
+        }
+
+            });
+
+
+    /** Password Requirements **/
+    require([
+        "dojo/dom",
+        "dojo/query",
+        "dojo/dom-class",
+        "dojo/dom-attr",
+        "dojo/dom-style",
+        "dojo/on",
+        "dijit/registry",
+        "mojo/utils",
+        "dojo/ready"
+    ], function(dom, query, domClass, domAttr, domStyle, on, registry, utils, ready){
+
+        // At least one LOWERCASE character:
+        var lowerCasePattern = /^(?=.*[a-z]).+$/;
+
+        // At least one UPPERCASE character:
+        var upperCasePattern = /^(?=.*[A-Z]).+$/;
+
+        // At least one NUMBER:
+        var numberPattern = /^(?=.*[\d]).+$/;
+
+        // At least one SPECIAL character:
+        var specialCharacterPatter = /([-+=_!@#$%^&*.,;:'\"<>/?`~\[\]\(\)\{\}\\\|\s])/;
+
+        // At least 8 characters in the screen:
+        var characterCountPattern = /^.{8,}/;
+
+        // Flag to keep track if password is less than 50 characters:
+        var isLessThan50 = true;
+
+        ready(function(){
+
+            var pwd = dom.byId("new_password");
+            var passReq = query(".password-requirements")[0];
+
+            if(dom.byId("create-account")){
+                var createBtn = dom.byId("create-account");
+            }
+
+            if(dom.byId("join-account")){
+                var joinBtn = dom.byId("join-account");
+            }
+
+            if(registry.byId("reset-password")){
+                var resetBtn = registry.byId("reset-password");
+                resetBtn.setDisabled(true);
+            }
+
+            var lowercaseChar = query(".lowercase-char")[0];
+            var uppercaseChar = query(".uppercase-char")[0];
+            var numberChar = query(".number-char")[0];
+            var specialChar = query(".special-char")[0];
+            var _8Char = query(".8-char")[0];
+            var plus50 = query(".plus-50")[0];
+
+            // Attach event for signup form
+            if(dom.byId("signup-form")) {
+                checkRequirements();
+                on(dom.byId("signup-form"), "submit", function (e) {
+                    // Add loading animation to button
+                    utils.toggleButtonLoadingState(createBtn);
+                });
+            }
+
+            // Attach event for invite form
+            if(dom.byId("login-form")) {
+                on(dom.byId("login-form"), "submit", function (e) {
+                    // Add loading animation to button
+                    utils.toggleButtonLoadingState(joinBtn);
+                });
+            }
+
+            // Attach event for reset password form
+            if(dom.byId("reset-password-form")) {
+                on(dom.byId("reset-password-form"), "submit", function (e) {
+                    // Add loading animation to button
+                    utils.toggleButtonLoadingState(resetBtn);
+                });
+            }
+
+            // focus/focusout events for new password
+            if(passReq && !domClass.contains(passReq, "always-open")){
+                on(dom.byId("new_password"), "focus", function(){
+                    domClass.add(passReq, "open");
+                });
+
+                on(dom.byId("new_password"), "focusout", function(){
+                    domClass.remove(passReq, "open");
+                });
+            }
+
+           // Event for change of input (typing, pasting)
+            if(pwd){ on(pwd, "input", function(e) { checkRequirements(); }); }
+
+            function checkRequirements(){
+                toggleRequirements(pwd, lowerCasePattern, lowercaseChar);
+                toggleRequirements(pwd, upperCasePattern, uppercaseChar);
+                toggleRequirements(pwd, numberPattern, numberChar);
+                toggleRequirements(pwd, specialCharacterPatter, specialChar);
+                toggleRequirements(pwd, characterCountPattern, _8Char);
+
+                // Check if password is 50 chars or longer
+                if(pwd.value.length > 50){
+                    domStyle.set(plus50, "opacity", "1");
+                    isLessThan50 = false;
+                }else{
+                    domStyle.set(plus50, "opacity", "0");
+                    isLessThan50 = true;
+                }
+
+                if( lowerCasePattern.test(pwd.value) &&
+                        upperCasePattern.test(pwd.value) &&
+                        numberPattern.test(pwd.value) &&
+                        specialCharacterPatter.test(pwd.value) &&
+                        characterCountPattern.test(pwd.value) &&
+                        isLessThan50
+                        ){
+                    domClass.remove(query(".password-ok")[0], "hide");
+                    domClass.add(passReq, "hide");
+                    if(createBtn){ domAttr.remove(createBtn, "disabled"); }
+                    if(joinBtn){ domAttr.remove(joinBtn, "disabled"); }
+                    if(resetBtn){ resetBtn.setDisabled(false); }
+                }else{
+                    domClass.add(query(".password-ok")[0], "hide");
+                    if(createBtn){ domAttr.set(createBtn, "disabled", "disabled"); }
+                    if(joinBtn){ domAttr.set(joinBtn, "disabled", "disabled"); }
+                    if(resetBtn){ resetBtn.setDisabled(true); }
+                    domClass.remove(passReq, "hide");
+                }
+            }
+
+            function toggleRequirements(/*input*/pwd, /*RegEx*/regEx, /*element*/el){
+                if(regEx.test(pwd.value) ){
+                    domClass.add(el, "completed");
+                }else{
+                    domClass.remove(el, "completed");
+                }
+            }
+
+        });
+    });
+
+</script>  <script>
+    (function(i,s,o,g,r,a,m){ i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments) },i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga("create","UA-329148-81","auto",{ allowLinker:!0 }),
+    ga("require","linker"),
+    ga("linker:autoLink",[/(.*\.)?mailchimp(app)?\.com$/],!1,!0),
+    ga("send","pageview");
+
+    // Save tracking id and client id to a cookie so we can use them server side
+    require(["mojo/utils"], function(utils) {
+        if (!utils.getCookie('_mcga')) {
+            ga(function(tracker) {
+                var gaData = {};
+                gaData.tid = tracker.get('trackingId');
+                gaData.cid = tracker.get('clientId');
+                document.cookie = '_mcga='+ JSON.stringify(gaData) +';path=/;domain=.mailchimp.com';
+            });
+        }
+    });
+</script>   <script type="text/javascript">
+    dojo.require('dijit.form.CheckBox');
+    dojo.require("dojo.NodeList-fx");
+    dojo.addOnLoad(function() {
+
+        // Show warning messages if browser is not supported or out of date.
+        var badbrowser = false;
+        var browsermsg = "";
+        if(dojo.isIE <= 9) {
+            if(dojo.isIE == 9) {
+                browsermsg = '<h4>Internet Explorer 9 is not actively supported in MailChimp.</h4>';
+                browsermsg += '<p class="full-width">The latest versions of <a href="http://www.google.com/chrome/" target="_blank">Chrome</a>, <a href="http://www.getfirefox.com/" target="_blank">Firefox</a> and Internet Explorer all play nice with the Chimp. We recommend switching to one of those.</p>';
+            } else {
+                browsermsg = '<h4>Whoa there! Internet Explorer 8 and below do not work with MailChimp.</h4>';
+                browsermsg += '<p class="full-width">The latest versions of <a href="http://www.google.com/chrome/" target="_blank">Chrome</a>, <a href="http://www.getfirefox.com/" target="_blank">Firefox</a> and Internet Explorer all play nice with the Chimp. To log in, you&rsquo;ll need to use one of those.</p>';
+                dojo.replaceClass("browser-warning", "error", "warning");
+            }
+            badbrowser = true;
+        }
+        if(dojo.isSafari < 7) {
+            var badbrowser = true;
+            browsermsg = '<h4>This version of Safari is not actively supported in MailChimp.</h4>';
+            browsermsg += '<p class="full-width">Most things should work, but if you have any problems, we&rsquo;d recommend checking for <a href="https://support.apple.com/en-us/HT201541" target="_blank">software updates</a> or switching to the latest version of <a href="http://www.google.com/chrome/" target="_blank">Chrome</a> or <a href="http://www.getfirefox.com/" target="_blank">Firefox</a>.</p>'
+        }
+        if(dojo.isFF < 32) {
+            var badbrowser = true;
+            browsermsg = '<h4>This version of Firefox is not actively supported in MailChimp.</h4>';
+            browsermsg += '<p class="full-width">Most things should work, but if you have any problems, we&rsquo;d recommend <a href="http://www.getfirefox.com/" target="_blank">updating Firefox</a> or switching to the latest version of <a href="http://www.google.com/chrome/" target="_blank">Chrome</a>.</p>'
+        }
+        if(dojo.isChrome < 38) {
+            var badbrowser = true;
+            browsermsg = '<h4>This version of Chrome is not actively supported in MailChimp.</h4>';
+            browsermsg += '<p class="full-width">Most things should work, but if you have any problems, we&rsquo;d recommend <a href="http://www.google.com/chrome/" target="_blank">updating Chrome</a> or switching to the latest version of <a href="http://www.getfirefox.com/" target="_blank">Firefox</a>.</p>'
+        }
+        if(badbrowser){
+            dojo.byId('browser-warning').style.display = '';
+            dojo.query('#browser-warning .media-body')[0].innerHTML = browsermsg;
+        }
+
+                var timediff = Math.abs((new Date()).getTime() - 1463255704000);
+        if (timediff >  (22*60*1000)) {
+            insertNode = dojo.query('.login-field')[0];
+            dojo.place('<div id="empty-error" class="feedback-block warning mar-lv5 mar-lr0 mar-t0">'+ '<div class="lastUnit size1of1">'+ '<div class="media">'+ '<div class="media-image">'+ '<span class="freddicon warn-circle"></span>'+ '</div>'+ '<div class="media-body">'+ '<h4>Whoops</h4>'+ '<p>It seems your system clock is set too far into the future. If login continually fails, please adjust your system clock or use <a href="http://en.wikipedia.org/wiki/Network_Time_Protocol" target="_blank">NTP</a></p>'+ '</div>'+ '</div>'+ '</div>'+ '</div>', insertNode, "before");
+        }
+
+        dojo.query('a.login-forgot-toggle').forEach(function (el) {
+            dojo.connect(el, 'onclick', function(e) {
+                dojo.query('form').style({ display:'none' });
+                dojo.query('.login-announcement-mobile').style({ display:'none' });
+                if(dojo.hasClass(el,'show-login')){
+                    dojo.byId('login-form').style.display = '';
+                } else if (dojo.hasClass(el,'show-forgot-user')) {
+                    dojo.byId('forgot-user').style.display = '';
+                } else {
+                    dojo.byId('forgot-pass').style.display = '';
+                    dojo.byId('forgotpass-username').value = dojo.byId('username').value;
+                }
+                dojo.stopEvent(e);
+            });
+        });
+
+        dojo.connect(dojo.byId('forgot-pass'), "onsubmit", function(e) {
+            // Add loading animation to button
+            var button = dojo.query('.forgot-password-button');
+            mojo.utils.toggleButtonLoadingState(button);
+        });
+
+        dojo.connect(dojo.byId('forgot-user'), "onsubmit", function(e) {
+            // Add loading animation to button
+            var button = dojo.query('.forgot-username-button');
+            mojo.utils.toggleButtonLoadingState(button);
+        });
+
+        dojo.connect(dojo.byId('login-form'), "onsubmit", function(e) {
+            // Add loading animation to button
+            var logInBtns = dojo.query('.login-button button');
+            mojo.utils.toggleButtonLoadingState(logInBtns, "Logging in...");
+
+            var errorText = "";
+            if(!dojo.byId('password').value){
+                errorText = 'Looks like you forgot your password there, '+ dojo.byId('username').value + '.';
+            }
+            if(!dojo.byId('username').value){
+                if(errorText == ""){
+                    errorText = "You entered a password but not a username.";
+                } else {
+                    errorText = "You did not enter a username or a password.";
+                }
+            }
+            if(errorText != ""){
+                // Turn off loading state
+                mojo.utils.toggleButtonLoadingState(logInBtns);
+                e.preventDefault();
+                errorText = errorText.replace(/(<([^>]+)>)/ig,"");
+                var n = dojo.byId("empty-error");
+                if(n){
+                    dojo.query("p", n).innerHTML = errorText;
+                } else {
+                    insertNode = dojo.query('.login-field')[0];
+
+                    dojo.place('<div id="empty-error" class="feedback-block warning mar-lv5 mar-lr0 mar-t0">'+ '<div class="lastUnit size1of1">'+ '<div class="media">'+ '<div class="media-image">'+ '<span class="freddicon warn-circle"></span>'+ '</div>'+ '<div class="media-body">'+ '<h4>Whoops</h4>'+ '<p>'+errorText+'</p>'+ '</div>'+ '</div>'+ '</div>'+ '</div>', insertNode, "before");
+                }
+            }
+        });
+
+        dojo.byId('screen-size').value = window.screen.availWidth + 'x' + window.screen.availHeight;
+    });
+</script>   <script type="text/javascript">require(['mojo/views/login/index'], function(Module) {
+                    window._mc = new Module();
+                    window._mc.run();
+                });</script> </head>  <body id="login" class="new_teal mcd bg-login pad-t0 selfclear overflow-auto"> <div class="line flex"> <div class="unit nopadding flex-col full-width-mobile full-width-old-ie size2of3">   <div class="pad-lv5 pad-lr0 pad-b0 mar-lv5 mar-lr0 mar-b0" id="login-box"> <div id="outer-content"> <div id="inner-content">  <div id="browser-warning" class="feedback-block warning" style="display: none;"> <div class="lastUnit size1of1"> <div class="media"> <div class="media-image"><span class="freddicon warn-circle"></span></div> <div class="media-body"></div> </div> </div> </div>  <div id="no-cookies" class="feedback-block warning" style="display: none;"> <div class="lastUnit size1of1 alignc"> <span class="freddicon warn-circle mar-lv2 mar-tb0 mar-l0"></span> <span>It looks like you have cookies disabled.</span> <span>Cookies need to be enabled for MailChimp to work properly.</span> </div> </div> <div id="content">  <div id="login-form-wrap" class="mc-mini-content centered"> <div class="alignc mar-lv8 mar-lr0"><div class="freddie centered"><a href="/" title="Freddie von Chimpenheimer, IV"></a></div></div> <div id="av-flash-block">    </div>   <div id="login-content-no-footer"> <div id="login-content" class="line selfclear">  <div class="signup-wrap lastUnit overflow-visible"> <form action="/login/post/" id="login-form" method="POST" novalidate="novalidate"> <input type="hidden" aria-hidden="true" name="referrer" class="av-hidden" value="/" id="referrer"> <input type="hidden" aria-hidden="true" name="from" class="av-hidden" value="" id="from"> <input type="hidden" aria-hidden="true" name="auth_token" class="av-hidden" value="" id="auth_token"> <input type="hidden" aria-hidden="true" name="auth_system" class="av-hidden" value="" id="auth_system"> <input type="hidden" aria-hidden="true" name="screen_size" id="screen-size" class="av-hidden"> <fieldset>     <div class="line login-field"> <div class="field-wrapper"> <label for="username" class=""> Username <span class="float-right fwn"> <a href="/login/forgot-username/" class="login-forgot-toggle show-forgot-user nowrap">I forgot</a> </span> </label> <input type="text" name="username" tabindex="1" autofocus="autofocus" autocorrect="off" autocapitalize="off" class=" av-text" value="" id="username"> </div> </div>   <div class="line login-field"> <div class="field-wrapper"> <label for="password" class=""> Password <span class="float-right fwn"> <a href="/login/forgot/" class="login-forgot-toggle show-forgot-pass nowrap">I forgot</a> </span> </label> <div class="input-append"> <input type="password" name="password" tabindex="2" maxlength="50" class=" av-password" value="" id="password"> <div class="show-pass-wrap add-on alignc left-on-small pad-lv2 pad-tb0 pad-r0"> <label for="show-password" title="Show Password" class="add-on-label nopadding"><input type="checkbox" data-dojo-type="dijit/form/CheckBox" name="show-password" id="show-password" value="1" class="av-checkbox">Show</label> </div> </div> </div> </div>  
+                                  <div class="line below30 login-controls"> <div class="login-button unit pad-l0 size1of2 nochange"> <button type="submit" value="log in" class="button-large p0 size1of1 hide-mobile" tabindex="3">Log in</button> <button type="submit" value="log in" class="button p0 size1of1 hide-desktop" tabindex="3">Log in</button> </div> <div class="lastUnit size1of2 nochange alignc left-on-small pad-r0"> <div class="stay-signed-in rounded3 pad-lv2 pad-tb0 pad-r0"> <label for="stay-signed-in" class="signed-in-label block nopadding"><input type="checkbox" data-dojo-type="dijit/form/CheckBox" name="stay-signed-in" value="Y" id="stay-signed-in" class="av-checkbox">Stay logged in</label> </div> </div> </div>   <div class="alignc normal-meta"> <p class="inline-block mar-lv1 mar-tb0 mar-l0"><a href="/signup/" title="Signup for a MailChimp account" onclick="ga('send', 'event', window.location.pathname, 'action', 'Create Account From Login');">Create an account</a></p> &middot; <p class="inline-block mar-lv1 mar-tb0 mar-r0"><a title="Trouble logging in?" href="http://kb.mailchimp.com/accounts/management/i-cant-log-in?" target="_blank" onclick="ga('send', 'event', window.location.pathname, 'action', 'Trouble Logging In KB Link');" data-kb-article="/accounts/management/i-cant-log-in">Can't log in?</a></p> </div>  </fieldset> </form> <div>
+            <a href="http://mailchimp.com/features/automation/?utm_source=mailchimp_app&utm_medium=internal_ad&utm_content=automation_login&utm_campaign=inapp" onclick="ga('send', 'event', 'MailChimp App Internal Ad', 'Automation Login Learn More');" class="login-announcement-mobile"> <div class="media"> <div class="media-image nofloat-small"> <img src="/release/11.1.11/images/login/announcements/automation/automation_small.jpg" class="icon centered round" role="presentation" width="150"> </div> <div class="media-body"> <h1 class="automation-header-small">Enterprise-level Automation without the headaches</h1> <p class="nomargin">Learn More &#8594;</p> </div> </div> </a>
+        </div>  <script type="text/javascript">
+    require(["dojo/query", "dojo/ready", "dojo/dom-class", "dojo/NodeList-traverse"], function(query, ready, domClass){
+        ready(function(){
+            var emailInputWrapper = query('.radio-description-out.recover-email-input')[0];
+            var smsInputWrapper = query('.radio-description-out.sms')[0];
+
+            query('input[name="recover_username"]').on("change", function(){
+                domClass.toggle(emailInputWrapper, "hide");
+                domClass.toggle(smsInputWrapper, "hide");
+            });
+
+
+        }); //eo ready
+    });
+
+</script> <div class="size1of1 lastUnit"> <form id="forgot-user" action="/login/forgot-username-post" style="display:none" method="POST" novalidate="novalidate"> <fieldset id="forgot-username" class="main-section">  <div class="line below24"> <h1 class="h4">Recover username</h1> <p>Recover your MailChimp username using the email address or SMS number associated with your account.</p> </div>    <div class="line"> <div class="lastUnit size1of1 nopadding"> <div class="field-wrapper below18"> <label class="recover-email"> <input name="recover_username" value="email" type="radio" data-dojo-type="dijit/form/RadioButton" checked class="av-radio" id="recover_username-email"> Recover using the email address on your account </label> <div class="radio-description-out recover-email-input "> <input type="email" name="email" placeholder="Ex: freddie@mailchimp.com" class=" av-email" value="" id="email"> </div> </div> <div class="field-wrapper below18"> <label class="recover-sms"> <input name="recover_username" value="sms" type="radio" data-dojo-type="dijit/form/RadioButton" class="av-radio" id="recover_username-sms" > Recover using the mobile number on your account </label> <div class="radio-description-out sms hide"> <div class="unit size1of2 recovery-phone-cc nopadding"> <select class="size1of1 select-small " name="phone_cc" id="recovery-phone-cc"> <option class="firstoption" value="" selected="selected">Select Country</option> <option value="1" >USA, US territories, Canada, and some Caribbean countries (+1)</option><option value="93" >Afghanistan (+93)</option><option value="355" >Albania (+355)</option><option value="213" >Algeria (+213)</option><option value="376" >Andorra (+376)</option><option value="244" >Angola (+244)</option><option value="54" >Argentina (+54)</option><option value="374" >Armenia (+374)</option><option value="297" >Aruba (+297)</option><option value="61" >Australia, Christmas Island (+61)</option><option value="43" >Austria (+43)</option><option value="994" >Azerbaijan (+994)</option><option value="973" >Bahrain (+973)</option><option value="880" >Bangladesh (+880)</option><option value="375" >Belarus (+375)</option><option value="32" >Belgium (+32)</option><option value="501" >Belize (+501)</option><option value="229" >Benin (+229)</option><option value="975" >Bhutan (+975)</option><option value="591" >Bolivia (+591)</option><option value="387" >Bosnia and Herzegovina (+387)</option><option value="267" >Botswana (+267)</option><option value="55" >Brazil (+55)</option><option value="673" >Brunei Darussalam (+673)</option><option value="359" >Bulgaria (+359)</option><option value="226" >Burkina Faso (+226)</option><option value="257" >Burundi (+257)</option><option value="855" >Cambodia (+855)</option><option value="237" >Cameroon (+237)</option><option value="238" >Cape Verde (+238)</option><option value="236" >Central African Republic (+236)</option><option value="235" >Chad (+235)</option><option value="56" >Chile (+56)</option><option value="86" >China (+86)</option><option value="57" >Colombia (+57)</option><option value="269" >Comoros (+269)</option><option value="242" >Congo (+242)</option><option value="682" >Cook Islands (+682)</option><option value="506" >Costa Rica (+506)</option><option value="225" >Cote D&#039;Ivoire (+225)</option><option value="385" >Croatia (+385)</option><option value="53" >Cuba (+53)</option><option value="357" >Cyprus (+357)</option><option value="420" >Czech Republic (+420)</option><option value="243" >Democratic Republic of the Congo (+243)</option><option value="45" >Denmark (+45)</option><option value="253" >Djibouti (+253)</option><option value="593" >Ecuador (+593)</option><option value="20" >Egypt (+20)</option><option value="503" >El Salvador (+503)</option><option value="240" >Equatorial Guinea (+240)</option><option value="291" >Eritrea (+291)</option><option value="372" >Estonia (+372)</option><option value="251" >Ethiopia (+251)</option><option value="500" >Falkland Islands, South Georgia and the South Sandwich Islands (+500)</option><option value="298" >Faroe Islands (+298)</option><option value="679" >Fiji (+679)</option><option value="358" >Finland, Aaland Islands (+358)</option><option value="33" >France (+33)</option><option value="594" >French Guiana (+594)</option><option value="689" >French Polynesia (+689)</option><option value="241" >Gabon (+241)</option><option value="220" >Gambia (+220)</option><option value="995" >Georgia (+995)</option><option value="49" >Germany (+49)</option><option value="233" >Ghana (+233)</option><option value="350" >Gibraltar (+350)</option><option value="30" >Greece (+30)</option><option value="299" >Greenland (+299)</option><option value="590" >Guadeloupe (+590)</option><option value="502" >Guatemala (+502)</option><option value="224" >Guinea (+224)</option><option value="592" >Guyana (+592)</option><option value="509" >Haiti (+509)</option><option value="504" >Honduras (+504)</option><option value="852" >Hong Kong (+852)</option><option value="36" >Hungary (+36)</option><option value="354" >Iceland (+354)</option><option value="91" >India (+91)</option><option value="62" >Indonesia (+62)</option><option value="98" >Iran (+98)</option><option value="964" >Iraq (+964)</option><option value="353" >Ireland (+353)</option><option value="972" >Israel (+972)</option><option value="39" >Italy (+39)</option><option value="81" >Japan (+81)</option><option value="962" >Jordan (+962)</option><option value="254" >Kenya (+254)</option><option value="686" >Kiribati (+686)</option><option value="965" >Kuwait (+965)</option><option value="996" >Kyrgyzstan (+996)</option><option value="856" >Lao People&#039;s Democratic Republic (+856)</option><option value="371" >Latvia (+371)</option><option value="961" >Lebanon (+961)</option><option value="266" >Lesotho (+266)</option><option value="231" >Liberia (+231)</option><option value="218" >Libya (+218)</option><option value="423" >Liechtenstein (+423)</option><option value="370" >Lithuania (+370)</option><option value="352" >Luxembourg (+352)</option><option value="853" >Macau (+853)</option><option value="389" >Macedonia (+389)</option><option value="261" >Madagascar (+261)</option><option value="265" >Malawi (+265)</option><option value="60" >Malaysia (+60)</option><option value="960" >Maldives (+960)</option><option value="223" >Mali (+223)</option><option value="356" >Malta (+356)</option><option value="692" >Marshall Islands (+692)</option><option value="596" >Martinique (+596)</option><option value="222" >Mauritania (+222)</option><option value="230" >Mauritius (+230)</option><option value="262" >Mayotte, Reunion (+262)</option><option value="52" >Mexico (+52)</option><option value="373" >Moldova, Republic of (+373)</option><option value="377" >Monaco (+377)</option><option value="976" >Mongolia (+976)</option><option value="382" >Montenegro (+382)</option><option value="212" >Morocco, Western Sahara (+212)</option><option value="258" >Mozambique (+258)</option><option value="95" >Myanmar (+95)</option><option value="264" >Namibia (+264)</option><option value="977" >Nepal (+977)</option><option value="31" >Netherlands (+31)</option><option value="599" >Netherlands Antilles (+599)</option><option value="687" >New Caledonia (+687)</option><option value="64" >New Zealand (+64)</option><option value="505" >Nicaragua (+505)</option><option value="227" >Niger (+227)</option><option value="234" >Nigeria (+234)</option><option value="683" >Niue (+683)</option><option value="672" >Norfolk Island,  (+672)</option><option value="47" >Norway, Svalbard and Jan Mayen Islands (+47)</option><option value="968" >Oman (+968)</option><option value="92" >Pakistan (+92)</option><option value="680" >Palau (+680)</option><option value="970" >Palestine (+970)</option><option value="507" >Panama (+507)</option><option value="675" >Papua New Guinea (+675)</option><option value="595" >Paraguay,  (+595)</option><option value="51" >Peru (+51)</option><option value="63" >Philippines (+63)</option><option value="872" >Pitcairn (+872)</option><option value="48" >Poland (+48)</option><option value="351" >Portugal (+351)</option><option value="974" >Qatar (+974)</option><option value="383" >Republic of Kosovo (+383)</option><option value="40" >Romania (+40)</option><option value="7" >Russia, Kazakhstan (+7)</option><option value="250" >Rwanda (+250)</option><option value="685" >Samoa (Independent) (+685)</option><option value="378" >San Marino (+378)</option><option value="239" >Sao Tome and Principe (+239)</option><option value="966" >Saudi Arabia (+966)</option><option value="221" >Senegal (+221)</option><option value="381" >Serbia (+381)</option><option value="248" >Seychelles (+248)</option><option value="232" >Sierra Leone (+232)</option><option value="65" >Singapore (+65)</option><option value="421" >Slovakia (+421)</option><option value="386" >Slovenia (+386)</option><option value="677" >Solomon Islands (+677)</option><option value="252" >Somalia (+252)</option><option value="27" >South Africa (+27)</option><option value="82" >South Korea (+82)</option><option value="850" >South Korea,  (+850)</option><option value="34" >Spain (+34)</option><option value="94" >Sri Lanka (+94)</option><option value="249" >Sudan (+249)</option><option value="597" >Suriname (+597)</option><option value="268" >Swaziland (+268)</option><option value="46" >Sweden (+46)</option><option value="41" >Switzerland (+41)</option><option value="963" >Syria (+963)</option><option value="886" >Taiwan (+886)</option><option value="992" >Tajikistan (+992)</option><option value="255" >Tanzania (+255)</option><option value="66" >Thailand (+66)</option><option value="670" >Timor-Leste (+670)</option><option value="228" >Togo (+228)</option><option value="676" >Tonga (+676)</option><option value="216" >Tunisia (+216)</option><option value="90" >Turkey (+90)</option><option value="993" >Turkmenistan (+993)</option><option value="256" >Uganda (+256)</option><option value="380" >Ukraine (+380)</option><option value="971" >United Arab Emirates (+971)</option><option value="44" >United Kingdom, Guernsey, Jersey  (Channel Islands) (+44)</option><option value="598" >Uruguay (+598)</option><option value="998" >Uzbekistan (+998)</option><option value="678" >Vanuatu (+678)</option><option value="379" >Vatican City State (Holy See) (+379)</option><option value="58" >Venezuela (+58)</option><option value="84" >Vietnam (+84)</option><option value="967" >Yemen (+967)</option><option value="260" >Zambia (+260)</option><option value="263" >Zimbabwe (+263)</option></select> </div> <div class="lastUnit size1of2 recovery-phone-number"> <input type="tel" id="recovery-phone-number" name="phone" placeholder="Mobile number" class=" av-tel" value=""> </div> </div> </div> </div> </div>  
+                      <div class="line"> <div class="lastUnit size1of1 nopadding"> <button type="submit" value="Send Username" class="button p0 mar-b0 forgot-username-button">Recover Username</button> <a class="small-meta fwb" href="/login/">Return to login</a> </div> </div>  </fieldset> </form> </div>  <div class="size1of1 lastUnit"> <form id="forgot-pass" action="/login/forgot-reset" style="display:none" method="POST" novalidate="novalidate"> <fieldset id="forgot-password">  <div class="line"> <h1 class="h4">Password reset</h1> </div>   <div class="line below24"> <p class="nomargin">We'll email you instructions on how to reset your password.</p> <p class="nomargin">If you don't have access to your email anymore, try <a href="https://login.mailchimp.com/login/account-recovery" class="nowrap">account recovery</a>.</p> </div>   <div class="login-field"> <div class="field-wrapper"> <label for="forgotpass-username" class="placeholder ">Username</label> <input type="text" id="forgotpass-username" name="username" class=" av-text" value=""> <div class="field-help"> We'll email you a password reset link. </div> </div> </div>  
+                       <div class="line"> <div class="unit size1of1 nopadding"> <button type="submit" value="Reset Password" class="button p0 forgot-password-button">Reset Password</button> <a class="small-meta fwb" href="/login/">Return to login</a> </div> </div>  </fieldset> </form> </div>      </div>  <script type="text/javascript">
+        document.getElementsByTagName('html')[0].className += " new_teal";
+    </script> </div> <div class="line alignc section hide-print"> <a title="Send better email with MailChimp" href="/" tabindex="-1" class="inline-block above48 centered footer-scripty">MailChimp</a> <p class="small-meta dim-el full-width"> &copy;2001&ndash;2016 <span>All Rights Reserved. MailChimp® is a registered trademark of The Rocket Science Group.</span> <span class="nowrap link-underline"> <a class="textcolor" href="http://mailchimp.com/legal/privacy" target="_blank" tabindex="-1" onclick="ga('send', 'event', 'dashboard', 'link', 'mailchimp.com/legal/privacy');">Privacy</a> and <a class="textcolor" href="http://mailchimp.com/legal/" target="_blank" tabindex="-1" onclick="ga('send', 'event', 'dashboard', 'link', 'mailchimp.com/legal/');">Terms</a> </span> </p> </div> </div> </div> </div> </div> </div> </div> </div> <div class="lastUnit flex-col overflow-y pad-lr0 hide-mobile hide-old-ie size1of3 login-automation ">
+            <script type="text/javascript">
+  ga('send', 'event', 'MailChimp App Internal Ad', 'Automation Login Impression');
+</script>
+
+<div class="automation-wrapper" data-mc-el="loginAnnouncementAnimation" style="display:none; opacity:0;"> <div class="automation-content"> <h1 class="automation-heading textcolor-dark">Enterprise-level Automation without the headaches</h1> <a href="http://mailchimp.com/features/automation/?utm_source=mailchimp_app&utm_medium=internal_ad&utm_content=automation_login&utm_campaign=inapp" onclick="ga('send', 'event', 'MailChimp App Internal Ad', 'Automation Login Learn More');" target="_blank" class="button no-transform" role="button">Learn More</a> </div> <div class="automation-image"></div> </div>
+        </div> </div> </body> </html>

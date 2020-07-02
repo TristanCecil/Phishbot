@@ -1,0 +1,702 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=9" >
+        <!--[if IE 9]>
+        <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9" >
+        <![endif]-->
+        <!--[if IE 8]>
+        <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8" >
+        <![endif]-->
+        <!--[if IE 7]>
+        <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" >
+        <![endif]-->
+<meta NAME="keywords" CONTENT="İstanbul Üniversitesi, Istanbul University, Eğitim, Education, Akademik, Academy, İstanbul, Istanbul, University, Üniversite, Student, Öğrenci, Turkey">
+<meta NAME="description" CONTENT="İstanbul Üniversitesi | Tarihten Geleceğe Bilim Köprüsü - 1453">
+<meta NAME="author" CONTENT="İstanbul Üniversitesi Bilgi İşlem Daire Başkanlığı">
+<meta name="google-site-verification" content="KIn8WeplSWedUUx5vVZiVnhacrOHkCLWuQPvp0Ags_I" />
+<META NAME="googlebot" CONTENT="index, follow">
+<META NAME="robots" CONTENT="index, follow">
+<meta name="robots" content="all">
+<meta name="revisit-after" content="1 Days">
+<title>İstanbul Üniversitesi | Tarihten Geleceğe Bilim Köprüsü</title>
+<link rel="profile" href="http://gmpg.org/xfn/11" />
+<link rel="stylesheet" type="text/css" media="all" href="http://www.istanbul.edu.tr/wp-content/themes/1453/style.css" />
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.6.2.min.js"></script>
+<script type="text/javascript" src="highlight.js"></script>
+<script src="/wp-content/plugins/wp-spry-menu/SpryAssets/SpryMenuBar.js" type="text/javascript"></script>
+<script type="text/javascript" src="jquery.scrollTo.js"></script>
+<script src="jcarousellite_1.0.1c4_new.js" type="text/javascript"></script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-30565767-2', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<script type="text/javascript">
+$(function() {
+	$(".duyuru-wrapper").jCarouselLite({
+		horizontal: true,
+		hoverPause: true,
+		btnPrev: ".back",
+		btnNext: ".next",
+		visible: 1,
+		auto:10000,
+		speed:500
+	});
+});
+</script>
+<script>
+
+$(document).ready(function() {
+
+	//Speed of the slideshow
+	var speed = 5000;
+	
+	//You have to specify width and height in #slider CSS properties
+	//After that, the following script will set the width and height accordingly
+	$('#mask-gallery, #gallery li').width($('#slider').width());	
+	$('#gallery').width($('#slider').width() * $('#gallery li').length);
+	$('#mask-gallery, #gallery li, #mask-excerpt, #excerpt li').height($('#slider').height());
+	
+	//Assign a timer, so it will run periodically
+	var run = setInterval('newsscoller(0)', speed);	
+	
+	$('#gallery li:first, #excerpt li:first').addClass('selected');
+
+	//Pause the slidershow with clearInterval
+	$('#btn-pause').click(function () {
+		clearInterval(run);
+		return false;
+	});
+
+	//Continue the slideshow with setInterval
+	$('#btn-play').click(function () {
+		run = setInterval('newsscoller(0)', speed);	
+		return false;
+	});
+	
+	//Next Slide by calling the function
+	$('#btn-next').click(function () {
+		newsscoller(0);	
+		return false;
+	});	
+
+	//Previous slide by passing prev=1
+	$('#btn-prev').click(function () {
+		newsscoller(1);	
+		return false;
+	});	
+	
+	//Mouse over, pause it, on mouse out, resume the slider show
+	$('#slider').hover(
+	
+		function() {
+			clearInterval(run);
+		}, 
+		function() {
+			run = setInterval('newsscoller(0)', speed);	
+		}
+	); 
+!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");	
+	
+});
+
+
+function newsscoller(prev) {
+
+	//Get the current selected item (with selected class), if none was found, get the first item
+	var current_image = $('#gallery li.selected').length ? $('#gallery li.selected') : $('#gallery li:first');
+	var current_excerpt = $('#excerpt li.selected').length ? $('#excerpt li.selected') : $('#excerpt li:first');
+
+	//if prev is set to 1 (previous item)
+	if (prev) {
+		
+		//Get previous sibling
+		var next_image = (current_image.prev().length) ? current_image.prev() : $('#gallery li:last');
+		var next_excerpt = (current_excerpt.prev().length) ? current_excerpt.prev() : $('#excerpt li:last');
+	
+	//if prev is set to 0 (next item)
+	} else {
+		
+		//Get next sibling
+		var next_image = (current_image.next().length) ? current_image.next() : $('#gallery li:first');
+		var next_excerpt = (current_excerpt.next().length) ? current_excerpt.next() : $('#excerpt li:first');
+	}
+
+	//clear the selected class
+	$('#excerpt li, #gallery li').removeClass('selected');
+	
+	//reassign the selected class to current items
+	next_image.addClass('selected');
+	next_excerpt.addClass('selected');
+
+	//Scroll the items
+	$('#mask-gallery').scrollTo(next_image, 800);		
+	$('#mask-excerpt').scrollTo(next_excerpt, 800);					
+	
+}
+
+
+
+</script>
+<script type="text/javascript">
+$(function() {
+$(".img-four ul li:last-child").addClass("son");
+});
+</script>
+
+<link rel="pingback" href="http://www.istanbul.edu.tr/xmlrpc.php" />
+<link rel="alternate" type="application/rss+xml" title="İstanbul Üniversitesi &raquo; Beslemesi" href="http://www.istanbul.edu.tr/?feed=rss2" />
+<link rel="alternate" type="application/rss+xml" title="İstanbul Üniversitesi &raquo; Yorum Beslemesi" href="http://www.istanbul.edu.tr/?feed=comments-rss2" />
+		<script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"http:\/\/s.w.org\/images\/core\/emoji\/72x72\/","ext":".png","source":{"concatemoji":"http:\/\/www.istanbul.edu.tr\/wp-includes\/js\/wp-emoji-release.min.js?ver=4.4"}};
+			!function(a,b,c){function d(a){var c=b.createElement("canvas"),d=c.getContext&&c.getContext("2d");return d&&d.fillText?(d.textBaseline="top",d.font="600 32px Arial","flag"===a?(d.fillText(String.fromCharCode(55356,56806,55356,56826),0,0),c.toDataURL().length>3e3):("simple"===a?d.fillText(String.fromCharCode(55357,56835),0,0):d.fillText(String.fromCharCode(55356,57135),0,0),0!==d.getImageData(16,16,1,1).data[0])):!1}function e(a){var c=b.createElement("script");c.src=a,c.type="text/javascript",b.getElementsByTagName("head")[0].appendChild(c)}var f,g;c.supports={simple:d("simple"),flag:d("flag"),unicode8:d("unicode8")},c.DOMReady=!1,c.readyCallback=function(){c.DOMReady=!0},c.supports.simple&&c.supports.flag&&c.supports.unicode8||(g=function(){c.readyCallback()},b.addEventListener?(b.addEventListener("DOMContentLoaded",g,!1),a.addEventListener("load",g,!1)):(a.attachEvent("onload",g),b.attachEvent("onreadystatechange",function(){"complete"===b.readyState&&c.readyCallback()})),f=c.source||{},f.concatemoji?e(f.concatemoji):f.wpemoji&&f.twemoji&&(e(f.twemoji),e(f.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script>
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+	<style type="text/css">
+	.wp-pagenavi{margin-left:auto !important; margin-right:auto; !important}
+	</style>
+  <link rel='stylesheet' id='slideshow-gallery-css'  href='http://www.istanbul.edu.tr/wp-content/plugins/slideshow-gallery/css/gallery-css.php?1=1&#038;resizeimages=N&#038;width=964&#038;height=400&#038;border=0px+none&#038;background=%23FFFFFF&#038;infobackground=%23546e34&#038;infocolor=%23fff&#038;ver=1.0' type='text/css' media='screen' />
+<link rel='stylesheet' id='gtranslate-style-css'  href='http://www.istanbul.edu.tr/wp-content/plugins/gtranslate/gtranslate-style16.css?ver=4.4' type='text/css' media='all' />
+<link rel='stylesheet' id='wp_spry_menu_style-css'  href='http://www.istanbul.edu.tr/wp-content/plugins/wp-spry-menu/SpryAssets/global.css?ver=1.5.2' type='text/css' media='all' />
+<link rel='stylesheet' id='wp_spry_menu_style_theme-css'  href='http://www.istanbul.edu.tr/wp-content/plugins/wp-spry-menu/themes/style.css?ver=1.5.2' type='text/css' media='all' />
+<link rel='stylesheet' id='tablepress-default-css'  href='http://www.istanbul.edu.tr/wp-content/plugins/tablepress/css/default.min.css?ver=1.6.1' type='text/css' media='all' />
+<link rel='stylesheet' id='mediaelementjs-styles-css'  href='http://www.istanbul.edu.tr/wp-content/plugins/media-element-html5-video-and-audio-player/mediaelement/mediaelementplayer.css?ver=4.4' type='text/css' media='all' />
+<link rel='stylesheet' id='tabs-slides-css'  href='http://www.istanbul.edu.tr/wp-content/plugins/wordpress-tabs-slides/style/default.css?ver=2.0.1' type='text/css' media='all' />
+<link rel='stylesheet' id='tabs-slides-hacks-css'  href='http://www.istanbul.edu.tr/wp-content/plugins/wordpress-tabs-slides/hacks.css?ver=2.0.1' type='text/css' media='all' />
+<link rel='stylesheet' id='lightboxStyle-css'  href='http://www.istanbul.edu.tr/wp-content/plugins/lightbox-plus/css/framed/colorbox.min.css?ver=2.7.2' type='text/css' media='screen' />
+<link rel='stylesheet' id='wp-pagenavi-style-css'  href='http://www.istanbul.edu.tr/wp-content/plugins/wp-pagenavi-style/css/css3_yellow_glossy.css?ver=1.0' type='text/css' media='all' />
+<script type='text/javascript' src='http://www.istanbul.edu.tr/wp-includes/js/jquery/jquery.js?ver=1.11.3'></script>
+<script type='text/javascript' src='http://www.istanbul.edu.tr/wp-includes/js/jquery/jquery-migrate.min.js?ver=1.2.1'></script>
+<script type='text/javascript' src='http://www.istanbul.edu.tr/wp-content/plugins/slideshow-gallery/js/gallery.js?ver=1.0'></script>
+<script type='text/javascript' src='http://www.istanbul.edu.tr/wp-content/plugins/rbl-navigator/js/rbl-navigator.js?ver=1.00'></script>
+<script type='text/javascript' src='http://www.istanbul.edu.tr/wp-content/plugins/gtranslate/jquery-translate.js?ver=4.4'></script>
+<script type='text/javascript' src='http://www.istanbul.edu.tr/wp-content/plugins/wp-spry-menu/SpryAssets/SpryMenuBar.js?ver=1.5.2'></script>
+<script type='text/javascript' src='http://www.istanbul.edu.tr/wp-content/plugins/media-element-html5-video-and-audio-player/mediaelement/mediaelement-and-player.min.js?ver=2.1.3'></script>
+<script type='text/javascript' src='http://www.istanbul.edu.tr/wp-content/plugins/wordpress-tabs-slides/ts/tabs_slides.js?ver=2.0.1'></script>
+<script type='text/javascript' src='http://www.istanbul.edu.tr/wp-content/plugins/wordpress-tabs-slides/ts/tabs_slides_opt_loader.js?ver=2.0.1'></script>
+<link rel='https://api.w.org/' href='http://www.istanbul.edu.tr/?rest_route=/' />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://www.istanbul.edu.tr/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://www.istanbul.edu.tr/wp-includes/wlwmanifest.xml" /> 
+<meta name="generator" content="WordPress 4.4" />
+<!-- <meta name="NextGEN" version="2.1.15" /> -->
+<link rel="stylesheet" href="http://www.istanbul.edu.tr/wp-content/plugins/rbl-navigator/css/rbl-navigator.css" type="text/css" media="screen, projection" />        
+        <script type="text/javascript">
+        var tb_pathToImage = "http://www.istanbul.edu.tr/wp-includes/js/thickbox/loadingAnimation.gif";
+		var tb_closeImage = "http://www.istanbul.edu.tr/wp-includes/js/thickbox/tb-close.png";
+		</script>
+        
+        	<style type="text/css">
+	 .wp-pagenavi
+	{
+		font-size:12px !important;
+	}
+	</style>
+	<!-- Vipers Video Quicktags v6.5.2 | http://www.viper007bond.com/wordpress-plugins/vipers-video-quicktags/ -->
+<style type="text/css">
+.vvqbox { display: block; max-width: 100%; visibility: visible !important; margin: 10px auto; } .vvqbox img { max-width: 100%; height: 100%; } .vvqbox object { max-width: 100%; } 
+</style>
+<script type="text/javascript">
+// <![CDATA[
+	var vvqflashvars = {};
+	var vvqparams = { wmode: "opaque", allowfullscreen: "true", allowscriptaccess: "always" };
+	var vvqattributes = {};
+	var vvqexpressinstall = "http://www.istanbul.edu.tr/wp-content/plugins/vipers-video-quicktags/resources/expressinstall.swf";
+// ]]>
+</script>
+	<style type="text/css">
+	.wp-pagenavi{margin-left:auto !important; margin-right:auto; !important}
+	</style>
+  </head>
+
+<body class="home blog">
+<div id="wrapper">
+<div class="header">
+<div id="topmenu">
+<div class="menu-top-menu-container"><ul id="wp_spry_menu" class="MenuBarHorizontal MenuBarActive"><li id="menu-item-2433" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-2433"><a href="#">Akademik</a>
+<ul class="sub-menu">
+	<li id="menu-item-1683" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1683"><a href="http://www.istanbul.edu.tr/?cat=15">Fakülteler</a></li>	<li id="menu-item-1686" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1686"><a href="http://www.istanbul.edu.tr/?cat=18">Enstitüler</a></li>	<li id="menu-item-1685" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1685"><a href="http://www.istanbul.edu.tr/?cat=17">Yüksekokullar</a></li>	<li id="menu-item-5270" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-5270"><a href="http://www.istanbul.edu.tr/?cat=557">Meslek Yüksekokulları</a></li>	<li id="menu-item-1684" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1684"><a href="http://www.istanbul.edu.tr/?cat=16">Bölümler</a></li>	<li id="menu-item-13063" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-13063"><a href="http://www.istanbul.edu.tr/?p=13059">Merkezler</a></li>	<li id="menu-item-5271" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-5271"><a href="#">Kurullar / Komisyonlar</a>
+	<ul class="sub-menu">
+		<li id="menu-item-2632" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2632"><a target="_blank" href="http://uaik.istanbul.edu.tr">Uluslararası Akademik İlişkiler Kurulu</a></li>		<li id="menu-item-5535" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5535"><a target="_blank" href="http://www.istanbul.edu.tr/bologna/tr/index_tr.php">Bologna Eşgüdüm Komisyonu</a></li>		<li id="menu-item-18632" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-18632"><a target="_blank" href="http://kalite.istanbul.edu.tr/">Kalite Koordinatörlüğü</a></li>		<li id="menu-item-5273" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-5273"><a href="http://www.istanbul.edu.tr/?p=393">Yayın Komisyonu Başkanlığı</a></li>		<li id="menu-item-5274" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5274"><a href="http://www.istanbul.edu.tr/?p=536">Öz Değerlendirme Yönlendirme Komitesi</a></li>		<li id="menu-item-12011" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-12011"><a target="_blank" href="http://etikkurul.istanbul.edu.tr/">İÜ Etik Kurulları</a></li>		<li id="menu-item-16901" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-16901"><a target="_blank" href="http://bilisimkoordinasyon.istanbul.edu.tr/">Bilişim Koordinasyon Kurulu</a></li>	</ul>
+</li></ul>
+</li><li id="menu-item-2435" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-2435"><a href="#">İdari / Personel</a>
+<ul class="sub-menu">
+	<li id="menu-item-5469" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5469"><a target="_blank" href="http://genelsekreterlik.istanbul.edu.tr">Genel Sekreterlik</a></li>	<li id="menu-item-5470" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5470"><a target="_blank" href="http://icdenetim.istanbul.edu.tr">İç Denetim Birimi</a></li>	<li id="menu-item-5471" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-5471"><a href="http://www.istanbul.edu.tr/?p=82">İdari Birimler</a>
+	<ul class="sub-menu">
+		<li id="menu-item-19604" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-19604"><a target="_blank" href="http://unibasin.istanbul.edu.tr/">Basın ve Halkla İlişkiler Müdürlüğü</a></li>		<li id="menu-item-19595" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-19595"><a target="_blank" href="http://ogrenci.istanbul.edu.tr">Öğrenci İşleri Daire Başkanlığı</a></li>		<li id="menu-item-19596" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-19596"><a target="_blank" href="http://personel.istanbul.edu.tr/">Personel Daire Başkanlığı</a></li>		<li id="menu-item-19597" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-19597"><a target="_blank" href="http://sks.istanbul.edu.tr/">Sağlık, Kültür ve Spor Daire Başkanlığı</a></li>		<li id="menu-item-19598" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-19598"><a target="_blank" href="http://yapi.istanbul.edu.tr/">Yapı İşleri ve Teknik Daire Başkanlığı</a></li>		<li id="menu-item-19599" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-19599"><a target="_blank" href="http://kutuphane.istanbul.edu.tr/">Kütüphane ve Dokümantasyon Daire Başkanlığı</a></li>		<li id="menu-item-19600" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-19600"><a target="_blank" href="http://idarimali.istanbul.edu.tr/">İdari ve Mali İşler Daire Başkanlığı</a></li>		<li id="menu-item-19601" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-19601"><a target="_blank" href="http://dsim.istanbul.edu.tr">Döner Sermaye İşletme Müdürlüğü</a></li>		<li id="menu-item-19602" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-19602"><a target="_blank" href="http://strateji.istanbul.edu.tr/">Strateji Geliştirme Daire Başkanlığı</a></li>		<li id="menu-item-19603" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-19603"><a target="_blank" href="http://bilgiislem.istanbul.edu.tr/">Bilgi İşlem Daire Başkanlığı</a></li>		<li id="menu-item-19605" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-19605"><a target="_blank" href="http://hukukburo.istanbul.edu.tr/">Hukuk Müşavirliği</a></li>		<li id="menu-item-19606" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-19606"><a target="_blank" href="http://www.istanbul.edu.tr/?page_id=2299">Basım ve Yayınevi Müdürlüğü</a></li>		<li id="menu-item-19607" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-19607"><a target="_blank" href="http://www.istanbul.edu.tr/?page_id=2303">Sivil Savunma Uzmanlığı</a></li>		<li id="menu-item-19608" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-19608"><a href="http://www.istanbul.edu.tr/?page_id=2309">Yazı İşleri ve Genel Evrak</a></li>		<li id="menu-item-19609" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-19609"><a target="_blank" href="http://www.istanbul.edu.tr/?page_id=2312">Özel Güvenlik ve Koruma Müdürlüğü</a></li>	</ul>
+</li>	<li id="menu-item-10766" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-10766"><a href="http://sosyaltesisler.istanbul.edu.tr">Sosyal Tesisler</a></li>	<li id="menu-item-10767" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-10767"><a target="_blank" href="http://avcilarkampus.istanbul.edu.tr/">Avcılar Kampüs Koordinatörlüğü</a></li>	<li id="menu-item-29287" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-29287"><a target="_blank" href="http://isguvenligi.istanbul.edu.tr/">İş Sağlığı ve Güvenliği Koordinatörlüğü</a></li>	<li id="menu-item-5534" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-5534"><a href="#">İhale ve Piyasa Araştırma</a>
+	<ul class="sub-menu">
+		<li id="menu-item-30848" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-30848"><a target="_blank" href="http://stf.istanbul.edu.tr/ibs/">İhale Bilgi Sistemi</a></li>		<li id="menu-item-31698" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-31698"><a target="_blank" href="http://piyasa.istanbul.edu.tr">Piyasa Araştırma Bil. Sis.</a></li>		<li id="menu-item-2547" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2547"><a target="_blank" href="http://dsim.istanbul.edu.tr/">Döner Sermaye İhaleleri</a></li>	</ul>
+</li>	<li id="menu-item-4984" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-4984"><a href="http://iskop.istanbul.edu.tr">İSKOP</a>
+	<ul class="sub-menu">
+		<li id="menu-item-46241" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-46241"><a href="http://pbys.istanbul.edu.tr/Portal">Personel PORTAL</a></li>		<li id="menu-item-5014" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5014"><a target="_blank" href="http://ebys.istanbul.edu.tr/">Elektronik Belge Yönetim Sistemi</a></li>		<li id="menu-item-4986" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-4986"><a target="_blank" href="http://pbys.istanbul.edu.tr">Personel Yönetim Sistemi</a></li>		<li id="menu-item-4987" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-4987"><a target="_blank" href="http://194.27.128.196:11080/UrtWEB/urt1024.jnlp">Finans(Muhasebe) Yönetim Sistemi</a></li>		<li id="menu-item-4988" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-4988"><a target="_blank" href="http://193.255.36.40:11080/UrtWEB/urt1024.jnlp">Satınalma Yönetim Sistemi</a></li>		<li id="menu-item-4989" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-4989"><a target="_blank" href="http://194.27.128.196:22080/UbakWEB/tas.jnlp">Taşınır Mal Yönetim Sistemi</a></li>	</ul>
+</li>	<li id="menu-item-27565" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-27565"><a target="_blank" href="http://ishop.istanbul.edu.tr">İSHOP</a></li>	<li id="menu-item-22722" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22722"><a target="_blank" href="http://oubs.istanbul.edu.tr">Öğretim Elemanları Bilgi Sis.</a></li>	<li id="menu-item-39379" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-39379"><a target="_blank" href="http://mail.istanbul.edu.tr/">e-Posta (Personel)</a></li>	<li id="menu-item-2134" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2134"><a target="_blank" href="http://oyp.istanbul.edu.tr">ÖYP (Öğr. Üy. Yetiştirme Prog.)</a></li>	<li id="menu-item-60410" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-60410"><a target="_blank" href="https://kms.kaysis.gov.tr/Home/Kurum/35980450">Yönetmelik / Yönerge</a></li>	<li id="menu-item-7623" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7623"><a target="_blank" href="http://strateji.istanbul.edu.tr/wp-content/uploads/2016/03/2015-Y%C4%B1l%C4%B1-%C4%B0dare-Faaliyet-Raporu.pdf">2015 İdare Faaliyet Raporu</a></li>	<li id="menu-item-4966" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-4966"><a href="http://personel.istanbul.edu.tr/?page_id=10879">Sendikalar</a></li>	<li id="menu-item-54446" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-54446"><a href="http://www.istanbul.edu.tr/?page_id=54142">YÖKSİS İşlemleri</a></li>	<li id="menu-item-5586" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5586"><a target="_blank" href="http://www.unikonutevleri.com/">Unikonut</a></li>	<li id="menu-item-58989" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-58989"><a target="_blank" href="http://rehber.istanbul.edu.tr">İletişim Rehberi</a></li>	<li id="menu-item-15021" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-15021"><a href="http://sks.istanbul.edu.tr/?page_id=12664">Yemek Listesi</a></li></ul>
+</li><li id="menu-item-2436" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-2436"><a href="#">Öğrenci</a>
+<ul class="sub-menu">
+	<li id="menu-item-22705" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22705"><a href="http://ogrenci.istanbul.edu.tr">Öğrenci İşleri Daire Başkanlığı</a></li>	<li id="menu-item-26254" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-26254"><a target="_blank" href="http://aksis.istanbul.edu.tr/">Öğrenci Otomasyon Sistemi – AKSİS</a></li>	<li id="menu-item-47188" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-47188"><a href="http://basvuru.istanbul.edu.tr">Akademik Kayıt Sistemi &#8211; Başvuru</a></li>	<li id="menu-item-62805" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-62805"><a target="_blank" href="http://ebs.istanbul.edu.tr">EBS &#8211; Eğitim Bilgi Sistemi</a></li>	<li id="menu-item-26898" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-26898"><a target="_blank" href="http://ogrenci.istanbul.edu.tr/?p=7227">Yönetmelikler &#8211; Yönergeler</a></li>	<li id="menu-item-5472" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-5472"><a href="#">Akademik Takvim</a>
+	<ul class="sub-menu">
+		<li id="menu-item-40682" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-40682"><a href="http://ogrenci.istanbul.edu.tr/?p=9032">2016-2017 Ön Lisans &#8211; Lisans Akademik Takvimi</a></li>		<li id="menu-item-40683" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-40683"><a href="http://ogrenci.istanbul.edu.tr/?p=9042">2016-2017 Lisans Üstü Akademik Takvimi</a></li>	</ul>
+</li>	<li id="menu-item-7059" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-7059"><a target="_blank" href="http://sks.istanbul.edu.tr">Sağlık Kültür ve Spor Daire Başkanlığı</a>
+	<ul class="sub-menu">
+		<li id="menu-item-10764" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-10764"><a target="_blank" href="http://sporbirligi.istanbul.edu.tr/">Spor Birliği</a></li>		<li id="menu-item-12855" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-12855"><a target="_blank" href="http://sks.istanbul.edu.tr/?p=6751">Öğrenci Kültür Merkezi</a></li>	</ul>
+</li>	<li id="menu-item-2055" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2055"><a href="http://www.istanbul.edu.tr/?p=341">Öğrenci Konseyi</a></li>	<li id="menu-item-5522" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-5522"><a target="_blank" href="http://kariyer.istanbul.edu.tr/">Kariyer Geliştirme Merkezi</a></li>	<li id="menu-item-22516" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22516"><a href="http://engelsiz.istanbul.edu.tr/">Engelli Ögrenciler Birimi</a></li>	<li id="menu-item-6888" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6888"><a target="_blank" href="http://yos.istanbul.edu.tr">İÜYÖS &#8211; Yabancı Öğrenci Sınavı</a></li>	<li id="menu-item-21604" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-21604"><a target="_blank" href="http://erasmus.istanbul.edu.tr">ERASMUS</a></li>	<li id="menu-item-2129" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2129"><a target="_blank" href="http://farabi.istanbul.edu.tr">FARABİ</a></li>	<li id="menu-item-21896" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-21896"><a target="_blank" href="http://mevlana.istanbul.edu.tr/">MEVLANA</a></li>	<li id="menu-item-12496" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-12496"><a href="http://eogren.istanbul.edu.tr">e-Öğren (Moodle-İST) Ortak Dersler</a></li>	<li id="menu-item-10545" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-10545"><a href="http://www.istanbul.edu.tr/?page_id=10528">Yabancı Dil Eğitimi</a></li>	<li id="menu-item-2054" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2054"><a target="_blank" href="http://ogr.iu.edu.tr/">e-Posta (Öğrenci)</a></li>	<li id="menu-item-10768" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-10768"><a href="http://www.iumezusa.org/">İ.Ü. Mezunları (USA)</a></li>	<li id="menu-item-62806" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-62806"><a target="_blank" href="http://amfi.istanbul.edu.tr/">Amfİstanbul &#8211; İÜ Mezun ve Mensup Sosyal Ağı</a></li></ul>
+</li><li id="menu-item-2451" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-2451"><a href="#">Araştırma</a>
+<ul class="sub-menu">
+	<li id="menu-item-30629" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-30629"><a target="_blank" href="http://bap.istanbul.edu.tr">Bilimsel Araştırma Projeleri Birimi</a></li>	<li id="menu-item-52735" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-52735"><a target="_blank" href="http://baponlinebasvuru.istanbul.edu.tr">BAP Proje Başvuru</a></li>	<li id="menu-item-23775" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-23775"><a href="http://cdpp.istanbul.edu.tr">Çok Disiplinli Proje Platformu</a></li>	<li id="menu-item-30865" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-30865"><a target="_blank" href="https://arlab.istanbul.edu.tr">Araştırma Laboratuvarları Bilgi Sistemi</a></li>	<li id="menu-item-29880" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-29880"><a href="http://usib.istanbul.edu.tr">Üniversite-Sanayi İşbirliği Birimi</a></li>	<li id="menu-item-22400" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22400"><a href="http://ttm.istanbul.edu.tr/">İstanbul TTM</a></li>	<li id="menu-item-19028" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-19028"><a href="http://teknokent.istanbul.edu.tr/">İstanbul Teknokent</a></li>	<li id="menu-item-22715" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22715"><a href="http://ttm.istanbul.edu.tr/">MERLAB (İAL)</a></li>	<li id="menu-item-40000" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-40000"><a target="_blank" href="http://euoffice.istanbul.edu.tr">AB ve Uluslararası Projeler Ofisi</a></li>	<li id="menu-item-26963" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-26963"><a target="_blank" href="http://deneyseltip.istanbul.edu.tr/tum-genom-analiz-laboratuvari/">Tüm Genom Analiz Laboratuvarı</a></li>	<li id="menu-item-18419" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-18419"><a target="_blank" href="http://aves.istanbul.edu.tr">AVES &#8211; Akademik Veri Yönetimi</a></li></ul>
+</li><li id="menu-item-2563" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-2563"><a href="#">Hastanelerimiz</a>
+<ul class="sub-menu">
+	<li id="menu-item-2264" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2264"><a target="_blank" href="http://haged.istanbul.edu.tr/">Hastaneler Genel Direktörlüğü</a></li>	<li id="menu-item-5477" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5477"><a target="_blank" href="http://www.yenicapacerrahpasa.org/">Yeni Çapa Cerrahpaşa Projesi</a></li>	<li id="menu-item-1748" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1748"><a target="_blank" href="http://www.istanbul.edu.tr/itf/">İstanbul Tıp Fakültesi</a></li>	<li id="menu-item-1743" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1743"><a target="_blank" href="http://www.ctf.edu.tr/">Cerrahpaşa Tıp Fakültesi</a></li>	<li id="menu-item-22082" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22082"><a href="http://dishekimligi.istanbul.edu.tr/">Diş Hekimliği Fakültesi</a></li>	<li id="menu-item-1747" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1747"><a target="_blank" href="http://onkoloji.istanbul.edu.tr">Onkoloji Enstitüsü</a></li>	<li id="menu-item-30719" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-30719"><a href="http://kardiyoloji.istanbul.edu.tr">Kardiyoloji Enstitüsü</a></li></ul>
+</li><li id="menu-item-2565" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-2565"><a href="http://kutuphane.istanbul.edu.tr">Kütüphane</a>
+<ul class="sub-menu">
+	<li id="menu-item-2039" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2039"><a target="_blank" href="http://kutuphane.istanbul.edu.tr">Merkez Kütüphane</a></li>	<li id="menu-item-2041" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2041"><a target="_blank" href="http://kutuphane.istanbul.edu.tr">Nadir Eserler Kütüphanesi</a></li>	<li id="menu-item-2040" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2040"><a target="_blank" href="http://kutuphane.istanbul.edu.tr">Diğer Kütüphaneler</a></li>	<li id="menu-item-16550" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-16550"><a href="http://journals.istanbul.edu.tr/">e- Dergi Sistemi</a></li></ul>
+</li><li id="menu-item-36837" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-36837"><a target="_blank" href="http://muzeyum.istanbul.edu.tr">Müzeler</a></li><li id="menu-item-2564" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-2564"><a href="http://unibasin.istanbul.edu.tr/">Basın ve Halkla İlişkiler</a>
+<ul class="sub-menu">
+	<li id="menu-item-2583" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2583"><a href="http://unibasin.istanbul.edu.tr/?page_id=2579">Bilgi Edinme Başvurusu</a></li>	<li id="menu-item-5480" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5480"><a target="_blank" href="http://unibasin.istanbul.edu.tr/?p=5395">Kurumsal Kimlik Kılavuzu-Logo</a></li>	<li id="menu-item-5478" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5478"><a href="http://www.istanbul.edu.tr/?p=5631">Tanıtım Filmi</a></li>	<li id="menu-item-2037" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2037"><a target="_blank" href="http://unibasin.istanbul.edu.tr/?p=5637">Medya Takip</a></li>	<li id="menu-item-2013" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2013"><a href="http://www.istanbul.edu.tr">Basın Bültenleri ve Bilgilendirme</a></li>	<li id="menu-item-38733" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-38733"><a href="http://www3.istanbul.edu.tr/genel/idari/basinhalk/TANITIM/IU_Belgesel_Kitabi/">1453&#8217;ten Günümüze İstanbul Üniversitesi</a></li>	<li id="menu-item-2081" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2081"><a target="_blank" href="http://iudergi.istanbul.edu.tr/">İÜ Bilim Kültür ve Sanat Dergisi</a></li>	<li id="menu-item-29669" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-29669"><a href="http://iletisim.istanbul.edu.tr/?p=13074">İletim Gazetesi</a></li>	<li id="menu-item-12236" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-12236"><a href="http://iuwebtv.istanbul.edu.tr/">İÜWEBTV</a></li>	<li id="menu-item-11836" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-11836"><a href="http://ajansuniversite.istanbul.edu.tr/">Ajans Üniversite</a></li>	<li id="menu-item-2033" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2033"><a target="_blank" href="http://radyoiletisim.istanbul.edu.tr/">Radyo İletişim</a></li>	<li id="menu-item-12215" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-12215"><a href="http://ataturkleokumak.istanbul.edu.tr">Atatürk&#8217;le Okumak</a></li></ul>
+</li><li id="menu-item-6947" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-6947"><a href="#">Bilgi İşlem</a>
+<ul class="sub-menu">
+	<li id="menu-item-6948" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6948"><a target="_blank" href="http://bilgiislem.istanbul.edu.tr">Bilgi İşlem Daire Başkanlığı</a></li>	<li id="menu-item-6949" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6949"><a target="_blank" href="http://mail.istanbul.edu.tr">Personel e-Posta</a></li>	<li id="menu-item-6950" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6950"><a target="_blank" href="http://ogr.iu.edu.tr">Öğrenci e-Posta</a></li>	<li id="menu-item-12509" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-12509"><a target="_blank" href="http://bilgiislem.istanbul.edu.tr/?p=282">Eduroam Kablosuz İnternet</a></li>	<li id="menu-item-10279" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-10279"><a href="http://www.istanbul.edu.tr/?page_id=10277">Öğrenci İşleri Çağrı Merkezi</a></li>	<li id="menu-item-25312" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-25312"><a href="http://iuvirlab.istanbul.edu.tr/">İÜ Sanal Laboratuvarı</a></li>	<li id="menu-item-64418" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-64418"><a href="http://amfi.istanbul.edu.tr">Amfİstanbul &#8211; İÜ Mezun ve Mensup Sosyal Ağı</a></li>	<li id="menu-item-25407" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-25407"><a target="_blank" href="http://bilgiislemdestek.istanbul.edu.tr">Bilgi İşlem Destek Portalı</a></li></ul>
+</li></ul></div><script type="text/javascript">
+<!--
+var wp_spry_menu = new Spry.Widget.MenuBar("wp_spry_menu");
+//-->
+</script>
+</div>
+<div class="clr"></div>
+
+<div class="logobar">
+<h1><a href="/">İstanbul Üniversitesi</a></h1>
+<div class="logobar-right">
+<div class="logo-menu"><div class="menu-logomenu-container"><ul id="logo-menu" class="logo-menu"><li id="menu-item-2781" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-2781"><a href="#">Üniversitemiz</a>
+<ul class="sub-menu">
+	<li id="menu-item-27438" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-27438"><a href="http://kalite.istanbul.edu.tr/">Kalite Koordinatörlüğü</a></li>	<li id="menu-item-5482" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5482"><a href="http://www.istanbul.edu.tr/?p=5487">Bir Bakışta İÜ</a></li>	<li id="menu-item-5483" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5483"><a href="#">Sıkça Sorulan Sorular</a></li>	<li id="menu-item-2020" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2020"><a href="http://www.istanbul.edu.tr/?p=68">Tarihçe</a></li>	<li id="menu-item-2019" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2019"><a href="http://www.istanbul.edu.tr/?p=71">Misyon &#8211; Vizyon</a></li>	<li id="menu-item-2021" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2021"><a href="http://www.istanbul.edu.tr/?p=89">Yerleşim</a></li>	<li id="menu-item-2018" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2018"><a href="http://www.istanbul.edu.tr/?p=91">İletişim</a></li></ul>
+</li><li id="menu-item-2780" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-2780"><a href="#">Yönetim</a>
+<ul class="sub-menu">
+	<li id="menu-item-2025" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2025"><a href="http://www.istanbul.edu.tr/?p=76">Rektörlük</a></li>	<li id="menu-item-2026" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2026"><a href="http://www.istanbul.edu.tr/?p=78">Senato</a></li>	<li id="menu-item-2023" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2023"><a href="http://www.istanbul.edu.tr/?p=80">Yönetim Kurulu</a></li>	<li id="menu-item-2085" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2085"><a href="http://www.istanbul.edu.tr/?p=5228">Danışmanlar</a></li>	<li id="menu-item-5492" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5492"><a href="http://genelsekreterlik.istanbul.edu.tr/">Genel Sekreter</a></li></ul>
+</li><li id="menu-item-2029" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2029"><a href="http://uaik.istanbul.edu.tr">Uluslararası</a></li></ul></div></div>
+</div>
+<div class="clr"></div>
+</div>
+<div class="clr"></div>
+<div style="float: left; margin-top: 7px;"><a href="http://www.istanbul.edu.tr/en/"><img src="http://www.istanbul.edu.tr/wp-content/uploads/2014/09/uk.png" alt="" /></a></div>
+<div class="searchbar">
+<div class="sosyal">
+<a class="fb" target="blank" href="http://www.facebook.com/pages/İstanbul-Üniversitesi/122985584385497" target="_blank"></a>
+<iframe frameborder="0" scrolling="no" allowtransparency="true" style="border:none; overflow:hidden; width:60px; height:24px; margin-top: -4px" src="//www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.facebook.com%2Fpages%2F%25C4%25B0stanbul-%25C3%259Cniversitesi%2F122985584385497&amp;send=false&amp;layout=standard&amp;width=60&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font&amp;height=24"></iframe>
+<a class="twitter" target="blank" href="http://twitter.com/#!/istanbuledutr"></a>
+<a href="https://twitter.com/istanbuledutr" target="_blank" class="twitter-follow-button" data-show-count="false" data-lang="tr" data-show-screen-name="false">Takip et: @istanbuledutr</a>
+
+<a class="youtube" target="blank" href="http://www.youtube.com/user/iu1453" target="_blank"></a>
+<a class="instagram" target="blank" href="http://instagram.com/iu1453" target="_blank"></a>
+<a class="rss" target="blank" href="/?feed=rss2"></a>
+</div><div class="arama">
+<form method="get" id="searchform" action="/">
+<input type="text" onblur="if(this.value == '') { this.value='Arama'; }" onfocus="if(this.value == 'Arama') { this.value=''; }" value="Arama" name="s" id="s"/>
+<input type="submit" id="searchsubmit" value=""/>
+</form>
+</div></div>
+<div class="clr"></div>
+</div>
+
+	<ul id="slideshow" style="display:none;">
+							
+				<li>
+					<h3>İstanbul Üniversitesi Halk İle Beraber Demokrasi Nöbetindeydi</h3>
+					<span>http://www.istanbul.edu.tr/wp-content/uploads/slideshow-gallery/demokrasi_yuruyusu_banner.jpg</span>
+					<p> </p>
+																		<a href="http://www.istanbul.edu.tr/?p=65163" title="İstanbul Üniversitesi Halk İle Beraber Demokrasi Nöbetindeydi"><img style="height:75px;" src="http://www.istanbul.edu.tr/wp-content/uploads/slideshow-gallery/demokrasi_yuruyusu_banner-thumb.jpg" alt="stanbul-niversitesi-halk-le-beraber-demokrasi-nbetindeydi" /></a>
+															</li>
+					
+				<li>
+					<h3>İstanbul Üniversitesi Tercih ve Tanıtım Günleri’nin İlk Bölümü Tamamlandı</h3>
+					<span>http://www.istanbul.edu.tr/wp-content/uploads/slideshow-gallery/tanitim_gunleri_basladi_banner.jpg</span>
+					<p> </p>
+																		<a href="http://www.istanbul.edu.tr/?p=65561" title="İstanbul Üniversitesi Tercih ve Tanıtım Günleri’nin İlk Bölümü Tamamlandı"><img style="height:75px;" src="http://www.istanbul.edu.tr/wp-content/uploads/slideshow-gallery/tanitim_gunleri_basladi_banner-thumb.jpg" alt="stanbul-niversitesi-tercih-ve-tantm-gnlerinin-lk-blm-tamamland" /></a>
+															</li>
+					
+				<li>
+					<h3> </h3>
+					<span>http://www.istanbul.edu.tr/wp-content/uploads/slideshow-gallery/lanetliyoruz_banner.jpg</span>
+					<p> </p>
+																		<a href="http://www.istanbul.edu.tr/?p=65008" title=" "><img style="height:75px;" src="http://www.istanbul.edu.tr/wp-content/uploads/slideshow-gallery/lanetliyoruz_banner-thumb.jpg" alt="-" /></a>
+															</li>
+					
+				<li>
+					<h3>İÜ Socrat Ekibi Japonya’da Ülkemizi Temsil Edecek</h3>
+					<span>http://www.istanbul.edu.tr/wp-content/uploads/slideshow-gallery/sokrat_ekip_banner.jpg</span>
+					<p> </p>
+																		<a href="http://www.istanbul.edu.tr/?p=65023" title="İÜ Socrat Ekibi Japonya’da Ülkemizi Temsil Edecek"><img style="height:75px;" src="http://www.istanbul.edu.tr/wp-content/uploads/slideshow-gallery/sokrat_ekip_banner-thumb.jpg" alt="-socrat-ekibi-japonyada-lkemizi-temsil-edecek" /></a>
+															</li>
+					
+				<li>
+					<h3> </h3>
+					<span>http://www.istanbul.edu.tr/wp-content/uploads/slideshow-gallery/iu_tercih_ve_tanitim_gunleri_banner.jpg</span>
+					<p> </p>
+																		<a href="http://iutercih.istanbul.edu.tr/" title=" "><img style="height:75px;" src="http://www.istanbul.edu.tr/wp-content/uploads/slideshow-gallery/iu_tercih_ve_tanitim_gunleri_banner-thumb.jpg" alt="-" /></a>
+															</li>
+					
+				<li>
+					<h3>Hidrojen Enerjili Araç Takımımız (HİDROİST) Avrupa 5.’si Oldu</h3>
+					<span>http://www.istanbul.edu.tr/wp-content/uploads/slideshow-gallery/hidroist_5_inci_oldu_banner.jpg</span>
+					<p> </p>
+																		<a href="http://www.istanbul.edu.tr/?p=64913" title="Hidrojen Enerjili Araç Takımımız (HİDROİST) Avrupa 5.’si Oldu"><img style="height:75px;" src="http://www.istanbul.edu.tr/wp-content/uploads/slideshow-gallery/hidroist_5_inci_oldu_banner-thumb.jpg" alt="hidrojen-enerjili-ara-takmmz-hdrost-avrupa-5si-oldu" /></a>
+															</li>
+					
+				<li>
+					<h3>İstanbul Üniversitesi Dünyanın İlk 500 Üniversitesi Arasında</h3>
+					<span>http://www.istanbul.edu.tr/wp-content/uploads/slideshow-gallery/ilk_500_banner.jpg</span>
+					<p> </p>
+																		<a href="http://www.istanbul.edu.tr/?p=64860" title="İstanbul Üniversitesi Dünyanın İlk 500 Üniversitesi Arasında"><img style="height:75px;" src="http://www.istanbul.edu.tr/wp-content/uploads/slideshow-gallery/ilk_500_banner-thumb.jpg" alt="stanbul-niversitesi-dnyann-lk-500-niversitesi-arasnda" /></a>
+															</li>
+					
+				<li>
+					<h3> </h3>
+					<span>http://www.istanbul.edu.tr/wp-content/uploads/slideshow-gallery/yos_sonuclari.jpg</span>
+					<p> </p>
+																		<a href="http://www.istanbul.edu.tr/?p=64853" title=" "><img style="height:75px;" src="http://www.istanbul.edu.tr/wp-content/uploads/slideshow-gallery/yos_sonuclari-thumb.jpg" alt="-" /></a>
+															</li>
+					
+				<li>
+					<h3>Dondurma Tedavisi İle Kalp Hastalarının Taburcu Olma Süresi Kısalıyor</h3>
+					<span>http://www.istanbul.edu.tr/wp-content/uploads/slideshow-gallery/KALPPPP SAĞLIK.jpg</span>
+					<p>  </p>
+																		<a href="http://www.istanbul.edu.tr/?p=64439" title="Dondurma Tedavisi İle Kalp Hastalarının Taburcu Olma Süresi Kısalıyor"><img style="height:75px;" src="http://www.istanbul.edu.tr/wp-content/uploads/slideshow-gallery/KALPPPP SAĞLIK-thumb.jpg" alt="dondurma-tedavisi-le-kalp-hastalarnn-taburcu-olma-sresi-ksalyor" /></a>
+															</li>
+					
+				<li>
+					<h3>“Türkiye Uzay Ajansı Özerk Bir Yapıya Sahip Olmalı”</h3>
+					<span>http://www.istanbul.edu.tr/wp-content/uploads/slideshow-gallery/uzay bilim manşet.jpg</span>
+					<p>  </p>
+																		<a href="http://www.istanbul.edu.tr/?p=64340" title="“Türkiye Uzay Ajansı Özerk Bir Yapıya Sahip Olmalı”"><img style="height:75px;" src="http://www.istanbul.edu.tr/wp-content/uploads/slideshow-gallery/uzay bilim manşet-thumb.jpg" alt="trkiye-uzay-ajans-zerk-bir-yapya-sahip-olmal" /></a>
+															</li>
+					
+				<li>
+					<h3>Geleceğimiz İçin Büyük Tehdit: Su Kaynaklarının Kalitesinin Bozulması</h3>
+					<span>http://www.istanbul.edu.tr/wp-content/uploads/slideshow-gallery/SU URUN MANŞET.jpg</span>
+					<p>  </p>
+																		<a href="http://www.istanbul.edu.tr/?p=63947" title="Geleceğimiz İçin Büyük Tehdit: Su Kaynaklarının Kalitesinin Bozulması"><img style="height:75px;" src="http://www.istanbul.edu.tr/wp-content/uploads/slideshow-gallery/SU URUN MANŞET-thumb.jpg" alt="geleceimiz-in-byk-tehdit-su-kaynaklarnn-kalitesinin-bozulmas" /></a>
+															</li>
+					
+				<li>
+					<h3>Üniversitemiz Personeli Esra Tekin’i Son Yolculuğuna Uğurladık</h3>
+					<span>http://www.istanbul.edu.tr/wp-content/uploads/slideshow-gallery/CENAZE TÖREN.jpg</span>
+					<p> </p>
+																		<a href="http://www.istanbul.edu.tr/?p=63483" title="Üniversitemiz Personeli Esra Tekin’i Son Yolculuğuna Uğurladık"><img style="height:75px;" src="http://www.istanbul.edu.tr/wp-content/uploads/slideshow-gallery/CENAZE TÖREN-thumb.jpg" alt="niversitemiz-personeli-esra-tekini-son-yolculuuna-uurladk" /></a>
+															</li>
+					
+				<li>
+					<h3>Esra Tekin ve Eşi İçin 08.06.2016 Çarşamba Günü Saat 12:00'da Cenaze Töreni Yapılacaktır</h3>
+					<span>http://www.istanbul.edu.tr/wp-content/uploads/slideshow-gallery/teroru_lanetliyoruz_1.jpg</span>
+					<p> </p>
+																		<a href="http://www.istanbul.edu.tr/?p=63458" title="Esra Tekin ve Eşi İçin 08.06.2016 Çarşamba Günü Saat 12:00'da Cenaze Töreni Yapılacaktır"><img style="height:75px;" src="http://www.istanbul.edu.tr/wp-content/uploads/slideshow-gallery/teroru_lanetliyoruz_1-thumb.jpg" alt="esra-tekin-ve-ei-in-08062016-aramba-gn-saat-1200da-cenaze-treni-yaplacaktr" /></a>
+															</li>
+					
+				<li>
+					<h3>Bilim ve Sanat Ödülleri Sahiplerini Buldu</h3>
+					<span>http://www.istanbul.edu.tr/wp-content/uploads/slideshow-gallery/bilim_sanat_odulu_2.jpg</span>
+					<p>  </p>
+																		<a href="http://www.istanbul.edu.tr/?p=63002" title="Bilim ve Sanat Ödülleri Sahiplerini Buldu"><img style="height:75px;" src="http://www.istanbul.edu.tr/wp-content/uploads/slideshow-gallery/bilim_sanat_odulu_2-thumb.jpg" alt="bilim-ve-sanat-dlleri-sahiplerini-buldu" /></a>
+															</li>
+					
+				<li>
+					<h3>Prof. Dr. Aziz Sancar İÜ İstanbul Tıp Fakültesi Mezuniyet Töreni’ne Katıldı</h3>
+					<span>http://www.istanbul.edu.tr/wp-content/uploads/slideshow-gallery/aziz_sancar_mezuniyet_2.jpg</span>
+					<p> </p>
+																		<a href="http://www.istanbul.edu.tr/?p=62215" title="Prof. Dr. Aziz Sancar İÜ İstanbul Tıp Fakültesi Mezuniyet Töreni’ne Katıldı"><img style="height:75px;" src="http://www.istanbul.edu.tr/wp-content/uploads/slideshow-gallery/aziz_sancar_mezuniyet_2-thumb.jpg" alt="prof-dr-aziz-sancar-stanbul-tp-fakltesi-mezuniyet-trenine-katld" /></a>
+															</li>
+					
+				<li>
+					<h3> </h3>
+					<span>http://www.istanbul.edu.tr/wp-content/uploads/slideshow-gallery/aziz_sanvar_odul_banner_2_madalyali.jpg</span>
+					<p> </p>
+																		<a href="http://www.istanbul.edu.tr/?p=62108" title=" "><img style="height:75px;" src="http://www.istanbul.edu.tr/wp-content/uploads/slideshow-gallery/aziz_sanvar_odul_banner_2_madalyali-thumb.jpg" alt="-" /></a>
+															</li>
+					
+				<li>
+					<h3>Prof. Dr. Aziz Sancar’ın İsmi Deneysel Tıp Araştırma Enstitüsü’ne Verildi</h3>
+					<span>http://www.istanbul.edu.tr/wp-content/uploads/slideshow-gallery/aziz_sanvar_detam_1.jpg</span>
+					<p> </p>
+																		<a href="http://www.istanbul.edu.tr/?p=62308" title="Prof. Dr. Aziz Sancar’ın İsmi Deneysel Tıp Araştırma Enstitüsü’ne Verildi"><img style="height:75px;" src="http://www.istanbul.edu.tr/wp-content/uploads/slideshow-gallery/aziz_sanvar_detam_1-thumb.jpg" alt="prof-dr-aziz-sancarn-smi-deneysel-tp-aratrma-enstitsne-verildi" /></a>
+															</li>
+					
+				<li>
+					<h3>Nobel Ödülü İstanbul Üniversitesi Rektörlüğü’nde Sürekli Olarak Sergilenecek</h3>
+					<span>http://www.istanbul.edu.tr/wp-content/uploads/slideshow-gallery/aziz_sancar_tam_haber.jpg</span>
+					<p> </p>
+																		<a href="http://www.istanbul.edu.tr/?p=62414" title="Nobel Ödülü İstanbul Üniversitesi Rektörlüğü’nde Sürekli Olarak Sergilenecek"><img style="height:75px;" src="http://www.istanbul.edu.tr/wp-content/uploads/slideshow-gallery/aziz_sancar_tam_haber-thumb.jpg" alt="nobel-dl-stanbul-niversitesi-rektrlnde-srekli-olarak-sergilenecek" /></a>
+															</li>
+					
+				<li>
+					<h3> </h3>
+					<span>http://www.istanbul.edu.tr/wp-content/uploads/slideshow-gallery/iu_anakapi_havadan_lisansustu_2.jpg</span>
+					<p> </p>
+																		<a href="http://www.istanbul.edu.tr/?p=62093" title=" "><img style="height:75px;" src="http://www.istanbul.edu.tr/wp-content/uploads/slideshow-gallery/iu_anakapi_havadan_lisansustu_2-thumb.jpg" alt="-" /></a>
+															</li>
+					
+				<li>
+					<h3>Yağlı Boya Tablo ve Kâğıt Koruma-Onarım Laboratuvarı Açıldı</h3>
+					<span>http://www.istanbul.edu.tr/wp-content/uploads/slideshow-gallery/LABORATUVAR MANŞET.jpg</span>
+					<p>  </p>
+																		<a href="http://www.istanbul.edu.tr/?p=61236" title="Yağlı Boya Tablo ve Kâğıt Koruma-Onarım Laboratuvarı Açıldı"><img style="height:75px;" src="http://www.istanbul.edu.tr/wp-content/uploads/slideshow-gallery/LABORATUVAR MANŞET-thumb.jpg" alt="yal-boya-tablo-ve-kt-koruma-onarm-laboratuvar-ald" /></a>
+															</li>
+						</ul>
+	
+	<div id="slideshow-wrapper">
+			
+		<div id="fullsize">
+			<div id="imgprev" class="imgnav" title="Previous Image"></div>
+			<div id="imglink"><!-- link --></div>
+			<div id="imgnext" class="imgnav" title="Next Image"></div>
+			<div id="image"></div>
+							<div id="information">
+					<h3></h3>
+					<p></p>
+				</div>
+					</div>
+		
+					<div id="thumbnails" class="thumbsbot">
+				<div id="slideleft" title="Slide Left"></div>
+				<div id="slidearea">
+					<div id="slider"></div>
+				</div>
+				<div id="slideright" title="Slide Right"></div>
+				<br style="clear:both; visibility:hidden; height:1px;" />
+			</div>
+			</div>
+	
+	<script type="text/javascript">
+	jQuery.noConflict();
+	tid('slideshow').style.display = "none";
+	tid('slideshow-wrapper').style.display = 'block';
+	tid('slideshow-wrapper').style.visibility = 'hidden';	
+
+
+	/**
+	 * issue #2: Bugfix for WebKit. Safari and similar browsers aren't capable to handle jQuery.ready() right. The problem
+	 * here was, that sometimes the event was fired (if js is not available in browsers cache) too early, so that not all
+	 * pictures were displayed in the thumbnail bar. I added a timeout to give the browser time to load the pictures.
+	 * During that time I found it nice to display a spinner icon to give the visitor a hint that "somethings going on there".
+	 * For this to display correctly I've added some lines to the css file too.
+	 */
+
+	// append the spinner
+	jQuery("#fullsize").append('<div id="spinner"><img src="http://www.istanbul.edu.tr/wp-content/plugins/slideshow-gallery/images/spinner.gif"></div>');
+	tid('spinner').style.visibility = 'visible';
+
+	var slideshow = new TINY.slideshow("slideshow");
+	jQuery(document).ready(function() {
+		// set a timeout before launching the slideshow
+		window.setTimeout(function() {
+			slideshow.auto = true;			slideshow.speed = 30;
+			slideshow.imgSpeed = 10;
+			slideshow.navOpacity = 5;
+			slideshow.navHover = 100;
+			slideshow.letterbox = "#ffffff";
+			slideshow.linkclass = "linkhover";
+			slideshow.info = "information";
+			slideshow.infoSpeed = 10;
+			slideshow.thumbs = "slider";
+			slideshow.thumbOpacity = 80;
+			slideshow.left = "slideleft";
+			slideshow.right = "slideright";
+			slideshow.scrollSpeed = 5;
+			slideshow.spacing = 1;
+			slideshow.active = "#FFCC00";
+			slideshow.imagesthickbox = "false";
+			jQuery("#spinner").remove();
+			slideshow.init("slideshow","image","imgprev","imgnext","imglink");
+			tid('slideshow-wrapper').style.visibility = 'visible';
+		}, 1000);
+	});
+	</script>
+ 
+<div class="clr"></div>
+<div id="wrapper">
+<div class="duyuru">
+<div class="buttons"><a class="back">Geri</a><a class="next">İleri</a></div>
+<h2><a style="display: block; float: left ;padding-left: 0px;;" href="?cat=981">Etkinlikler</a>  <a style="padding-left: 703px; display: block; float: left;" href="?cat=13">Güncel Duyurular</a></h2>
+<div class="clr"></div>
+<div class="duyuru-wrapper">
+<ul>
+
+
+<li><a  href="http://www.istanbul.edu.tr/?p=65662" title="İstanbul Üniversitesi’nden Uluslararası Akademik Arenada Darbe Girişimine Tepki"><span style="color: #5b5c5e">İstanbul Üniversitesi’nden Uluslararası Akademik Arenada Darbe Girişimine Tepki</span></a></li>
+
+<li><a  href="http://www.istanbul.edu.tr/?p=65659" title="İÜ Eczacılık Fakültesi Deney Hayvanı Bakım ve Araştırma Birimi’ne Ruhsat"><span style="color: #5b5c5e">İÜ Eczacılık Fakültesi Deney Hayvanı Bakım ve Araştırma Birimi’ne Ruhsat</span></a></li>
+
+<li><a  href="http://www.istanbul.edu.tr/?p=65654" title="Darbe Kalkışmasına İlahiyat Fakültesi’nden Tepki"><span style="color: #5b5c5e">Darbe Kalkışmasına İlahiyat Fakültesi’nden Tepki</span></a></li>
+
+<li><a  href="http://www.istanbul.edu.tr/?p=65644" title="15 Temmuz Dayanışma Kampanyası"><span style="color: #5b5c5e">15 Temmuz Dayanışma Kampanyası</span></a></li>
+
+<li><a  href="http://www.istanbul.edu.tr/?p=65657" title="Hayvan Deneyleri Yerel Etik Kurulu Hakkında (İ.Ü.HADYEK)"><span style="color: #5b5c5e">Hayvan Deneyleri Yerel Etik Kurulu Hakkında (İ.Ü.HADYEK)</span></a></li>
+
+<li><a  href="http://www.istanbul.edu.tr/?p=65561" title="İstanbul Üniversitesi Tercih ve Tanıtım Günleri’nin İlk Bölümü Tamamlandı"><span style="color: #5b5c5e">İstanbul Üniversitesi Tercih ve Tanıtım Günleri’nin İlk Bölümü Tamamlandı</span></a></li>
+
+<li><a  href="http://www.istanbul.edu.tr/?p=65462" title="İÜ Tercih ve Tanıtım Günlerinde 2. Gün Sona Erdi"><span style="color: #5b5c5e">İÜ Tercih ve Tanıtım Günlerinde 2. Gün Sona Erdi</span></a></li>
+
+<li><a  href="http://www.istanbul.edu.tr/?p=65458" title="İÜ Orman Mühendisliği ve Orman Endüstri Mühendisliği Bölümleri’nden Akreditasyon Başarısı"><span style="color: #5b5c5e">İÜ Orman Mühendisliği ve Orman Endüstri Mühendisliği Bölümleri’nden Akredita...</span></a></li>
+
+<li><a  href="http://www.istanbul.edu.tr/?p=65440" title="Milletimize Teşekkür"><span style="color: #5b5c5e">Milletimize Teşekkür</span></a></li>
+
+<li><a  href="http://personel.istanbul.edu.tr/?p=15740" title="İstanbul Üniversitesi İdari Personel 2016 Görevde Yükselme Sınavı Soru Kitapçıkları ile Cevap Anahtarı (A-B) ve Sınav Kurulu Komisyonunun Açıklama Yazısı"><span style="color: #5b5c5e">İstanbul Üniversitesi İdari Personel 2016 Görevde Yükselme Sınavı Soru Kitapçı...</span></a></li>
+
+<li><a  href="http://www.istanbul.edu.tr/?p=65343" title="İstanbul Üniversitesi’nde Tercih ve Tanıtım Günleri Başladı"><span style="color: #5b5c5e">İstanbul Üniversitesi’nde Tercih ve Tanıtım Günleri Başladı</span></a></li>
+
+<li><a  href="http://www.istanbul.edu.tr/?p=65163" title="İstanbul Üniversitesi Halk İle Beraber Demokrasi Nöbetindeydi"><span style="color: #5b5c5e">İstanbul Üniversitesi Halk İle Beraber Demokrasi Nöbetindeydi</span></a></li>
+
+<li><a  href="http://www.istanbul.edu.tr/?p=65154" title="Yürüyüş Sonrası Servis Hizmeti Verilecek"><span style="color: #5b5c5e">Yürüyüş Sonrası Servis Hizmeti Verilecek</span></a></li>
+
+<li><a  href="http://www.istanbul.edu.tr/?p=65146" title="Cerrahpaşa’daki Hasta Çocuklara Hediye Sürprizi"><span style="color: #5b5c5e">Cerrahpaşa’daki Hasta Çocuklara Hediye Sürprizi</span></a></li>
+
+<li><a  href="http://www.istanbul.edu.tr/?p=65559" title="Beyazıt Kampüsü Yemek Hizmeti"><span style="color: #5b5c5e">Beyazıt Kampüsü Yemek Hizmeti</span></a></li>
+
+<li><a  href="http://www.istanbul.edu.tr/?p=65129" title="Demokrasi Yürüyüşü"><span style="color: #5b5c5e">Demokrasi Yürüyüşü</span></a></li>
+
+<li><a  href="http://www.istanbul.edu.tr/?p=65017" title="İstanbul Üniversitesi Senato Duyurusu"><span style="color: #5b5c5e">İstanbul Üniversitesi Senato Duyurusu</span></a></li>
+
+<li><a  href="http://www.istanbul.edu.tr/?p=65006" title="İstanbul Üniversitesi İktisat Fakültesi Öğretim Üyelerinden Prof. Dr. Nevzat Yalçıntaş Vefat Etti"><span style="color: #5b5c5e">İstanbul Üniversitesi İktisat Fakültesi Öğretim Üyelerinden Prof. Dr. Nevzat Yal...</span></a></li>
+
+<li><a  href="http://www.istanbul.edu.tr/?p=65008" title="Türk Silahlı Kuvvetleri&#8217;nin İçindeki Küçük Bir Azınlık Tarafından Milli İradeye Karşı Yapılan Askeri Kalkışma Girişimini Lanetliyoruz"><span style="color: #5b5c5e">Türk Silahlı Kuvvetleri&#8217;nin İçindeki Küçük Bir Azınlık Tarafından Milli...</span></a></li>
+
+<li><a  href="http://ogrenci.istanbul.edu.tr/?p=9049" title="2016-2017 Güz Yarıyılı Yatay Geçiş Başvuruları"><span style="color: #5b5c5e">2016-2017 Güz Yarıyılı Yatay Geçiş Başvuruları</span></a></li>
+
+<li><a  href="http://www.istanbul.edu.tr/?p=65003" title="İstanbul Sanayi Odası Başkanı İÜ Rektörü Prof. Dr. Mahmut Ak’ı Ziyaret Etti"><span style="color: #5b5c5e">İstanbul Sanayi Odası Başkanı İÜ Rektörü Prof. Dr. Mahmut Ak’ı Ziyaret Etti</span></a></li>
+
+<li><a  href="http://www.istanbul.edu.tr/?p=64990" title="Kâtipler Sertifikalarını Aldılar"><span style="color: #5b5c5e">Kâtipler Sertifikalarını Aldılar</span></a></li>
+
+<li><a  href="http://www.istanbul.edu.tr/?p=64913" title="Hidrojen Enerjili Araç Takımımız (HİDROİST) Avrupa 5.’si Oldu"><span style="color: #5b5c5e">Hidrojen Enerjili Araç Takımımız (HİDROİST) Avrupa 5.’si Oldu</span></a></li>
+
+<li><a  href="http://www.istanbul.edu.tr/?p=64910" title="İstanbul İl Milli Eğitim Müdürü İÜ Rektörü Prof. Dr. Mahmut Ak’ı Ziyaret Etti"><span style="color: #5b5c5e">İstanbul İl Milli Eğitim Müdürü İÜ Rektörü Prof. Dr. Mahmut Ak’ı Ziyaret E...</span></a></li>
+
+<li><a  href="http://personel.istanbul.edu.tr/?p=15701" title="2016/1 Yılı Devlet Personel Başkanlığı  ve ÖSYM tarafından Yapılan KPSS Sınavı İle Kurumumuza Yerleşen Adayların Listesi ve İstenilen Belgeler"><span style="color: #5b5c5e">2016/1 Yılı Devlet Personel Başkanlığı  ve ÖSYM tarafından Yapılan KPSS Sınav...</span></a></li>
+
+<li><a  href="http://iutercih.istanbul.edu.tr/index.php/rektor-prof-dr-mahmut-ak-akilli-tercih-programina-katildi/" title="Rektör Prof. Dr. Mahmut Ak Akıllı Tercih Programı’na Katıldı"><span style="color: #5b5c5e">Rektör Prof. Dr. Mahmut Ak Akıllı Tercih Programı’na Katıldı</span></a></li>
+
+<li><a  href="http://www.istanbul.edu.tr/?p=64860" title="İstanbul Üniversitesi Dünyanın İlk 500 Üniversitesi Arasında"><span style="color: #5b5c5e">İstanbul Üniversitesi Dünyanın İlk 500 Üniversitesi Arasında</span></a></li>
+
+<li><a  href="http://www.istanbul.edu.tr/?p=64835" title="Rektör Prof. Dr. Mahmut AK&#8217;ın Ramazan Bayramı Mesajı"><span style="color: #5b5c5e">Rektör Prof. Dr. Mahmut AK&#8217;ın Ramazan Bayramı Mesajı</span></a></li>
+
+<li><a  href="http://www.istanbul.edu.tr/?p=64832" title="Vezneciler Saldırısında Hayatını Kaybeden Levent Yeşilot’un Organları Başka Hastalara Umut Oldu"><span style="color: #5b5c5e">Vezneciler Saldırısında Hayatını Kaybeden Levent Yeşilot’un Organları Başka H...</span></a></li>
+
+<li><a  href="http://www.istanbul.edu.tr/?p=65023" title="İÜ Socrat Ekibi Japonya’da Ülkemizi Temsil Edecek"><span style="color: #5b5c5e">İÜ Socrat Ekibi Japonya’da Ülkemizi Temsil Edecek</span></a></li>
+
+<li><a  href="http://www.istanbul.edu.tr/?p=64819" title="İÜ Devlet Konservatuvarı Mezuniyet Töreni Yapıldı"><span style="color: #5b5c5e">İÜ Devlet Konservatuvarı Mezuniyet Töreni Yapıldı</span></a></li>
+
+<li><a  href="http://www.istanbul.edu.tr/?p=64815" title="İstanbul Üniversitesi’nin Eurocup Ön Eleme Turundaki Rakibi Belli Oldu"><span style="color: #5b5c5e">İstanbul Üniversitesi’nin Eurocup Ön Eleme Turundaki Rakibi Belli Oldu</span></a></li>
+
+<li><a  href="http://www.istanbul.edu.tr/?p=64790" title="Terörü Bir Kez Daha Lanetliyoruz"><span style="color: #5b5c5e">Terörü Bir Kez Daha Lanetliyoruz</span></a></li>
+
+<li><a  href="http://www.istanbul.edu.tr/?p=64703" title="“Aşk-ı Nebi Hilye-i Şerif Karma” Sergisi İstanbul Üniversitesi’nde Sergileniyor"><span style="color: #5b5c5e">“Aşk-ı Nebi Hilye-i Şerif Karma” Sergisi İstanbul Üniversitesi’nde Sergileni...</span></a></li>
+
+<li><a  href="http://www.istanbul.edu.tr/?p=64985" title="Deneme Veritabanı Erişimi :  BSOL ONLINE Uluslararası Standartlar / Teknik dokümanlar"><span style="color: #5b5c5e">Deneme Veritabanı Erişimi :  BSOL ONLINE Uluslararası Standartlar / Teknik dokümanl...</span></a></li>
+
+<li><a  href="http://www.istanbul.edu.tr/?p=64666" title="“Oruç İle Hem İbadet Ediyoruz Hem Sosyalleşiyoruz”"><span style="color: #5b5c5e">“Oruç İle Hem İbadet Ediyoruz Hem Sosyalleşiyoruz”</span></a></li>
+
+<li><a  href="http://www.istanbul.edu.tr/?p=64663" title="İÜ Diş Hekimliği Fakültesi Mezuniyet Töreni Yapıldı"><span style="color: #5b5c5e">İÜ Diş Hekimliği Fakültesi Mezuniyet Töreni Yapıldı</span></a></li>
+
+<li><a  href="http://www.istanbul.edu.tr/?p=64610" title="İÜ Futsal Takımı İçin İftar Yemeği Düzenlendi"><span style="color: #5b5c5e">İÜ Futsal Takımı İçin İftar Yemeği Düzenlendi</span></a></li>
+
+<li><a  href="http://www.istanbul.edu.tr/?p=64497" title="Cluj Babeş Bolyai Üniversitesi’nden Üniversitemize Ziyaret"><span style="color: #5b5c5e">Cluj Babeş Bolyai Üniversitesi’nden Üniversitemize Ziyaret</span></a></li>
+
+<li><a  href="http://www.istanbul.edu.tr/?p=64914" title="Uygulamalı 3 Boyutlu Yazıcı Eğitimi"><span style="color: #5b5c5e">Uygulamalı 3 Boyutlu Yazıcı Eğitimi</span></a></li>
+
+<li><a  href="http://www.istanbul.edu.tr/?p=64480" title="İÜ Fen Fakültesi Mezunlarını Uğurladı"><span style="color: #5b5c5e">İÜ Fen Fakültesi Mezunlarını Uğurladı</span></a></li>
+
+<li><a  href="http://www.istanbul.edu.tr/?p=64463" title="Dilbilim Araştırmalarında Zamansal Mekânsal Nöro-Görüntüleme Çalıştayı ve Olaya İlişkin Beyin Potansiyelleri Eğitimi Gerçekleştirildi"><span style="color: #5b5c5e">Dilbilim Araştırmalarında Zamansal Mekânsal Nöro-Görüntüleme Çalıştayı ve O...</span></a></li>
+
+<li><a  href="http://www.istanbul.edu.tr/?p=64428" title="İÜ Dil Merkezi Türkçe Eğitimi Alan Kâtipler İçin İftar Programı Düzenledi"><span style="color: #5b5c5e">İÜ Dil Merkezi Türkçe Eğitimi Alan Kâtipler İçin İftar Programı Düzenledi</span></a></li>
+
+<li><a  href="http://www.istanbul.edu.tr/?p=64426" title="İstanbul Üniversitesi Türkiye’nin En İyi Üniversiteleri Arasında"><span style="color: #5b5c5e">İstanbul Üniversitesi Türkiye’nin En İyi Üniversiteleri Arasında</span></a></li>
+
+<li><a  href="http://www.istanbul.edu.tr/?p=64905" title="2016 yılı 2. İdari Personel Memnuniyet Anketi "><span style="color: #5b5c5e">2016 yılı 2. İdari Personel Memnuniyet Anketi </span></a></li>
+
+<li><a  href="http://www.istanbul.edu.tr/?p=64424" title="Üniversitelerin Teşvik Karnesi Açıklandı"><span style="color: #5b5c5e">Üniversitelerin Teşvik Karnesi Açıklandı</span></a></li>
+
+<li><a  href="http://www.istanbul.edu.tr/?p=64282" title="Türk Bilim İnsanları Antarktika’daki Çalışmalarını Tamamladı"><span style="color: #5b5c5e">Türk Bilim İnsanları Antarktika’daki Çalışmalarını Tamamladı</span></a></li>
+
+<li><a  href="http://www.istanbul.edu.tr/?p=64280" title="İstanbul Üniversitesi İlk 100 Üniversite Arasında"><span style="color: #5b5c5e">İstanbul Üniversitesi İlk 100 Üniversite Arasında</span></a></li>
+
+<li><a  href="http://www.istanbul.edu.tr/?p=64254" title="“Medya ve İletişim” Semineri Gerçekleştirildi"><span style="color: #5b5c5e">“Medya ve İletişim” Semineri Gerçekleştirildi</span></a></li>
+
+<li><a  href="http://www.istanbul.edu.tr/?p=64850" title="İstanbul Üniversitesi Kurum İç Değerlendirme Raporu"><span style="color: #5b5c5e">İstanbul Üniversitesi Kurum İç Değerlendirme Raporu</span></a></li>
+</ul>
+</div>
+<div class="clr"></div>
+</div>
+</div>
+<div class="clr"></div>
+
+	<div class="img-four">
+<ul>
+<li><div class="four"><a href="http://www.istanbul.edu.tr/?p=65644"><img src="http://www.istanbul.edu.tr/wp-content/uploads/2016/07/15_temmuz_dayanisma_banner.jpg" height="168" width="184"/><h2>15 Temmuz Dayanışma Kampanyası</h2></a></div></li>
+<li><div class="four"><a href="http://www.istanbul.edu.tr/?p=65440"><img src="http://www.istanbul.edu.tr/wp-content/uploads/2016/07/tesekkur_banner.jpg" height="168" width="184"/><h2>Milletimize Teşekkür</h2></a></div></li>
+<li><div class="four"><a href="http://www.istanbul.edu.tr/?p=65039"><img src="http://www.istanbul.edu.tr/wp-content/uploads/2016/07/rektör-1.jpg" height="168" width="184"/><h2>YÖK ve Üniversite Rektörlerinden Darbe Girişimine Karşı Açıklama</h2></a></div></li>
+<li><div class="four"><a href="http://www.istanbul.edu.tr/?p=65017"><img src="http://www.istanbul.edu.tr/wp-content/uploads/2016/07/senato_duyurusu_banner.jpg" height="168" width="184"/><h2>İstanbul Üniversitesi Senato Duyurusu</h2></a></div></li>
+<li><div class="four"><a href="http://iutercih.istanbul.edu.tr/"><img src="http://www.istanbul.edu.tr/wp-content/uploads/2016/07/tercih_sitesi_banner.jpg" height="168" width="184"/><h2>İÜ Tercih 2016 Web Sitesi</h2></a></div></li>
+<li><div class="four"><a href="http://iutercih.istanbul.edu.tr/index.php/courses/is-olanaklari/"><img src="http://www.istanbul.edu.tr/wp-content/uploads/2016/06/kariyer_olanaklari.jpg" height="168" width="184"/><h2>Kariyer ve İş Olanakları</h2></a></div></li>
+<li><div class="four"><a href="http://iutercih.istanbul.edu.tr/index.php/courses/burs-olanaklarimiz/"><img src="http://www.istanbul.edu.tr/wp-content/uploads/2016/06/burs_olanaklari_3.jpg" height="168" width="184"/><h2>Burs Olanaklarımız</h2></a></div></li>
+<li><div class="four"><a href="http://iutercih.istanbul.edu.tr/index.php/courses/yurt-olanaklarimiz/"><img src="http://www.istanbul.edu.tr/wp-content/uploads/2016/06/yurt_olanaklari.jpg" height="168" width="184"/><h2>Yurt Olanaklarımız</h2></a></div></li>
+<li><div class="four"><a href="http://iutercih.istanbul.edu.tr/index.php/courses/akademik-kadromuz/"><img src="http://www.istanbul.edu.tr/wp-content/uploads/2016/06/akademik_basarilar_3.jpg" height="168" width="184"/><h2>Akademik Kadromuz</h2></a></div></li>
+<li><div class="four"><a href="http://www.istanbul.edu.tr/?p=64442"><img src="http://www.istanbul.edu.tr/wp-content/uploads/2016/06/SOCRAT-SAMPIYON.jpg" height="168" width="184"/><h2>SOCRAT’ımız Yine Şampiyon</h2></a></div></li>
+</ul>
+</div>
+<div class="clr"></div>
+<div class="unifoot">
+<div class="adres">İstanbul Üniversitesi Merkez Kampüsü<br>
+34452 Beyazıt/Fatih-İstanbul<br><span>Tel:</span> +90 (212) 440 00 00 <br>
+E-Mail: iubilgi@istanbul.edu.tr
+</div>
+<div class="uyelogo">
+<a class="eu" href="http://uaik.istanbul.edu.tr/?page_id=7741" target="_blank"></a>
+<a class="AIM" href="#"></a>
+<a class="gs" target="_blank" href="http://www.gsb.gov.tr/"></a>
+<a class="bu" target="_blank" href="http://www.baunas.org"></a>
+<a class="bse" href="#"></a>
+<a class="coimbra" target="_blank" href="http://www.coimbra-group.eu/"></a>
+<a class="eua" target="_blank" href="http://www.eua.be/"></a>
+
+</div>
+
+<div class="clr"></div>
+</div>
+<div class="footer">
+<div class="clr"></div>
+<span class="left"><a href=" http://www.istanbul.edu.tr/?page_id=19536">Her hakkı İstanbul Üniversitesi'ne aittir. Copyright 2011.</a></span>
+<div class="right">
+<ul>
+<li><a href="/">Site Haritası</a></li>
+<li><a href="/?p=91">İletişim Bilgileri</a></li>
+<li><a href="http://www.facebook.com/pages/İstanbul-Üniversitesi/122985584385497">Facebook</a></li>
+<li><a href="http://twitter.com/#!/istanbuledutr">Twitter</a></li>
+</ul>
+</div>
+</div>
+<div class="clr"></div>
+<!-- ngg_resource_manager_marker --><script type='text/javascript' src='http://www.istanbul.edu.tr/wp-content/plugins/lightbox-plus/js/jquery.colorbox.1.5.9-min.js?ver=1.5.9'></script>
+<script type='text/javascript' src='http://www.istanbul.edu.tr/wp-includes/js/wp-embed.min.js?ver=4.4'></script>
+<!-- Lightbox Plus Colorbox v2.7.2/1.5.9 - 2013.01.24 - Message: 0-->
+<script type="text/javascript">
+jQuery(document).ready(function($){
+  $("a[rel*=lightbox]").colorbox({speed:350,initialWidth:"300",initialHeight:"100",opacity:0.8,previous:"Geri",next:"İleri",close:"Kapat",loop:false,scrolling:false,arrowKey:false,top:false,right:false,bottom:false,left:false});
+});
+</script>
+</body>
+</html>

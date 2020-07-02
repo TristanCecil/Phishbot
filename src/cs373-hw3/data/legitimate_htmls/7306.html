@@ -1,0 +1,239 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<script language="JavaScript">
+function CheckTime(){
+servertime = 'Mon, 23 May 2016 21:03:37 UTC';
+var serverDate = new Date(servertime);
+var tempDate = new Date;
+var localDate = new Date(tempDate.toGMTString());
+//alert('Local Time: ' + localDate.toString())
+//alert('Stratus Time: ' + serverDate.toString())
+var secsServer = serverDate.getTime() / 1000
+var secsLocal = localDate.getTime() / 1000;
+secs = secsLocal - secsServer;
+msg = 'Your computer time is ' + localDate.toLocaleString();
+msg += '\nStratus time is '  + serverDate.toLocaleString();
+if(secs > (3600*3)){
+msg += '\nYour computer time is more than 3 hours ahead of Stratus';
+msg += '\nMake sure that your computer is set to the correct time';
+alert(msg);}
+if(secs < ( (0- (3600*3) ) )){
+msg += '\nYour computer time is more than 3 hours behind Stratus';
+msg += '\nMake sure that your computer is set to the correct time';
+alert(msg);}
+}
+</script>
+
+<head>
+	<title>Login - StratusMLS</title>
+	<script language="javascript">
+		function pageload() {
+			setfocus();
+
+			//prevent Chrome autocomplete
+			window.setTimeout(function() {
+				var inputs = document.getElementsByTagName('input');
+				for (var i = 0, l = inputs.length; i < l; i++) {
+					if ((inputs[i].getAttribute('type') || '').toLowerCase() == 'password') {
+						inputs[i].value = '';
+					}
+				}
+			}, 100);
+		}
+		function setfocus() { try { document.getElementById('safemls-id').focus() } catch (y) { } }
+		function popUp(url) { sealWin = window.open(url, "win", 'toolbar=0,location=0,directories=0,status=1,menubar=1,scrollbars=1,resizable=1,width=717,height=450'); self.name = "mainWin"; }
+
+		var msg, error, xtra;
+		var jsable = navigator.javaEnabled(); 	//returns true if Java is enabled
+		if (document.cookie.length == 0) {
+			error = "Per-Session Cookies";
+			xtra = "";
+		} else {
+			error = "";
+			xtra = "";
+		}
+		if (error != "") {
+			msg = "_______________________________________________________________________\n\n";
+			msg += "You have " + error + " disabled. \n";
+			msg += "Stratus MLS requires " + error + xtra + " to be enabled.  \n";
+			msg += "_______________________________________________________________________\n\n";
+			msg += "To enable:\n\n";
+			msg += "  1st  Click on the 'Tools' menu on your browser's toolbar.\n";
+			msg += "  2nd  Select 'Internet Options'.\n";
+			msg += "  3rd  Click on the privacy tab.\n";
+			msg += '  4th  Set your privacy level to Medium.\n';
+			msg += "  5th  Click on the 'OK' button.\n";
+			alert(msg);
+		}
+
+		//		function setiFrame()
+		//		{
+		//			if (top.window.name.substr(0, 12) == "StratusLogin")document.frames.ErrorFrame.location = "http://dev2.stratusmls.com/Test/Jamie/ReportError.asp?Error=LostSession&Server=10.54.38.114&Client=60.53.121.90&Cookie=ASPSESSIONIDCASCDQBA=NAEEJLCBCMIBMAHODBFJEHPP&Data=" + escape(top.window.name);
+		//			top.window.name = "";
+		//		}
+
+		CheckTime();
+
+
+		var loginClicked = false;
+		function loginSubmit() {
+
+			if (!loginClicked) {
+				loginClicked = true;
+				document.getElementById('login').submit();
+			} else {
+				return false;
+			}
+		}
+
+		function safemlsSubmit() {
+			if (!loginClicked) {
+				loginClicked = true;
+				document.getElementById('safemls-login').submit();
+			} else {
+				return false;
+			}
+		}
+
+	</script>
+	<noscript>
+		<h1>You have JavaScript disabled.</h1>
+		<h2>Stratus MLS requires JavaScript to be enabled.</h3>
+		<h3>To Enable:</h3>
+		<ol>
+			<li>Click on the 'Tools' menu on your browser's toolbar.
+			<li>Select 'Internet Options'.
+			<li>Click on the security tab.
+			<li>Set your security level to medium.
+			<li>Click on the 'OK' button.
+		</ol>
+	</noscript>
+<basefont face="Arial, Helvetica, sans-serif" size="2">
+<style type="text/css">
+	<!--
+	BODY, TD { font-family: Arial, Lucida Grande; font-size: 10pt; }
+	TD							{ font: bold 8pt }
+	.arrow	{background-image:url('Images/logonMsgBg.jpg');  margin: 10px 10px 10px 10px; }
+	INPUT, SELECT		{ font: 8pt }
+	div.error { font-weight:bold;color:red; }
+	.disabled .small-label { color: #777; }
+	.loginTargets { margin: 0px 0px 3px 0px; }
+	.loginTargets > div { height: 23px; }
+	.small-label, input[type="radio"] {
+  font-size: 10px;
+  vertical-align: middle;
+}
+	-->
+</style>
+</head>
+<body onload="pageload();">
+<iframe id="ErrorFrame" name="ErrorFrame" width=600 height=300 scrolling=no style="display:none"></iframe>
+<table width="722" ID="Table1">
+	<tr>
+		<td>
+			<fieldset>
+			<legend><!--img src="/images/StratusMLSSmall.jpg"--><img width="150" height="73" src="/images/StratusMLS-73H.png?00000001"></legend>
+			<table width="99%" align="center" ID="Table2">
+				<tr>
+					<td width="33%">&nbsp;</td>
+					<td width="34%" align="center"><img src="/images/Welcome3.gif"></td>
+					<td width="33%" valign="bottom"><div class="form-help">User ID = Membership #</div></td>
+				</tr>
+				<tr valign="top">
+					<td>
+						<table width="90%" bgcolor="#ffffcc" style="border-top:solid; border-bottom:solid;" align="center" ID="Table3">
+							<tr>
+								<td>
+									<div id="terms">
+									By clicking on the "Log On" button you are confirming that the Toronto Real Estate Board has
+									authorized your use of the User ID, PIN and Password entered and that you are an Authorized
+									User. Fraudulently accessing the system using someone else's User ID,
+									PIN, and Password are criminal offences punishable by up to ten years imprisonment and may
+									result in statutory and contractual damages.
+									</div>
+
+								</td>
+							</tr>
+						</table>
+					</td>
+					<td colspan="2">
+						<form id="safemls-login" name="safemls-login" action="/Login.asp?CallPage=" method="post">
+						<input type="hidden" id="safemls" name="safemls" value="y" />
+						<table width="95%" bgcolor="#ffffcc" style="border-top:solid; border-bottom:solid;" align="center" ID="Table4" >
+							<tr>
+								<td colspan="3" > &nbsp;</td>
+							</tr>
+							<tr><td colspan="3">&nbsp;<div class="error"></div></td></tr>
+							<tr>
+								<td><label for="safemls-id">&nbsp;&nbsp;User ID</label></td>
+								<td colspan="2"><input type="password" maxlength="20" id="safemls-id" name="username" value=" " autocomplete="off"></td>
+							</tr>
+							<tr>
+								<td><label for="safemls-pin">&nbsp;&nbsp;Your PIN #</label></td>
+								<td colspan="2"><input type="password" maxlength="20" id="safemls-pin" name="pin" value=" " autocomplete="off"></td>
+							</tr>
+							<tr>
+								<td><label for="safemls-pw">&nbsp;&nbsp;Authenticator Password</label></td>
+								<td><input type="password" maxlength="20" id="safemls-pw" name="password" value=" " autocomplete="off"></td>
+								<td><script src="/includes/Buttons/buttons.js" type="text/javascript"></script>
+		
+	<script type="text/javascript">
+		ButtonLibOver1 = new Image(); ButtonLibOver1.src = "/Includes/Buttons/Images/Clean/ffffcc/cccccc/75/LogOn_Over.png";
+		ButtonLibDown1 = new Image(); ButtonLibDown1.src = "/Includes/Buttons/Images/Clean/ffffcc/cccccc/75/LogOn_Down.png";
+		ButtonLibDis1 = new Image(); ButtonLibDis1.src = "/Includes/Buttons/Images/Clean/ffffcc/cccccc/75/LogOn_Dis.png";
+	</script>
+	<input type=image align=absmiddle alt="Log On" src="/Includes/Buttons/Images/Clean/ffffcc/cccccc/75/LogOn_Out.png" id=_BL1 name=_BL1 tabindex=0 onkeypress="DoButtonCheckKey('_BL1');" onclick="safemlsSubmit(); return false;" ondblclick="safemlsSubmit(); return false;" style=cursor:hand; onmousedown="this.src = '/Includes/Buttons/Images/Clean/ffffcc/cccccc/75/LogOn_Down.png'; this.mouseclicked=true;" onmouseover="this.src = '/Includes/Buttons/Images/Clean/ffffcc/cccccc/75/LogOn_Over.png';" onmouseup="this.src = '/Includes/Buttons/Images/Clean/ffffcc/cccccc/75/LogOn_Over.png';" onmouseout="this.src = '/Includes/Buttons/Images/Clean/ffffcc/cccccc/75/LogOn_Out.png'; this.mouseclicked=false;"></td>
+							</tr>
+							<tr>
+								<td rowspan="2" >
+							   <!--<td rowspan="2" class="arrow" >
+
+									<!--<div class="small-label"><font color="red">Starting on July 8, you will log on to New Stratus unless you select "Log On to Old Stratus".</font></div>
+									<br/>
+									<div class="small-label"><font color="red">The final switch to New Stratus occurs on March 2, 2015.</font></div>-->
+
+								</td>
+							</tr>
+							<tr>
+								
+							 <td colspan="2" align="left" style="">
+								<div style="visibility:hidden"><input type="radio" name="loginTarget" value="stratusmls3" id="Radio1" checked="checked"  /><label class="small-label" for="loginTargetStratusMLS3">Log On to New Stratus MLS</label></div>
+							</td>
+							 
+
+							</tr>
+							<tr></tr>
+
+						</table>
+						</form>
+                            <ul class="safemls-links"><li><a href="https://treb.clareitysecurity.net/token/lost.jsp" target="_blank"><font color="black">I lost my token/phone</font></a></li><li><a href="https://treb.clareitysecurity.net/token/broken.jsp" target="_blank"><font color="black">My token/phone is broken</font></a></li><li><a href="https://treb.clareitysecurity.net/forgotpin/" target="_blank"><font color="black">I forgot my PIN</font></a></li><li><a href="https://treb.clareitysecurity.net/changepin/" target="_blank"><font color="black">I want to change my PIN</font></a></li><li><a href="https://treb.clareitysecurity.net/tokenenroll/" target="_blank"><font color="black">I need to enroll my token</font></a></li></ul>
+
+
+
+
+					</td>
+				</tr>
+			</table>
+			</fieldset>
+			
+			<p align="center"><font size="1"><table width="600">
+  <tr>
+        <td align="center">
+			<font style="font:9px" color="black">
+				Copyright TREB 2016. All rights reserved.
+			</font>
+		</td>
+ 
+  </tr>
+  <tr>
+        <td align="center"><font style="font:9px" color="black">Stratus Data Systems, Inc.&nbsp;&nbsp;Copyright 2016, Stratus Data Systems, Inc.</font></td>
+
+  </tr>
+</table></font></p>
+		</td>
+	</tr>
+</table>
+
+</body>
+</html>

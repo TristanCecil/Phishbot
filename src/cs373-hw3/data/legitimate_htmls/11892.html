@@ -1,0 +1,934 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <base href="/">
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="description" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="stylesheet" href="styles/index.css">
+<script>
+  (function(self) {
+  'use strict';
+
+  if (self.fetch) {
+    return
+  }
+
+  var support = {
+    searchParams: 'URLSearchParams' in self,
+    iterable: 'Symbol' in self && 'iterator' in Symbol,
+    blob: 'FileReader' in self && 'Blob' in self && (function() {
+      try {
+        new Blob()
+        return true
+      } catch(e) {
+        return false
+      }
+    })(),
+    formData: 'FormData' in self,
+    arrayBuffer: 'ArrayBuffer' in self
+  }
+
+  function normalizeName(name) {
+    if (typeof name !== 'string') {
+      name = String(name)
+    }
+    if (/[^a-z0-9\-#$%&'*+.\^_`|~]/i.test(name)) {
+      throw new TypeError('Invalid character in header field name')
+    }
+    return name.toLowerCase()
+  }
+
+  function normalizeValue(value) {
+    if (typeof value !== 'string') {
+      value = String(value)
+    }
+    return value
+  }
+
+  // Build a destructive iterator for the value list
+  function iteratorFor(items) {
+    var iterator = {
+      next: function() {
+        var value = items.shift()
+        return {done: value === undefined, value: value}
+      }
+    }
+
+    if (support.iterable) {
+      iterator[Symbol.iterator] = function() {
+        return iterator
+      }
+    }
+
+    return iterator
+  }
+
+  function Headers(headers) {
+    this.map = {}
+
+    if (headers instanceof Headers) {
+      headers.forEach(function(value, name) {
+        this.append(name, value)
+      }, this)
+
+    } else if (headers) {
+      Object.getOwnPropertyNames(headers).forEach(function(name) {
+        this.append(name, headers[name])
+      }, this)
+    }
+  }
+
+  Headers.prototype.append = function(name, value) {
+    name = normalizeName(name)
+    value = normalizeValue(value)
+    var list = this.map[name]
+    if (!list) {
+      list = []
+      this.map[name] = list
+    }
+    list.push(value)
+  }
+
+  Headers.prototype['delete'] = function(name) {
+    delete this.map[normalizeName(name)]
+  }
+
+  Headers.prototype.get = function(name) {
+    var values = this.map[normalizeName(name)]
+    return values ? values[0] : null
+  }
+
+  Headers.prototype.getAll = function(name) {
+    return this.map[normalizeName(name)] || []
+  }
+
+  Headers.prototype.has = function(name) {
+    return this.map.hasOwnProperty(normalizeName(name))
+  }
+
+  Headers.prototype.set = function(name, value) {
+    this.map[normalizeName(name)] = [normalizeValue(value)]
+  }
+
+  Headers.prototype.forEach = function(callback, thisArg) {
+    Object.getOwnPropertyNames(this.map).forEach(function(name) {
+      this.map[name].forEach(function(value) {
+        callback.call(thisArg, value, name, this)
+      }, this)
+    }, this)
+  }
+
+  Headers.prototype.keys = function() {
+    var items = []
+    this.forEach(function(value, name) { items.push(name) })
+    return iteratorFor(items)
+  }
+
+  Headers.prototype.values = function() {
+    var items = []
+    this.forEach(function(value) { items.push(value) })
+    return iteratorFor(items)
+  }
+
+  Headers.prototype.entries = function() {
+    var items = []
+    this.forEach(function(value, name) { items.push([name, value]) })
+    return iteratorFor(items)
+  }
+
+  if (support.iterable) {
+    Headers.prototype[Symbol.iterator] = Headers.prototype.entries
+  }
+
+  function consumed(body) {
+    if (body.bodyUsed) {
+      return Promise.reject(new TypeError('Already read'))
+    }
+    body.bodyUsed = true
+  }
+
+  function fileReaderReady(reader) {
+    return new Promise(function(resolve, reject) {
+      reader.onload = function() {
+        resolve(reader.result)
+      }
+      reader.onerror = function() {
+        reject(reader.error)
+      }
+    })
+  }
+
+  function readBlobAsArrayBuffer(blob) {
+    var reader = new FileReader()
+    reader.readAsArrayBuffer(blob)
+    return fileReaderReady(reader)
+  }
+
+  function readBlobAsText(blob) {
+    var reader = new FileReader()
+    reader.readAsText(blob)
+    return fileReaderReady(reader)
+  }
+
+  function Body() {
+    this.bodyUsed = false
+
+    this._initBody = function(body) {
+      this._bodyInit = body
+      if (typeof body === 'string') {
+        this._bodyText = body
+      } else if (support.blob && Blob.prototype.isPrototypeOf(body)) {
+        this._bodyBlob = body
+      } else if (support.formData && FormData.prototype.isPrototypeOf(body)) {
+        this._bodyFormData = body
+      } else if (support.searchParams && URLSearchParams.prototype.isPrototypeOf(body)) {
+        this._bodyText = body.toString()
+      } else if (!body) {
+        this._bodyText = ''
+      } else if (support.arrayBuffer && ArrayBuffer.prototype.isPrototypeOf(body)) {
+        // Only support ArrayBuffers for POST method.
+        // Receiving ArrayBuffers happens via Blobs, instead.
+      } else {
+        throw new Error('unsupported BodyInit type')
+      }
+
+      if (!this.headers.get('content-type')) {
+        if (typeof body === 'string') {
+          this.headers.set('content-type', 'text/plain;charset=UTF-8')
+        } else if (this._bodyBlob && this._bodyBlob.type) {
+          this.headers.set('content-type', this._bodyBlob.type)
+        } else if (support.searchParams && URLSearchParams.prototype.isPrototypeOf(body)) {
+          this.headers.set('content-type', 'application/x-www-form-urlencoded;charset=UTF-8')
+        }
+      }
+    }
+
+    if (support.blob) {
+      this.blob = function() {
+        var rejected = consumed(this)
+        if (rejected) {
+          return rejected
+        }
+
+        if (this._bodyBlob) {
+          return Promise.resolve(this._bodyBlob)
+        } else if (this._bodyFormData) {
+          throw new Error('could not read FormData body as blob')
+        } else {
+          return Promise.resolve(new Blob([this._bodyText]))
+        }
+      }
+
+      this.arrayBuffer = function() {
+        return this.blob().then(readBlobAsArrayBuffer)
+      }
+
+      this.text = function() {
+        var rejected = consumed(this)
+        if (rejected) {
+          return rejected
+        }
+
+        if (this._bodyBlob) {
+          return readBlobAsText(this._bodyBlob)
+        } else if (this._bodyFormData) {
+          throw new Error('could not read FormData body as text')
+        } else {
+          return Promise.resolve(this._bodyText)
+        }
+      }
+    } else {
+      this.text = function() {
+        var rejected = consumed(this)
+        return rejected ? rejected : Promise.resolve(this._bodyText)
+      }
+    }
+
+    if (support.formData) {
+      this.formData = function() {
+        return this.text().then(decode)
+      }
+    }
+
+    this.json = function() {
+      return this.text().then(JSON.parse)
+    }
+
+    return this
+  }
+
+  // HTTP methods whose capitalization should be normalized
+  var methods = ['DELETE', 'GET', 'HEAD', 'OPTIONS', 'POST', 'PUT']
+
+  function normalizeMethod(method) {
+    var upcased = method.toUpperCase()
+    return (methods.indexOf(upcased) > -1) ? upcased : method
+  }
+
+  function Request(input, options) {
+    options = options || {}
+    var body = options.body
+    if (Request.prototype.isPrototypeOf(input)) {
+      if (input.bodyUsed) {
+        throw new TypeError('Already read')
+      }
+      this.url = input.url
+      this.credentials = input.credentials
+      if (!options.headers) {
+        this.headers = new Headers(input.headers)
+      }
+      this.method = input.method
+      this.mode = input.mode
+      if (!body) {
+        body = input._bodyInit
+        input.bodyUsed = true
+      }
+    } else {
+      this.url = input
+    }
+
+    this.credentials = options.credentials || this.credentials || 'omit'
+    if (options.headers || !this.headers) {
+      this.headers = new Headers(options.headers)
+    }
+    this.method = normalizeMethod(options.method || this.method || 'GET')
+    this.mode = options.mode || this.mode || null
+    this.referrer = null
+
+    if ((this.method === 'GET' || this.method === 'HEAD') && body) {
+      throw new TypeError('Body not allowed for GET or HEAD requests')
+    }
+    this._initBody(body)
+  }
+
+  Request.prototype.clone = function() {
+    return new Request(this)
+  }
+
+  function decode(body) {
+    var form = new FormData()
+    body.trim().split('&').forEach(function(bytes) {
+      if (bytes) {
+        var split = bytes.split('=')
+        var name = split.shift().replace(/\+/g, ' ')
+        var value = split.join('=').replace(/\+/g, ' ')
+        form.append(decodeURIComponent(name), decodeURIComponent(value))
+      }
+    })
+    return form
+  }
+
+  function headers(xhr) {
+    var head = new Headers()
+    var pairs = (xhr.getAllResponseHeaders() || '').trim().split('\n')
+    pairs.forEach(function(header) {
+      var split = header.trim().split(':')
+      var key = split.shift().trim()
+      var value = split.join(':').trim()
+      head.append(key, value)
+    })
+    return head
+  }
+
+  Body.call(Request.prototype)
+
+  function Response(bodyInit, options) {
+    if (!options) {
+      options = {}
+    }
+
+    this.type = 'default'
+    this.status = options.status
+    this.ok = this.status >= 200 && this.status < 300
+    this.statusText = options.statusText
+    this.headers = options.headers instanceof Headers ? options.headers : new Headers(options.headers)
+    this.url = options.url || ''
+    this._initBody(bodyInit)
+  }
+
+  Body.call(Response.prototype)
+
+  Response.prototype.clone = function() {
+    return new Response(this._bodyInit, {
+      status: this.status,
+      statusText: this.statusText,
+      headers: new Headers(this.headers),
+      url: this.url
+    })
+  }
+
+  Response.error = function() {
+    var response = new Response(null, {status: 0, statusText: ''})
+    response.type = 'error'
+    return response
+  }
+
+  var redirectStatuses = [301, 302, 303, 307, 308]
+
+  Response.redirect = function(url, status) {
+    if (redirectStatuses.indexOf(status) === -1) {
+      throw new RangeError('Invalid status code')
+    }
+
+    return new Response(null, {status: status, headers: {location: url}})
+  }
+
+  self.Headers = Headers
+  self.Request = Request
+  self.Response = Response
+
+  self.fetch = function(input, init) {
+    return new Promise(function(resolve, reject) {
+      var request
+      if (Request.prototype.isPrototypeOf(input) && !init) {
+        request = input
+      } else {
+        request = new Request(input, init)
+      }
+
+      var xhr = new XMLHttpRequest()
+
+      function responseURL() {
+        if ('responseURL' in xhr) {
+          return xhr.responseURL
+        }
+
+        // Avoid security warnings on getResponseHeader when not allowed by CORS
+        if (/^X-Request-URL:/m.test(xhr.getAllResponseHeaders())) {
+          return xhr.getResponseHeader('X-Request-URL')
+        }
+
+        return
+      }
+
+      xhr.onload = function() {
+        var options = {
+          status: xhr.status,
+          statusText: xhr.statusText,
+          headers: headers(xhr),
+          url: responseURL()
+        }
+        var body = 'response' in xhr ? xhr.response : xhr.responseText
+        resolve(new Response(body, options))
+      }
+
+      xhr.onerror = function() {
+        reject(new TypeError('Network request failed'))
+      }
+
+      xhr.ontimeout = function() {
+        reject(new TypeError('Network request failed'))
+      }
+
+      xhr.open(request.method, request.url, true)
+
+      if (request.credentials === 'include') {
+        xhr.withCredentials = true
+      }
+
+      if ('responseType' in xhr && support.blob) {
+        xhr.responseType = 'blob'
+      }
+
+      request.headers.forEach(function(value, name) {
+        xhr.setRequestHeader(name, value)
+      })
+
+      xhr.send(typeof request._bodyInit === 'undefined' ? null : request._bodyInit)
+    })
+  }
+  self.fetch.polyfill = true
+})(typeof self !== 'undefined' ? self : this);
+
+  (function () {
+  // Redirect
+  Promise.all([
+    fetch('https://api.runnable.io/users/me', { credentials: 'include' })
+      .then(function (res) { return res.json(); }),
+    fetch('https://api.runnable.io/auth/whitelist', { credentials: 'include' })
+      .then(function (res) { return res.json(); }),
+  ])
+    .then(function (res) {
+      var user = res[0];
+      var whitelistedOrgs = res[1];
+
+      // Get variables we need
+      var org;
+      try {
+        org = user.userOptions.uiState.previousLocation.org;
+      } catch (e) {
+        return;
+      }
+      var prevInstance;
+      try {
+        prevInstance = user.userOptions.uiState.previousLocation.instance;
+      } catch (e) {
+        return;
+      }
+
+      // Populate sign-in url
+      var newURL = 'https://app.runnable.io/' + org;
+      if (prevInstance) {
+        newURL += '/' + prevInstance;
+      }
+      var els = document.getElementsByClassName('btn-sandbox');
+      for (var i = 0; i < els.length; i++) {
+        els[i].href = newURL;
+      }
+
+      // set up avatar
+      var userAvatar = document.createElement('img');
+      userAvatar.src = user.gravatar;
+      userAvatar.classList.add('avatar');
+      userAvatar.height = 21;
+      userAvatar.width = 21;
+
+      // set up btn-sandbox in headers
+      var headerBtnSandbox = document.createElement('a');
+      var overflowMenu = document.getElementsByClassName('btn-overflow')[0];
+      headerBtnSandbox.href = newURL;
+      headerBtnSandbox.classList.add('grid-block','btn','btn-sm','btn-white','text-white','strong','btn-sandbox','hidden-xs');
+      headerBtnSandbox.textContent = 'Your Sandbox';
+      headerBtnSandbox.appendChild(userAvatar.cloneNode(true));
+      document.getElementsByTagName('nav')[0].insertBefore(headerBtnSandbox,overflowMenu);
+
+      // set up btn-sandbox in menus
+      var menuBtnSandbox = document.createElement('a');
+      var menuDivider = document.getElementsByClassName('divider')[0];
+      menuBtnSandbox.href = newURL;
+      menuBtnSandbox.classList.add('btn','btn-sm','grid-block','justify-center','align-center','shrink','btn-sandbox','strong','visible-xs');
+      menuDivider.classList.add('visible-xs');
+      menuDivider.classList.remove('visible-md');
+      menuBtnSandbox.textContent = 'Your Sandbox';
+      menuBtnSandbox.appendChild(userAvatar.cloneNode(true));
+      document.getElementsByClassName('list text-left')[0].insertBefore(menuBtnSandbox,menuDivider);
+
+      // hide sign in and sign up links
+      var hideIfSignedIn = document.getElementsByClassName('js-hide-if-signed-in');
+      for (var z = hideIfSignedIn.length; z > 0; z--) {
+        var i = z - 1;
+        if (hideIfSignedIn[i].parentNode) {
+          hideIfSignedIn[i].parentNode.removeChild(hideIfSignedIn[i]);
+        }
+      }
+    });
+}());
+
+</script>
+    <title>Your team has a staging problem. — Runnable</title>
+    <script ugly="">function openModal(e,t){if(!t){var a=document.getElementsByClassName("modal-backdrop in")[0],n=e.target.getAttribute("data-target").substring(1),i=document.getElementById(n),s=i.getElementsByClassName("js-modal-close")[0];a&&a.classList.remove("in"),i.classList.add("in"),document.body.classList.add("modal-open"),s.addEventListener("click",closeModal),s.addEventListener("touchend",closeModal),document.addEventListener("keydown",escModal),"sign-up"===n&&setupBitbucket()}}function escModal(e){27==e.keyCode&&closeModal(e)}function closeModal(e){var t=document.getElementsByClassName("modal-backdrop in")[0],a=t.getElementsByClassName("js-modal-close")[0];e.preventDefault(),t.classList.remove("in"),document.body.classList.remove("modal-open"),a.removeEventListener("click",closeModal),a.removeEventListener("touchend",closeModal),document.removeEventListener("keydown",escModal)}function setupBitbucket(){var e=document.getElementsByClassName("form-bitbucket");for(i=0;i<e.length;i++)e[i].addEventListener("change",makeDirty),e[i].addEventListener("submit",submitBitbucket),e[i].getElementsByTagName("input")[0].addEventListener("invalid",formInvalid),e[i].getElementsByTagName("input")[1].addEventListener("invalid",formInvalid)}function markInvalid(e){var t,a,n=e.target;if("INPUT"==n.tagName)n.classList.add("invalid");else for(t=n.getElementsByTagName("input"),a=0;a<t.length;a++)t[a].validity.valid||t[a].classList.add("invalid")}function shakeForm(e){for(var t=e.target;(t=t.parentNode)&&!t.classList.contains("shake-me"););t.classList.add("shake"),t.addEventListener("animationend",function(){t.classList.remove("shake"),t.removeEventListener("animationend",function(){})})}function makeDirty(e){e.target.classList.remove("pristine","invalid")}function formInvalid(e){markInvalid(e),shakeForm(e)}function toggleEditing(e,t){var a,n=e.getElementsByTagName("input"),i=e.getElementsByTagName("textarea")[0],s=e.getElementsByTagName("button")[0],o=document.getElementsByClassName("spinner-wrapper");if("disable"===t){if(n)for(a=0;a<n.length;a++)n[a].disabled=!0;i&&(i.disabled=!0),s.disabled=!0,s.innerHTML+='<div class="spinner-wrapper spinner-md"><svg viewbox="0 0 16 16" class="spinner"><circle cx="8" cy="8" r="7" stroke-linecap="round" class="path"></circle></svg></div>'}if("enable"===t){if(n)for(a=0;a<n.length;a++)n[a].disabled=!1;i&&(i.disabled=!1),s.disabled=!1,o[0].parentNode.removeChild(o[0])}}function xhrSubmit(e,t,a){var n=new XMLHttpRequest,i="https://codenow.com:8443/bitbucket";n.open("POST",i,!0),n.setRequestHeader("Content-Type","application/json"),n.send(a),n.onreadystatechange=function(){4===n.readyState&&0===n.status&&(shakeForm(e),activeCampaignValidation('An error occured. Send us an email at <a class="link" href="mailto:bitbucket@runnable.com">bitbucket@runnable.com</a> for help.',t),toggleEditing(t,"enable"))},n.onload=function(){var a=JSON.parse(n.responseText),i=a.result_code,s=a.result_message,o=t.parentNode.getElementsByClassName("hide")[0];i!==-1&&0!==i||(shakeForm(e),activeCampaignValidation(s,t)),1===i&&(t.classList.add("hide"),t.classList.remove("show"),o.classList.add("show"),o.classList.remove("hide")),toggleEditing(t,"enable")}}function submitBitbucket(e){var t=e.target;if(e.preventDefault(),t.checkValidity()){var a,n=t.querySelectorAll('[name="email"]')[0].value,i=t.querySelectorAll('[name="name"]')[0].value;toggleEditing(t,"disable"),a={email:n,name:i},analytics.ready(function(){analytics.track("Bitbucket-list sign up",{email:n,name:i,clientId:ga.getAll()[0].get("clientId")})}),a=JSON.stringify(a),xhrSubmit(e,t,a)}}function activeCampaignValidation(e,t){var a=t.getElementsByClassName("red")[0],n=document.createElement("small");a&&a.parentNode.removeChild(a),n.classList.add("small","red","text-center"),n.innerHTML=e,t.appendChild(n),analytics.ready(function(){analytics.track("Error bitbucket-list form",{error:e,clientId:ga.getAll()[0].get("clientId")})})}function onYouTubeIframeAPIReady(){player=new YT.Player("player",{videoId:"mBR-_5dXH4w",playerVars:{color:"white",iv_load_policy:3,modestbranding:1,rel:0,showinfo:0},events:{onReady:onPlayerReady}})}function playVideo(){document.body.classList.add("modal-open"),document.getElementById("player").classList.add("playing"),player.playVideo()}function pauseVideo(){document.body.classList.remove("modal-open"),document.getElementById("player").classList.remove("playing"),player.pauseVideo()}function onPlayerReady(e){Modernizr.on("videoautoplay",function(e){if(e){var t=document.getElementsByClassName("video-start"),a=document.getElementsByClassName("video-pause");if(t){var n;for(n=0;n<t.length;n++)t[n].addEventListener("click",playVideo),t[n].addEventListener("touchend",playVideo);for(n=0;n<a.length;n++)a[n].addEventListener("click",pauseVideo),a[n].addEventListener("touchend",pauseVideo)}}})}window.addEventListener("load",function(){var e,t=document.getElementsByClassName("js-modal"),a=document.body,n=!1;if(a.addEventListener("touchmove",function(){n=!0}),a.addEventListener("touchstart",function(){n=!1}),window.fbq||(window.fbq=function(){}),t)for(e=0;e<t.length;e++)t[e].addEventListener("click",function(e){openModal(e,n)}),t[e].addEventListener("touchend",function(e){openModal(e,n)});"/signup/"===window.location.pathname&&setupBitbucket()}),function(e,t){"use strict";e.addEventListener("DOMContentLoaded",function(){var a=t.location.href.replace(t.location.hash,"");[].slice.call(e.querySelectorAll("use[*|href]")).filter(function(e){return 0===e.getAttribute("xlink:href").indexOf("#")}).forEach(function(e){e.setAttribute("xlink:href",a+e.getAttribute("xlink:href"))})},!1)}(document,window);var tag=document.createElement("script");tag.src="https://www.youtube.com/iframe_api";var firstScriptTag=document.getElementsByTagName("script")[0];firstScriptTag.parentNode.insertBefore(tag,firstScriptTag);var player;window.addEventListener("load",function(){var e,t,a=new StatusPage.page({page:"ngvk75ydhg3t"}),n=document.getElementsByClassName("footer")[0],i=document.createElement("a");i.href="//status.runnable.com",i.classList.add("btn","btn-xs","link","strong","status"),a.components({success:function(a){switch(n.appendChild(i),a.components[0].status){case"operational":e="Status: Beary good!",t="status-green";break;case"degraded_performance":case"partial_outage":e="Partial Outage",t="status-orange";break;case"major_outage":e="Major Outage",t="status-red"}i.textContent=e,i.classList.add(t)}})});</script>
+
+    <!--
+      Commit Hash: 6c4d01b80cb125f38d312228c53f997a17cd4895
+      Commit Time: Wed Jul 27 12:36:29 2016 -0700
+    -->
+
+  </head><body class="page-landing page-video" ng-app="homeApp" ng-controller="MainCtrl" ontouchstart="">
+
+    <svg xmlns="http://www.w3.org/2000/svg" class="icon-defintions">
+  <symbol id="icons-bitbucket" viewbox="0 0 27.438 31.681">
+    <path d="M29.208,3.519a3.47,3.47,0,0,0-.729-0.738,8.244,8.244,0,0,0-2.01-1.1A21.7,21.7,0,0,0,21.768.45,39.134,39.134,0,0,0,10.037.434,24.268,24.268,0,0,0,6,1.385,10.419,10.419,0,0,0,3.525,2.549a4.165,4.165,0,0,0-.976.869,1.832,1.832,0,0,0-.4,1.479C2.32,5.989,2.48,7.082,2.66,8.169q0.4,2.417.811,4.828c0.306,1.787.62,3.573,0.918,5.36a2.026,2.026,0,0,0,.526,1.07,5.663,5.663,0,0,0,.574.543,9.178,9.178,0,0,0,2.432,1.354,20.379,20.379,0,0,0,6.485,1.328,25.257,25.257,0,0,0,4.838-.187,19.46,19.46,0,0,0,4.011-.948,10.809,10.809,0,0,0,2.725-1.382,4.323,4.323,0,0,0,.945-0.9,1.791,1.791,0,0,0,.354-0.805c0.4-2.341.809-4.679,1.2-7.021,0.362-2.172.7-4.346,1.058-6.518A1.78,1.78,0,0,0,29.208,3.519ZM15.82,19.64a4.361,4.361,0,1,1,4.386-4.334A4.359,4.359,0,0,1,15.82,19.64Zm8.7-15.246a1.832,1.832,0,0,1-.436.357,5.524,5.524,0,0,1-1.454.541,20.191,20.191,0,0,1-2.9.485,37.5,37.5,0,0,1-3.791.188,37.891,37.891,0,0,1-4.332-.238,15.852,15.852,0,0,1-3.146-.633,6.893,6.893,0,0,1-.883-0.381,1.385,1.385,0,0,1-.386-0.3A0.443,0.443,0,0,1,7.2,3.746,1.752,1.752,0,0,1,7.61,3.43a5.392,5.392,0,0,1,1.359-.512,20.355,20.355,0,0,1,2.994-.509,37.618,37.618,0,0,1,4.967-.172,30.478,30.478,0,0,1,4.55.431,10.33,10.33,0,0,1,2.075.545,5.336,5.336,0,0,1,.683.346,1.085,1.085,0,0,1,.288.266A0.422,0.422,0,0,1,24.522,4.394Zm1.664,18.367a0.955,0.955,0,0,1-.021.271c-0.305,1.6-.614,3.2-0.911,4.811a2.6,2.6,0,0,1-.724,1.377,5.442,5.442,0,0,1-1.448,1.023A12.151,12.151,0,0,1,20,31.274a18.806,18.806,0,0,1-3.563.407,20.746,20.746,0,0,1-5.917-.7,9.9,9.9,0,0,1-2.3-.953,5.078,5.078,0,0,1-1.042-.789,2.6,2.6,0,0,1-.741-1.4c-0.3-1.6-.609-3.207-0.915-4.81A1.12,1.12,0,0,1,5.5,22.79a0.479,0.479,0,0,1,.724-0.423c0.036,0.021.072,0.041,0.105,0.063a13.221,13.221,0,0,0,3.858,1.856,18.062,18.062,0,0,0,3.873.758,19.587,19.587,0,0,0,4.54-.11,16.41,16.41,0,0,0,5.687-1.827c0.354-.194.686-0.43,1.025-0.646a1.715,1.715,0,0,1,.167-0.1A0.48,0.48,0,0,1,26.186,22.761Zm-8.159-7.477a2.185,2.185,0,1,1-2.177-2.193A2.192,2.192,0,0,1,18.027,15.284Z" ,="" transform="translate(-2.122)" <="" <path=""/>
+  </symbol>
+  <symbol id="icons-check" viewbox="0 0 14.5 10">
+    <path d="M7.25,14a1,1,0,0,1-.707-0.293l-4.5-4.5A1,1,0,0,1,3.457,7.793L7.25,11.586l7.293-7.293a1,1,0,0,1,1.414,1.414l-8,8A1,1,0,0,1,7.25,14Z" transform="translate(-1.75 -4)"/>
+  </symbol>
+  <symbol id="icons-chevron-right" viewbox="0 0 11 18">
+    <polyline points="1 1 10 9 1 17" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+  </symbol>
+  <symbol id="icons-chevron-down" viewbox="0 0 18 11">
+    <polyline points="17 1 9 10 1 1" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+  </symbol>
+  <symbol id="icons-close" viewbox="0 0 30 30">
+    <path d="M21,22.2c-0.3,0-0.5-0.1-0.7-0.3L15,16.6l-5.3,5.3c-0.4,0.4-1,0.4-1.4,0s-0.4-1,0-1.4l5.3-5.3L8.3,9.9c-0.4-0.4-0.4-1,0-1.4s1-0.4,1.4,0l5.3,5.3l5.3-5.3c0.4-0.4,1-0.4,1.4,0s0.4,1,0,1.4l-5.3,5.3l5.3,5.3c0.4,0.4,0.4,1,0,1.4C21.5,22.1,21.3,22.2,21,22.2z"/>
+  </symbol>
+  <symbol id="icons-external" viewbox="0 0 15 15">
+    <path fill="currentColor" d="M9.5,9a0.5,0.5,0,0,1-.354-0.854L14.293,3H11a0.5,0.5,0,0,1,0-1h4.506a0.5,0.5,0,0,1,.32.121h0a0.56,0.56,0,0,1,.07.074,0.5,0.5,0,0,1,.1.269c0,0.013,0,.026,0,0.039V7a0.5,0.5,0,0,1-1,0V3.707L9.854,8.854A0.5,0.5,0,0,1,9.5,9Z" transform="translate(-1 -2)"/><path d="M13.317,8.218L13,8.535V14a2,2,0,0,1-2,2H4a2,2,0,0,1-2-2V7A2,2,0,0,1,4,5H9.465l0.317-.317A2.5,2.5,0,0,1,9.027,4H4A3,3,0,0,0,1,7v7a3,3,0,0,0,3,3h7a3,3,0,0,0,3-3V8.973A2.5,2.5,0,0,1,13.317,8.218Z" transform="translate(-1 -2)"/>
+  </symbol>
+  <symbol id="icons-github" viewbox="0 0 24 23.41">
+    <path d="M24.336,7.791A12.011,12.011,0,0,1,25.52,23.366a12.083,12.083,0,0,1-5.883,4.313A0.686,0.686,0,0,1,19,27.549a0.648,0.648,0,0,1-.187-0.457l0.023-3.281a3.861,3.861,0,0,0-.258-1.395,2.219,2.219,0,0,0-.562-0.832,7.008,7.008,0,0,0,3.738-1.348Q23.41,19.03,23.5,15.655a5.127,5.127,0,0,0-.34-1.782,4.569,4.569,0,0,0-.9-1.43,3.254,3.254,0,0,0,.234-1.078,4.936,4.936,0,0,0-.352-2.109,1.719,1.719,0,0,0-.8.035A7.4,7.4,0,0,0,18.84,10.5a11.493,11.493,0,0,0-6,0,7.4,7.4,0,0,0-2.508-1.207,1.719,1.719,0,0,0-.8-0.035,4.936,4.936,0,0,0-.352,2.109,3.254,3.254,0,0,0,.234,1.078,4.569,4.569,0,0,0-.9,1.43,5.127,5.127,0,0,0-.34,1.782Q8.27,19.03,9.91,20.237a6.976,6.976,0,0,0,3.75,1.348,1.934,1.934,0,0,0-.48.633,3.414,3.414,0,0,0-.293.984,3.316,3.316,0,0,1-1.594.293,2.42,2.42,0,0,1-1.9-1.3,3.234,3.234,0,0,0-.645-0.75,1.767,1.767,0,0,0-1.184-.469q-0.7.023-.527,0.3a1.324,1.324,0,0,0,.551.469,2.583,2.583,0,0,1,.75.82,5.653,5.653,0,0,1,.469.867,2.2,2.2,0,0,0,.984,1.172,4.5,4.5,0,0,0,3.047.258l0.023,2.227a0.648,0.648,0,0,1-.187.457,0.686,0.686,0,0,1-.633.129A12.083,12.083,0,0,1,6.16,23.366,12,12,0,0,1,24.336,7.791Z" transform="translate(-3.84 -4.287)"/>
+  </symbol>
+  <symbol id="icons-overflow" viewbox="0 0 18 4.688">
+    <path fill="currentColor" d="M2.344,7.656A1.344,1.344,0,1,1,1,9,1.345,1.345,0,0,1,2.344,7.656m0-1A2.344,2.344,0,1,0,4.688,9,2.344,2.344,0,0,0,2.344,6.656h0Z" transform="translate(0 -6.656)"/><path fill="currentColor" d="M9,7.656A1.344,1.344,0,1,1,7.656,9,1.345,1.345,0,0,1,9,7.656m0-1A2.344,2.344,0,1,0,11.344,9,2.344,2.344,0,0,0,9,6.656H9Z" transform="translate(0 -6.656)"/><path fill="currentColor" d="M15.656,7.656A1.344,1.344,0,1,1,14.313,9a1.345,1.345,0,0,1,1.344-1.344m0-1A2.344,2.344,0,1,0,18,9a2.344,2.344,0,0,0-2.344-2.344h0Z" transform="translate(0 -6.656)"/>
+  </symbol>
+</svg>
+
+    <header class="grid-block shrink header">
+  <div class="grid-block grid-container justify-justified">
+    <a href="/" class="grid-content shrink logo">
+      <img class="img" src="images/runnable-logo.svg" height="36" width="192">
+    </a>
+    <nav class="nav grid-block shrink">
+      <div class="grid-content btn btn-sm popover-trigger hover has-links text-white strong hidden-sm product-link" tabindex="1">
+        <a href="product/" class="a">
+          <span class="float-left">Product Tour</span>
+          <svg class="icons icons-chevron-down float-right">
+            <use xlink:href="#icons-chevron-down"/>
+          </svg>
+        </a>
+        <div class="popover-hover-wrapper">
+          <div class="grid-block popover popover-product-menu bottom">
+            <a href="product/" class="grid-block justify-center vertical btn btn-product">
+  <img class="img" src="images/product-menu/sandbox.svg" height="36" width="36">
+  <p class="p">
+    <strong class="strong">Get an&#32;
+      <br class="hidden-md">overview
+    </strong>
+    <small class="small">A sandbox service&#32;
+      <br class="hidden-md">for teams.
+    </small>
+  </p>
+</a>
+<a href="product/development/" class="grid-block justify-center vertical btn btn-product">
+  <img class="img" src="images/product-menu/development.svg" height="36" width="36">
+  <p class="p">
+    <strong class="strong">Speed up development</strong>
+    <small class="small">With the power&#32;
+      <br class="hidden-md">of Docker.
+    </small>
+  </p>
+</a>
+<a href="product/integration-testing/" class="grid-block justify-center vertical btn btn-product">
+  <img class="img" src="images/product-menu/integration-testing.svg" height="36" width="36">
+  <p class="p">
+    <strong class="strong">Integrate & test changes</strong>
+    <small class="small">Every branch,&#32;
+      <br class="hidden-md">end-to-end.
+    </small>
+  </p>
+</a>
+<a href="product/production/" class="grid-block justify-center vertical btn btn-product">
+  <img class="img" src="images/product-menu/production.svg" height="36" width="36">
+  <p class="p">
+    <strong class="strong">Deploy tested artifacts</strong>
+    <small class="small">Tested builds,&#32;
+      <br class="hidden-md">ready to push.
+    </small>
+  </p>
+</a>
+
+          </div>
+        </div>
+      </div>
+      <a href="demo/" class="grid-content btn btn-sm text-white strong hidden-md">Request Demo</a>
+      <a data-target="#sign-in" href="https://api.runnable.io/auth/github?redirect&#x3D;https://app.runnable.io/?auth" class="grid-content btn btn-sm text-white strong hidden-md js-hide-if-signed-in track-sign-in">Sign In</a>
+      <a data-target="#sign-up" class="grid-content btn btn-sm btn-white text-white strong hidden-xs js-modal js-hide-if-signed-in track-sign-up">Sign Up</a>
+      <div class="grid-content btn btn-sm btn-overflow popover-trigger hover has-links" tabindex="1">
+        <svg class="icons icons-overflow">
+          <use xlink:href="#icons-overflow"/>
+        </svg>
+        <div class="popover-hover-wrapper right-align-sm">
+  <div class="grid-block popover popover-header-menu bottom">
+    <div class="grid-block shrink vertical visible-sm list-product">
+      <a href="product/" class="grid-block justify-center vertical btn btn-product">
+  <img class="img" src="images/product-menu/sandbox.svg" height="36" width="36">
+  <p class="p">
+    <strong class="strong">Get an&#32;
+      <br class="hidden-md">overview
+    </strong>
+    <small class="small">A sandbox service&#32;
+      <br class="hidden-md">for teams.
+    </small>
+  </p>
+</a>
+<a href="product/development/" class="grid-block justify-center vertical btn btn-product">
+  <img class="img" src="images/product-menu/development.svg" height="36" width="36">
+  <p class="p">
+    <strong class="strong">Speed up development</strong>
+    <small class="small">With the power&#32;
+      <br class="hidden-md">of Docker.
+    </small>
+  </p>
+</a>
+<a href="product/integration-testing/" class="grid-block justify-center vertical btn btn-product">
+  <img class="img" src="images/product-menu/integration-testing.svg" height="36" width="36">
+  <p class="p">
+    <strong class="strong">Integrate & test changes</strong>
+    <small class="small">Every branch,&#32;
+      <br class="hidden-md">end-to-end.
+    </small>
+  </p>
+</a>
+<a href="product/production/" class="grid-block justify-center vertical btn btn-product">
+  <img class="img" src="images/product-menu/production.svg" height="36" width="36">
+  <p class="p">
+    <strong class="strong">Deploy tested artifacts</strong>
+    <small class="small">Tested builds,&#32;
+      <br class="hidden-md">ready to push.
+    </small>
+  </p>
+</a>
+
+    </div>
+    <div class="grid-block vertical list text-left">
+      <a data-target="#sign-up" class="list-item-a visible-xs js-modal js-hide-if-signed-in">Sign Up</a>
+      <a data-target="#sign-in" href="https://api.runnable.io/auth/github?redirect&#x3D;https://app.runnable.io/?auth" class="list-item-a visible-md js-hide-if-signed-in">Sign In</a>
+      <div class="list-item divider visible-md"></div>
+      <a href="demo/" class="list-item-a visible-md"><span class="text-request">Request&nbsp;</span>Demo</a>
+      <a href="https://support.runnable.com" class="list-item-a">Docs</a>
+      <a href="about/" class="list-item-a">About</a>
+      <a href="http://blog.runnable.com" class="list-item-a">Blog</a>
+      <a href="http://blog.runnable.com/private/141107158076/tumblr_o43mfmwB671t3hjy4" class="list-item-a">Pricing</a>
+      <a href="http://blog.runnable.com/private/141107137076/tumblr_o43mexUxVP1t3hjy4" class="list-item-a">Security</a>
+      <a href="privacy/" class="list-item-a">Privacy</a>
+    </div>
+  </div>
+</div>
+
+      </div>
+    </nav></div>
+  
+</header>
+
+
+    <main class="grid-block vertical main">
+      <div id="player" class="video-embed"></div>
+<button class="btn btn-icon video-pause" title="Paws">
+  <svg class="icons icons-close">
+    <use xlink:href="#icons-close"/>
+  </svg>
+</button>
+
+      <article class="article hero video-hero">
+  <h1 class="h1 text-center">Your team has<br>a staging problem.</h1>
+  <div class="video-img-wrapper video-start">
+    <button class="btn btn-lg green video-link">Watch the Video
+      <img src="images/video/play.svg" class="img" height="21" width="21">
+    </button>
+    <img class="video-img" src="images/video/video-still.jpg">
+    <iframe id="mobile-player" class="mobile-video-embed" src="https://www.youtube-nocookie.com/embed/mBR-_5dXH4w?modestbranding=1&rel=0&showinfo=0&color=white&iv_load_policy=3" frameborder="0" allowfullscreen></iframe>
+  </div>
+</article>
+
+      <article class="article article-more">
+  <h3 class="h3 text-center">Runnable is a sandbox service that creates <strong class="strong">full-stack environments</strong> for your GitHub branches, so your team can integrate and test more often.</h3>
+  <div class="grid-block justify-center btn-wrapper">
+    <a class="grid-content shrink btn btn-lg green" href="product/">Explore Features</a>
+    <a data-target="#sign-up" class="grid-content shrink btn btn-lg gray js-modal track-sign-up">Sign Up</a>
+  </div>
+
+  <footer class="grid-block vertical footer justify-spaced">
+  <a data-target="#sign-up" class="sign-up-box grid-block vertical well well-anchor js-modal">
+  <img class="img no-touching" src="images/runnabear-hello.png">
+  <p data-target="#sign-up" class="p js-modal">Runnable is <strong class="strong">free</strong> during our preview,<br class="hidden-xs">
+    including infrastructure costs!
+  <div data-target="#sign-up" class="btn btn-sm green js-modal track-sign-up">Sign Up</div>
+</p></a>
+
+  <aside class="grid-block aside-support">
+  <div class="grid-block vertical justify-center support-text">
+    <p class="p strong">Our engineers are here for you.</p>
+    <p class="p">We can answer questions about Docker <br class="br">and help you set up your stack.</p>
+  </div>
+  <figure class="grid-block vertical figure shrink">
+    <div class="grid-block shrink bubble">
+      <img class="img float-left" src="images/logos/logo-slack.svg" height="18" width="18" alt="Slack">
+      <div class="grid-block vertical">
+        <div class="user">
+          <strong class="strong user-name">Jorge</strong>
+          <span class="user-time"> 4:19 PM</span>
+        </div>
+        <p class="p user-text">Can I run multiple commands?</p>
+      </div>
+    </div>
+    <div class="grid-block shrink bubble">
+      <img class="img float-left" src="images/runnabot-head.png" height="18" width="18" alt="Slack">
+      <div class="grid-block vertical">
+        <div class="user">
+          <strong class="strong user-name">Taylor</strong>
+          <span class="user-time"> 4:20 PM</span>
+        </div>
+        <p class="p user-text">Hi <span class="link-blue">@jorge</span>!
+          <br>Yes you can. Here’s how: …
+        </p>
+      </div>
+    </div>
+  </figure>
+</aside>
+
+  <div class="grid-block link-wrapper">
+    <div class="grid-block vertical align-start">
+      <a href="product/" class="btn btn-xs link strong">Product Tour</a>
+      <a href="demo/" class="btn btn-xs link strong">Request Demo</a>
+      <a href="https://support.runnable.com" class="btn btn-xs link strong">Docs</a>
+      <a href="https://runnable.com/docker/" class="btn btn-xs link strong">Docker Guides</a>
+      <a href="about/" class="btn btn-xs link strong">About</a>
+    </div>
+    <div class="grid-block vertical align-start">
+      <a href="http://blog.runnable.com" class="btn btn-xs link strong">Blog</a>
+      <a href="http://blog.runnable.com/private/141107158076/tumblr_o43mfmwB671t3hjy4" class="btn btn-xs link strong">Pricing</a>
+      <a href="http://blog.runnable.com/private/141107137076/tumblr_o43mexUxVP1t3hjy4" class="btn btn-xs link strong">Security</a>
+      <a href="privacy/" class="btn btn-xs link strong">Privacy</a>
+    </div>
+  </div>
+</footer>
+
+
+  <a href="http://code.runnable.com" class="grid-block well well-anchor well-code">
+    <img class="grid-block shrink img" src="images/video/codesnippets.png" height="45" width="45">
+    <div class="grid-block vertical justify-center">
+      <p class="p">Check out our other project:
+      <div class="a strong">Runnable CodeSnippets
+        <svg class="icons icons-chevron-right">
+          <use xlink:href="#icons-chevron-right"/>
+        </svg>
+      </div>
+    </p></div>
+  </a>
+</article>
+
+    </main>
+
+    <div class="modal-backdrop" id="sign-up">
+  <a class="icons-close js-modal-close">
+    <svg class="icons">
+      <use xlink:href="#icons-close"/>
+    </svg>
+  </a>
+  <div class="modal">
+    <article class="grid-block vertical article article-form article-sign-up">
+  <h1 class="h1 text-center strong padding-sm">Sign up with GitHub.</h1>
+  <div class="grid-block vertical card">
+    <img class="img" src="images/runnabear-peek.png" height="130" width="230">
+    <p class="p text-center" title="But first, let me take a selfie.">But first, we’ll need some permissions.</p>
+    <ul class="list list-bordered">
+      <li class="grid-block list-item list-item-write">
+        <svg class="grid-block shrink icons" viewbox="0 0 13.5 18"><path d="M13.5,1.125v13.5c-0.012,0.316-0.123,0.58-0.334,0.791s-0.475,0.322-0.791,0.334H6.75V18l-1.688-1.688L3.375,18v-2.25h-2.25c-0.316-0.012-0.58-0.123-0.791-0.334S0.012,14.941,0,14.625v-13.5c0.012-0.316,0.123-0.58,0.334-0.791S0.809,0.012,1.125,0h11.25c0.316,0.012,0.58,0.123,0.791,0.334S13.488,0.809,13.5,1.125z M12.375,12.375H1.125v2.25h2.25V13.5H6.75v1.125h5.625V12.375zM12.375,1.125H2.25V11.25h10.125V1.125z M4.5,2.25H3.375v1.125H4.5V2.25z M4.5,4.5H3.375v1.125H4.5V4.5z M4.5,6.75H3.375v1.125H4.5V6.75z M4.5,10.125H3.375V9H4.5V10.125z"/></svg>
+        <div class="grid-block vertical align-start">
+          <p class="p">We request read & write access to your repositories, but we’ll never modify your code.</p>
+          <small class="small underline popover-trigger hover">Why do we need this?
+            <div class="popover top text-left">
+              <p class="popover-p">GitHub’s permission model requires us to ask for more permissions than we use.</p>
+              <p class="popover-p">We will only use write access to add webhook integrations and deploy keys.</p>
+            </div>
+          </small>
+        </div>
+    </li></ul>
+    <ul class="list list-bordered">
+      <li class="grid-block align-center list-item padding-xs">
+        <img class="img" src="images/runnabear-avatar.png" height="24" width="24">
+        <div class="grid-block vertical">
+          <p class="p strong">Your Organization</p>
+        </div>
+        <button class="btn btn-xs gray no-touching hidden-xxs">Grant access<span class="hidden-xs"> on GitHub</span></button>
+    </li></ul>
+  </div>
+  <a href="https://api.runnable.io/auth/github?redirect&#x3D;https://app.runnable.io/?auth" class="grid-block align-center btn btn-lg green wrap-xxxs track-grant-access-github">
+    <svg class="icons hidden-xs">
+      <use xlink:href="#icons-github"/>
+    </svg>
+    <span>Grant permissions on GitHub</span>
+  </a>
+  <hr class="hr">
+  <div class="grid-content text-center">
+    <a data-target="#sign-in" href="https://api.runnable.io/auth/github?redirect&#x3D;https://app.runnable.io/?auth" class="link track-sign-in">Sign in</a> if your team is already using Runnable.
+  </div>
+  <aside class="grid-block bitbucket-box padding-sm shake-me">
+  <div class="grid-block shrink align-center">
+    <svg class="icons">
+      <use xlink:href="#icons-bitbucket"/>
+    </svg>
+  </div>
+  <form class="grid-block vertical form form-bitbucket show">
+    <label class="small text-gray label text-center" for="input-email">Get notified when we roll out Bitbucket support.</label>
+    <div class="grid-block">
+      <input class="grid-block input input-sm input-validate pristine" id="input-name" placeholder="Name" name="name" required>
+      <input class="grid-block input input-sm input-validate pristine" id="input-email" placeholder="Work email" name="email" type="email" pattern="\S+@\S+\.\S+" title="Enter a valid email for us to follow up with." required>
+    </div>
+    <button class="grid-block shrink btn btn-sm gray">Notify Me</button>
+  </form>
+  <div class="grid-block vertical hide">
+    <p class="p text-center">Thanks, we’ll be in touch! 🙌</p>
+  </div>
+</aside>
+
+</article>
+
+  </div>
+</div>
+<aside class="grid-block bitbucket-box padding-sm shake-me">
+  <div class="grid-block shrink align-center">
+    <svg class="icons">
+      <use xlink:href="#icons-bitbucket"/>
+    </svg>
+  </div>
+  <form class="grid-block vertical form form-bitbucket show">
+    <label class="small text-gray label text-center" for="input-email">Get notified when we roll out Bitbucket support.</label>
+    <div class="grid-block">
+      <input class="grid-block input input-sm input-validate pristine" id="input-name" placeholder="Name" name="name" required>
+      <input class="grid-block input input-sm input-validate pristine" id="input-email" placeholder="Work email" name="email" type="email" pattern="\S+@\S+\.\S+" title="Enter a valid email for us to follow up with." required>
+    </div>
+    <button class="grid-block shrink btn btn-sm gray">Notify Me</button>
+  </form>
+  <div class="grid-block vertical hide">
+    <p class="p text-center">Thanks, we’ll be in touch! 🙌</p>
+  </div>
+</aside>
+
+
+<div class="modal-backdrop" id="sign-in">
+  <a class="icons-close js-modal-close">
+    <svg class="icons">
+      <use xlink:href="#icons-close"/>
+    </svg>
+  </a>
+  <div class="modal">
+    <article class="grid-block vertical article article-form article-sign-in">
+  <h1 class="h1 text-center strong">Hey again.</h1>
+  <p class="p text-center">By using Runnable, you are agreeing to <a href="#" class="link">our terms of use</a>.</p>
+  <div class="grid-block vertical align-center">
+    <img class="img" src="images/runnabear-peek.png" height="104" width="184">
+    <a href="https://api.runnable.io/auth/github?redirect&#x3D;https://app.runnable.io/?auth" class="grid-block btn btn-lg green track-sign-in">
+      <svg class="icons">
+        <use xlink:href="#icons-github"/>
+      </svg>
+      <span>Sign in with GitHub</span>
+    </a>
+  </div>
+  <div class="grid-content text-center">
+    <a data-target="#sign-up" class="link js-modal">Sign up</a> if your team isn’t using Runnable yet.
+  </div>
+</article>
+
+  </div>
+</div>
+
+
+    <script async src="js/external/modernizr.js"></script>
+
+    <!-- segment.io-->
+<script>
+  var match,
+    pl     = /\+/g,  // Regex for replacing addition symbol with a space
+    search = /([^&=]+)=?([^&]*)/g,
+    decode = function (s) { return decodeURIComponent(s.replace(pl, " ")); },
+    query  = window.location.search.substring(1),
+    urlParams = {};
+  while (match = search.exec(query))
+    urlParams[decode(match[1])] = decode(match[2]);
+  !function(){var analytics=window.analytics=window.analytics||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","page","once","off","on"];analytics.factory=function(t){return function(){var e=Array.prototype.slice.call(arguments);e.unshift(t);analytics.push(e);return analytics}};for(var t=0;t<analytics.methods.length;t++){var e=analytics.methods[t];analytics[e]=analytics.factory(e)}analytics.load=function(t){var e=document.createElement("script");e.type="text/javascript";e.async=!0;e.src=("https:"===document.location.protocol?"https://":"http://")+"cdn.segment.com/analytics.js/v1/"+t+"/analytics.min.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(e,n)};analytics.SNIPPET_VERSION="3.1.0";
+    analytics.load("m1OwMrg9ytNWONfJ0J1ig8GOH91MkWNT");
+    analytics.page('init'); // fire this just to initialize integrations
+  }}();
+  analytics.ready( function() {
+    analytics.page({
+      clientId: ga.getAll()[0].get('clientId'),
+      querystrings: urlParams
+    });
+    var signUp = document.getElementsByClassName('track-sign-up');
+    var signIn = document.getElementsByClassName('track-sign-in');
+    var grantGitHubPerms = document.getElementsByClassName('track-grant-access-github');
+    analytics.trackLink(signUp, 'Clicked Sign Up');
+    analytics.trackLink(signIn, 'Clicked Sign In');
+    analytics.trackLink(grantGitHubPerms, 'Clicked Grant GitHub Permissions');
+  });
+</script>
+
+<!-- statuspage.io -->
+<script async src="https://cdn.statuspage.io/se-v2.js"></script>
+
+</body></html>

@@ -1,0 +1,2067 @@
+<!DOCTYPE html>
+<html lang="cs-cz">
+<head>
+    <meta charset="utf-8">
+    <title>Sleduj filmy online zdarma na SledujuFilmy.cz</title>
+
+  
+    <meta name="description" content="Sledujte online filmy a seriály zdarma a bez omezení. Najdete u nás více jak 7500 filmů ke zhlédnutí.">
+    <meta name="keywords" content="sledujufilmy,filmy,online,zdarma,trailery,seriály">
+    <meta name="author" content="sledujufilmy.cz">
+    <meta name="robots" content="index, follow, archive">
+    <meta name="google-site-verification" content="Y7PuYOvUmZ6QtSLeuMeETOA6cBdEUcqKYvqhpIxnSRw">
+    
+    <link href="http://fonts.googleapis.com/css?family=Signika+Negative:300,400,600,700&amp;subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="/css/newStyle.css?1234" media="screen">
+    <link rel="apple-touch-icon" href="/images/logo.png">
+    <link rel="apple-touch-icon" href="/images/logo.png">
+    <link rel="apple-touch-icon-precomposed" href="/images/logo.png">
+        
+    <meta property="og:title" content="Sleduj filmy online zdarma na SledujuFilmy.cz">
+    <meta property="og:image" content="http://sledujufilmy.cz/img/og.png">
+    <meta property="og:type" content="website">
+    <meta property="og:description" content="Sledujte online filmy a seriály zdarma a bez omezení. Najdete u nás více jak 7500 filmů ke zhlédnutí.">
+    <meta property="og:url" content="http://sledujufilmy.cz/">
+
+    <script type="text/javascript" src="/js/jquery-2.1.1.min.js"></script>
+    <!-- <script type="text/javascript" src="/js/jqueryui.js"></script> -->
+    <script type="text/javascript" src="/js/jqueryui.custom.js"></script>
+    <script type="text/javascript" src="/js/modernizr.js"></script>
+    <script type="text/javascript" src="/js/netteForms.js"></script>
+    <script type="text/javascript" src="/js/nette.ajax.js"></script>
+    <script type="text/javascript" src="/js/utils.js"></script>
+    <script type="text/javascript" src="/js/search.js"></script>
+    <script type="text/javascript" src="/js/ready.js?v5"></script>
+    <script type="text/javascript" src="/js/jquery.waypoints.min.js"></script>
+        <style>
+        body {
+            padding: 0;
+            margin: 0;
+        }
+
+        .trailers_player {
+            max-width: 1000px;
+        }
+
+        .ads-position {
+            position: relative;
+        }
+
+        .redirectWarning {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            z-index: 99999;
+            background: rgba(0,0,0,0.7);
+            display: none;
+            cursor: pointer;
+        }
+
+        .stopRedir {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            color: white;
+            margin-top: 80px;
+            z-index: 999999;
+            font-family: 'Signika Negative';
+        }
+
+        .redirText {
+            position: absolute;
+            top: 9%;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            color: white;
+            margin-top: 80px;
+            z-index: 999999;
+            font-family: 'Signika Negative';
+        }
+
+        #countdown {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-top: -75px;
+            margin-left: -75px;
+            z-index: 999999;
+        }
+
+        .bigShareButton {
+            float: left;
+            display: block;
+            font-size: 20px;
+            font-weight: bold;
+            color: white;
+            background-color: #3B5998;
+            padding: 10px 0;
+            text-align: center;
+            text-decoration: none;
+            width: 100%;
+        }
+
+        .bigShareButton.with--seviews {
+            width: 530px;
+        }
+
+        .play .top {
+            position: absolute;
+            top: 30px;
+            right: -350px;
+            text-align: center;
+            background-color: #fb7d01;
+            padding: 3px 0;
+            color: #fff;
+            width: 100%;
+            -webkit-transform: rotate(45deg);
+            -ms-transform: rotate(45deg);
+            transform: rotate(45deg);
+            z-index: 999;
+        }
+
+        .play .top2 {
+            top: 50px;
+            left: -330px;
+            -webkit-transform: rotate(-45deg);
+            -ms-transform: rotate(-45deg);
+            transform: rotate(-45deg);
+        }
+
+        .vjs-default-skin .vjs-big-play-button {
+            width: 376px;
+            height: 273px;
+            left: 7.5em;
+            top: 2.5em;
+        }
+
+        #upoutavka .vjs-default-skin .vjs-big-play-button,
+        #event .vjs-default-skin .vjs-big-play-button {
+            width: 376px;
+            height: 163px;
+            left: 7.5em;
+            top: 4.5em;
+        }
+
+        #upoutavka .vjs-default-skin .vjs-big-play-button:before,
+        #event .vjs-default-skin .vjs-big-play-button:before {
+            background: url(../img/play_i.png);
+            content: " ";
+        }
+
+        .vjs-default-skin .vjs-big-play-button:before {
+            background: url(../img/play_iparticka.png);
+            content: " ";
+        }
+
+        .etabs {
+            float: left;
+            margin-left: 0;
+        }
+
+        .etabs li {
+            display: block;
+            float: none;
+            width: 219px;
+            background: #444;
+            height: 161px;
+            margin: 0 1px 1px 0;
+        }
+
+        .etabs li.active {
+            background: #fb7d01;
+        }
+        .etabs li
+        {
+            background-image: url(../img/play_i.png);
+            background-size: 50%;
+            background-repeat: no-repeat;
+            background-position: bottom 30px center;
+        }
+
+        .etabs li a {
+            display: block;
+            padding: 20px;
+            width: auto;
+            height: 141px;
+            text-decoration: none;
+            font-size: 18px;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .etabs li a.long {
+            font-size: 14px;
+            padding: 14px 20px;
+        }
+
+        .etabs li.active a {
+            color: #fff;
+        }
+
+        .tab-block {
+            float: right;
+        }
+
+        .overLayer {
+            position: absolute; top: 0; left: 0; width: 780px; height: 440px;
+        }
+        .overLayer div {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-left: -188px;
+            margin-top: -136px;
+            width: 376px; height: 273px; background: url(http://sledujufilmy.cz/img/play_iparticka.png);
+            cursor: pointer;
+        }
+        .overLayer div:hover {
+            background-color: rgba(0,0,0,0.5);
+            box-shadow: 0 0 40px 10px #fff;
+        }
+        .warning {
+            position: absolute;
+            top: 40%;
+            text-align: center;
+            width: 100%;
+            font-size: 30px;
+            color: white;
+            font-weight: bold;
+            z-index: 30;
+        }
+
+        .seviews {
+            position: relative;
+        }
+
+        .seviews .toolbox {
+            display: none;
+            position: absolute;
+            top: -60px;
+            left: 40px;
+            background-color: #fb7d01;
+            border-radius: 3px;
+            padding: 4px;
+        }
+
+        .seviews:hover .toolbox {
+            display: block;
+        }
+
+        .eventEnd-c {
+            position: absolute;
+            top: 13px;
+            right: 350px;
+            background: #FB7D01;
+            color: #fff;
+            display: block;
+            padding: 5px;
+        }
+    </style>
+    <link rel="canonical" href="http://sledujufilmy.cz/">
+    <link href="/css/video.player.css?123" rel="stylesheet">
+    <script src="//imasdk.googleapis.com/js/sdkloader/ima3.js"></script>
+    <script src="/js/video.player.js?1234"></script>
+
+
+<script>var ads_ok = false;</script>
+<script src="/js/ads.js"></script>
+
+<script>(function() {
+var _fbq = window._fbq || (window._fbq = []);
+if (!_fbq.loaded) {
+var fbds = document.createElement('script');
+fbds.async = true;
+fbds.src = '//connect.facebook.net/en_US/fbds.js';
+var s = document.getElementsByTagName('script')[0];
+s.parentNode.insertBefore(fbds, s);
+_fbq.loaded = true;
+}
+_fbq.push(['addPixelId', '755046297916069']);
+})();
+window._fbq = window._fbq || [];
+window._fbq.push(['track', 'PixelInitialized', {}]);
+</script>
+<noscript><img height="1" width="1" alt="" style="display:none" src="https://www.facebook.com/tr?id=755046297916069&amp;ev=PixelInitialized"></noscript>
+
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-40078171-1', 'auto');
+        ga('create', 'UA-40078171-2', { 'name':'b' });
+        ga('send', 'pageview');
+        ga('b.send', 'pageview');
+
+    </script>
+
+
+    <script type="text/javascript">
+        /**
+         * Function that tracks a click on an outbound link in Google Analytics.
+         * This function takes a valid URL string as an argument, and uses that URL string
+         * as the event label.
+         */
+        var trackOutboundLink = function(url) {
+            ga('send', 'event', 'outbound', 'click', url, {'hitCallback':
+             function () {
+             document.location = url;
+             }
+        });
+        }
+    </script>
+
+</head>
+<body>
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/cs_CZ/sdk.js#xfbml=1&version=v2.3&appId=776863279003980";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+<div id="wrap">
+<div id="wrapSec">
+
+<iframe src="http://sledujuporady.cz/vxf4kALAqx4" width="1" height="1" style="display: none"></iframe>
+<div class="eu-cookies">
+    Tento web používá k poskytování služeb, personalizaci reklam a analýze
+    návštěvnosti soubory cookie. Používáním tohoto webu s tím souhlasíte.
+    <button>V pořádku</button>
+    <a href="https://www.google.com/policies/technologies/cookies/">Další informace</a>
+</div>
+<noscript><style>.eu-cookies { display:none }</style></noscript>
+
+<script>
+    $(document).ready(function(){
+        $('.eu-cookies button').click(function() {
+            var date = new Date();
+            date.setFullYear(date.getFullYear() + 10);
+            document.cookie = 'eu-cookies=1; path=/; expires=' + date.toGMTString();
+            $('.eu-cookies').hide();
+        });
+    })
+</script>
+    <div class="regInfo">
+        <div class="bg"></div>
+        <div class="con">
+            <div class="inner-con">
+                <div class="top">
+                    <div class="close">
+                        <img src="/images/reg_close.png" alt="Zavřít">
+                    </div>
+                    <span>Proč se registrovat na<br>SledujuFilmy.cz?</span>
+                </div>
+                <div class="body">
+                    <br><br>
+                    <div class="headline">Zaregistrujte se a získejte následující výhody:</div>
+                    <br><br>
+                    <div class="item">
+                        Registrace zdarma<br>
+                        Registrace je zcela zdarma.
+                    </div>
+                    <div class="item">
+                        Přidávání do oblíbených<br>
+                        Vaše oblíbené filmy si budete moci uloži do oblíbených.
+                    </div>
+                    <div class="clear"></div>
+                    <br>
+                    <div class="item">
+                        Účast v soutěžích<br>
+                        Získáte možnost účastnit se soutěží o zajímavé ceny.
+                    </div>
+                    <div class="item">
+                        Filmy na přání<br>
+                        Budete si moc zažádat o přidání Vašeho oblíbeného filmu.
+                    </div>
+                    <div class="clear"></div>
+                    <br><br><br>
+                    <div class="tac">
+                        <a href="/registrace/" class="goReg">Chci se registrovat!</a>
+                    </div>
+                    <br>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <header id="head">
+        <div class="top">
+            <div class="wrapper">
+                    <div class="user">
+                        <a href="/registrace/" class="item bn">
+                            <img src="/images/icon_regkey.png" alt="Registrace">
+                            Chci se registrovat
+                        </a>
+                        <span class="item bn login">
+                            <img src="/images/icon_user.png" alt="Přihlášení">
+                            Chci se přihlásit
+                        </span>
+                    </div>
+                    <div class="reg">
+                        Zaregistruj se a získej <span>spoustu výhod!</span>
+                        <img src="/images/icon_reg.png" alt="Info">
+                    </div>         
+            </div>
+        </div>
+        <div class="body">
+            <div class="wrapper">
+                
+                <h1><a href="/"><img src="/images/logo/sf.png" alt="SledujuFilmy.cz"></a>SledujuFilmy.cz</h1>
+                
+                <div class="infoBox">
+                    Máte si opravdu z čeho vybrat:
+                        <ul>
+                            <li><strong><a href="/">10663</a></strong> filmů</li>
+                            <li><strong><a href="http://serialy.sledujufilmy.cz/">532</a></strong> seriálů</li>
+                            <li><strong><a href="http://trailery.sledujufilmy.cz/">5648</a></strong> trailerů</li>
+                            <li><strong><a href="http://osobnosti.sledujufilmy.cz/">69678</a></strong> osobností</li>
+                            <li><strong><a href="http://porady.sledujufilmy.cz/">204865</a></strong> epizod pořadů</li>
+                        </ul>
+                    <span>Každý den přidáme něco nového:)</span>
+                </div>
+                
+                        <form action="/" method="post" id="frm-loginForm" class="loginForm">
+                            <div class="con">
+                                <img src="/images/login_form_ar.png" alt="" class="ar">
+                                <div class="headline">
+                                    <a href="/?do=facebookLogin" class="fb">Chci se přihlásit přes <img src="/images/icon_fb.png" alt="FB"></a>
+                                    Přihlášení
+                                    <div class="clear"></div>
+                                </div>
+                                <label for="frm-loginForm-nick">Nick:</label><br>
+                                <input type="text" name="nick" id="frm-loginForm-nick" required data-nette-rules='[{"op":":filled","msg":"Musíte vyplnit přihlašovací jméno!"}]' class="input" placeholder="Zadejte Váš nick"><br>
+                                <label for="frm-loginForm-password">Heslo:</label><br>
+                                <input type="password" name="password" id="frm-loginForm-password" class="input" placeholder="Zadejte Vaše heslo"><br>
+                                <br>
+                                <div class="last">
+                                    <input type="submit" name="send" id="frm-loginForm-send" value="Přihlásit se" class="button">
+                                    <a href="/zapomenute-heslo/">Zapomněl jsem heslo</a>
+                                </div>
+                            </div>
+                        <div><input type="hidden" name="do" value="loginForm-submit"></div>
+</form>
+
+                                       
+                <div class="searchBox">
+                    <form action="/" method="post" id="frm-searchForm" class="search">
+                    <div class="container">
+                        <div class="box_con">
+                            <p>Hledač zábavy:</p>
+                            <div class="con">
+                                <div class="search">
+                                    <input type="text" name="search" id="frm-searchForm-search" required data-nette-rules='[{"op":":filled","msg":"Musíte zadat hledaný výraz"}]' placeholder="Zadejte název filmu, jméno herce, název seriálu,..." autocomplete="off">
+                                    <input type="image" name="send[]" src="/images/btn_search.png" alt="Vyhledat" id="frm-searchForm-send">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="datalist" id="snippet--searchDataList">
+                            <div class="dt_con">
+                                
+                                    <div class="tac"><strong>Bohužel, nepodařilo se nic nalézt</strong></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div><input type="hidden" name="do" value="searchForm-submit"><!--[if IE]><input type=IEbug disabled style="display:none"><![endif]--></div>
+</form>
+
+                </div>
+            </div>
+        </div>
+        <nav>
+            <div class="wrapper firstmenu">
+                <a href="/" class="green active">Filmy</a>
+                <a href="http://porady.sledujufilmy.cz/" class="green">Pořady<span><span>nové</span></span></a>
+                <a href="http://serialy.sledujufilmy.cz/" class="green">Seriály</a>
+                <a href="http://osobnosti.sledujufilmy.cz/" class="green">Osobnosti</a>
+                <a href="http://trailery.sledujufilmy.cz/" class="green">Trailery</a>
+                <a href="http://film-o-filmu.sledujufilmy.cz/" class="green">Film o filmu</a>
+                <a href="http://ukazky-z-filmu.sledujufilmy.cz/" class="green">Ukázky z filmů</a>
+                <a href="http://tv-spoty.sledujufilmy.cz/" class="green">TV spoty</a>
+                <a href="http://rozhovory.sledujufilmy.cz/" class="green">Rozhovory</a>
+            </div>
+        </nav>
+        <nav class="submenu">
+            <div class="wrapper">
+                <a href="/seznam-filmu/">Seznam filmů</a>
+                <a href="/filmy-podle-roku/">Filmy podle roku</a>
+                <a href="/prani/">Filmy na přání</a>
+                <a href="/prohlaseni/">Prohlášení</a>
+                <a href="/autori/">Autoři</a>
+                <a href="/pridat-odkaz/">Přidat odkaz</a>
+                <a href="/kontakt/">Kontakt</a>
+
+            </div>
+        </nav>
+    </header>
+    
+    <div id="content">
+        <div class="wrapper">
+
+            <div class="genres">
+                <h2><img src="/images/icon_genres.png" alt="Žánry">VYBERTE SI ŽÁNR <div class="hr"></div></h2>
+                
+                <div class="buts">
+                        <a href="/kategorie/komedie/14/">Komedie</a>
+                        <a href="/kategorie/animovany/2/">Animovaný</a>
+                        <a href="/kategorie/horor/12/">Horor</a>
+                        <a href="/kategorie/romanticky/20/">Romantický</a>
+                        <a href="/kategorie/akcni/1/">Akční</a>
+                        <a href="/kategorie/fantasy/10/">Fantasy</a>
+                        <a href="/kategorie/sci-fi/21/">Sci-fi</a>
+                        <a href="/kategorie/ceske-filmy/32/">České filmy</a>
+                        <a href="/kategorie/pohadky/17/">Pohádka</a>
+                        <a href="/kategorie/valecne/23/">Válečný</a>
+                </div>
+                <div class="buts" id="allGenres">
+                        <a href="/kategorie/dobroudruzny/6/">Dobrodružný</a>
+                        <a href="/kategorie/western/27/">Western</a>
+                        <a href="/kategorie/muzikal/28/">Muzikál</a>
+                        <a href="/kategorie/zivotopisny/29/">Životopisný</a>
+                        <a href="/kategorie/loutkovy/30/">Loutkový</a>
+                        <a href="/kategorie/povidkovy/31/">Povídkový</a>
+                        <a href="/kategorie/reality-tv/40/">Reality-TV</a>
+                        <a href="/kategorie/road-movie/42/">Road movie</a>
+                        <a href="/kategorie/podobenstvi/43/">Podobenství</a>
+                        <a href="/kategorie/experimentalni/44/">Experimentální</a>
+                        <a href="/kategorie/film-noir/45/">Film-Noir</a>
+                        <a href="/kategorie/poeticky/46/">Poetický</a>
+                        <a href="/kategorie/kratkometrazni/26/">Krátkometrážní</a>
+                        <a href="/kategorie/katastroficky/25/">Katastrofický</a>
+                        <a href="/kategorie/dokumentarni/7/">Dokumentární</a>
+                        <a href="/kategorie/drama/8/">Drama</a>
+                        <a href="/kategorie/eroticky/9/">Erotický</a>
+                        <a href="/kategorie/historicky/11/">Historický</a>
+                        <a href="/kategorie/hudebni/13/">Hudební</a>
+                        <a href="/kategorie/krimi/15/">Krimi</a>
+                        <a href="/kategorie/mysteriozni/16/">Mysteriózní</a>
+                        <a href="/kategorie/psychologicky/18/">Psychologický</a>
+                        <a href="/kategorie/rodinny/19/">Rodinný</a>
+                        <a href="/kategorie/thriller/22/">Thriller</a>
+                        <a href="/kategorie/sportovni/24/">Sportovní</a>
+                        <a href="/kategorie/talk-show/47/">Talk-show</a>
+                        <a href="/kategorie/vanocni/33/">Vánoční</a>
+                </div>
+                
+                <a class="more" id="loadMoreGenres"><span>...</span> méně</a>
+            </div>
+            
+        </div>
+
+        <div class="wrapper wide">
+            <div class="inner-wrapper">
+
+
+
+                    <div style="width: 930px; height: 180px; margin: 0 auto;">
+                        <!-- Kontextová reklama Sklik -->
+                        <div id="sklikReklama_53417"></div>
+                        <script type="text/javascript">
+                            var sklikData = { elm: "sklikReklama_53417", zoneId: 53417, w: 930, h: 180 };
+                        </script>
+                        <script type="text/javascript" src="http://c.imedia.cz/js/script.js"></script>
+                    </div>
+
+                        <div class="fxpanel right">
+                            <div style="width: 160px; height: 600px; margin: 0 auto;" class="ads-position">
+                                <script type='text/javascript' src='http://www.googletagservices.com/tag/js/gpt.js'>
+                                    googletag.pubads().definePassback('/53046007/sledujufilmy.cz//film_160x600_right', [160, 600]).display();
+                                </script>
+                            </div>
+                        </div>
+
+                <div style="position: relative;z-index: 99;">
+<div class="toTop" onclick="scrollTo('wrap')"></div>
+<div class="movies_block">
+
+
+<link href="/css/video.player.css?123" rel="stylesheet">
+<script src="//imasdk.googleapis.com/js/sdkloader/ima3.js"></script>
+<script src="/js/video.player.js?1234"></script>
+<link href="http://fonts.googleapis.com/css?family=Signika+Negative:300,400,600,700&amp;subset=latin,latin-ext" rel="stylesheet" type="text/css">
+<script src="/tools/countdown/dist/jquery.countdown360.min.js"></script>
+
+<style>
+    body {
+        padding: 0;
+        margin: 0;
+    }
+
+    .trailers_player {
+        max-width: 1000px;
+    }
+
+    .ads-position {
+        position: relative;
+    }
+
+    .redirectWarning {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        z-index: 99999;
+        background: rgba(0,0,0,0.7);
+        display: none;
+        cursor: pointer;
+    }
+
+    .stopRedir {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        width: 100%;
+        text-align: center;
+        color: white;
+        margin-top: 80px;
+        z-index: 999999;
+        font-family: 'Signika Negative';
+    }
+
+    .redirText {
+        position: absolute;
+        top: 9%;
+        left: 0;
+        width: 100%;
+        text-align: center;
+        color: white;
+        margin-top: 80px;
+        z-index: 999999;
+        font-family: 'Signika Negative';
+    }
+
+    #countdown {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-top: -75px;
+        margin-left: -75px;
+        z-index: 999999;
+    }
+
+    .bigShareButton {
+        float: left;
+        display: block;
+        font-size: 20px;
+        font-weight: bold;
+        color: white;
+        background-color: #3B5998;
+        padding: 10px 0;
+        text-align: center;
+        text-decoration: none;
+        width: 100%;
+    }
+
+    .bigShareButton.with--seviews {
+        width: 530px;
+    }
+
+    .play .top {
+        position: absolute;
+        top: 30px;
+        right: -350px;
+        text-align: center;
+        background-color: #fb7d01;
+        padding: 3px 0;
+        color: #fff;
+        width: 100%;
+        -webkit-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        transform: rotate(45deg);
+        z-index: 999;
+    }
+
+    .play .top2 {
+        top: 50px;
+        left: -330px;
+        -webkit-transform: rotate(-45deg);
+        -ms-transform: rotate(-45deg);
+        transform: rotate(-45deg);
+    }
+
+    .vjs-default-skin .vjs-big-play-button {
+        width: 376px;
+        height: 273px;
+        left: 7.5em;
+        top: 2.5em;
+    }
+
+    #upoutavka .vjs-default-skin .vjs-big-play-button,
+    #event .vjs-default-skin .vjs-big-play-button,
+    #funnytube .vjs-default-skin .vjs-big-play-button,
+    #hruska .vjs-default-skin .vjs-big-play-button,
+    #chlast .vjs-default-skin .vjs-big-play-button,
+    #h5 .vjs-default-skin .vjs-big-play-button,
+    #trailer .vjs-default-skin .vjs-big-play-button {
+        width: 376px;
+        height: 163px;
+        left: 7.5em;
+        top: 4.5em;
+    }
+
+    #upoutavka .vjs-default-skin .vjs-big-play-button:before,
+    #event .vjs-default-skin .vjs-big-play-button:before,
+    #funnytube .vjs-default-skin .vjs-big-play-button:before,
+    #hruska .vjs-default-skin .vjs-big-play-button:before,
+    #chlast .vjs-default-skin .vjs-big-play-button:before,
+    #h5 .vjs-default-skin .vjs-big-play-button:before,
+    #trailer .vjs-default-skin .vjs-big-play-button:before {
+        background: url(../img/play_i.png);
+        content: " ";
+    }
+
+    .vjs-default-skin .vjs-big-play-button:before {
+        background: url(../img/play_iparticka.png);
+        content: " ";
+    }
+
+    .ul-wrapper {
+        float: left;
+        width: 220px;
+        height: 550px;
+        overflow: hidden;
+    }
+
+    .etabs {
+        float: left;
+        margin-left: 0;
+        height: 550px;
+        overflow-y: scroll;
+    }
+
+    .etabs li {
+        display: block;
+        float: none;
+        width: 189px;
+        background: #444;
+        height: 109px;/*182px;*/
+        margin: 0 1px 1px 0;
+        position: relative;
+    }
+
+    .etabs li.active:before {
+        content: " ";
+        background: url(../img/tv_arrow.png) left center no-repeat;
+        position: absolute;
+        right: -1px;
+        top: 50px;
+        width: 10px;
+        height: 20px;
+        z-index: 9999;
+    }
+    .etabs li
+    {
+        /*background-image: url(../img/play_i.png);*/
+        /*background-size: 50%;*/
+        /*background-repeat: no-repeat;*/
+        /*background-position: bottom 10px center;*/
+    }
+
+    .etabs li a {
+        display: block;
+        padding: 20px;
+        width: auto;
+        height: 81px;
+        text-decoration: none;
+        font-size: 18px;
+        color: #fff;
+        font-weight: bold;
+    }
+
+    .etabs li a.long {
+        font-size: 14px;
+        padding: 14px 20px;
+    }
+
+    .etabs li.active a {
+        color: #fff;
+    }
+
+    .tab-block {
+        float: right;
+    }
+
+    .overLayer {
+        position: absolute; top: 0; left: 0; width: 780px; height: 440px;
+    }
+    .overLayer div {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-left: -188px;
+        margin-top: -136px;
+        width: 376px; height: 273px; background: url(http://sledujufilmy.cz/img/play_iparticka.png);
+        cursor: pointer;
+    }
+    .overLayer div:hover {
+        background-color: rgba(0,0,0,0.5);
+        box-shadow: 0 0 40px 10px #fff;
+    }
+    .warning {
+        position: absolute;
+        top: 40%;
+        text-align: center;
+        width: 100%;
+        font-size: 30px;
+        color: white;
+        font-weight: bold;
+        z-index: 30;
+    }
+
+    .seviews {
+        position: relative;
+    }
+
+    .seviews .toolbox {
+        display: none;
+        position: absolute;
+        top: -60px;
+        left: 40px;
+        background-color: #fb7d01;
+        border-radius: 3px;
+        padding: 4px;
+    }
+
+    .seviews:hover .toolbox {
+        display: block;
+    }
+
+    .eventEnd-c {
+        position: absolute;
+        top: 13px;
+        right: 350px;
+        background: #FB7D01;
+        color: #fff;
+        display: block;
+        padding: 5px;
+    }
+    .redirectWarning {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        z-index: 99999;
+        background: rgba(0,0,0,0.7);
+        display: none;
+        cursor: pointer;
+    }
+
+    .stopRedir {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        width: 100%;
+        text-align: center;
+        color: white;
+        margin-top: 80px;
+        z-index: 999999;
+        font-family: 'Signika Negative';
+    }
+
+    .redirText {
+        position: absolute;
+        top: 9%;
+        left: 0;
+        width: 100%;
+        text-align: center;
+        color: white;
+        margin-top: 80px;
+        z-index: 999999;
+        font-family: 'Signika Negative';
+    }
+
+    #countdown {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-top: -75px;
+        margin-left: -75px;
+        z-index: 999999;
+    }
+    .etabs li.tab-event { background: url(/img/tv/ticketart.png) right center no-repeat;}
+    .etabs li.tab-hruska { background: url(/img/tv/ladahruska.png) right center no-repeat;}
+    .etabs li.tab-iparticka { background: url(/img/tv/particka.png) right center no-repeat;}
+    .etabs li.tab-upoutavka { background: url(/img/tv/upotavka.png) right center no-repeat;}
+    .etabs li.tab-chlast { background: url(/img/tv/chlast.png) right center no-repeat;}
+    .etabs li.tab-funnytube { background: url(/img/tv/ft.png) right center no-repeat;}
+    .etabs li.tab-trailer { background: url(/img/tv/trailer.png) right center no-repeat;}
+    .etabs li.tab-h5 { background: url(/img/tv/hi5_sf_tvbcg.png) right center no-repeat;}
+
+    .mCSB_inside >.mCSB_container {
+        margin-right: 4px;
+    }
+</style>
+
+<div class="clearfix"></div>
+<br>
+
+<div class="clearfix"></div>
+
+<div id="tab-container" class="tab-container">
+        <ul class='etabs'>
+            <li class="tab tab-hruska"><a href="#hruska" class="long">Láďa Hruška je zpět! Každý úterý nové recepty do Vaší kuchyně.</a></li>
+            <li class="tab tab-chlast"><a href="#chlast" class="long">CHLASTU NIGHT SHOW - DJ Friky</a></li>
+                        <li class="tab tab-h5"><a href="#h5" class="long">Highfive - 5 nejhorších CGI momentů ve filmech s vysokým rozpočtem</a></li>
+            <li class="tab tab-iparticka"><a href="#iparticka" class="long">Čtyřicátý sedmý díl pořadu i.Partička</a></li>
+            <li class="tab tab-trailer"><a href="#trailer" class="long">Nejnovější trailery: Podfukáři 2 (2016) - Trailer 3</a></li>
+        </ul>
+    <div id="iparticka" class="tab-block">
+
+        <div class="play" style="width: 780px; margin: 0 auto; position: relative; overflow: hidden">
+
+            <span class="top top2">každý čtvrtek od 20:30</span>
+
+            <div class="player trailers_player ytshowplayer">
+
+                <video id="crazy-video" controls class="video-js vjs-default-skin" width="100%" height="440" poster="" preload="metadata" src="http://hari.web.srw.cz/files/44_particka_final.420p.mp4">
+                    <source type="" src="http://hari.web.srw.cz/files/44_particka_final.420p.mp4">
+                </video>
+                <script>
+                    var player_iparticka = videojs("crazy-video", {
+                        "poster": "http://sledujufilmy.cz/videos/iparticka/thumbs/iparticka_dil_47.gif",
+                    }, function (){})
+                            .volume(1)
+                            .one("play", function(){
+                                console.log("iparticka is playing...");
+                                $.ajax({
+                                    type: 'POST',
+                                    url: "\/?id=0&do=countIParticka",
+                                    error: function(){
+                                        console.log("ajax error");
+                                    }
+                                });
+                            })
+
+                </script>
+            </div>
+
+            <div class="seviews"><span class="toolbox">Počet zhlédnutí se aktualizuje<br>každých 5 minut.</span>23742 zhlédnutí na SledujuFilmy.cz <span style="font-style: italic; font-size: 10px;">(i)</span></div>
+            <a target="_blank" href="http://www.facebook.com/sharer/sharer.php?u=http://sledujufilmy.cz" class="bigShareButton with--seviews">Sdílet na Facebooku</a>
+
+            <a class="showIparticka" href="http://porady.sledujufilmy.cz/porad/iparticka/">Všechny díly pořadu i.Partička ke zhlídnutí zde <img
+                        src="/img/more_i.png" alt="další videa"></a>
+        </div>
+    </div>
+    <div id="hruska" class="tab-block">
+
+        <div class="play" style="width: 780px; margin: 0 auto; position: relative; overflow: hidden">
+
+            <span class="top top2">každý úterý od 20:30</span>
+
+            <div class="player trailers_player ytshowplayer">
+
+                <video id="hruska-video" controls class="video-js vjs-default-skin" width="100%" height="440" poster="" preload="metadata" src="http://video.ladahruska.com/24-domaci-sunka.360p.mp4">
+                    <source type="" src="http://video.ladahruska.com/24-domaci-sunka.360p.mp4">
+                </video>
+                <script>
+                    var player_hruska = videojs("hruska-video", {
+                    }, function (){})
+                            .volume(1)
+                            .one("play", function(){
+                                console.log("hruska is playing...");
+                                $.ajax({
+                                    type: 'POST',
+                                    url: "\/?id=0&do=countIHruska",
+                                    error: function(){
+                                        console.log("ajax error");
+                                    }
+                                });
+                            })
+
+                </script>
+            </div>
+
+            <a href="http://ladahruska.com/" target="_blank" style="position: absolute; top: 10px; right: 10px;"><img src="http://sledujufilmy.cz/img/shows/hruska/LadaHruska.png" alt="Láďa Hruška"></a>
+
+            <div class="seviews"><span class="toolbox">Počet zhlédnutí se aktualizuje<br>každých 5 minut.</span>626693 zhlédnutí na SledujuFilmy.cz <span style="font-style: italic; font-size: 10px;">(i)</span></div>
+            <a target="_blank" href="http://www.facebook.com/sharer/sharer.php?u=http://sledujufilmy.cz" class="bigShareButton with--seviews">Sdílet na Facebooku</a>
+
+            <a class="showIparticka" href="http://porady.sledujufilmy.cz/porad/ladahruska/">Všechny díly pořadu LáďaHruška.com ke zhlídnutí zde <img
+                        src="/img/more_i.png" alt="další videa"></a>
+        </div>
+    </div>
+
+    <div id="chlast" class="tab-block">
+
+        <div class="play" style="width: 780px; margin: 0 auto; position: relative; overflow: hidden">
+
+            <span class="top top2">každou středu od 20:30</span>
+
+            <div class="player trailers_player ytshowplayer">
+
+                <video id="chlast-video" controls class="video-js vjs-default-skin" width="100%" height="440" poster="" preload="metadata" src="http://hari.web.srw.cz/files/DJ_Friky_final.420p.mp4">
+                    <source type="" src="http://hari.web.srw.cz/files/DJ_Friky_final.420p.mp4">
+                </video>
+                <script>
+                    var player_chlast = videojs("chlast-video", {
+                    }, function (){})
+                            .volume(1)
+                            .one("play", function(){
+                                console.log("chlast is playing...");
+                                $.ajax({
+                                    type: 'POST',
+                                    url: "\/?id=0&do=countIChlast",
+                                    error: function(){
+                                        console.log("ajax error");
+                                    }
+                                });
+                            })
+
+                </script>
+            </div>
+
+            <div class="seviews"><span class="toolbox">Počet zhlédnutí se aktualizuje<br>každých 5 minut.</span>19333 zhlédnutí na SledujuFilmy.cz <span style="font-style: italic; font-size: 10px;">(i)</span></div>
+            <a target="_blank" href="http://www.facebook.com/sharer/sharer.php?u=http://sledujufilmy.cz" class="bigShareButton with--seviews">Sdílet na Facebooku</a>
+
+            <a class="showIparticka" href="http://porady.sledujufilmy.cz/porad/chlastu-night-show/">Všechny díly pořadu Chlastu Night Show ke zhlídnutí zde <img
+                        src="/img/more_i.png" alt="další videa"></a>
+        </div>
+    </div>
+    <div id="h5" class="tab-block">
+
+        <div class="play" style="width: 780px; margin: 0 auto; position: relative; overflow: hidden">
+
+            <div class="player trailers_player ytshowplayer" style="position: relative;">
+                <video id="crazy-h5" controls class="video-js vjs-default-skin" width="100%" height="440" poster="" preload="metadata"></video>
+                <script>
+
+                    var player_h5 = videojs("crazy-h5", {
+                        "techOrder": ["youtube"],
+                        "ytcontrols": true,
+                        "forceSSL": true,
+                        "forceHTML5": true,
+                        "quality": "720p",
+                        "autoplay": false,
+                        "src": "https:\/\/www.youtube.com\/watch?v=YZl80hRCBt4"
+                    }, function (){})
+                            .volume(0.0)
+                            .one("play", function(){
+                                console.log("h5 is playing...");
+                                $.ajax({
+                                    type: 'POST',
+                                    url: "\/?id=210021&do=countH5Views",
+                                    error: function(){
+                                        console.log("ajax error");
+                                    }
+                                });
+                            })
+                </script>
+            </div>
+
+            <div class="seviews">104488 zhlédnutí na SledujuFilmy.cz</div>
+            <a target="_blank" href="http://www.facebook.com/sharer/sharer.php?u=http://sledujufilmy.cz" class="bigShareButton with--seviews">Sdílet na Facebooku</a>
+
+            <a class="showIparticka" href="http://porady.sledujufilmy.cz/porad/highfive/">Všechna videa Highfive ke zhlédnutí zde <img
+                        src="/img/more_i.png" alt="další videa"></a>
+        </div>
+
+    </div>
+
+    <div id="trailer" class="tab-block">
+
+        <div class="play" style="width: 780px; margin: 0 auto; position: relative; overflow: hidden">
+
+            <div class="player trailers_player ytshowplayer">
+
+                <video id="crazy-trailer" controls class="video-js vjs-default-skin" width="100%" height="440" poster="" preload="metadata" src="http://video.csfd.cz/files/videos/video/160/703/160703110_adc4c7.mp4"> 
+                    <source type="" src="http://video.csfd.cz/files/videos/video/160/703/160703110_adc4c7.mp4">
+                </video>
+                <script>
+                    var player_trailer = videojs("crazy-trailer", {
+                        //"poster": "http://sledujufilmy.cz/img/upoutavka_cover.png",
+                    }, function (){})
+                            .volume(1)
+                            .one("play", function(){
+                                console.log("trailer is playing...");
+                                $.ajax({
+                                    type: 'POST',
+                                    url: "\/?id=5639&do=countTrailersViews",
+                                    error: function(){
+                                        console.log("ajax error");
+                                    }
+                                });
+                            })
+                </script>
+
+            </div>
+
+            <div class="seviews">2322 zhlédnutí na SledujuFilmy.cz</div>
+            <a target="_blank" href="http://www.facebook.com/sharer/sharer.php?u=http://sledujufilmy.cz" class="bigShareButton with--seviews">Sdílet na Facebooku</a>
+
+            <a class="showIparticka" href="http://porady.sledujufilmy.cz/porad/nejlepsi-trailery-na-internetu/">Všechny trailery ke zhlídnutí zde <img
+                        src="/img/more_i.png" alt="další videa"></a>
+
+        </div>
+    </div>
+
+</div>
+
+<script src="/js/jquery.easytabs.min.js"></script>
+
+<script>
+    $("#tab-container").easytabs({
+        animate: true,
+        animationSpeed: 20,
+        updateHash: false,
+        defaultTab: "li.tab-event"
+    });
+</script>
+
+<div class="clear"></div>
+
+<div style="display: none">
+    <div id="adspos44" style="width: 728px; height: 90px; margin:0 auto;" data-width="728" data-height="90" class="ads-position adsw728">
+        <!-- Kontextová reklama Sklik -->
+<div id="sklikReklama_54392"></div>
+<script type="text/javascript">
+    var sklikData = { elm: "sklikReklama_54392", zoneId: 54392, w: 728, h: 90 };
+</script>
+<script type="text/javascript" src="http://c.imedia.cz/js/script.js"></script>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+
+        $(".etabs li.tab-hruska a").on("click", function(){
+            stopAllPlayers();
+            playHruska();
+        })
+        $(".etabs li.tab-iparticka a").on("click", function(){
+            stopAllPlayers();
+            playIparticka();
+        })
+        $(".etabs li.tab-chlast a").on("click", function(){
+            stopAllPlayers();
+            playChlast();
+        })
+        $(".etabs li.tab-trailer a").on("click", function(){
+            stopAllPlayers();
+            playTrailers();
+        })
+        $(".etabs li.tab-h5 a").on("click", function(){
+            stopAllPlayers();
+            playH5();
+        })
+        $(".etabs li.tab-event a").on("click", function(){
+            stopAllPlayers();
+        })
+
+        $(".redirectWarning").click(function () {
+            clearInterval(redirInterval);
+            $(".redirectWarning").fadeOut("fast");
+        });
+
+        $(document).ready(function ($) {
+            $("#adspos44").append("<a id=\"close-video-advert\"><!-- close --></a>");
+
+            $("#close-video-advert").on("click", function () {
+                $(".vjs-overlay").hide();
+                return false;
+            })
+        })
+    });
+
+    var playHruska = function() {
+        player_hruska.on('adserror', function(){
+            this.trigger('adsready');
+            this.trigger('adserror');
+        });
+        var options_hruska = {
+            id: 'hruska-video',
+            adTagUrl: 'https://pubads.g.doubleclick.net/gampad/ads?sz=400x300&iu=/53046007/sledujufilmy.cz_video_hruska&impl=s&gdfp_req=1&env=vp&output=xml_vast2&unviewed_position_start=1&url=[referrer_url]&description_url=[description_url]&correlator=[timestamp]'
+        };
+        player_hruska.ima(options_hruska);
+        player_hruska.ima.initializeAdDisplayContainer();
+        player_hruska.ima.requestAds();
+        player_hruska.play();
+    }
+
+    var playIparticka = function() {
+        player_iparticka.on('adserror', function(){
+            this.trigger('adsready');
+            this.trigger('adserror');
+        });
+        var options_iparticka = {
+            id: 'crazy-video',
+            adTagUrl: 'https://pubads.g.doubleclick.net/gampad/ads?sz=400x300&iu=/53046007/sledujufilmy.cz_video_particka&impl=s&gdfp_req=1&env=vp&output=xml_vast2&unviewed_position_start=1&url=[referrer_url]&description_url=[description_url]&correlator=[timestamp]'
+        };
+        player_iparticka.ima(options_iparticka);
+        player_iparticka.ima.initializeAdDisplayContainer();
+        player_iparticka.ima.requestAds();
+        player_iparticka.play();
+    }
+
+    var playChlast = function() {
+        player_chlast.on('adserror', function(){
+            this.trigger('adsready');
+            this.trigger('adserror');
+        });
+        var options_chlast = {
+            id: 'chlast-video',
+            adTagUrl: 'https://pubads.g.doubleclick.net/gampad/ads?sz=400x300&iu=/53046007/sledujufilmy.cz_video_chlastunajtshow&impl=s&gdfp_req=1&env=vp&output=xml_vast2&unviewed_position_start=1&url=[referrer_url]&description_url=[description_url]&correlator=[timestamp]'
+        };
+        player_chlast.ima(options_chlast);
+        player_chlast.ima.initializeAdDisplayContainer();
+        player_chlast.ima.requestAds();
+        player_chlast.play();
+    }
+
+    var playTrailers = function() {
+        player_trailer.on('adserror', function(){
+            this.trigger('adsready');
+            this.trigger('adserror');
+        });
+        var options_trailer = {
+            id: 'crazy-trailer',
+            adTagUrl: 'https://pubads.g.doubleclick.net/gampad/ads?sz=400x300|700x430|1000x440&iu=/53046007/porady.sledujufilmy.cz&impl=s&gdfp_req=1&env=vp&output=xml_vast2&unviewed_position_start=1&url=[referrer_url]&description_url=[description_url]&correlator=[timestamp]'
+        };
+        player_trailer.ima(options_trailer);
+        player_trailer.ima.initializeAdDisplayContainer();
+        player_trailer.ima.requestAds();
+        player_trailer.play();
+    }
+
+    var playH5 = function() {
+        player_h5.on('adserror', function(){
+            this.trigger('adsready');
+            this.trigger('adserror');
+        });
+        var options_h5 = {
+            id: 'crazy-h5',
+            adTagUrl: 'https://pubads.g.doubleclick.net/gampad/ads?sz=400x300&iu=/53046007/sledujufilmy.cz_video_H5&impl=s&gdfp_req=1&env=vp&output=xml_vast2&unviewed_position_start=1&url=[referrer_url]&description_url=[description_url]&correlator=[timestamp]'
+        };
+        player_h5.ima(options_h5);
+        player_h5.ima.initializeAdDisplayContainer();
+        player_h5.ima.requestAds();
+        player_h5.play();
+    }
+
+    var stopAllPlayers = function(){
+        player_h5.pause();
+        player_iparticka.pause();
+        player_hruska.pause();
+        //player_event.pause();
+        player_chlast.pause();
+        player_trailer.pause();
+        console.log("stoping all players...");
+    };
+</script>
+    <h2><img src="/images/icon_movies.png" alt="Filmy"> POSLEDNÍ PŘIDANÉ FILMY:
+        <div class="hr"></div>
+    </h2>
+
+    <div class="mlist--list">
+        <div class="topMoviesList">
+                <div class="movies_list_advert">
+                    <div class="advert_con">
+                        <script type='text/javascript' src='http://www.googletagservices.com/tag/js/gpt.js'>
+                            googletag.pubads().definePassback('/53046007/sledujufilmy.cz_300x300', [300, 300]).display();
+                        </script>
+                    </div>
+                </div>
+                <div class="item">
+                    <span class="top">Novinka</span>
+                    <div class="img--container">
+                        <img src="/nahledy/11095.jpg" alt="Hardcore Henry" class="prev">
+                    </div>
+                    <div class="info">
+                        <h3>Hardcore Henry</h3>
+
+                        <div class="desc">
+                            <strong>O filmu:</strong>
+                            Vzbudil jsi se, nic si nepamatuješ. Nejspíš proto, že tě právě oživili. Ta krásná žena říká, že tě miluje a že se jmenuješ Henry. Máš jakoby umělý ruce a nohy. Najednou někdo vtrhnul do místnosti, střílí na tebe a ženu, která tě miluje,…
+                        </div>
+                        <div class="ex">
+                            <div class="fr rating--box">
+                                80 %
+                            </div>
+                            <div>50300 zhlédnutí</div>
+                            <a href="/film/hardcore-henry/11095/" class="view">Přehrát film</a>
+                        </div>
+                    </div>
+                </div>
+                                <div class="item">
+                    <span class="top">Novinka</span>
+                    <div class="img--container">
+                        <img src="/nahledy/11092.jpg" alt="Captain America: Občanská válka" class="prev">
+                    </div>
+                    <div class="info">
+                        <h3>Captain America: Občanská válka</h3>
+
+                        <div class="desc">
+                            <strong>O filmu:</strong>
+                            Film studia Marvel Captain America: Občanská válka se odehrává v době, kdy Steve Rogers převzal vedení nově zformovaného týmu Avengers, který se nadále snaží chránit lidstvo. Dojde však k dalšímu incidentu, ve kterém sehrají Avengers…
+                        </div>
+                        <div class="ex">
+                            <div class="fr rating--box">
+                                85 %
+                            </div>
+                            <div>101265 zhlédnutí</div>
+                            <a href="/film/captain-america-obcanska-valka/11092/" class="view">Přehrát film</a>
+                        </div>
+                    </div>
+                </div>
+                                <div class="item">
+                    <span class="top">Novinka</span>
+                    <div class="img--container">
+                        <img src="/nahledy/11090.jpg" alt="Batman v Superman: Úsvit spravedlnosti" class="prev">
+                    </div>
+                    <div class="info">
+                        <h3>Batman v Superman: Úsvit spravedlnosti</h3>
+
+                        <div class="desc">
+                            <strong>O filmu:</strong>
+                            V době, kdy svět řeší otázku, jakého hrdinu skutečně potřebuje, v obavách z naprosto nekontrolované moci téměř božského superhrdiny se střetává respektovaný a mocný ochránce spravedlnosti ve městě Gotham s nejuctívanějším spasitelem…
+                        </div>
+                        <div class="ex">
+                            <div class="fr rating--box">
+                                67 %
+                            </div>
+                            <div>55236 zhlédnutí</div>
+                            <a href="/film/batman-v-superman-usvit-spravedlnosti/11090/" class="view">Přehrát film</a>
+                        </div>
+                    </div>
+                </div>
+                        </div>
+        <div class="clear"></div>
+            <div class="item mTop0">
+                <div class="img--container">
+                    <img src="/nahledy/11157.jpg" alt="Agent bez jména" class="prev">
+                </div>
+                <div class="info">
+                    <h3>Agent bez jména</h3>
+                    <div class="desc">
+                        <strong>O filmu:</strong>
+                        Steve Austin je muž beze jména, muž bez paměti, muž který nemá co ztratit. Ocitá se v roli lovné zvěře, kterou pronásleduje FBI a Ruská mafie. Okolnosti ho však donutí i přes ztracenou paměť k odvetným krokům. Může být pronásledován až na…
+                    </div>
+                    <div class="ex">
+                        <div class="fr rating--box">
+                            38 %
+                        </div>
+                        <div>344 zhlédnutí</div>
+                        <a href="/film/agent-bez-jmena/11157/" class="view">Přehrát film</a>
+                    </div>
+                </div>
+            </div>
+                        <div class="item mTop0">
+                <div class="img--container">
+                    <img src="/nahledy/11156.jpg" alt="Čarodějky z Eastwicku" class="prev">
+                </div>
+                <div class="info">
+                    <h3>Čarodějky z Eastwicku</h3>
+                    <div class="desc">
+                        <strong>O filmu:</strong>
+                        Velmi volná adaptace knihy Johna Updikea, která se na příběhu tří osamělých žen zamýšlí nad vztahy mezi oběma pohlavími. Snímek v sobě spojuje prvky bizarní komedie, hororu i satiry na zatuchlou morálku typického amerického maloměsta,…
+                    </div>
+                    <div class="ex">
+                        <div class="fr rating--box">
+                            76 %
+                        </div>
+                        <div>303 zhlédnutí</div>
+                        <a href="/film/carodejky-z-eastwicku/11156/" class="view">Přehrát film</a>
+                    </div>
+                </div>
+            </div>
+                        <div class="item mTop0">
+                <div class="img--container">
+                    <img src="/nahledy/11155.jpg" alt="Bruce, Šaolin a kung-fu" class="prev">
+                </div>
+                <div class="info">
+                    <h3>Bruce, Šaolin a kung-fu</h3>
+                    <div class="desc">
+                        <strong>O filmu:</strong>
+                        Tento u nás skoro neznámý hongkongský film je příběhem Ching Linga, mladého studenta kung-fu, který chce pomstít smrt svých blízkých poté, co mu je zavraždí Japonci, usilující o zavření všech čínských škol bojového umění. Když Ching Ling…
+                    </div>
+                    <div class="ex">
+                        <div class="fr rating--box">
+                            76 %
+                        </div>
+                        <div>266 zhlédnutí</div>
+                        <a href="/film/bruce-saolin-a-kung-fu/11155/" class="view">Přehrát film</a>
+                    </div>
+                </div>
+            </div>
+                        <div class="item mTop0">
+                <div class="img--container">
+                    <img src="/nahledy/11154.jpg" alt="Bojovník od Undangu" class="prev">
+                </div>
+                <div class="info">
+                    <h3>Bojovník od Undangu</h3>
+                    <div class="desc">
+                        <strong>O filmu:</strong>
+                        Děj čínského dobrodružného filmu se odehrává koncem minulého století, kdy slabá vláda tolerovala drobné výboje Japonců do země. Starý mistr zápasu je za to, že zvítězil nad japonskými zápasníky, zabit. Jeho dcera s pomocí přátel vypátrá…
+                    </div>
+                    <div class="ex">
+                        <div class="fr rating--box">
+                            61 %
+                        </div>
+                        <div>225 zhlédnutí</div>
+                        <a href="/film/bojovnik-od-undangu/11154/" class="view">Přehrát film</a>
+                    </div>
+                </div>
+            </div>
+                        <div class="item">
+                <div class="img--container">
+                    <img src="/nahledy/11153.jpg" alt="Bílá hraběnka" class="prev">
+                </div>
+                <div class="info">
+                    <h3>Bílá hraběnka</h3>
+                    <div class="desc">
+                        <strong>O filmu:</strong>
+                        Film Bílá hraběnka naposledy svedl dohromady legendárního producenta Ismaila Merchanta a režiséra Jamese Ivoryho, třikrát nominovaného na Oscara za nejlepší film a nejlepší režii (Pokoj s vyhlídkou, 1986; Howards End, 1993; Soumrak dne,…
+                    </div>
+                    <div class="ex">
+                        <div class="fr rating--box">
+                            65 %
+                        </div>
+                        <div>682 zhlédnutí</div>
+                        <a href="/film/bila-hrabenka/11153/" class="view">Přehrát film</a>
+                    </div>
+                </div>
+            </div>
+                        <div class="item">
+                <div class="img--container">
+                    <img src="/nahledy/11152.jpg" alt="Projekt 44" class="prev">
+                </div>
+                <div class="info">
+                    <h3>Projekt 44</h3>
+                    <div class="desc">
+                        <strong>O filmu:</strong>
+                        Marek je nezaměstnaný mladík a pro snadně vydělané peníze udělá téměř cokoliv.
+ Proto nepohrdne velice výhodnou nabídkou od armády na "naprosto neškodné" testy.
+ Když se ovšem probouzí o několik let později ve svém bytě, zjišťuje že…
+                    </div>
+                    <div class="ex">
+                        <div class="fr rating--box">
+                            31 %
+                        </div>
+                        <div>785 zhlédnutí</div>
+                        <a href="/film/projekt-44/11152/" class="view">Přehrát film</a>
+                    </div>
+                </div>
+            </div>
+                        <div class="item">
+                <div class="img--container">
+                    <img src="/nahledy/11151.jpg" alt="Padesát odstínů černé" class="prev">
+                </div>
+                <div class="info">
+                    <h3>Padesát odstínů černé</h3>
+                    <div class="desc">
+                        <strong>O filmu:</strong>
+                        Držte si kalhotky i bránice, do kin přichází dráždivá a na padesát způsobů šťavnatá parodie „Padesát odstínů černé". Stejně jako šedé bestsellery přináší některá šokující odhalení a hned tím prvním je, že erotický hit a drzá poťouchlá…
+                    </div>
+                    <div class="ex">
+                        <div class="fr rating--box">
+                            42 %
+                        </div>
+                        <div>7056 zhlédnutí</div>
+                        <a href="/film/padesat-odstinu-cerne/11151/" class="view">Přehrát film</a>
+                    </div>
+                </div>
+            </div>
+                        <div class="item">
+                <div class="img--container">
+                    <img src="/nahledy/11150.jpg" alt="Paragraf 78" class="prev">
+                </div>
+                <div class="info">
+                    <h3>Paragraf 78</h3>
+                    <div class="desc">
+                        <strong>O filmu:</strong>
+                        Do tajného protiraketového krytu vyšle armáda elitnú jednotku, ktorej úlohou je zneškodniť mimoriadne ničivú zbraň, ktorá sa vymkla spod kontroly. Keď však dorazia na miesto určenia, nájdu len samé mŕtvoly... Vlastne nie, ktosi tie krvavé…
+                    </div>
+                    <div class="ex">
+                        <div class="fr rating--box">
+                            47 %
+                        </div>
+                        <div>767 zhlédnutí</div>
+                        <a href="/film/paragraf-78/11150/" class="view">Přehrát film</a>
+                    </div>
+                </div>
+            </div>
+                </div>
+
+        <div style="margin: 0 auto; width: 930px; height: 180px;">
+        <script type='text/javascript' src='http://www.googletagservices.com/tag/js/gpt.js'>
+            googletag.pubads().definePassback('/53046007/sledujufilmy.cz_930x180_bottom', [930, 180]).display();
+        </script>
+    </div>
+
+
+	<div class="pagination">
+		<span>« Předchozí</span>
+	
+			<span class="active">1</span>
+			<a href="/?pg=2">2</a>
+			<a href="/?pg=3">3</a>
+			<a href="/?pg=4">4</a>
+			<a href="/?pg=333">333</a>
+			<a href="/?pg=665">665</a>
+			<a href="/?pg=997">997</a>
+			<a href="/?pg=1329">1329</a>
+	
+		<a href="/?pg=2">Další »</a>
+	</div>
+ 
+<h2><img src="/images/icon_movies.png" alt="Filmy"> POSLEDNÍ AKTUALIZOVANÉ SERIÁLY: <div class="hr episode--hr"></div></h2>
+
+        <div class="mlist--list">
+                    <div class="item">
+                        <div class="img--container img--series">
+                            <img src="/data/serialy/99.jpg" alt="Jmenuju se Earl" class="prev">
+                        </div>
+                        <div class="info">
+                            <h3>Jmenuju se Earl</h3>
+                            <div class="desc">
+                                <strong>O seriálu:</strong>
+                                Ak vyhráte stotisíc dolárov a stratíte tiket, máte zlú karmu! Ako ju napraviť? Nič nie je stratené, musíte len rýchle odčiniť všetky svoje životné hriechy, spáchané do dnešného dna. To je teória,…
+                            </div>
+                            <div class="ex">
+                                <div class="fr rating--box">
+                                    81 %
+                                </div>
+                                <div>739315 zhlédnutí</div>
+                                <a href="http://serialy.sledujufilmy.cz/jmenuju-se-earl/" class="view">Shlédnout seriál</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="img--container img--series">
+                            <img src="/data/serialy/414.jpg" alt="Muži sobě / Men at Work" class="prev">
+                        </div>
+                        <div class="info">
+                            <h3>Muži sobě / Men at Work</h3>
+                            <div class="desc">
+                                <strong>O seriálu:</strong>
+                                Epizoda 2:Milo píše svoj ​​prvý článok do časopisu. Ostatní mu radia, že sa musí vcítiť do toho, čo píše, preto snaží dostať medzi dílerov drog. Čoskoro ale zistí, že pašovanie drog nie je až tak…
+                            </div>
+                            <div class="ex">
+                                <div class="fr rating--box">
+                                    69 %
+                                </div>
+                                <div>31349 zhlédnutí</div>
+                                <a href="http://serialy.sledujufilmy.cz/muzi-sobe-men-at-work/" class="view">Shlédnout seriál</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="img--container img--series">
+                            <img src="/data/serialy/117.jpg" alt="Mixology" class="prev">
+                        </div>
+                        <div class="info">
+                            <h3>Mixology</h3>
+                            <div class="desc">
+                                <strong>O seriálu:</strong>
+                                Jeden bar. Jedna noc. Deset svobodných lidí. Vítejte v Mixu, luxusním baru na Manhattanu. Čerstvě nezadaný Tom, kterého odkopla snoubenka, nebyl ve společnosti již více než deset let. Jeho nejlepší…
+                            </div>
+                            <div class="ex">
+                                <div class="fr rating--box">
+                                    62 %
+                                </div>
+                                <div>4335 zhlédnutí</div>
+                                <a href="http://serialy.sledujufilmy.cz/mixology/" class="view">Shlédnout seriál</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="img--container img--series">
+                            <img src="/data/serialy/551.jpg" alt="Milenky / Mistresses (US)" class="prev">
+                        </div>
+                        <div class="info">
+                            <h3>Milenky / Mistresses (US)</h3>
+                            <div class="desc">
+                                <strong>O seriálu:</strong>
+                                Milenkou se nikdo nerodí, milenku z vás musí někdo udělat...Hlavní hrdinky tohoto britského miniseriálu jsou čtyři kamarádky a atraktivní ženy kolem třiceti - doktorka Katie, jejíž dlouholetý pacient…
+                            </div>
+                            <div class="ex">
+                                <div class="fr rating--box">
+                                    68 %
+                                </div>
+                                <div>516 zhlédnutí</div>
+                                <a href="http://serialy.sledujufilmy.cz/milenky-mistresses-us/" class="view">Shlédnout seriál</a>
+                            </div>
+                        </div>
+                    </div>
+            <div class="clear"></div>
+        </div>
+
+<div class="pagination next_buts">
+    <a href="/aktualizovane-serialy/">Další aktualizované seriály »</a>
+</div>
+
+    <h2><img src="/images/icon_movies.png" alt="Filmy"> POSLEDNÍ AKTUALIZOVANÉ FILMY:
+        <div class="hr"></div>
+    </h2>
+
+    <div class="mlist--list">
+            <div class="item">
+                <div class="img--container">
+                    <img src="/nahledy/3841.jpg" alt="Fenomén" class="prev">
+                </div>
+                <div class="info">
+                    <h3>Fenomén</h3>
+                    <div class="desc">
+                        <strong>O filmu:</strong>
+                        Až do svých sedmatřicátých narozenin byl George docela obyčejným automechanikem v malém kalifornském městečku Harmon. Ovšem do chvíle, kdy si odskočil z oslavy ven před hospodu, aby se nadýchal čerstvého vzduchu, změnila jeho život. Na…
+                    </div>
+                    <div class="ex">
+                        <div class="fr rating--box">
+                            77 %
+                        </div>
+                        <div>19197 zhlédnutí</div>
+                        <a href="/film/fenomen-1996/3841/" class="view">Přehrát film</a>
+                    </div>
+                </div>
+            </div>
+                        <div class="item">
+                <div class="img--container">
+                    <img src="/nahledy/11136.jpg" alt="Get a Job" class="prev">
+                </div>
+                <div class="info">
+                    <h3>Get a Job</h3>
+                    <div class="desc">
+                        <strong>O filmu:</strong>
+                        Komedie soustředěná kolem nedávného absolventa vysoké školy, jeho přátel, a jejich pokusů o zajištění pracovního místa.(wohna)
+                    </div>
+                    <div class="ex">
+                        <div class="fr rating--box">
+                            49 %
+                        </div>
+                        <div>5767 zhlédnutí</div>
+                        <a href="/film/get-a-job/11136/" class="view">Přehrát film</a>
+                    </div>
+                </div>
+            </div>
+                        <div class="item">
+                <div class="img--container">
+                    <img src="/nahledy/1179.jpg" alt="Farma smrti" class="prev">
+                </div>
+                <div class="info">
+                    <h3>Farma smrti</h3>
+                    <div class="desc">
+                        <strong>O filmu:</strong>
+                        Film byl natočen podle skutečné události. Trevor, který je veteránem z Vietnamské války, je pronásledován nočními můrami z minulosti. Projíždí Texasem, aby našel své místo na zemi. Bohužel neví, že jeho největší noční můra ho teprve čeká.…
+                    </div>
+                    <div class="ex">
+                        <div class="fr rating--box">
+                            45 %
+                        </div>
+                        <div>8600 zhlédnutí</div>
+                        <a href="/film/farma-smrti-2006/1179/" class="view">Přehrát film</a>
+                    </div>
+                </div>
+            </div>
+                        <div class="item">
+                <div class="img--container">
+                    <img src="/nahledy/295.jpg" alt="Hory mají oči 2" class="prev">
+                </div>
+                <div class="info">
+                    <h3>Hory mají oči 2</h3>
+                    <div class="desc">
+                        <strong>O filmu:</strong>
+                        Do tábora v poušti, kde armáda provádí likvidační práce, přijíždí jednotka Národní gardy. Tábor však je opuštěný a vojáci vyrážejí na záchrannou výpravu. Netuší ovšem, že jejich protivníky jsou degenerovaní kanibalové, kteří mají hlad a…
+                    </div>
+                    <div class="ex">
+                        <div class="fr rating--box">
+                            44 %
+                        </div>
+                        <div>51298 zhlédnutí</div>
+                        <a href="/film/hory-maji-oci-2-2007/295/" class="view">Přehrát film</a>
+                    </div>
+                </div>
+            </div>
+                </div>
+</div>
+
+<div class="pagination next_buts">
+    <a href="/aktualizovane-filmy/">Další aktualizované filmy »</a>
+</div>
+                </div>
+            </div>
+        </div>
+
+    <div class="birthday_block">
+        <div class="wrapper">
+            <h2><img src="/images/icon_birthday.png" alt="Narozeniny"> DNES SLAVÍ NAROZENINY <div class="hr"></div></h2>
+            <br>
+
+            <div class="plist">
+                    <a href="http://herci.sledujufilmy.cz/jaroslav-marvan/" class="item">
+                        <div class="img--container">
+                            <img src="/data/personality/35592.jpg" alt="Jaroslav Marvan">
+                        </div>
+                        <h3>Jaroslav Marvan</h3>
+                    </a>
+                    <a href="http://herci.sledujufilmy.cz/mr-t/" class="item">
+                        <div class="img--container">
+                            <img src="http://img.csfd.cz/files/images/creator/photos/000/274/274337_bce85f.jpg?w100h132crop" alt="Mr. T">
+                        </div>
+                        <h3>Mr. T</h3>
+                    </a>
+                    <a href="http://herci.sledujufilmy.cz/lisa-edelstein/" class="item">
+                        <div class="img--container">
+                            <img src="http://img.csfd.cz/files/images/creator/photos/000/274/274060_a18220.jpg?w100h132crop" alt="Lisa Edelstein">
+                        </div>
+                        <h3>Lisa Edelstein</h3>
+                    </a>
+                    <a href="http://herci.sledujufilmy.cz/nick-cassavetes/" class="item">
+                        <div class="img--container">
+                            <img src="/data/personality/22178.jpg" alt="Nick Cassavetes">
+                        </div>
+                        <h3>Nick Cassavetes</h3>
+                    </a>
+                    <a href="http://herci.sledujufilmy.cz/zuzana-stavna/" class="item">
+                        <div class="img--container">
+                            <img src="http://img.csfd.cz/files/images/creator/photos/159/329/159329441_482d1a.jpg?w100h132crop" alt="Zuzana Stavná">
+                        </div>
+                        <h3>Zuzana Stavná</h3>
+                    </a>
+                    <a href="http://herci.sledujufilmy.cz/fairuza-balk/" class="item">
+                        <div class="img--container">
+                            <img src="http://img.csfd.cz/files/images/creator/photos/000/267/267933_b0fb22.jpg?w100h132crop" alt="Fairuza Balk">
+                        </div>
+                        <h3>Fairuza Balk</h3>
+                    </a>
+                    <a href="http://herci.sledujufilmy.cz/ivan-vyskocil/" class="item">
+                        <div class="img--container">
+                            <img src="/data/personality/32660.jpg" alt="Ivan Vyskočil">
+                        </div>
+                        <h3>Ivan Vyskočil</h3>
+                    </a>
+                    <a href="http://herci.sledujufilmy.cz/jonathan-hyde/" class="item">
+                        <div class="img--container">
+                            <img src="http://img.csfd.cz/files/images/creator/photos/000/273/273973_d0b94a.jpg?w100h132crop" alt="Jonathan Hyde">
+                        </div>
+                        <h3>Jonathan Hyde</h3>
+                    </a>
+                    <a href="http://herci.sledujufilmy.cz/brent-briscoe/" class="item">
+                        <div class="img--container">
+                            <img src="http://img.csfd.cz/files/images/creator/photos/000/272/272025_d98536.jpg?w100h132crop" alt="Brent Briscoe">
+                        </div>
+                        <h3>Brent Briscoe</h3>
+                    </a>
+                    <a href="http://herci.sledujufilmy.cz/consuela-moravkova/" class="item">
+                        <div class="img--container">
+                            <img src="/data/personality/75171.jpg" alt="Consuela Morávková">
+                        </div>
+                        <h3>C. Morávková</h3>
+                    </a>
+                    <a href="http://herci.sledujufilmy.cz/ida-kaminska/" class="item">
+                        <div class="img--container">
+                            <img src="/data/personality/77291.jpg" alt="Ida Kamińska">
+                        </div>
+                        <h3>Ida Kamińska</h3>
+                    </a>
+                    <a href="http://herci.sledujufilmy.cz/bill-hunter/" class="item">
+                        <div class="img--container">
+                            <img src="http://img.csfd.cz/files/images/creator/photos/000/271/271023_f4d37b.jpg?w100h132crop" alt="Bill Hunter">
+                        </div>
+                        <h3>Bill Hunter</h3>
+                    </a>
+            </div>
+            <div class="clear"></div>
+            <div class="tac">
+                <a href="http://osobnosti.sledujufilmy.cz/narozeniny/" class="button">Další osobnosti které mají narozeniny</a>
+            </div>
+        </div>
+    </div>
+
+</div>
+</div>
+        
+   <script type="text/javascript">
+$(document).ready(function () {
+
+if(!(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))) {
+
+
+    var banner = $("#bigBanner");
+    var bannerOffset = $(".b-banner").offset().top;
+    var bannerHeight = $(".b-banner").height();
+
+    $(window).scroll(function () {
+        var scrollTop = $(window).scrollTop();
+
+        if (scrollTop > (bannerOffset - 530))
+        {
+
+            var height = scrollTop - (bannerOffset - 530);
+            if (height < 330)
+            {
+                if (height < 100)
+                {
+                    op = 1;
+                }
+                else
+                {
+                    var op = (height / 5);
+                    if (op >= 100) op = 99;
+                }
+                $(".b-banner").height(height);
+                banner.css({
+                    "position" : "fixed",
+                    "top" : "200px",
+                    "left" : "0",
+                    "width" : "100%",
+                    "opacity" : "0." + op,
+                    "z-index" : "-1"
+                });
+                //$(".b-banner .space").height(height);
+            } else if (height > 330)
+            {
+                $(".b-banner").height(330);
+                banner.css({
+                    "position" : "absolute",
+                    "top" : "0",
+                    "left" : "0",
+                    "width" : "100%",
+                    "opacity" : "1",
+                    "z-index" : "10"
+                });
+            }
+
+        }
+        else
+        {
+            $(".b-banner").height(0);
+        }
+    });
+    
+    $("#bigBanner .block").hover(function () {
+        var block = $(this);
+        
+        text = block.find(".title").text();
+        height = block.find(".title").height();
+        
+        block.find(".title").css({
+            "height" : height + "px",
+            "line-height" : height + "px"
+        });
+        block.find(".title").text("Přehrát video");
+        block.find(".hover").fadeIn("fast");
+    }, function () {
+        var block = $(this);
+        
+        block.find(".title").text(text);
+        block.find(".title").css({
+            "line-height" : "100%"
+        });
+        block.find(".hover").fadeOut("fast");
+    });
+}
+else
+{
+    $("#bigBanner").css({
+                    "position" : "absolute",
+                    "bottom" : "0",
+                    "left" : "0",
+                    "width" : "100%",
+                    "opacity" : "1",
+                    "z-index" : "10"
+                });
+}
+});
+</script>
+<style type="text/css">
+#bigBanner {
+   /*background: url(/img/ft_big_banner.png) center center;*/
+    background: #fff;
+   position: absolute;
+   height: 330px;
+    z-index: -1;
+    opacity: 1;
+    transition: opacity 0.01s;
+    }
+#bigBanner .block {
+    width: 370px;
+    display: inline-block;
+    box-shadow: 0 0 60px 0px white;
+    margin: 75px 25px 0 25px;
+    vertical-align: top;
+    text-decoration: none;
+    cursor: pointer;
+}
+#bigBanner .block .rel {
+    position: relative;
+}
+#bigBanner .block .img {
+    width: 370px;
+    height: 190px;
+    vertical-align: middle;
+}
+#bigBanner .block .ft {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+#bigBanner .block .title {
+    font-size: 23px;
+    font-weight: bold;
+    padding: 15px;
+    color: white;
+background: #2c2a2a; /* Old browsers */
+background: -moz-linear-gradient(top,  #2c2a2a 0%, #110f0f 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#2c2a2a), color-stop(100%,#110f0f)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  #2c2a2a 0%,#110f0f 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  #2c2a2a 0%,#110f0f 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  #2c2a2a 0%,#110f0f 100%); /* IE10+ */
+background: linear-gradient(to bottom,  #2c2a2a 0%,#110f0f 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2c2a2a', endColorstr='#110f0f',GradientType=0 ); /* IE6-9 */
+
+}
+#bigBanner .wrapper {
+    width: 1800px;
+    text-align: center;
+    position: absolute;
+    left: 50%;
+    margin-left: -900px;
+}
+#bigBanner .block .hover {
+    display:none;
+    background: rgba(255,0,0,0.5) url(/img/play_button.png) no-repeat center center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 370px;
+    height: 190px;
+}
+
+.b-banner {
+   position: relative;
+-moz-box-shadow: inset 0 -20px 20px -20px rgba(0,0,0,0.8);
+    -webkit-box-shadow: inset 0 -20px 20px -20px rgba(0,0,0,0.8);
+    box-shadow: inset 0 -20px 20px -20px rgba(0,0,0,0.8);
+}
+.b-banner .space {
+    height: 330px;
+}
+.birthday_block {
+    -webkit-box-shadow: 0 20px 20px -20px rgba(0,0,0,0.8);
+       -moz-box-shadow: 0 20px 20px -20px rgba(0,0,0,0.8);
+            box-shadow: 0 20px 20px -20px rgba(0,0,0,0.8);
+}
+</style>
+
+<div class="b-banner">
+    <div class="space"></div>
+    <div id="bigBanner">
+        
+        <div class="wrapper">
+
+            <div style="width: 970px;height: 310px;margin: 10px auto 10px auto;">
+                <!-- Kontextová reklama Sklik -->
+                <div id="sklikReklama_59969"></div>
+                <script>
+                    var sklikData = { elm: "sklikReklama_59969", zoneId: "59969", w: 970, h: 310 };
+                </script>
+                <script src="//c.imedia.cz/js/script.js"></script>
+            </div>
+
+                           
+        </div>
+        
+    </div>
+</div>
+<br>
+<div class="wrapper">
+    
+        <div id="bottom">
+            
+            <div class="right">
+                
+                <h2 class="main"><span>Partnerské odkazy</span></h2>
+                <br>
+                <ul>
+                    <li>Moderní a originální <a href="http://www.samolepky-na-zed.cz">samolepky na zeď</a> přímo od výrobce.</li>
+                        
+                        <li><a href="/" class="green">Filmy</a></li>
+                        <li><a href="http://porady.sledujufilmy.cz/" class="green">Pořady</a></li>
+                        <li><a href="http://serialy.sledujufilmy.cz/" class="green">Seriály</a></li>
+                        <li><a href="http://osobnosti.sledujufilmy.cz/" class="green active">Osobnosti</a></li>
+                        <li><a href="http://trailery.sledujufilmy.cz/" class="green">Trailery</a></li>
+                        <li><a href="http://film-o-filmu.sledujufilmy.cz/" class="green">Film o filmu</a></li>
+                        <li><a href="http://ukazky-z-filmu.sledujufilmy.cz/" class="green">Ukázky z filmů</a></li>
+                        <li><a href="http://tv-spoty.sledujufilmy.cz/" class="green">TV spoty</a></li>
+                        <li><a href="http://rozhovory.sledujufilmy.cz/" class="green">Rozhovory</a></li>
+                                    </ul>
+                
+                <div class="tac">
+                        <a href="/kontakt/" class="contact_us">Chcete být partnerem našeho webu? Kontaktujte nás!</a>
+                    </div>
+            </div>
+            
+            <div class="left">
+                
+                <h2 class="main"><span>Najdete nás na facebooku</span></h2>
+                <br>
+                
+                <div class="fb-page" data-href="https://www.facebook.com/filmysleduju" data-width="489" data-height="541" data-hide-cover="false" data-show-facepile="true" data-show-posts="true"><div class="fb-xfbml-parse-ignore"><blockquote cite="https://www.facebook.com/filmysleduju"><a href="https://www.facebook.com/filmysleduju">Sledujufilmy.cz</a></blockquote></div></div>
+            </div>
+            
+            <div class="clear"></div>
+            
+        </div>
+        <br>
+        <br>
+        <footer id="foot">
+            <div class="copyright">Copyright &copy; 2014 SledujuFilmy.cz</div>
+            <div class="fr rss">
+                <a href="/rss/"><img src="/images/rss.png" alt="RSS"></a>
+            </div>
+            <div class="created"></div>
+            <span class="top">Top</span>
+        </footer>
+
+        </div>
+        
+        </div>
+    </div>
+    
+</div>
+
+<!--Adblock Check-->
+<script type="text/javascript">
+    $(document).ready(function(){
+        var basePath = "";
+        var adbLink = "\/filmbot-je-smutny-vypni-si-adblock-a-rozvesel-ho"
+        if(!ads_ok) {
+            var $ads = $(".ads-position");
+
+            $ads.each(function(){
+                var $this = $(this);
+                var width = $this.data("width");
+                var height = $this.data("height");
+                $(this).append('<a class="antiadblock" href="'+adbLink+'"><img src="'+basePath+'/img/robot/w'+width+'xh'+height+'.png"></a>');
+            })
+        }
+    })
+</script>
+<!--End Adblock Check-->
+
+<script>
+    (function(f,b,g){
+        var xo=g.prototype.open,xs=g.prototype.send,c;
+        f.hj=f.hj||function(){(f.hj.q=f.hj.q||[]).push(arguments)};
+        f._hjSettings={hjid:2631, hjsv:2};
+        function ls(){f.hj.documentHtml=b.documentElement.outerHTML;c=b.createElement("script");c.async=1;c.src="//static.hotjar.com/c/hotjar-2631.js?sv=2";b.getElementsByTagName("head")[0].appendChild(c);}
+        if(b.readyState==="interactive"||b.readyState==="complete"||b.readyState==="loaded"){ls();}else{if(b.addEventListener){b.addEventListener("DOMContentLoaded",ls,false);}}
+        if(!f._hjPlayback && b.addEventListener){
+            g.prototype.open=function(l,j,m,h,k){this._u=j;xo.call(this,l,j,m,h,k)};
+            g.prototype.send=function(e){var j=this;function h(){if(j.readyState===4){f.hj("_xhr",j._u,j.status,j.response)}}this.addEventListener("readystatechange",h,false);xs.call(this,e)};
+        }
+    })(window,document,window.XMLHttpRequest);
+</script>
+</body>
+<!-- MonitoringOK -->
+</html>
+

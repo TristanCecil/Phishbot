@@ -1,0 +1,516 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" dir="ltr" >
+<head>
+  <title>Mirrorcreator - Upload files to multiple hosts</title>
+	<meta http-equiv="Pragma" content="no-cache" />
+	<meta http-equiv="Expires" content="-1" />
+	<meta http-equiv="Cache-Control" content="no-cache" />
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="keywords" content="File mirroring, file backup, multiple file backup, file upload, file hosting" />
+	<meta name="description" content="Mirrorcreator helps you create multiple mirrors for your files. Upload and store files simultaneously to free hosting providers including Oboom, Filecloud, Solidfiles, 4shared, Uploaded, Turbobit, Ziddu, Gett  etc." />
+	<meta name="google-site-verification" content="4JOKkjuXcrxEityTq0Uy06-3IK1v2QxniecoFTb64gM" />
+	<META NAME="ROBOTS" CONTENT="INDEX,FOLLOW"/>
+	<link rel="shortcut icon" href="http://www.mirrorcreator.com/templates/mirror/images/favicon.png" type="image/x-icon" />
+<link rel="stylesheet" href="/uploadify/uploadify.css" type="text/css" />
+<link rel="stylesheet" href="http://www.mirrorcreator.com/templates/mirror/stylesheet.css?v=2.8" type="text/css" />
+<script type="text/javascript" src="http://www.mirrorcreator.com/uploadify/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="http://www.mirrorcreator.com/js/prettyCheckboxes.js"></script>
+<script type="text/javascript" src="http://www.mirrorcreator.com/js/index.js"></script>
+<style id="antiClickjack">body{display:none !important;}</style>
+<script type="text/javascript">
+   if (self === top) {
+       var antiClickjack = document.getElementById("antiClickjack");
+       antiClickjack.parentNode.removeChild(antiClickjack);
+   } else {
+       top.location = self.location;
+   }
+</script>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-8586142-1");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+
+</head>
+<body>
+	<div id="header"></div>
+	<div id="content">
+			<a href="http://www.mirrorcreator.com"><img src="http://www.mirrorcreator.com/templates/mirror/images/logo.png" alt="Mirrorcreator" height="74" width="309" class="logo"/> </a>
+			<div id="navigation"> 
+				<ul class="nav"> 
+					<li class="current"><a href="http://www.mirrorcreator.com"><span>Upload</span></a></li> 
+					<li><a href="http://www.mirrorcreator.com/p/filemanager" class="myaccount"><span>My Account</span></a></li> 
+					<li><a href="http://www.mirrorcreator.com/p/faq"><span>Help</span></a></li> 
+					<li><a href="http://www.mirrorcreator.com/p/contact"><span>Contact</span></a></li> 
+				</ul> 
+			</div> 
+		<div class="page">
+			<div class=" all"><script type="text/javascript" src="/uploadify/swfobject.js"></script>
+<script type="text/javascript" src="/uploadify/jquery.uploadify.v2.1.4.min.js"></script>
+<script type="text/javascript" src="./js/prettyCheckboxes.js"></script>
+<script type="text/javascript" src="./js/jquery.filestyle.mini.js"></script>
+<script type = "text/javascript"  src="./js/motionpack.js"></script>
+<script type = "text/javascript" src="./js/jquery.base64.js"></script>
+<script type = "text/javascript" src="./js/jquery.colorbox-min.js"></script>
+<script src="/uploadify/jquery.uploadifive.min.js?v=1.1.2" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="/uploadify/uploadifive.css">
+<link rel="stylesheet" href="./js/colorbox.css" type="text/css" media="screen" />
+<link href='https://fonts.googleapis.com/css?family=Abel' rel='stylesheet' type='text/css'>
+<script type="text/javascript">
+//<![CDATA[
+$(document).ready(function() {
+	
+$(".loading").hide();
+	
+	filesCompleted = [];	
+	filesCompletedSize = [];
+	
+	$("#file_upload").uploadify({
+		'uploader': 'uploadify/uploadify.swf',
+		'script': 'uploadify/uploadify.php',
+		'buttonImg'      : 'http://www.mirrorcreator.com/templates/mirror/images/start3.png',
+		'wmode' :"transparent",
+        'width'          : '359',
+        'height'         : '97',		
+		'cancelImg': 'uploadify/cancel.png',
+		'folder': 'uploads',
+		'auto': false, 
+		'multi': true,
+		'displayData' : 'speed', 	
+		'rollover'    : true,
+		'sizeLimit': '419430400',
+		'queueSizeLimit': 10,
+		'onQueueFull': function(event, queueSizeLimit) {
+			alert("Alert: You can upload Maximum " + queueSizeLimit + " files at once");
+			return false;
+		},
+		'onComplete': function(event, queueID, fileObj, response, data) {
+			var obj = jQuery.parseJSON(response);
+			 filesCompleted.push(obj.fileName);
+			 filesCompletedSize.push(fileObj['size']);
+		},
+		'onAllComplete': function(event, data) {
+				var scanvirus ='';
+				var filesNames='';
+				var email = $('[name=mail]').val() ;
+				var pass = $('[name=pass]').val() ;
+				$.each(filesCompleted, function(key, value) { 
+				filesNames +=value + '#0#' + filesCompletedSize[key]+ ';0;';
+				});
+				
+				if($("#scanvirus").is(':checked')){
+					scanvirus = 'on';
+				}
+				
+				var selectedHosts = [];
+				 $('#pick :checked').each(function() {
+				   selectedHosts.push($(this).val());
+				 });				
+				var selectedHost = '';
+				$.each(selectedHosts, function(key, value) { 
+				selectedHost += value + ';';
+				});				
+			submitData = filesNames + '@e@' + email + '#H#' + selectedHost +'#P#' + pass + '#SC#' + scanvirus;
+			var b64 = $.base64.btoa(submitData);
+			 window.location = '/process.php?data=' +b64;
+		}
+		
+	});
+
+
+
+var qooy = {
+	animateToggle: function(id){
+			speed=arguments[1]?arguments[1]:500;
+			$('#'+id).animate({height: 'toggle', opacity: 'toggle'}, speed)
+		},
+		animateScroll: function(id){
+			speed=arguments[1]?arguments[1]:500;
+			var offset = 0 - Math.round( $(window).height()/2);
+			var targetOffset = offset + $('#'+id).offset().top; 	
+			$('html,body').animate({scrollTop: targetOffset}, speed)
+		},
+		swapImages: function(id,n){
+			var restore=null;
+			var clk=arguments[2];
+				$('#'+id).hover(function() {
+					restore=$(this).attr("src");
+					$(this).attr("src",n);
+				}, function() {
+					$(this).attr("src",restore);
+			}).click(function(){
+				if(clk)window.location=clk});
+		},
+		maxMirrors: function (id){
+				if($("#pick input[type=checkbox]:checked=true").length >12){
+					alert("Sorry, You may only select a maximum of 12 mirrors at a time!");
+					id.checked = false;scanforchanges('#pick');
+				}
+				if($("#pick input[type=checkbox]:checked=true").length < 1){
+				alert("Please select at least one mirror!");return true;}
+				}
+};
+
+function fnvalidate()
+{
+	var upMethod = $("#flashorhtml").val();
+	var cName = '';
+	if(upMethod == 'html5'){
+		cName = $(".filename");	
+	} else {
+		cName = $(".fileName");
+	}
+
+	if(cName.length < 1){
+		alert("Please Choose a file");return true;
+	}
+	
+	qooy.animateScroll('uu_upload');
+	var filename='';
+	var fid='';
+
+	cName.each(function(){
+		filename=filename + $(this).html() + ';';
+		if(filename)
+		fid=fid + $(this).attr('id') + ';';
+	});
+
+	$.ajax({
+
+		url: "fnvalidator.php?fn="+filename+"&fid="+fid,
+		dataType: "json",
+		timeout: (30 * 1000),
+		success: function(data){
+			if(data.userdata[0].msg=="###000###"){
+				if(upMethod == 'html5'){
+					$('#html_file_upload').uploadifive('upload'); 
+					return false;
+				} else {
+					$('#file_upload').uploadifyUpload(); 
+				}		
+			}
+			else{
+			confirm(data.userdata[0].msg);
+				$.each(data.userid, function(i,user){
+				
+				});
+			}
+		}
+
+		});
+}
+
+
+
+$("#file_picker_container").hide();
+
+$(".switch").live("click",function(){
+
+	$('#html_file_upload').uploadifive('clearQueue');
+
+	if($(this).text() == 'Switch to Flash Upload'){
+		$(this).text('Switch to HTML5 Upload (beta)');
+		$("#flashorhtml").val('flash');
+			$("#uploadifive-html_file_upload").hide();
+			$("#file_picker_container").show();
+		if($("#enableflash").val() == '1') {
+			$("#html_file_upload").hide();			
+		}	
+	} else {
+		$(this).text('Switch to Flash Upload');
+		if($("#enableflash").val() == '1') {
+			$("#html_file_upload").show();			
+		}
+		$("#flashorhtml").val('html5');
+			$("#file_picker_container").hide();
+			$("#uploadifive-html_file_upload").show(); 
+	}
+	return false;
+});
+
+	$("#remote_file_picker_container").hide();
+	$("#upload_button").unbind("click").bind('click',fnvalidate);
+	$("#upload_button").click(function(){return false;});
+		
+$("#remote").click(function(){
+	$(".switch").hide();	
+	$(".sizeinfo").hide();
+	$("#file_picker_container").hide();
+	$("#uploadifive-html_file_upload").hide();
+	$("#remote_file_picker_container").show();
+		$("#upload_button").unbind("click").bind('click',function(){
+			$(".loading").fadeIn("slow");
+		$("#uu_upload").attr('action','/remote.php').submit();
+		});
+		$("#upload_button").click(function(){
+			qooy.animateScroll('uu_upload');
+			return false;
+			});
+	return false;
+
+});
+
+
+
+$("#local").click(function(){
+		if($("#enableflash").val() == '1') {
+			$("#file_picker_container").show();
+			$("#uploadifive-html_file_upload").hide();
+			$(".switch").hide();
+		} else {
+			$("#file_picker_container").hide();
+			$("#uploadifive-html_file_upload").show();	
+			$(".switch").show();	
+		}
+	$(".sizeinfo").show();
+	$("#remote_file_picker_container").hide();
+	$("#upload_button").unbind("click").bind('click',fnvalidate);
+	$("#upload_button").click(function(){
+		return false;
+		});
+return false;
+});
+
+
+$(".youtube").colorbox({iframe:true, innerWidth:853, innerHeight:480});
+$(".iframe").colorbox({iframe:true, width:"80%", height:"80%"});
+
+$('#pick input[type=checkbox]').bind('change',function () { 
+	qooy.maxMirrors(this);}).prettyCheckboxes({
+	checkboxWidth: 18, 
+	checkboxHeight: 18 
+});
+
+qooy.animateScroll('uu_upload');
+
+
+
+// HTML5 UPLOAD
+$('#html_file_upload').uploadifive({
+	'auto'             : false,
+	'width'          : 559,
+	'height'         : 76,
+	'dnd'            :  true,
+	'formData'         : {
+						   'timestamp' : '',
+						   'token'     : '6b79a77180e9ec3a7ca351ebe54641a2'
+						 },
+	'queueID'          : 'queue',
+	'queueSizeLimit': 10,
+    'dropTarget'            :  document.body,
+	'fileSizeLimit': '400MB',
+	'uploadScript'     : 'uploadify/uploadifive.php',
+	'onUploadComplete' : function(file, data) { 
+		var obj = jQuery.parseJSON(data);
+		filesCompleted.push(obj.fileName);;
+		filesCompletedSize.push(file.size);
+	},
+	'onQueueComplete': function(data) { 
+		var scanvirus ='';
+		var filesNames='';
+		var email = $('[name=mail]').val() ;
+		var pass = $('[name=pass]').val() ;
+		$.each(filesCompleted, function(key, value) { 
+		filesNames +=value + '#0#' + filesCompletedSize[key]+ ';0;';
+		});
+		
+		if($("#scanvirus").is(':checked')){
+			scanvirus = 'on';
+		}
+		
+		var selectedHosts = [];
+		 $('#pick :checked').each(function() {
+		   selectedHosts.push($(this).val());
+		 });				
+		var selectedHost = '';
+		$.each(selectedHosts, function(key, value) { 
+		selectedHost += value + ';';
+		});			
+		if(filesNames==null || filesNames==undefined || filesNames==''){
+			return false;
+		}	
+		submitData = filesNames + '@e@' + email + '#H#' + selectedHost +'#P#' + pass + '#SC#' + scanvirus;
+		var b64 = $.base64.btoa(submitData); 
+		window.location = '/process.php?data=' +b64;
+	},
+	'onFallback'   : function() {
+			$(".switch").hide();				
+			$("#file_picker_container").css("margin-top","-30px");			
+			$("#html_file_upload").hide();	
+			$("#flashorhtml").val('flash');
+			$("#file_picker_container").show();				
+			$("#enableflash").val('1');				
+	}
+});
+	
+});
+//]]>
+</script>
+
+<div class="highlight"><div class="socialb">
+</div>
+		<div class="login">	
+						Hello guest, Please <a href="/p/login">Login</a> or <a href="/p/register">Register</a>  
+						</div></div>
+			<br /><br />
+			
+			<div class="highlight"><div class="banner"><div id="banner_h"></div></div>
+				<div class="info">
+					<span>Mirrorcreator helps you upload files<br />to your own accounts on multiple hosting sites!</span><br />
+					<a id="watch_video" href="https://www.youtube.com/embed/jGKRR_RMgr0?rel=0&amp;wmode=transparent&amp;autoplay=1" title="Mirrorcreator.com - How it works" class="youtube"></a>  
+
+				</div>
+				
+			</div>
+			<div class="shadow"></div>
+
+<div class="highlight term">News : <strong>Added BigFile.to and Google Drive with account support</strong></div>
+<br />
+
+
+
+			<form id="uu_upload" name="uu_upload" method="post" enctype="multipart/form-data" action="#">
+			<div class="highlight main">
+					<div class="buttons">
+						<a href="#" id="local" ><div id="pc_up_h"></div> </a>
+						<a href="#" id="remote"><div id="remote_up_h"></div> </a>				
+					</div>
+				<br />
+				<span class="sizeinfo">
+				Maximum allowed file size : <b>400MB</b>
+				</span>
+				<br /><br />
+				<div class="loading"><img src="/images/ajax-loader.gif" alt="" /></div>	
+				
+				<a class="switch" href="#">Switch to Flash Upload</a><br /><br />
+				<center><input id="html_file_upload" name="html_file_upload" type="file" multiple="true"></center>
+				<div id="file_picker_container">
+				<input type="file" id="file_upload" name="file_upload" /> 
+				</div>
+				<div id="queue"></div>
+				<div id="remote_file_picker_container">
+				<br /><font color="red" size="2"><em><b>Sorry, Only <a href="/p/login">registered members</a> can remote upload.</b></em></font><br /> <br /><br /><br />
+				</div>					
+				<br />
+				<div class="options">
+					<a href="#" class="additional">Additional Options</a>
+					<div class="addinfo">
+						<span class="left"><b>Email me the download link(s)</b> (optional)</span>
+						<span class="right"><b>Password protect this file</b> (optional)</span><br />
+						<input type="text" name="mail" autocomplete="off" size="55" />	
+						<input type="text" name="pass" autocomplete="off" size="55" /><br />
+
+					</div>
+				</div>
+					<br />
+			</div>
+			<br />
+			<div class="hosts1">
+				<b>Choose the hosting sites where you want your files to be mirrored:</b><br />
+				<a href="/p/howto" class="term" target="_blank">(How do I upload to my own accounts on hosting sites?)</a><br />
+<span class="mirrorinfo">Your maximum allowed mirrors : <b>12</b> </span><br />
+				<br />
+				</div>
+			<div class="hosts2">	
+				<div class="section demo" id="pick">
+					<div class="rightcol">
+							<table width="898" cellpadding="0" cellspacing="5" border="0">
+			<tr>
+		<td><label for="solidfiles">SolidFiles<br/><span class="maxsize">Max. 400 MB</span></label><input type="checkbox" value="solidfiles" name="solidfiles" id="solidfiles"  checked="checked" /></td><td><label for="hugefiles">HugeFiles<br/><span class="maxsize">Max. 400 MB</span></label><input type="checkbox" value="hugefiles" name="hugefiles" id="hugefiles"  checked="checked" /></td><td><label for="sendmyway">SendMyWay<br/><span class="maxsize">Max. 300 MB</span></label><input type="checkbox" value="sendmyway" name="sendmyway" id="sendmyway"  checked="checked" /></td><td><label for="rghost">RGhost<br/><span class="maxsize">Max. 100 MB</span></label><input type="checkbox" value="rghost" name="rghost" id="rghost"   /></td><td><label for="gett">Gett<br/><span class="maxsize">Max. 400 MB</span></label><input type="checkbox" value="gett" name="gett" id="gett"   /></td><td><label for="filesfm">FilesFm<br/><span class="maxsize">Max. 400 MB</span></label><input type="checkbox" value="filesfm" name="filesfm" id="filesfm"   /></td></tr><tr><td><label for="zippyshare">ZippyShare<br/><span class="maxsize">Max. 200 MB</span></label><input type="checkbox" value="zippyshare" name="zippyshare" id="zippyshare"   /></td><td><label for="openload">OpenLoad<br/><span class="maxsize">Max. 400 MB</span></label><input type="checkbox" value="openload" name="openload" id="openload"   /></td><td><label for="speedyshare">SpeedyShare<br/><span class="maxsize">Max. 400 MB</span></label><input type="checkbox" value="speedyshare" name="speedyshare" id="speedyshare"   /></td><td><label for="turbobit">TurboBit<br/><span class="maxsize">Max. 400 MB</span></label><input type="checkbox" value="turbobit" name="turbobit" id="turbobit"   /></td><td><label for="tusfiles">TusFiles<br/><span class="maxsize">Max. 400 MB</span></label><input type="checkbox" value="tusfiles" name="tusfiles" id="tusfiles"   /></td><td><label for="userscloud">UsersCloud<br/><span class="maxsize">Max. 400 MB</span></label><input type="checkbox" value="userscloud" name="userscloud" id="userscloud"   /></td></tr><tr><td><label for="uppit">UppIt<br/><span class="maxsize">Max. 400 MB</span></label><input type="checkbox" value="uppit" name="uppit" id="uppit"   /></td><td><label for="onefichier">OneFichier<br/><span class="maxsize">Max. 400 MB</span></label><input type="checkbox" value="onefichier" name="onefichier" id="onefichier"   /></td><td><label for="datafilehost">DataFileHost<br/><span class="maxsize">Max. 400 MB</span></label><input type="checkbox" value="datafilehost" name="datafilehost" id="datafilehost"   /></td><td><label for="uptobox">Uptobox<br/><span class="maxsize">Max. 400 MB</span></label><input type="checkbox" value="uptobox" name="uptobox" id="uptobox"   /></td><td><label for="clicknupload">ClicknUpload<br/><span class="maxsize">Max. 400 MB</span></label><input type="checkbox" value="clicknupload" name="clicknupload" id="clicknupload"   /></td><td><label for="bigfileto">BigFileTo<br/><span class="maxsize">Max. 400 MB</span></label><input type="checkbox" value="bigfileto" name="bigfileto" id="bigfileto"   /></td></tr><tr><td><label for="dailyuploads">DailyUploads<br/><span class="maxsize">Max. 400 MB</span></label><input type="checkbox" value="dailyuploads" name="dailyuploads" id="dailyuploads"   /></td><td><label for="rapidgator">RapidGator<br/><span class="maxsize">Max. 400 MB</span></label><input type="checkbox" value="rapidgator" name="rapidgator" id="rapidgator"   /></td><td><label for="uploadednet">UploadedNet<br/><span class="maxsize">Max. 400 MB</span></label><input type="checkbox" value="uploadednet" name="uploadednet" id="uploadednet"   /></td><td><label for="filecloud">FileCloud<br/><span class="maxsize">Max. 400 MB</span></label><input type="checkbox" value="filecloud" name="filecloud" id="filecloud"   /></td><td><label for="fourshared">FourShared<br/><span class="maxsize">Max. 400 MB</span></label><input type="checkbox" value="fourshared" name="fourshared" id="fourshared"   /></td><td><label for="twoshared">TwoShared<br/><span class="maxsize">Max. 200 MB</span></label><input type="checkbox" value="twoshared" name="twoshared" id="twoshared"   /></td></tr><tr><td><label for="depositfiles">DepositFiles<br/><span class="maxsize">Max. 400 MB</span></label><input type="checkbox" value="depositfiles" name="depositfiles" id="depositfiles"   /></td><td><label for="ziddu">Ziddu<br/><span class="maxsize">Max. 200 MB</span></label><input type="checkbox" value="ziddu" name="ziddu" id="ziddu"   /></td><td><label for="oboom">Oboom<br/><span class="maxsize">Max. 400 MB</span></label><input type="checkbox" value="oboom" name="oboom" id="oboom"   /></td><td><label for="filefactory">FileFactory<br/><span class="maxsize">Max. 400 MB</span></label><input type="checkbox" value="filefactory" name="filefactory" id="filefactory"   /></td><td><label for="cloudup">CloudUp<br/><span class="maxsize">Max. 200 MB</span></label><input type="checkbox" value="cloudup" name="cloudup" id="cloudup"   /></td><td><label for="dropbox">DropBox<br/><span class="maxsize">Max. 400 MB</span></label><input type="checkbox" value="dropbox" name="dropbox" id="dropbox"   /></td></tr><tr><td><label for="googledrive">GoogleDrive<br/><span class="maxsize">Max. 400 MB</span></label><input type="checkbox" value="googledrive" name="googledrive" id="googledrive"   /></td>			</tr>
+		</table>
+					</div>
+				</div>
+			</div>
+<div class="highlight pakageinfo"><span><b>RapidGator</b>, <b>UploadedNet</b>, <b>FileCloud</b>, <b>FourShared</b>, <b>TwoShared</b>, <b>DepositFiles</b>, <b>Ziddu</b>, <b>Oboom</b>, <b>FileFactory</b>, <b>CloudUp</b>, <b>DropBox</b> and <b>GoogleDrive</b> mirrors will only work if you have account with them and have provided your login details <a href="/p/hostsetting" target=_blank>on this page.</a></span></div>
+			<div class="highlight term">
+				By clicking the upload button, you acknowledge that you have read and accepted <a class="iframe" href="/tos.html">terms of service</a> and you have all the necessary rights to the content(s) you are uploading.
+			</div>
+			<br />
+			<input type="hidden" name="flashorhtml" id="flashorhtml" value="html5" />
+			<input type="hidden" name="enableflash" id="enableflash" value="0" />
+			<a href="#" id="upload_button" > <div id="start_up"></div></a>
+			</form>
+
+			
+
+<div class="separator"></div>
+<span class="sizeinfo">Featured on</span>
+			<div class="featured">
+				<ul>
+					<li><div id="life_h" ></div></li>
+					<li><div id="ghacks_h" ></div></li>
+					<li><div id="makeus_h" ></div></li>
+					<li><div id="chip_h" ></div></li>
+				</ul>
+			</div>
+			
+
+
+		  </div>
+		</div>	
+	</div>
+
+	<div id="footer">
+		<div class="rightlist">
+			<table cellpadding="0" cellspacing="0" border="0">
+				<tr>
+					<td valign="top">
+					<ul class="ft_header">
+						<li><span class="foothead">SITE LINKS:</span></li>
+						<li><a href="http://www.mirrorcreator.com">Upload files</a></li>
+						<li><a href="http://www.mirrorcreator.com/p/login">Login/Register</a></li>
+						<li><a href="http://www.mirrorcreator.com/p/faq">FAQ/Help</a></li>
+
+
+					</ul>
+					</td>
+					<td valign="top">
+					<ul class="ft_header">
+						<li><span class="foothead">MY ACCOUNT:</span></li>
+						<li><a href="http://www.mirrorcreator.com/p/summary">Account Summary</a></li>
+						<li><a href="http://www.mirrorcreator.com/p/filemanager">File Manager</a></li>
+					</ul>
+					</td>
+					<td valign="top">
+					<ul class="ft_header">
+						<li><span class="foothead">CONTACT:</span></li>
+						<li><a href="http://www.mirrorcreator.com/p/contact">Contact us</a></li>
+						<li><a href="http://www.mirrorcreator.com/p/abuse">Report Abuse</a></li>
+						<li><a href="http://www.mirrorcreator.com/p/advertise">Advertise with us</a></li>
+					</ul>
+					</td>
+					<td valign="top">
+					<ul class="ft_header">
+						<li><span class="foothead">OTHER:</span></li>
+						<li><a href="http://www.mirrorcreator.com/p/tos">Terms of service</a></li>
+						<li><a href="http://www.mirrorcreator.com/p/privacy">Privacy policy</a></li>
+											<li><a href="https://www.mirrorcreator.com/">Turn on HTTPS</a></li>
+					</ul>
+					</td>
+					<td valign="top">
+					<ul class="ft_header">
+						<li><span class="foothead">SOCIAL:</span></li>
+						<li><a href="https://facebook.com/mirrorcreator"  target="_BLANK" class="facebook">Find us on Facebook</a></li>
+						<li><a href="https://twitter.com/Mirrorcreator" target="_BLANK" class="twitter">Find us on Twitter</a></li>
+					</ul>
+					</td>
+				</tr>
+			</table>
+			
+		</div>
+
+			
+		</div>
+	</div>	
+	<div class="footerbg">
+			
+	</div>
+                       
+</body>
+</html>

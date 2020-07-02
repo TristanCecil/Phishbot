@@ -1,0 +1,2123 @@
+<!DOCTYPE html> <html> <head> <meta charset="utf-8" /> <meta name="copyright" content="Tune.pk (Pvt) Ltd. 2016" /> <meta name="p:domain_verify" content="dba9a3dd370f85928012fad5129d42fb"/> <meta name="apple-itunes-app" content="app-id=526724988, app-argument=tune.pk://"> <meta name="google-play-app" content="app-id=com.tune.pk"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <meta name="web_author" content="Arslan Hassan - http://tune.pk/az"> <meta name="keywords" content="videos, entertainmnet, music, portal, pakistan, sports, cricket" /> <meta name="description" content="bringing you best videos from all over the world  - entertainment, sports, news, politics, technology, music, covering all categories of planet humanoid" /> <meta name="distribution" content="global" /> <title>Tune.pk - Watch, Share & Discover Videos!</title> <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <link href="http://tune.pk/styles/tunev4/theme/css/tune.css?1462972886" rel="stylesheet"> <link href="http://tune.pk/styles/tunev4/theme/css/bootstrap.css?1462972886" rel="stylesheet"> <link rel="stylesheet" type="text/css" href="http://tune.pk/styles/tunev4/theme/css/typeahead.css?cache=1462972886" /> <link rel="alternate" type="application/rss+xml" title="Recently added videos" href="http://tune.pk/rss/recent" /> <link rel="alternate" type="application/rss+xml" title="Most Viewed Videos" href="http://tune.pk/rss/views" /> <link rel="alternate" type="application/rss+xml" title="Top Rated Videos" href="http://tune.pk/rss/rating" /> <link rel="alternate" type="application/rss+xml" title="Videos Being Watched" href="http://tune.pk/rss/watching" /> <link rel="canonical" href="http://tune.pk" /> <link rel="stylesheet" type="text/css" href="http://tune.pk/styles/tunev4/theme/css/quick-list.css?cache=1462972886" /> <script type="text/javascript" src="http://tune.pk/styles/tunev4/theme/js/jquery-1.11.3.min.js"></script> <script type="text/javascript" src="http://tune.pk/styles/tunev4/theme/js/jquery.cookie.js"></script> <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer>
+		</script> <script type="text/javascript">
+			var baseurl = 'http://tune.pk';
+			var imageurl = 'http://tune.pk/styles/tunev4/images';
+			var long_poll_url = "//poll.tune.pk";
+			var cache_buster = '1462972886'
+			var protocol = ('https:' == document.location.protocol ? 'https://' : 'http://') ;
+			var search_url = 'http://search1.tune.pk';
+			var ajax_loader = 'http://tune.pk/styles/tunev4/images/loaders/1.gif';
+		    var ad_blocker = true;
+		    var reload = true;
+		            </script> <script src="http://tune.pk/js/ads.js"></script> <script type='text/javascript'>
+		(function() {
+		var useSSL = 'https:' == document.location.protocol;
+		var src = (useSSL ? 'https:' : 'http:') +
+		    '//www.googletagservices.com/tag/js/gpt.js';
+		document.write('<scr' + 'ipt src="' + src + '"></scr' + 'ipt>');
+		})();
+	</script> <script type='text/javascript'>
+		// 300x250
+		googletag.cmd.push(function() {
+		googletag.defineSlot('/18154040/Tunepk_Home_Page', [300, 250], 'div-gpt-ad-1456141122183-0').addService(googletag.pubads());
+		googletag.pubads().enableSingleRequest();
+		googletag.enableServices();
+		});
+
+		// 728x90
+
+		googletag.cmd.push(function() {
+		googletag.defineSlot('/18154040/tunepk_homepage_leaderboard', [728, 90], 'div-gpt-ad-1456148017926-0').addService(googletag.pubads());
+		googletag.pubads().enableSingleRequest();
+		googletag.enableServices();
+		});
+	
+	</script> <script type="text/javascript">
+
+    
+
+    function show_error(msg,ID,fade)
+    { 
+        
+        $('#alert_message .alert_message')
+        .addClass('alert-inverted-err')
+        .text(msg);
+        
+        $('#alert_message').show()
+        .delay(10000).fadeOut('slow');
+    }
+    
+    function show_message(msg,ID,fade)
+    { 
+        $('#alert_message .alert_message')
+        .removeClass('alert-inverted-err')
+        .text(msg);
+        
+        $('#alert_message').show().delay(10000).fadeOut('slow');
+    }
+
+
+
+   
+
+</script> <script>
+var admin_ajax_url = 'https://sunny091213.tune.pk/admin_ajax.php';
+
+    function tune_alert(type,title,message)
+    {
+        var modal = $('#modal_alert');
+        if(type=='success')
+        {
+            modal.find('.success_msg').show().find('.msg_space').text(message);
+            modal.find('.error_msg').hide();
+        }
+        else
+        {
+            modal.find('.error_msg').show().find('.msg_space').text(message);
+            modal.find('.success_msg').hide();
+        }
+
+        modal.find('.modal-title').text(title);
+
+        modal.modal('show');
+    }
+
+    function deactivate_video(videoid)
+    {
+        var data = $('#deactivate-form-'+videoid).serialize();
+        data += '&mode=deactivate_video';
+
+
+
+        var modal =  $('#video-deactivate-'+videoid);
+        $(modal).find('.btn-action').button('loading');
+
+        $.ajax({
+            'url' : admin_ajax_url,
+            data : data,
+            type : 'post',
+            success : function(data)
+            {
+
+                modal.modal('hide');
+                if(data.success)
+                {
+
+                    tune_alert('success','Video deactivated','Video has been deactivated');
+                    $('#report-'+videoid).html(data.template);
+                }else
+                {
+                    tune_alert("error","Error!",data.error);
+                }
+
+                $(modal).find('.btn-action').button('reset');
+
+            },
+            dataType : 'json'
+
+        })
+    }
+
+
+    function activate_video(videoid)
+    {
+        var data = $('#activate-form-'+videoid).serialize();
+        data += '&mode=activate_video';
+
+
+        var modal =  $('#video-activate-'+videoid);
+        $(modal).find('.btn-action').button('loading');
+
+        $.ajax({
+            'url' : admin_ajax_url,
+            data : data,
+            type : 'post',
+            success : function(data)
+            {
+
+                modal.modal('hide');
+                if(data.success)
+                {
+
+                    tune_alert('success','Video activated','Video has been activated');
+                    $('#report-'+videoid).html(data.template);
+                }else
+                {
+                    tune_alert("error","Error!",data.error);
+                }
+
+                $(modal).find('.btn-action').button('reset');
+
+            },
+            dataType : 'json'
+
+        })
+    }
+
+
+    function close_report(videoid)
+    {
+        $.ajax({
+            'url' : admin_ajax_url,
+            data : { videoid:videoid,mode:'close_report' },
+            type : 'post',
+            success : function(data)
+            {
+                if(data.success)
+                {
+                    tune_alert('success','Report closed!','Video report has been closed successfully!');
+                    $('#report-'+videoid).addClass('report-closed').removeClass('report-opened').html(data.template);
+                }else
+                {
+                    tune_alert("error","Error!",data.error);
+                }
+
+            },
+            dataType : 'json'
+
+        })
+    }
+
+    function activate_video_close(videoid)
+    {
+        activate_video(videoid);
+        close_report(videoid);
+    }
+
+    function open_report(videoid)
+    {
+        $.ajax({
+            'url' : admin_ajax_url,
+            data : { videoid:videoid,mode:'open_report' },
+            type : 'post',
+            success : function(data)
+            {
+                if(data.success)
+                {
+                    tune_alert('success','Report opened!','Video report has been opened successfully!');
+                    $('#report-'+videoid).addClass('report-opened').removeClass('report-closed').html(data.template);
+                }else
+                {
+                    tune_alert("error","Error!",data.error);
+                }
+
+            },
+            dataType : 'json'
+
+        })
+    }
+
+
+
+    /**
+     * Function used to make confirmation about any action
+     */
+    function cb_confirm(title,text,callback)
+    {
+        $('#confirm .modal-header h4').text(title);
+        $('#confirm .modal-body').html(text);
+        $('#confirm-yes').bind('click',callback);
+        $('#confirm').modal('show');
+    }
+
+
+    /**
+     * Clears confirm form events and text
+     */
+    function clear_confirm(){
+        $('#confirm .modal-header h3').text('');
+        $('#confirm .modal-body').html('');
+        $('#confirm-yes').unbind('click');
+    }
+
+    function close_confirm(){
+
+        clear_confirm();
+        $('#confirm').modal('hide');
+    }
+
+
+    /**
+     * Submit form with extra values attached
+     */
+    function submit_form($formId,input)
+    {
+        $button = '<input type="hidden" name="'+input+'" value="yes" />';
+        $('#'+$formId).append($button).submit();
+    }
+
+
+</script> <script>
+    /**
+     * Function used to make confirmation about any action
+     */
+    function cb_confirm(title,text,callback)
+    {
+        $('#confirm .modal-header h4').text(title);
+        $('#confirm .modal-body').html(text);
+        $('#confirm-yes').bind('click',callback);
+        $('#confirm').modal('show');
+    }
+
+
+    /**
+     * Clears confirm form events and text
+     */
+    function clear_confirm(){
+        $('#confirm .modal-header h3').text('');
+        $('#confirm .modal-body').html('');
+        $('#confirm-yes').unbind('click');
+    }
+
+    function close_confirm(){
+
+        clear_confirm();
+        $('#confirm').modal('hide');
+    }
+
+
+    /**
+     * Submit form with extra values attached
+     */
+    function submit_form($formId,input)
+    {
+        $button = '<input type="hidden" name="'+input+'" value="yes" />';
+        $('#'+$formId).append($button).submit();
+    }
+
+    function tune_alert(type,title,message)
+    {
+        var modal = $('#modal-alert');
+        if(type=='success')
+        {
+            modal.find('.success_msg').show().find('.msg_space').text(message);
+            modal.find('.error_msg').hide();
+        }
+        else
+        {
+            modal.find('.error_msg').show().find('.msg_space').text(message);
+            modal.find('.success_msg').hide();
+        }
+
+        modal.find('.modal-title').text(title);
+
+        modal.modal('show');
+    }
+
+
+
+    $(document).ready(function(){
+
+
+        $('.the_checkbox').change(function () {
+            var check = ($(this).filter(":checked").length == $(this).length);
+
+            $(this).parents('.item_list').find('.item_check').prop("checked", check);
+        });
+
+    })
+</script> <script>
+ 
+ var RecaptchaOptions = {
+    theme : 'white'
+	
+ };
+ 
+</script> <script type="text/javascript">
+
+function check_file_url(objid)
+{
+	var video_link = $('#remote_play_url').val();
+	var duration = $('#linkUploadForm'+objid+' #duration').val();
+	
+	var reg = /^([0-9\:]+)$/i;
+	
+	if(!video_link)
+	{
+		alert("Please enter valid video link");
+		$('#remote_play_url').focus();
+		return false;
+	}
+	if(!duration || !reg.test(duration))
+	{
+		alert("Please enter valid video duration");
+		$('#linkUploadForm'+objid+' #duration').focus();
+		return false;
+	}
+	
+	$.post(baseurl+"/actions/embed_form_verifier.php", 
+	{ 	
+		'mode' : 'remote_play',
+		'remote_play_url' :  $('#remote_play_url').val(),
+		duration : $("#linkUploadForm"+objid+" #duration").val(),
+		file_name : file_name,
+		thumb_file :  $("#linkUploadForm"+objid+" #thumb_file").val()
+	},				
+	
+	function (data) {
+		if(data.err)
+		{
+			alert(data.err);
+		}else{
+			$("#linkUploadForm"+objid).submit();
+		}
+	}, "json");}
+	
+
+</script> <style>
+
+.fb_button_submit,.fb_button .start,.fb_button .center, .fb_button .end{background-image:url('http://tune.pk/plugins/cb_facebook/imgs/fb.png');}
+
+a.fb_button
+{
+	text-decoration:none;
+	font-style:normal;
+	color:#fff;!important
+	font-size:11px;
+	font-family:"lucida grande",tahoma,verdana,arial,sans-serif
+	
+}
+.fb_button_submit,.fb_button .start,.fb_button .center, .fb_button .end{display:inline-block; font-style:normal;height:22px; padding:0px; margin:0px; line-height:22px; vertical-align:middle}
+
+.fb_button .start{ background-position:0px 0px; background-repeat:no-repeat; width:24px;}
+
+.fb_button_submit, .fb_button .center{ background-position:0px -22px; background-repeat:repeat-x; padding-right:5px; padding-left:3px }
+.fb_button .end{ background-position:right -44px; background-repeat:no-repeat; width:5px;}
+
+.fb_field{display:block; margin-bottom:5px}
+.fb_field label{display:inline-block; width:70px; text-align:right; padding-right:5px; font-weight:bold}
+.fb_field input[type=text],.fb_field select{border:1px solid #ccc; font-size:12px; padding:3px; width:300px} 
+.fb_break{height:10px}
+
+.fb_button_submit{font-weight:bold; color:#fff; border:0px; border-left:1px solid #29447e; border-right:1px solid #29447e; cursor:pointer}
+
+
+
+</style> <script>
+	$(document).ready(function(){
+		show_ads();
+		//ads div empty 
+		$(".advertisement-box").each(function(index, value){ 
+				
+			var _this = $( value );
+				
+			if ( _this.children('.ad-holder').height() == 0 ) {
+				
+				_this.hide();
+			}
+			
+		});
+	});
+
+	$('#selectAll').click(function(e){
+		var table= $(e.target).closest('table');
+		$('td input:checkbox',table).prop('checked',this.checked);
+	});
+	function show_ads()
+		{
+			var ad_units = new Array();
+
+			
+									ad_units.push(31);
+					ad_units.push(81);
+					ad_units.push(101);
+					ad_units.push(112);
+																							   
+			
+			var ad_unit_string = "";
+
+			/*$.each(ad_units,function(key,value){
+				if(ad_unit_string)
+					ad_unit_string += ',';
+
+				ad_unit_string += value;
+			});*/
+			var adss = [{"_id":{"$id":"57221d1854b0723001ea7931"},"page":"index","ad_unit":151,"platefrom":"desktop","place_type":"970x250","platform":"desktop"}];
+			$.each(adss,function(key,value){
+				
+				$('.'+value.place_type).attr('id', 'tune_ad_'+value.ad_unit);
+
+				if(ad_unit_string)
+					ad_unit_string += ',';
+
+				ad_unit_string += value.ad_unit;
+			});
+
+			/**
+			 * Adding Categories 
+			 */
+			var category="";
+			var categories = new Array();
+
+			
+			
+
+			$.each(categories,function(key,value){
+				if(category)
+					category += ',';
+
+				category += value;
+			})
+
+			
+						
+			/*$.getJSON( "http://ads1.tune.pk/get_ads.php?ad_units="+ad_unit_string+"&category="+category, function( data ) {
+				$.each(data,function(key,value){
+
+					var iframe= '<iframe id="tune_ads_iframe_'+value.ad_unit+'" ' +
+							'width="'+value.width+'" height="'+value.height+'" scrolling="no"' +
+							' marginwidth="0" marginheight="0" ' +
+							'frameborder="0" src="'+value.banner_path+'" style="border:' +
+							' 0px;"></iframe>';
+
+					$('#tune_ad_'+value.ad_unit).html(iframe);
+				})
+			});*/
+			var xhrFields = {};
+			
+			xhrFields.withCredentials = true;
+			if(ad_unit_string!='')
+			{
+
+				var _data ='ad_units='+ad_unit_string+'&category='+category+'&html=true';
+
+				
+				$.ajax({
+					url : "http://ads1.tune.pk/get_ads.php",
+					type:'GET',
+					dataType : 'json',
+					data: _data,
+					crossDomain : true,
+					xhrFields: xhrFields,
+					beforeSend:function(data){
+
+					},
+					success : function(data)
+					{
+						/*$.each(data,function(key,value){
+
+							var iframe= '<iframe id="tune_ads_iframe_'+value.ad_unit+'" ' +
+									'width="'+value.width+'" height="'+value.height+'" scrolling="no"' +
+									' marginwidth="0" marginheight="0" ' +
+									'frameborder="0" src="'+value.banner_path+'" style="border:' +
+									' 0px;"></iframe>';
+
+							$('#tune_ad_'+value.ad_unit).html(iframe);
+							$('#tune_ad_'+value.ad_unit).parent('div.empty-ads').show();
+						
+						})*/
+						
+						console.log(data);
+						$.each(data,function(key,value){
+
+							var _adUnit = $( '#tune_ad_'+value.ad_unit );
+
+							console.log ('#tune_ad_'+value.ad_unit);
+
+							$('#tune_ad_'+value.ad_unit).html(value.html);
+							$('#tune_ad_'+value.ad_unit).parent('div.empty-ads').show();
+							if(typeof(value.height) != "undefined" && value.height !== null) {
+								$('#tune_ad_'+value.ad_unit).css("height",value.height); 
+							}
+							if(typeof(value.width) != "undefined" && value.width !== null) {
+								$('#tune_ad_'+value.ad_unit).css("width",value.width);
+								
+							}
+
+							$('#tune_ad_'+value.ad_unit).css("width",value.width);
+
+							if ( _adUnit.parents( '.advertisement-box' ).css( 'display' ) == 'none' ) {
+								_adUnit.parents( '.advertisement-box' ).show();
+							}
+
+							// var x = $('#tune_ad_'+value.ad_unit).html;
+							// alert(x);
+						
+						})
+					},
+					/*complete:function(data) 
+					{
+						alert ("complete");
+						ads div empty 
+						$(".advertisement-box").each(function(index, value){ 
+							 console.log(value);
+							var _this = $( value );
+							
+							 var adhtmal = $('#tune_ad_'+value.ad_unit).html();	
+
+							 alert(adhtmal);
+
+							 if ( _this.children('.ad-holder').height() != 0 ) {
+								
+							 	_this.show();
+							 }
+							
+						});
+					}*/
+				});
+
+			}
+			
+		}
+
+</script> <style type="text/css">
+/* tour_notification */
+	.jobs_notification,
+	.tour_notification {
+		position: fixed;
+		top: 70px;
+		right: 10px;
+		z-index: 5;
+		-moz-box-shadow: 0 0 3px #000; 
+		-webkit-box-shadow: 0 0 3px #000; 
+		box-shadow: 0 0 3px #000; 
+		padding:0px 10px;
+		border-radius:5px;
+		color:#097d02; 
+		border: 1px solid #1069c2;
+		width: 215px;
+		background-color: #fff;
+	}
+	.jobs_notification img{
+		opacity: .7;
+	}
+	.jobs_notification {
+		-moz-box-shadow: 0 0 3px rgba(0,0,0,0.5); 
+		-webkit-box-shadow: 0 0 3px rgba(0,0,0,0.5); 
+		box-shadow: 0 0 3px rgba(0,0,0,0.5); 
+		padding:6px 10px;
+		border-radius:5px;
+		background-color: #2fcc71;
+		border: 1px solid #2fcc71;
+		color: #fff;
+	}
+	.tour_notification h1 {
+		font-size:16px; 
+		margin:0; 
+		padding:0 
+	}
+	.jobs_notification p,
+	.tour_notification p { 
+		margin:3px 0; 
+		padding:0; 
+		line-height:18px;
+		font-size: 12px;
+	}
+	.jobs_notification p {
+		font-weight: bold;
+	}
+	.jobs_notification p i{
+		font-size: 18px;
+		margin-right: 10px;
+		vertical-align: middle;
+	}
+	.tour_notification-close { 
+		color:#097d02; 
+		position: absolute;
+		top: 6px;
+		right: 10px;
+		font-size: 16px;
+	}
+</style> <script type="text/javascript">
+	$(document).ready(function(){
+
+				$( document ).on( 'click', '.close-tour', function( event){
+
+			$.cookie('close-index-tour','yes',{ path: '/' });
+
+			$(this).parent('.tour_notification, .jobs_notification').hide();
+		});
+	});
+</script> <meta property="fb:app_id" content="239452059417627" /> <meta property="fb:admins" content="100000670699643" /> </head> <script>
+	var playlist_show=0;
+    var playlist_limit=10;
+    var page = baseurl+'/ajax.php';
+    var userid = '';
+        var tune_userid = 0;
+			
+	
+</script> <body class="page-index parent-home  active   "> <div class="modal fade" id="loginform" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"> <div class="modal-dialog login-modal" role="document"> <div class="modal-content"> <div class="modal-header"> <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button> <h4 class="modal-title" id="myModalLabel">Login</h4> </div> <form class="login-form" id="login_form" action="http://tune.pk/signup" method="post"> <div class="modal-body"> <div class="alert relative alert-mesaages display-none alert-danger" style="display:none" > </div> <div class="form-group"> <input type="hidden" name="login" value="do"/> <input type="text" class="form-control modal-username" placeholder="Username" name="username" placeholder="Username"> </div> <div class="form-group"> <input type="password" class="form-control modal-password" placeholder="Password" name="password" placeholder="Password"> <input type="hidden" name="login" value="yes" /> </div> <div class="form-group custom-elements"> <div class="checkbox"> <label> <input type="checkbox" id="rememberme" class="rememberme" value="yes"> Remember Me
+							</label> </div> </div> <div class="form-group"> <div class="login-btns clearfix"> <div class="col-xs-6 col"> <button class="btn btn-primary pull-left modal-login" data-loading-text="Signing in.." type="submit" name="login">Login</button> </div> <div class="col-xs-6 col"> <button type="button" onclick="window.location.replace('http://tune.pk/signup')" class="btn btn-success pull-right">Create New Account</button> </div> </div> </div> <div class="or clearfix"> <span>OR</span> </div> <div class="form-group"> <button type="button" class="btn btn-primary btn-block" onclick="window.location.replace('https://www.facebook.com/v2.5/dialog/oauth?client_id=239452059417627&state=133c53ebfac160efaf1cbcf388d1410e&response_type=code&sdk=php-sdk-5.1.0&redirect_uri=http%3A%2F%2Ftune.pk%2Fmodule.php%3Fp%3Dfbconnect%26s%3Dcb_facebook&scope=email%2Cuser_friends%2Cuser_about_me%2Cuser_actions.video%2Cuser_location%2Cuser_birthday%2Cuser_likes%2Cuser_status%2Cuser_videos%2Cuser_website');$(this).button('loading')" data-loading-text="Connecting with Facebook.." data-toggle="modal" data-target="#login-modalBox">Login With Facebook</button> </div> </div> <div class="modal-footer"> <button type="button" onclick="window.location.replace('/forgot.php?mode=reset_pass')" class="btn btn-default pull-left">Forgot Password</button> <button type="button" onclick="window.location.replace('/forgot.php?mode=reset_username')" class="btn btn-default pull-right">Forgot Username</button> </div> </form> </div> </div> </div> <div id="wrapper"> <header id="header" class="option2 clearfix"> <div class="logo-nav pull-left"> <div class="logo-holder"> <h1 class="logo"> <a href="http://tune.pk"> <i class="icon-tune"></i> <i class="icon-tune2"></i> </a> </h1> </div> <div class="nav-top hidden-sm hidden-xs"> <ul> <li class=" dropdown-holder"> <div class="align-middle"> <a href="http://tune.pk/videos/">Videos</a> </div> <div class="align-middle dropdown"> <button class="dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"> <span class="caret"></span> </button> <ul class="dropdown-menu" aria-labelledby="dropdownMenu1"> <li> <a href="http://tune.pk/trailers"> <i class="icon-trailers"></i> <span>Trailers</span> </a> </li> <li> <a href="http://tune.pk/videos/16/music/most_recent/all_time/"> <i class="icon-music"></i> <span>Music</span> </a> </li> <li> <a href="http://tune.pk/videos/21/news-politics/most_recent/all_time/"> <i class="icon-news"></i> <span>News</span> </a> </li> </ul> </div> </li> <li > <a href="http://tune.pk/channels/">Channels</a> </li> <li id="header-playlist" > </li> </ul> </div> <div class="nav-icon-holder hidden-lg hidden-md"> <a href="javascript:void(0)" class="menu-icon lines"> <span></span> <span class="line2"></span> <span class="line3"></span> </a> </div> </div> <div class="nav-menu"> <ul> <li class=" dropdown-holder"> <div class="align-middle"> <a href="http://tune.pk/videos/">Videos</a> </div> <div class="align-middle dropdown"> <button class="dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"> <span class="caret"></span> </button> <ul class="dropdown-menu" aria-labelledby="dropdownMenu1"> <li> <a href="http://tune.pk/trailers"> <i class="icon-trailers"></i> <span>Trailers</span> </a> </li> <li> <a href="http://tune.pk/videos/16/music/most_recent/all_time/"> <i class="icon-music"></i> <span>Music</span> </a> </li> <li> <a href="http://tune.pk/videos/21/news-politics/most_recent/all_time/"> <i class="icon-news"></i> <span>News</span> </a> </li> </ul> </div> </li> <li > <a href="http://tune.pk/channels/">Channels</a> </li> </ul> </div> <div class="search-holder pull-left"> <div class="form-group"> <form role="search" role="search" id="header-form" action="http://tune.pk/search_result.php?query=&sort=most_recent&time=all_time"> <input type="text" class='form-control' placeholder="Search for videos..." name="query" id="header-query" value="" autocomplete="off" data-provide="typeahead"> <div  class="search-icon" id="search_icon"> <i class="icon-search"></i> </div> <div id="suggesstion-box" class="hidden"></div> </form> </div> </div> <div class="user-section pull-right" id="user-logged-in"> <ul> <li id="guest_li"> <a class="upload-btn btn btn-primary user-col" href="#loginform" data-toggle="modal">
+					Login
+				</a> <a class="upload-btn btn btn-primary user-col" href="http://tune.pk/signup" data-toggle="modal">
+					Create new account
+				</a> </li> </ul> </div> <div class="user-section pull-right"> <ul> <li> <div class="dropdown apps-holder user-col"> <a href="#" class="app-icon dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"> <i class="icon-mobile"></i> <span>Apps</span> </a> <ul class="dropdown-menu" aria-labelledby="dropdownMenu1"> <li class="appleStore"> <a onclick="_trackEvent( 'appPages', 'https://itunes.apple.com/pk/app/tune.pk/id526724988?mt=8', 'nativeApps', 'ios', 'Header', 'new' );" href="javascript:void(0)" target="none"> <i class="icon-itunesStore"></i> <span>iTunes Store</span> </a> </li> <li class="playStore"> <a onclick="_trackEvent( 'appPages', 'https://play.google.com/store/apps/details?id=com.tune.pk', 'nativeApps', 'android', 'Header', 'new' );" href="javascript:void(0)" target="none"> <i class="icon-playStore"></i> <span>Play Store</span> </a> </li> <li class="windowStore"> <a onclick="_trackEvent( 'appPages', 'http://www.windowsphone.com/en-pk/store/app/tune-pk/6dbb21c3-4e3f-40a6-b352-b80ae1b5b681', 'nativeApps', 'windows', 'Header', 'new' );" href="javascript:void(0)" target="none"> <i class="icon-windowStore"></i> <span>Window Store</span> </a> </li> </ul> </div> </li> </ul> </div> </header> <button type="button" class="add-quicklistBox "> <i class="icon-playlist"></i> </button> <div id="quicklist_box" class="quicklist_boxSection"> <div class="quicklist_box" > <div class="quicklist_box_head border_btm"> <h4 style="cursor:pointer">
+			Quicklist 
+			<span id="item-counter"></span> <button class="btn btn-success rounded save-btn" id="save-quick-list" type="">Save</button> </h4> <div class="btn-group pull-right plus-trush" role="group" aria-label="..."> <button data-dismiss="modal" onClick="clear_quicklist_new()" class="icon-delete"></button> </div> <div class="btn-group padding-top pull-right"> <button onClick="quick_show_hide_toggle('#quicklist_cont')" id="hide_show_x" class="icon-minus2"> </button> <a href="http://tune.pk?quick_list_box=true" id="play-quicklist-items" class="icon-playicon2" type=""></a> </div> </div> <div id="quicklist_cont" class="playlist-sction"> <div class="custom-elements"> <div id="my_quicklist" class="my_quicklist scrollable-area"> <div class="clearfix"></div> </div> </div> </div> </div> </div> <div class="menu-playlist-holder"> <div class='message-alert'> </div> <div class="playlists-top-section clearfix"> <h4>Playlists</h4> <div class="dropdown pull-left plus-playlist-holder"> <button class="btn btn-sm btn-default plus-playlist dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown"> <span class="icon-plus"></span> <span>New playlist</span> </button> <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1"> <form role="form" class="new-playlist-create"> <li class="playlist-title"> <h5>Your Playlist's title</h5> <div class="form-group"> <input type="text" placeholder="Your Playlist's title" class="form-control playlist-title-get" id="playlist-title-get"> <input type="hidden" id="type-html" name="type-html" value="header"> </div> </li> <li class="playlist-btn-holder"> <button type="submit" id="playlist-btn-new" class="btn playlist-btn playlist-btn-new btn-primary pull-right" data-loading-text="Creating...">Add</button> <button type="button" class="btn close-btn playlist-btn btn-default pull-right">Cancel</button> </li> </form> </ul> </div> <a href="#" class="close-icon icon-cross pull-right"></a> <div class="btn-group pull-right" role="group" aria-label="..."> <a href="http://tune.pk/manage_playlists.php" class="btn btn-default">View All</a> <input type="button" class="more-playlist btn btn-default" data-loading-text="Loading..." value="Show more"> </div> </div> <div class="custom-elements relative clearfix"> <div class="cover-playlist text-center">Loading...</div> <div class="playlists-mid-section playlist-header scrollable-area hscrollable "> </div> </div> </div> <div class="modal fade create-playlist-modal-holder" id="create-playlist-modal"> <div class="modal-dialog"> <div class="modal-content"> <div class="modal-header"> <button class="close" data-dismiss="modal">×</button> <h3>Create new playlist</h3> </div> <div class="modal-body"> <div class="alert alert-danger hidden" id="create-playlist-error" ></div> <div id="create_playlist_body"> <form method="post"> <div class="form-group"> <label class="control-label" for="playlist_name">Playlist Name</label> <div class="controls"> <input type="text" class="form-control" id="playlist_name" name="name" /> <span class="help-inline"></span> </div> </div> <div class="form-group"> <label class="control-label" for="description">Description</label> <div class="controls"> <textarea class="form-control" id="description" name="description" ></textarea> <span class="help-inline"></span> </div> </div> <div class="form-group"> <label class="control-label" for="description">Tags</label> <div class="controls"> <input type="text" class="form-control" id="tags" name="tags" /> <p class="help-block">Separate tags by comma, will be used for searching</p> <span class="help-inline"></span> </div> </div> <div class="form-group"> <label class="control-label">Privacy</label> <div class="controls"> <label class="radio inline"> <input type="radio" name="privacy" id="privacy_pub" value="0" checked="checked">
+                                Public
+                                </label> <label class="radio inline"> <input type="radio" name="privacy" id="privacy_pri" value="1">
+                                Private
+                                </label> <p class="help-block">Choose whether to make your playlist public or private</p> </div> </div> </form> </div> </div> <div class="modal-footer"> <a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a> <a href="javascript:void(0)" onclick="create_playlist('v');" id="create_playlist_bttn" class="btn btn-primary" data-loading-text="Creating..." data-complete-text="finished!">Create</a> </div> </div> </div> </div> <div role="dialog" tabindex="-1" class="modal fade quick-model in" > <div class="modal-dialog modal-sm"> <div class="modal-content"> <div class="modal-header"> <button data-dismiss="modal" class="close" type="button"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button> <h4 id="mySmallModalLabel" class="modal-title">Playlist Name</h4> <small class="error-msg label label-info" ></small> </div> <div class="modal-body"> <div class="input-group"> <input type="text" class="form-control" id="name-play-list"> <span class="input-group-btn"> <button type="button" class="btn btn-default" data-loading-text="Creating..." onclick="return saveQuickList(this,'#name-play-list')">Go!</button> </span> </div> </div> </div> </div> </div> <div class="hidden pre-load-video clearfix"> <div class="loading-wrapper clearfix"> <div class="loadingThumb timeline-item clearfix"> <div class="thumb-video background-masker clearfix"></div> <div class="loadingInfo relative clearfix"> <div class="background-masker heading clearfix"></div> <div class="background-masker paragraph clearfix"></div> <div class="background-masker views clearfix"></div> </div> </div> </div> </div> <script type="text/html" id="video-quick-item">
+
+<div class="playlist-column clearfix" data-alt="div_videoid" data-template-bind='[
+{ "attribute":"id","value":"div_videoid"}
+]'>
+	<div class="column-left img-holder pull-left relative" data-template-bind='[{ "attribute":"title","value":"title"}]'>
+		<img src="http://tune.pk/styles/tunev4/images/16_10.gif" data-alt="title" class="img-responsive img-gif"  />
+		<img data-src="thumb" data-alt="title" data-link-wrap="video_link" class="img-responsive absolute-img" />
+		<div class="duration-holder"  data-link-wrap="video_link">	
+			<span class="video_duration" data-content="duration"></span>
+		</div>
+	</div>
+	<div class="add-playlist-column">
+		<p><span data-link-wrap="video_link" data-content-text="title"></span></p>
+		<p class="by"> by <span class="link" data-link-wrap="user_link" data-content="user_name"></span></p>
+		<button data-alt="videoid" data-template-bind='[{ "attribute":"id","value":"div_close"}]' class="icon-delete" data-dismiss="modal" title="remove it" onclick="remove_qucklist_new(this)"></button>
+	</div>
+</div>
+
+</script> <div id="fb-root"></div> <div class="content-holder   clearfix"> <div class="alert-msg-holder clearfix hidden"> <div id="ajax-response" class="alert alert-mesaages alert-ajax"> <div id="ajax-response-message"></div> <button type="button" class="close">&times;</button> </div> </div> <div class="tune-container"> <div class="page-content clearfix"> <div class="advertisement-box advertisement-holder indexAds-holder clearfix"> <div class="ad-holder clearfix"> <div class="" id="tune_ad_151"> </div> </div> </div> <div class="main pull-left"> <div class="sidebar-left pull-left "> <div class="left-innerColumn clearfix"> <div id="user_info_block"> </div> <div class="white-box trending-videos-holder clearfix"> <h2>Editor's Pick</h2> <ul> <li class="clearfix editor-holder"> <div class="col-lg-5 col-md-6 col-sm-6 col-xs-5 col"> <div class="relative"> <a href="http://tune.pk/video/6517700/make-electric-bike-with-this-wheel" class="img-holder"> <img src="http://tune.pk/styles/tunev4/images/16_10.gif" alt="Make Electric Bike With This Wheel" title="Make Electric Bike With This Wheel" class="img-responsive img-gif" width="116" height="80" /> <img src="http://thumbs.gear3rd.net/38,8d4aecd1288a25" alt="Make Electric Bike With This Wheel" title="Make Electric Bike With This Wheel" class="img-responsive absolute-img" width="116" height="80"> <div class="duration-holder"> <span class="pull-right">01:43</span> </div> </a> <a href="http://tune.pk/video/6517700/make-electric-bike-with-this-wheel" class="add-quick-list1"> <span class="add-quick-list fa-stack fa-xs" data-href="http://tune.pk/video/6517700/make-electric-bike-with-this-wheel" data-videoid="6517700" data-thumb="http://thumbs.gear3rd.net/38,8d4aecd1288a25" data-duration="01:43" data-title="Make Electric Bike With This Wheel" user-link="http://tune.pk/user/PopularNow" user-name="PopularNow" title="Add Make Electric Bike With This Wheel to Quicklist"> <i class="fa fa-plus fa-stack-1x fa-inverse icon-plus5 "></i> </span> </a> </div> </div> <div class="col-lg-7 col-md-6 col-sm-6 col-xs-7 video-info"> <h3 title="Make Electric Bike With This Wheel"> <a href="http://tune.pk/video/6517700/make-electric-bike-with-this-wheel">
+						Make Electric Bike With This Wheel
+					</a> </h3> <a href="http://tune.pk/user/PopularNow" class="by">by PopularNow</a> <p class="hidden-md hidden-sm">
+								109 views - 1 day ago</p> </div> </li> <li class="clearfix editor-holder"> <div class="col-lg-5 col-md-6 col-sm-6 col-xs-5 col"> <div class="relative"> <a href="http://tune.pk/video/6516270/the-oldest-restaurant-in-the-world" class="img-holder"> <img src="http://tune.pk/styles/tunev4/images/16_10.gif" alt="The Oldest Restaurant In The World" title="The Oldest Restaurant In The World" class="img-responsive img-gif" width="116" height="80" /> <img src="http://thumbs.gear3rd.net/40,8a2eaeb3b6a595" alt="The Oldest Restaurant In The World" title="The Oldest Restaurant In The World" class="img-responsive absolute-img" width="116" height="80"> <div class="duration-holder"> <span class="pull-right">01:36</span> </div> </a> <a href="http://tune.pk/video/6516270/the-oldest-restaurant-in-the-world" class="add-quick-list1"> <span class="add-quick-list fa-stack fa-xs" data-href="http://tune.pk/video/6516270/the-oldest-restaurant-in-the-world" data-videoid="6516270" data-thumb="http://thumbs.gear3rd.net/40,8a2eaeb3b6a595" data-duration="01:36" data-title="The Oldest Restaurant In The World" user-link="http://tune.pk/user/MikeEnslin" user-name="Mike Enslin" title="Add The Oldest Restaurant In The World to Quicklist"> <i class="fa fa-plus fa-stack-1x fa-inverse icon-plus5 "></i> </span> </a> </div> </div> <div class="col-lg-7 col-md-6 col-sm-6 col-xs-7 video-info"> <h3 title="The Oldest Restaurant In The World"> <a href="http://tune.pk/video/6516270/the-oldest-restaurant-in-the-world">
+						The Oldest Restaurant In The World
+					</a> </h3> <a href="http://tune.pk/user/MikeEnslin" class="by">by Mike Enslin</a> <p class="hidden-md hidden-sm">
+								125 views - 2 days ago</p> </div> </li> <li class="clearfix editor-holder"> <div class="col-lg-5 col-md-6 col-sm-6 col-xs-5 col"> <div class="relative"> <a href="http://tune.pk/video/6514627/game-of-thrones-s06-ep-4-preview" class="img-holder"> <img src="http://tune.pk/styles/tunev4/images/16_10.gif" alt="Game Of Thrones S06 Ep # 4 Preview" title="Game Of Thrones S06 Ep # 4 Preview" class="img-responsive img-gif" width="116" height="80" /> <img src="http://thumbs.gear3rd.net/49,86f95a947524ef" alt="Game Of Thrones S06 Ep # 4 Preview" title="Game Of Thrones S06 Ep # 4 Preview" class="img-responsive absolute-img" width="116" height="80"> <div class="duration-holder"> <span class="pull-right">00:35</span> </div> </a> <a href="http://tune.pk/video/6514627/game-of-thrones-s06-ep-4-preview" class="add-quick-list1"> <span class="add-quick-list fa-stack fa-xs" data-href="http://tune.pk/video/6514627/game-of-thrones-s06-ep-4-preview" data-videoid="6514627" data-thumb="http://thumbs.gear3rd.net/49,86f95a947524ef" data-duration="00:35" data-title="Game Of Thrones S06 Ep # 4 Preview" user-link="http://tune.pk/user/VideoInsider" user-name="Video Insider" title="Add Game Of Thrones S06 Ep # 4 Preview to Quicklist"> <i class="fa fa-plus fa-stack-1x fa-inverse icon-plus5 "></i> </span> </a> </div> </div> <div class="col-lg-7 col-md-6 col-sm-6 col-xs-7 video-info"> <h3 title="Game Of Thrones S06 Ep # 4 Preview"> <a href="http://tune.pk/video/6514627/game-of-thrones-s06-ep-4-preview">
+						Game Of Thrones S06 Ep # 4 Preview
+					</a> </h3> <a href="http://tune.pk/user/VideoInsider" class="by">by Video Insider</a> <p class="hidden-md hidden-sm">
+								206 views - 3 days ago</p> </div> </li> </ul> </div> <div class="white-box suggested-channels-holder clearfix"> <h2>Featured Channels</h2> <ul> <li> <div class="img-holder"> <a href="http://tune.pk/user/tunewithmustafa"> <img src="http://static2.tune.pk/user/thumb/m/536912/small" width="40" height="40" alt=""> </a> </div> <div class="channels-info clearfix"> <a href="http://tune.pk/user/tunewithmustafa"><h3>Tune With Mustafa</h3></a> <p>23 Videos</p> <span data-todo="subscribe" data-userid="536912" class="plsu-btn ch-btn-subscribe subscribe-btn" data-toggle="tooltip" data-placement="top" title="Subscribe"> <i class="icon-plus"></i> </span> </div> </li> <li> <div class="img-holder"> <a href="http://tune.pk/user/mothersday"> <img src="http://static2.tune.pk/user/thumb/m/429276/small" width="40" height="40" alt=""> </a> </div> <div class="channels-info clearfix"> <a href="http://tune.pk/user/mothersday"><h3>Mothers Day</h3></a> <p>227 Videos</p> <span data-todo="subscribe" data-userid="429276" class="plsu-btn ch-btn-subscribe subscribe-btn" data-toggle="tooltip" data-placement="top" title="Subscribe"> <i class="icon-plus"></i> </span> </div> </li> <li> <div class="img-holder"> <a href="http://tune.pk/user/official"> <img src="http://static2.tune.pk/user/thumb/m/465066/small" width="40" height="40" alt=""> </a> </div> <div class="channels-info clearfix"> <a href="http://tune.pk/user/official"><h3>Tune.pk</h3></a> <p>8 Videos</p> <span data-todo="subscribe" data-userid="465066" class="plsu-btn ch-btn-subscribe subscribe-btn" data-toggle="tooltip" data-placement="top" title="Subscribe"> <i class="icon-plus"></i> </span> </div> </li> <li> <div class="img-holder"> <a href="http://tune.pk/user/Travel2Pakistan"> <img src="http://static2.tune.pk/user/thumb/m/545709/small" width="40" height="40" alt=""> </a> </div> <div class="channels-info clearfix"> <a href="http://tune.pk/user/Travel2Pakistan"><h3>Travel 2 Pakistan</h3></a> <p>14 Videos</p> <span data-todo="subscribe" data-userid="545709" class="plsu-btn ch-btn-subscribe subscribe-btn" data-toggle="tooltip" data-placement="top" title="Subscribe"> <i class="icon-plus"></i> </span> </div> </li> <li> <div class="img-holder"> <a href="http://tune.pk/user/dinnewslhr"> <img src="http://static2.tune.pk/user/thumb/m/88271/small" width="40" height="40" alt=""> </a> </div> <div class="channels-info clearfix"> <a href="http://tune.pk/user/dinnewslhr"><h3>Din News</h3></a> <p>2,089 Videos</p> <span data-todo="subscribe" data-userid="88271" class="plsu-btn ch-btn-subscribe subscribe-btn" data-toggle="tooltip" data-placement="top" title="Subscribe"> <i class="icon-plus"></i> </span> </div> </li> </ul> </div> </div> <div class="fixed-column clearfix"> <div class="signup-box clearfix remove-after-login"> <a href="http://tune.pk/signup" target="_blank"> <div class="col"> <h3>Create an account</h3> <span>and enjoy more features</span> </div> </a> </div> </div> </div> <div class="content-area pull-right"> <div class="advertisement-box advertisement-holder clearfix ads_home_728"> <p>
+        Advertisement 
+        <i class="glyphicon glyphicon-menu-down"></i> </p> <div class="ad-holder clearfix"> <div id="" class="728x90"> <div id='div-gpt-ad-1456148017926-0' style='height:90px; width:728px;'> <script type='text/javascript'>
+							googletag.cmd.push(function() { googletag.display('div-gpt-ad-1456148017926-0'); });
+						</script> </div> </div> </div> </div> <div class="business-videos-holder clearfix"> <div class="videos clearfix"> </div> </div> <div class="margin-bottom"></div> <div class="home-page"> <div class="white-box1 clearfix"> <div class="videos-holder clearfix"> <div class="videos clearfix"> </div> </div> </div> <div class="show-text-holder"> <div class="heading clearfix"> <h2 class="pull-left">
+					Music Videos
+				</h2> <a href="#" class="play-all pull-right"> <i class="icon-playicon2"></i>
+					Play all
+				</a> </div> <div class="videos-holder clearfix"> <div class="videos clearfix" data-limit='1' data-category="16"> <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 video-col"> <div class="white-box clearfix video_block"> <div class="deactivate-holder clearifx"> <a href="http://tune.pk/video/6519364/malamaal-video-song-housefull-3-akshay-riteish-abhishek-jacqueline-nargis-lisa" class="img-holder"> <img src="http://tune.pk/styles/tunev4/images/16_10.gif" alt="Malamaal Video Song | Housefull 3 - Akshay, Riteish, Abhishek, Jacqueline, Nargis & Lisa" title="Malamaal Video Song | Housefull 3 - Akshay, Riteish, Abhishek, Jacqueline, Nargis & Lisa" class="img-responsive" height="229" width="143"> <img src="http://tune.pk/styles/tunev4/images/16_10.gif" title="Malamaal Video Song | Housefull 3 - Akshay, Riteish, Abhishek, Jacqueline, Nargis & Lisa" data-src="http://thumbs.gear3rd.net/50,90f9b43244d6fb" alt="Malamaal Video Song | Housefull 3 - Akshay, Riteish, Abhishek, Jacqueline, Nargis & Lisa" class="img-responsive absolute-img unveil" height="229" width="143"> <div class="duration-holder"> <span class="time-duration">02:09</span> <span class="icon-hd"></span> </div> </a> <a href="http://tune.pk/video/6519364/malamaal-video-song-housefull-3-akshay-riteish-abhishek-jacqueline-nargis-lisa" class="add-quick-list1"> <span class="add-quick-list fa-stack fa-xs" data-href="http://tune.pk/video/6519364/malamaal-video-song-housefull-3-akshay-riteish-abhishek-jacqueline-nargis-lisa" data-videoid="6519364" data-thumb="http://thumbs.gear3rd.net/44,90f9b3bd22c27d" data-duration="02:09" data-title="Malamaal Video Song | Housefull 3 - Akshay, Riteish,..." user-link="http://tune.pk/user/musicnetwork" user-name="musicnetwork" title="Add Malamaal Video Song | Housefull 3 - Akshay, Riteish, Abhishek, Jacqueline, Nargis & Lisa to Quicklist"> <i class="fa fa-plus fa-stack-1x fa-inverse icon-plus5 "></i> </span> </a> </div> <div class="video-info"> <h2 title="Malamaal Video Song | Housefull 3 - Akshay, Riteish, Abhishek, Jacqueline, Nargis & Lisa"> <a href="http://tune.pk/video/6519364/malamaal-video-song-housefull-3-akshay-riteish-abhishek-jacqueline-nargis-lisa">
+					Malamaal Video Song | Housefull 3 - Akshay, Riteish,
+				</a> </h2> <p class="by-col new">
+				by 
+				<a class="by" href="http://tune.pk/user/musicnetwork">
+					musicnetwork
+				</a> </p> <p>195 views - 5 hours ago</p> </div> </div> </div> <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 video-col"> <div class="white-box clearfix video_block"> <div class="deactivate-holder clearifx"> <a href="http://tune.pk/video/6519211/baaghi-agar-tu-hota-video-song-tiger-shroff-shraddha-kapoor" class="img-holder"> <img src="http://tune.pk/styles/tunev4/images/16_10.gif" alt="Baaghi - Agar Tu Hota Video Song | Tiger Shroff, Shraddha Kapoor" title="Baaghi - Agar Tu Hota Video Song | Tiger Shroff, Shraddha Kapoor" class="img-responsive" height="229" width="143"> <img src="http://tune.pk/styles/tunev4/images/16_10.gif" title="Baaghi - Agar Tu Hota Video Song | Tiger Shroff, Shraddha Kapoor" data-src="http://thumbs.gear3rd.net/41,9071acf2d88e76" alt="Baaghi - Agar Tu Hota Video Song | Tiger Shroff, Shraddha Kapoor" class="img-responsive absolute-img unveil" height="229" width="143"> <div class="duration-holder"> <span class="time-duration">02:05</span> <span class="icon-hd"></span> </div> </a> <a href="http://tune.pk/video/6519211/baaghi-agar-tu-hota-video-song-tiger-shroff-shraddha-kapoor" class="add-quick-list1"> <span class="add-quick-list fa-stack fa-xs" data-href="http://tune.pk/video/6519211/baaghi-agar-tu-hota-video-song-tiger-shroff-shraddha-kapoor" data-videoid="6519211" data-thumb="http://thumbs.gear3rd.net/36,9071a604163940" data-duration="02:05" data-title="Baaghi - Agar Tu Hota Video Song | Tiger Shroff,..." user-link="http://tune.pk/user/muSicFuN" user-name="muSic FuN" title="Add Baaghi - Agar Tu Hota Video Song | Tiger Shroff, Shraddha Kapoor to Quicklist"> <i class="fa fa-plus fa-stack-1x fa-inverse icon-plus5 "></i> </span> </a> </div> <div class="video-info"> <h2 title="Baaghi - Agar Tu Hota Video Song | Tiger Shroff, Shraddha Kapoor"> <a href="http://tune.pk/video/6519211/baaghi-agar-tu-hota-video-song-tiger-shroff-shraddha-kapoor">
+					Baaghi - Agar Tu Hota Video Song | Tiger Shroff, Shraddha
+				</a> </h2> <p class="by-col new">
+				by 
+				<a class="by" href="http://tune.pk/user/muSicFuN">
+					muSic FuN
+				</a> </p> <p>240 views - 6 hours ago</p> </div> </div> </div> <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 video-col"> <div class="white-box clearfix video_block"> <div class="deactivate-holder clearifx"> <a href="http://tune.pk/video/6518972/jeena-marna-video-song-do-lafzon-ki-kahani-randeep-hooda-kajal-aggarwal" class="img-holder"> <img src="http://tune.pk/styles/tunev4/images/16_10.gif" alt="Jeena Marna Video Song | Do Lafzon Ki Kahani - Randeep Hooda, Kajal Aggarwal" title="Jeena Marna Video Song | Do Lafzon Ki Kahani - Randeep Hooda, Kajal Aggarwal" class="img-responsive" height="229" width="143"> <img src="http://tune.pk/styles/tunev4/images/16_10.gif" title="Jeena Marna Video Song | Do Lafzon Ki Kahani - Randeep Hooda, Kajal Aggarwal" data-src="http://thumbs.gear3rd.net/47,8fce0234c35afe" alt="Jeena Marna Video Song | Do Lafzon Ki Kahani - Randeep Hooda, Kajal Aggarwal" class="img-responsive absolute-img unveil" height="229" width="143"> <div class="duration-holder"> <span class="time-duration">02:20</span> <span class="icon-hd"></span> </div> </a> <a href="http://tune.pk/video/6518972/jeena-marna-video-song-do-lafzon-ki-kahani-randeep-hooda-kajal-aggarwal" class="add-quick-list1"> <span class="add-quick-list fa-stack fa-xs" data-href="http://tune.pk/video/6518972/jeena-marna-video-song-do-lafzon-ki-kahani-randeep-hooda-kajal-aggarwal" data-videoid="6518972" data-thumb="http://thumbs.gear3rd.net/52,8fcdfee2dd1c2f" data-duration="02:20" data-title="Jeena Marna Video Song | Do Lafzon Ki Kahani -..." user-link="http://tune.pk/user/musicultra" user-name="Music Ultra" title="Add Jeena Marna Video Song | Do Lafzon Ki Kahani - Randeep Hooda, Kajal Aggarwal to Quicklist"> <i class="fa fa-plus fa-stack-1x fa-inverse icon-plus5 "></i> </span> </a> </div> <div class="video-info"> <h2 title="Jeena Marna Video Song | Do Lafzon Ki Kahani - Randeep Hooda, Kajal Aggarwal"> <a href="http://tune.pk/video/6518972/jeena-marna-video-song-do-lafzon-ki-kahani-randeep-hooda-kajal-aggarwal">
+					Jeena Marna Video Song | Do Lafzon Ki Kahani - Randeep
+				</a> </h2> <p class="by-col new">
+				by 
+				<a class="by" href="http://tune.pk/user/musicultra">
+					Music Ultra
+				</a> </p> <p>237 views - 10 hours ago</p> </div> </div> </div> <span class="hidden"> <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 video-col"> <div class="white-box clearfix video_block"> <div class="deactivate-holder clearifx"> <a href="http://tune.pk/video/6519016/zara-zara-video-song-waiting-kavita-seth-vishal-dadlani-naseeruddin-shah-kalki-koechlin" class="img-holder"> <img src="http://tune.pk/styles/tunev4/images/16_10.gif" alt="Zara Zara Video Song - Waiting | Kavita Seth & Vishal Dadlani | Naseeruddin Shah & Kalki Koechlin" title="Zara Zara Video Song - Waiting | Kavita Seth & Vishal Dadlani | Naseeruddin Shah & Kalki Koechlin" class="img-responsive" height="229" width="143"> <img src="http://tune.pk/styles/tunev4/images/16_10.gif" title="Zara Zara Video Song - Waiting | Kavita Seth & Vishal Dadlani | Naseeruddin Shah & Kalki Koechlin" data-src="http://thumbs.gear3rd.net/56,8fcf91ce1981bb" alt="Zara Zara Video Song - Waiting | Kavita Seth & Vishal Dadlani | Naseeruddin Shah & Kalki Koechlin" class="img-responsive absolute-img unveil" height="229" width="143"> <div class="duration-holder"> <span class="time-duration">02:16</span> <span class="icon-hd"></span> </div> </a> <a href="http://tune.pk/video/6519016/zara-zara-video-song-waiting-kavita-seth-vishal-dadlani-naseeruddin-shah-kalki-koechlin" class="add-quick-list1"> <span class="add-quick-list fa-stack fa-xs" data-href="http://tune.pk/video/6519016/zara-zara-video-song-waiting-kavita-seth-vishal-dadlani-naseeruddin-shah-kalki-koechlin" data-videoid="6519016" data-thumb="http://thumbs.gear3rd.net/39,8fcf96c5d4f986" data-duration="02:16" data-title="Zara Zara Video Song - Waiting | Kavita Seth &..." user-link="http://tune.pk/user/JustMusic" user-name="Just Music" title="Add Zara Zara Video Song - Waiting | Kavita Seth & Vishal Dadlani | Naseeruddin Shah & Kalki Koechlin to Quicklist"> <i class="fa fa-plus fa-stack-1x fa-inverse icon-plus5 "></i> </span> </a> </div> <div class="video-info"> <h2 title="Zara Zara Video Song - Waiting | Kavita Seth & Vishal Dadlani | Naseeruddin Shah & Kalki Koechlin"> <a href="http://tune.pk/video/6519016/zara-zara-video-song-waiting-kavita-seth-vishal-dadlani-naseeruddin-shah-kalki-koechlin">
+					Zara Zara Video Song - Waiting | Kavita Seth & Vishal
+				</a> </h2> <p class="by-col new">
+				by 
+				<a class="by" href="http://tune.pk/user/JustMusic">
+					Just Music
+				</a> </p> <p>242 views - 9 hours ago</p> </div> </div> </div> </span> <span class="hidden"> <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 video-col"> <div class="white-box clearfix video_block"> <div class="deactivate-holder clearifx"> <a href="http://tune.pk/video/6518969/ammy-virk-surma-to-sandals-video-song-b-praak-jaani" class="img-holder"> <img src="http://tune.pk/styles/tunev4/images/16_10.gif" alt="Ammy Virk - Surma To Sandals Video Song | B Praak | Jaani" title="Ammy Virk - Surma To Sandals Video Song | B Praak | Jaani" class="img-responsive" height="229" width="143"> <img src="http://tune.pk/styles/tunev4/images/16_10.gif" title="Ammy Virk - Surma To Sandals Video Song | B Praak | Jaani" data-src="http://thumbs.gear3rd.net/51,8fccd9aff74327" alt="Ammy Virk - Surma To Sandals Video Song | B Praak | Jaani" class="img-responsive absolute-img unveil" height="229" width="143"> <div class="duration-holder"> <span class="time-duration">03:12</span> <span class="icon-hd"></span> </div> </a> <a href="http://tune.pk/video/6518969/ammy-virk-surma-to-sandals-video-song-b-praak-jaani" class="add-quick-list1"> <span class="add-quick-list fa-stack fa-xs" data-href="http://tune.pk/video/6518969/ammy-virk-surma-to-sandals-video-song-b-praak-jaani" data-videoid="6518969" data-thumb="http://thumbs.gear3rd.net/51,8fccd87bab90a4" data-duration="03:12" data-title="Ammy Virk - Surma To Sandals Video Song | B Praak |..." user-link="http://tune.pk/user/Musiclovers" user-name="Music Lovers" title="Add Ammy Virk - Surma To Sandals Video Song | B Praak | Jaani to Quicklist"> <i class="fa fa-plus fa-stack-1x fa-inverse icon-plus5 "></i> </span> </a> </div> <div class="video-info"> <h2 title="Ammy Virk - Surma To Sandals Video Song | B Praak | Jaani"> <a href="http://tune.pk/video/6518969/ammy-virk-surma-to-sandals-video-song-b-praak-jaani">
+					Ammy Virk - Surma To Sandals Video Song | B Praak | Jaani
+				</a> </h2> <p class="by-col new">
+				by 
+				<a class="by" href="http://tune.pk/user/Musiclovers">
+					Music Lovers
+				</a> </p> <p>108 views - 10 hours ago</p> </div> </div> </div> </span> <span class="hidden"> <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 video-col"> <div class="white-box clearfix video_block"> <div class="deactivate-holder clearifx"> <a href="http://tune.pk/video/6517535/ikk-kudi-reprised-version-udta-punjab-diljit-dosanjh-alia-bhatt-amit-trivedi" class="img-holder"> <img src="http://tune.pk/styles/tunev4/images/16_10.gif" alt="Ikk Kudi (Reprised Version) | Udta Punjab - Diljit Dosanjh, Alia Bhatt, Amit Trivedi" title="Ikk Kudi (Reprised Version) | Udta Punjab - Diljit Dosanjh, Alia Bhatt, Amit Trivedi" class="img-responsive" height="229" width="143"> <img src="http://tune.pk/styles/tunev4/images/16_10.gif" title="Ikk Kudi (Reprised Version) | Udta Punjab - Diljit Dosanjh, Alia Bhatt, Amit Trivedi" data-src="http://thumbs.gear3rd.net/55,8d184b79608dec" alt="Ikk Kudi (Reprised Version) | Udta Punjab - Diljit Dosanjh, Alia Bhatt, Amit Trivedi" class="img-responsive absolute-img unveil" height="229" width="143"> <div class="duration-holder"> <span class="time-duration">03:07</span> <span class="icon-hd"></span> </div> </a> <a href="http://tune.pk/video/6517535/ikk-kudi-reprised-version-udta-punjab-diljit-dosanjh-alia-bhatt-amit-trivedi" class="add-quick-list1"> <span class="add-quick-list fa-stack fa-xs" data-href="http://tune.pk/video/6517535/ikk-kudi-reprised-version-udta-punjab-diljit-dosanjh-alia-bhatt-amit-trivedi" data-videoid="6517535" data-thumb="http://thumbs.gear3rd.net/42,8d184aea9051aa" data-duration="03:07" data-title="Ikk Kudi (Reprised Version) | Udta Punjab - Diljit..." user-link="http://tune.pk/user/MusicFunda" user-name="Music Funda" title="Add Ikk Kudi (Reprised Version) | Udta Punjab - Diljit Dosanjh, Alia Bhatt, Amit Trivedi to Quicklist"> <i class="fa fa-plus fa-stack-1x fa-inverse icon-plus5 "></i> </span> </a> </div> <div class="video-info"> <h2 title="Ikk Kudi (Reprised Version) | Udta Punjab - Diljit Dosanjh, Alia Bhatt, Amit Trivedi"> <a href="http://tune.pk/video/6517535/ikk-kudi-reprised-version-udta-punjab-diljit-dosanjh-alia-bhatt-amit-trivedi">
+					Ikk Kudi (Reprised Version) | Udta Punjab - Diljit Dosanjh,
+				</a> </h2> <p class="by-col new">
+				by 
+				<a class="by" href="http://tune.pk/user/MusicFunda">
+					Music Funda
+				</a> </p> <p>647 views - 1 day ago</p> </div> </div> </div> </span> </div> <span class="16-excluded-videos" value='["6519364","6519211","6518972","6519016","6518969","6517535"]'></span> </script> <ul class="show-text-holder"> <li class="clearfix"> <div class="show-text clearfix"> <span class="more_results_home show-btn" data-loading-text="Loading..."> <span class="show">Show more</span> <i class="glyphicon glyphicon-triangle-bottom"></i> </span> <span class="loading" style="display:none"> <img src="http://tune.pk/styles/tunev4/theme/images/dots-gif.gif" alt="" width="28" height="7" class="img-responsive"> </span> </div> </li> </ul> </div> </div> <div class="show-text-holder"> <div class="heading clearfix"> <h2 class="pull-left">
+					Comedy Videos
+				</h2> <a href="#" class="play-all pull-right"> <i class="icon-playicon2"></i>
+					Play all
+				</a> </div> <div class="videos-holder clearfix"> <div class="videos clearfix" data-limit='1' data-category="15"> <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 video-col"> <div class="white-box clearfix video_block"> <div class="deactivate-holder clearifx"> <a href="http://tune.pk/video/6518829/when-guys-get-cheated-on-maansals" class="img-holder"> <img src="http://tune.pk/styles/tunev4/images/16_10.gif" alt="When Guys Get Cheated On - Maansals" title="When Guys Get Cheated On - Maansals" class="img-responsive" height="229" width="143"> <img src="http://tune.pk/styles/tunev4/images/16_10.gif" title="When Guys Get Cheated On - Maansals" data-src="http://thumbs.gear3rd.net/56,8f8eb4917d5871" alt="When Guys Get Cheated On - Maansals" class="img-responsive absolute-img unveil" height="229" width="143"> <div class="duration-holder"> <span class="time-duration">01:47</span> <span class="icon-hd"></span> </div> </a> <a href="http://tune.pk/video/6518829/when-guys-get-cheated-on-maansals" class="add-quick-list1"> <span class="add-quick-list fa-stack fa-xs" data-href="http://tune.pk/video/6518829/when-guys-get-cheated-on-maansals" data-videoid="6518829" data-thumb="http://thumbs.gear3rd.net/41,8f8eb996e08ca0" data-duration="01:47" data-title="When Guys Get Cheated On - Maansals" user-link="http://tune.pk/user/Maansals" user-name="Maansals" title="Add When Guys Get Cheated On - Maansals to Quicklist"> <i class="fa fa-plus fa-stack-1x fa-inverse icon-plus5 "></i> </span> </a> </div> <div class="video-info"> <h2 title="When Guys Get Cheated On - Maansals"> <a href="http://tune.pk/video/6518829/when-guys-get-cheated-on-maansals">
+					When Guys Get Cheated On - Maansals
+				</a> </h2> <p class="by-col new">
+				by 
+				<a class="by" href="http://tune.pk/user/Maansals">
+					Maansals
+				</a> </p> <p>105 views - 11 hours ago</p> </div> </div> </div> <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 video-col"> <div class="white-box clearfix video_block"> <div class="deactivate-holder clearifx"> <a href="http://tune.pk/video/6518434/when-you-take-too-many-photos-of-your-food-by-danish-ali" class="img-holder"> <img src="http://tune.pk/styles/tunev4/images/16_10.gif" alt="When You Take Too Many Photos Of Your Food -By Danish Ali..." title="When You Take Too Many Photos Of Your Food -By Danish Ali..." class="img-responsive" height="229" width="143"> <img src="http://tune.pk/styles/tunev4/images/16_10.gif" title="When You Take Too Many Photos Of Your Food -By Danish Ali..." data-src="http://thumbs.gear3rd.net/45,8e889e98132250" alt="When You Take Too Many Photos Of Your Food -By Danish Ali..." class="img-responsive absolute-img unveil" height="229" width="143"> <div class="duration-holder"> <span class="time-duration">01:33</span> <span class="icon-hd"></span> </div> </a> <a href="http://tune.pk/video/6518434/when-you-take-too-many-photos-of-your-food-by-danish-ali" class="add-quick-list1"> <span class="add-quick-list fa-stack fa-xs" data-href="http://tune.pk/video/6518434/when-you-take-too-many-photos-of-your-food-by-danish-ali" data-videoid="6518434" data-thumb="http://thumbs.gear3rd.net/45,8e88a305029399" data-duration="01:33" data-title="When You Take Too Many Photos Of Your Food -By..." user-link="http://tune.pk/user/DanishAli" user-name="Danish Ali" title="Add When You Take Too Many Photos Of Your Food -By Danish Ali... to Quicklist"> <i class="fa fa-plus fa-stack-1x fa-inverse icon-plus5 "></i> </span> </a> </div> <div class="video-info"> <h2 title="When You Take Too Many Photos Of Your Food -By Danish Ali..."> <a href="http://tune.pk/video/6518434/when-you-take-too-many-photos-of-your-food-by-danish-ali">
+					When You Take Too Many Photos Of Your Food -By Danish Ali...
+				</a> </h2> <p class="by-col new">
+				by 
+				<a class="by" href="http://tune.pk/user/DanishAli">
+					Danish Ali
+				</a> </p> <p>188 views - 23 hours ago</p> </div> </div> </div> <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 video-col"> <div class="white-box clearfix video_block"> <div class="deactivate-holder clearifx"> <a href="http://tune.pk/video/6518436/types-of-neighbors-3-idiotz-pakistan" class="img-holder"> <img src="http://tune.pk/styles/tunev4/images/16_10.gif" alt="Types Of Neighbors - 3 Idiotz Pakistan" title="Types Of Neighbors - 3 Idiotz Pakistan" class="img-responsive" height="229" width="143"> <img src="http://tune.pk/styles/tunev4/images/16_10.gif" title="Types Of Neighbors - 3 Idiotz Pakistan" data-src="http://thumbs.gear3rd.net/47,8e88ec71f17f9c" alt="Types Of Neighbors - 3 Idiotz Pakistan" class="img-responsive absolute-img unveil" height="229" width="143"> <div class="duration-holder"> <span class="time-duration">03:38</span> <span class="icon-hd"></span> </div> </a> <a href="http://tune.pk/video/6518436/types-of-neighbors-3-idiotz-pakistan" class="add-quick-list1"> <span class="add-quick-list fa-stack fa-xs" data-href="http://tune.pk/video/6518436/types-of-neighbors-3-idiotz-pakistan" data-videoid="6518436" data-thumb="http://thumbs.gear3rd.net/54,8e88f18bc3d46e" data-duration="03:38" data-title="Types Of Neighbors - 3 Idiotz Pakistan" user-link="http://tune.pk/user/3idiotzpakistan" user-name="3idiotzpakistan" title="Add Types Of Neighbors - 3 Idiotz Pakistan to Quicklist"> <i class="fa fa-plus fa-stack-1x fa-inverse icon-plus5 "></i> </span> </a> </div> <div class="video-info"> <h2 title="Types Of Neighbors - 3 Idiotz Pakistan"> <a href="http://tune.pk/video/6518436/types-of-neighbors-3-idiotz-pakistan">
+					Types Of Neighbors - 3 Idiotz Pakistan
+				</a> </h2> <p class="by-col new">
+				by 
+				<a class="by" href="http://tune.pk/user/3idiotzpakistan">
+					3idiotzpakistan
+				</a> </p> <p>188 views - 23 hours ago</p> </div> </div> </div> <span class="hidden"> <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 video-col"> <div class="white-box clearfix video_block"> <div class="deactivate-holder clearifx"> <a href="http://tune.pk/video/6518437/effects-of-bollywood-songs-in-a-relationship-sham-idrees" class="img-holder"> <img src="http://tune.pk/styles/tunev4/images/16_10.gif" alt="Effects Of Bollywood Songs In A Relationship - Sham Idrees" title="Effects Of Bollywood Songs In A Relationship - Sham Idrees" class="img-responsive" height="229" width="143"> <img src="http://tune.pk/styles/tunev4/images/16_10.gif" title="Effects Of Bollywood Songs In A Relationship - Sham Idrees" data-src="http://thumbs.gear3rd.net/46,8e88c86c5588c9" alt="Effects Of Bollywood Songs In A Relationship - Sham Idrees" class="img-responsive absolute-img unveil" height="229" width="143"> <div class="duration-holder"> <span class="time-duration">01:05</span> <span class="icon-hd"></span> </div> </a> <a href="http://tune.pk/video/6518437/effects-of-bollywood-songs-in-a-relationship-sham-idrees" class="add-quick-list1"> <span class="add-quick-list fa-stack fa-xs" data-href="http://tune.pk/video/6518437/effects-of-bollywood-songs-in-a-relationship-sham-idrees" data-videoid="6518437" data-thumb="http://thumbs.gear3rd.net/55,8e88d131982ec9" data-duration="01:05" data-title="Effects Of Bollywood Songs In A Relationship - Sham..." user-link="http://tune.pk/user/shamIdrees" user-name="sham Idrees" title="Add Effects Of Bollywood Songs In A Relationship - Sham Idrees to Quicklist"> <i class="fa fa-plus fa-stack-1x fa-inverse icon-plus5 "></i> </span> </a> </div> <div class="video-info"> <h2 title="Effects Of Bollywood Songs In A Relationship - Sham Idrees"> <a href="http://tune.pk/video/6518437/effects-of-bollywood-songs-in-a-relationship-sham-idrees">
+					Effects Of Bollywood Songs In A Relationship - Sham Idrees
+				</a> </h2> <p class="by-col new">
+				by 
+				<a class="by" href="http://tune.pk/user/shamIdrees">
+					sham Idrees
+				</a> </p> <p>147 views - 23 hours ago</p> </div> </div> </div> </span> <span class="hidden"> <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 video-col"> <div class="white-box clearfix video_block"> <div class="deactivate-holder clearifx"> <a href="http://tune.pk/video/6517379/the-sheesha-experience-rahim-pardesi" class="img-holder"> <img src="http://tune.pk/styles/tunev4/images/16_10.gif" alt="The Sheesha Experience - Rahim Pardesi" title="The Sheesha Experience - Rahim Pardesi" class="img-responsive" height="229" width="143"> <img src="http://tune.pk/styles/tunev4/images/16_10.gif" title="The Sheesha Experience - Rahim Pardesi" data-src="http://thumbs.gear3rd.net/45,8c83ed984f0487" alt="The Sheesha Experience - Rahim Pardesi" class="img-responsive absolute-img unveil" height="229" width="143"> <div class="duration-holder"> <span class="time-duration">03:50</span> <span class="icon-hd"></span> </div> </a> <a href="http://tune.pk/video/6517379/the-sheesha-experience-rahim-pardesi" class="add-quick-list1"> <span class="add-quick-list fa-stack fa-xs" data-href="http://tune.pk/video/6517379/the-sheesha-experience-rahim-pardesi" data-videoid="6517379" data-thumb="http://thumbs.gear3rd.net/43,8c83f4f7e8d155" data-duration="03:50" data-title="The Sheesha Experience - Rahim Pardesi" user-link="http://tune.pk/user/RahimDesiPardesi" user-name="Rahim Pardesi" title="Add The Sheesha Experience - Rahim Pardesi to Quicklist"> <i class="fa fa-plus fa-stack-1x fa-inverse icon-plus5 "></i> </span> </a> </div> <div class="video-info"> <h2 title="The Sheesha Experience - Rahim Pardesi"> <a href="http://tune.pk/video/6517379/the-sheesha-experience-rahim-pardesi">
+					The Sheesha Experience - Rahim Pardesi
+				</a> </h2> <p class="by-col new">
+				by 
+				<a class="by" href="http://tune.pk/user/RahimDesiPardesi">
+					Rahim Pardesi
+				</a> </p> <p>175 views - 1 day ago</p> </div> </div> </div> </span> <span class="hidden"> <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 video-col"> <div class="white-box clearfix video_block"> <div class="deactivate-holder clearifx"> <a href="http://tune.pk/video/6516621/aunty-on-the-phone-meri-bahu-best-hai-faiza-saleem" class="img-holder"> <img src="http://tune.pk/styles/tunev4/images/16_10.gif" alt="Aunty On The Phone &quot;Meri Bahu Best Hai&quot; | Faiza Saleem" title="Aunty On The Phone &quot;Meri Bahu Best Hai&quot; | Faiza Saleem" class="img-responsive" height="229" width="143"> <img src="http://tune.pk/styles/tunev4/images/16_10.gif" title="Aunty On The Phone &quot;Meri Bahu Best Hai&quot; | Faiza Saleem" data-src="http://thumbs.gear3rd.net/52,8aa258e833a0be" alt="Aunty On The Phone &quot;Meri Bahu Best Hai&quot; | Faiza Saleem" class="img-responsive absolute-img unveil" height="229" width="143"> <div class="duration-holder"> <span class="time-duration">01:26</span> <span class="icon-hd"></span> </div> </a> <a href="http://tune.pk/video/6516621/aunty-on-the-phone-meri-bahu-best-hai-faiza-saleem" class="add-quick-list1"> <span class="add-quick-list fa-stack fa-xs" data-href="http://tune.pk/video/6516621/aunty-on-the-phone-meri-bahu-best-hai-faiza-saleem" data-videoid="6516621" data-thumb="http://thumbs.gear3rd.net/36,8aa25d2611369a" data-duration="01:26" data-title="Aunty On The Phone &quot;Meri Bahu Best Hai&quot; |..." user-link="http://tune.pk/user/faizasaleem" user-name="faiza saleem" title="Add Aunty On The Phone &quot;Meri Bahu Best Hai&quot; | Faiza Saleem to Quicklist"> <i class="fa fa-plus fa-stack-1x fa-inverse icon-plus5 "></i> </span> </a> </div> <div class="video-info"> <h2 title="Aunty On The Phone &quot;Meri Bahu Best Hai&quot; | Faiza Saleem"> <a href="http://tune.pk/video/6516621/aunty-on-the-phone-meri-bahu-best-hai-faiza-saleem">
+					Aunty On The Phone &quot;Meri Bahu Best Hai&quot; | Faiza
+				</a> </h2> <p class="by-col new">
+				by 
+				<a class="by" href="http://tune.pk/user/faizasaleem">
+					faiza saleem
+				</a> </p> <p>350 views - 2 days ago</p> </div> </div> </div> </span> </div> <span class="15-excluded-videos" value='["6519364","6519211","6518972","6519016","6518969","6517535","6518829","6518434","6518436","6518437","6517379","6516621"]'></span> </script> <ul class="show-text-holder"> <li class="clearfix"> <div class="show-text clearfix"> <span class="more_results_home show-btn" data-loading-text="Loading..."> <span class="show">Show more</span> <i class="glyphicon glyphicon-triangle-bottom"></i> </span> <span class="loading" style="display:none"> <img src="http://tune.pk/styles/tunev4/theme/images/dots-gif.gif" alt="" width="28" height="7" class="img-responsive"> </span> </div> </li> </ul> </div> </div> <div class="show-text-holder"> <div class="heading clearfix"> <h2 class="pull-left">
+					Sports Videos
+				</h2> <a href="#" class="play-all pull-right"> <i class="icon-playicon2"></i>
+					Play all
+				</a> </div> <div class="videos-holder clearfix"> <div class="videos clearfix" data-limit='1' data-category="14"> <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 video-col"> <div class="white-box clearfix video_block"> <div class="deactivate-holder clearifx"> <a href="http://tune.pk/video/6519148/a-short-compilation-of-shoaib-akhtar-vs-adam-gilchrist" class="img-holder"> <img src="http://tune.pk/styles/tunev4/images/16_10.gif" alt="A Short Compilation Of Shoaib Akhtar Vs Adam Gilchrist" title="A Short Compilation Of Shoaib Akhtar Vs Adam Gilchrist" class="img-responsive" height="229" width="143"> <img src="http://tune.pk/styles/tunev4/images/16_10.gif" title="A Short Compilation Of Shoaib Akhtar Vs Adam Gilchrist" data-src="http://thumbs.gear3rd.net/38,904745cfb91fed" alt="A Short Compilation Of Shoaib Akhtar Vs Adam Gilchrist" class="img-responsive absolute-img unveil" height="229" width="143"> <div class="duration-holder"> <span class="time-duration">01:24</span> </div> </a> <a href="http://tune.pk/video/6519148/a-short-compilation-of-shoaib-akhtar-vs-adam-gilchrist" class="add-quick-list1"> <span class="add-quick-list fa-stack fa-xs" data-href="http://tune.pk/video/6519148/a-short-compilation-of-shoaib-akhtar-vs-adam-gilchrist" data-videoid="6519148" data-thumb="http://thumbs.gear3rd.net/56,90474a316387e1" data-duration="01:24" data-title="A Short Compilation Of Shoaib Akhtar Vs Adam Gilchrist" user-link="http://tune.pk/user/googlycricket" user-name="googlycricket" title="Add A Short Compilation Of Shoaib Akhtar Vs Adam Gilchrist to Quicklist"> <i class="fa fa-plus fa-stack-1x fa-inverse icon-plus5 "></i> </span> </a> </div> <div class="video-info"> <h2 title="A Short Compilation Of Shoaib Akhtar Vs Adam Gilchrist"> <a href="http://tune.pk/video/6519148/a-short-compilation-of-shoaib-akhtar-vs-adam-gilchrist">
+					A Short Compilation Of Shoaib Akhtar Vs Adam Gilchrist
+				</a> </h2> <p class="by-col new">
+				by 
+				<a class="by" href="http://tune.pk/user/googlycricket">
+					googlycricket
+				</a> </p> <p>31 views - 7 hours ago</p> </div> </div> </div> <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 video-col"> <div class="white-box clearfix video_block"> <div class="deactivate-holder clearifx"> <a href="http://tune.pk/video/6517662/sharjeel-khan-umar-akmal-shane-watson-sixes-psl-2016" class="img-holder"> <img src="http://tune.pk/styles/tunev4/images/16_10.gif" alt="Sharjeel Khan, Umar Akmal & Shane Watson Sixes | PSL 2016" title="Sharjeel Khan, Umar Akmal & Shane Watson Sixes | PSL 2016" class="img-responsive" height="229" width="143"> <img src="http://tune.pk/styles/tunev4/images/16_10.gif" title="Sharjeel Khan, Umar Akmal & Shane Watson Sixes | PSL 2016" data-src="http://thumbs.gear3rd.net/36,8d3192912a5a70" alt="Sharjeel Khan, Umar Akmal & Shane Watson Sixes | PSL 2016" class="img-responsive absolute-img unveil" height="229" width="143"> <div class="duration-holder"> <span class="time-duration">04:02</span> </div> </a> <a href="http://tune.pk/video/6517662/sharjeel-khan-umar-akmal-shane-watson-sixes-psl-2016" class="add-quick-list1"> <span class="add-quick-list fa-stack fa-xs" data-href="http://tune.pk/video/6517662/sharjeel-khan-umar-akmal-shane-watson-sixes-psl-2016" data-videoid="6517662" data-thumb="http://thumbs.gear3rd.net/36,8d319739b0f4eb" data-duration="04:02" data-title="Sharjeel Khan, Umar Akmal & Shane Watson Sixes | PSL..." user-link="http://tune.pk/user/cricketfever" user-name="cricketfever" title="Add Sharjeel Khan, Umar Akmal & Shane Watson Sixes | PSL 2016 to Quicklist"> <i class="fa fa-plus fa-stack-1x fa-inverse icon-plus5 "></i> </span> </a> </div> <div class="video-info"> <h2 title="Sharjeel Khan, Umar Akmal & Shane Watson Sixes | PSL 2016"> <a href="http://tune.pk/video/6517662/sharjeel-khan-umar-akmal-shane-watson-sixes-psl-2016">
+					Sharjeel Khan, Umar Akmal & Shane Watson Sixes | PSL 2016
+				</a> </h2> <p class="by-col new">
+				by 
+				<a class="by" href="http://tune.pk/user/cricketfever">
+					cricketfever
+				</a> </p> <p>120 views - 1 day ago</p> </div> </div> </div> <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 video-col"> <div class="white-box clearfix video_block"> <div class="deactivate-holder clearifx"> <a href="http://tune.pk/video/6519185/rashid-latif-greatest-wicket-keeper-and-batsman-of-pakistan-cricket-team" class="img-holder"> <img src="http://tune.pk/styles/tunev4/images/16_10.gif" alt="Rashid Latif Greatest Wicket Keeper And Batsman Of Pakistan Cricket Team" title="Rashid Latif Greatest Wicket Keeper And Batsman Of Pakistan Cricket Team" class="img-responsive" height="229" width="143"> <img src="http://tune.pk/styles/tunev4/images/16_10.gif" title="Rashid Latif Greatest Wicket Keeper And Batsman Of Pakistan Cricket Team" data-src="http://thumbs.gear3rd.net/50,905634c39109af" alt="Rashid Latif Greatest Wicket Keeper And Batsman Of Pakistan Cricket Team" class="img-responsive absolute-img unveil" height="229" width="143"> <div class="duration-holder"> <span class="time-duration">01:49</span> </div> </a> <a href="http://tune.pk/video/6519185/rashid-latif-greatest-wicket-keeper-and-batsman-of-pakistan-cricket-team" class="add-quick-list1"> <span class="add-quick-list fa-stack fa-xs" data-href="http://tune.pk/video/6519185/rashid-latif-greatest-wicket-keeper-and-batsman-of-pakistan-cricket-team" data-videoid="6519185" data-thumb="http://thumbs.gear3rd.net/54,905643751d902e" data-duration="01:49" data-title="Rashid Latif Greatest Wicket Keeper And Batsman Of..." user-link="http://tune.pk/user/sportsonline" user-name="sports online" title="Add Rashid Latif Greatest Wicket Keeper And Batsman Of Pakistan Cricket Team to Quicklist"> <i class="fa fa-plus fa-stack-1x fa-inverse icon-plus5 "></i> </span> </a> </div> <div class="video-info"> <h2 title="Rashid Latif Greatest Wicket Keeper And Batsman Of Pakistan Cricket Team"> <a href="http://tune.pk/video/6519185/rashid-latif-greatest-wicket-keeper-and-batsman-of-pakistan-cricket-team">
+					Rashid Latif Greatest Wicket Keeper And Batsman Of Pakistan
+				</a> </h2> <p class="by-col new">
+				by 
+				<a class="by" href="http://tune.pk/user/sportsonline">
+					sports online
+				</a> </p> <p>63 views - 6 hours ago</p> </div> </div> </div> <span class="hidden"> <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 video-col"> <div class="white-box clearfix video_block"> <div class="deactivate-holder clearifx"> <a href="http://tune.pk/video/6517605/mohammad-amir-hat-trick-karachi-kings-vs-lahore-qalandars" class="img-holder"> <img src="http://tune.pk/styles/tunev4/images/16_10.gif" alt="Mohammad Amir Hat-Trick | Karachi Kings vs Lahore Qalandars" title="Mohammad Amir Hat-Trick | Karachi Kings vs Lahore Qalandars" class="img-responsive" height="229" width="143"> <img src="http://tune.pk/styles/tunev4/images/16_10.gif" title="Mohammad Amir Hat-Trick | Karachi Kings vs Lahore Qalandars" data-src="http://thumbs.gear3rd.net/36,8d1cdb266c8c85" alt="Mohammad Amir Hat-Trick | Karachi Kings vs Lahore Qalandars" class="img-responsive absolute-img unveil" height="229" width="143"> <div class="duration-holder"> <span class="time-duration">01:31</span> <span class="icon-hd"></span> </div> </a> <a href="http://tune.pk/video/6517605/mohammad-amir-hat-trick-karachi-kings-vs-lahore-qalandars" class="add-quick-list1"> <span class="add-quick-list fa-stack fa-xs" data-href="http://tune.pk/video/6517605/mohammad-amir-hat-trick-karachi-kings-vs-lahore-qalandars" data-videoid="6517605" data-thumb="http://thumbs.gear3rd.net/39,8d1cf2bdb2c277" data-duration="01:31" data-title="Mohammad Amir Hat-Trick | Karachi Kings vs Lahore..." user-link="http://tune.pk/user/sportsworld" user-name="sports world" title="Add Mohammad Amir Hat-Trick | Karachi Kings vs Lahore Qalandars to Quicklist"> <i class="fa fa-plus fa-stack-1x fa-inverse icon-plus5 "></i> </span> </a> </div> <div class="video-info"> <h2 title="Mohammad Amir Hat-Trick | Karachi Kings vs Lahore Qalandars"> <a href="http://tune.pk/video/6517605/mohammad-amir-hat-trick-karachi-kings-vs-lahore-qalandars">
+					Mohammad Amir Hat-Trick | Karachi Kings vs Lahore Qalandars
+				</a> </h2> <p class="by-col new">
+				by 
+				<a class="by" href="http://tune.pk/user/sportsworld">
+					sports world
+				</a> </p> <p>79 views - 1 day ago</p> </div> </div> </div> </span> <span class="hidden"> <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 video-col"> <div class="white-box clearfix video_block"> <div class="deactivate-holder clearifx"> <a href="http://tune.pk/video/6519136/waqar-younis-super-last-over-vs-new-zealand-3-runs-to-win-off-6-balls" class="img-holder"> <img src="http://tune.pk/styles/tunev4/images/16_10.gif" alt="Waqar Younis Super Last Over Vs New Zealand - 3 Runs To Win Off 6 Balls" title="Waqar Younis Super Last Over Vs New Zealand - 3 Runs To Win Off 6 Balls" class="img-responsive" height="229" width="143"> <img src="http://tune.pk/styles/tunev4/images/16_10.gif" title="Waqar Younis Super Last Over Vs New Zealand - 3 Runs To Win Off 6 Balls" data-src="http://thumbs.gear3rd.net/46,903f136a0c4538" alt="Waqar Younis Super Last Over Vs New Zealand - 3 Runs To Win Off 6 Balls" class="img-responsive absolute-img unveil" height="229" width="143"> <div class="duration-holder"> <span class="time-duration">05:38</span> </div> </a> <a href="http://tune.pk/video/6519136/waqar-younis-super-last-over-vs-new-zealand-3-runs-to-win-off-6-balls" class="add-quick-list1"> <span class="add-quick-list fa-stack fa-xs" data-href="http://tune.pk/video/6519136/waqar-younis-super-last-over-vs-new-zealand-3-runs-to-win-off-6-balls" data-videoid="6519136" data-thumb="http://thumbs.gear3rd.net/41,903f18f97cd685" data-duration="05:38" data-title="Waqar Younis Super Last Over Vs New Zealand - 3 Runs..." user-link="http://tune.pk/user/GreenRoars" user-name="Green Roars" title="Add Waqar Younis Super Last Over Vs New Zealand - 3 Runs To Win Off 6 Balls to Quicklist"> <i class="fa fa-plus fa-stack-1x fa-inverse icon-plus5 "></i> </span> </a> </div> <div class="video-info"> <h2 title="Waqar Younis Super Last Over Vs New Zealand - 3 Runs To Win Off 6 Balls"> <a href="http://tune.pk/video/6519136/waqar-younis-super-last-over-vs-new-zealand-3-runs-to-win-off-6-balls">
+					Waqar Younis Super Last Over Vs New Zealand - 3 Runs To Win
+				</a> </h2> <p class="by-col new">
+				by 
+				<a class="by" href="http://tune.pk/user/GreenRoars">
+					Green Roars
+				</a> </p> <p>5 views - 7 hours ago</p> </div> </div> </div> </span> <span class="hidden"> <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 video-col"> <div class="white-box clearfix video_block"> <div class="deactivate-holder clearifx"> <a href="http://tune.pk/video/6517471/12-runs-needed-off-1-ball-the-most-amazing-finish-ever" class="img-holder"> <img src="http://tune.pk/styles/tunev4/images/16_10.gif" alt="12 Runs Needed Off 1 Ball The Most Amazing Finish Ever" title="12 Runs Needed Off 1 Ball The Most Amazing Finish Ever" class="img-responsive" height="229" width="143"> <img src="http://tune.pk/styles/tunev4/images/16_10.gif" title="12 Runs Needed Off 1 Ball The Most Amazing Finish Ever" data-src="http://thumbs.gear3rd.net/37,8cafc51bcf10b0" alt="12 Runs Needed Off 1 Ball The Most Amazing Finish Ever" class="img-responsive absolute-img unveil" height="229" width="143"> <div class="duration-holder"> <span class="time-duration">00:53</span> </div> </a> <a href="http://tune.pk/video/6517471/12-runs-needed-off-1-ball-the-most-amazing-finish-ever" class="add-quick-list1"> <span class="add-quick-list fa-stack fa-xs" data-href="http://tune.pk/video/6517471/12-runs-needed-off-1-ball-the-most-amazing-finish-ever" data-videoid="6517471" data-thumb="http://thumbs.gear3rd.net/56,8cafcacd2c6e2a" data-duration="00:53" data-title="12 Runs Needed Off 1 Ball The Most Amazing Finish Ever" user-link="http://tune.pk/user/SportsUpdate" user-name="Sports Update" title="Add 12 Runs Needed Off 1 Ball The Most Amazing Finish Ever to Quicklist"> <i class="fa fa-plus fa-stack-1x fa-inverse icon-plus5 "></i> </span> </a> </div> <div class="video-info"> <h2 title="12 Runs Needed Off 1 Ball The Most Amazing Finish Ever"> <a href="http://tune.pk/video/6517471/12-runs-needed-off-1-ball-the-most-amazing-finish-ever">
+					12 Runs Needed Off 1 Ball The Most Amazing Finish Ever
+				</a> </h2> <p class="by-col new">
+				by 
+				<a class="by" href="http://tune.pk/user/SportsUpdate">
+					Sports Update
+				</a> </p> <p>194 views - 1 day ago</p> </div> </div> </div> </span> </div> <span class="14-excluded-videos" value='["6519364","6519211","6518972","6519016","6518969","6517535","6518829","6518434","6518436","6518437","6517379","6516621","6519148","6517662","6519185","6517605","6519136","6517471"]'></span> </script> <ul class="show-text-holder"> <li class="clearfix"> <div class="show-text clearfix"> <span class="more_results_home show-btn" data-loading-text="Loading..."> <span class="show">Show more</span> <i class="glyphicon glyphicon-triangle-bottom"></i> </span> <span class="loading" style="display:none"> <img src="http://tune.pk/styles/tunev4/theme/images/dots-gif.gif" alt="" width="28" height="7" class="img-responsive"> </span> </div> </li> </ul> </div> </div> <div class="show-text-holder"> <div class="heading clearfix"> <h2 class="pull-left">
+					Technology Videos
+				</h2> <a href="#" class="play-all pull-right"> <i class="icon-playicon2"></i>
+					Play all
+				</a> </div> <div class="videos-holder clearfix"> <div class="videos clearfix" data-limit='1' data-category="20"> <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 video-col"> <div class="white-box clearfix video_block"> <div class="deactivate-holder clearifx"> <a href="http://tune.pk/video/6519128/samsung-gear-vr-unboxing" class="img-holder"> <img src="http://tune.pk/styles/tunev4/images/16_10.gif" alt="Samsung Gear VR Unboxing!" title="Samsung Gear VR Unboxing!" class="img-responsive" height="229" width="143"> <img src="http://tune.pk/styles/tunev4/images/16_10.gif" title="Samsung Gear VR Unboxing!" data-src="http://thumbs.gear3rd.net/55,903a3de7a48344" alt="Samsung Gear VR Unboxing!" class="img-responsive absolute-img unveil" height="229" width="143"> <div class="duration-holder"> <span class="time-duration">09:46</span> <span class="icon-hd"></span> </div> </a> <a href="http://tune.pk/video/6519128/samsung-gear-vr-unboxing" class="add-quick-list1"> <span class="add-quick-list fa-stack fa-xs" data-href="http://tune.pk/video/6519128/samsung-gear-vr-unboxing" data-videoid="6519128" data-thumb="http://thumbs.gear3rd.net/46,903a51731e64bc" data-duration="09:46" data-title="Samsung Gear VR Unboxing!" user-link="http://tune.pk/user/futureworld" user-name="future world" title="Add Samsung Gear VR Unboxing! to Quicklist"> <i class="fa fa-plus fa-stack-1x fa-inverse icon-plus5 "></i> </span> </a> </div> <div class="video-info"> <h2 title="Samsung Gear VR Unboxing!"> <a href="http://tune.pk/video/6519128/samsung-gear-vr-unboxing">
+					Samsung Gear VR Unboxing!
+				</a> </h2> <p class="by-col new">
+				by 
+				<a class="by" href="http://tune.pk/user/futureworld">
+					future world
+				</a> </p> <p>28 views - 7 hours ago</p> </div> </div> </div> <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 video-col"> <div class="white-box clearfix video_block"> <div class="deactivate-holder clearifx"> <a href="http://tune.pk/video/6519126/oneplus-3-what-we-know" class="img-holder"> <img src="http://tune.pk/styles/tunev4/images/16_10.gif" alt="OnePlus 3  What We Know" title="OnePlus 3  What We Know" class="img-responsive" height="229" width="143"> <img src="http://tune.pk/styles/tunev4/images/16_10.gif" title="OnePlus 3  What We Know" data-src="http://thumbs.gear3rd.net/51,9038b4056eaa27" alt="OnePlus 3  What We Know" class="img-responsive absolute-img unveil" height="229" width="143"> <div class="duration-holder"> <span class="time-duration">03:04</span> <span class="icon-hd"></span> </div> </a> <a href="http://tune.pk/video/6519126/oneplus-3-what-we-know" class="add-quick-list1"> <span class="add-quick-list fa-stack fa-xs" data-href="http://tune.pk/video/6519126/oneplus-3-what-we-know" data-videoid="6519126" data-thumb="http://thumbs.gear3rd.net/49,9038b958551e71" data-duration="03:04" data-title="OnePlus 3  What We Know" user-link="http://tune.pk/user/GenerationChallenge" user-name="Generation Challenge" title="Add OnePlus 3  What We Know to Quicklist"> <i class="fa fa-plus fa-stack-1x fa-inverse icon-plus5 "></i> </span> </a> </div> <div class="video-info"> <h2 title="OnePlus 3  What We Know"> <a href="http://tune.pk/video/6519126/oneplus-3-what-we-know">
+					OnePlus 3  What We Know
+				</a> </h2> <p class="by-col new">
+				by 
+				<a class="by" href="http://tune.pk/user/GenerationChallenge">
+					Generation Challenge
+				</a> </p> <p>17 views - 7 hours ago</p> </div> </div> </div> <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 video-col"> <div class="white-box clearfix video_block"> <div class="deactivate-holder clearifx"> <a href="http://tune.pk/video/6519123/asus-4k-touch-all-in-one-desktop-review" class="img-holder"> <img src="http://tune.pk/styles/tunev4/images/16_10.gif" alt="ASUS 4K Touch - All In One Desktop - Review" title="ASUS 4K Touch - All In One Desktop - Review" class="img-responsive" height="229" width="143"> <img src="http://tune.pk/styles/tunev4/images/16_10.gif" title="ASUS 4K Touch - All In One Desktop - Review" data-src="http://thumbs.gear3rd.net/54,903a0311f2968a" alt="ASUS 4K Touch - All In One Desktop - Review" class="img-responsive absolute-img unveil" height="229" width="143"> <div class="duration-holder"> <span class="time-duration">15:31</span> <span class="icon-hd"></span> </div> </a> <a href="http://tune.pk/video/6519123/asus-4k-touch-all-in-one-desktop-review" class="add-quick-list1"> <span class="add-quick-list fa-stack fa-xs" data-href="http://tune.pk/video/6519123/asus-4k-touch-all-in-one-desktop-review" data-videoid="6519123" data-thumb="http://thumbs.gear3rd.net/53,903a15b468e48b" data-duration="15:31" data-title="ASUS 4K Touch - All In One Desktop - Review" user-link="http://tune.pk/user/TechGenius" user-name="TechGenius" title="Add ASUS 4K Touch - All In One Desktop - Review to Quicklist"> <i class="fa fa-plus fa-stack-1x fa-inverse icon-plus5 "></i> </span> </a> </div> <div class="video-info"> <h2 title="ASUS 4K Touch - All In One Desktop - Review"> <a href="http://tune.pk/video/6519123/asus-4k-touch-all-in-one-desktop-review">
+					ASUS 4K Touch - All In One Desktop - Review
+				</a> </h2> <p class="by-col new">
+				by 
+				<a class="by" href="http://tune.pk/user/TechGenius">
+					TechGenius
+				</a> </p> <p>7 views - 7 hours ago</p> </div> </div> </div> <span class="hidden"> <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 video-col"> <div class="white-box clearfix video_block"> <div class="deactivate-holder clearifx"> <a href="http://tune.pk/video/6519125/galaxy-note-6-samsung-focus-feature-iphone-7-plus-specs-amp-more" class="img-holder"> <img src="http://tune.pk/styles/tunev4/images/16_10.gif" alt="Galaxy Note 6 Samsung Focus Feature, iPhone 7 Plus Specs &amp; More" title="Galaxy Note 6 Samsung Focus Feature, iPhone 7 Plus Specs &amp; More" class="img-responsive" height="229" width="143"> <img src="http://tune.pk/styles/tunev4/images/16_10.gif" title="Galaxy Note 6 Samsung Focus Feature, iPhone 7 Plus Specs &amp; More" data-src="http://thumbs.gear3rd.net/43,9038e61ee6af2a" alt="Galaxy Note 6 Samsung Focus Feature, iPhone 7 Plus Specs &amp; More" class="img-responsive absolute-img unveil" height="229" width="143"> <div class="duration-holder"> <span class="time-duration">04:03</span> <span class="icon-hd"></span> </div> </a> <a href="http://tune.pk/video/6519125/galaxy-note-6-samsung-focus-feature-iphone-7-plus-specs-amp-more" class="add-quick-list1"> <span class="add-quick-list fa-stack fa-xs" data-href="http://tune.pk/video/6519125/galaxy-note-6-samsung-focus-feature-iphone-7-plus-specs-amp-more" data-videoid="6519125" data-thumb="http://thumbs.gear3rd.net/46,9038eb594f0a3e" data-duration="04:03" data-title="Galaxy Note 6 Samsung Focus Feature, iPhone 7 Plus..." user-link="http://tune.pk/user/CrazyTechnology" user-name="Crazy Technology" title="Add Galaxy Note 6 Samsung Focus Feature, iPhone 7 Plus Specs &amp; More to Quicklist"> <i class="fa fa-plus fa-stack-1x fa-inverse icon-plus5 "></i> </span> </a> </div> <div class="video-info"> <h2 title="Galaxy Note 6 Samsung Focus Feature, iPhone 7 Plus Specs &amp; More"> <a href="http://tune.pk/video/6519125/galaxy-note-6-samsung-focus-feature-iphone-7-plus-specs-amp-more">
+					Galaxy Note 6 Samsung Focus Feature, iPhone 7 Plus Specs
+				</a> </h2> <p class="by-col new">
+				by 
+				<a class="by" href="http://tune.pk/user/CrazyTechnology">
+					Crazy Technology
+				</a> </p> <p>12 views - 7 hours ago</p> </div> </div> </div> </span> <span class="hidden"> <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 video-col"> <div class="white-box clearfix video_block"> <div class="deactivate-holder clearifx"> <a href="http://tune.pk/video/6519124/best-new-apps-for-ios-and-android-may-3rd-may-9th" class="img-holder"> <img src="http://tune.pk/styles/tunev4/images/16_10.gif" alt="Best new apps for iOS and Android (May 3rd - May 9th)" title="Best new apps for iOS and Android (May 3rd - May 9th)" class="img-responsive" height="229" width="143"> <img src="http://tune.pk/styles/tunev4/images/16_10.gif" title="Best new apps for iOS and Android (May 3rd - May 9th)" data-src="http://thumbs.gear3rd.net/45,90389a94794ab7" alt="Best new apps for iOS and Android (May 3rd - May 9th)" class="img-responsive absolute-img unveil" height="229" width="143"> <div class="duration-holder"> <span class="time-duration">02:39</span> <span class="icon-hd"></span> </div> </a> <a href="http://tune.pk/video/6519124/best-new-apps-for-ios-and-android-may-3rd-may-9th" class="add-quick-list1"> <span class="add-quick-list fa-stack fa-xs" data-href="http://tune.pk/video/6519124/best-new-apps-for-ios-and-android-may-3rd-may-9th" data-videoid="6519124" data-thumb="http://thumbs.gear3rd.net/43,90389f9199d01e" data-duration="02:39" data-title="Best new apps for iOS and Android (May 3rd - May 9th)" user-link="http://tune.pk/user/PrimitiveTechnology" user-name="PrimitiveTechnology" title="Add Best new apps for iOS and Android (May 3rd - May 9th) to Quicklist"> <i class="fa fa-plus fa-stack-1x fa-inverse icon-plus5 "></i> </span> </a> </div> <div class="video-info"> <h2 title="Best new apps for iOS and Android (May 3rd - May 9th)"> <a href="http://tune.pk/video/6519124/best-new-apps-for-ios-and-android-may-3rd-may-9th">
+					Best new apps for iOS and Android (May 3rd - May 9th)
+				</a> </h2> <p class="by-col new">
+				by 
+				<a class="by" href="http://tune.pk/user/PrimitiveTechnology">
+					PrimitiveTechnology
+				</a> </p> <p>11 views - 7 hours ago</p> </div> </div> </div> </span> <span class="hidden"> <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 video-col"> <div class="white-box clearfix video_block"> <div class="deactivate-holder clearifx"> <a href="http://tune.pk/video/6517465/xiaomi-mi-5-review" class="img-holder"> <img src="http://tune.pk/styles/tunev4/images/16_10.gif" alt="Xiaomi Mi 5 Review" title="Xiaomi Mi 5 Review" class="img-responsive" height="229" width="143"> <img src="http://tune.pk/styles/tunev4/images/16_10.gif" title="Xiaomi Mi 5 Review" data-src="http://thumbs.gear3rd.net/47,8caf46b86893d7" alt="Xiaomi Mi 5 Review" class="img-responsive absolute-img unveil" height="229" width="143"> <div class="duration-holder"> <span class="time-duration">05:58</span> <span class="icon-hd"></span> </div> </a> <a href="http://tune.pk/video/6517465/xiaomi-mi-5-review" class="add-quick-list1"> <span class="add-quick-list fa-stack fa-xs" data-href="http://tune.pk/video/6517465/xiaomi-mi-5-review" data-videoid="6517465" data-thumb="http://thumbs.gear3rd.net/47,8caf4b51d6ff84" data-duration="05:58" data-title="Xiaomi Mi 5 Review" user-link="http://tune.pk/user/TechStudio" user-name="Tech Studio" title="Add Xiaomi Mi 5 Review to Quicklist"> <i class="fa fa-plus fa-stack-1x fa-inverse icon-plus5 "></i> </span> </a> </div> <div class="video-info"> <h2 title="Xiaomi Mi 5 Review"> <a href="http://tune.pk/video/6517465/xiaomi-mi-5-review">
+					Xiaomi Mi 5 Review
+				</a> </h2> <p class="by-col new">
+				by 
+				<a class="by" href="http://tune.pk/user/TechStudio">
+					Tech Studio
+				</a> </p> <p>73 views - 1 day ago</p> </div> </div> </div> </span> </div> <span class="20-excluded-videos" value='["6519364","6519211","6518972","6519016","6518969","6517535","6518829","6518434","6518436","6518437","6517379","6516621","6519148","6517662","6519185","6517605","6519136","6517471","6519128","6519126","6519123","6519125","6519124","6517465"]'></span> </script> <ul class="show-text-holder"> <li class="clearfix"> <div class="show-text clearfix"> <span class="more_results_home show-btn" data-loading-text="Loading..."> <span class="show">Show more</span> <i class="glyphicon glyphicon-triangle-bottom"></i> </span> <span class="loading" style="display:none"> <img src="http://tune.pk/styles/tunev4/theme/images/dots-gif.gif" alt="" width="28" height="7" class="img-responsive"> </span> </div> </li> </ul> </div> </div> </div> <script type="text/html" id="template">
+    <div class="subs_video">
+		<img data-link="profile_link" data-link-wrap="profile_link"  data-src="avatar" class="uploader_thumb img-circle" data-alt="name" />
+		<img data-src="thumb" data-alt="title" data-link-wrap="video_link" class="video_thumb"/>
+		<div class="video_uploader" data-link="profile_link" data-content="name"></div>
+		<div class="video_title" data-link="video_link" data-content="title"></div>
+		<div class="video_details"><span data-content="views"></span> views | <span data-content="date_added"></span></div>
+	</div>
+</script> <script type="text/html" id="trending_video">
+	<div class="video_block video_block_default">
+		<img data-src="thumb" data-alt="title" data-link="video_link" class="video_thumb"/>
+		<div class="video_title" data-link="video_link" data-content="title"></div>
+		<span class="video_duration" data-content="duration"></span>
+		<span class="video_uploader">by <span data-link-wrap="profile_link" data-content="name"></span></span>
+	</div>
+</script> </div> </div> <div class="sidebar-right   hidden-sm hidden-xs pull-right"> <div class="right-innerColumn clearfix"> <div class="advertisement-box advertisement-holder clearfix "> <p>
+        Advertisement 
+        <i class="glyphicon glyphicon-menu-down"></i> </p> <div class="ad-holder clearfix"> <div id="" class="300x250"> <div id='div-gpt-ad-1456141122183-0' style='height:250px; width:300px;'> <script type='text/javascript'>
+							googletag.cmd.push(function() { googletag.display('div-gpt-ad-1456141122183-0'); });
+						</script> </div> </div> </div> </div> <div class="white-box trending-videos-holder clearfix"> <h2><a href="http://tune.pk/videos/21/news-politics/most_recent/all_time/">News & Politics</a></h2> <ul> <li class="clearfix"> <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 col"> <div class="relative"> <a href="http://tune.pk/video/6519786/benaqaab-12th-may-2016" class="img-holder"> <img src="http://tune.pk/styles/tunev4/images/16_10.gif" alt="Benaqaab - 12th May 2016" title="Benaqaab - 12th May 2016" class="img-responsive img-gif" width="116" height="80" /> <img src="http://thumbs.gear3rd.net/50,916207144dca21" alt="Benaqaab - 12th May 2016" title="Benaqaab - 12th May 2016" class="img-responsive absolute-img" width="116" height="80"> <div class="duration-holder"> <span class="pull-right">33:31</span> </div> </a> <a href="http://tune.pk/video/6519786/benaqaab-12th-may-2016" class="add-quick-list1"> <span class="add-quick-list fa-stack fa-xs"
+    data-href="http://tune.pk/video/6519786/benaqaab-12th-may-2016"
+    data-videoid="6519786"
+    data-thumb="http://thumbs.gear3rd.net/50,916207144dca21"
+    data-duration="33:31"
+    data-title="Benaqaab - 12th May 2016"
+    user-link="http://tune.pk/user/AwazToday"
+    user-name="AwazToday"
+    title="Add Benaqaab - 12th May 2016 to Quicklist"> <i class="fa fa-plus fa-stack-1x fa-inverse icon-plus5 "></i> </span> </a> </div> </div> <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7 video-info"> <h3 title="Benaqaab - 12th May 2016"> <a href="http://tune.pk/video/6519786/benaqaab-12th-may-2016">
+								Benaqaab - 12th May 2016
+							</a> </h3> <a href="http://tune.pk/user/AwazToday" class="by">by AwazToday</a> <p class="hidden-md"> 
+						3 views - 1 hour ago</p> </div> </li> <li class="clearfix"> <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 col"> <div class="relative"> <a href="http://tune.pk/video/6519780/sairbeen-12th-may-2016" class="img-holder"> <img src="http://tune.pk/styles/tunev4/images/16_10.gif" alt="Sairbeen - 12th May 2016" title="Sairbeen - 12th May 2016" class="img-responsive img-gif" width="116" height="80" /> <img src="http://thumbs.gear3rd.net/36,9155e9cbbf7532" alt="Sairbeen - 12th May 2016" title="Sairbeen - 12th May 2016" class="img-responsive absolute-img" width="116" height="80"> <div class="duration-holder"> <span class="pull-right">17:33</span> </div> </a> <a href="http://tune.pk/video/6519780/sairbeen-12th-may-2016" class="add-quick-list1"> <span class="add-quick-list fa-stack fa-xs"
+    data-href="http://tune.pk/video/6519780/sairbeen-12th-may-2016"
+    data-videoid="6519780"
+    data-thumb="http://thumbs.gear3rd.net/36,9155e9cbbf7532"
+    data-duration="17:33"
+    data-title="Sairbeen - 12th May 2016"
+    user-link="http://tune.pk/user/AwazToday"
+    user-name="AwazToday"
+    title="Add Sairbeen - 12th May 2016 to Quicklist"> <i class="fa fa-plus fa-stack-1x fa-inverse icon-plus5 "></i> </span> </a> </div> </div> <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7 video-info"> <h3 title="Sairbeen - 12th May 2016"> <a href="http://tune.pk/video/6519780/sairbeen-12th-may-2016">
+								Sairbeen - 12th May 2016
+							</a> </h3> <a href="http://tune.pk/user/AwazToday" class="by">by AwazToday</a> <p class="hidden-md"> 
+						7 views - 1 hour ago</p> </div> </li> <li class="clearfix"> <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 col"> <div class="relative"> <a href="http://tune.pk/video/6519776/ho-kya-raha-hai-12th-may-2016" class="img-holder"> <img src="http://tune.pk/styles/tunev4/images/16_10.gif" alt="Ho Kya Raha Hai - 12th May 2016" title="Ho Kya Raha Hai - 12th May 2016" class="img-responsive img-gif" width="116" height="80" /> <img src="http://thumbs.gear3rd.net/36,91573cdc04c370" alt="Ho Kya Raha Hai - 12th May 2016" title="Ho Kya Raha Hai - 12th May 2016" class="img-responsive absolute-img" width="116" height="80"> <div class="duration-holder"> <span class="pull-right">33:18</span> </div> </a> <a href="http://tune.pk/video/6519776/ho-kya-raha-hai-12th-may-2016" class="add-quick-list1"> <span class="add-quick-list fa-stack fa-xs"
+    data-href="http://tune.pk/video/6519776/ho-kya-raha-hai-12th-may-2016"
+    data-videoid="6519776"
+    data-thumb="http://thumbs.gear3rd.net/36,91573cdc04c370"
+    data-duration="33:18"
+    data-title="Ho Kya Raha Hai - 12th May 2016"
+    user-link="http://tune.pk/user/AwazToday"
+    user-name="AwazToday"
+    title="Add Ho Kya Raha Hai - 12th May 2016 to Quicklist"> <i class="fa fa-plus fa-stack-1x fa-inverse icon-plus5 "></i> </span> </a> </div> </div> <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7 video-info"> <h3 title="Ho Kya Raha Hai - 12th May 2016"> <a href="http://tune.pk/video/6519776/ho-kya-raha-hai-12th-may-2016">
+								Ho Kya Raha Hai - 12th May 2016
+							</a> </h3> <a href="http://tune.pk/user/AwazToday" class="by">by AwazToday</a> <p class="hidden-md"> 
+						22 views - 1 hour ago</p> </div> </li> </ul> </div> <div class="white-box suggested-channels-holder clearfix"> <h2>Suggested Channels</h2> <ul> <li> <div class="img-holder"> <a href="http://tune.pk/user/DanishAli"> <img src="http://static2.tune.pk/user/thumb/m/227012/small" width="40" height="40" alt=""> </a> </div> <div class="channels-info clearfix"> <a href="http://tune.pk/user/DanishAli"><h3>Danish Ali</h3></a> <p>27 Videos</p> <span data-todo="subscribe" data-userid="227012" class="plsu-btn ch-btn-subscribe subscribe-btn" data-toggle="tooltip" data-placement="top" title="Subscribe"> <i class="icon-plus"></i> </span> </div> </li> <li> <div class="img-holder"> <a href="http://tune.pk/user/behrozali"> <img src="http://static2.tune.pk/user/thumb/m/496986/small" width="40" height="40" alt=""> </a> </div> <div class="channels-info clearfix"> <a href="http://tune.pk/user/behrozali"><h3>behroz ali</h3></a> <p>29 Videos</p> <span data-todo="subscribe" data-userid="496986" class="plsu-btn ch-btn-subscribe subscribe-btn" data-toggle="tooltip" data-placement="top" title="Subscribe"> <i class="icon-plus"></i> </span> </div> </li> <li> <div class="img-holder"> <a href="http://tune.pk/user/bilalzahoor"> <img src="http://static2.tune.pk/user/thumb/m/496994/small" width="40" height="40" alt=""> </a> </div> <div class="channels-info clearfix"> <a href="http://tune.pk/user/bilalzahoor"><h3>bilalzahoor</h3></a> <p>29 Videos</p> <span data-todo="subscribe" data-userid="496994" class="plsu-btn ch-btn-subscribe subscribe-btn" data-toggle="tooltip" data-placement="top" title="Subscribe"> <i class="icon-plus"></i> </span> </div> </li> <li> <div class="img-holder"> <a href="http://tune.pk/user/musicultra"> <img src="http://static2.tune.pk/user/thumb/m/519195/small" width="40" height="40" alt=""> </a> </div> <div class="channels-info clearfix"> <a href="http://tune.pk/user/musicultra"><h3>Music Ultra</h3></a> <p>115 Videos</p> <span data-todo="subscribe" data-userid="519195" class="plsu-btn ch-btn-subscribe subscribe-btn" data-toggle="tooltip" data-placement="top" title="Subscribe"> <i class="icon-plus"></i> </span> </div> </li> <li> <div class="img-holder"> <a href="http://tune.pk/user/MusicFunda"> <img src="http://static2.tune.pk/user/thumb/m/534774/small" width="40" height="40" alt=""> </a> </div> <div class="channels-info clearfix"> <a href="http://tune.pk/user/MusicFunda"><h3>Music Funda</h3></a> <p>288 Videos</p> <span data-todo="subscribe" data-userid="534774" class="plsu-btn ch-btn-subscribe subscribe-btn" data-toggle="tooltip" data-placement="top" title="Subscribe"> <i class="icon-plus"></i> </span> </div> </li> </ul> </div> <div class="white-box fbLike-holder clearfix"> <h2>Like us on Facebook</h2> <div class="fb-like" data-href="http://facebook.com/tunepkofficial" data-width="264" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div> </div> </div> </div> </div> </div> </div> <footer id="footer" class="clearfix option2"> <div class="footer-container"> <div class="ft-nav clearfix"> <ul class="nav-large"> <li><a href="http://tune.pk/about">About</a></li> <li><a href="http://tune.pk/advertise">Advertise</a></li> <li><a href="http://tune.pk/policy/icps">Copyright Protection</a></li> <li><a href="http://tune.pk/policy/dmca">DMCA</a></li> <li><a href="http://tune.pk/support/faqs">FAQs</a></li> <li><a href="http://tune.pk/contact">Contact</a></li> <li><a href="//blog.tune.pk" target="_blank">Blog</a></li> </ul> <ul class="nav-small"> <li><a href="http://tune.pk/policy/terms">Terms</a></li> <li><a href="http://tune.pk/policy/privacy">Privacy</a></li> <li><a href="http://tune.pk/about/jobs">Jobs</a></li> <li><a href="http://tune.pk/security/hall-of-fame">White hat</a></li> <li><a href="http://tune.pk/advertise/clients">Clients</a></li> <li><a href="http://tune.pk/about/partnership">Partnership</a></li> <li><a href="http://tune.pk/downloads">Downloads</a></li> </ul> </div> <div class="powered clearfix"> <span class="pull-left">
+				Powered by ClipBucket &amp; Control Web
+			</span> <span class="pull-right jeevay">
+				Jeevay <span class="pakistan">Pakistan</span> &copy; Tune.pk 2016 
+			</span> </div> </div> </footer> <div class="modal fade" id="error"> <div class="modal-dialog"> <div class="modal-content"> <div class="modal-header"> <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button> <h4 class="modal-title">Error</h4> </div> <div class="modal-body"> <p></p> </div> <div class="modal-footer"> <a href="javascript:void(0)" class="btn btn-danger" data-dismiss="modal">Okay!</a> </div> </div> </div> </div> <div class="modal fade" id="msg"> <div class="modal-dialog"> <div class="modal-content"> <div class="modal-header"> <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button> <h4 class="modal-title">Success</h4> </div> <div class="modal-body"> <p></p> </div> <div class="modal-footer"> <a href="javascript:void(0)" class="btn btn-info" data-dismiss="modal">Okay!</a> </div> </div> </div> </div> <div class="modal fade" id="modal-alert"> <div class="modal-dialog"> <div class="modal-content"> <div class="modal-header"> <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button> <h4 class="modal-title"></h4> </div> <div class="modal-body"> <h5 class="success_msg no-display"><i class="fa fa-ok-sign text-success"></i> <span class="msg_space"></span></h5> <h5 class="error_msg no-display"><i class="fa fa-exclamation-sign text-danger"></i> <span class="msg_space"></span></h5> </div> <div class="modal-footer"> <button type="button"  data-dismiss="modal" class="btn btn-primary">Okay!</button> </div> </div> </div> </div> <div class="modal fade" id="confirm"> <div class="modal-dialog"> <div class="modal-content"> <div class="modal-header"> <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button> <h4 class="modal-title">Confirm</h4> </div> <div class="modal-body"> </div> <div class="modal-footer"> <a href="javascript:void(0)" id="confirm-yes" class="btn btn-primary">Yes</a> <button onclick="close_confirm();" class="btn btn-default" data-dismiss="modal">No</button> </div> </div> </div> </div> <script>
+	  (function(i,s,o,g,r,a,m){ i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+		
+
+		ga('create', 'UA-12212755-2', 'auto');  // Replace with your property ID.
+
+		ga('send', 'pageview');
+
+		
+		
+	
+	
+	
+	ga('send', 'event','UpTime', 'www_5', 1 );
+
+	if(ad_blocker)
+	ga('send', 'event','Ads', 'Ad blocker', 1 );
+
+	
+</script> <script type="text/javascript">
+var _qevents = _qevents || [];
+
+(function() {
+var elem = document.createElement('script');
+elem.src = (document.location.protocol == "https:" ? "https://secure" : "http://edge") + ".quantserve.com/quant.js";
+elem.async = true;
+elem.type = "text/javascript";
+var scpt = document.getElementsByTagName('script')[0];
+scpt.parentNode.insertBefore(elem, scpt);
+})();
+
+_qevents.push({
+qacct:"p-k-tNCVpBJqU0c"
+});
+</script> <noscript> <div style="display:none;"> <img src="//pixel.quantserve.com/pixel/p-k-tNCVpBJqU0c.gif" border="0" height="1" width="1" alt="Quantcast"/> </div> </noscript> <div class="modal fade" id="deactivate_video"> <form id="deativate_modal_submit" method="POST" > <div class="modal-dialog"> <div class="modal-content"> <div class="modal-header"> <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button> <h4 class="modal-title">Moderate video</h4> </div> <div class="modal-body"> <p>Please choose report reason carefully and enter your message which will be emailed to
+                        the uploader and will be displayed on video page as well.</p> <div class="form-group"> <label for="deactivate_reason_code" class="control-label">Report Category</label> <select class="form-control" id="deactivate_reason_code" name="deactivate_reason_code"> <option value='prohibited_content' >Video contains prohibited content.</option> <option value='copyright_content' >Video violates copyrights.</option> <option value='privacy_violation' >Video is violating privacy.</option> <option value='repulsive_content' >Video contains repulsive violation</option> <option value='sexual_content' >Video contains sexual content</option> <option value='upload_moderator_error' >Video is pending for moderation.</option> <option value='spam' >Video contains spam</option> <option value='disturbing' >Video has disturbing content.</option> <option value='video_corrupt' >Video file is corrupt and is not playable.</option> <option value='moderators_review' >Video was deactivated by our moderator.</option> </select> </div> <div class="form-group"> <label for="deactivate_reason" class="control-label">Report Detail</label> <select id="deactivate_reason" class="form-control" id="deactivate_reason" name="deactivate_reason"> <option value='Video contains prohibited content.'
+                            >Video contains prohibited content.</option> <option value='Video violates copyrights.'
+                            >Video violates copyrights.</option> <option value='Video is violating privacy.'
+                            >Video is violating privacy.</option> <option value='Video contains repulsive violation'
+                            >Video contains repulsive violation</option> <option value='Video contains sexual content'
+                            >Video contains sexual content</option> <option value='Video is pending for moderation.'
+                            >Video is pending for moderation.</option> <option value='Video contains spam'
+                            >Video contains spam</option> <option value='Video has disturbing content.'
+                            >Video has disturbing content.</option> <option value='Video file is corrupt and is not playable.'
+                            >Video file is corrupt and is not playable.</option> <option value='Video was deactivated by our moderator.'
+                            >Video was deactivated by our moderator.</option> </select> <br> <textarea id="deactivate_reason_textarea" name="deactivate_reason_textarea" placeholder="Enter a deactivate reason"
+                                  class="form-control"></textarea> </div> <input type="hidden" value="" name="action" id="action"> <div class="checkbox"> <label> <input type="checkbox" value="yes" name="deactivate_notify_user">
+                            Notify user via Email
+                        </label> </div> <input type="hidden" name="videoid" id="videoid" value="" /> </div> <div class="modal-footer"> <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> <button type="button" class="btn btn-primary btn-deactive" data-loading-text="Deactivating...." >Deactivate video</button> </div> </div> </div> </form> </div> <div class="modal fade" id="activate_videos"> <form id="activate_modal_submit" method="POST" > <div class="modal-dialog"> <div class="modal-content"> <div class="modal-header"> <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button> <h4 class="modal-title">Activate video</h4> </div> <div class="modal-body"> <div class="checkbox"> <label> <input type="checkbox" value="yes" name="activate_notify_user">
+                            Notify user via Email
+                        </label> </div> <input type="hidden" value="" name="action" id="action"> <input type="hidden" name="videoid" id="videoid" value="" /> </div> <div class="modal-footer"> <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> <button type="button" class="btn btn-primary btn-active" data-loading-text="Activating...." >Activate video</button> </div> </div> </div> </form> </div> </div> <div class="ad_box  empty-ads  adbox-holder clearfix hidden-xs"> <div id="tune_ad_150"></div> </div> <script type="text/javascript" src="http://tune.pk/styles/tunev4/theme/js/bootstrap.min.js"></script> <script src="http://tune.pk/styles/tunev4/theme/js/jquery.unveil.min.js"></script> <script type="text/javascript" src="http://tune.pk/styles/tunev4/theme/js/jquery_plugs.js"></script> <script type="text/javascript" src="http://tune.pk/styles/tunev4/theme/js/custom-elements.min.js"></script> <script type="text/javascript" src="http://tune.pk/js/functions.min.js"></script> <script type="text/javascript" src="http://tune.pk/styles/tunev4/theme/js/typeahead.js"></script> <script type="text/javascript" src="http://tune.pk/js.php?p=index"></script> <script type="text/javascript">
+    callURLParser();
+</script> <div class="hidden" itemscope itemtype="http://schema.org/WebSite"> <meta itemprop="url" content="http://tune.pk"/> </div> <script type="text/javascript">
+		
+		
+		// functions start
+					function fbLikeFixed (){
+				
+				var fbLikeHolder = $('.fbLike-holder').offset();
+				
+				$(window).scroll(function(event) {
+					var sidebarWidth = $('.sidebar-right').width();
+					$('.fbLike-holder').css('width',sidebarWidth+'px');
+					var boxHeight = $('.fbLike-holder').height();
+					if ( $(window).scrollTop() > fbLikeHolder.top - boxHeight) {
+						$('.fbLike-holder').addClass('fixedBox')
+					}else {
+						$('.fbLike-holder').removeClass('fixedBox')
+					}
+				});
+				
+				$(window).resize(function(event) {
+					var sidebarWidth = $('.sidebar-right').width();
+					$('.fbLike-holder').css('width',sidebarWidth+'px');
+				});
+			} 
+		
+					function leftSectionFixed (argument){
+
+				var fixedColumn = $('.fixed-column').offset();
+				
+				$(window).scroll(function(event) {
+					var sidebarWidth = $('.sidebar-left').width();
+					$('.fixed-column').css('width', sidebarWidth+'px');
+					var boxHeight = $('.fixed-column').height();	
+					if ( $(window).scrollTop() > fixedColumn.top - boxHeight ) {
+						$('.fixed-column').addClass('fixedBox');
+					}
+					else {
+						$('.fixed-column').removeClass('fixedBox');
+					}
+				});
+
+				$(window).resize(function(event) {
+					var sidebarWidth = $('.sidebar-left').width();
+					$('.fixed-column').css('width', sidebarWidth+'px');
+				});
+			} 		
+		
+		//footerfixedBottm
+		function footerfixedBottm(argument){
+			var footerHeight = $('#footer').outerHeight();
+			$('#wrapper').css('padding-bottom', footerHeight+'px');
+		} 
+		//headerfixedTop
+		function headerfixedTop(argument){
+			var headHeight = $('#header').outerHeight();
+			$('#wrapper').css('padding-top', headHeight+'px');
+		}
+		//svgfontSize
+		function svgfontSize (argument) {
+			$('.img-hover').each(function(i, obj) {
+
+				var imgHover = $(this).width();
+				if (imgHover < 135) {
+					$(this).addClass('svg-fontSize');
+				}else {
+					$(this).removeClass('svg-fontSize');
+				}
+
+			});
+		}
+
+		function preLoadingBlock( check ){
+			$(".thumb-video").each(function() {
+				if(check)
+				console.log(check);
+				var thumbWidth = $(this).width();
+				var thumbHeight = thumbWidth * (10/16);
+				$(this).css('height', thumbHeight+'px');
+			});
+		}
+
+		//featured-channel
+		// function featuredChannelHeight(argument){
+		// 	var fChannelHeight = $('.features-col').outerHeight();
+		// 	$('.channel-features .features-block .features-col .channels-info').css("height", fChannelHeight+'px');
+		// 	var fdetailHeight = $('.channels-info .detail').height();
+		// 	$('.channels-info .detail').css('margin-top', - (fdetailHeight/2) + 'px');
+
+
+		// 	return featuredChannelHeight;
+		// }
+
+		function search_suggest(selector)
+		{
+			// var suggestTimeout = 5000;
+			var value_query = $(selector).val(),
+			search_suggest = "http://tune.pk/ajax/search.php";
+			if(value_query.length<3)
+			{
+				return false;
+			}
+			if(!value_query) {
+				$("#suggesstion-box").addClass('hidden');
+				return false;
+			}
+
+			// if ( suggestTimeout ) {
+			// 	clearTimeout( suggestTimeout );
+			// }
+			var search_icon = '';
+			// suggestTimeout = setTimeout(function(){
+				$.ajax({
+					url: search_suggest,
+					type: "POST",
+					data: {  mode :  "search_suggest" , suggest_query : value_query },
+					dataType: "json",
+					beforeSend: function () {
+						search_icon = $(".icon-search");
+						$(".icon-search").addClass("SEarch_load");
+						// $( ".icon-search" ).replaceWith( "<h2>Lo</h2>" );
+
+					},
+					success:function (data) 
+					{
+						$(".icon-search").removeClass("SEarch_load");
+						if(data.error)
+						{
+							show_ajax_message( data.error, 'alert-danger' );
+						}
+						else
+						{
+							if(data.total>0&&data.results)
+							{
+								
+								// if ( suggestTimeout ) {
+								// 	clearTimeout( suggestTimeout );
+								// }
+								var p_element = $("#suggesstion-box a p").each(function(index, value)
+								{
+									// console.log(index + ": " + value);
+								});
+								var p_count = p_element.length;
+								document.onkeydown = function() {
+									switch (window.event.keyCode) {
+
+										case 38:
+										{
+											p_count = p_count + 1;
+											p_element[0].addClass("here");
+											console.log(p_element) 
+										}
+										break;
+										case 40:
+										{
+											p_count = p_count + 1;
+											console.log('Down key is pressed') 
+										}
+									break;
+									}
+								};
+								var flag = 0;
+								// console.log(data);
+								var results = data.results;
+								var search_template = "";
+								var new_title = '';
+								var regex = /(<([^>]+)>)/ig;
+								$.each(results,function(index, element) {
+									new_title = element.title;
+									new_title = decodeURIComponent(new_title);
+									new_title = new_title.replace(regex, "");
+									// console.log(new_title);
+									if(element.display)
+									{
+										search_template+="<a href='/search_result.php?query="+encodeURIComponent(new_title)+"'><p>"+ element.display+"</p></a>";
+										flag = 1;
+									}
+								});
+								if(!flag)
+								{
+									search_template = '<div class="no-suggestion clearfix"><span>No suggestion found</span><a href="http://tune.pk/search_results.php?query='+value_query+'">Click to see all</a></div>';
+								}
+								$("#suggesstion-box").removeClass('hidden');
+								$( "#suggesstion-box" ).fadeIn( "slow" );
+								$("#suggesstion-box").html(search_template);
+							}
+						}
+							
+					},
+					error:function(data){
+						
+						
+					},
+					complete:function (data) 
+					{
+					  
+					} 
+
+				});
+			// }, 500 );
+
+						  
+		}
+
+		$(window).load(function() {
+			preLoadingBlock();
+
+							fbLikeFixed();
+					});
+
+		function showThumb(obj)
+		{
+			$(obj).fadeIn(400);
+		}
+
+		$( document ).ajaxComplete(function() {
+			$(".unveil").unveil();
+		});
+
+		function videoInactive(obj)
+		{
+			var __this = $(obj),
+			videoid = __this.data('id'),
+			d_form = $('#deativate_modal_submit'),
+			action = __this.data('action');
+			if(action=='deactive'){
+				var _modal = $('#deactivate_video');
+				_modal.find('#videoid').val(videoid);
+				_modal.find('#action').val(action);
+				_modal.modal('show');    
+			}else
+			{
+				var _modal = $('#activate_videos');
+				_modal.find('#videoid').val(videoid);
+				_modal.find('#action').val(action);
+				_modal.modal('show'); 
+			}
+			
+		}
+
+		function show_alert()
+		{
+			$('#alert_message').show()
+			.delay(10000).fadeOut('slow',function(){
+				$('#alert_message .alert_message').removeClass('text-error')
+			});
+		}
+
+		
+		
+		function supports_history_api() {
+			return !!(window.history && history.pushState);
+		}
+
+		if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
+			var msViewportStyle = document.createElement("style");
+			msViewportStyle.appendChild(
+				document.createTextNode(
+				"@-ms-viewport{ width:auto!important }"
+			)
+		);
+		document.getElementsByTagName("head")[0].
+			appendChild(msViewportStyle);
+		}
+
+		(function(d, s, id) {
+		var js, fjs = d.getElementsByTagName(s)[0];
+		if (d.getElementById(id)) return;
+		js = d.createElement(s); js.id = id;
+		js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5&appId=565537343536229";
+		fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));
+
+		/*
+			index
+		*/
+		
+			var ajax_timeline_url = baseurl+"/ajax/videos.php",
+			limit=3,
+			mode ='get_videos',
+			_holder = '.videos-holder .videos',
+			//_btn ='.more_results_home',
+			category = 1,
+			page_num = 2,
+			scrolCount=5,//total number when results gettimg on scroll
+			exclude='null',//exclude videos
+			threshold=30 ;//total pages
+			var checkRequest=false;
+			var scroleLimt = 500;
+			var lastPoistion = $( document ).scrollTop(),
+			maxPosition = $( document ).height() - $( window ).height();
+
+			function scrollPaginate(mode,template_holder,loading) 
+			{
+				if(!checkRequest)
+				{
+					//console.log(loading.attr('class'));
+					//template_holder =  $(loading).parent('.videos');
+					var page = $(template_holder).data('limit');
+					$(loading).next('.loading').show();
+					$(loading).hide();
+					var _data  = 'mode='+mode+'&limit='+limit+'&page='+page;
+					_data +='&category='+ $(template_holder).data('category');
+					
+										
+					var ex = $('.'+$(template_holder).data('category')+'-excluded-videos').attr('value');
+					_data +='&exclude='+ex;
+					
+					//console.log('page:'+page_num+' limit:'+limit);
+					$.ajax({
+
+						url: ajax_timeline_url,
+						type: "POST",
+						data: _data,
+						dataType: "json",
+						beforeSend: function () {
+							page++;
+							$(template_holder).data('limit',page);
+							checkRequest=true;
+							$(loading).closest('.loaders').show();
+							//if(page==2)
+								//$(template_holder).css('opacity', '.5');
+						},
+						success:function (data) {
+							
+							/*if(page==2){
+								$(template_holder).html('');
+								$(template_holder).css('opacity', '1');
+							}*/
+
+							if(data.message)
+							{
+								checkRequest=false;     
+							}
+
+							if ( data.error ) {
+								show_ajax_message( data.error, 'alert-danger' );
+							}
+
+							if ( data.templates ) {
+									  checkRequest=false;
+									$.each(data.templates, function(index, template) {
+										
+										//$('.videos-holder .videos').append(template);
+										$(template_holder).append(template);
+									});
+									
+									//$('.accordion').append(data.templates_menu);
+									
+							}else
+							{
+								$(loading).remove();
+								$(loading).next('.loading').remove();
+							}
+						},
+						error:function(data){
+							
+							
+						},
+						complete:function (data) 
+						{
+						  $(loading).show();
+						  $(loading).next('.loading').hide();
+						} 
+
+					});  
+				} 
+			}
+
+			var preLoader = $('.pre-load-video').html();
+			var HomePage = $('.home-page .white-box1').clone();
+			function getCategoryPromotedvideos(id,type,first,url)
+			{
+				var  category = id;
+				var _holder  = $('.business-videos-holder .videos');
+				var dataSend = 'mode=promoted_videos_home&category='+category+'&type='+type+"&index=1";
+
+				$.ajax({
+				'url' : 'http://tune.pk/ajax/videos.php',
+				data : dataSend,
+				type : 'post',
+				beforeSend:function (argument) {
+					
+					var loader1 = '<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 video-col">'+preLoader+'<div>';
+					
+					var loader2 = '<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 video-col">'+preLoader+'<div>';
+					
+					_holder.html(loader1);
+					_holder.append(loader1);
+
+					if(!first)
+					{	
+						$('.home-page .white-box1 .videos-holder .videos').html(loader2);
+						$('.home-page .white-box1 .videos-holder .videos').append(loader2);
+						$('.home-page .white-box1 .videos-holder .videos').append(loader2);
+					}
+					preLoadingBlock();
+				},
+				success : function(data)
+				{
+					if(data.success)
+					{
+						if(type=='trend'||type=='featured')
+						{
+							$(".trend ").addClass('active');
+						}
+						if(data.templates)
+						{
+							_holder.html('');
+
+							if($("body").find(".new_sections"))
+							{
+								$(".new_sections").html('');
+							}
+							_holder.append(data.templates);
+
+							if(data.templates2 && !first)
+							{	
+								$('.home-page .white-box1 .videos-holder .videos').html('');
+								$('.home-page .white-box .special-block').remove();
+								$('.home-page .white-box').remove();
+								$('.home-page .show-text-holder').remove();
+								 
+								$('.remove-more').remove();
+								$('.home-page .white-box1 .videos-holder .videos').html(data.templates2);
+								$('.home-page .white-box1 .videos-holder').after(data.templates3);
+							}
+							if(data.submenu&&"1")
+							{
+								$(".trending-recent").remove();
+								$(_holder).after( data.submenu );
+							}
+							if(data.featured_section&&type=='featured')
+							{
+								console.log('featured_section');
+								// $(".trending-recent").remove();
+								$(".business-videos-holder").after("<div class='new_sections'></div>");
+								$(".new_sections").html('');
+								if(data.trending_section&&"1")
+								{
+									console.log('trending_section');
+									// $(".trending-recent").remove();
+									$(".new_sections").append( data.trending_section );
+								}
+								$(".new_sections").append( data.featured_section );
+							}
+
+						}else
+						{
+							_holder.html('There is no video');
+						}
+						if(category==0)
+						{
+							 window.history.replaceState({
+								content: $('.content-area').html(),
+							}, document.title, document.location.href);
+						}else
+						{
+							var ChangeAbleHtml = $('.content-area').html();
+					
+							window.history.pushState(
+							{ 
+								content:ChangeAbleHtml,
+								
+							}, '', url);
+						}    
+
+						//$('#report-'+videoid).html(data.template);
+					}
+					else
+					{
+						_holder.append('There is no video');
+					}
+
+				},
+				dataType : 'json',
+				complete:function (argument) {
+					
+				}
+
+				});
+			}
+
+		
+		
+		/* 
+			watch_video 
+		*/
+				var playlistLimit = 5;
+		var playlistPage = 1;
+		var showPlaylist = false;
+		/* 
+			index, edit_video, videos, search_result, view_channel 
+		*/	
+					//$("#quicklist_box").css("display","none");
+				/* 
+			watch_video, edit_video, view_channel 
+		*/	
+				/* 
+			upload 
+		*/	
+				/* 
+			notifications_on 
+		*/
+				/* 
+			search_result 
+		*/
+		  
+
+		/*
+			myaccount
+		*/
+		
+		/* 
+			upload 
+		*/
+				
+
+		/*
+			advertise
+		*/
+		
+		/*
+			security
+		*/
+		
+		/*
+			object
+		*/
+		
+		/* 
+			view_channel 
+		*/	
+		
+		
+		/* document ready */
+		$( document ).ready( function(){
+			// for view channels
+			$('.social-nav-subscribers .icons-holder .circle').tooltip({
+				placement: function(tip, element) { //$this is implicit
+				var coverHeight = $('.cover-holder').height() + $('#header').height();
+				var windowScrollTop = $(window).scrollTop();
+				if (windowScrollTop > coverHeight){
+					return "bottom";
+				}
+					return "top";
+				}
+			});	
+
+			
+									getCategoryPromotedvideos(0,'featured',true);
+				
+						$('body').on('click', '.top-links li span', function(event)
+			{
+				if($(this).parent('li').hasClass('active'))
+				{
+
+				}
+				else
+				{
+					$('.top-links li span').removeClass('active');
+					$(this).addClass('active');
+					if($(this).hasClass('trend')){
+					$('#category-drop .name').data('type','trend');
+
+					}else
+					$('#category-drop .name').data('type','recent');
+					var type = $('#category-drop .name').data('type');
+					var id = $('#category-drop .name').data('id');
+					getCategoryPromotedvideos(id,type);
+				}
+				
+
+			}); 
+
+			$('body').on('click', '.get-category-videos', function(event) 
+			{
+				event.preventDefault();
+				/* Act on the event */
+				var id = $(this).data('id');
+				var type = $('#category-drop .name').data('type');
+				
+				var url = $(this).find('a').attr('href');
+				/*var ChangeAbleHtml = $('.content-area').html();
+				
+				window.history.pushState(
+				{ 
+					content:ChangeAbleHtml,
+					
+				}, '', url);*/
+
+				//window.history.replaceState({ content:$('.content-area').html()},'', url);
+				/*if(id=='spot')
+				{
+				  $('.home-page .white-box1 .videos-holder .videos').html(HomePage);  
+				}
+				else*/
+				getCategoryPromotedvideos(id,type,false,url);
+				
+				$('#category-drop .name').html($(this).find('a').html());
+				$('#category-drop .name').data('id',id);
+			});
+
+			$('body').on('click', '.more_results_home', function(event) {
+				event.preventDefault();
+				/* Act on the event */
+				loading = $(this);
+				var HiddenDev = loading.parents('.videos-holder').find('.hidden');
+				if(HiddenDev.length > 0)
+				{
+					HiddenDev.removeClass('hidden');
+				}
+				else
+				{	
+					_holder = $(this).parents('.videos-holder').find('.videos');
+					scrollPaginate(mode,_holder,loading) 
+				}
+
+			});
+
+			$('body').click(function(e){
+				var target3 = $( e.target ), parent2 = target3.parents('.dropdown.notification-icon.notifications-holder');
+				if ( parent2.length <= 0 ) {
+				$('.dropdown.notification-icon.notifications-holder').removeClass('open');
+				}
+			});
+
+
+							preLoadingBlock();
+			
+							fbLikeFixed();
+										leftSectionFixed();
+			
+			/*
+				header search section
+			*/
+			$("#search_icon").on("click",function(){
+				var value_query = $("#header-query").val();
+				value_query = value_query.replace("<", "");
+				value_query = value_query.replace(">", "");
+				value_query = value_query.replace("/", "");
+				value_query = value_query.replace("'", "");
+				value_query = encodeURIComponent(value_query);
+				if(value_query)
+					window.location.href = "http://tune.pk/search_result.php?flag=1&sort=most_recent&time=all_time&query="+value_query;
+			});
+
+			$("#header-form").on("submit",function(e){
+				e.preventDefault();
+				var value_query = $("#header-query").val();
+				value_query = value_query.replace("<", "");
+				value_query = value_query.replace(">", "");
+				value_query = value_query.replace("/", "");
+				value_query = value_query.replace("'", "");
+				value_query = encodeURIComponent(value_query);
+				window.location.href = "http://tune.pk/search_result.php?flag=1&sort=most_recent&time=all_time&query="+value_query;
+			});
+			$('#header-query').typeahead([
+                {
+                  name: 'video-title',
+                  remote: 'http://tune.pk/tune_suggestion.php?query=%QUERY',
+                  formid : 'header-form'
+                }
+            ]);
+            $(".tt-hint").addClass('hidden');
+			var suggestTimeout = 1000;
+			$("body").on("click",function(){
+				$( "#suggesstion-box" ).fadeOut( "slow" );
+			});
+
+			
+			// $( document ).on('submit','#header-form',function(event)
+		 //    {
+		 //    	event.preventDefault();
+		 //    	var query1 = $("#search_suggest_query").val();
+		 //    	console.log(query1);
+		 //    	if(query1.length<3)
+		 //    	{
+		 //    		return 0;
+		 //    	} 
+		 //    	else
+		 //    	{
+		 //    		query1 = encodeURIComponent(query1);
+		 //    		window.location.href = "http://tune.pk/search_result.php?flag=1&sort=most_recent&time=all_time&query="+query1;
+		 //    	}
+		        
+		 //    });
+		    var timeout_1;
+			$("#search_suggest_query").keyup(function() {
+				var this__ = this;
+				if( timeout_1)
+				{
+					clearTimeout( timeout_1);
+				}
+				timeout_1 = setTimeout(function(){ 
+					search_suggest(this__);
+
+				},500);
+			});
+			//playlist items
+			$(document).on('click', ".show-items-list", function (e) {
+				
+				var checkClass = false;
+
+				var closestElement = $(this).closest('.channelsplaylist-holder').find('.channelsplaylist-items');
+				
+				if(closestElement.hasClass('items-show')){
+					checkClass = true;
+				}
+				
+				$('.channelsplaylist-items').removeClass('items-show');
+				
+				if(checkClass){
+					closestElement.addClass('items-show');
+				}
+
+				closestElement.toggleClass('items-show');
+			});
+
+			$('.show-more').click(function(event) {
+			  /* Act on the event */
+				var  _this = $(this);
+				var _holder = _this.parent('.videos');
+				var action = _this.data('action');
+				var dataSend ='mode=get_videos_home&action='+action;
+				console.log(action);
+				_this.button('loading');
+				$.ajax({
+					'url' : 'http://tune.pk/ajax/videos.php',
+					data : dataSend,
+					type : 'post',
+					beforeSend:function (argument) {
+					  //_holder.html('loading...');
+					},
+					success : function(data)
+					{
+						
+						if(data.success)
+						{
+							if(data.templates)
+							{
+							   // _holder.html('');
+
+								_holder.append(data.templates);
+							}else
+							{
+							  //_holder.html('There is no video');
+							}
+							//$('#report-'+videoid).html(data.template);
+						}
+						else
+						{
+							//_holder.append('There is no video');
+						}
+
+					},
+					dataType : 'json',
+					complete:function (argument) {
+						_this.remove();
+					}
+
+				  });
+			});
+
+			$('.menu-icon').click(function(event) {
+						
+				$('.nav-menu').toggleClass('active');
+
+				if ( $('.menu-icon').hasClass('lines') ) {
+					$('.menu-icon').removeClass('lines')
+					$('.menu-icon').addClass('cross');
+				}else {
+					$('.menu-icon').addClass('lines')
+					$('.menu-icon').removeClass('cross');
+				}
+
+			});
+
+			// mesaage remove 
+			$('.close').click(function(event) {
+				$('.alert').removeClass('open');
+			});
+
+			footerfixedBottm();
+			svgfontSize();
+			//featuredChannelHeight();
+			//headerfixedTop();
+			$('.checkable').click(function(event) {
+				$(this).find('.likeAnimation').addClass('anim');
+			});
+			$('.checkable').mouseleave(function(event) {
+				$(this).find('.likeAnimation').removeClass('anim');
+			});
+
+			$(".unveil").unveil();
+
+			$('body').on('click', '.deactivate-video', function(event) {
+				event.preventDefault();
+				/* Act on the event */
+				videoInactive($(this));
+			});
+
+			$('body').on('click', '.btn-deactive', function(event) {
+				event.preventDefault();
+				/* Act on the event */
+
+				var FromData = $('#deativate_modal_submit').serialize(),
+
+				__this = $(this),
+				_modal = $('#deactivate_video'),
+				videoid = _modal.find('#videoid').val();
+
+				FromData += "&mode=deactivate_video";
+
+				__this.button('loading');
+
+				$.ajax({
+					'url' : 'http://tune.pk/ajax/videos.php',
+					data : FromData,
+					type : 'post',
+					success : function(data)
+					{
+						
+						if(data.success)
+						{
+							_modal.modal('hide');
+							show_ajax_message('Video has been deactivated','alert-success');
+							//console.log('.deactive-'+videoid);
+							$('.deactive-'+videoid).data('action','activate');
+							$('.deactive-'+videoid).removeClass('btn-danger');
+							$('.deactive-'+videoid).addClass('btn-success');
+							$('.deactive-'+videoid).html('Activate');
+							//$('#report-'+videoid).html(data.template);
+						}
+						else
+						{
+							show_ajax_message(data.error,'alert-danger');
+						}
+
+					},
+					dataType : 'json',
+					complete:function (argument) {
+						__this.button('reset');
+					}
+
+				})
+
+			});
+
+			$('body').on('click', '.btn-active', function(event) {
+				event.preventDefault();
+				/* Act on the event */
+
+				var FromData = $('#activate_modal_submit').serialize(),
+
+				__this = $(this),
+				_modal = $('#activate_videos'),
+				videoid = _modal.find('#videoid').val();
+
+				FromData += "&mode=activate_video";
+
+				__this.button('loading');
+
+				$.ajax({
+					'url' : 'http://tune.pk/ajax/videos.php',
+					data : FromData,
+					type : 'post',
+					success : function(data)
+					{
+						
+						if(data.success)
+						{
+							_modal.modal('hide');
+							show_ajax_message('Video has been Activated','alert-success');
+							//console.log('.deactive-'+videoid);
+							$('.deactive-'+videoid).data('action','deactive');
+							$('.deactive-'+videoid).removeClass('btn-success');
+							$('.deactive-'+videoid).addClass('btn-danger');
+							$('.deactive-'+videoid).html('Deactivate');
+							//$('#report-'+videoid).html(data.template);
+						}
+						else
+						{
+							show_ajax_message(data.error,'alert-danger');
+						}
+
+					},
+					dataType : 'json',
+					complete:function (argument) {
+						__this.button('reset');
+					}
+
+				})
+			});	
+
+			
+
+			$('body').on('click', '.add-quicklistBox', function(event) {
+				event.preventDefault();
+				/* Act on the event */
+				quick_show_hide_toggle('#quicklist_cont');
+				
+			});
+			
+			$('.notifications-img-holder').click(function(event) {
+				//event.stopPropagation();
+				$(this).parent('.dropdown').toggleClass('open');
+			}); 
+			
+							// page init
+				bindReady(function(){
+					jcf.customForms.replaceAll('.custom-elements');
+				});
+			
+
+			$( document ).on( 'click', '#ajax-response-close', function(){
+				hide_ajax_message();
+			});
+			//for send update request
+			$("#send-request").click(function(){ sendRequestLevel(); });    
+
+			if($.cookie("side_bar_cat")=="show"){
+				$('#more-cate').show();
+				$('#more-icon a').text('Show less');
+			}
+			//show more link on side bar    
+			$('#more-icon a').click(function(event) {
+				event.preventDefault();
+				
+				$('#more-cate').toggle();
+				$(this).parent('li').toggleClass('arrow-up', 'add');
+				$(this).parent('li').toggleClass('arrow-down', 'remove');
+				$(this).text(function(i, v){
+				
+					if(v === 'Show less')
+					{
+					  $.cookie("side_bar_cat","hide");  
+					  return 'Show more';
+					} 
+					else
+					{ 
+						$.cookie("side_bar_cat","show"); 
+						return 'Show less';
+					}
+
+				}); 
+
+				jcf.customForms.replaceAll('.custom-elements');
+			});
+
+			/* 
+				watch_video 
+			*/
+			
+			
+			$('body').on('submit','#login_form',function(e){
+			
+				e.preventDefault();
+				
+				if(tune_userid)
+				{
+					$('#loginform').modal('hide');
+					return false;
+				} 
+
+				var username = $(this).find('.modal-username').val();
+				var password = $(this).find('.modal-password').val();
+				var remember = $('#rememberme :checkbox:checked').length > 0 ? 'yes' : '';
+				var button = $(this).find('.modal-login');
+				var alertdiv = $(this).parent().find('.alert-danger');
+
+				alertdiv.hide();
+				//Pre checking values
+				if(username==''){
+					alertdiv.html('Username was empty').show();
+					return false;
+				} 
+
+				if(password==''){
+					alertdiv.html('Pasword was empty').show();
+					return false;
+				} 
+
+				button.button('loading');
+
+					$.ajax({
+						url : baseurl + '/ajax.php',
+						data : { mode:'login',password:password,remember:remember,username:username},
+						dataType : 'json',
+						type : 'post',
+						success : function(data){
+							if(data.error){
+								button.button('reset');
+
+								alertdiv.html(data.error).show();
+							}
+
+							if(data.success)
+							{
+								$('#guest_li').remove();
+								$('#user-logged-in').html(data.user_li);
+								$('#header-playlist').html(data.playlist_li);
+								$('#user_info_block').html(data.user_info_block);
+								$('#loginform').modal('hide');
+								
+								$('.remove-after-login').remove();
+
+								tune_userid = data.user.userid;
+
+								ga('send', 'event', 'Users', 'login', data.username);
+								ga('user_tracker.send', 'event', 'Users', 'login', data.username);
+
+															}
+						}
+					})
+				  
+			});
+
+			if($.cookie('playlist-visible')!='no')
+			{
+				$("#playlist-block-container").show();
+			}
+			
+			$('#file_upload_pointer').on('click','input[name="category[]"]',function(){
+				
+				$('input[name="category[]"]').removeAttr('checked');
+				$(this).attr('checked','checked');
+		
+			});
+
+			$('#lang_selector').change(function(){
+				var optionSelectedValue = $('#lang_selector option:selected').val();
+				if(optionSelectedValue)
+					window.location = "?set_site_lang="+optionSelectedValue;
+			});
+
+			$('.subscribe-btn').tooltip('hide');
+			$('[data-toggle="popover"]').css('cursor','pointer').popover()
+			$('*[rel=popover],.popover-class').css('cursor','pointer').popover();
+			$('[data-hover="tooltip"]').tooltip();	
+			/*
+				myaccount
+			*/
+			
+			/*
+				upload
+			*/
+			
+			/*
+				advertise
+			*/
+
+			
+			/*
+				jobs
+			*/
+			
+			/*
+				security
+			*/
+			
+			/*
+				edit_account
+			*/
+			
+			/*
+				manage_videos
+			*/
+			
+			/*
+				object
+			*/
+			
+			/*
+				manage_playlists
+			*/
+			
+			/* 
+				view_channel 
+			*/	
+			
+			/* 
+				profile_shot 
+			*/	
+			
+			/* 
+				app_downloads 
+			*/	
+			
+		});
+
+		$(window).resize(function(event) {
+
+							preLoadingBlock();
+			
+							fbLikeFixed();
+										leftSectionFixed();
+			
+			var windowsize = $(window).width();
+
+			if (windowsize > 991){
+				$('.nav-menu').removeClass('active');
+				$('.menu-icon').removeClass('cross');
+				$('.menu-icon').addClass('lines');
+			}
+			
+			footerfixedBottm();
+			svgfontSize();
+		//	featuredChannelHeight();
+			//headerfixedTop();
+
+			/* 
+				view_channel 
+			*/	
+			
+			/* 
+				advertise
+			*/
+			
+		});
+
+		$('body').on('click', '.play-all', function(event) {
+			event.preventDefault();
+			/* Act on the event */
+			//add-quick-list1
+			var _this = $(this),
+			dataHref = '',
+			_div = _this.parents('.show-text-holder').find('.videos-holder');//.next('.videos-holder');
+
+			var playvideoIDs = new Array();
+			
+			var playName = '';
+
+			_div.find('.add-quick-list').each(function() { 
+		
+				var vid = $(this).data('videoid');
+				
+				if(dataHref=='')
+					dataHref = $(this).data('href');
+
+				playvideoIDs.push(vid);
+			});	
+
+			playName = _this.prev('h2').html(); 
+
+			var playVideoString = "";
+
+			$.each(playvideoIDs,function(key,value){
+                
+                if(playVideoString)
+                    playVideoString += ',';
+
+                playVideoString += value;
+            });
+			
+			if(playVideoString){	
+
+				dataHref+="?play_all="+playVideoString+"&play_name="+playName;
+				window.location.href =dataHref;
+			}
+
+		});
+
+	</script> <script type="text/javascript" id="inspectletjs">
+		window.__insp = window.__insp || [];
+		__insp.push(['wid', 492230419]);
+		(function() {
+		function ldinsp(){ if(typeof window.__inspld != "undefined") return; window.__inspld = 1; var insp = document.createElement('script'); insp.type = 'text/javascript'; insp.async = true; insp.id = "inspsync"; insp.src = ('https:' == document.location.protocol ? 'https' : 'http') + '://cdn.inspectlet.com/inspectlet.js'; var x = document.getElementsByTagName('script')[0]; x.parentNode.insertBefore(insp, x); };
+		setTimeout(ldinsp, 500); document.readyState != "complete" ? (window.attachEvent ? window.attachEvent('onload', ldinsp) : window.addEventListener('load', ldinsp, false)) : ldinsp();
+		})();
+		</script> </body> </html>

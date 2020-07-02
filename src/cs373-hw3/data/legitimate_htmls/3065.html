@@ -1,0 +1,3485 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=9">
+<title>Rai.it - Homepage</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<meta property="og:image" content="http://www.rai.it/dl/rai/images/ogImage.jpg"/>
+<meta property="og:title" content="Rai.it"/>
+	<!--head - js-css-->
+	<link rel="Shortcut Icon" href="/dl/rai/images/favicon.gif"/>
+<!-- css all'inizio, js alla fine... -->
+<link href="/dl/rai/css/raiStyle.css?2.1" rel="stylesheet" type="text/css" title="default"/>
+<link href="/dl/rai/css/apertura.css" rel="stylesheet" type="text/css" title="default"/>
+<link rel="stylesheet" href="/dl/js/jquery/plugin/jquery.jscrollpane.css" type="text/css"/>
+<link href="http://fonts.googleapis.com/css?family=Open+Sans:400,600,700" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=Arvo:400,700" rel="stylesheet" type="text/css">
+<!-- includo all'inizio jQuery, per poter schedulare l'esecuzione funzioni dall'interno dei blocchi inclusi -->
+<script type="text/javascript" src="/dl/js/jquery/jquery-1.6.4.js"></script>
+<script type="text/javascript" src="/dl/js/jquery/plugin/jquery.mousewheel.min.js"></script>
+<script type="text/javascript" src="/dl/js/jquery/plugin/jquery.jscrollpane.min.js"></script>
+<script type="text/javascript" src="/dl/js/jquery/plugin/jquery.pagination_svn.js"></script>
+<script type="text/javascript" src="/dl/js/common.js"></script>
+<script type="text/javascript" src="/dl/rai/js/commonFun.js"></script>
+
+<script type="text/javascript" src="/dl/portale/js/cookie.pack.js"></script>
+
+<script type="text/javascript" src="/dl/js/jquery/plugin/jcarousellite.js" charset="utf-8"></script>
+<script type="text/javascript" src="/dl/js/jquery/plugin/jquery.easing.js" charset="utf-8"></script>
+<script type="text/javascript" src="/dl/js/jquery/plugin/jquery.media.js" charset="utf-8"></script>
+<script type="text/javascript" src="/dl/js/jquery/plugin/jquery-ui-1.8.16.autocomplete.custom.min.js"></script>
+
+<script type="text/javascript" src="/dl/sondaggi/js/jquery.sondaggio.js"></script>
+<link rel="stylesheet" href="/dl/sondaggi/css/jquery.sondaggio.css" type="text/css"/>
+<link href="/dl/rai/css/sondaggio.css" rel="stylesheet" type="text/css" title="default"/>
+
+<script type="text/javascript" src="http://ad2.neodatagroup.com/uploads/js/sid49jq.js">;</script>
+<script type="text/javascript">var UserLocation = 'ITA';</script>
+
+<!-- Libreria NeoData -->
+<script type="text/javascript" src="http://js49.adagionet.com/uploads/js/sipra.js"></script>
+
+<script type="text/javascript" src="/dl/rai/js/home.rai.js"></script>
+<script type="text/javascript" src="/dl/js/jquery/plugin/jquery.lazyload.1.9.0.min.js"></script>
+
+<!--
+<script type="text/javascript" src="/dl/rai/js/rainews.js"></script>
+<script type="text/javascript" src="/dl/rai/js/utils.js"></script>
+-->
+
+<!-- ELEZIONI -->
+<script type="text/javascript" src="/dl/rainews/js/rainews-widgets.min.js"></script>
+<link rel="stylesheet" href="/dl/rainews/css/elezioni.Rai.it.css">
+
+
+<script type="text/javascript" suppressedsrc="http://w.sharethis.com/button/buttons.js#publisher=92f7f970-02d5-4b35-bec1-03454ebb7d3b&amp;onhover=true &lt;http://w.sharethis.com/button/buttons.js#publisher=92f7f970-02d5-4b35-bec1-03454ebb7d3b%26onhover=true&gt; " src="http://cdn.iubenda.com/cookie_solution/noscript.js" class="_iub_cs_activate">;</script>
+<script type="text/javascript">
+	function getServerDateTime() {
+		var ServerDate = '2016/05/14';
+		var ServerTime = '19:25:58';
+		return [ServerDate, ServerTime];
+	}
+	var pageRai = 'HP';
+</script>
+<!-- Popup lanci in overlay -->
+<!-- shadowbox, torna sempre utile -->
+<script type="text/javascript" src="/dl/js/shadowbox-2.0/build/adapter/shadowbox-jquery.js"></script>
+<script type="text/javascript" src="/dl/js/shadowbox-2.0/build/shadowbox.js"></script>
+<script type="text/javascript">
+	Shadowbox.loadSkin('raitv2012', '/dl/js/shadowbox-2.0/src/skin');
+	Shadowbox.loadLanguage('it', '/dl/js/shadowbox-2.0/build/lang');
+	Shadowbox.loadPlayer(['html', 'iframe'], '/dl/js/shadowbox-2.0/build/player');
+</script>
+
+<script type="text/javascript">
+/*<![CDATA[*/
+/* JS incluso nelle pagine
+ * /dl/RaiTV/homeTv.html
+ * /dl/RaiTV/diretta.html
+ * /dl/portale/GuidaProgrammi.html
+ * /dl/portale/homeRai.html
+ * /dl/rai/guidaTv.html
+ *
+ * per eseguire dei test e' possibile passare i due parametri ?forceShow=true&autoHide=false  per mostrare sempre un contenuto e non nasconderlo automaticamente.
+ * avendo introdotto gli array di contenuti, non ho pero' predisposto la scelta del contenuto da mostrare :P
+ * se viene usato il forceShow e non si trova nessun intervallo di tempo, viene scelto il primo intervallo e quindi i suoi contenuti.
+ *
+ * note importanti nel codice: cerca le seguenti stringhe come segnalibri:P
+ * NOTA_1    definizione degli intervalli di tempo di schedulazione
+ * NOTA_2    numero di visualizzazione della pagina e durata dell'overlay
+ * NOTA_3      scansione degli intervalli di tempo schedulati
+ * NOTA_4      lettura del cookie per il conteggio delle visualizzazioni
+ * NOTA_5      lettura del cookie per alternare i contenuti schedulati
+ * NOTA_6      inizializzazione di shadowbox (note sulle dimensioni forzate)
+ * NOTA_7      pngfix
+ * NOTA_8      fix alla grafica, necessari per i lanci di ItaliaWave e Roma2009
+ * NOTA_9      timeout di chiusura di shadowbox
+ *
+ *
+ * Questi sono i javascript usati in homeTv.html, diretta.html e GuidaProgrammi.html
+ * script type="text/javascript" src="/dl/js/shadowbox-2.0/build/adapter/shadowbox-jquery.js"
+ * script type="text/javascript" src="/dl/js/shadowbox-2.0/build/shadowbox.js"
+ * script type="text/javascript"
+ * Shadowbox.loadSkin('raitv', '/dl/js/shadowbox-2.0/src/skin');
+ * Shadowbox.loadLanguage('it', '/dl/js/shadowbox-2.0/build/lang');
+ * Shadowbox.loadPlayer(['html', 'iframe'], '/dl/js/shadowbox-2.0/build/player');
+ * /script
+ */
+
+// alla chiusura del popup viene scatenato l'evento "OverlayPopup.closed" (OverlayPopupClosedEvent)
+// l'evento deve essere scatenato anche nel caso in cui il popup non venga proprio aperto (per l'homepage di rai.tv ;) )
+var OverlayPopupClosedEvent = 'OverlayPopup.closed';
+var isOverlayPopupClosed = false;
+var overlayPopupClose = (function() {
+	/* intercetto qualunque chiamata a Shadowbox.close
+	 * (se l'utente clicca nell'area scura intorno al popup, invece che sul pulsante chiudi, viene
+	 * chiamata automaticamente da shadowbox)
+	 */
+	var oldShadowboxClose = Shadowbox.close;
+	function f() {
+		oldShadowboxClose();
+		// evito di sparare due volte l'evento (da timer E da click dell'utente)
+		if (!isOverlayPopupClosed) {
+			isOverlayPopupClosed = true;
+			$(document).trigger(OverlayPopupClosedEvent);
+		}
+	};
+	Shadowbox.close = f;
+	return f;
+})();
+function OverlayPopupCheckOpen() {
+
+	// Togliere il commento alle due righe qui sotto. Non cancellarle mai, per ricordarsi di chiamare overlayPopupClose.
+	// overlayPopupClose();
+	// return true;
+
+	// per il primo maggio, solo diretta raiuno e raitre (sulle altre pagine, sempre)
+	// if (/\/dl\/RaiTV\/diretta\.html/i.test(''+document.location)) {
+	// 	if (
+	// 			!(
+	// 				!document.location.search ||
+	// 				document.location.search == '' ||
+	// 				/PublishingBlock-64203784-70f7-4b53-9d21-b14693850195/.test(document.location.search) ||
+	// 				/PublishingBlock-eedb4649-b6c4-4892-a5a9-e2ca63b54bd8/.test(document.location.search)
+	// 			)
+	// 		){
+	// 		overlayPopupClose();
+	// 		return true;
+	// 	}
+	// }
+
+
+	var timeIntervals = [];
+
+	var matchedTimeInterval = false;
+
+	var btnClose = '<a style="background: transparent url(/dl/RaiTV/images/btn_close_comm.gif) no-repeat scroll right top; position: absolute; z-index: 500; color: #fff; font-weight: bold; height: 15px; padding-right: 18px; top: -15px; right: 0px;" onclick="overlayPopupClose(); return false;" href="#">Chiudi</a>';
+
+	//var c1 = btnClose + '<a href="http://www.raimusic.rai.it" target="_blank"><img src="/dl/RaiTV/popup/img/bg_primo_maggio_2011.gif" /></a>';
+	//var c2 = btnClose + '<a href="http://www.rai.tv/dl/RaiTV/dirette/PublishingBlock-57351f9c-f319-4526-b0a5-da6e19f98d74.html?channel=Rai%202" target="_blank"><img src="/dl/RaiTV/popup/img/bg_primo_maggio.gif" /></a>';
+
+	//var unPassoDalCielo = btnClose + '<a href="http://www.rai.tv/dl/RaiTV/socialtv/PublishingBlock-1730b4bf-2493-4460-a780-0c50ac2a6e89.html" target="_blank"><img src="/dl/RaiTV/popup/img/PopUpRaiTv_UnPassoDalCieloSocialTv_22nov.jpg" /></a>';
+
+	//var socialBallaro = btnClose + '<a href="http://www.rai.tv/dl/RaiTV/socialtv/PublishingBlock-0cd8fa1a-77a5-4828-a770-e9f97bead5d8.html" target="_blank"><img src="/dl/RaiTV/popup/img/PopUp_Ballaro_SocialTv.jpg" alt="Segui l\'evento Social TV di Ballaro\'" /></a>';
+
+	//var socialBallaroVideochat = btnClose + '<a href="http://www.rai.it/dl/RaiTV/socialtv/PublishingBlock-474cdb93-0a1b-44bc-918a-d8e1892d1765.html" target="_blank"><img src="/dl/RaiTV/popup/img/12_11_15_PopUpRaiTv_Ballaro_SocialTv.jpg" /></a>';
+
+	//var socialMissItaliaVideochat = btnClose + '<a href="http://www.rai.tv/dl/RaiTV/socialtv/PublishingBlock-8085b5fc-796f-4997-93c7-7fff586ed1f7.html" target="_blank"><img src="/dl/RaiTV/popup/img/12_12_06_PopUpRaiTv_VideochatMissItalia_SocialTv.jpg" /></a>';
+
+	//var lineaVerde = btnClose + '<a href="http://www.rai.tv/dl/RaiTV/socialtv/PublishingBlock-84d10916-2e73-49f3-a673-92b86c2a38ea.html" target="_blank"><img src="/dl/RaiTV/popup/img/18_12_12_PopUpRaiTv_LineaVerde_SocialTv.jpg" /></a>';
+
+	//var presidenteRepubblica = btnClose + '<a href="http://www.rai.tv/dl/RaiTV/dirette/PublishingBlock-64203784-70f7-4b53-9d21-b14693850195.html?channel=Rai%201" target="_blank"><img src="/dl/RaiTV/popup/img/MessaggioFineAnno2012.jpg" /></a>';
+
+	//var unoMattina = btnClose + '<a href="http://www.rai.tv/dl/RaiTV/socialtv/PublishingBlock-c41e4496-fdb1-4136-aaaf-30e09059ded0.html" target="_blank"><img src="/dl/RaiTV/popup/img/29_01_13_PopUpRaiTv_Unomattina_SocialTv.jpg" /></a>';
+	//var RCC_overlay = btnClose + '<a href="http://www.rai.tv/dl/RaiTV/programmi/media/ContentItem-f771537e-d1e0-4747-84ea-6068abe97821-cinema.html" target="_blank"><img src="/dl/RaiTV/popup/img/RCC_Andare_via.jpg" /></a>';
+
+	//var sanremoWorld = btnClose + '<a href="http://www.sanremo.rai.it" target="_blank"><img src="/dl/RaiTV/popup/img/sanremo-box-italiani-allestero.jpg" /></a>';
+	//var sanremoWorldGenerico = btnClose + '<a href="http://www.sanremo.rai.it" target="_blank"><img src="/dl/RaiTV/popup/img/sanremo-box-italiani-allestero.jpg" /></a>';
+
+
+	//var elezioni2013 = btnClose + '<a href="http://www.rainews24.rai.it/ran24/extra/elezioni2013/" target="_blank"><img src="/dl/RaiTV/popup/img/2013-02_overlay_Elezioni.jpg" /></a>';
+
+	//var raigulp = btnClose + '<a href="http://www.raigulp.rai.it" target="_blank"><img src="/dl/RaiTV/popup/img/RaiGulp_overlay.jpg" /></a>';
+	
+	//var overlayiiad = btnClose + '<a href="http://www.italyinaday.rai.it/" target="_blank"><img src="/dl/RaiTV/popup/img/overlayiiad.jpg" /></a>';
+
+	//var overlayprimomaggio = btnClose + '<a href="http://www.primomaggio.rai.it/" target="_blank"><img src="/dl/RaiTV/popup/img/Overlay_promo_ConcertoPrimoMaggio2014.png" /></a>';
+
+    //	var overlaySanremo2015 = btnClose + '<a href="http://www.sanremo.rai.it/" target="_blank"><img src="/dl/sanremo/2015/images/lancio_overlay.png" /></a>';
+
+	var overlayTLUC = btnClose + '<a href="http://www.tilasciounacanzone.rai.it/dl/portali/site/dirette/PublishingBlock-ac1dd79c-41e9-445b-bcbb-3b2c556d2cfa-page.html" target="_blank"><img src="/dl/portali/site/custom/images/lancio_overlay_tluc.jpg" /></a>';
+	var overlayCalcio = btnClose + '<a href="http://www.quellicheilcalcio.rai.it/dl/portali/site/dirette/PublishingBlock-461f36fc-d746-473a-a78c-e682f39586c0-page.html" target="_blank"><img src="/dl/portali/site/custom/images/lancio_overlay_calcio.png" /></a>';
+	var overlayExpo = btnClose + '<a href="http://www.expo.rai.it" target="_blank"><img src="/dl/portali/site/custom/images/lancio_overlay_expo.jpg" /></a>';
+
+	var lanci = []; // quelli vecchi, per avere qualche esempio :P
+	lanci[lanci.length] = btnClose + '<a href="http://raimusic.blog.rai.it/" target="_blank"><img src="/dl/RaiTV/popup/img/bg_giovanni_allevi.gif" /></a>';
+	lanci[lanci.length] = '<a href="http://www.raisport.rai.it/dl/raisport/dirette/direttaNuoto.html" target="_blank"><img src="/dl/RaiTV/popup/img/bg_mondiali_nuoto.gif" /></a>';
+
+
+	/* NOTA_1
+	 * Array di intervalli di tempo.
+	 * Ogni elemento dell'array definisce data di inizio e data di fine (from e to) e un array (anche di un solo elemento, ma *sempre* array) con i contenuti da mostrare.
+	 * L'array viene scandito in ordine e il primo intervallo matchato viene utilizzato.
+	 * In pages sono indicate le pagine da mostrare. Quando si usa una regexp deve essere in un array per forza...
+	 * es:
+	 * timeIntervals[timeIntervals.length] = {from: new Date('2009/07/16 9:00:00'), to: new Date('2009/07/16 18:00:00'), contents: [c1, c2]};
+	 * timeIntervals[timeIntervals.length] = {from: new Date('2009/07/17 9:00:00'), to: new Date('2009/07/17 18:00:00'), contents: [c1, c2]};
+	 * timeIntervals[timeIntervals.length] = {from: new Date('2009/07/16 21:00:00'), to: new Date('2009/07/19 22:30:00'), contents: [c1]};
+	 * dalle 9 alle 18 dei giorni 16 e 17, si alternano i contenuti c1 e c2, mentre dal 16 al 19 fuori dall'intervallo 9-18 (quindi anche la notte) appare solo c1
+	 */
+
+	// esempi vari, vecchi
+	// timeIntervals[timeIntervals.length] = {from: new Date('2009/07/16 9:00:00'), to: new Date('2009/07/16 18:00:00'), contents: [c1, c2]};
+	// timeIntervals[timeIntervals.length] = {from: new Date('2009/07/17 9:00:00'), to: new Date('2009/07/17 18:00:00'), contents: [c1, c2]};
+	// timeIntervals[timeIntervals.length] = {from: new Date('2009/07/16 9:00:00'), to: new Date('2009/07/19 23:59:59'), contents: [c1]}; // se non matcha nessun altro, si arriva a questo
+
+	// Intervallo reale
+	//timeIntervals[timeIntervals.length] = {from: new Date('2013/04/26 00:00:00'), to: new Date('2013/05/16 23:59:00'), popupSize: {w: 759, h: 556}, contents: [RCC_overlay], pages: {'homeRai': false, 'homeTv': false, 'dl/RaiTV/dirette_tv.html': false, 'dl/replaytv/replaytv.html': false, 'dl/rai/guidaProgrammi.html': false, 'dl/RaiCinema/site/playlist.html': true, 'dl/RaiCinema/site/Page-4777ed96-9b0f-4ad6-8913-ab1c2e9f579c.html': true, '/': [/http:\/\/www.raicinema.rai.it\/?(\?.*)?$/], 'dirette2012': []}};
+	//timeIntervals[timeIntervals.length] = {from: new Date('2013/10/25 10:00:00'), to: new Date('2013/10/28 10:00:00'), popupSize: {w: 810, h: 440}, contents: [overlayiiad], pages: {'homeRai': true, 'homeTv': true}};
+	
+	//timeIntervals[timeIntervals.length] = {from: new Date('2014/05/01 14:30:00'), to: new Date('2014/05/02 00:30:00'), popupSize: {w: 811, h: 441}, contents: [overlayprimomaggio], pages: {'homeRai': true, 'homeTv': true,'dl/rai/guidaProgrammi.html': true, 'dl/replaytv/replaytv.html': true,'dl/RaiTV/dirette_tv.html': true, 'dl/RaiTV/dirette/PublishingBlock-eedb4649-b6c4-4892-a5a9-e2ca63b54bd8.html': true,'dl/rai/guidaTv.html':true}};
+
+	//timeIntervals[timeIntervals.length] = { from: new Date('2015/02/13 20:00:00'), to: new Date('2015/02/14 02:00:00'), popupSize: { w: 1024, h: 768 }, contents: [overlaySanremo2015], pages: { 'homeRai': true, 'homeTv': true, 'dl/rai/guidaTv.html': true, 'dl/rai/guidaProgrammi.html': true, 'homeTvWorld': true, 'dl/PortaliRai/Page-24b1ffee-423d-4000-b263-7334083aec77.html': true } };
+    //timeIntervals[timeIntervals.length] = { from: new Date('2015/02/14 20:00:00'), to: new Date('2015/02/15 02:00:00'), popupSize: { w: 1024, h: 768 }, contents: [overlaySanremo2015], pages: { 'homeRai': true, 'homeTv': true, 'dl/rai/guidaTv.html': true, 'dl/rai/guidaProgrammi.html': true, 'homeTvWorld': true, 'dl/PortaliRai/Page-24b1ffee-423d-4000-b263-7334083aec77.html': true } };
+
+	timeIntervals[timeIntervals.length] = { from: new Date('2015/09/19 21:10:00'), to: new Date('2015/09/20 00:40:00'), popupSize: { w: 812, h: 432 }, contents: [overlayTLUC], pages: { 'homeRai': true, 'homeTv': true, 'dl/rai/guidaTv.html': true, 'dl/rai/guidaProgrammi.html': true, 'homeTvWorld': true, 'dl/PortaliRai/Page-24b1ffee-423d-4000-b263-7334083aec77.html': true } };
+	timeIntervals[timeIntervals.length] = { from: new Date('2015/10/28 18:00:00'), to: new Date('2015/10/31 23:59:59'), popupSize: { w: 759, h: 556 }, contents: [overlayExpo], pages: { 'homeRai': true, 'homeTv': true, 'dl/rai/guidaTv.html': true, 'dl/rai/guidaProgrammi.html': true, 'homeTvWorld': true, 'dl/PortaliRai/Page-24b1ffee-423d-4000-b263-7334083aec77.html': true } };
+
+	
+
+
+	/* NOTA_2
+	 * visitLimit indica ogni quante visite della pagina mostrare i contenuti schedulati.
+	 * duration indica dopo quanto tempo chiudere automagicamente l'overlay
+	 */
+
+	var visitLimit = 1; // ogni quante visite mostrare il link
+	var duration = 10000; //ms
+
+	var title = '';
+
+	// per debug
+	var forceShow = false;
+	var autoHide = true;
+	var testIndex = -1;
+	if (document.location.search != null && document.location.search.length>1) {
+		// eseguo tutto in una closure: evito di creare variabili globali non necessarie
+		(function(){
+			var s = document.location.search;
+			if (s.match(/^\?/)) {
+				s = s.substring(1);
+			}
+			var strParams = s.split('&');
+			var params = {};
+			var i = 0;
+			for (i = 0; i < strParams.length; i++) {
+				var name = strParams[i];
+				var value = true;
+				var pos = name.indexOf('=');
+				if (pos>0) {
+					value = name.substring(pos+1);
+					name = name.substring(0, pos);
+				}
+				params[name] = value;
+			}
+			if (params.forceShow === true || params.forceShow == 'true' || params.debug === true || params.debug == 'true' || params.debug == 'debug') {
+				forceShow = true;
+			}
+			if (params.autoHide === false || params.autoHide == 'false') {
+				autoHide = false;
+			}
+			if (params.testIndex != null) {
+				testIndex = parseInt(params.testIndex);
+			}
+		})();
+	}
+	try {console.log('testIndex', testIndex);} catch(e){}
+
+
+	var currPage = false;
+	var loc = document.location;
+	if (loc.pathname == '/dl/RaiTV/homeRaiTv.html' || loc.pathname == '/dl/RaiTV/homeRaiTv.dev.html' || document.URL == 'http://www.rai.tv/' || document.URL == 'http://www.rai.tv/?world') {
+		currPage = 'homeTv';
+		if (typeof(window.UserLocation) != 'undefined' && window.UserLocation != 'ITA') {
+			currPage = 'homeTvWorld'; // poco piu' avanti gestisco l'assenza della chiave homeTvWorld nei timeInterval unificandola a homeTv
+		}
+	} else if (loc.pathname == '/dl/RaiTV/diretta.html' || loc.pathname == '/dl/RaiTV/direttaSmooth.dev.html') {
+		currPage = 'diretta';
+	} else if (/\/dl\/RaiTV\/dirette\//.test(loc.pathname)) {
+		currPage = 'dirette2012';
+	// } else if (/\/dl\/portali\/site\/page\//.test(loc.pathname)) {
+	// 	currPage = 'minisiti';
+	} else if (loc.pathname == '/dl/rai/homeRai.html' ||
+		((loc.pathname == '/' || loc.pathname == '') && (loc.hostname == 'www.rai.it' || loc.hostname == 'rai.it') )) {
+		currPage = 'homeRai';
+	} else {
+		currPage = loc.pathname;
+		if (currPage.indexOf('/')>-1) {
+			currPage = currPage.substring(currPage.indexOf('/')+1);
+			if (currPage == '') {
+				currPage = '/';
+			}
+		} else {
+			currPage = '/';
+		}
+	}
+	function checkPages(timeInterval) {
+		var pageShow = false;
+		if (typeof(timeInterval.homeTv) != 'undefined' && typeof(timeInterval.homeTvWorld) == 'undefined') {
+			timeInterval.homeTvWorld = timeInterval.homeTv;
+		}
+		console.log('checkPages', currPage, timeInterval);
+		if (currPage !== false) {
+			if (!timeInterval.pages) {
+				pageShow = true; // in assenza di pagine definite, mostro sempre l'overlay
+			} else {
+				function checkInLocation(obj) {
+					function c(o, s) {
+						if (typeof(obj) == 'string') {
+							if ( s.indexOf(obj) > -1) {
+								pageShow = true;
+							}
+						} else {
+							try { // assumo sia una regexp
+								if (obj.test(s)) {
+									pageShow = true;
+								}
+							} catch (e) {
+								try{console.log(e);}catch(e2){}
+							}
+						}
+					}
+					if (currPage == 'diretta') {
+						if (document.location.hash.indexOf('cid')>-1) {
+							c(obj, document.location.hash);
+						} else {
+							c(obj, ''+loc);
+						}
+					} else if (currPage == 'currPage') {
+						c(obj, ''+loc);
+					} else {
+						c(obj, ''+loc);
+					}
+				}
+				var pageTest = timeInterval.pages[currPage];
+				if (pageTest == undefined) {
+					pageShow = false;
+				} else if (pageTest === true) {
+					pageShow = true;
+				} else if (pageTest === false) {
+					pageShow = false;
+				} else if ((typeof(pageTest) == 'object' || typeof(pageTest) == 'array')) {
+					for (var pageI in pageTest) {
+						checkInLocation(pageTest[pageI]);
+						// if (typeof(pageTest[pageI]) == 'string') {
+						// 	if ( (''+loc).indexOf(pageTest[pageI]) > -1) {
+						// 		pageShow = true;
+						// 	}
+						// } else {
+						// 	try { // assumo sia una regexp
+						// 		if (pageTest[pageI].test(''+loc)) {
+						// 			pageShow = true;
+						// 		}
+						// 	} catch (e) {
+						// 		try{console.log(e);}catch(e2){}
+						// 	}
+						// }
+					}
+				} else if (typeof(pageTest) == 'string') { // && ((''+loc).indexOf(pageTest) > -1) ) {
+					checkInLocation(pageTest);
+					// pageShow = true;
+				} else {
+					pageShow = false;
+				}
+			}
+		} else {
+			pageShow = false; // pagina non riconosciuta
+		}
+		return pageShow;
+	}
+
+
+	/* TIME_SHOW NOTA_3
+	 * Scansione degli intervalli di tempo: il primo intervallo individuato che contenga la pagina corrente viene usato per determinare i contenuti.
+	 */
+	// Test time intervals: don't update cookies if not needed
+	var timeShow = false;
+	var now = new Date('2016/05/14 19:25:58');
+	for (i in timeIntervals) {
+		if (timeShow) {
+			break;
+		}
+		var t = timeIntervals[i];
+		if (t.from != null && t.to != null) {
+			if (now.getTime() >= t.from.getTime() && now.getTime() <= t.to.getTime() && checkPages(t)) {
+				timeShow = true;
+				matchedTimeInterval = t;
+			}
+		} else if (t.from != null) {
+			if (now.getTime() >= t.from.getTime() && checkPages(t)) {
+				timeShow = true;
+			}
+		}
+	}
+
+
+	//var s = ''; for (i in matchedTimeInterval) {s += i+': '+matchedTimeInterval[i]+'\n';}; alert(s);
+
+	if (!timeShow && !forceShow) {
+		overlayPopupClose();
+		return false;
+	}
+	if (!matchedTimeInterval && forceShow) { // forceShow === true   -->  debug
+		if (testIndex < 0) {
+			testIndex = 0;
+		}
+		matchedTimeInterval = timeIntervals[testIndex];
+	}
+
+	var pageShow = false;
+	if (!!matchedTimeInterval) {
+		pageShow = checkPages(matchedTimeInterval);
+	}
+	if (forceShow) {
+		pageShow = true;
+	}
+	if (!pageShow && !forceShow) {
+		overlayPopupClose();
+		return false;
+	}
+
+
+	/* COOKIE_SHOW NOTA_4
+	 * Verifica i cookie quante volte e' stata visualizzata la pagina.
+	 * I cookie sono a livello di dominio, quindi condivisi tra le pagine di rai.tv (homeTv e diretta) ma non con rai.it (guida programmi)
+	 */
+	function setCookie(c_name,value,expiredays) {
+		var exdate=new Date();
+		exdate.setDate(exdate.getDate()+expiredays);
+		document.cookie=c_name+ "=" +escape(value)+
+		((expiredays==null) ? "" : ";expires="+exdate.toGMTString());
+	}
+	function getCookie(c_name) {
+		if (document.cookie.length>0) {
+			c_start=document.cookie.indexOf(c_name + "=");
+			if (c_start!=-1) {
+				c_start=c_start + c_name.length+1;
+				c_end=document.cookie.indexOf(";",c_start);
+				if (c_end==-1) {
+					c_end=document.cookie.length;
+				}
+				return unescape(document.cookie.substring(c_start,c_end));
+			}
+		}
+		return "";
+	}
+	var vc = getCookie('visitCount');
+	if (vc != '') {
+		vc = parseInt(vc);
+	} else {
+		vc = 0;
+	}
+	if (vc<0 || vc>visitLimit) {
+		vc = 0;
+	}
+	var cookieShow = false;
+	if (vc == 0) {
+		cookieShow = true;
+	}
+	vc = (vc+1)%visitLimit;
+	setCookie('visitCount',''+vc,null);
+	
+	if (!cookieShow && !forceShow && currPage != 'homeTvWorld') {
+		overlayPopupClose();
+		return false;
+	}
+
+	/* LAST_SHOWN NOTA_5
+	 * Memorizza nei cookie qual'e' il prossimo contenuto da visualizzare, tra quelli schedulati.
+	 * (Memorizza l'indice, allo stesso modo del conteggio delle visite)
+	 */
+	var lastShown = getCookie('lastShown');
+	if (lastShown != '') {
+		lastShown = parseInt(lastShown);
+	} else {
+		lastShown = 0;
+	}
+	if (lastShown<0 || lastShown>=matchedTimeInterval.contents.length) {
+		lastShown = 0;
+	}
+	var currentIndex = lastShown;
+	lastShown = (lastShown+1)%matchedTimeInterval.contents.length;
+	setCookie('lastShown',''+lastShown,null);
+
+
+	/* NOTA_6
+	 * Inizializzazione di Shadowbox.
+	 * Viene forzata la dimensione a 812x432, ovvero la dimensione delle due immagini usate per i lanci di ItaliaWave e dei Mondiali di Nuoto 2009
+	 */
+	var htmlContent = matchedTimeInterval.contents[currentIndex];
+	var popupSize = {w: 812, h: 432};
+	if (matchedTimeInterval.popupSize && matchedTimeInterval.popupSize.w) {
+		popupSize.w = matchedTimeInterval.popupSize.w;
+	}
+	if (matchedTimeInterval.popupSize && matchedTimeInterval.popupSize.h) {
+		popupSize.h = matchedTimeInterval.popupSize.h;
+	}
+
+	Shadowbox.init({
+		skipSetup:true,
+		animate: false,
+		players:['html'],
+		autoDimensions: false,
+		handleOversize: 'resize',
+		displayNav: false,
+		initialWidth: popupSize.w,
+		initialHeight: popupSize.h
+	});
+	Shadowbox.open({
+		title: title,
+		content: htmlContent,
+		player: 'html',
+		animate: false,
+		width: popupSize.w,
+		height: popupSize.h
+	});
+
+	/* NOTA_7
+	 * Esegue pngfix, nel caso ci siano png nei contenuti visualizzati.
+	 */
+	if (typeof(pngfix) != 'undefined') {
+		pngfix.main();
+		for (i = 1;i<=10;i++) {
+			setTimeout(function(){pngfix.main();}, i*100);
+		}
+	}
+
+	/* NOTA_8
+	 * Alcuni fix alla grafica di shadowbox:
+	 * + Nasconde i bordi superiore e inferiore, in quanto nelle immagini usate abbiamo gia' il bordo.
+	 * + Forza la dimensione a 812x432, ovvero la dimensione delle due immagini usate per i lanci di ItaliaWave e dei Mondiali di Nuoto 2009
+	 * + Cerca di rimuovere le barre di scorrimento nel caso in cui la finestra sia piu' piccola del necessario (con scarso successo)
+	 */
+	function fixCss() {
+		$('#sb-tc').css('padding-top', '0px');
+		$('#sb-cc').css({backgroundColor: 'transparent'});
+		$('#shadowbox tr').slice(0,1).hide();
+		$('#shadowbox tr').slice(-1).hide();
+		$('#shadowbox #shadowbox_body').css({width: popupSize.w + 'px', height: popupSize.h + 'px', padding: '0px', borderWidth: '0px', overflow: 'visible', backgroundColor: 'transparent'});
+		$('#shadowbox #shadowbox_content').css({overflow: 'visible'});
+	}
+	fixCss();
+	setTimeout(fixCss, 100);
+	setTimeout(fixCss, 500);
+	setTimeout(fixCss, 1100);
+
+
+
+	/* NOTA_9
+	 * Imposta un timeout per chiudere automagicamente l'overlay.
+	 */
+	if (autoHide) {
+		setTimeout(overlayPopupClose, duration+1000); //+1s per l'apertura di shadowbox (sistema occhiometrico :P)
+	}
+}
+$(OverlayPopupCheckOpen);
+
+// sviluppo al volo per *aggiungere* l'autopromo 300x250 degli europei
+
+$(function() {
+	var euro2012 = '<a href="http://www.europei.rai.it"><img src="/dl/RaiTV/popup/img/Euro2012_300x250.png" alt="Vivi gli Europei 2012 su www.europei.rai.it" /></a>';
+	var matchedTimeInterval = false;
+
+	var timeIntervals = [];
+	timeIntervals[timeIntervals.length] = {from: new Date('2012/06/07 00:00:00'), to: new Date('2012/07/08 23:59:50'), popupSize: {w: 990, h: 600}, contents: [euro2012], pages: {'homeRai': true, 'homeTv': true, 'dl/RaiTV/dirette_tv.html': true, 'dl/replaytv/replaytv.html': true, 'dl/rai/guidaProgrammi.html': true, 'dl/RaiUno/home_r1.html': true, 'dirette2012': ['PublishingBlock-64203784-70f7-4b53-9d21-b14693850195', 'PublishingBlock-7131f72e-5ca4-45f7-bd50-ebf161d164fc']}};
+
+
+	var pageShow = false;
+	var timeShow = false;
+
+	var now = new Date('2016/05/14 19:25:58');
+	for (i in timeIntervals) {
+		if (timeShow) {
+			break;
+		}
+		var t = timeIntervals[i];
+		if (t.from != null && t.to != null) {
+			if (now.getTime() >= t.from.getTime() && now.getTime() <= t.to.getTime()) {
+				timeShow = true;
+				matchedTimeInterval = t;
+			}
+		} else if (t.from != null) {
+			if (now.getTime() >= t.from.getTime()) {
+				timeShow = true;
+			}
+		}
+	}
+
+	if (!!matchedTimeInterval) {
+		var currPage = false;
+		var loc = document.location;
+		if (loc.pathname == '/dl/RaiTV/homeRaiTv.html' || loc.pathname == '/dl/RaiTV/homeRaiTv.dev.html' || document.URL == 'http://www.rai.tv/' ) {
+			currPage = 'homeTv';
+		} else if (loc.pathname == '/dl/RaiTV/diretta.html' || loc.pathname == '/dl/RaiTV/direttaSmooth.dev.html') {
+			currPage = 'diretta';
+		} else if (/\/dl\/RaiTV\/dirette\//.test(loc.pathname)) {
+			currPage = 'dirette2012';
+		} else if (loc.pathname == '/dl/rai/homeRai.html' ||
+			((loc.pathname == '/' || loc.pathname == '') && (loc.hostname == 'www.rai.it' || loc.hostname == 'rai.it') )) {
+			currPage = 'homeRai';
+		} else {
+			currPage = loc.pathname;
+			if (currPage.indexOf('/')>-1) {
+				currPage = currPage.substring(currPage.indexOf('/')+1);
+				if (currPage == '') {
+					currPage = false;
+				}
+			}
+		}
+
+		if (currPage !== false) {
+			if (!matchedTimeInterval.pages) {
+				pageShow = true; // in assenza di pagine definite, mostro sempre l'overlay
+			} else {
+				function checkInLocation(obj) {
+					function c(o, s) {
+						if (typeof(obj) == 'string') {
+							if ( s.indexOf(obj) > -1) {
+								pageShow = true;
+							}
+						} else {
+							try { // assumo sia una regexp
+								if (obj.test(s)) {
+									pageShow = true;
+								}
+							} catch (e) {
+								try{console.log(e);}catch(e2){}
+							}
+						}
+					}
+					if (currPage == 'diretta') {
+						if (document.location.hash.indexOf('cid')>-1) {
+							c(obj, document.location.hash);
+						} else {
+							c(obj, ''+loc);
+						}
+					} else if (currPage == 'currPage') {
+						c(obj, ''+loc);
+					} else {
+						c(obj, ''+loc);
+					}
+				}
+				var pageTest = matchedTimeInterval.pages[currPage];
+				if (pageTest == undefined) {
+					pageShow = false;
+				} else if (pageTest === true) {
+					pageShow = true;
+				} else if (pageTest === false) {
+					pageShow = false;
+				} else if ((typeof(pageTest) == 'object' || typeof(pageTest) == 'array')) {
+					for (var pageI in pageTest) {
+						checkInLocation(pageTest[pageI]);
+						// if (typeof(pageTest[pageI]) == 'string') {
+						// 	if ( (''+loc).indexOf(pageTest[pageI]) > -1) {
+						// 		pageShow = true;
+						// 	}
+						// } else {
+						// 	try { // assumo sia una regexp
+						// 		if (pageTest[pageI].test(''+loc)) {
+						// 			pageShow = true;
+						// 		}
+						// 	} catch (e) {
+						// 		try{console.log(e);}catch(e2){}
+						// 	}
+						// }
+					}
+				} else if (typeof(pageTest) == 'string') { // && ((''+loc).indexOf(pageTest) > -1) ) {
+					checkInLocation(pageTest);
+					// pageShow = true;
+				} else {
+					pageShow = false;
+				}
+			}
+		} else {
+			pageShow = false; // pagina non riconosciuta
+		}
+	}
+
+	if (timeShow && pageShow) {
+		var b250 = $('.banner300x250');
+// 		var h = $('<div class="banner_autopromo" />').html(matchedTimeInterval.contents[0]);
+// 		h.insertAfter(b250);
+	}
+
+
+});
+
+/*]]>*/
+</script>
+
+<!-- Fine popup lanci in overlay  -->
+<!--[if lt IE 9]>
+    <script>
+    document.createElement('header');
+    document.createElement('nav');
+    document.createElement('section');
+    document.createElement('article');
+    document.createElement('aside');
+    document.createElement('footer');
+    document.createElement('hgroup');
+    document.createElement('time');
+    document.createElement('figure');
+    document.createElement('figcaption');
+    </script>
+    <link href="/dl/rainews/css/min/ieFix.min.css" rel="stylesheet" type="text/css" title="default" />
+  <![endif]-->
+
+</head>
+<body class='homepage'>
+	<!--barre+header-->
+	<div id="fb-root"></div>
+<script type="text/plain" class="_iub_cs_activate">(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/it_IT/all.js#xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+<!-- Place this tag where you want the +1 button to render -->
+<!-- Place this render call where appropriate -->
+<script type="text/plain" class="_iub_cs_activate">
+  window.___gcfg = {lang: 'it'};
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/plusone.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+
+$(function() {
+  	$(".Scelta ul li").click(function(){
+		$(".boxSearch input[name='site']").val($("span",this).attr("data-site"));
+		$(".boxSearch form").attr("action",$("span",this).attr("data-action"));
+		$(".Scelta>span").text($("span",this).text());
+		return false;
+	});
+});
+
+</script>
+
+<!-- barra -->
+<script type="text/javascript" src="/dl/js/barreRai_v2.html"></script>
+<div class="Header">
+	<div class="intHeader">
+		<h1 class="logo"><a href="http://www.rai.it"><span class="solotesto">Rai.it</span></a></h1>
+
+		<div class="boxSearch">
+
+			<form name="qtv" action="http://www.rai.it/dl/rai/ricerca.html">
+				<input type="hidden" name="site" value="default_collection"/>
+				<input type="hidden" name="getfields" value="*"/>
+				<input type="hidden" name="filter" value="0"/>
+				<input type="text" name="q" size="40" maxlength="256" placeholder="Cerca"/>
+				<div class="Scelta">
+					<span>nei siti Rai</span>
+					<ul>
+						<li><span data-action="http://www.rai.it/dl/rai/ricerca.html" data-site="default_collection">nei siti Rai</span></li>
+						<li><span data-action="http://www.rai.tv/dl/RaiTV/ricerca.html" data-site="raitv">su Rai.Tv</span></li>
+					</ul>
+				</div>
+				<input type="submit" class="submit" value="Cerca"/>
+			</form>
+		</div>
+		<div class="miniSocial">
+			<a target="_blank" title="Vai alla pagina Facebook di Rai.tv" class="fb-link" href="http://www.facebook.com/pages/Raitv/88988179171">Fb Page</a>
+			<div class="fb-like" data-href="http://www.facebook.com/pages/Raitv/88988179171" data-send="false" data-layout="button_count" data-width="135" data-show-faces="true" data-font="segoe ui"></div>
+			<a target="_blank" class="twitter" href="http://twitter.com/raitv">Twitter</a>
+			<div class="g-plusone" data-size="medium" data-href="http://www.rai.tv/"></div>
+		</div>
+		<div class="head-links">
+			<a href="http://www.fornitori.rai.it" target="_blank">FORNITORI</a>
+			<a href="http://www.canone.rai.it" target="_blank">CANONE</a>
+		</div>
+
+	</div>
+
+
+	<div class="sub-head-spacer">
+
+	</div>
+</div>
+
+<div class="Container">
+	<div class="Page">
+		
+		
+		 
+		
+
+		
+		<div class="Main">
+			<!--focus -->
+
+
+			<script type="text/javascript" src="/dl/js/getServerTime.html">;</script>
+<!--orainonda--><script type="text/javascript" src="/dl/portale/html/palinsesti/static/palinsestoOraInOnda.html">;</script>
+<script type="text/javascript">
+var tg1Diretta = {dirette: {}};
+var lastTg = {};
+</script>
+<script type="text/javascript" src="/dl/tg1/2010/live/PublishingBlock-4a71306d-7318-432e-82e5-7e2abf0be930.js">;</script>
+<!--tg1--><script type="text/javascript" src="/dl/rai/html/PublishingBlock-c73f169d-10ba-4176-bc99-aecb2d83dfad.html">;</script>
+<!--tg2--><script type="text/javascript" src="/dl/rai/html/PublishingBlock-87cd1b6c-8b03-4745-8c28-5328537aa428.html">;</script>
+<!--tg3--><script type="text/javascript" src="/dl/rai/html/PublishingBlock-43f9f760-6cb1-4e5d-8f88-6cb54506adfa.html">;</script>
+<!--tg sport--><script type="text/javascript" src="/dl/rai/html/ContentSet-daf9f1ba-9389-4096-a45f-29c1efda9f66.html">;</script>
+
+<script type="text/javascript">
+/*
+$.getJSON(
+		// Rai Parlamento
+		'/dl/RaiTV/programmi/json/liste/ContentSet-88b3b8d7-dbc7-4fa5-ac5e-2d554bc192b7-json-V-0.html',
+*/
+(function(data) {
+	var rp, obj;
+	rp = {};
+	obj = (data && data.list && data.list.length > 0) ? data.list[0] : {};
+
+	rp.edizione = obj.name || '';
+	rp.videoUrl = obj.mediaUri || '';
+	rp.h264 = obj.h264 || '';
+	rp.androidUrl = obj.h264|| '';
+	rp.length = obj.length || 0;
+
+	lastTg.RaiParlamento = rp;
+})(
+    {
+    "name": "EDIZIONE INTEGRALE",
+    "setId": "ContentSet-88b3b8d7-dbc7-4fa5-ac5e-2d554bc192b7",
+    
+    "pages": "17",
+    "currPage": "0",
+    "pageType": "V",
+    "b100": "",
+    "b250": "",
+    "bkw": "",
+    "bsp": "",
+    "bsp_fmt": "",
+    "bspAudio": "",
+    
+    "stopBanner": true,
+    
+    "summary": {
+      
+        "RaiTv Media Video Item": "200"
+    },
+    "list": [
+    
+    {
+      "type": "RaiTv Media Video Item",
+      "itemId": "ContentItem-75bafa33-ffb4-4f7c-8eda-97edf588834b",
+      "seoUrl": "Edizione-della-notte-del-13052016-75bafa33-ffb4-4f7c-8eda-97edf588834b",
+      "weblink": "http://www.rai.tv/dl/RaiTV/programmi/media/ContentItem-75bafa33-ffb4-4f7c-8eda-97edf588834b.html",
+      "mediaUri": "http://mediapolisvod.rai.it/relinker/relinkerServlet.htm?cont=mo3adP6FXKseeqqEEqual",
+      "h264": "http://mediapolisvod.rai.it/relinker/relinkerServlet.htm?cont=F1T04orAHUoeeqqEEqual",
+    "m3u8": "http://mediapolisvod.rai.it/relinker/relinkerServlet.htm?cont=yAd90wIQGzEeeqqEEqual",
+    "wmv": "http://mediapolisvod.rai.it/relinker/relinkerServlet.htm?cont=mo3adP6FXKseeqqEEqual",
+      "uhd": "",   
+     "urlrisorsahighlights": "",          
+    "masterImage": "",
+    "image": "/dl/img/2012/12/264x1961354895303519raip_tg_grande_no_bandina.jpg",
+      "image_medium": "",
+      "image_300": "",
+      "image_433": "",
+      "length": "",
+      "date": "14-05-2016",
+      "name": "Edizione della notte del 13/05/2016",
+      "author": "",
+      "from": "Rai Parlamento",
+      "editore": "",
+      "tagcloud": "",
+      "desc": " ",
+      
+    "bsp":  "",
+    "bsp_fmt": "",
+    "b100": "",
+    "b250": ""
+  
+    }
+  ,
+    {
+      "type": "RaiTv Media Video Item",
+      "itemId": "ContentItem-f59a4404-cb81-4cd9-b7fb-25d61db042e9",
+      "seoUrl": "Edizione-della-notte-del-13052016-f59a4404-cb81-4cd9-b7fb-25d61db042e9",
+      "weblink": "http://www.rai.tv/dl/RaiTV/programmi/media/ContentItem-f59a4404-cb81-4cd9-b7fb-25d61db042e9.html",
+      "mediaUri": "http://mediapolisvod.rai.it/relinker/relinkerServlet.htm?cont=p538qNJJh70eeqqEEqual",
+      "h264": "http://mediapolisvod.rai.it/relinker/relinkerServlet.htm?cont=5BkB18YTOXceeqqEEqual",
+    "m3u8": "http://mediapolisvod.rai.it/relinker/relinkerServlet.htm?cont=XmPkFXiU4XMeeqqEEqual",
+    "wmv": "http://mediapolisvod.rai.it/relinker/relinkerServlet.htm?cont=p538qNJJh70eeqqEEqual",
+      "uhd": "",   
+     "urlrisorsahighlights": "",          
+    "masterImage": "",
+    "image": "/dl/img/2012/12/264x1961354895303519raip_tg_grande_no_bandina.jpg",
+      "image_medium": "",
+      "image_300": "",
+      "image_433": "",
+      "length": "",
+      "date": "14-05-2016",
+      "name": "Edizione della notte del 13/05/2016",
+      "author": "",
+      "from": "Rai Parlamento",
+      "editore": "",
+      "tagcloud": "",
+      "desc": " ",
+      
+    "bsp":  "",
+    "bsp_fmt": "",
+    "b100": "",
+    "b250": ""
+  
+    }
+  ,
+    {
+      "type": "RaiTv Media Video Item",
+      "itemId": "ContentItem-9e929858-e3b3-4aaa-be64-2c0912e402e9",
+      "seoUrl": "Edizione-del-pomeriggio-del-13052016-9e929858-e3b3-4aaa-be64-2c0912e402e9",
+      "weblink": "http://www.rai.tv/dl/RaiTV/programmi/media/ContentItem-9e929858-e3b3-4aaa-be64-2c0912e402e9.html",
+      "mediaUri": "http://mediapolisvod.rai.it/relinker/relinkerServlet.htm?cont=Y8d352KkspPpPlussUeeqqEEqual",
+      "h264": "http://mediapolisvod.rai.it/relinker/relinkerServlet.htm?cont=2To4XQWJv9MeeqqEEqual",
+    "m3u8": "http://mediapolisvod.rai.it/relinker/relinkerServlet.htm?cont=UyFOcsSUqF0eeqqEEqual",
+    "wmv": "http://mediapolisvod.rai.it/relinker/relinkerServlet.htm?cont=Y8d352KkspPpPlussUeeqqEEqual",
+      "uhd": "",   
+     "urlrisorsahighlights": "",          
+    "masterImage": "",
+    "image": "/dl/img/2012/12/264x1961354895303519raip_tg_grande_no_bandina.jpg",
+      "image_medium": "",
+      "image_300": "",
+      "image_433": "",
+      "length": "",
+      "date": "13-05-2016",
+      "name": "Edizione del pomeriggio del 13/05/2016",
+      "author": "",
+      "from": "Rai Parlamento",
+      "editore": "",
+      "tagcloud": "",
+      "desc": " ",
+      
+    "bsp":  "",
+    "bsp_fmt": "",
+    "b100": "",
+    "b250": ""
+  
+    }
+  ,
+    {
+      "type": "RaiTv Media Video Item",
+      "itemId": "ContentItem-0fc25518-09e1-4f75-9c34-e1d62538232e",
+      "seoUrl": "Edizione-della-notte-del-12052016-0fc25518-09e1-4f75-9c34-e1d62538232e",
+      "weblink": "http://www.rai.tv/dl/RaiTV/programmi/media/ContentItem-0fc25518-09e1-4f75-9c34-e1d62538232e.html",
+      "mediaUri": "http://mediapolisvod.rai.it/relinker/relinkerServlet.htm?cont=ljZGMaUhuKkeeqqEEqual",
+      "h264": "http://mediapolisvod.rai.it/relinker/relinkerServlet.htm?cont=a9Jb55orHD0eeqqEEqual",
+    "m3u8": "http://mediapolisvod.rai.it/relinker/relinkerServlet.htm?cont=5WS9fRIINe4eeqqEEqual",
+    "wmv": "http://mediapolisvod.rai.it/relinker/relinkerServlet.htm?cont=ljZGMaUhuKkeeqqEEqual",
+      "uhd": "",   
+     "urlrisorsahighlights": "",          
+    "masterImage": "",
+    "image": "/dl/img/2012/12/264x1961354895303519raip_tg_grande_no_bandina.jpg",
+      "image_medium": "",
+      "image_300": "",
+      "image_433": "",
+      "length": "",
+      "date": "13-05-2016",
+      "name": "Edizione della notte del 12/05/2016",
+      "author": "",
+      "from": "Rai Parlamento",
+      "editore": "",
+      "tagcloud": "",
+      "desc": "Edizione della notte del 12/05/2016 ",
+      
+    "bsp":  "",
+    "bsp_fmt": "",
+    "b100": "",
+    "b250": ""
+  
+    }
+  ,
+    {
+      "type": "RaiTv Media Video Item",
+      "itemId": "ContentItem-8b656299-c412-44cf-ae6e-e0cee6c0022c",
+      "seoUrl": "Edizione-del-mattino-del-13052016-8b656299-c412-44cf-ae6e-e0cee6c0022c",
+      "weblink": "http://www.rai.tv/dl/RaiTV/programmi/media/ContentItem-8b656299-c412-44cf-ae6e-e0cee6c0022c.html",
+      "mediaUri": "http://mediapolisvod.rai.it/relinker/relinkerServlet.htm?cont=w70kIa0SAageeqqEEqual",
+      "h264": "http://mediapolisvod.rai.it/relinker/relinkerServlet.htm?cont=S4KCzI86mbUeeqqEEqual",
+    "m3u8": "http://mediapolisvod.rai.it/relinker/relinkerServlet.htm?cont=tDcjeIMb6QEeeqqEEqual",
+    "wmv": "http://mediapolisvod.rai.it/relinker/relinkerServlet.htm?cont=w70kIa0SAageeqqEEqual",
+      "uhd": "",   
+     "urlrisorsahighlights": "",          
+    "masterImage": "",
+    "image": "/dl/img/2012/12/264x1961354895303519raip_tg_grande_no_bandina.jpg",
+      "image_medium": "",
+      "image_300": "",
+      "image_433": "",
+      "length": "",
+      "date": "13-05-2016",
+      "name": "Edizione del mattino del 13/05/2016",
+      "author": "",
+      "from": "Rai Parlamento",
+      "editore": "",
+      "tagcloud": "",
+      "desc": " Edizione del mattino del 13/05/2016",
+      
+    "bsp":  "",
+    "bsp_fmt": "",
+    "b100": "",
+    "b250": ""
+  
+    }
+  ,
+    {
+      "type": "RaiTv Media Video Item",
+      "itemId": "ContentItem-3741c7d6-6f6a-45dd-a866-3c5c35684003",
+      "seoUrl": "Edizione-del-pomeriggio-del-12052016-3741c7d6-6f6a-45dd-a866-3c5c35684003",
+      "weblink": "http://www.rai.tv/dl/RaiTV/programmi/media/ContentItem-3741c7d6-6f6a-45dd-a866-3c5c35684003.html",
+      "mediaUri": "http://mediapolisvod.rai.it/relinker/relinkerServlet.htm?cont=kuco5ZIKG0oeeqqEEqual",
+      "h264": "http://mediapolisvod.rai.it/relinker/relinkerServlet.htm?cont=rljssSlashcTNo3LUeeqqEEqual",
+    "m3u8": "http://mediapolisvod.rai.it/relinker/relinkerServlet.htm?cont=vGf4AQIrfCIeeqqEEqual",
+    "wmv": "http://mediapolisvod.rai.it/relinker/relinkerServlet.htm?cont=kuco5ZIKG0oeeqqEEqual",
+      "uhd": "",   
+     "urlrisorsahighlights": "",          
+    "masterImage": "",
+    "image": "/dl/img/2012/12/264x1961354895303519raip_tg_grande_no_bandina.jpg",
+      "image_medium": "",
+      "image_300": "",
+      "image_433": "",
+      "length": "",
+      "date": "12-05-2016",
+      "name": "Edizione del pomeriggio del 12/05/2016",
+      "author": "",
+      "from": "Rai Parlamento",
+      "editore": "",
+      "tagcloud": "",
+      "desc": " ",
+      
+    "bsp":  "",
+    "bsp_fmt": "",
+    "b100": "",
+    "b250": ""
+  
+    }
+  ,
+    {
+      "type": "RaiTv Media Video Item",
+      "itemId": "ContentItem-d4d9fd5e-9f1b-45b4-bf37-fd0ac1b1f7e3",
+      "seoUrl": "Edizione-del-mattino-del-12052016-d4d9fd5e-9f1b-45b4-bf37-fd0ac1b1f7e3",
+      "weblink": "http://www.rai.tv/dl/RaiTV/programmi/media/ContentItem-d4d9fd5e-9f1b-45b4-bf37-fd0ac1b1f7e3.html",
+      "mediaUri": "http://mediapolisvod.rai.it/relinker/relinkerServlet.htm?cont=QHQZCOo5zl8eeqqEEqual",
+      "h264": "http://mediapolisvod.rai.it/relinker/relinkerServlet.htm?cont=hgvbc215pPpPluss7AeeqqEEqual",
+    "m3u8": "http://mediapolisvod.rai.it/relinker/relinkerServlet.htm?cont=8oTAmvMm2u8eeqqEEqual",
+    "wmv": "http://mediapolisvod.rai.it/relinker/relinkerServlet.htm?cont=QHQZCOo5zl8eeqqEEqual",
+      "uhd": "",   
+     "urlrisorsahighlights": "",          
+    "masterImage": "",
+    "image": "/dl/img/2012/12/264x1961354895303519raip_tg_grande_no_bandina.jpg",
+      "image_medium": "",
+      "image_300": "",
+      "image_433": "",
+      "length": "",
+      "date": "12-05-2016",
+      "name": "Edizione del mattino del 12/05/2016",
+      "author": "",
+      "from": "Rai Parlamento",
+      "editore": "",
+      "tagcloud": "",
+      "desc": "Edizione del mattino del 12/05/2016 ",
+      
+    "bsp":  "",
+    "bsp_fmt": "",
+    "b100": "",
+    "b250": ""
+  
+    }
+  ,
+    {
+      "type": "RaiTv Media Video Item",
+      "itemId": "ContentItem-6458b167-e4ac-4e9a-b848-a2d07408426e",
+      "seoUrl": "Edizione-della-notte-del-11052016-6458b167-e4ac-4e9a-b848-a2d07408426e",
+      "weblink": "http://www.rai.tv/dl/RaiTV/programmi/media/ContentItem-6458b167-e4ac-4e9a-b848-a2d07408426e.html",
+      "mediaUri": "http://mediapolisvod.rai.it/relinker/relinkerServlet.htm?cont=uHmbLxVrktweeqqEEqual",
+      "h264": "http://mediapolisvod.rai.it/relinker/relinkerServlet.htm?cont=bmWGiaNijyQeeqqEEqual",
+    "m3u8": "http://mediapolisvod.rai.it/relinker/relinkerServlet.htm?cont=dB0HEj7LjtkeeqqEEqual",
+    "wmv": "http://mediapolisvod.rai.it/relinker/relinkerServlet.htm?cont=uHmbLxVrktweeqqEEqual",
+      "uhd": "",   
+     "urlrisorsahighlights": "",          
+    "masterImage": "",
+    "image": "/dl/img/2012/12/264x1961354895303519raip_tg_grande_no_bandina.jpg",
+      "image_medium": "",
+      "image_300": "",
+      "image_433": "",
+      "length": "",
+      "date": "12-05-2016",
+      "name": "Edizione della notte del 11/05/2016",
+      "author": "",
+      "from": "Rai Parlamento",
+      "editore": "",
+      "tagcloud": "",
+      "desc": "Edizione della notte del 11/05/2016 ",
+      
+    "bsp":  "",
+    "bsp_fmt": "",
+    "b100": "",
+    "b250": ""
+  
+    }
+  ,
+    {
+      "type": "RaiTv Media Video Item",
+      "itemId": "ContentItem-87b70ee5-28cf-4cf2-9a91-bfd828fcfa98",
+      "seoUrl": "Edizione-del-pomeriggio-del-11052016-87b70ee5-28cf-4cf2-9a91-bfd828fcfa98",
+      "weblink": "http://www.rai.tv/dl/RaiTV/programmi/media/ContentItem-87b70ee5-28cf-4cf2-9a91-bfd828fcfa98.html",
+      "mediaUri": "http://mediapolisvod.rai.it/relinker/relinkerServlet.htm?cont=GssSlashX0lZhjvAseeqqEEqual",
+      "h264": "http://mediapolisvod.rai.it/relinker/relinkerServlet.htm?cont=hEIF0FX0b78eeqqEEqual",
+    "m3u8": "http://mediapolisvod.rai.it/relinker/relinkerServlet.htm?cont=Owh9hbcg8CAeeqqEEqual",
+    "wmv": "http://mediapolisvod.rai.it/relinker/relinkerServlet.htm?cont=GssSlashX0lZhjvAseeqqEEqual",
+      "uhd": "",   
+     "urlrisorsahighlights": "",          
+    "masterImage": "",
+    "image": "/dl/img/2012/12/264x1961354895303519raip_tg_grande_no_bandina.jpg",
+      "image_medium": "",
+      "image_300": "",
+      "image_433": "",
+      "length": "",
+      "date": "11-05-2016",
+      "name": "Edizione del pomeriggio del 11/05/2016",
+      "author": "",
+      "from": "Rai Parlamento",
+      "editore": "",
+      "tagcloud": "",
+      "desc": " ",
+      
+    "bsp":  "",
+    "bsp_fmt": "",
+    "b100": "",
+    "b250": ""
+  
+    }
+  ,
+    {
+      "type": "RaiTv Media Video Item",
+      "itemId": "ContentItem-4d45495d-cd49-436e-9994-a600f085d6b1",
+      "seoUrl": "Edizione-della-notte-del-10052016-4d45495d-cd49-436e-9994-a600f085d6b1",
+      "weblink": "http://www.rai.tv/dl/RaiTV/programmi/media/ContentItem-4d45495d-cd49-436e-9994-a600f085d6b1.html",
+      "mediaUri": "http://mediapolisvod.rai.it/relinker/relinkerServlet.htm?cont=u2hyGqkanyUeeqqEEqual",
+      "h264": "http://mediapolisvod.rai.it/relinker/relinkerServlet.htm?cont=fGnDkezLsssSlashceeqqEEqual",
+    "m3u8": "http://mediapolisvod.rai.it/relinker/relinkerServlet.htm?cont=OVbPtfOssSlashWBAeeqqEEqual",
+    "wmv": "http://mediapolisvod.rai.it/relinker/relinkerServlet.htm?cont=u2hyGqkanyUeeqqEEqual",
+      "uhd": "",   
+     "urlrisorsahighlights": "",          
+    "masterImage": "",
+    "image": "/dl/img/2012/12/264x1961354895303519raip_tg_grande_no_bandina.jpg",
+      "image_medium": "",
+      "image_300": "",
+      "image_433": "",
+      "length": "",
+      "date": "11-05-2016",
+      "name": "Edizione della notte del 10/05/2016",
+      "author": "",
+      "from": "Rai Parlamento",
+      "editore": "",
+      "tagcloud": "",
+      "desc": " ",
+      
+    "bsp":  "",
+    "bsp_fmt": "",
+    "b100": "",
+    "b250": ""
+  
+    }
+  ,
+    {
+      "type": "RaiTv Media Video Item",
+      "itemId": "ContentItem-c7d87487-7f87-4154-8331-b6cdcdd81e2d",
+      "seoUrl": "Edizione-del-mattino-del-11052016-c7d87487-7f87-4154-8331-b6cdcdd81e2d",
+      "weblink": "http://www.rai.tv/dl/RaiTV/programmi/media/ContentItem-c7d87487-7f87-4154-8331-b6cdcdd81e2d.html",
+      "mediaUri": "http://mediapolisvod.rai.it/relinker/relinkerServlet.htm?cont=rVWPHnNM0O0eeqqEEqual",
+      "h264": "http://mediapolisvod.rai.it/relinker/relinkerServlet.htm?cont=oeafbcekN9MeeqqEEqual",
+    "m3u8": "http://mediapolisvod.rai.it/relinker/relinkerServlet.htm?cont=70SefzkFok0eeqqEEqual",
+    "wmv": "http://mediapolisvod.rai.it/relinker/relinkerServlet.htm?cont=rVWPHnNM0O0eeqqEEqual",
+      "uhd": "",   
+     "urlrisorsahighlights": "",          
+    "masterImage": "",
+    "image": "/dl/img/2012/12/264x1961354895303519raip_tg_grande_no_bandina.jpg",
+      "image_medium": "",
+      "image_300": "",
+      "image_433": "",
+      "length": "",
+      "date": "11-05-2016",
+      "name": "Edizione del mattino del 11/05/2016",
+      "author": "",
+      "from": "Rai Parlamento",
+      "editore": "",
+      "tagcloud": "",
+      "desc": " ",
+      
+    "bsp":  "",
+    "bsp_fmt": "",
+    "b100": "",
+    "b250": ""
+  
+    }
+  ,
+    {
+      "type": "RaiTv Media Video Item",
+      "itemId": "ContentItem-337dcee3-4dd5-4311-98e6-6ab048eb14af",
+      "seoUrl": "Edizione-del-pomeriggio-del-10052016-337dcee3-4dd5-4311-98e6-6ab048eb14af",
+      "weblink": "http://www.rai.tv/dl/RaiTV/programmi/media/ContentItem-337dcee3-4dd5-4311-98e6-6ab048eb14af.html",
+      "mediaUri": "http://mediapolisvod.rai.it/relinker/relinkerServlet.htm?cont=w1L7okDYssSlashi0eeqqEEqual",
+      "h264": "",
+    "m3u8": "http://mediapolisvod.rai.it/relinker/relinkerServlet.htm?cont=w1L7okDYssSlashi0eeqqEEqual",
+    "wmv": "http://mediapolisvod.rai.it/relinker/relinkerServlet.htm?cont=w1L7okDYssSlashi0eeqqEEqual",
+      "uhd": "",   
+     "urlrisorsahighlights": "",          
+    "masterImage": "",
+    "image": "/dl/img/2012/12/264x1961354895303519raip_tg_grande_no_bandina.jpg",
+      "image_medium": "",
+      "image_300": "",
+      "image_433": "",
+      "length": "",
+      "date": "10-05-2016",
+      "name": "Edizione del pomeriggio del 10/05/2016",
+      "author": "",
+      "from": "Rai Parlamento",
+      "editore": "",
+      "tagcloud": "",
+      "desc": "Edizione del pomeriggio del 10/05/2016",
+      
+    "bsp":  "",
+    "bsp_fmt": "",
+    "b100": "",
+    "b250": ""
+  
+    }
+  
+    ]
+    }
+  );
+</script>
+
+<script type="text/javascript">
+var dirette = {};
+
+dirette.rainews = [];
+dirette.rainews.push({ from: '00:00', to: '23:59', edizione: 'Live' });
+dirette.rainews.videoUrl = 'http://mediapolis.rai.it/relinker/relinkerServlet.htm?cont=1';
+dirette.rainews.h264 = 'http://mediapolis.rai.it/relinker/relinkerServlet.htm?cont=489110';
+dirette.rainews.androidUrl = '';
+dirette.rainews.image = '';
+dirette.rainews.label = 'rainews';
+dirette.rainews.live = 'on';
+
+dirette.tg1 = tg1Diretta.dirette;
+dirette.tg1.videoUrl = tg1Diretta.videoUrl;
+dirette.tg1.h264 = tg1Diretta.h264;
+dirette.tg1.androidUrl = tg1Diretta.androidUrl;
+dirette.tg1.image = tg1Diretta.image;
+dirette.tg1.label = 'tg1';
+dirette.tg1.live = 'off';
+
+dirette.tg2 = [];
+//dirette.tg2.push({ from: '10:00', to: '11:00', edizione: 'Edizione delle ore 10.00' });
+dirette.tg2.push({ from: '13:00', to: '13:30', edizione: 'Edizione delle ore 13.00' });
+dirette.tg2.push({ from: '18:30', to: '19:00', edizione: 'Edizione delle ore 18.30' });
+dirette.tg2.push({ from: '20:30', to: '21:00', edizione: 'Edizione delle ore 20.00' });
+dirette.tg2.videoUrl = 'http://mediapolis.rai.it/relinker/relinkerServlet.htm?cont=180116';
+dirette.tg2.h264 = '';
+dirette.tg2.androidUrl = '';
+dirette.tg2.image = '';
+dirette.tg2.label = 'tg2';
+dirette.tg2.live = 'off';
+
+dirette.tg3 = [];
+dirette.tg3.push({ from: '11:55', to: '13:00', edizione: 'Edizione delle ore 12.00' });
+dirette.tg3.push({ from: '14:15', to: '14:50',edizione: 'Edizione delle ore 14.15' });
+dirette.tg3.push({ from: '18:55', to: '19:35',edizione: 'Edizione delle ore 19.00' });
+dirette.tg3.videoUrl = 'http://mediapolis.rai.it/relinker/relinkerServlet.htm?cont=180117';
+dirette.tg3.h264 = '';
+dirette.tg3.androidUrl = '';
+dirette.tg3.image = '';
+dirette.tg3.label = 'tg3';
+dirette.tg3.live = 'off';
+
+dirette.tgr = [];
+dirette.tgr.push({ from: '14:00', to: '14:19', edizione: 'Edizione delle ore 14.00' });
+dirette.tgr.push({ from: '19:33', to: '19:54', edizione: 'Edizione delle ore 19.00' });
+dirette.tgr.push({ from: '00:10', to: '00:16', edizione: 'Edizione delle ore 00.10' });
+dirette.tgr.push({ from: '20:30', to: '21:00', edizione: 'Edizione delle ore 20.00' });
+dirette.tgr.label = 'tgr';
+dirette.tgr.live = 'off';
+
+/*$.getJSON('/dl/tgr/regioni/Page-6a53ee13-85e1-4771-b32e-c2e8e6ec40da-json.html');*/
+if(UserLocation != 'ITA'){
+	dirette.tg2 = [];
+	dirette.tg3 = [];
+}
+$(document).trigger('ScheduleDiretteLoaded');
+</script>
+
+			
+			
+			<div class="boxMiddle left">
+				<div class="top Apertura">
+					<h3>RaiNews</h3>
+					<h4>TUTTA LA REALTA' IN DIRETTA</h4>
+					<!--include virtual="/dl/rai/info/ContentSet-40ebc020-84d5-42a6-881b-6cf22fd7e9ec.html"-->
+				</div>
+				<div class="mid">
+					<div id="TopNews" class="box">
+<!-- Redazione -->
+<a href="/dl/rainews/articoli/Costa-Stop-alla-giurisprudenza-creativa-sulle-adozioni-Cirinna-I-giudici-applicano-la-legge-4ec05692-2507-441e-9b13-91f038faa70a.html" class="img">
+<img src="/dl/img/2016/01/640x344_1454017381667.rainews_2016012822412982.jpg"></a>
+<div class="label">Top news</div>
+<div class="title">
+<h3>Unioni civili</h3>
+<h2 class="size1 (32/46) ">
+<a href="/dl/rainews/articoli/Costa-Stop-alla-giurisprudenza-creativa-sulle-adozioni-Cirinna-I-giudici-applicano-la-legge-4ec05692-2507-441e-9b13-91f038faa70a.html">Costa: "Stop alla giurisprudenza creativa sulle adozioni"</a>
+</h2>
+<h3 class="sub">Tensioni nella maggioranza dopo il varo del ddl</h3>
+</div>
+<div class="text">
+<p>Cirinnà: i giudici applicano la legge</p>
+<div class="timeShare">
+<time datetime="2016/05/14 17:18" class="autoTimeFormat">2016/05/14 17:18</time>
+<a class="ico comm" href="/dl/rainews/articoli/Costa-Stop-alla-giurisprudenza-creativa-sulle-adozioni-Cirinna-I-giudici-applicano-la-legge-4ec05692-2507-441e-9b13-91f038faa70a.html#commenti"><span>Commenti:</span> 0</a><a class="ico share" href="/dl/rainews/articoli/Costa-Stop-alla-giurisprudenza-creativa-sulle-adozioni-Cirinna-I-giudici-applicano-la-legge-4ec05692-2507-441e-9b13-91f038faa70a.html"><span>Condividi:</span> 0</a>
+</div>
+</div>
+<div class="related">
+<ul class="special item2 BAKspecial2">
+<li>
+<a href="/dl/rainews/articoli/Unioni-civili-Salvini-Sindaci-della-Lega-disobbedite-legge-anticamera-delle-adozioni-gay-531889d5-99b4-4153-9328-3f91a92901a5.html" class="pic">
+<div>
+<img alt="Salvini amministrative (Screnshot)" src="/dl/rainews/images/pixel.gif" data-original="/dl/img/2016/03/50x50_1457280001860.png"></div>
+</a><a class="txt" href="/dl/rainews/articoli/Unioni-civili-Salvini-Sindaci-della-Lega-disobbedite-legge-anticamera-delle-adozioni-gay-531889d5-99b4-4153-9328-3f91a92901a5.html">
+<div>
+<div>
+<div>Salvini: "Sindaci della Lega disobbedite alla legge, è anticamera delle adozioni gay"</div>
+</div>
+</div>
+</a>
+<div data-href="/dl/rainews/articoli/Unioni-civili-Salvini-Sindaci-della-Lega-disobbedite-legge-anticamera-delle-adozioni-gay-531889d5-99b4-4153-9328-3f91a92901a5.html" class="Share">
+<a class="ico comm" href="/dl/rainews/articoli/Unioni-civili-Salvini-Sindaci-della-Lega-disobbedite-legge-anticamera-delle-adozioni-gay-531889d5-99b4-4153-9328-3f91a92901a5.html#commenti"></a><a class="ico share" href="/dl/rainews/articoli/Unioni-civili-Salvini-Sindaci-della-Lega-disobbedite-legge-anticamera-delle-adozioni-gay-531889d5-99b4-4153-9328-3f91a92901a5.html"></a>
+</div>
+</li>
+<li>
+<a href="/dl/rainews/articoli/Unioni-Civili-Renzi-ho-giurato-sulla-Costituzione-e-non-sul-Vangelo-195f449c-a316-4dae-a0ed-2dfd5b686403.html" class="pic">
+<div>
+<img alt="Il Presidente del Consiglio Matteo Renzi a 'Porta a Porta' (Ansa)" src="/dl/rainews/images/pixel.gif" data-original="/dl/img/2016/05/50x50_1463087286688.rainews_20160512230641654.jpg"></div>
+</a><a class="txt" href="/dl/rainews/articoli/Unioni-Civili-Renzi-ho-giurato-sulla-Costituzione-e-non-sul-Vangelo-195f449c-a316-4dae-a0ed-2dfd5b686403.html">
+<div>
+<div>
+<div>Unioni civili Renzi : "Ho giurato sulla Costituzione e non sul Vangelo"</div>
+</div>
+</div>
+</a>
+<div data-href="/dl/rainews/articoli/Unioni-Civili-Renzi-ho-giurato-sulla-Costituzione-e-non-sul-Vangelo-195f449c-a316-4dae-a0ed-2dfd5b686403.html" class="Share">
+<a class="ico comm" href="/dl/rainews/articoli/Unioni-Civili-Renzi-ho-giurato-sulla-Costituzione-e-non-sul-Vangelo-195f449c-a316-4dae-a0ed-2dfd5b686403.html#commenti"></a><a class="ico share" href="/dl/rainews/articoli/Unioni-Civili-Renzi-ho-giurato-sulla-Costituzione-e-non-sul-Vangelo-195f449c-a316-4dae-a0ed-2dfd5b686403.html"></a>
+</div>
+</li>
+</ul>
+</div>
+
+</div>
+
+					<div class="link_utili">
+						<nav>
+							<ul>
+							  <li class="menuLive"><a href="/dl/rainews/live/ContentItem-3156f2f2-dc70-4953-8e2f-70d7489d4ce9.html"><span class="menuIcon">Diretta</span></a></li>
+							  <li class="menuVideo"><a href="/dl/rainews/redazioni/ContentSet-751365e1-0e95-45c7-9909-86a63d5d5f84-0.html"><span class="menuIcon">Video</span></a></li>
+							  <li class="menuFoto"><a href="/dl/rainews/redazioni/ContentSet-dfa4779f-a45d-474f-a459-71c7bbc77325-0.html"><span class="menuIcon">Foto</span></a></li>      
+							  <li class="menuBlog"><a href="http://www.rainews.it/blog"><span class="menuIcon">Blog</span></a></li>
+							</ul>
+						</nav>
+					</div>
+				</div>
+				<script>
+                    $('#TopNews .label').css('cursor', 'pointer').click(function () { window.open('http://www.rainews.it', '_blank'); });
+                    $('#TopNews').find(".text").remove();
+				</script>
+			</div>
+			<div class="boxMiddle right">
+				<div class="top Apertura">
+					<h3>RaiSport</h3>
+					<h4>TUTTA LA REALTA' IN DIRETTA</h4>
+				</div>
+				<div class="mid">
+					<div id="focus">
+<div class="box" id="topNews">
+
+<a target="_self" href="/dl/raiSport/Articoli/Brambilla-che-impresa-f97e94e6-b7d0-46f9-83ff-5b8029d91ebe.html" class="img">
+<div class="mask">
+<img alt="1463239638475_Brembilla 04.jpg" src="/dl/img/2016/05/14/640x0_1463239638475_Brembilla%2004.jpg"></div>
+</a>
+<div style="cursor: pointer;" class="label">Top news</div>
+<a target="_self" href="/dl/raiSport/Articoli/Brambilla-che-impresa-f97e94e6-b7d0-46f9-83ff-5b8029d91ebe.html">
+<div class="onImg">
+<h2>Brambilla, che impresa!</h2>
+<h3 class="sub">Tappa e maglia rosa dopo una super fuga </h3>
+</div>
+</a>
+<div class="related">
+<ul>
+<li>
+<a target="_self" href="
+    /dl/raiSport/media/Intervista-a-Gianluca-Brambilla-df394937-456b-452b-a60c-d8b08e38f523.html
+  
+" class="ico video">Intervista a Gianluca Brambilla</a>
+</li>
+<li>
+<a target="_self" href="
+    /dl/raiSport/media/-8-tappa--Lultimo-km-6ca6b15f-d00d-4c91-80d0-72a6764181c9.html
+  
+" class="ico video"> 8ª tappa | L'ultimo km</a>
+</li>
+<li>
+<a target="_self" href="
+    /dl/raiSport/media/Giro-8-tappa-6596357c-bbc0-4694-9d21-d5c0a9a1d9fb.html
+  
+" class="ico foto">Giro, 8ª tappa</a>
+</li>
+<li>
+<a target="_self" href="
+    /dl/raiSport/media/8-tappa--Gianluca-Brambilla-9f6cad91-9b01-49be-ad6c-c7479fc615ee.html
+  
+" class="ico video">8ª tappa | Gianluca Brambilla</a>
+</li>
+<li>
+<a target="_self" href="
+    /dl/raiSport/media/Processo-alla-tappa-249a2b41-525c-41df-b7b0-a4857d21a734.html
+  
+" class="ico video">Processo alla tappa</a>
+</li>
+</ul>
+</div>
+
+</div>
+</div>
+
+					<div class="link_utili">
+						<nav>
+							<ul>
+							  <li class="menuRaisport1"><a href="/dl/raiSport/dirette/ContentItem-49340f1d-5246-4cf7-931f-75d65af039e7.html"><span class="menuIcon">Diretta</span></a></li>
+							  <li class="menuRaisport2"><a href="/dl/raiSport/dirette/ContentItem-983d0874-1718-4e58-952a-1615517c8e83.html"><span class="menuIcon">Diretta</span></a></li>
+							  <li class="menuCalcio"><a href="/dl/raiSport/Page-cef97a2b-8a3e-47cd-81f3-ede246a7421b.html"><span class="menuIcon">Calcio</span></a></li>      
+							  <li class="menuMotori"><a href="/dl/raiSport/Page-c4ba73c5-eedc-4a46-870a-64b0b784c8b3.html"><span class="menuIcon">Motori</span></a></li>
+							</ul>
+						</nav>
+					</div>
+				</div>
+				<script>
+
+					/*$('<div class="label" style="cursor: pointer;">Top news</div>').insertBefore('#focus .box .related');*/
+					$('#focus .box .label').css('cursor', 'pointer').click(function () { window.open('http://www.raisport.rai.it', '_blank'); });
+                    $(document).ready(function(){
+						/*
+						var altezzaBoxDestra = $(".boxMiddle.right").height();
+						var altezzaBoxSinistra = $(".boxMiddle.left").height();
+						$(".boxMiddle.left").height(Math.max(altezzaBoxDestra,altezzaBoxSinistra));
+						$(".boxMiddle.right").height(Math.max(altezzaBoxDestra,altezzaBoxSinistra));
+						*/
+						});
+					
+				</script>
+			</div>
+			
+			<!-- Programmi da rivedere (ondemand)  generato da /dl/xsl/rai/rai_it_ondemand.xsl -->
+			<div class="onDemand boxLarge left">
+<div class="top">
+<h3>
+<a href="http://www.rai.tv"> Programmi on demand</a>
+</h3>
+<h4>DA RIVEDERE E RIASCOLTARE</h4>
+<h1 class="logo">
+<a href="http://www.rai.tv">
+<span class="solotesto">Rai.tv</span>
+</a>
+</h1>
+</div>
+<div class="mid">
+<div class="videoContainer">
+<div class="Tematiche">
+<ul>
+<li id="ContentSet-b17cf69b-c1c2-4026-9444-1364a9c3193e" data-filter="" data-id="ContentSet-b17cf69b-c1c2-4026-9444-1364a9c3193e" class="multi">
+<a href="#">Da non perdere</a>
+</li>
+<li data-exclude="Tematica:News^Tematica:ntz" data-order="" data-filter="" data-id="visited" class="stats">
+<a href="#">I più visti</a>
+</li>
+
+<li id="ContentSet-d361f379-82b6-4b25-a044-c4d6c7bccbb5" data-filter="" data-id="ContentSet-d361f379-82b6-4b25-a044-c4d6c7bccbb5" class="multi">
+<a href="#">I FILM DEL GIORNO</a>
+</li>
+<li data-exclude="Tematica:News^Tematica:ntz" data-order="Category:Category-0bb7280a-fedf-4a10-8e98-0299bce7d3c7" data-filter="Category:Rai Sport:Category-0bb7280a-fedf-4a10-8e98-0299bce7d3c7^Category:Rai Sport:Category-0bb7280a-fedf-4a10-8e98-0299bce7d3c7" data-id="recent" class="stats">
+<a href="#">Sport</a>
+</li>
+
+<li data-exclude="Tematica:News^Tematica:ntz" data-order="Category:Category-e4da74a6-4128-4a5a-b884-782c879d0a47" data-filter="Tematica:Fiction" data-id="recent" class="stats">
+<a href="#">Fiction</a>
+</li>
+
+<li data-exclude="Tematica:News^Tematica:ntz" data-order="Category:Category-3ee14f49-e4a6-4075-8af5-277dc5a1d9e7" data-filter="Tematica:Cartoni" data-id="recent" class="stats">
+<a href="#">Cartoni</a>
+</li>
+
+</ul>
+</div>
+<script>var setPagine = new Array()</script>
+<div id="ContentSet-b17cf69b-c1c2-4026-9444-1364a9c3193e" class="listaVideo">
+<ul>
+<li id="ContentItem-f1c301e0-6769-4963-b055-7dfe39c3fb83" class="Video "><a href="/dl/RaiTV/programmi/media/ContentItem-f1c301e0-6769-4963-b055-7dfe39c3fb83.html#p=" class="img"><img height="169" width="300" alt="" src="http://www.rai.it/dl/video/smooth/300x169b50dab96-083f-48a7-a5a4-f720fe132f24.jpg"><div class="mask">
+<span class="icoVideo">Video</span><em>00:11:50</em>
+</div></a><div class="Info">
+<h2><a href="/dl/RaiTV/programmi/media/ContentItem-f1c301e0-6769-4963-b055-7dfe39c3fb83.html#p=" class="txt">Carlo Conti intervista Linda Blair la bambina posseduta dal demonio nel film L'esorcista</a></h2>
+<h5>I migliori anni 2016</h5>
+<h4></h4>
+<p><a href="/dl/RaiTV/programmi/media/ContentItem-f1c301e0-6769-4963-b055-7dfe39c3fb83.html#p=" class="txt">Linda Blair, bambina prodigio cominci&#242; ad avere successo nel mondo dello spettacolo a soli sei anni e nel 1973, quand&#39;era appena quattordicenne, sconvolse il mondo interpretando il ruolo di Regan MacNeil, la bambina posseduta dal demonio nel film L&#39;esorcista</a></p>
+<ol class="Specifiche">
+<li class="Pubblicato">
+<span>Pubblicato il</span>13/05/2016</li>
+</ol>
+</div>
+</li>
+<li id="ContentItem-927dd377-8742-480f-a5b8-875b87d0e930" class="Video "><a href="/dl/RaiTV/programmi/media/ContentItem-927dd377-8742-480f-a5b8-875b87d0e930.html#p=" class="img"><img height="169" width="300" alt="" src="/dl/img/2016/05/300x1691463116366478nondirlo_19_anti.jpg"><div class="mask">
+<span class="icoVideo">Video</span><em>00:00:35</em>
+</div></a><div class="Info">
+<h2><a href="/dl/RaiTV/programmi/media/ContentItem-927dd377-8742-480f-a5b8-875b87d0e930.html#p=" class="txt">Non dirlo al mio capo - Anticipazione del 19/05/2016</a></h2>
+<h5>Non dirlo al mio capo</h5>
+<h4>Fiction</h4>
+<p><a href="/dl/RaiTV/programmi/media/ContentItem-927dd377-8742-480f-a5b8-875b87d0e930.html#p=" class="txt">Gioved&#236; 19 maggio 2016 ore 21:20 Rai Uno</a></p>
+<ol class="Specifiche">
+<li class="Pubblicato">
+<span>Pubblicato il</span>12/05/2016</li>
+</ol>
+</div>
+</li>
+<li id="ContentItem-b692301e-3bf2-4ed3-9c4d-0bff2f18535c" class="Video "><a href="/dl/RaiTV/programmi/media/ContentItem-b692301e-3bf2-4ed3-9c4d-0bff2f18535c.html#p=" class="img"><img height="169" width="300" alt="" src="/dl/img/2016/05/300x1691463091664398ev.jpg"><div class="mask">
+<span class="icoVideo">Video</span><em>01:58:59</em>
+</div></a><div class="Info">
+<h2><a href="/dl/RaiTV/programmi/media/ContentItem-b692301e-3bf2-4ed3-9c4d-0bff2f18535c.html#p=" class="txt">Eurovision Song Contest - Semifinale del 12/05/2016</a></h2>
+<h5>Eurovision Song Contest 2016</h5>
+<h4></h4>
+<p><a href="/dl/RaiTV/programmi/media/ContentItem-b692301e-3bf2-4ed3-9c4d-0bff2f18535c.html#p=" class="txt">2^ semifinale, con 18 paesi in concorso di cui 10 approdano alla finale del sabato. Sempre con la telecronaca di di Filippo Solibello e Marco Ardemagni, in questa semifinale i telespettatori italiani sono chiamati a esprimere le loro preferenze tramite il televoto insieme a una giuria formata da cinque professionisti del settore musicale</a></p>
+<ol class="Specifiche">
+<li class="Pubblicato">
+<span>Pubblicato il</span>12/05/2016</li>
+</ol>
+</div>
+</li>
+<li id="ContentItem-ae024d81-a498-42a7-891a-98c9a810acbe" class="Video "><a href="/dl/RaiTV/programmi/media/ContentItem-ae024d81-a498-42a7-891a-98c9a810acbe.html#p=" class="img"><img height="169" width="300" alt="" src="/dl/img/2016/05/300x169146314031773602-titolo-BIS.jpg"><div class="mask">
+<span class="icoVideo">Video</span><em>01:26:45</em>
+</div></a><div class="Info">
+<h2><a href="/dl/RaiTV/programmi/media/ContentItem-ae024d81-a498-42a7-891a-98c9a810acbe.html#p=" class="txt">- Matteo Renzi a Porta a Porta</a></h2>
+<h5>Porta a Porta 2015-2016</h5>
+<h4></h4>
+<p><a href="/dl/RaiTV/programmi/media/ContentItem-ae024d81-a498-42a7-891a-98c9a810acbe.html#p=" class="txt"></a></p>
+<ol class="Specifiche">
+<li class="Pubblicato">
+<span>Pubblicato il</span>12/05/2016</li>
+</ol>
+</div>
+</li>
+<li id="ContentItem-5a930a0f-6565-4642-8310-8feba3c42814" class="Video "><a href="/dl/RaiTV/programmi/media/ContentItem-5a930a0f-6565-4642-8310-8feba3c42814.html#p=" class="img"><img height="169" width="300" alt="" src="/dl/img/2016/05/300x1691463115939352nondirlo_12_video.jpg"><div class="mask">
+<span class="icoVideo">Video</span><em>01:46:30</em>
+</div></a><div class="Info">
+<h2><a href="/dl/RaiTV/programmi/media/ContentItem-5a930a0f-6565-4642-8310-8feba3c42814.html#p=" class="txt">Non dirlo al mio capo - st 01 ep 03</a></h2>
+<h5>Non dirlo al mio capo</h5>
+<h4>Fiction</h4>
+<p><a href="/dl/RaiTV/programmi/media/ContentItem-5a930a0f-6565-4642-8310-8feba3c42814.html#p=" class="txt">Enrico viene aggredito perch&#233; lo studio difende una banca colpevole di aver affamato i propri clienti. Romeo &#232; finalmente tornato a scuola ma Mia sembra quasi evitarlo. Lisa, alla festa, ha lasciato il numero a "qualche" uomo di troppo. In studio arriva la severissima madre di Marta, Elda, accusata per la frattura di una allieva della sua scuola di danza</a></p>
+<ol class="Specifiche">
+<li class="Pubblicato">
+<span>Pubblicato il</span>12/05/2016</li>
+</ol>
+</div>
+</li>
+<li id="ContentItem-07902f5c-893f-4bbe-a054-0ee76df847fd" class="Video "><a href="/dl/RaiTV/programmi/media/ContentItem-07902f5c-893f-4bbe-a054-0ee76df847fd.html#p=" class="img"><img height="169" width="300" alt="" src="/dl/img/2016/05/300x1691463135136363gazebo_12_video.jpg"><div class="mask">
+<span class="icoVideo">Video</span><em>01:02:02</em>
+</div></a><div class="Info">
+<h2><a href="/dl/RaiTV/programmi/media/ContentItem-07902f5c-893f-4bbe-a054-0ee76df847fd.html#p=" class="txt">Gazebo del 12/05/2016</a></h2>
+<h5>Gazebo 2015-2016</h5>
+<h4></h4>
+<p><a href="/dl/RaiTV/programmi/media/ContentItem-07902f5c-893f-4bbe-a054-0ee76df847fd.html#p=" class="txt">Puntata numero 60 di Gazebo con le video inchieste di Diego Bianchi, i commenti dalla giornalista Francesca Schianchi sui principali fatti d&#8217;attualit&#224;, le vignette di Marco Dambrosio-Makkox e le divertenti incursioni di Mirko Matteucci-Missouri 4. Immancabile l&#8217;appuntamento con la Social Top Ten, la classifica dei tweet pi&#249; divertenti degli ultimi giorni e la musica live di Roberto Angelini, Giovanni Di Cosimo e la &#8220;resident band&#8221;.</a></p>
+<ol class="Specifiche">
+<li class="Pubblicato">
+<span>Pubblicato il</span>12/05/2016</li>
+</ol>
+</div>
+</li>
+<li id="ContentItem-82a69049-a88d-4eeb-973b-c1c22b004683" class="Video "><a href="/dl/RaiTV/programmi/media/ContentItem-82a69049-a88d-4eeb-973b-c1c22b004683.html#p=" class="img"><img height="169" width="300" alt="" src="/dl/img/2016/05/300x1691463134712146x.jpg"><div class="mask">
+<span class="icoVideo">Video</span><em>02:29:53</em>
+</div></a><div class="Info">
+<h2><a href="/dl/RaiTV/programmi/media/ContentItem-82a69049-a88d-4eeb-973b-c1c22b004683.html#p=" class="txt">Virus - Il contagio delle idee del 12/05/2016</a></h2>
+<h5>Virus 2015-2016</h5>
+<h4></h4>
+<p><a href="/dl/RaiTV/programmi/media/ContentItem-82a69049-a88d-4eeb-973b-c1c22b004683.html#p=" class="txt">Non ci lasciamo distrarre: siamo un paese insicuro. Insicuri nelle case, nelle piazze e nelle nostre tasche. Il Colosseo, il Circo Massimo e piazza di Spagna potevano essere gli obiettivi, volevano colpire dove c&#8217;era pi&#249; folla. L&#8217;inchiesta della trasmissione sulla cellula jihadista radicata in Puglia e bloccata ieri dall&#8217;operazione antiterrorismo a Bari.</a></p>
+<ol class="Specifiche">
+<li class="Pubblicato">
+<span>Pubblicato il</span>12/05/2016</li>
+</ol>
+</div>
+</li>
+<li id="ContentItem-17fcfc10-9266-470b-a6da-49d97492efb0" class="Video "><a href="/dl/RaiTV/programmi/media/ContentItem-17fcfc10-9266-470b-a6da-49d97492efb0.html#p=" class="img"><img height="169" width="300" alt="" src="/dl/img/2016/05/300x1691463047320932ant5_IlSistema.jpg"><div class="mask">
+<span class="icoVideo">Video</span><em>00:06:00</em>
+</div></a><div class="Info">
+<h2><a href="/dl/RaiTV/programmi/media/ContentItem-17fcfc10-9266-470b-a6da-49d97492efb0.html#p=" class="txt">Il sistema - Anteprima 5^ puntata</a></h2>
+<h5>Il sistema</h5>
+<h4>Fiction</h4>
+<p><a href="/dl/RaiTV/programmi/media/ContentItem-17fcfc10-9266-470b-a6da-49d97492efb0.html#p=" class="txt">L&#39;anteprima esclusiva della quinta puntata della serie "Il sistema", in onda luned&#236; 16 maggio in prima serata su Rai1.</a></p>
+<ol class="Specifiche">
+<li class="Pubblicato">
+<span>Pubblicato il</span>12/05/2016</li>
+</ol>
+</div>
+</li>
+<li id="ContentItem-925e5443-6e5d-4a34-8d02-d76224708180" class="Video "><a href="/dl/RaiTV/programmi/media/ContentItem-925e5443-6e5d-4a34-8d02-d76224708180.html#p=" class="img"><img height="169" width="300" alt="" src="/dl/img/2016/05/300x16914630326043401280x720_1457450984859_the_voice.jpg"><div class="mask">
+<span class="icoVideo">Video</span><em>03:54:00</em>
+</div></a><div class="Info">
+<h2><a href="/dl/RaiTV/programmi/media/ContentItem-925e5443-6e5d-4a34-8d02-d76224708180.html#p=" class="txt">Live #2 del 11/05/2016</a></h2>
+<h5>The Voice of Italy 2016</h5>
+<h4></h4>
+<p><a href="/dl/RaiTV/programmi/media/ContentItem-925e5443-6e5d-4a34-8d02-d76224708180.html#p=" class="txt">Secondo appuntamento dei Live di &#8220;The Voice of Italy&#8221;. 
+Ospiti della serata saranno Malika Ayane e Giorgio Moroder. La cantautrice milanese, dopo il grande successo del suo ultimo album &#8220;Naif&#8221; e di un tour sold out, arriva sul palco di The Voice dove incanter&#224; il pubblico con la sua splendida voce interpretando insieme ai ragazzi in gara due dei suoi brani pi&#249; celebri. Mentre il re della musica elettronica, Moroder, vincitore di tre Premi Oscar per le colonne sonore di &#8220;Flashdance&#8221;, &#8220;Top Gun&#8221; e &#8220;Fuga di Mezzanotte&#8221;,  accompagner&#224; i Talenti in una spettacolare esibizione. <br><br>
+
+TEAM CARR&#192;: Beatrice Ferrantino (Nova Milanese, MB); Tanya Borgese (Polistena, RC); Samuel Pietrasanta (Catania).<br><br>
+TEAM DOLCENERA: Alice Paba (Tolfa, RM); Joe Croci (Lusurasco, PC); Giorgia Al&#242; (di Londra, nata a Roma).<br><br>
+TEAM KILLA: Frances Alina Ascione (nata a Burbank, Los Angeles, vive a Roma); Roberta Nasti (Napoli); Charles Kablan (ivoriano, vive a Seriate, BG).<br><br>
+TEAM PEZZALI: Davide Carbone (Milano); Elya Zambolin (Monselice, PD); iWolf (Cristina De Vita e Michele Bonfitto, Foggia).<br><br>
+ 
+Gli 8 Talenti che rimarranno in gara al termine di questa puntata si affronteranno nella semifinale in onda luned&#236; 16 maggio e le 4 Voci che passeranno il turno si giocheranno la vittoria nella finalissima di luned&#236; 23 maggio.</a></p>
+<ol class="Specifiche">
+<li class="Pubblicato">
+<span>Pubblicato il</span>12/05/2016</li>
+</ol>
+</div>
+</li>
+<li id="ContentItem-dacbf199-4851-4164-9956-b9ef16aa3d07" class="Video "><a href="/dl/RaiTV/programmi/media/ContentItem-dacbf199-4851-4164-9956-b9ef16aa3d07.html#p=" class="img"><img height="169" width="300" alt="" src="/dl/img/2016/05/300x1691463056471965velvet.JPG"><div class="mask">
+<span class="icoVideo">Video</span><em>01:46:49</em>
+</div></a><div class="Info">
+<h2><a href="/dl/RaiTV/programmi/media/ContentItem-dacbf199-4851-4164-9956-b9ef16aa3d07.html#p=" class="txt">Velvet 3a stagione - Affari di famiglia del 11/05/2016</a></h2>
+<h5>Velvet</h5>
+<h4></h4>
+<p><a href="/dl/RaiTV/programmi/media/ContentItem-dacbf199-4851-4164-9956-b9ef16aa3d07.html#p=" class="txt">Durante la cena di fidanzamento, a cui sono presenti anche i genitori di Clara, arriva inaspettato il padre di Mateo. Suo figlio non vuole perdonargli il fatto di averlo abbandonato da bambino e pertanto gli dice chiaramente di non gradirlo alle sue nozze. Intanto, il nuovo direttore della Velvet fa subito intendere di voler mettere in atto diversi cambiamenti all&#8217;interno della Galleria provocando il malumore dei dipendenti. Dovr&#224; vedersela anche con Cristina che, saputo della gravidanza di Anna, la va a cercare aggredendola con violenza spingendola per le scale&#8230;</a></p>
+<ol class="Specifiche">
+<li class="Pubblicato">
+<span>Pubblicato il</span>11/05/2016</li>
+</ol>
+</div>
+</li>
+<li id="ContentItem-8d0de230-22f6-418f-a1b9-1083ca099796" class="Video "><a href="/dl/RaiTV/programmi/media/ContentItem-8d0de230-22f6-418f-a1b9-1083ca099796.html#p=" class="img"><img height="169" width="300" alt="" src="/dl/img/2016/03/300x1691456935008272MariaBellonci_tmb.jpg"><div class="mask">
+<span class="icoVideo">Video</span><em>00:07:09</em>
+</div></a><div class="Info">
+<h2><a href="/dl/RaiTV/programmi/media/ContentItem-8d0de230-22f6-418f-a1b9-1083ca099796.html#p=" class="txt">Maria Bellonci, il Premio Strega</a></h2>
+<h5>Bianco e Nero</h5>
+<h4>Bianco e Nero</h4>
+<p><a href="/dl/RaiTV/programmi/media/ContentItem-8d0de230-22f6-418f-a1b9-1083ca099796.html#p=" class="txt">Animatrice del fermento culturale degli anni 50, Maria Bellonci, scrittrice e traduttrice italiana,  esordisce nel 1939 con Lucrezia Borgia, che lo stesso anno si aggiudica il Premio Viareggio. Nel suo salotto letterario, insieme al marito Goffredo e all&#8217;industriale e amico Guido Alberti fonda nel 1947 il Premio Strega, ancora oggi prestigiosa rassegna di rilievo nazionale. La ricordiamo a 30 anni dalla morte, 13 maggio 1986<br/>videografia:Tempo Novecento &#8211; Maria Bellonci una signora della scrittura (1998), Matita blu &#8211; I premi letterari (1968), Novecento &#8211; la letteratura italiana dal 45 a oggi (1990), Attualit&#224; magazine &#8211; Arte: nel regno di Isabella  (2006), Tg2 Studio Aperto (1986), Arti e scienze &#8211; Con Maria Bellonci a Ferrara (1961), Voyager : ai confini della conoscenza (2004),  Premio Strega (1998), Premio letterario Strega (1984), Premio Strega (1983), Premio letterario Strega (2001), Tuttilibri (1973), Io e &#8230; Maria Bellonci e la camera degli sposi di Mantegna (1973)</a></p>
+<ol class="Specifiche">
+<li class="Pubblicato">
+<span>Pubblicato il</span>29-03-2011</li>
+</ol>
+</div>
+</li>
+<li id="ContentItem-66730ffb-acfb-4bdb-947c-a7249dbc6153" class="Video "><a href="/dl/RaiTV/programmi/media/ContentItem-66730ffb-acfb-4bdb-947c-a7249dbc6153.html#p=" class="img"><img height="169" width="300" alt="" src="/dl/img/2016/05/300x1691462951644432impastato_1_video.jpg"><div class="mask">
+<span class="icoVideo">Video</span><em>01:38:14</em>
+</div></a><div class="Info">
+<h2><a href="/dl/RaiTV/programmi/media/ContentItem-66730ffb-acfb-4bdb-947c-a7249dbc6153.html#p=" class="txt">Felicia Impastato</a></h2>
+<h5>Felicia Impastato</h5>
+<h4>Fiction</h4>
+<p><a href="/dl/RaiTV/programmi/media/ContentItem-66730ffb-acfb-4bdb-947c-a7249dbc6153.html#p=" class="txt">Il 9 maggio 1978 Peppino Impastato viene assassinato dalla mafia. E&#8217; da allora che la madre Felicia decide di gridare al mondo i nomi e i cognomi di chi Io ha ucciso. E negli anni trover&#224; qualcuno disposto ad ascoltarla: si chiama Rocco Chinnici. Il magistrato che riuscir&#224; a ribaltare le conclusioni frettolose dei suoi colleghi sulla morte di Peppino. Ma il 29 luglio del 1983 Io fanno saltare in aria. Felicia ne piange la morte, ma non si arrender&#224; mai. 25 ottobre del 2000: la Sicilia, grazie al sacrificio di tanti, &#232; cambiata: ventidue anni dopo la morte di Peppino, Felicia Bartolotta, primo teste nel processo a Tano Badalamenti, pu&#242; dire in faccia al boss &#8220;tu hai ucciso mio figlio&#8221;.</a></p>
+<ol class="Specifiche">
+<li class="Pubblicato">
+<span>Pubblicato il</span>10/05/2016</li>
+</ol>
+</div>
+</li>
+<li id="ContentItem-709439e1-63d3-4161-9f55-b21eb0c31b55" class="Video "><a href="/dl/RaiTV/programmi/media/ContentItem-709439e1-63d3-4161-9f55-b21eb0c31b55.html#p=" class="img"><img height="169" width="300" alt="" src="/dl/img/2016/05/300x1691462950833834ballaro.jpg"><div class="mask">
+<span class="icoVideo">Video</span><em>02:39:15</em>
+</div></a><div class="Info">
+<h2><a href="/dl/RaiTV/programmi/media/ContentItem-709439e1-63d3-4161-9f55-b21eb0c31b55.html#p=" class="txt">Ballarò del 10/05/2016</a></h2>
+<h5>Ballarò 2015-2016</h5>
+<h4></h4>
+<p><a href="/dl/RaiTV/programmi/media/ContentItem-709439e1-63d3-4161-9f55-b21eb0c31b55.html#p=" class="txt">Sandro Gozi,Sottosegretario alla Presidenza del Consiglio; Susanna Camusso, Segretario della CGIL e la candidata a Sindaco di Roma Giorgia Meloni saranno tra gli ospiti di Massimo Giannini.
+La Gialappa&#8217;s Band irromper&#224; con la sua satira attraverso una classifica semiseria sui temi dell&#8217;attualit&#224; e della politica della settimana.
+Come di consueto sar&#224; ospite anche Alessandra Ghisleri, direttrice di Euromedia Research, che dar&#224; in diretta i risultati dei sondaggi realizzati per la trasmissione.
+
+Ballar&#242; &#232; anche sui social network, attraverso l&#8217;account Twitter (@RaiBallaro) e Facebook (www.facebook.com/ballaro.rai).
+Dalle 16 di ogni marted&#236;, nella sezione News del sito del programma www.ballaro.rai.it, saranno visibili le anticipazioni dei servizi in onda.
+La puntata sar&#224; visibile in diretta streaming sul sito dove, poco dopo la messa in onda, saranno on line anche tutti i contenuti video e altre informazioni sul programma.</a></p>
+<ol class="Specifiche">
+<li class="Pubblicato">
+<span>Pubblicato il</span>11/05/2016</li>
+</ol>
+</div>
+</li>
+<li id="ContentItem-861c7d71-8c99-4f09-8b90-050b69784381" class="Video "><a href="/dl/RaiTV/programmi/media/ContentItem-861c7d71-8c99-4f09-8b90-050b69784381.html#p=" class="img"><img height="169" width="300" alt="" src="http://www.rai.it/dl/video/smooth/300x169941f0b61-9890-4e05-a191-c6d37c1342ea.jpg"><div class="mask">
+<span class="icoVideo">Video</span><em>00:07:14</em>
+</div></a><div class="Info">
+<h2><a href="/dl/RaiTV/programmi/media/ContentItem-861c7d71-8c99-4f09-8b90-050b69784381.html#p=" class="txt">I fatti della settimana raccontati dalla Gialappa's - Ballarò del 10/05/2016</a></h2>
+<h5>Ballarò 2015-2016</h5>
+<h4></h4>
+<p><a href="/dl/RaiTV/programmi/media/ContentItem-861c7d71-8c99-4f09-8b90-050b69784381.html#p=" class="txt">I fatti della settimana raccontati dalla Gialappa&#39;s - Ballar&#242; del 10/05/2016</a></p>
+<ol class="Specifiche">
+<li class="Pubblicato">
+<span>Pubblicato il</span>10/05/2016</li>
+</ol>
+</div>
+</li>
+<li id="ContentItem-e8dacf26-42ee-4838-9df8-1206b6c6ab7f" class="Video "><a href="/dl/RaiTV/programmi/media/ContentItem-e8dacf26-42ee-4838-9df8-1206b6c6ab7f.html#p=" class="img"><img height="169" width="300" alt="" src="/dl/img/2016/05/300x1691462982467083franco.jpg"><div class="mask">
+<span class="icoVideo">Video</span><em>00:02:34</em>
+</div></a><div class="Info">
+<h2><a href="/dl/RaiTV/programmi/media/ContentItem-e8dacf26-42ee-4838-9df8-1206b6c6ab7f.html#p=" class="txt">Franco Gatti: "Ecco perchè ho lasciato i Ricchi e Poveri"</a></h2>
+<h5>Celebrity</h5>
+<h4>Gossip</h4>
+<p><a href="/dl/RaiTV/programmi/media/ContentItem-e8dacf26-42ee-4838-9df8-1206b6c6ab7f.html#p=" class="txt">In un&#39;intervista  a "La vita in diretta" il cantante Franco Gatti  ha spiegato le ragioni che lo hanno spinto a ritirarsi dalla scena artistica dopo quasi 50 anni di carriera con i Ricchi e Poveri: "Dopo che mio figlio &#232; mancato la mia vita &#232; cambiata"</a></p>
+<ol class="Specifiche">
+<li class="Pubblicato">
+<span>Pubblicato il</span>10/05/2016</li>
+</ol>
+</div>
+</li>
+<li id="ContentItem-3aa0ba64-f54f-469b-83c8-697332576c91" class="Video "><a href="/dl/RaiTV/programmi/media/ContentItem-3aa0ba64-f54f-469b-83c8-697332576c91.html#p=" class="img"><img height="169" width="300" alt="" src="/dl/img/2016/05/300x1691462959763617ev.jpg"><div class="mask">
+<span class="icoVideo">Video</span><em>01:58:20</em>
+</div></a><div class="Info">
+<h2><a href="/dl/RaiTV/programmi/media/ContentItem-3aa0ba64-f54f-469b-83c8-697332576c91.html#p=" class="txt">Eurovision Song Contest - Semifinale del 10/05/2016</a></h2>
+<h5>Eurovision Song Contest 2016</h5>
+<h4></h4>
+<p><a href="/dl/RaiTV/programmi/media/ContentItem-3aa0ba64-f54f-469b-83c8-697332576c91.html#p=" class="txt">Si apre l sipario sulla 1^ semifinale, che vede 18 canzoni sfidarsi per 10 posti in finale. Per i telespettatori italiani, il commento fuori campo &#232; affidato alle voci di Filippo Solibello e Marco Ardemagni</a></p>
+<ol class="Specifiche">
+<li class="Pubblicato">
+<span>Pubblicato il</span>10/05/2016</li>
+</ol>
+</div>
+</li>
+<li id="ContentItem-44f76410-38b3-418b-9736-51cf1bcb6e87" class="Video "><a href="/dl/RaiTV/programmi/media/ContentItem-44f76410-38b3-418b-9736-51cf1bcb6e87.html#p=" class="img"><img height="169" width="300" alt="" src="http://www.rai.it/dl/video/smooth/300x16959ceb0c6-dc44-434a-98c0-208a661cc187.jpg"><div class="mask">
+<span class="icoVideo">Video</span><em>00:55:15</em>
+</div></a><div class="Info">
+<h2><a href="/dl/RaiTV/programmi/media/ContentItem-44f76410-38b3-418b-9736-51cf1bcb6e87.html#p=" class="txt">2Next - Economia e Futuro del 10/05/2016</a></h2>
+<h5>2Next Economia e Futuro 2015-2016</h5>
+<h4></h4>
+<p><a href="/dl/RaiTV/programmi/media/ContentItem-44f76410-38b3-418b-9736-51cf1bcb6e87.html#p=" class="txt">Giovani e lost generation, pensioni e flessibilit&#224;, lavoro e prospettive. Al centro della puntata, l&#39;intervista a Giuliano Poletti, ministro del Lavoro e delle Politiche Sociali, ospite in studio di Annalisa Bruchi</a></p>
+<ol class="Specifiche">
+<li class="Pubblicato">
+<span>Pubblicato il</span>11/05/2016</li>
+</ol>
+</div>
+</li>
+<li id="ContentItem-74ac1d31-c594-402b-9c6e-68ae2d595997" class="Video "><a href="/dl/RaiTV/programmi/media/ContentItem-74ac1d31-c594-402b-9c6e-68ae2d595997.html#p=" class="img"><img height="169" width="300" alt="" src="/dl/img/2016/05/300x1691462863584475sistema.jpg"><div class="mask">
+<span class="icoVideo">Video</span><em>01:47:49</em>
+</div></a><div class="Info">
+<h2><a href="/dl/RaiTV/programmi/media/ContentItem-74ac1d31-c594-402b-9c6e-68ae2d595997.html#p=" class="txt">Il sistema - st 01 ep 04</a></h2>
+<h5>Il sistema</h5>
+<h4>Fiction</h4>
+<p><a href="/dl/RaiTV/programmi/media/ContentItem-74ac1d31-c594-402b-9c6e-68ae2d595997.html#p=" class="txt">Alessandro capisce che Daria ha scoperto la sua vera identit&#224;. Mentre cerca di rintracciarla, il Rosso fa irruzione in casa sua e gli ordina di seguirlo. I due salgono a bordo di uno yacht in cui c&#39;&#232; anche Daria. La squadra teme che possa accadere il peggio, ma la donna non ha fatto la spia: l&#39;avvocato Alcamo ha voluto incontrare e conoscere Alessandro lontano da occhi indiscreti...</a></p>
+<ol class="Specifiche">
+<li class="Pubblicato">
+<span>Pubblicato il</span>09/05/2016</li>
+</ol>
+</div>
+</li>
+<li id="ContentItem-628b48e7-1b1b-48e2-af0c-919aaf0468d0" class="Video "><a href="/dl/RaiTV/programmi/media/ContentItem-628b48e7-1b1b-48e2-af0c-919aaf0468d0.html#p=" class="img"><img height="169" width="300" alt="" src="/dl/img/2016/05/300x1691462858898222petrolio.jpg"><div class="mask">
+<span class="icoVideo">Video</span><em>01:08:56</em>
+</div></a><div class="Info">
+<h2><a href="/dl/RaiTV/programmi/media/ContentItem-628b48e7-1b1b-48e2-af0c-919aaf0468d0.html#p=" class="txt">Petrolio del 09/05/2016</a></h2>
+<h5>Petrolio 2016</h5>
+<h4></h4>
+<p><a href="/dl/RaiTV/programmi/media/ContentItem-628b48e7-1b1b-48e2-af0c-919aaf0468d0.html#p=" class="txt">Cargo: la via nascosta della globalizzazione - Con 60.000 navi che solcano costantemente i nostri mari, il commercio marittimo &#232; un business con un gigantesco giro d&#8217;affari che controlla l&#8217;economia globale, il 90% di tutte le merci. Una gigantesca piattaforma logistica che consente sotterfugi di ogni tipo, dal traffico di armi e droga, all&#8217;evasione fiscale fino al micidiale inquinamento. Le prime 20 navi al mondo producono emissioni di zolfo superiori a quelle di tutte le automobili del pianeta.
+Cargo racconta il potere e la ricchezza dei grandi e pressoch&#233; sconosciuti armatori, le telecamere di Petrolio entrano nelle stive delle gigantesche navi di nuova generazione, rivelando inaspettati traffici illeciti con i rischi posti dalla crescente minaccia terroristica. In esclusiva le telecamere di Petrolio sono sulle navi e sui sottomarini che pattugliano le nostre coste e hanno documentato il lavoro della Centrale Operativa da cui si controlla il traffico marittimo del Mediterraneo un&#8217;esclusiva missione all&#8217;interno di un sottomarino.</a></p>
+<ol class="Specifiche">
+<li class="Pubblicato">
+<span>Pubblicato il</span>10/05/2016</li>
+</ol>
+</div>
+</li>
+<li id="ContentItem-ac5fdef0-2988-4d4b-9156-9bac1a7b7697" class="Video "><a href="/dl/RaiTV/programmi/media/ContentItem-ac5fdef0-2988-4d4b-9156-9bac1a7b7697.html#p=" class="img"><img height="169" width="300" alt="" src="http://www.rai.it/dl/video/smooth/300x169ef3aa873-c385-4e67-a94b-f59c725a7c7e.jpg"><div class="mask">
+<span class="icoVideo">Video</span><em>01:31:13</em>
+</div></a><div class="Info">
+<h2><a href="/dl/RaiTV/programmi/media/ContentItem-ac5fdef0-2988-4d4b-9156-9bac1a7b7697.html#p=" class="txt">La via di uscita - Report del 08/05/2016</a></h2>
+<h5>Report 2015-2016</h5>
+<h4></h4>
+<p><a href="/dl/RaiTV/programmi/media/ContentItem-ac5fdef0-2988-4d4b-9156-9bac1a7b7697.html#p=" class="txt">Siamo di fronte alla pi&#249; grave crisi migratoria dal secondo dopoguerra a oggi. La risposta dell&#39;Europa &#232; stata la firma di un accordo con la Turchia che di fatto chiude la rotta balcanica e impedisce ai profughi di arrivare nei paesi del Nord Europa. Il trattato di Schengen traballa, molti stati europei alzano barricate, fili spinati, o introducono i controlli ai confini. Il risultato &#232; che oggi l&#39;unica rotta aperta &#232; quella mediterranea dalla Libia all&#39;Italia. Noi non possiamo chiudere il Mediterraneo con il filo spinato e di fatto stiamo diventando, insieme alla Grecia, l&#8217;unico luogo di approdo. Per evitare l&#8217;instabilit&#224; del paese, bisogner&#224; affrontare l&#8217;ondata migratoria cambiando radicalmente l&#8217;impostazione dell&#8217;accoglienza. Report ha provato a costruire un progetto pragmatico (completamente a gestione pubblica con supervisione europea), dove il dramma si trasforma in opportunit&#224;. Sono anche stati calcolati i costi e i benefici che ne deriverebbero. Il progetto, sottoposto al commissario europeo e ai delegati degli stati membri del Nord Europa, ha trovato apertura e disponibilit&#224;, sia ad accogliere le quote di richiedenti asilo, sia a intervenire sostenendo i costi. L&#8217;inchiesta di Report si propone come un contributo di idee al governo</a></p>
+<ol class="Specifiche">
+<li class="Pubblicato">
+<span>Pubblicato il</span>09/05/2016</li>
+</ol>
+</div>
+</li>
+<li id="ContentItem-0f654903-6d4d-4f6f-93b4-eee119062601" class="Video "><a href="/dl/RaiTV/programmi/media/ContentItem-0f654903-6d4d-4f6f-93b4-eee119062601.html#p=" class="img"><img height="169" width="300" alt="" src="http://www.rai.it/dl/video/smooth/300x1690f5fb88c-309e-4aae-80dd-2d9b044b8beb.jpg"><div class="mask">
+<span class="icoVideo">Video</span><em>00:35:05</em>
+</div></a><div class="Info">
+<h2><a href="/dl/RaiTV/programmi/media/ContentItem-0f654903-6d4d-4f6f-93b4-eee119062601.html#p=" class="txt">Fiorello a Quelli che il Calcio - Quelli che il calcio 08/05/16</a></h2>
+<h5>Quelli che il calcio 2015-2016</h5>
+<h4></h4>
+<p><a href="/dl/RaiTV/programmi/media/ContentItem-0f654903-6d4d-4f6f-93b4-eee119062601.html#p=" class="txt"></a></p>
+<ol class="Specifiche">
+<li class="Pubblicato">
+<span>Pubblicato il</span>08/05/2016</li>
+</ol>
+</div>
+</li>
+<li id="ContentItem-b987243b-969a-4218-accc-1e55896d57d7" class="Video "><a href="/dl/RaiTV/programmi/media/ContentItem-b987243b-969a-4218-accc-1e55896d57d7.html#p=" class="img"><img height="169" width="300" alt="" src="http://www.rai.it/dl/video/smooth/300x169f7181c1e-29eb-461f-ae9f-56ad576fe633.jpg"><div class="mask">
+<span class="icoVideo">Video</span><em>00:33:54</em>
+</div></a><div class="Info">
+<h2><a href="/dl/RaiTV/programmi/media/ContentItem-b987243b-969a-4218-accc-1e55896d57d7.html#p=" class="txt">Matteo Renzi - Che tempo che fa 08/05/2016</a></h2>
+<h5>Che tempo che fa 2015-2016</h5>
+<h4></h4>
+<p><a href="/dl/RaiTV/programmi/media/ContentItem-b987243b-969a-4218-accc-1e55896d57d7.html#p=" class="txt">Matteo Renzi, Presidente del Consiglio dei Ministri dal 22 febbraio 2014 e Segretario del Partito Democratico dall&#39;8 dicembre 2013, traccia un bilancio dei suoi due anni di governo</a></p>
+<ol class="Specifiche">
+<li class="Pubblicato">
+<span>Pubblicato il</span>08/05/2016</li>
+</ol>
+</div>
+</li>
+<li id="ContentItem-c21b920a-c635-49f2-8b17-9c9e090b2ad9" class="Video "><a href="/dl/RaiTV/programmi/media/ContentItem-c21b920a-c635-49f2-8b17-9c9e090b2ad9.html#p=" class="img"><img height="169" width="300" alt="" src="/dl/img/2016/05/300x1691462791382790XXXXXX.jpg"><div class="mask">
+<span class="icoVideo">Video</span><em>00:59:35</em>
+</div></a><div class="Info">
+<h2><a href="/dl/RaiTV/programmi/media/ContentItem-c21b920a-c635-49f2-8b17-9c9e090b2ad9.html#p=" class="txt">Gazebo del 08/05/2016</a></h2>
+<h5>Gazebo 2015-2016</h5>
+<h4></h4>
+<p><a href="/dl/RaiTV/programmi/media/ContentItem-c21b920a-c635-49f2-8b17-9c9e090b2ad9.html#p=" class="txt">Diego Bianchi ci racconta i principali fatti sociali e politici della settimana attraverso le video inchieste e la Social Top Ten, con i tweet pi&#249; significativi degli ultimi giorni. Non mancheranno le vignette di Marco Dambrosio-Makkox, il punto della settimana del giornalista Marco Damilano, le divertenti incursioni di Mirko Matteucci-Missouri4 e la musica dal vivo della &#8220;resident band&#8221;, accompagnata dalla bellissima voce di Awa Ly.</a></p>
+<ol class="Specifiche">
+<li class="Pubblicato">
+<span>Pubblicato il</span>08/05/2016</li>
+</ol>
+</div>
+</li>
+<li id="ContentItem-efc87c07-23d1-4784-8b0d-fb80d35e0642" class="Video "><a href="/dl/RaiTV/programmi/media/ContentItem-efc87c07-23d1-4784-8b0d-fb80d35e0642.html#p=" class="img"><img height="169" width="300" alt="" src="/dl/img/2016/05/300x1691462460271375vlcsnap-2016-05-05-16h49m47s179.png"><div class="mask">
+<span class="icoVideo">Video</span>
+</div></a><div class="Info">
+<h2><a href="/dl/RaiTV/programmi/media/ContentItem-efc87c07-23d1-4784-8b0d-fb80d35e0642.html#p=" class="txt">Intervista a Lunetta Savino - Felicia Impastato</a></h2>
+<h5>Felicia Impastato</h5>
+<h4>Fiction</h4>
+<p><a href="/dl/RaiTV/programmi/media/ContentItem-efc87c07-23d1-4784-8b0d-fb80d35e0642.html#p=" class="txt">L&#39;attrice, che interpreta Felicia Impastato, racconta alle telecamere di Rai.tv la preparazione del personaggio</a></p>
+<ol class="Specifiche">
+<li class="Pubblicato">
+<span>Pubblicato il</span>05/05/2016</li>
+</ol>
+</div>
+</li>
+<li id="ContentItem-134bf229-b90f-42b8-9e3b-c263d4798919" class="Video "><a href="/dl/RaiTV/programmi/media/ContentItem-134bf229-b90f-42b8-9e3b-c263d4798919.html#p=" class="img"><img height="169" width="300" alt="" src="http://www.rai.it/dl/video/smooth/300x16993ecc904-43db-49e8-be0f-f0809d4ee5ea.jpg"><div class="mask">
+<span class="icoVideo">Video</span><em>00:14:31</em>
+</div></a><div class="Info">
+<h2><a href="/dl/RaiTV/programmi/media/ContentItem-134bf229-b90f-42b8-9e3b-c263d4798919.html#p=" class="txt">Luciana Littizzetto - Che tempo che fa 08/05/2016</a></h2>
+<h5>Che tempo che fa 2015-2016</h5>
+<h4></h4>
+<p><a href="/dl/RaiTV/programmi/media/ContentItem-134bf229-b90f-42b8-9e3b-c263d4798919.html#p=" class="txt">Luciana Littizzetto chiude la trasmissione con il suo originale commento delle notizie della settimana</a></p>
+<ol class="Specifiche">
+<li class="Pubblicato">
+<span>Pubblicato il</span>08/05/2016</li>
+</ol>
+</div>
+</li>
+<li id="ContentItem-5d935e63-256e-432f-a24b-5a3270fe44f7" class="Video "><a href="/dl/RaiTV/programmi/media/ContentItem-5d935e63-256e-432f-a24b-5a3270fe44f7.html#p=" class="img"><img height="169" width="300" alt="" src="http://www.rai.it/dl/video/smooth/300x1699d94a790-afc8-4b4d-89d7-b4ffefe383b2.jpg"><div class="mask">
+<span class="icoVideo">Video</span><em>00:17:57</em>
+</div></a><div class="Info">
+<h2><a href="/dl/RaiTV/programmi/media/ContentItem-5d935e63-256e-432f-a24b-5a3270fe44f7.html#p=" class="txt">Pedro Almodóvar - Che tempo che fa 08/05/2016</a></h2>
+<h5>Che tempo che fa 2015-2016</h5>
+<h4></h4>
+<p><a href="/dl/RaiTV/programmi/media/ContentItem-5d935e63-256e-432f-a24b-5a3270fe44f7.html#p=" class="txt">Pedro Almodovar, venti titoli in ventisei anni di carriera, due Premi Oscar (Tutto su mia madre 1999 - Parla con lei 2003), due premi al Festival di Cannes, 5 Premi Goya, due David di Donatello, tre Nastri d&#39;Argento e altrettanti Bafta, dal 18 maggio nelle sale italiane con un nuovo emozionante dramma, Julieta, in concorso per la Palma d&#39;Oro all&#39;imminente Festival di Cannes</a></p>
+<ol class="Specifiche">
+<li class="Pubblicato">
+<span>Pubblicato il</span>08/05/2016</li>
+</ol>
+</div>
+</li>
+<li id="ContentItem-18248425-e936-493f-884e-031c187ef9d8" class="Video "><a href="/dl/RaiTV/programmi/media/ContentItem-18248425-e936-493f-884e-031c187ef9d8.html#p=" class="img"><img height="169" width="300" alt="" src="http://www.rai.it/dl/video/smooth/300x169c3b8c6a3-6a53-42db-b560-9b282a73def1.jpg"><div class="mask">
+<span class="icoVideo">Video</span><em>00:14:16</em>
+</div></a><div class="Info">
+<h2><a href="/dl/RaiTV/programmi/media/ContentItem-18248425-e936-493f-884e-031c187ef9d8.html#p=" class="txt">Riccardo Scamarcio - Che tempo che fa 08/05/2016</a></h2>
+<h5>Che tempo che fa 2015-2016</h5>
+<h4></h4>
+<p><a href="/dl/RaiTV/programmi/media/ContentItem-18248425-e936-493f-884e-031c187ef9d8.html#p=" class="txt">Presenta Pericle il nero di Stefano Mordini in uscita il 12 maggio e al Festival di Cannes nella sezione &#39;Un Certain Regard&#39;. Basato sull&#39;omonimo romanzo di Giuseppe Ferrandino e interpretato da Riccardo Scamarcio e Marina Fo&#239;s, racconta di Pericle Scalzone (Scamarcio), detto Il nero, che di lavoro "fa il culo alla gente" per conto di Don Luigi, boss camorrista emigrato in Belgio. Durante una spedizione punitiva per conto del boss, Pericle commette un grave errore. Scatta la sua condanna a morte.In una rocambolesca fuga che lo porter&#224; fino in Francia, Pericle incontra Anastasia, che lo accoglie e gli mostra la possibilit&#224; di una nuova esistenza. Ma Pericle non pu&#242; sfuggire a un passato ingombrante e pieno di interrogativi. Attraversando le pagine di Ferrandino, quello che ci ha subito catturato &#232; stata quella strana musica che suonava dentro la testa di Pericle. Abbiamo cercato di assecondarne i pensieri, di accordandoci alle sue digressioni e alle sue intuizioni, solo cos&#236; potevamo trovare la sua storia e quella del nostro film. (...)il film sfugge a qualsiasi definizione, c&#39;&#232; dramma, c&#226;&#232; la teatralit&#224; di certe figure iconiche e c&#39;&#232; un vena di humor (nero). Ed &#232; la voce di Pericle a guidarci in una fuga che ha un solo scopo: fermarsi in un luogo tranquillo e non essere pi&#249; solo. (Stefano Mordini)</a></p>
+<ol class="Specifiche">
+<li class="Pubblicato">
+<span>Pubblicato il</span>08/05/2016</li>
+</ol>
+</div>
+</li>
+<li id="ContentItem-11ea2fe6-9acc-4b4f-b1e3-63fc39f4ae62" class="Video "><a href="/dl/RaiTV/programmi/media/ContentItem-11ea2fe6-9acc-4b4f-b1e3-63fc39f4ae62.html#p=" class="img"><img height="169" width="300" alt="" src="/dl/img/2016/05/300x1691462542629250ROSSELLINI.jpg"><div class="mask">
+<span class="icoVideo">Video</span>
+</div></a><div class="Info">
+<h2><a href="/dl/RaiTV/programmi/media/ContentItem-11ea2fe6-9acc-4b4f-b1e3-63fc39f4ae62.html#p=" class="txt">Roberto Rossellini, il mestiere di uomo</a></h2>
+<h5>Bianco e Nero</h5>
+<h4></h4>
+<p><a href="/dl/RaiTV/programmi/media/ContentItem-11ea2fe6-9acc-4b4f-b1e3-63fc39f4ae62.html#p=" class="txt">110 anni fa, l&#39;8 maggio 1906, nasceva a Roma Roberto Gastone Zeffiro Rossellini. Regista, sceneggiatore e produttore cinematografico, uno dei pi&#249; importanti registi della storia del cinema italiano ma soprattutto un filosofo e come lui stesso amava definirsi, un lavoratore per l&#39;umanit&#224;. In questo omaggio ricordiamo il passaggio dal cinema alla televisione,  che  Rossellini  ritenne il mezzo di comunicazione in grado di raggiungere meglio lo spettatore. Ha inizio cos&#236; il suo progetto enciclopedico volto a  trasmettere la cultura in modo pi&#249; efficace a supporto dei libri e della scuola.</a></p>
+<ol class="Specifiche">
+<li class="Pubblicato">
+<span>Pubblicato il</span>06-05-2016</li>
+</ol>
+</div>
+</li>
+<li id="ContentItem-ff765a96-4c86-4a9a-9884-137be9be4b44" class="Video "><a href="/dl/RaiTV/programmi/media/ContentItem-ff765a96-4c86-4a9a-9884-137be9be4b44.html#p=" class="img"><img height="169" width="300" alt="" src="http://www.rai.it/dl/video/smooth/300x1693ce204ee-6c52-48fd-b5d1-c7d712c371c3.jpg"><div class="mask">
+<span class="icoVideo">Video</span><em>00:05:57</em>
+</div></a><div class="Info">
+<h2><a href="/dl/RaiTV/programmi/media/ContentItem-ff765a96-4c86-4a9a-9884-137be9be4b44.html#p=" class="txt">The Kolors a Quelli che il calcio con "Me minus you"  - Quelli che il calcio 08/05/16 </a></h2>
+<h5>Quelli che il calcio 2015-2016</h5>
+<h4></h4>
+<p><a href="/dl/RaiTV/programmi/media/ContentItem-ff765a96-4c86-4a9a-9884-137be9be4b44.html#p=" class="txt"></a></p>
+<ol class="Specifiche">
+<li class="Pubblicato">
+<span>Pubblicato il</span>08/05/2016</li>
+</ol>
+</div>
+</li>
+<li id="ContentItem-a2f431fc-0cf0-4147-a66f-15bcd04831ce" class="Video "><a href="/dl/RaiTV/programmi/media/ContentItem-a2f431fc-0cf0-4147-a66f-15bcd04831ce.html#p=" class="img"><img height="169" width="300" alt="" src="/dl/img/2016/05/300x1691462771362617ulisse_7_video.jpg"><div class="mask">
+<span class="icoVideo">Video</span><em>02:02:20</em>
+</div></a><div class="Info">
+<h2><a href="/dl/RaiTV/programmi/media/ContentItem-a2f431fc-0cf0-4147-a66f-15bcd04831ce.html#p=" class="txt">I segreti del Fuoco - Ulisse: il piacere della scoperta del 07/05/2016</a></h2>
+<h5>Ulisse 2015-2016</h5>
+<h4></h4>
+<p><a href="/dl/RaiTV/programmi/media/ContentItem-a2f431fc-0cf0-4147-a66f-15bcd04831ce.html#p=" class="txt">E&#8217; la forza della natura per eccellenza, la fonte dell&#8217;antica meraviglia umana: &#232; il fuoco. Accendere un fuoco significa accendere la vita, aprire nuove possibilit&#224; e far nascere dei nuovi oggetti. Racconteremo quali sono i &#8220;figli del fuoco&#8221; che ogni giorno teniamo tra le mani: i bicchieri, gli oggetti in terracotta, le rotaie, i binari, la armi da fuoco e tutti quegli oggetti che dobbiamo alla rivoluzione industriale.</a></p>
+<ol class="Specifiche">
+<li class="Pubblicato">
+<span>Pubblicato il</span>07/05/2016</li>
+</ol>
+</div>
+</li>
+<li id="ContentItem-3c0b5760-d3f2-4703-8f7f-fc3cb7647d43" class="Video "><a href="/dl/RaiTV/programmi/media/ContentItem-3c0b5760-d3f2-4703-8f7f-fc3cb7647d43.html#p=" class="img"><img height="169" width="300" alt="" src="http://www.rai.it/dl/video/smooth/300x169df67e484-75ee-4dc0-83c3-57b36a726da6.jpg"><div class="mask">
+<span class="icoVideo">Video</span><em>00:04:48</em>
+</div></a><div class="Info">
+<h2><a href="/dl/RaiTV/programmi/media/ContentItem-3c0b5760-d3f2-4703-8f7f-fc3cb7647d43.html#p=" class="txt">Max (Edoardo Ferrario) - Quelli che il calcio 08/05/16 </a></h2>
+<h5>Quelli che il calcio 2015-2016</h5>
+<h4></h4>
+<p><a href="/dl/RaiTV/programmi/media/ContentItem-3c0b5760-d3f2-4703-8f7f-fc3cb7647d43.html#p=" class="txt"></a></p>
+<ol class="Specifiche">
+<li class="Pubblicato">
+<span>Pubblicato il</span>08/05/2016</li>
+</ol>
+</div>
+</li>
+<li id="ContentItem-92c2f149-7ed8-4cf3-909c-d212ee0dad10" class="Video "><a href="/dl/RaiTV/programmi/media/ContentItem-92c2f149-7ed8-4cf3-909c-d212ee0dad10.html#p=" class="img"><img height="169" width="300" alt="" src="http://www.rai.it/dl/video/smooth/300x169c4e623ae-3ddb-41a5-83f6-b63f6d54e850.jpg"><div class="mask">
+<span class="icoVideo">Video</span><em>00:05:45</em>
+</div></a><div class="Info">
+<h2><a href="/dl/RaiTV/programmi/media/ContentItem-92c2f149-7ed8-4cf3-909c-d212ee0dad10.html#p=" class="txt">Michele Mirabella a Quelli che il calcio - Quelli che il calcio 08/05/16 </a></h2>
+<h5>Quelli che il calcio 2015-2016</h5>
+<h4></h4>
+<p><a href="/dl/RaiTV/programmi/media/ContentItem-92c2f149-7ed8-4cf3-909c-d212ee0dad10.html#p=" class="txt"></a></p>
+<ol class="Specifiche">
+<li class="Pubblicato">
+<span>Pubblicato il</span>08/05/2016</li>
+</ol>
+</div>
+</li>
+<li id="ContentItem-b3f7e2f8-53ae-4ca9-9f3c-3ac23b6e5066" class="Video "><a href="/dl/RaiTV/programmi/media/ContentItem-b3f7e2f8-53ae-4ca9-9f3c-3ac23b6e5066.html#p=" class="img"><img height="169" width="300" alt="" src="/dl/img/2016/05/300x1691462511760453nondirlo_5_puntata.jpg"><div class="mask">
+<span class="icoVideo">Video</span><em>01:50:28</em>
+</div></a><div class="Info">
+<h2><a href="/dl/RaiTV/programmi/media/ContentItem-b3f7e2f8-53ae-4ca9-9f3c-3ac23b6e5066.html#p=" class="txt">Non dirlo al mio capo - st 01 ep 02</a></h2>
+<h5>Non dirlo al mio capo</h5>
+<h4>Fiction</h4>
+<p><a href="/dl/RaiTV/programmi/media/ContentItem-b3f7e2f8-53ae-4ca9-9f3c-3ac23b6e5066.html#p=" class="txt">Arriva una lettera dell&#8217;assicurazione: l&#8217;amante del marito di Lisa sar&#224; chiamata a deporre e lei non sa se cedere o meno alla tentazione della vendetta. Intanto lo studio &#232; impegnato nella difficile difesa di una compagnia aerea responsabile di un grave incidente. Per di pi&#249;, salta la corrente elettrica dello studio: Lisa e Enrico finiscono per trovarsi molto, troppo vicini</a></p>
+<ol class="Specifiche">
+<li class="Pubblicato">
+<span>Pubblicato il</span>05/05/2016</li>
+</ol>
+</div>
+</li>
+<li id="ContentItem-c5c842b7-7ba9-4aa5-8e23-fc636eb7ac6e" class="Video "><a href="/dl/RaiTV/programmi/media/ContentItem-c5c842b7-7ba9-4aa5-8e23-fc636eb7ac6e.html#p=" class="img"><img height="169" width="300" alt="" src="/dl/img/2016/05/300x1691462527121216virus_5_video.jpg"><div class="mask">
+<span class="icoVideo">Video</span><em>02:30:36</em>
+</div></a><div class="Info">
+<h2><a href="/dl/RaiTV/programmi/media/ContentItem-c5c842b7-7ba9-4aa5-8e23-fc636eb7ac6e.html#p=" class="txt">Virus - Il contagio delle idee del 05/05/2016</a></h2>
+<h5>Virus 2015-2016</h5>
+<h4></h4>
+<p><a href="/dl/RaiTV/programmi/media/ContentItem-c5c842b7-7ba9-4aa5-8e23-fc636eb7ac6e.html#p=" class="txt">Il racconto dell&#39;attualit&#224; visto attraverso la lente dell&#39;approfondimento in cui trovano spazio diverse pagine con linguaggi televisivi differenti pur nel mantenimento della monotematicit&#224;...</a></p>
+<ol class="Specifiche">
+<li class="Pubblicato">
+<span>Pubblicato il</span>05/05/2016</li>
+</ol>
+</div>
+</li>
+<li id="ContentItem-f9b29961-355e-4c78-aa83-2dd7ab689873" class="Video "><a href="/dl/RaiTV/programmi/media/ContentItem-f9b29961-355e-4c78-aa83-2dd7ab689873.html#p=" class="img"><img height="169" width="300" alt="" src="/dl/img/2016/05/300x1691462444647934terremto_video.jpg"><div class="mask">
+<span class="icoVideo">Video</span>
+</div></a><div class="Info">
+<h2><a href="/dl/RaiTV/programmi/media/ContentItem-f9b29961-355e-4c78-aa83-2dd7ab689873.html#p=" class="txt">Terremoto del Friuli</a></h2>
+<h5>Radio3 Gli Speciali</h5>
+<h4>Speciali Radio3</h4>
+<p><a href="/dl/RaiTV/programmi/media/ContentItem-f9b29961-355e-4c78-aa83-2dd7ab689873.html#p=" class="txt"></a></p>
+<ol class="Specifiche">
+<li class="Pubblicato">
+<span>Pubblicato il</span>05/05/2016</li>
+</ol>
+</div>
+</li>
+<li id="ContentItem-270fd5b8-8d9b-482d-bfc3-c0a9e342d28d" class="Video "><a href="/dl/RaiTV/programmi/media/ContentItem-270fd5b8-8d9b-482d-bfc3-c0a9e342d28d.html#p=" class="img"><img height="169" width="300" alt="" src="/dl/img/2016/05/300x1691462530255904gazebo_5_video.jpg"><div class="mask">
+<span class="icoVideo">Video</span><em>01:06:17</em>
+</div></a><div class="Info">
+<h2><a href="/dl/RaiTV/programmi/media/ContentItem-270fd5b8-8d9b-482d-bfc3-c0a9e342d28d.html#p=" class="txt">Gazebo del 05/05/2016</a></h2>
+<h5>Gazebo 2015-2016</h5>
+<h4></h4>
+<p><a href="/dl/RaiTV/programmi/media/ContentItem-270fd5b8-8d9b-482d-bfc3-c0a9e342d28d.html#p=" class="txt">Il cantante reggae giamaicano Anthony B &#232; l&#8217;ospite musicale della puntata. In programma i principali fatti d&#8217;attualit&#224;,  raccontati attraverso le video inchieste di Diego Bianchi e commentati in studio dalla giornalista Francesca Schianchi, le vignette di Marco Dambrosio-Makkox e, nelle vesti di inviato speciale, Mirko Matteucci-Missouri4 in collegamento in esterna per il &#8220;Tg Bello&#8221;. Immancabile l&#8217;appuntamento con la Social Top Ten, la classifica dei tweet pi&#249; divertenti degli ultimi giorni, e la musica dal vivo di Roberto Angelini, Giovanni Di Cosimo e la &#8220;resident band&#8221;.</a></p>
+<ol class="Specifiche">
+<li class="Pubblicato">
+<span>Pubblicato il</span>05/05/2016</li>
+</ol>
+</div>
+</li>
+<li id="ContentItem-20f2ab93-8e5a-4df9-a65a-056e89d4c405" class="Video "><a href="/dl/RaiTV/programmi/media/ContentItem-20f2ab93-8e5a-4df9-a65a-056e89d4c405.html#p=" class="img"><img height="169" width="300" alt="" src="/dl/img/2016/05/300x1691462205905756Raimondo_Vianello_1.jpg"><div class="mask">
+<span class="icoVideo">Video</span><em>00:08:58</em>
+</div></a><div class="Info">
+<h2><a href="/dl/RaiTV/programmi/media/ContentItem-20f2ab93-8e5a-4df9-a65a-056e89d4c405.html#p=" class="txt">Raimondo Vianello, un ricordo di Enrico Vaime</a></h2>
+<h5>Bianco e Nero</h5>
+<h4>Bianco e Nero</h4>
+<p><a href="/dl/RaiTV/programmi/media/ContentItem-20f2ab93-8e5a-4df9-a65a-056e89d4c405.html#p=" class="txt">"Perch&#233; ride? sono un comico!..." con sarcasmo ed ironia, Raimondo Vianello, nato a Roma il 7 maggio 1922,  ha raccontato la storia di vizi e virt&#249; degli italiani e con un umorismo fuori dagli schemi, ha mostrato in tv quello che fino ad allora, non si era mai visto <br/><br/>
+Videografia:<br/> 
+Noi &#8230; no (1977), Di nuovo tante scuse (1979), Tante scuse (1974), Un, due tre (1958), Stasera niente di nuovo (1981), Sai che ti dico?  (1972)</a></p>
+<ol class="Specifiche">
+<li class="Pubblicato">
+<span>Pubblicato il</span>20-06-2011</li>
+</ol>
+</div>
+</li>
+<li id="ContentItem-f9f9e63c-6d5e-4755-b601-49c308a7d23f" class="Foto "><a href="/dl/RaiTV/programmi/media/ContentItem-f9f9e63c-6d5e-4755-b601-49c308a7d23f.html#p=" class="img"><img height="169" width="300" alt="" src="/dl/img/2016/05/300x1691462457152103internaz_tennis_fotogallery_media_image_640x360.jpg"><div class="mask">
+<span class="icoFoto">Foto</span>
+</div></a><div class="Info">
+<h2><a href="/dl/RaiTV/programmi/media/ContentItem-f9f9e63c-6d5e-4755-b601-49c308a7d23f.html#p=" class="txt">Radio1 agli Internazionali d'Italia di Tennis</a></h2>
+<h5>Radio1 Sport</h5>
+<h4></h4>
+<p><a href="/dl/RaiTV/programmi/media/ContentItem-f9f9e63c-6d5e-4755-b601-49c308a7d23f.html#p=" class="txt"></a></p>
+<ol class="Specifiche">
+<li class="Pubblicato">
+<span>Pubblicato il</span>05-05-2016</li>
+</ol>
+</div>
+</li>
+<li id="ContentItem-16a09bc8-767c-47b4-a57f-da3a2a139cf4" class="Video "><a href="/dl/RaiTV/programmi/media/ContentItem-16a09bc8-767c-47b4-a57f-da3a2a139cf4.html#p=" class="img"><img height="169" width="300" alt="" src="/dl/img/2016/05/300x1691462511440902nondirlo_12_anti.jpg"><div class="mask">
+<span class="icoVideo">Video</span><em>00:00:35</em>
+</div></a><div class="Info">
+<h2><a href="/dl/RaiTV/programmi/media/ContentItem-16a09bc8-767c-47b4-a57f-da3a2a139cf4.html#p=" class="txt">Non dirlo al mio capo - Anticipazione del 12/05/2016</a></h2>
+<h5>Non dirlo al mio capo</h5>
+<h4>Fiction</h4>
+<p><a href="/dl/RaiTV/programmi/media/ContentItem-16a09bc8-767c-47b4-a57f-da3a2a139cf4.html#p=" class="txt">Gioved&#236; 12 maggio 2016 ore 21:20 Rai Uno</a></p>
+<ol class="Specifiche">
+<li class="Pubblicato">
+<span>Pubblicato il</span>05/05/2016</li>
+</ol>
+</div>
+</li>
+<li id="ContentItem-4e96ca9e-1752-4269-aa63-18944e397fdc" class="Video "><a href="/dl/RaiTV/programmi/media/ContentItem-4e96ca9e-1752-4269-aa63-18944e397fdc.html#p=" class="img"><img height="169" width="300" alt="" src="/dl/img/2016/05/300x1691462425120125the_voice.jpg"><div class="mask">
+<span class="icoVideo">Video</span><em>04:27:17</em>
+</div></a><div class="Info">
+<h2><a href="/dl/RaiTV/programmi/media/ContentItem-4e96ca9e-1752-4269-aa63-18944e397fdc.html#p=" class="txt">Live #1 del 04/05/2016</a></h2>
+<h5>The Voice of Italy 2016</h5>
+<h4></h4>
+<p><a href="/dl/RaiTV/programmi/media/ContentItem-4e96ca9e-1752-4269-aa63-18944e397fdc.html#p=" class="txt">Hanno ascoltato le voci fin dalle Blind Audition, hanno scelto i componenti dei propri Team e hanno dovuto eliminarne alcuni alle Battle. Infine, dopo aver preparato ed esaminato attentamente le voci in gara durante i Knockout, si sono ritrovati davanti a scelte difficili per arrivare a 4 finalisti per ogni Team. Raffaella Carr&#224;, Dolcenera, Emis Killa e Max Pezzali, ora, affrontano il momento decisivo con i 16 finalisti: arrivano i &#8220;Live&#8221; di &#8220;The Voice of Italy&#8221; e, alla fine, uno solo sar&#224; il vincitore, che si aggiudicher&#224; un contratto di esclusiva discografica con Universal Music Italia.<br><br>
+I team in gara:
+TEAM CARR&#192;: Beatrice Ferrantino (Nova Milanese, MB); Tanya Borgese (Polistena, RC); Samuel Pietrasanta (Catania); Foxy Ladies (Villanova del Ghebbo, RO).<br><br>
+TEAM DOLCENERA: Alice Paba (Tolfa, RM); Joe Croci (Lusurasco, PC); Giorgia Al&#242; (di Londra, nata a Roma); Edith Brinca (di Iasi, Romania, vive a Verbania).<br><br>
+TEAM KILLA: Frances Alina Ascione (nata a Burbank, Los Angeles, vive a Roma); Roberta Nasti (Napoli); Giuliana Ferraz (Bollate, MI); Charles Kablan (ivoriano, vive a Seriate, BG).<br><br>
+TEAM PEZZALI: Francesca Basaglia (Cavezzo, MO); Davide Carbone (Milano); Elya Zambolin (Monselice, PD); iWolf (Cristina De Vita e Michele Bonfitto, Foggia).</a></p>
+<ol class="Specifiche">
+<li class="Pubblicato">
+<span>Pubblicato il</span>04/05/2016</li>
+</ol>
+</div>
+</li>
+<li id="ContentItem-65aabaa0-a186-49a6-b264-9f6423649453" class="Video "><a href="/dl/RaiTV/programmi/media/ContentItem-65aabaa0-a186-49a6-b264-9f6423649453.html#p=" class="img"><img height="169" width="300" alt="" src="/dl/img/2016/05/300x1691462203685211welles640x380.jpg"><div class="mask">
+<span class="icoVideo">Video</span><em>00:12:11</em>
+</div></a><div class="Info">
+<h2><a href="/dl/RaiTV/programmi/media/ContentItem-65aabaa0-a186-49a6-b264-9f6423649453.html#p=" class="txt">Orson Welles</a></h2>
+<h5>Bianco e Nero</h5>
+<h4>Bianco e Nero</h4>
+<p><a href="/dl/RaiTV/programmi/media/ContentItem-65aabaa0-a186-49a6-b264-9f6423649453.html#p=" class="txt">Un omaggio a uno dei pi&#249; grandi e poliedrici artisti del &#39;900, geniale e anticonformista. Nato a Kenosha, il 6 maggio 1915, ci ha regalato uniche prove d&#39;attore e indimenticabili lezioni di cinema<br/><br/>
+Videografia: Maestri del cinema: Ritratto di Orson Welles (1970), Fuori orario (1991), Il mio amico Cagliostro (1999), TV Zone &#8211; Dentro Quarto potere (1996), Prossimamente (1996)</a></p>
+<ol class="Specifiche">
+<li class="Pubblicato">
+<span>Pubblicato il</span>08-02-2011</li>
+</ol>
+</div>
+</li>
+<li id="ContentItem-ecf135ed-965d-4d92-a546-d9dcd3a48582" class="Video "><a href="/dl/RaiTV/programmi/media/ContentItem-ecf135ed-965d-4d92-a546-d9dcd3a48582.html#p=" class="img"><img height="169" width="300" alt="" src="http://www.rai.it/dl/video/smooth/300x169e3901be8-b3d0-4797-a15b-a987c9db1679.jpg"><div class="mask">
+<span class="icoVideo">Video</span><em>01:40:58</em>
+</div></a><div class="Info">
+<h2><a href="/dl/RaiTV/programmi/media/ContentItem-ecf135ed-965d-4d92-a546-d9dcd3a48582.html#p=" class="txt">Velvet 3a stagione - Il tempo che verrà del 04/05/2016</a></h2>
+<h5>Velvet</h5>
+<h4>Fiction</h4>
+<p><a href="/dl/RaiTV/programmi/media/ContentItem-ecf135ed-965d-4d92-a546-d9dcd3a48582.html#p=" class="txt">Approfittando del momento di disperazione per la perdita di Alberto, Carlos circonda Anna di attenzioni per riconquistarla. Ma oltre ad essere sconvolta la ragazza &#232; anche molto debole. Durante una riunione con Enzo Cafiero ha un improvviso malore e sviene. Il medico che la visita la informa che &#232; incinta. Intanto tra i dirigenti della Velvet &#232; guerra aperta per conquistare la fiducia del magnate italiano e ottenere il controllo dell&#8217;azienda. Il nuovo proprietario per&#242;, stanco dei dissidi interni al consiglio di amministrazione, decide di affidare la galleria a suo figlio Marco...</a></p>
+<ol class="Specifiche">
+<li class="Pubblicato">
+<span>Pubblicato il</span>05/05/2016</li>
+</ol>
+</div>
+</li>
+<li id="ContentItem-a148f56b-3184-4ccd-8970-2f382be3f0df" class="Video "><a href="/dl/RaiTV/programmi/media/ContentItem-a148f56b-3184-4ccd-8970-2f382be3f0df.html#p=" class="img"><img height="169" width="300" alt="" src="/dl/img/2016/05/300x1691462454157072ant4_IlSistema.jpg"><div class="mask">
+<span class="icoVideo">Video</span><em>00:06:42</em>
+</div></a><div class="Info">
+<h2><a href="/dl/RaiTV/programmi/media/ContentItem-a148f56b-3184-4ccd-8970-2f382be3f0df.html#p=" class="txt">Il sistema - Anteprima 4^ puntata</a></h2>
+<h5>Il sistema</h5>
+<h4>Fiction</h4>
+<p><a href="/dl/RaiTV/programmi/media/ContentItem-a148f56b-3184-4ccd-8970-2f382be3f0df.html#p=" class="txt">L&#39;anteprima esclusiva della quarta puntata della serie "Il sistema", in onda luned&#236; 9 maggio in prima serata su Rai1.</a></p>
+<ol class="Specifiche">
+<li class="Pubblicato">
+<span>Pubblicato il</span>05/05/2016</li>
+</ol>
+</div>
+</li>
+<li id="ContentItem-7a897965-6d75-4351-9a50-a6706de2c2bf" class="Video "><a href="/dl/RaiTV/programmi/media/ContentItem-7a897965-6d75-4351-9a50-a6706de2c2bf.html#p=" class="img"><img height="169" width="300" alt="" src="/dl/img/2016/05/300x169146244706620901.jpg"><div class="mask">
+<span class="icoVideo">Video</span><em>01:43:49</em>
+</div></a><div class="Info">
+<h2><a href="/dl/RaiTV/programmi/media/ContentItem-7a897965-6d75-4351-9a50-a6706de2c2bf.html#p=" class="txt">– Roma: se fossi sindaco farei… <br> – Proposta UE: chi non accoglie paghi 250.000 euro per profugo <br> – Dopo arresti a Lecco: la paura di altre cellule jihadiste</a></h2>
+<h5>Porta a Porta 2015-2016</h5>
+<h4></h4>
+<p><a href="/dl/RaiTV/programmi/media/ContentItem-7a897965-6d75-4351-9a50-a6706de2c2bf.html#p=" class="txt"></a></p>
+<ol class="Specifiche">
+<li class="Pubblicato">
+<span>Pubblicato il</span>04/05/2016</li>
+</ol>
+</div>
+</li>
+<li id="ContentItem-833560c7-a2f6-4193-a980-ed8670223057" class="Video "><a href="/dl/RaiTV/programmi/media/ContentItem-833560c7-a2f6-4193-a980-ed8670223057.html#p=" class="img"><img height="169" width="300" alt="" src="/dl/img/2016/05/300x1691462202920259Bartalipg.jpg"><div class="mask">
+<span class="icoVideo">Video</span><em>00:06:45</em>
+</div></a><div class="Info">
+<h2><a href="/dl/RaiTV/programmi/media/ContentItem-833560c7-a2f6-4193-a980-ed8670223057.html#p=" class="txt">Gino Bartali</a></h2>
+<h5>Bianco e Nero</h5>
+<h4>Bianco e Nero</h4>
+<p><a href="/dl/RaiTV/programmi/media/ContentItem-833560c7-a2f6-4193-a980-ed8670223057.html#p=" class="txt">Il 5 maggio del 2000 moriva a Firenze, dove ere nato il 18 luglio 1914, Gino Bartali, leggenda dell&#39;Italia in bicicletta, campione e mito di un ciclismo povero e senza trucchi. Soprannominato Ginettaccio, fu grande avversario di Coppi. La loro rivalit&#224; divise l&#39;Italia. La sua carriera dur&#242; 20 anni. Durante la Resistenza si &#232; adoperato in favore dei rifugiati ebrei compiendo numerosi viaggi in bicicletta, trasportando documenti nascosti nei tubi del telaio. Nel 2005 il Presidente della Repubblica Carlo Azeglio Ciampi gli confer&#236; la medaglia d&#39;oro al merito civile per aver salvato "circa 800 cittadini ebrei"<br/><br/>
+Videografia:<br/>
+Il mattatore (1959), Gino Bartali: l&#8217;intramontabile (2006), Incontro con Gino Bartali  (1962), L&#8217;Italia di Bartali e Coppi (2000), Alfabeto italiano: un popolo di sportivi (1998)</a></p>
+<ol class="Specifiche">
+<li class="Pubblicato">
+<span>Pubblicato il</span>10/07/2014</li>
+</ol>
+</div>
+</li>
+<li id="ContentItem-87339b5c-468a-462d-8d12-10e27966fae9" class="Video "><a href="/dl/RaiTV/programmi/media/ContentItem-87339b5c-468a-462d-8d12-10e27966fae9.html#p=" class="img"><img height="169" width="300" alt="" src="http://www.rai.it/dl/video/smooth/300x169d1bb0935-f636-420d-b3b3-33cf7e6a9ff0.jpg"><div class="mask">
+<span class="icoVideo">Video</span><em>00:09:05</em>
+</div></a><div class="Info">
+<h2><a href="/dl/RaiTV/programmi/media/ContentItem-87339b5c-468a-462d-8d12-10e27966fae9.html#p=" class="txt">I fatti della settimana raccontati dalla Gialappa's - Ballarò del 03/05/2016</a></h2>
+<h5>Ballarò 2015-2016</h5>
+<h4></h4>
+<p><a href="/dl/RaiTV/programmi/media/ContentItem-87339b5c-468a-462d-8d12-10e27966fae9.html#p=" class="txt">I fatti della settimana raccontati dalla Gialappa&#39;s</a></p>
+<ol class="Specifiche">
+<li class="Pubblicato">
+<span>Pubblicato il</span>03/05/2016</li>
+</ol>
+</div>
+</li>
+</ul>
+</div><!-- - - lastGen - - 13-05-2016 23:31-->
+
+<script>setPagine.push('/dl/RaiTV/programmi/json/liste/ContentSet-d361f379-82b6-4b25-a044-c4d6c7bccbb5-json-V-0.html');</script>
+<div class="listaVideo ext"> </div>
+</div>
+<div class="paging"> </div>
+</div>
+<div class="SearchBar">
+<div class="filtriRicerca">
+<div class="boxSearch">
+<form action="/dl/RaiTV/ricerca.html" name="qtv">
+<input value="raitv" name="site" type="hidden"/>
+<input value="*" name="getfields" type="hidden"/>
+<input value="0" name="filter" type="hidden"/>
+<input type="text" name="q" size="40" maxlength="256" placeholder="Cerca" id="search_complete" class="ui-autocomplete-input" autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true"/>
+<input type="submit" class="submit" value="Cerca"/>
+</form>
+</div>
+</div>
+<div class="miniMenu">
+<span>Cerca programmi:</span>
+<ul>
+<li>
+<a href="http://www.rai.tv/dl/RaiTV/programmi.html">A/Z</a>
+</li>
+<li>
+<a href="http://www.rai.tv/dl/RaiTV/tematiche.html">Tematiche</a>
+</li>
+</ul>
+</div>
+</div>
+</div><script src="/dl/rai/js/ondemand.js" type="text/javascript">;</script>
+
+
+			<!-- sp0rt non c'e' piu' -->
+			<!--include virtual="/dl/rai/html/PublishingBlock-20a543fa-1c40-4024-ac59-92dfd8bbe2c7.html" -->
+
+			<!--include virtual="/dl/rai/focus/PublishingBlock-4af05f92-bc71-4be8-bf2b-d46f6c765e98.html"-->
+			<!--Tv e Radio -->
+			<div class="boxLarge left" id="Focus">
+<div class="top">
+<h3>Tv, Radio, Cinema e Web</h3>
+</div>
+
+<div class="mid">
+<div class="imgFocus">
+<a class="imgFocus" target="_blank" href="http://www.eurovisionsongcontest.rai.it/"><img alt="Eurovision Song Contest 2016" src="/dl/img/2016/05/1462544285465erovision-michielin425.jpg"></a>
+</div>
+<div class="focusContent">
+<div class="Editore">
+<img src="/dl/images/1326820654203raiuno.png" alt="Logo Editore"> </div>
+<div class="slideMain">
+<img src="/dl/images/1326820654203raiuno.png" class="editoreLogo" alt="Logo Editore"><h4 class="label">Stasera in tv </h4>
+<h2>
+<a title="Eurovision Song Contest 2016" target="_blank" href="http://www.eurovisionsongcontest.rai.it/">Eurovision Song Contest 2016</a>
+</h2>
+<p>
+<a title="Eurovision Song Contest 2016" target="_blank" href="http://www.eurovisionsongcontest.rai.it/">La <b>finale</b> della 61&#170; edizione del popolarissimo concorso canoro internazionale in diretta da Stoccolma. A guidarci nella serata saranno due voci molto care al pubblico italiano: <b>Flavio Insinna e Federico Russo</b> <br><b>Alle 20:35</b></a>
+</p>
+</div>
+<div id="pagingFocus">
+<a class="btnPrev"> </a>
+<div class="Item">
+<ul>
+<li class="selected">
+<a href="#"><span class="Baloon"><span class="mask"><img alt="Eurovision Song Contest 2016" src="/dl/img/2015/05/1431604822981eurocontest_focus.jpg"></span></span></a>
+<div class="slide">
+<img src="/dl/img/2016/05/1462544285465erovision-michielin425.jpg" alt="Eurovision Song Contest 2016" class="slideImg"><img src="/dl/images/1326820654203raiuno.png" alt="Logo Editore" class="editoreLogo"><h4 class="label">Stasera in tv </h4>
+<h2>
+<a title="Eurovision Song Contest 2016" target="_blank" href="http://www.eurovisionsongcontest.rai.it/">Eurovision Song Contest 2016</a>
+</h2>
+<p>
+<a title="Eurovision Song Contest 2016" target="_blank" href="http://www.eurovisionsongcontest.rai.it/">La <b>finale</b> della 61&#170; edizione del popolarissimo concorso canoro internazionale in diretta da Stoccolma. A guidarci nella serata saranno due voci molto care al pubblico italiano: <b>Flavio Insinna e Federico Russo</b> <br><b>Alle 20:35</b></a>
+</p>
+</div>
+</li>
+<li>
+<a href="#"><span class="Baloon"><span class="mask"><img alt="Che fuori tempo che fa" src="/dl/img/2014/03/1394914201173landini1.jpg"></span></span></a>
+<div class="slide">
+<img src="/dl/img/2015/06/1433433683116teo.jpg" alt="Che fuori tempo che fa" class="slideImg"><img src="/dl/images/1326820646748raitre.png" alt="Logo Editore" class="editoreLogo"><h4 class="label">Stasera in Tv </h4>
+<h2>
+<a title="Che fuori tempo che fa" target="_top" href="http://www.chetempochefa.rai.it/">Che fuori tempo che fa</a>
+</h2>
+<p>
+<a title="Che fuori tempo che fa" target="_top" href="http://www.chetempochefa.rai.it/">Tra gli ospiti di questa sera: Enrico e Carlo Vanzina, Nino D&#39;Angelo, Eleonora Giorgi, Caterina Caselli, Giovanni Caccamo e Teo Teocoli <br><br><b>Alle 20:10</b></a>
+</p>
+</div>
+</li>
+<li>
+<a href="#"><span class="Baloon"><span class="mask"><img alt="Ulisse" src="/dl/img/2015/04/1427975653113ulisse_slide.jpg"></span></span></a>
+<div class="slide">
+<img src="/dl/img/2015/10/1443693986088ulisse.jpg" alt="Ulisse" class="slideImg"><img src="/dl/images/1326820646748raitre.png" alt="Logo Editore" class="editoreLogo"><h4 class="label">Stasera in Tv </h4>
+<h2>
+<a title="Ulisse" target="_blank" href="http://www.ulisse.rai.it/">Ulisse</a>
+</h2>
+<p>
+<a title="Ulisse" target="_blank" href="http://www.ulisse.rai.it/"><b>Vivere nel deserto</b>. Con Alberto Angela partiremo per un viaggio straordinario intorno al nostro pianeta, tra orizzonti che sembrano infiniti, sotto un sole che acceca, all&#39;ascolto del vento, in compagnia del suono del silenzio... <b>Alle 21:45</b></a>
+</p>
+</div>
+</li>
+<li>
+<a href="#"><span class="Baloon"><span class="mask"><img alt="NCIS + Elementary" src="/dl/img/2014/09/1411633299034elementary-e-castle.jpg"></span></span></a>
+<div class="slide">
+<img src="/dl/img/2016/05/1462541608051ncis_elementary.jpg" alt="NCIS + Elementary" class="slideImg"><img src="/dl/images/1326820561581raidue.png" alt="Logo Editore" class="editoreLogo"><h4 class="label">Stasera in Tv </h4>
+<h2>
+<a title="NCIS + Elementary" target="_blank" href="http://www.rai.tv/dl/RaiTV/programmi/media/ContentItem-765fb9a4-657b-4155-a8aa-5315fc20c300.html">NCIS + Elementary</a>
+</h2>
+<p>
+<a title="NCIS + Elementary" target="_blank" href="http://www.rai.tv/dl/RaiTV/programmi/media/ContentItem-765fb9a4-657b-4155-a8aa-5315fc20c300.html">Appuntamento con le grandi serie Tv di Rai2.<br>Alle 21:05 l&#39; 11^ stagione di "NCIS" con l&#39;episodio <b>"La triade del diavolo"</b>. A seguire, in <b>1^ visione assoluta</b> alle 21:50, la 4^ serie di "Elementary" con l&#39;episodio <b>"Delitto ex machina"</b></a>
+</p>
+</div>
+</li>
+<li>
+<a href="#"><span class="Baloon"><span class="mask"><img alt="Un giorno in pretura" src="/dl/img/2015/03/1427463100868mare-nero.jpg"></span></span></a>
+<div class="slide">
+<img src="/dl/img/2015/11/1447075371024preturas.jpg" alt="Un giorno in pretura" class="slideImg"><img src="/dl/images/1326820646748raitre.png" alt="Logo Editore" class="editoreLogo"><h4 class="label">Stanotte in Tv </h4>
+<h2>
+<a title="Un giorno in pretura" target="_blank" href="http://www.ungiornoinpretura.rai.it/">Un giorno in pretura</a>
+</h2>
+<p>
+<a title="Un giorno in pretura" target="_blank" href="http://www.ungiornoinpretura.rai.it/"><b>"La retata dei vigili urbani"</b>. Otto vigili imputati in un processo reso delicato dall&#39;eco mediatica scatenata dal sospetto della discriminazione razziale <br><b>Alle 24:20</b></a>
+</p>
+</div>
+</li>
+<li>
+<a href="#"><span class="Baloon"><span class="mask"><img alt="La Corsa Rosa sulle reti Rai" src="/dl/img/2015/05/1431005473971italia_di_notte_dallo_spazio_620x320.jpg"></span></span></a>
+<div class="slide">
+<img src="/dl/img/2016/05/1462369120659giro.jpg" alt="La Corsa Rosa sulle reti Rai" class="slideImg"><img src="/dl/images/1326820625743raisport1.png" alt="Logo Editore" class="editoreLogo"><h4 class="label">Giro d&#39;Italia 2016 </h4>
+<h2>
+<a title="La Corsa Rosa sulle reti Rai" target="_blank" href="http://rumors.blog.rai.it/2016/05/03/il-giro-ditalia-sulle-reti-rai/">La Corsa Rosa sulle reti Rai</a>
+</h2>
+<p>
+<a title="La Corsa Rosa sulle reti Rai" target="_blank" href="http://rumors.blog.rai.it/2016/05/03/il-giro-ditalia-sulle-reti-rai/">Anche quest&#39;anno la Rai rinnova il suo impegno con il Giro d&#39;Italia, in programma <b>dal 6 al 29 maggio</b>, proponendo soluzioni tecnologiche all&#39;avanguardia, entrando nel territorio e raccontando la 99^ edizione della corsa in tutti i suoi aspetti in tv, in radio e sul web</a>
+</p>
+</div>
+</li>
+</ul>
+</div>
+<a class="btnNext"> </a>
+</div>
+</div>
+</div>
+</div><div class="solotesto">
+<a name="NP_FocusContents"> </a>
+<ul>
+<li>
+<h4>
+<a title="Eurovision Song Contest 2016" target="_blank" href="http://www.eurovisionsongcontest.rai.it/">Eurovision Song Contest 2016 </a>
+</h4>
+<h5>Stasera in tv </h5>
+<p>La <b>finale</b> della 61&#170; edizione del popolarissimo concorso canoro internazionale in diretta da Stoccolma. A guidarci nella serata saranno due voci molto care al pubblico italiano: <b>Flavio Insinna e Federico Russo</b> <br><b>Alle 20:35</b> </p>
+</li>
+<li>
+<h4>
+<a title="Che fuori tempo che fa" target="_top" href="http://www.chetempochefa.rai.it/">Che fuori tempo che fa </a>
+</h4>
+<h5>Stasera in Tv </h5>
+<p>Tra gli ospiti di questa sera: Enrico e Carlo Vanzina, Nino D&#39;Angelo, Eleonora Giorgi, Caterina Caselli, Giovanni Caccamo e Teo Teocoli <br><br><b>Alle 20:10</b> </p>
+</li>
+<li>
+<h4>
+<a title="Ulisse" target="_blank" href="http://www.ulisse.rai.it/">Ulisse </a>
+</h4>
+<h5>Stasera in Tv </h5>
+<p><b>Vivere nel deserto</b>. Con Alberto Angela partiremo per un viaggio straordinario intorno al nostro pianeta, tra orizzonti che sembrano infiniti, sotto un sole che acceca, all&#39;ascolto del vento, in compagnia del suono del silenzio... <b>Alle 21:45</b> </p>
+</li>
+<li>
+<h4>
+<a title="NCIS + Elementary" target="_blank" href="http://www.rai.tv/dl/RaiTV/programmi/media/ContentItem-765fb9a4-657b-4155-a8aa-5315fc20c300.html">NCIS + Elementary </a>
+</h4>
+<h5>Stasera in Tv </h5>
+<p>Appuntamento con le grandi serie Tv di Rai2.<br>Alle 21:05 l&#39; 11^ stagione di "NCIS" con l&#39;episodio <b>"La triade del diavolo"</b>. A seguire, in <b>1^ visione assoluta</b> alle 21:50, la 4^ serie di "Elementary" con l&#39;episodio <b>"Delitto ex machina"</b> </p>
+</li>
+<li>
+<h4>
+<a title="Un giorno in pretura" target="_blank" href="http://www.ungiornoinpretura.rai.it/">Un giorno in pretura </a>
+</h4>
+<h5>Stanotte in Tv </h5>
+<p><b>"La retata dei vigili urbani"</b>. Otto vigili imputati in un processo reso delicato dall&#39;eco mediatica scatenata dal sospetto della discriminazione razziale <br><b>Alle 24:20</b> </p>
+</li>
+<li>
+<h4>
+<a title="La Corsa Rosa sulle reti Rai" target="_blank" href="http://rumors.blog.rai.it/2016/05/03/il-giro-ditalia-sulle-reti-rai/">La Corsa Rosa sulle reti Rai </a>
+</h4>
+<h5>Giro d&#39;Italia 2016 </h5>
+<p>Anche quest&#39;anno la Rai rinnova il suo impegno con il Giro d&#39;Italia, in programma <b>dal 6 al 29 maggio</b>, proponendo soluzioni tecnologiche all&#39;avanguardia, entrando nel territorio e raccontando la 99^ edizione della corsa in tutti i suoi aspetti in tv, in radio e sul web </p>
+</li>
+</ul>
+</div>
+
+
+
+
+			<div id="inOnda" class="boxLarge left">
+				<div class="top">
+				<div class="oraInOndaTop">
+					<h3>Ora in onda</h3>
+					<h4>Tutti i programmi Live sui canali Rai</h4>
+				</div>
+					<!--include virtual="/dl/rai/info/ContentSet-d173dd51-c521-4454-889e-5970d5938ae1.html"-->
+					<div class="mainChoice">
+						<ul class="Choice">
+								<li class="selected"><a href="#" class="Tv">Televisione</a></li>
+								<li><a href="#" class="Radio">Radio</a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="blueLine">
+				<a href="http://www.rai.it/dl/rai/guidaTv.html" class="tv_o_radio">CLICCA QUI PER GUARDARE LA GUIDA PROGRAMMI COMPLETA</a>
+				</div>
+
+				<div class="mid">
+
+					<ul class="onAir">
+						<li class="Tv" rel="Rai 1"></li>
+						<li class="Tv" rel="Rai 2"></li>
+						<li class="Tv" rel="Rai 3"></li>
+						<li class="Tv" rel="Rai4"></li>
+						<li class="Tv" rel="Extra"></li>
+						<li class="Tv" rel="CinemaWorld"></li>
+						<li class="Tv" rel="Premium"></li>
+						<li class="Tv" rel="Rai Gulp"></li>
+						<li class="Tv" rel="Yoyo"></li>
+						<li class="Tv" rel="Rai Storia"></li>
+						<li class="Tv" rel="Rai Educational"></li>
+						<li class="Tv" rel="Rai News24"></li>
+						<li class="Tv" rel="Rai Sport Satellite"></li>
+						<li class="Tv" rel="Rai Sport2"></li>
+						<!--li class="Tv" rel="Yes Italia"></li>
+						<li class="Tv" rel="Rai Med"></li-->
+						<li class="Tv" rel="EuroNews"></li>
+
+						<li class="Radio" rel="radio 1"></li>
+						<li class="Radio" rel="radio 2"></li>
+						<li class="Radio" rel="radio3"></li>
+						<li class="Radio" rel="Isoradio"></li>
+						<li class="Radio" rel="GrParlamento"></li>
+						<li class="Radio" rel="fd4"></li>
+						<li class="Radio" rel="fd5"></li>
+						<!--li class="Radio" rel="RaitaliaRadio"></li-->
+						<li class="Radio" rel="WebRadio 6"></li>
+						<li class="Radio" rel="WebRadio 7"></li>
+						<li class="Radio" rel="WebRadio 8"></li>
+					</ul>
+
+					<div class="paging"></div>
+
+					<div class="toNight">
+						<h4>Questa sera in Tv</h4>
+						<a href="#" class="btnPrev"></a>
+						<div class="Prog">
+							<a href="#" class="inOnda"></a>
+						</div>
+						<a href="#" class="btnNext"></a>
+					</div>
+
+				</div>
+			</div>
+
+			<script>$('.mainChoice .Tv').click(function(){
+				$('#inOnda .blueLine a').attr('href', 'http://www.rai.it/dl/rai/guidaTv.html');
+			});
+			$('.mainChoice .Radio').click(function(){
+				$('#inOnda .blueLine a').attr('href','http://www.rai.it/dl/portaleRadio/PublishingBlock-56dbc97d-45c8-487a-8742-4009cea20fa3.html');
+			});
+			</script>
+			
+
+
+			<!--community-->
+			<!--include virtual="/dl/rai/html/PublishingBlock-eff55a65-33ab-4aee-910b-9789ee756ecd.html"-->
+			<!--junior-->
+			<!--include virtual="/dl/rai/html/PublishingBlock-e7fffa10-69e3-45f6-a4ee-d07d5a25f1fd.html"-->
+
+
+		</div>
+
+
+		<div class="Spalla">
+			<!-- div style="margin:0px 0px 15px 0px;">
+				<a href="http://rumors.blog.rai.it/ "><img src="/dl/raisport/londra2012/images/OlimpiadiLondra2012_Banner_300x100.gif" /></a>
+			</div -->
+			<div class="banner300x250"></div>
+
+			 
+			<div class="boxSpalla"><a href="http://www.eurovisionsongcontest.rai.it/dl/portali/site/page/Page-4b29a954-e746-481f-9e18-d39286be04e1.html"><img width="288" height="250" src="http://www.rai.it/dl/img/2016/05/1462540655011POP_300X250.jpg" alt="eurovision"/></a></div><div class="boxSpalla"><a href="http://www.rai.it/dl/rai/text/ContentItem-6b8ccb93-adc5-4f91-8a59-adbed46fe31f.html?refresh_ce"><img src="http://www.rai.it/dl/img/2016/04/1461657075490amministrative-elezion-banner-300i.jpg" height="100" width="288"/></a></div>
+
+
+			<!--raitv: Programmi on demand, Rai Replay, Dirette Tv e Radio-->
+			<div class="boxVideo">
+<style type="text/css">
+.Spalla .boxVideo .box.Replay .mid ul li {
+	height: 30px;
+	width: auto;
+	margin: 0px 6px;
+}
+.Spalla .boxVideo .box.Replay .mid ul li a {
+	height: 30px;
+	width: 59px;
+	background: url(/dl/rai/images/btn_replay_large.png) no-repeat;
+}
+.Spalla .boxVideo .box.Replay .mid ul li a.Rai1{background-position: 0px -8px}
+.Spalla .boxVideo .box.Replay .mid ul li a.Rai2{background-position: -150px -8px}
+.Spalla .boxVideo .box.Replay .mid ul li a.Rai3{background-position: -300px -8px}
+.Spalla .boxVideo .box.Replay .mid ul li a.Rai5{background-position: -450px -8px}
+.Spalla .boxVideo .box.Replay .mid ul li a.RaiPremium{width: 110px; background-position: -600px -8px}
+.Spalla .boxVideo .box.Replay .mid ul li a.RaiGulp{width: 75px; background-position: -750px -8px}
+.Spalla .boxVideo .box.Replay .mid ul li a.RaiYoyo{width: 70px; background-position: -900px -8px}
+
+.Spalla .boxVideo .box.Replay .mid ul li a.Rai1:hover, .Spalla .boxVideo .box.Replay .mid ul li.selected a.Rai1 {background-position: 0px -58px;}
+.Spalla .boxVideo .box.Replay .mid ul li a.Rai2:hover, .Spalla .boxVideo .box.Replay .mid ul li.selected a.Rai2 {background-position: -150px -58px;}
+.Spalla .boxVideo .box.Replay .mid ul li a.Rai3:hover, .Spalla .boxVideo .box.Replay .mid ul li.selected a.Rai3 {background-position: -300px -58px;}
+.Spalla .boxVideo .box.Replay .mid ul li a.Rai5:hover, .Spalla .boxVideo .box.Replay .mid ul li.selected a.Rai5 {background-position: -450px -58px;}
+.Spalla .boxVideo .box.Replay .mid ul li a.RaiPremium:hover, .Spalla .boxVideo .box.Replay .mid ul li.selected a.RaiPremium {background-position: -600px -58px;}
+.Spalla .boxVideo .box.Replay .mid ul li a.RaiGulp:hover, .Spalla .boxVideo .box.Replay .mid ul li.selected a.RaiGulp {background-position: -750px -58px;}
+.Spalla .boxVideo .box.Replay .mid ul li a.RaiYoyo:hover, .Spalla .boxVideo .box.Replay .mid ul li.selected a.RaiYoyo {background-position: -900px -58px;}
+
+.Spalla .boxVideo .box.Replay .mid .giorno:hover,
+.Spalla .boxVideo .box.Replay .mid .giorno {
+	background-color: #6f6f6f;
+}
+.Spalla .boxVideo .box.Replay .mid .giorno li,
+.Spalla .boxVideo .box.Replay .mid .giorno li a,
+.Spalla .boxVideo .box.Replay .mid .giorno li a span {
+	color: #fff;
+}
+.Spalla .boxVideo .box.Replay .mid .btnSub {
+	float: right;
+	margin: 10px 16px 0px 9px;
+}
+
+
+.Replay .scroller {
+	width: 288px;
+	position: relative;
+	height: 48px;
+	float: left;
+	margin-bottom: 7px;
+	padding-bottom: 8px;
+	border-bottom: 1px solid #3e3e3e;
+}
+.Replay .scroller button {
+	position: absolute;
+	width: 20px;
+	height: 20px;
+	border: 0px;
+	padding: 0px;
+	margin: 0px;
+	cursor: pointer;
+	background: transparent url(/dl/rai/images/btn_arrows_replaytv.png) 0px -20px scroll no-repeat;
+}
+.Replay .scroller button.arrLeft {
+	left: 0px;
+	top: 14px;
+	background-position: 0px -20px;
+}
+.Replay .scroller button.arrLeft:hover {
+	background-position: 0px 0px;
+}
+.Replay .scroller button.arrLeft.disabled,
+.Replay .scroller button.arrLeft.disabled:hover {
+	background-position: 0px -40px;
+}
+.Replay .scroller button.arrRight {
+	right: 0px;
+	top: 14px;
+	background-position: -20px -20px;
+}
+.Replay .scroller button.arrRight:hover {
+	background-position: -20px 0px;
+}
+.Replay .scroller button.arrRight.disabled,
+.Replay .scroller button.arrRight.disabled:hover {
+	background-position: -20px -40px;
+}
+.Replay .scroller .scroll-content {
+	position: absolute;
+	top: 0px;
+	left: 23px;
+	width: 242px;
+	height: 32px;
+	padding: 8px 0px 8px 0px;
+	overflow: hidden;
+	background: #3e3e3e;
+}
+.Replay .scroller .scroll-content ul.replayChan {
+	width: 1125px;
+}
+</style>
+<div class="box Replay">
+	<div class="titolo">
+		<h3><a href="http://www.raireplay.rai.it">Rai Replay</a></h3>
+		<h4>7 giorni di programmi rai da rivedere</h4>
+		<div class="miniLink">
+<a href="#" class="Info">Info
+				<div class="descr">
+<span>Info</span><strong></strong>
+<p>Rai Replay &#232; il servizio che ti permette di rivedere in replica i programmi andati in onda negli ultimi 7 giorni su Rai Uno, Rai Due, Rai Tre e Rai 5.
+Seleziona il canale tv che ti interessa  e il giorno di messa in onda; visualizzerai la lista dei programmi andati in onda da rivedere con un semplice click</p>
+</div>
+</a>
+</div>
+
+	</div>
+	<div class="mid">
+		<strong>Scegli il canale</strong>
+		<div class="scroller">
+			<button class="arrLeft"></button>
+			<button class="arrRight"></button>
+			<div class="scroll-content">
+				<ul class="replayChan">
+					<li class="selected" rel="1"><a href="#" class="Rai1">Rai1</a></li>
+					<li rel="2"><a href="#" class="Rai2">Rai2</a></li>
+					<li rel="3"><a href="#" class="Rai3">Rai3</a></li>
+					<li rel="31"><a href="#" class="Rai5">Rai5</a></li>
+					<li rel="32"><a href="#" class="RaiPremium">RaiPremium</a></li>
+					<li rel="23"><a href="#" class="RaiGulp">RaiGulp</a></li>
+					<li rel="38"><a href="#" class="RaiYoyo">RaiYoYo</a></li>
+				</ul>
+			</div>
+		</div>
+		<strong>Scegli il giorno</strong>
+		<div class="calendario">
+				<!--div class="prev"></div-->
+					<ul class="giorno"></ul>
+				<!--div class="next"></div-->
+		</div>
+		<a href="#" class="btnCal">Calendario</a>
+		<a href="#" target="_blank" class="btnSub">Visualizza</a>
+	</div>
+</div>
+<script type="text/javascript">
+	//$(function() {
+	
+  var chanReplayBases = {
+			'1': 'http://www.rai.tv/dl/replaytv/replaytv.html',
+			'2': 'http://www.rai.tv/dl/replaytv/replaytv.html',
+			'3': 'http://www.rai.tv/dl/replaytv/replaytv.html',
+			'31': 'http://www.rai.tv/dl/replaytv/replaytv.html',
+			'32': 'http://www.rai.tv/dl/replaytv/replaytv.html',
+			'23': 'http://www.rai.tv/dl/replaytv/replaytv.html',
+			'38': 'http://www.rai.tv/dl/replaytv/replaytv.html'
+		  };  	
+		// Calcola le date da visualizzare:
+		var daysBeforeCurrent = 7;
+		var a = getServerDateTime();
+		//var currDate = new Date(this.startDate); // data di partenza
+		var currDate = new Date(a[0]); // data di partenza
+		var todayDate = new Date(a[0]);
+		currDate.setDate(todayDate.getDate()-daysBeforeCurrent);
+
+		var maxDate = new Date(todayDate);
+		maxDate.setDate(maxDate.getDate()-1);
+
+		var cal = $(".calendario");
+		var ul = $('.giorno', cal);
+		ul.empty();
+
+		var months = ['GEN', 'FEB', 'MAR', 'APR', 'MAG', 'GIU','LUG', 'AGO', 'SET', 'OTT', 'NOV', 'DIC'];
+		var monthsXXL = ['Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio', 'Giugno','Luglio', 'Agosto', 'Settembre', 'Ottobre', 'Novembre', 'Dicembre'];
+		var weekDays = ['DOM', 'LUN', 'MAR', 'MER', 'GIO', 'VEN', 'SAB'];
+		var weekDaysXXL = ['Domenica', 'Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato'];
+		var s = "";
+		for ( ; currDate <= maxDate; currDate.setDate(currDate.getDate()+1) ) {
+			var d = currDate.getDate();
+			var m = currDate.getMonth();
+			var y = currDate.getFullYear();
+			var w = currDate.getDay();
+			var dateString = y+'-'+((m<9)?'0'+(m+1):''+(m+1))+'-'+((d<10)?'0'+d:''+d);
+				s += '<li';
+				if (currDate.getDate() == (todayDate.getDate()-1)) {
+					s+= ' class="selected"';
+				}
+				s +=' rel="'+dateString+'">';
+				s += '<a href="#">';
+				s += '<span>'+weekDaysXXL[w]+'</span>'+'&nbsp;'+d+'&nbsp;'+monthsXXL[m];
+				s += '</a></li>';
+		}
+		$('.giorno').html(s);
+
+		$(".btnSub").click(function () {
+			var chanRep = $(".replayChan li.selected").attr("rel");
+			var dayRep = $(".giorno li.selected").attr("rel");
+			var replayUrl = chanReplayBases[chanRep]+'#day='+dayRep+'&ch='+chanRep;
+			if(chanRep != '' && dayRep != '') {
+				$(this).attr("href",replayUrl);
+				return true;
+			} else {
+				alert("Seleziona il giorno ed il canale!");
+				return false;
+			}
+		});
+		$(".Replay ul li").live("click",function () {
+			$(this).siblings().removeClass("selected");
+			$(this).addClass("selected");
+			return false;
+		});
+	//});
+
+function replayTvInitCarousel() {
+	$('.Replay,.boxReplay').find('.scroller').each(function() {
+		function enableButtons(v) {
+			if (typeof(v) == 'undefined') {
+				v = cont.scrollLeft();
+			}
+			if (v <= 0) {
+				arrLeft.addClass('disabled');
+			} else {
+				arrLeft.removeClass('disabled');
+			}
+			if (v >= maxHScroll) {
+				arrRight.addClass('disabled');
+			} else {
+				arrRight.removeClass('disabled');
+			}
+		}
+
+		var box, cont, list, width, maxHScroll, arrLeft, arrRight;
+		box = $(this);
+		cont = box.find('.scroll-content');
+		list = cont.find('ul');
+		items = list.find('>li');
+		width = 0;
+		console.log(box, cont, list, items, width);
+		items.each(function() {
+			console.log(width, this, $(this).outerWidth({margin: true}));
+			width += $(this).outerWidth({margin: true}); // compatibile sia con jquery 1.4 che 1.6+
+		});
+		width+=4;//fix al volo , quando ci sarà tempo si vede perchè su rai.tv funziona mentre qui la alrghezza è diversa.
+		console.log(width);
+		list.width(width);
+		maxHScroll = width - cont.innerWidth();
+
+		arrLeft = box.find('.arrLeft').unbind('click').click(function() {
+			var scroll, pos, left, i
+			if ($(this).is('.disabled')) {
+				return false;
+			}
+			cont.stop(true);
+			pos = -1;
+			scroll = cont.scrollLeft();
+			// cerco l'elemento *completamente* visibile piu' a sinistra
+			items.each(function(i) {
+				var left;
+				left = $(this).position().left;
+				if (left >= 0 && pos < 0) {
+					pos = i;
+				}
+			});
+			scroll = 0;
+			if (pos >= 2) {
+				items.slice(0, pos - 1).each(function() {
+					scroll += $(this).outerWidth({margin: true});
+				});
+			}
+
+			scroll = Math.max(0, Math.min(scroll, maxHScroll));
+			// cont.scrollLeft(scroll);
+			cont.animate({scrollLeft: scroll}, 250);
+			enableButtons(scroll);
+			return false;
+		});
+		arrRight = box.find('.arrRight').unbind('click').click(function() {
+			var scroll, pos;
+			if ($(this).is('.disabled')) {
+				return false;
+			}
+			cont.stop(true);
+			pos = -1;
+			scroll = cont.scrollLeft();
+			// cerco l'elemento visibile, anche parzialmente, piu' a sinistra
+			items.each(function(i) {
+				var left;
+				left = $(this).position().left;
+				if ((left >= 0 || (0 - left) < $(this).outerWidth({margin: true})) && pos < 0) {
+					pos = i;
+				}
+			});
+
+			scroll = 0;
+			if (pos >= 0) {
+				items.slice(0, pos + 1).each(function() {
+					scroll += $(this).outerWidth({margin: true});
+				});
+			}
+
+			scroll = Math.max(0, Math.min(scroll, maxHScroll));
+			// cont.scrollLeft(scroll);
+			cont.animate({scrollLeft: scroll}, 250);
+			enableButtons(scroll);
+			return false;
+		});
+		enableButtons(0);
+	});
+}
+replayTvInitCarousel();
+
+</script>
+
+
+<hr class="sep">
+<div class="box Dirette">
+<div class="titolo">
+
+<h3>Dirette Tv e Radio</h3>
+<h4>Tutta la Rai in diretta sul web</h4>
+
+
+
+</div>
+<div class="mid">
+
+<ul class="dark"><li rel="Rai1">
+<a target="_top" title="Rai 1" href="http://www.rai.tv/dl/RaiTV/dirette/PublishingBlock-64203784-70f7-4b53-9d21-b14693850195.html?channel=Rai 1" class="img Rai1"><img src="http://www.rai.it/lfe_apple/Rai1.png" alt="" height="60" width="82"><strong><span>Rai 1</span></strong></a>
+</li>
+
+<li rel="Rai2">
+<a target="_top" title="Rai 2" href="http://www.rai.tv/dl/RaiTV/dirette/PublishingBlock-57351f9c-f319-4526-b0a5-da6e19f98d74.html?channel=Rai 2" class="img Rai2"><img src="http://www.rai.it/lfe_apple/Rai2.png" alt="" height="60" width="82"><strong><span>Rai 2</span></strong></a>
+</li>
+
+<li rel="Rai3">
+<a target="_top" title="Rai 3" href="http://www.rai.tv/dl/RaiTV/dirette/PublishingBlock-eedb4649-b6c4-4892-a5a9-e2ca63b54bd8.html?channel=Rai 3" class="img Rai3"><img src="http://www.rai.it/lfe_apple/Rai3.png" alt="" height="60" width="82"><strong><span>Rai 3</span></strong></a>
+</li>
+
+<li rel="Rai4">
+<a target="_top" title="Rai 4" href="http://www.rai.tv/dl/RaiTV/dirette/PublishingBlock-ea74b386-9a37-4293-a06b-c003359c6ede.html?channel=Rai 4" class="img Rai4"><img src="http://www.rai.it/lfe_apple/Rai4.png" alt="" height="60" width="82"><strong><span>Rai 4</span></strong></a>
+</li>
+</ul><ul class="light"><li rel="Rai5">
+<a target="_top" title="Rai 5" href="http://www.rai.tv/dl/RaiTV/dirette/PublishingBlock-5d691044-de91-4942-8c9c-4b9bda4b8b79.html?channel=Rai 5" class="img Rai5"><img src="http://www.rai.it/lfe_apple/Rai5.png" alt="" height="60" width="82"><strong><span>Rai 5</span></strong></a>
+</li>
+<li rel="RaiMovie">
+<a target="_top" title="Rai Movie" href="http://www.rai.tv/dl/RaiTV/dirette/PublishingBlock-1dc5af18-ecc2-497f-be49-8e2989cbcc2a.html?channel=Rai Movie" class="img RaiMovie"><img src="http://www.rai.it/lfe_apple/Rai_Movie.png" alt="" height="60" width="82"><strong><span>Rai Movie</span></strong></a>
+</li>
+<li rel="RaiPremium">
+<a target="_top" title="Rai Premium" href="http://www.rai.tv/dl/RaiTV/dirette/PublishingBlock-2f9bc3f5-b629-44c0-aeb2-d3af4eb1e446.html?channel=Rai Premium" class="img RaiPremium"><img src="http://www.rai.it/lfe_apple/Rai_Premium.png" alt="" height="60" width="82"><strong><span>Rai Premium</span></strong></a>
+</li>
+<li rel="RaiGulp">
+<a target="_top" title="Rai Gulp" href="http://www.rai.tv/dl/RaiTV/dirette/PublishingBlock-4a26f83b-8a8e-4a0f-a213-6d936ef1f48d.html?channel=Rai Gulp" class="img RaiGulp"><img src="http://www.rai.it/lfe_apple/Rai_Gulp.png" alt="" height="60" width="82"><strong><span>Rai Gulp</span></strong></a>
+</li>
+</ul><ul class="dark"><li rel="RaiYoYo">
+<a target="_top" title="Rai YoYo" href="http://www.rai.tv/dl/RaiTV/dirette/PublishingBlock-c38d501a-75af-4285-9b5a-54c801d95cbc.html?channel=Rai YoYo" class="img RaiYoYo"><img src="http://www.rai.it/lfe_apple/Rai_YoYo.png" alt="" height="60" width="82"><strong><span>Rai YoYo</span></strong></a>
+</li>
+<li rel="RaiStoria">
+<a target="_top" title="Rai Storia" href="http://www.rai.tv/dl/RaiTV/dirette/PublishingBlock-f630463f-a1b1-4ca6-925a-6d9e8801d88c.html?channel=Rai Storia" class="img RaiStoria"><img src="http://www.rai.it/lfe_apple/Rai_Storia.png" alt="" height="60" width="82"><strong><span>Rai Storia</span></strong></a>
+</li>
+<li rel="RaiScuola">
+<a target="_top" title="Rai Scuola" href="http://www.rai.tv/dl/RaiTV/dirette/PublishingBlock-aaca392a-da8b-4fc8-8a74-add9363188e4.html?channel=Rai Scuola" class="img RaiScuola"><img src="http://www.rai.it/lfe_apple/Rai_Scuola.png" alt="" height="60" width="82"><strong><span>Rai Scuola</span></strong></a>
+</li>
+<li rel="RaiNews">
+<a target="_top" title="RaiNews" href="http://www.rai.tv/dl/RaiTV/dirette/PublishingBlock-233b8482-1cbc-4970-87d5-9d7604b26ddb.html?channel=RaiNews" class="img RaiNews"><img src="http://www.rai.it/lfe_apple/RaiNews.png" alt="" height="60" width="82"><strong><span>RaiNews</span></strong></a>
+</li>
+</ul><ul class="light"><li rel="RaiSport1">
+<a target="_top" title="RaiSport 1" href="http://www.rai.tv/dl/RaiTV/dirette/PublishingBlock-7131f72e-5ca4-45f7-bd50-ebf161d164fc.html?channel=RaiSport 1" class="img RaiSport1"><img src="http://www.rai.it/lfe_apple/Raisport1.png" alt="" height="60" width="82"><strong><span>RaiSport 1</span></strong></a>
+</li>
+<li rel="RaiSport2">
+<a target="_top" title="RaiSport 2" href="http://www.rai.tv/dl/RaiTV/dirette/PublishingBlock-c7daf6b9-aeb4-48ed-8e0a-3d8afe7c5f8f.html?channel=RaiSport 2" class="img RaiSport2"><img src="http://www.rai.it/lfe_apple/Raisport2.png" alt="" height="60" width="82"><strong><span>RaiSport 2</span></strong></a>
+</li>
+<li rel="EuroNews">
+<a target="_top" title="EuroNews" href="http://www.rai.tv/dl/RaiTV/dirette/PublishingBlock-1912dbbf-3f96-44c3-b4cf-523681fbacbc.html?channel=EuroNews" class="img EuroNews"><img src="http://www.rai.it/lfe_apple/Euronews.png" alt="" height="60" width="82"><strong><span>EuroNews</span></strong></a>
+</li>
+</ul>
+
+
+
+<ul class="dark radio">
+	<li>
+		<a class="Radio1live" href="javascript:{wid=window.open('http://www.rai.tv/dl/RaiTV/popup/player_radio.html?v=1','raiDirette','top=40,left=40,toolbar=0,directories=0,menubar=0,status=0,resizable=0,statusbar=0,scrollbars=0,width=597,height=400');wid.focus();}">Radio1 live</a>
+	</li>
+	<li>
+		<a class="Radio2live" href="javascript:{wid=window.open('http://www.rai.tv/dl/RaiTV/popup/player_radio.html?v=2','raiDirette','top=40,left=40,toolbar=0,directories=0,menubar=0,status=0,resizable=0,statusbar=0,scrollbars=0,width=597,height=400');wid.focus();}">Radio2 live</a>
+	</li>
+	<li>
+		<a class="Radio3live" href="javascript:{wid=window.open('http://www.rai.tv/dl/RaiTV/popup/player_radio.html?v=3','raiDirette','top=40,left=40,toolbar=0,directories=0,menubar=0,status=0,resizable=0,statusbar=0,scrollbars=0,width=597,height=400');wid.focus();}">Radio3 live</a>
+	</li>
+</ul>
+<ul class="light radio">
+	<li>
+		<a class="Isoradio" href="javascript:{wid=window.open('http://www.rai.tv/dl/RaiTV/popup/player_radio.html?v=9','raiDirette','top=40,left=40,toolbar=0,directories=0,menubar=0,status=0,resizable=0,statusbar=0,scrollbars=0,width=597,height=400');wid.focus();}">Isoradio</a>
+	</li>
+	<li>
+		<a class="GrParlamento" href="javascript:{wid=window.open('http://www.rai.tv/dl/RaiTV/popup/player_radio.html?v=10','raiDirette','top=40,left=40,toolbar=0,directories=0,menubar=0,status=0,resizable=0,statusbar=0,scrollbars=0,width=597,height=400');wid.focus();}">Gr Parlamento</a>
+	</li>
+</ul>
+<ul class="dark radio">
+	<li>
+		<a class="Filodiffusione4" href="javascript:{wid=window.open('http://www.rai.tv/dl/RaiTV/popup/player_radio.html?v=4','raiDirette','top=40,left=40,toolbar=0,directories=0,menubar=0,status=0,resizable=0,statusbar=0,scrollbars=0,width=597,height=400');wid.focus();}">Filodiffusione4</a>
+	</li>
+	<li>
+		<a class="Filodiffusione5" href="javascript:{wid=window.open('http://www.rai.tv/dl/RaiTV/popup/player_radio.html?v=5','raiDirette','top=40,left=40,toolbar=0,directories=0,menubar=0,status=0,resizable=0,statusbar=0,scrollbars=0,width=597,height=400');wid.focus();}">Filodiffusione5</a>
+	</li>
+	<!--li>
+	<a class="RaitaliaRadio" href="http://www.rai.tv/dl/RaiTV/popup/player_radio.html?v=8">Raitalia Radio</a>
+	</li-->
+</ul>
+<ul class="light radio">
+	<li>
+		<a class="Wr6" href="javascript:{wid=window.open('http://www.rai.tv/dl/RaiTV/popup/player_radio.html?v=6','raiDirette','top=40,left=40,toolbar=0,directories=0,menubar=0,status=0,resizable=0,statusbar=0,scrollbars=0,width=597,height=400');wid.focus();}">WebRadio 6</a>
+	</li>
+	<li>
+		<a class="Wr7" href="javascript:{wid=window.open('http://www.rai.tv/dl/RaiTV/popup/player_radio.html?v=7','raiDirette','top=40,left=40,toolbar=0,directories=0,menubar=0,status=0,resizable=0,statusbar=0,scrollbars=0,width=597,height=400');wid.focus();}">WebRadio 7</a>
+	</li>				
+	<li>
+		<a class="Wr8" href="javascript:{wid=window.open('http://www.rai.tv/dl/RaiTV/popup/player_radio.html?v=8','raiDirette','top=40,left=40,toolbar=0,directories=0,menubar=0,status=0,resizable=0,statusbar=0,scrollbars=0,width=597,height=400');wid.focus();}">WebRadio 8</a>
+	</li>
+</ul>
+
+
+</div>
+</div>
+
+
+
+</div>
+
+
+			<div id="Rumors" class="boxSpalla">
+				<div class="top">
+					<h3>Rumors e anticipazioni</h3>
+					<h4>Tutte le novità sui programmi Rai</h4>
+					
+				</div>
+				<div class="mid">
+					<div class="paging"></div>
+				</div>
+			</div>		
+			<!-- informa -->
+			<div class="boxSpalla">
+<div class="top">
+<h3>Rai informa</h3>
+<h4>Informazioni e novit&agrave; aziendali</h4>
+<div class="miniLink">
+<a href="#" class="Info">Info
+				<div class="descr">
+<span>Info</span><strong></strong>
+<p>"Rai Informa" &#232; l&#39;area di Rai.it dedicata alle comunicazioni istituzionali, aziendali e di servizio rivolte agli utenti e abbonati</p>
+</div>
+</a>
+</div>
+
+</div>
+<div class="mid">
+<ul class="Elenco">
+<li>
+<a class="img" title="Piano Triennale di Prevenzione della Corruzione di RAI SpA" target="_top" href="http://www.rai.it/dl/rai/text/PublishingBlock-1dbab294-d544-454e-80bb-0e33d69ebc15.html?id=ContentItem-306f8537-051f-4566-880a-fa6e651e792c[P]"><img alt="Piano Triennale di Prevenzione della Corruzione di RAI SpA" src="/dl/img/2014/12/1418898410026rai70x70.jpg"></a><a class="link" target="_top" href="http://www.rai.it/dl/rai/text/PublishingBlock-1dbab294-d544-454e-80bb-0e33d69ebc15.html?id=ContentItem-306f8537-051f-4566-880a-fa6e651e792c[P]">&#200; on line, il nuovo Piano Triennale di Prevenzione della Corruzione 2016-2018 di Rai SpA, liberamente consultabile nella Sezione Societ&#224; Trasparente- sottosezione Anticorruzione e Trasparenza</a>
+</li>
+<li>
+<a title="Patrimonio Immobiliare RAI" target="_blank" href="http://www.immobili.rai.it/"><img alt="Patrimonio Immobiliare RAI" src="/dl/images/1326797197148patrimonio.jpg"></a>
+</li>
+<li>
+<a class="img" title="Il telecomando integrato Rai" target="_blank" href="http://www.rai.it/dl/rai/text/ContentItem-0d55bed1-8510-4f18-b989-836f6f5c2add.html"><img alt="Il telecomando integrato Rai" src="/dl/img/2013/08/1375798399385telecomando70.jpg"></a><a class="link" target="_blank" href="http://www.rai.it/dl/rai/text/ContentItem-0d55bed1-8510-4f18-b989-836f6f5c2add.html">Il servizio interattivo a standard MHP, fruibile dai decoder e TV dotati di bollino DGTVi Blu o Gold</a>
+</li>
+<li>
+<a class="img" title="Albo Fornitori Rai" target="_top" href="http://www.fornitori.rai.it/avvisi/Dotazione_PEC_e_Firma_Digitale_%E2%80%93_adozione_di_nuovi.html"><img alt="Albo Fornitori Rai" src="/dl/img/2014/12/1418898410026rai70x70.jpg"></a><a class="link" target="_top" href="http://www.fornitori.rai.it/avvisi/Dotazione_PEC_e_Firma_Digitale_%E2%80%93_adozione_di_nuovi.html"><p><i>Nuovo Portale Telematico Acquisti Rai</i></p>
+</br></br>Gli operatori economici interessati possono cliccare qui per avere le prime informazioni operative...</a>
+</li>
+<li>
+<a class="img" title="Digitale terrestre" target="_blank" href="http://www.raiway.it"><img alt="Digitale terrestre" src="/dl/images/13146235926301242301208035123_dtt4.jpg"></a><a class="link" target="_blank" href="http://www.raiway.it">Hai problemi nella ricezione dei canali RAI sul digitale? Utilizza il servizio di assistenza via livechat di RaiWay</a>
+</li>
+<li>
+<a class="img" title="Delibera AGCOM 497/10/CONS art.4, comma7" target="_blank" href="http://www.rai.it/dl/rai/text/ContentItem-1fc137b1-132e-4813-85d4-422a44b159d5.html"><img alt="Delibera AGCOM 497/10/CONS art.4, comma7" src="/dl/images/132679788038770_Agcom.jpg"></a><a class="link" target="_blank" href="http://www.rai.it/dl/rai/text/ContentItem-1fc137b1-132e-4813-85d4-422a44b159d5.html">Offerta condizioni economiche/contrattuali</a>
+</li>
+<li>
+<a class="img" title="Contatta la Rai" target="_blank" href="http://www.rai.it/dl/rai/contattalarai.html"><img alt="Contatta la Rai" src="/dl/images/1327333981087contatta.jpg"></a><a class="link" target="_blank" href="http://www.rai.it/dl/rai/contattalarai.html">I riferimenti del call center Rai</a>
+</li>
+</ul>
+</div>
+</div>
+
+			<div class="banner300x100"></div>
+			<!-- ufficio stampa PublishingBlock-9fb0f9a0-2e0a-4993-8ea7-2f2b4fb1c92d -->
+			<div class="boxSpalla" id="uffStampa">
+	<div class="top">
+		<h3>Ufficio Stampa</h3> 
+		<h4>Comunicati Rai e ascolti tv</h4>
+		
+		<!--div class="miniLink">
+			<a href="#">Info</a>
+			<a href="http://www.ufficiostampa.rai.it/" target="_blank">Vai al sito</a>
+		</div-->
+		<div class="miniLink">
+<a href="#" class="Info">Info
+				<div class="descr">
+<span>Info</span><strong></strong>
+<p>"Ufficio stampa" &#232; l&#39;area di Rai.it dedicata agli ultimi comunicati stampa pubblicati relativi alle messe in onda dei programmi, ad ascolti e share e ad informazione di tipo aziendale</p>
+</div>
+</a><a target="_top" href="http://www.ufficiostampa.rai.it">Vai al sito</a>
+</div>
+
+	</div>
+	<div class="mid"></div>
+	<script type="text/javascript">
+		function getFeedRss(params,el){
+			var $div = $('#uffStampa .mid '+el);
+			var callback = function() {
+
+			/*
+						<li>
+							<span>Rai Ufficio Stampa</span>
+							<a class="link" href="#"><em>17/05/2011</em> Ascolti Lunedì 16 Maggio</a>
+						</li>
+			*/
+				var liUff = "";
+				$('li.rss-item', $div).each(function(){
+					var link = $("a.rss-item", this).attr("href");
+					if(link.substr(0,7)!='http://'){
+						link='http://www.ufficiostampa.rai.it'+link;
+					}
+					var datePost = $(".rss-date", this).text();
+					var img = $(".pod-play-box img", this).attr("src");
+					var titleCat = $("a.rss-item", this).text().split(":");
+					var title, cat;
+					//console.log(title,titleCat);
+					
+					if(typeof(titleCat[0]) == 'undefined'){cat = '';} else { cat = titleCat[0];}
+					if(typeof(titleCat[1]) == 'undefined'){title = titleCat[0];} else { title = titleCat[1];}
+					//var desc = $(this).text();
+					liUff += '<li>'+
+								'<span>'+cat+'</span>'+
+								'<a href="'+link+'" target="_blank" class="link">'+
+									'<em>'+datePost.substr(0,11)+'</em>'+title+'</a><br />'+
+									//'<p>'+desc+'</p>'+
+							'</li>';
+				});
+
+				$("#uffStampa .mid "+el).html(liUff);
+				$('#uffStampa .mid').show();
+			};
+
+			function getUniqueName() {
+				var t = new Date();
+				t = t.getTime();
+				var r = Math.floor(Math.random()*997);
+				var baseName = 'feed_';
+				var fname = baseName+t+r;
+				while (typeof(window[fname]) != 'undefined') {
+					r = Math.floor(Math.random()*997);;
+					fname = baseName+''+t+''+r;
+				}
+				return fname;
+			};
+
+			var uName = getUniqueName();
+			var obj = {};
+			obj.feed = [];
+			obj.render = function() {
+				var html = obj.feed.join('');
+				try {
+					$div.html(html);
+				} catch(e) {
+					$div.replaceWith(html);
+				}
+				if (callback) {
+					if (typeof(callback) == 'string' && typeof(window[callback]) == 'function') {
+						window[callback].apply($div[0]);
+					} else if (typeof(callback) == 'function') {
+						callback.apply($div[0]);
+					}
+				}
+			};
+			obj.init = function() {obj.feed = [];};
+
+			window[uName] = obj;
+
+			var myParams = {
+				initFunction: uName+'.init();',
+				outputFunction: uName+'.feed.push',
+				callbackFunction: uName+'.render();'
+			}
+
+			params = $.extend({}, params, myParams);
+			var p = $.param(params);
+			var url = 'http://www.feed.rai.it/async_feed.php?'+p;
+			$.getScript(url);
+		
+		}
+		
+		function initUffStampa(){
+			/*var params = {
+				src:  "http://www.ufficiostampa.rai.it/work/rss/allnews.xml",
+				utf:  "y",
+				num:  "5",
+				targ: "y",
+				tz:   "+1",
+				date: "y",
+				pc: "y",
+				html: "n",
+				desc: "1"
+			};*/
+			var params = {
+				src:  "http://www.ufficiostampa.rai.it/dl/UfficioStampa/Articoli/Rss/ContentSet-67b988e3-08e6-45bb-9147-f74d9c7c4360.xml",
+				utf:  "y",
+				num:  "2",
+				targ: "y",
+				tz:   "+1",
+				date: "y",
+				pc: "y",
+				html: "n",
+				desc: "1"
+			};	
+			var params_2 = {
+				src:  "http://www.ufficiostampa.rai.it/dl/UfficioStampa/Articoli/Rss/ContentSet-1489e5cd-285a-4121-bf8b-35f73d8f4693.xml",
+				utf:  "y",
+				num:  "3",
+				targ: "y",
+				tz:   "+1",
+				date: "y",
+				pc: "y",
+				html: "n",
+				desc: "1"
+			};
+			$('#uffStampa .mid ').html('<ul id="rss_ascolti" class="Elenco"/><ul id="rss_aziendali" class="Elenco"/>');
+			getFeedRss(params,"#rss_ascolti");
+			getFeedRss(params_2,"#rss_aziendali");
+			
+		};
+		$(function() {	
+			initUffStampa();
+			self.setInterval(function(){initUffStampa();}, 120*1000);
+		});
+		</script>
+</div>
+
+			<div class="boxSpalla Nero">
+	<div class="top">
+		<h3>Rai App</h3> 
+		<h4>Le applicazioni rai su altre piattaforme</h4>
+	</div>
+	<div class="mid">
+		<div class="Apps">
+			<a href="/dl/rai/appMobile.html" class="appMobile"><strong>Smartphone e Tablet</strong></a>
+			<a href="/dl/rai/appTv.html" class="appTv"><strong>Tv interattiva</strong></a>
+			<!--a href="/dl/rai/app.html" class="appDesktop"><strong>Desktop</strong> Scarica l'applicazione desktop Rai.tv per accedere ai contenuti del portale anche in modalità off-line e ricevere notifiche sui nuovi contenuti disponibili</a-->
+		</div>
+	</div>
+</div>
+
+			<!--Sondaggio -->			
+			<div class="clear"></div>
+			<div class="banner300x250"></div><div class="banner300x100"></div>
+
+
+		</div>
+		<div class="clear"></div>
+	</div>
+
+</div>
+<span id="nielsen" class="hidden"><img src="/dl/portale/images/trasparent.png" alt="' '"/></span>
+<!--footer-->
+<div class="contFooter">
+	<div class="Footer clearfix">
+		<div class="top">
+			<h2>Rai.it</h2> 
+			<h3>Network Rai</h3>
+			<div class="boxSearch">
+				<form name="qtv" action="http://www.rai.it/dl/rai/ricerca.html">
+					<input type="hidden" name="site" value="default_collection"/>
+					<input type="hidden" name="getfields" value="*"/>
+					<input type="hidden" name="filter" value="0"/>
+					<input type="text" name="q" size="40" id="ricercafootertesto" maxlength="256" placeholder="Cerca"/>
+					<label for="ricercafootertesto">Inserisci il testo per la ricerca</label>
+					<div class="Scelta">
+						<span>nei siti Rai</span>
+						<ul>
+							<li><span data-action="http://www.rai.it/dl/rai/ricerca.html" data-site="default_collection">nei siti Rai</span></li>
+							<li><span data-action="http://www.rai.tv/dl/RaiTV/ricerca.html" data-site="raitv">su Rai.Tv</span></li> 
+						</ul>
+					</div>
+					<input type="submit" class="submit" id="ricercafootersubmit" value="Cerca"/>
+					<label for="ricercafootersubmit">Cerca</label>
+				</form>
+			</div>	
+		</div>
+		<div class="mid">
+			<!--googleoff: all--><div class="col TV">
+<h4>TV</h4>
+<ul>
+<li>
+<span>Rai 1</span><a href="http://www.rai1.rai.it" data-desc="Sito">Sito</a> | <a href="http://www.direttaraiuno.rai.it/dl/RaiTV/diretta.html?cid=PublishingBlock-64203784-70f7-4b53-9d21-b14693850195&amp;amp;channel=Rai%20Uno" data-desc="Live">Live</a>
+</li>
+<li>
+<span>Rai 2</span><a href="http://www.rai2.rai.it/" data-desc="Sito">Sito</a> | <a href="http://www.direttaraidue.rai.it" data-desc="Live">Live</a>
+</li>
+<li>
+<span>Rai 3</span><a href="http://www.rai3.rai.it/" data-desc="Sito">Sito</a> | <a href="http://www.direttaraitre.rai.it" data-desc="Live">Live</a>
+</li>
+<li>
+<span>Rai 4</span><a href="http://www.rai4.rai.it/" data-desc="Sito">Sito</a> | <a href="http://www.direttaraiquattro.rai.it" data-desc="Live">Live</a>
+</li>
+<li>
+<span>Rai 5</span><a href="http://www.rai5.rai.it/" data-desc="Sito">Sito</a> | <a href="http://www.direttaraicinque.rai.it" data-desc="Live">Live</a>
+</li>
+<li>
+<span>Rainews</span><a href="http://www.rainews.it" data-desc="Sito">Sito</a> | <a href="http://www.rainews.it/dl/rainews/live/ContentItem-3156f2f2-dc70-4953-8e2f-70d7489d4ce9.html" data-desc="Live">Live</a>
+</li>
+<li>
+<span>Rai Gulp</span><a href="http://www.raigulp.rai.it/" data-desc="Sito">Sito</a> | <a href="http://www.rai.tv/dl/RaiTV/dirette/PublishingBlock-4a26f83b-8a8e-4a0f-a213-6d936ef1f48d.html?channel=Rai%20Gulp" data-desc="Live">Live</a>
+</li>
+<li>
+<span>Rai Sport</span><a href="http://www.raisport.rai.it/" data-desc="Sito">Sito</a> | <a href="http://www.rai.tv/dl/RaiTV/dirette/PublishingBlock-7131f72e-5ca4-45f7-bd50-ebf161d164fc.html?channel=RaiSport%201" data-desc="Live">Live</a>
+</li>
+<li>
+<span>Rai Sport 2</span><a href="http://www.raisport.rai.it/" data-desc="Sito">Sito</a> | <a href="http://www.rai.tv/dl/RaiTV/dirette/PublishingBlock-c7daf6b9-aeb4-48ed-8e0a-3d8afe7c5f8f.html?channel=RaiSport%202" data-desc="Live">Live</a>
+</li>
+<li>
+<span>Rai Storia</span><a href="http://www.raistoria.rai.it/" data-desc="Sito">Sito</a> | <a href="http://www.rai.tv/dl/RaiTV/dirette/PublishingBlock-f630463f-a1b1-4ca6-925a-6d9e8801d88c.html?channel=Rai%20Storia" data-desc="Live">Live</a>
+</li>
+<li>
+<span>Rai Premium</span><a href="http://www.raipremium.rai.it" data-desc="Sito">Sito</a> | <a href="http://www.rai.tv/dl/RaiTV/dirette/PublishingBlock-2f9bc3f5-b629-44c0-aeb2-d3af4eb1e446.html?channel=Rai%20Premium" data-desc="Live">Live</a>
+</li>
+<li>
+<span>Rai Scuola</span><a href="http://www.educational.rai.it/" data-desc="Sito">Sito</a> | <a href="http://www.rai.tv/dl/RaiTV/dirette/PublishingBlock-aaca392a-da8b-4fc8-8a74-add9363188e4.html?channel=Rai%20Scuola" data-desc="Live">Live</a>
+</li>
+<li>
+<span>Rai YoYo</span><a href="http://www.raiyoyo.rai.it/" data-desc="Sito">Sito</a> | <a href="http://www.rai.tv/dl/RaiTV/dirette/PublishingBlock-c38d501a-75af-4285-9b5a-54c801d95cbc.html?channel=Rai%20YoYo" data-desc="Live">Live</a>
+</li>
+<li>
+<span>Rai Movie</span><a href="http://www.raimovie.rai.it/" data-desc="Sito">Sito</a> | <a href="http://www.rai.tv/dl/RaiTV/dirette/PublishingBlock-1dc5af18-ecc2-497f-be49-8e2989cbcc2a.html?channel=Rai%20Movie" data-desc="Live">Live</a>
+</li>
+</ul>
+</div><div class="col RADIO">
+<h4>RADIO</h4>
+<ul>
+<li>
+<span>Radio Rai</span><a href="http://www.radio.rai.it" data-desc="Sito">Sito</a>
+</li>
+<li>
+<span>Radio 1</span><a href="http://www.radio1.rai.it/" data-desc="Sito">Sito</a> | <a href="http://www.rai.tv/dl/RaiTV/popup/player_radio.html?v=1" data-desc="Live">Live</a>
+</li>
+<li>
+<span>Radio 2</span><a href="http://www.radio2.rai.it/" data-desc="Sito">Sito</a> | <a href="http://www.rai.tv/dl/RaiTV/popup/player_radio.html?v=2" data-desc="Live">Live</a>
+</li>
+<li>
+<span>Radio 3</span><a href="http://www.radio3.rai.it/" data-desc="Sito">Sito</a> | <a href="http://www.rai.tv/dl/RaiTV/popup/player_radio.html?v=3" data-desc="Live">Live</a>
+</li>
+<li>
+<span>Radiofd4</span><a href="http://www.fd4.rai.it" data-desc="Sito">Sito</a> | <a href="http://www.radiorai.rai.it/dl/portaleRadio/popup/player_radio.html?v=4" data-desc="Live">Live</a>
+</li>
+<li>
+<span>Radiofd5</span><a href="http://www.fd5.rai.it" data-desc="Sito">Sito</a> | <a href="http://www.rai.tv/dl/RaiTV/popup/player_radio.html?v=5" data-desc="Live">Live</a>
+</li>
+<li>
+<span>Isoradio</span><a href="http://www.isoradio.rai.it" data-desc="Sito">Sito</a> | <a href="http://www.radiorai.rai.it/dl/portaleRadio/popup/player_radio.html?v=9" data-desc="Live">Live</a>
+</li>
+<li>
+<span>CCISS</span><a href="http://www.cciss.rai.it/" data-desc="Sito">Sito</a>
+</li>
+<li>
+<span>Web Radio 6</span><a href="http://www.wr6.rai.it" data-desc="Sito">Sito</a> | <a href="http://www.radiorai.rai.it/dl/portaleRadio/popup/player_radio.html?v=6" data-desc="Live">Live</a>
+</li>
+<li>
+<span>Web Radio 7</span><a href="http://www.wr7.rai.it" data-desc="Sito">Sito</a> | <a href="http://www.radiorai.rai.it/dl/portaleRadio/popup/player_radio.html?v=7" data-desc="Live">Live</a>
+</li>
+<li>
+<span>Web Radio 8</span><a href="http://www.wr8.rai.it" data-desc="Sito">Sito</a> | <a href="http://www.radiorai.rai.it/dl/portaleRadio/popup/player_radio.html?v=8" data-desc="Live">Live</a>
+</li>
+</ul>
+</div><div class="col portal">
+<h4>PORTALI WEB</h4>
+<ul>
+<li>
+<a href="http://www.rai.tv">Rai.tv</a>
+</li>
+<li>
+<a href="http://www.cultura.rai.it/">Rai Cultura</a>
+</li>
+<li>
+<a href="http://www.fiction.rai.it">Rai Fiction</a>
+</li>
+<li>
+<a href="http://www.raicinema.rai.it">Rai Cinema</a>
+</li>
+<li>
+<a href="http://www.teche.rai.it">Rai Teche</a>
+</li>
+<li>
+<a href="http://www.classica.rai.it">Rai Classica</a>
+</li>
+<li>
+<a href="http://www.expo.rai.it/">Rai Expo</a>
+</li>
+<li>
+<a href="http://www.libri.rai.it/dl/portali/site/page/Page-325ca4d6-7114-4990-9f6c-d11884397a94.html">Rai Libri</a>
+</li>
+<li>
+<a href="http://www.eri.rai.it/">Rai Eri</a>
+</li>
+<li>
+<a href="http://www.ray.rai.it/">Ray</a>
+</li>
+<li>
+<a href="http://www.osn.rai.it">Orchestra Sinfonica</a>
+</li>
+<li>
+<a href="http://www.segretariatosociale.rai.it">Segretariato sociale</a>
+</li>
+<li>
+<a href="http://www.letteratura.rai.it">Rai Letteratura</a>
+</li>
+<li>
+<a href="http://www.arte.rai.it">Rai Arte</a>
+</li>
+<li>
+<a href="http://www.prixitalia.rai.it/">Prix Italia</a>
+</li>
+<li>
+<a href="http://www.museoradiotv.rai.it/">Museo della radio e della televisione</a>
+</li>
+<li>
+<a href="http://www.nuovitalenti.rai.it">Nuovi Talenti</a>
+</li>
+<li>
+<a href="http://www.raiitalia.it">Rai Italia</a>
+</li>
+</ul>
+</div><div class="col link">
+<h4>NOTIZIE E SPORT</h4>
+<ul>
+<li>
+<a href="http://www.rainews.it">Rai News</a>
+</li>
+<li>
+<a href="http://www.raisport.rai.it/">Rai Sport</a>
+</li>
+<li>
+<a href="http://www.servizitelevideo.rai.it">Televideo</a>
+</li>
+<li>
+<a href="http://www.tg1.rai.it">Tg1</a>
+</li>
+<li>
+<a href="http://www.tg2.rai.it/">Tg2</a>
+</li>
+<li>
+<a href="http://www.tg3.rai.it/">Tg3</a>
+</li>
+<li>
+<a href="http://www.tgr.rai.it/">TgR</a>
+</li>
+<li>
+<a href="http://www.raiparlamento.rai.it/">Rai Parlamento</a>
+</li>
+</ul>
+</div><div class="col Scura">
+<h4>L'AZIENDA</h4>
+<ul>
+<li>
+<a href="http://www.rai.it/dl/rai/text/ContentItem-9e40fc26-6bca-4fc7-a682-50d48a0f19e0.html">Il gruppo Rai</a>
+</li>
+<li>
+<a href="http://www.rai.it/dl/rai/text/ContentItem-90a3232f-5d76-4bd0-80df-49c3800276d2.html">Linee editoriali per la produzione di fiction</a>
+</li>
+<li>
+<a href="http://www.canone.rai.it">Rai Canone</a>
+</li>
+<li>
+<a href="http://www.ufficiostampa.rai.it/">Ufficio Stampa</a>
+</li>
+<li>
+<a href="http://www.fornitori.rai.it/">Rai Fornitori</a>
+</li>
+<li>
+<a href="http://www.lavoraconnoi.rai.it">Lavora con noi</a>
+</li>
+<li>
+<a href="http://www.casting.rai.it">Rai Casting</a>
+</li>
+<li>
+<a href="http://www.raipubblicita.it/">Rai Pubblicità</a>
+</li>
+<li>
+<a href="http://www.rai.it/dl/rai/text/ContentItem-22ea61dd-10e6-4374-96ac-127f7a86f8da.html">Il timbro digitale Rai</a>
+</li>
+<li>
+<a href="http://www.rai.it/dl/rai/text/ContentItem-5a0d5bc3-9f0e-4f6b-8b65-13dd14385123.html">Privacy policy</a>
+</li>
+<li>
+<a href="http://www.rai.it/dl/rai/text/ContentItem-a7cc361d-3653-4865-9030-5359d23c43d0.html">Condizioni Generali Servizi Rai</a>
+</li>
+<li>
+<a href="http://www.rai.it/dl/rai/diritti-fotografici.html">Diritti fotografici</a>
+</li>
+<li>
+<a href="http://www.rai.it/dl/rai/text/ContentItem-b3d354b3-cc8a-4e16-8e26-9f7d7471c3da.html">Privacy e rapporto di lavoro</a>
+</li>
+<li>
+<a href="http://www.contattalarai.rai.it/dl/rai/contattalarai.html">Contatti</a>
+</li>
+<li>
+<a href="http://www.rai.it/societatrasparente">Società trasparente</a>
+</li>
+<li>
+<a href="http://www.bilanciosociale.rai.it/">Bilancio Sociale</a>
+</li>
+<li>
+<a href="http://www.rai.it/dl/rai/text/ContentItem-12641837-8083-4b47-a21a-eba19161737a.html">Posta certificata</a>
+</li>
+</ul>
+</div><!--googleon: all-->
+
+			<div class="Credits">
+				&copy; RAI  2016 - tutti i diritti riservati. P.Iva 06382641006<br/>
+				Engineered by Rai, Direzione Web
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+<script type="text/javascript">
+var sipra_background = ".contContainer{background:none;}"+
+	".box_Header { background:none; }"+
+	"html>/**/body .box_Header { background:none!important; }"+
+	".box_TopHeader,.barraSipra {width: 980px!important;}"+
+	".Header{width: 980px;float: none;}"+
+	".Container{width: 980px;float: none;}"+
+	"#ui-datepicker-div{display: none}"+
+	"#Footer: {float:none; width:980px;}" +
+	".contain-to-grid.barraRai {width: 980px !important;margin: 0 auto;}"+
+	".contain-to-grid.barraRai .top-bar-section .right a { padding: 0 !important;}"+
+	".contain-to-grid.barraRai div#barraRaiNetworkDiv { width: 100% !important;}"+
+	".homepage .barraSipra {width: 980px !important;}";
+</script>
+<script type="text/javascript">
+Banners.vars = [];
+Banners.printBanners = function(bannersNotEmpty) {
+	var p, positions, c, n;
+	positions = {
+		'MASTHEAD': '.masthead',
+		'MEDIUMBOX': '.Spalla .banner300x250:eq(0)',
+		'3_1_RECT': '.Spalla .banner300x100:eq(0)',
+		'BACKGROUND': '',
+		'POPUNDER': ''
+	};
+	if ($('.masthead').length == 0) {
+		$('<div class="masthead" />').insertBefore($('.Page>.Main'));
+	}
+	for (p in positions) {
+		c = adagioWriteBanner(p) || '';
+		if (!!positions[p]) {
+			if (c == '') {
+				$(positions[p]).html(c).hide();
+			} else {
+				$(positions[p]).html(c).show();
+			}
+		}
+	}
+};
+Banners.reloadAll = (function(prev) {
+	return function() {
+		console.log('Reloading banners');
+		var f = Banners.getOnceFunction();
+		window[f] = Banners.printBanners;
+		adagioWriteTag('rai_home^rai_home',
+									 'fmt_rai_it_jquery',
+									 '',
+									 '',
+									 1, // user $.getScript
+									 '',
+									 f + '(true);',
+									 f + '(false);',
+									 '');
+	};
+})(Banners.reloadAll);
+reloadBannersOnNielsen = true;
+// se e' presente un overlay gestito da noi (lanci_overlay.html), ritardo il caricamento dei banner
+if (typeof(OverlayPopupClosedEvent) != 'undefined') {
+	Banners._reloadAll = Banners.reloadAll;
+	Banners.reloadAll = function(){};
+	$(document).bind(OverlayPopupClosedEvent, function() {
+		Banners.reloadAll = Banners._reloadAll;
+		Banners.reloadAll();
+	});
+} else {
+	$(Banners.reloadAll);
+}
+</script>
+<script>
+var trackData = {
+    site: 'rai.it',
+    section: 'Sito',
+    canale: 'rai.it',
+    // programmaTV: '',
+    editore: 'rai.it',
+    pageType: 'pagina_senza_media',
+    // pubDate: '' // CP 3
+};
+</script>
+
+
+<!-- -->
+<script type="text/javascript" src="/dl/analytics/webtrekk/webtrekk_v323.js">;</script>
+<script type="text/javascript" src="/dl/analytics/webtrekk/webtrekk.video.js">;</script>
+<script type="text/javascript" src="/dl/analytics/webtrekk/webtrekk.socialMediaTrackingAsync.js">;</script>
+<script type="text/javascript" src="/dl/analytics/webtrekk/WT_Time.js">;</script>
+<script type="text/javascript">
+window.dipendenzeRaiTrackingLoaded=true;
+</script>
+<!-- -->
+<script type="text/javascript" src="/dl/analytics/mappaTracking.html">;</script>
+<script type="text/javascript" src="/dl/analytics/rai.tracking.js">;</script>
+<noscript><div style="display: inline-block; height: 1px; width: 1px; overflow: hidden; visibility: hidden; position: absolute; left: 0;"><img src="http://rai-italia01.wt-eu02.net/602039762736393/wt.pl?p=322,0" height="1" width="1" alt=""/></div></noscript>
+
+
+
+<script type="text/javascript">
+try {
+  if (typeof(setPageNielsenInfo) == 'function') {
+    setPageNielsenInfo();
+  }
+} catch(e) {
+}
+</script>
+
+<!-- START Nielsen//NetRatings SiteCensus V5.2 -->
+<!-- COPYRIGHT 2006 Nielsen//NetRatings -->
+<script type="text/javascript">
+var _rsCI="rainet-it";
+var _rsCG="0";
+var _rsDN="//secure-it.imrworldwide.com/";
+var _rsCC=0;
+var _rsIP=1;
+</script>
+<script type="text/javascript" src="//secure-it.imrworldwide.com/v52.js"></script>
+<noscript>
+<div style="display: none;">
+	<img src="//secure-it.imrworldwide.com/cgi-bin/m?ci=rainet-it&amp;cg=0" style="display:none" alt=""/>
+</div>
+</noscript>
+<!-- END Nielsen//NetRatings SiteCensus V5.2 -->
+
+<!-- Begin comScore Tag --> 
+<script type="text/plain" class="_iub_cs_activate"> 
+  var _comscore = _comscore || []; 
+  _comscore.push({ c1: "2", c2: "15866303" }); 
+  (function() { 
+    var s = document.createElement("script"), el = document.getElementsByTagName("script")[0]; s.async = true; 
+    s.src = (document.location.protocol == "https:" ? "https://sb" : "http://b") + ".scorecardresearch.com/beacon.js"; 
+    el.parentNode.insertBefore(s, el); 
+  })(); 
+</script> 
+<noscript> 
+  <img src="http://b.scorecardresearch.com/p?c1=2&c2=15866303&cv=2.0&cj=1"/> 
+</noscript> 
+<!-- End comScore Tag -->
+</body>
+
+</html>

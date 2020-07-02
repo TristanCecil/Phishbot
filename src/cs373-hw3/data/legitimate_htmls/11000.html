@@ -1,0 +1,1641 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" class="ua-windows ua-webkit">
+    <head>
+        
+<script>var Do=function(){Do.actions.push([].slice.call(arguments))};Do.ready=function(){Do.actions.push([].slice.call(arguments))};Do.add=Do.define=function(a,b){Do.mods[a]=b};Do.global=function(){Do.global.mods=Array.prototype.concat(Do.global.mods,[].slice.call(arguments))};Do.global.mods=[];Do.mods={};Do.actions=[];</script>
+<meta charset="UTF-8">
+<meta property="qc:admins" content="20531101776475216665" />
+<meta name="google-site-verification" content="WVBm7nGSJFZ0xiWILYtnt58MccLCUd5W4cudm7abY9o" />
+<meta name="baidu-site-verification" content="xlgbftQl5Z" />
+<title>豆瓣FM - Beta</title>
+<link rel="shortcut icon" href="http://douban.fm/favicon.ico" type="image/x-icon">
+<link href="http://img6.douban.com/f/shire/4058fa6a9d164232f1458338e59e6d4d60ed15ef/css/core.css" rel="stylesheet" type="text/css">
+<script> (function(d){var i=function(b,a,c){var e=new Date,f,a=a||30,c=c||"/";e.setTime(e.getTime()+a*864E5);a="; expires="+e.toGMTString();for(f in b)d.cookie=f+"="+b[f]+a+"; path="+c},j=function(b){b+="=";var a,c,e,f=d.cookie.split(";");for(c=0,e=f.length;c<e;c++)if(a=f[c].replace(/^\s+|\s+$/g,""),a.indexOf(b)==0)return a.substring(b.length,a.length).replace(/\"/g,"");return null},h=d.write,k={"douban.com":1,"douban.fm":1,"google.com":1,"googleapis.com":1,"gmaptiles.co.kr":1,"gstatic.com":1,"google-analytics.com":1, "googleadservices.com":1},l=function(b,a){var c=new Image;c.onload=function(){};c.src="http://www.douban.com/j/except_report?kind=ra022&reason="+encodeURIComponent(b)+"&environment="+encodeURIComponent(a)},g=function(b){try{h.call(d,b)}catch(a){h(b)}},m=/<script.*?src\=["']?([^"'\s>]+)/ig,n=/http:\/\/(.+?)\.([^\/]+).+/i;d.writeln=d.write=function(b){var a=m.exec(b),c;a?(c=n.exec(a[1]))?k[c[2]]?g(b):j("hj")!=="tqs"&&(l(a[1],location.href),i({hj:"tqs"},1),setTimeout(function(){location.replace(location.href)}, 50)):g(b):g(b)}})(document); </script>
+
+<meta name="keywords" content="豆瓣FM,豆瓣,FM,豆瓣电台,douban,doubanfm,电台,移动,app,音乐,智能,推荐," />
+<meta name="description" content="豆瓣FM是你专属的个性化音乐收听工具。它简单方便，打开就能收听。在收听过程中，你可以用“红心”、“垃圾桶”或者“跳过” 告诉豆瓣FM你的喜好。豆瓣FM将根据你的操作和反馈，从海量曲库中自动发现并播出符合你音乐口味的歌曲。" />
+<link href="http://img6.douban.com/f/fm/5c4aaa9e90c07252e17fa889ba9ecafcaf9ebb88/css/fm/fm_home.css" rel="stylesheet" type="text/css">
+<!--[if IE 6]>
+<script>
+try {
+  document.execCommand("BackgroundImageCache", false, true);
+} catch(e) { }
+</script>
+<![endif]-->
+<script>
+    function set_cookie(g,f,d,e){var b=new Date(),a,c;b.setTime(b.getTime()+((f||30)*24*60*60*1000));a="; expires="+b.toGMTString();for(c in g){document.cookie=c+"="+g[c]+a+"; domain="+(d||"douban.com")+"; path="+(e||"/")}}function get_cookie(b){var e=b+"=",a=document.cookie.split(";"),d,f;for(d=0;d<a.length;d++){f=a[d];while(f.charAt(0)==" "){f=f.substring(1,f.length)}if(f.indexOf(e)===0){return f.substring(e.length,f.length).replace(/\"/g,"")}}return null};;
+
+    Do.add('post_withck', {
+        path: "http://img6.douban.com/f/shire/966c42f6c67243a4d4a7db4ea4047d24ee54d724/js/core/post_withck.js",
+        type: "js"
+    });
+    Do.add('swfobject', {
+        path: "http://img6.douban.com/f/shire/b38e7b7bf607a06d0bc79a87736f0cde80d78e3c/js/swfobject.js",
+        type:'js'
+    });
+    Do.add('template', {
+        path: "http://img6.douban.com/f/shire/e48d781caed0837aee09ec3ad9dd330036280aa4/js/jquery.template.js",
+        type:'js'
+    });
+    Do.add('helpers', {
+        path: "http://img6.douban.com/f/fm/a6ab360c07875161a88ebee549b5101b3090e1ca/js/fm/index_helpers.js",
+        type: "js"
+    });
+    window.name = '_fm';
+    window.consts = {
+        ERR_CAPTCHA_INCORRECT: 1011,
+        FM_URL: "http://douban.fm",
+        CHL_REC_KIND: 3072,
+        LOGIN_EVENT: "user:login"
+    };
+    window.flags = {
+        is_user_login: false
+    };
+
+    // douban stats
+    var _paq = _paq || [];
+    _paq.push(['trackPageView']);
+    _paq.push(['enableLinkTracking']);
+    (function() {
+        var p=(('https:' == document.location.protocol) ? 'https' : 'http'), u=p+'://fundin.douban.fm/';
+        _paq.push(['setTrackerUrl', u+'piwik']);
+        _paq.push(['setSiteId', '100002']);
+        var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+        g.type='text/javascript';
+        g.defer=true;
+        g.async=true;
+        g.src=p+'://s.doubanio.com/dae/fundin/piwik.js';
+        s.parentNode.insertBefore(g,s);
+    })();
+
+    // google analytics
+    (function(i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] || function() {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date();
+        a = s.createElement(o), m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a,m)
+    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+    ga('create', 'UA-7019765-3', 'douban.fm');
+    ga('send', 'pageview');
+
+    window.title_fixed = document.title
+</script>
+<!-- Start Visual Website Optimizer Asynchronous Code -->
+<script type="text/javascript" src="http://img6.douban.com/f/fm/c93a3aa2ba73824005eba0823d7fa3e70d6164e1/js/fm/lib/vwo.js"></script>
+<!-- End Visual Website Optimizer Asynchronous Code -->
+
+
+        <!-- COLLECTED CSS -->
+    </head>
+
+    <body>
+        
+<div id="fm-section">
+    <div id="fm-header">
+        
+        <div id="login-tip" class="login-tip">
+           <span class="info">已经基于你的选择播放专属私人兆赫了，更多红心能让豆瓣FM猜得更准:)</span>
+           <span class="login">立即
+               <a class="login-action lnk-login" href="http://www.douban.com/accounts/login">登录</a> |
+               <a class="register-action lnk-register" href="http://www.douban.com/accounts/register">注册</a>，
+               让豆瓣FM 永久记住你的喜好
+           </span>
+           <span class="cancel">x</span>
+        </div>
+        <div id="anony_nav">
+            <em></em>
+            <div class="fm-user-login">
+                <a href="http://www.douban.com/accounts/login" target="_blank" class="lnk-login">登录</a>
+                <i class="cutline"></i>
+                <a href="http://www.douban.com/accounts/register" target="_blank" class="lnk-register">马上注册</a>
+                <i class="cutline"></i>
+                <a href="/upgrade" target="_blank" class="pro-promo">
+                    开启
+                </a>
+            </div>
+        </div>
+    <script>
+        Do.ready(function(){
+            var UserRecord = function(){
+                this.anony = true;
+                this.is_pro = false;
+                this.num = {};
+                this.init();
+            }
+            UserRecord.prototype.init = function(is_pro){
+                if ($('#user_play_record').length) {
+                    var self = this;
+                    $(['played', 'liked', 'banned']).each(function(){
+                        self.num[this] = parseInt($('#rec_' + this).text());
+                    })
+                    this.anony = false;
+                    this.is_pro = is_pro || $('.pro_icon').length > 0;
+                }
+                else {
+                    this.num["liked"] = 0
+                    this.num["banned"] = 0
+                    this.num["played"] = 0
+                }
+            }
+            UserRecord.prototype.set_num = function(cate, n){
+                this.num[cate] = n;
+                if(this.anony) return;
+                $('#rec_' + cate).html(n);
+            }
+            UserRecord.prototype.increase = function(cate) {
+                this.set_num(cate, this.num[cate] + 1);
+            }
+            UserRecord.prototype.decrease = function(cate) {
+                this.set_num(cate, Math.max(this.num[cate] - 1, 0));
+            }
+            window.user_record = new UserRecord();
+        });
+    </script>
+    </div>
+
+    <div id="logo">
+        <a href="/" title="豆瓣FM">豆瓣FM</a>
+    </div>
+
+    <div id="fm-player">
+      <div class="player-wrap">
+          
+
+
+
+        <div id="radioplayer" name="radioplayer">
+          <span id="no_flash_tip" style="display: none;">
+            请先安装flash player，<a target="_blank" href="http://get.adobe.com/flashplayer/">官方下载</a>
+          </span>
+        </div>
+
+
+
+<script>
+    Do.ready(function() {
+        var hash = location.hash.split('?'), para = {};
+        if (hash[1]) {
+            var kvs = hash[1].split('&');
+            $(kvs).each(function(){
+                var a = this.split('=');
+                para[a[0]] = a[1];
+            });
+            location.hash = '#';
+        }
+
+        para['channel'] = '-10';
+
+        para['defaultChannel'] = '0';
+
+
+        var swfurl='/swf/53096/fmplayer.swf' + (navigator.userAgent.search(/maxthon|qqbrowser/i)? '?' + Math.random() : ''),
+            params = {
+                wmode: 'transparent'
+            },
+            flashvars = {
+                uid: '0',
+                userType: '',
+                autoplay: 1,
+                host: 'http://douban.fm',
+                context: para['context'] || '',
+                channel: para['channel'] || '',
+                defaultChannel: para['defaultChannel'],
+                pid: para['pid'] || '',
+                fromname: 'mainsite',
+                channels: ''
+            },
+            attributes = {
+                id: 'radioplayer',
+                name: 'radioplayer'
+            };
+        swfobject.embedSWF(swfurl, "radioplayer", "510", "245", "9.0.0", "/swf/expressInstall.swf", flashvars, params, attributes);
+
+        setTimeout(function(){
+            var ftip = $('#no_flash_tip');
+            if (ftip.length) {
+                ftip.fadeIn();
+            };
+        }, 7000);
+ });
+
+</script>
+
+      </div>
+    </div>
+    <div id="rec-tip">
+        <div class="reason">
+            根据你喜欢的<span class="rec-type"></span>&nbsp;<span class="rec-title"></span>&nbsp;推荐
+        </div>
+    </div>
+
+    <div id="kbps-tip" class="top-tip-bar">
+        <a href="javascript:;" class="ignore-tip">我就卡着</a>
+        <form id="kbps-options">
+            <input type="radio" name="kbps_man" value="64"><span>64Kbps</span>
+            <input type="radio" name="kbps_man" value="128"><span>128Kbps</span>
+            <input type="radio" name="kbps_man" value="192"><span>192Kbps</span>
+            <input type="radio" name="kbps_man" value="auto"><span>自动切换</span>
+        </form>
+
+        <span class="tip">当前网络在<span id="kbps-current">192</span>
+            kbps 下播放不流畅，是否切换？</span>
+    </div>
+    <div id="kbps-changed-tip" class="top-tip-bar">
+        <a href="javascript:;" class="ignore-tip">知道了</a>
+        <span class="tip">
+            码率更换成功，当前码率
+            <span class="current-kbps"></span>
+            kbps
+        </span>
+    </div>
+
+    
+
+
+
+
+    <div id="top-tip-ad-bar" class="top-tip-bar top-tip-bar-yellow">
+        <a href="javascript:;" class="ignore-tip">x</a>
+        <a class="tip" href="#" target="_blank"></a>
+    </div>
+
+    <script>
+        Do.ready(function(){
+            var tip_timeout,tip_bar=$(".top-tip-bar"),hide_tip=function(){if(tip_bar.is(":visible")){tip_bar.animate({top:"-45px"},"fast",function(){tip_bar.hide()})}},delay_hide_tip=function(a){if(tip_timeout){clearTimeout(tip_timeout)}if(typeof a!=="number"){a=2000}tip_timeout=setTimeout(hide_tip,a)};$(window).bind("radio:start",function(a,b){if($("#kbps-tip").is(":visible")){hide_tip()}$("#dj-channel-init-tip").show()});var options=$("#kbps-tip input[type=radio]");options.click(function(){var a=this.value;if(a=="auto"){DBR.set_autokbps(true)}else{DBR.set_kbps_manually(a)}$(".top-tip-bar").hide();show_kbps_changed_tip(DBR.get_kbps())});$(".ignore-tip").click(hide_tip);$("#dj-channel-init-tip .ignore-tip").click(function(){$.post_withck("/j/open_channel/ignore_old_user_noti")});window.show_kbps_slow=function(a){$("#kbps-current").html(a);var b={"64":0,"128":1,"192":2}[a];if(b==undefined){return}options[b].checked=1;$("#kbps-tip").css("top","-45px").show().animate({top:0},"fast")};window.show_pro_init_tip=function(){if(get_cookie("show_pro_init_tip")!=="N"){$("#current-kbps").text(DBR.get_kbps());$("#pro-init-tip").show();set_cookie({show_pro_init_tip:"N"},365,"douban.fm")}};window.show_kbps_changed_tip=function(a){$("#kbps-changed-tip .current-kbps").text(a);$("#kbps-changed-tip").show();$("#kbps-changed-tip").css("top","-45px").show().animate({top:0},"fast");delay_hide_tip(5000)};window.on_set_kbps_by_remote=function(a){$(window).unbind("focus");$(window).one("focus",function(){show_kbps_changed_tip(a)})};window.show_pro_expire_tip=function(){if($("#pro-expire-tip").length&&get_cookie("show_pro_expire_tip")!=="N"){$("#pro-expire-tip").show();set_cookie({show_pro_expire_tip:"N"},27,"douban.fm")}};
+            (function(){var a=$("#top-tip-ad-bar");window.clear_top_ad=function(){a.slideUp(500)};window.show_top_ad=function(f,c){var e=a.find(".tip"),d,b;e.text(c.text);e.attr("href",c.url);a.css("top","-45px").show().animate({top:0},"fast");if(document.hasFocus()){b="on_player"}else{b="other"}d={track_id:f.sid,user_id:window.globalConfig.uid||"",device_id:window.get_cookie("bid"),source:"mainsite",ad_id:c.id,status:b,};$.get("/j/show_ad",d);delete d.status;e.click(function(){$.get("/j/click_ad",d)})}})();
+        });
+    </script>
+
+</div>
+<div id="fm-channel-list">
+    <div class="ch-list-container">
+        <div class="ch-list">
+            <div class="ch-list-wrapper">
+                <ul class="channel_list" id="system_chls">
+                    <li data-cid="0" class="channel personal" cid="0">
+                        <a class="chl_name"><span class='cname'>我的私人兆赫</span></a>
+                        <span class="st_playing"></span>
+                    </li>
+                    <li data-cid="-3" class="channel personal" cid="-3">
+                        <div id="red_chl_tip" class="red_chl_tip side_tip"> <em></em> <div>将歌曲加心<br/>即可在红心兆赫中听到</div> </div>
+                        <a class="chl_name"><span class='cname'>我的红心兆赫</span></a>
+                        <span class="st_playing"></span>
+                    </li>
+                    <li data-cid="-10" class="channel personal" cid="-10">
+                        <a class="chl_name"><span class='cname'>豆瓣精选兆赫</span></a>
+                        <span class="st_playing"></span>
+                    </li>
+                </ul>
+                
+                <script>
+                    window.is_fresh = false;
+                </script>
+                <div class="chl_section">
+                    <ul class="channel_list
+                    " id="recent_chls" style="display:none;">
+                    </ul>
+                </div>
+                <div class="chl_section">
+                    <h3 class="title">最近收听<span class="line"></span></h3>
+                    <ul class="channel_list" id="history_chls">
+                        
+                    </ul>
+                </div>
+                <div class="chl_section">
+                    <h3 class="title">试试这些<span class="line"></span></h3>
+                    <ul class="channel_list" id="promotion_chls">
+                            
+
+<li data-cid="2185725" data-cover="http://img6.douban.com/lpic/s4717510.jpg"
+    data-intro="为你推荐与 徐若瑄 - 爱笑的眼睛 相似的歌曲"
+    data-start="185725gf7afg2185725"
+    class="channel" cid="2185725"
+        style="z-index:8"
+    >
+    <a class="chl_name"><span class='cname'>爱笑的眼睛 系 <span class="mhz">MHz</span></span></a>
+    <span class="st_playing"></span>
+    <span class="toggle">
+        <span class="triangle"></span>
+    </span>
+    <ul class="menu">
+            <li class="fav" style="display:none">收藏</li>
+        <li class="share">分享</li>
+    </ul>
+</li>
+
+                            
+
+<li data-cid="3478123" data-cover="http://img6.douban.com/lpic/s4188597.jpg"
+    data-intro="为你推荐与 전수연 - Summer Rainbow 相似的歌曲"
+    data-start="1478123g45f8g3478123"
+    class="channel" cid="3478123"
+        style="z-index:7"
+    >
+    <a class="chl_name"><span class='cname'>Summer Rainbow 系 <span class="mhz">MHz</span></span></a>
+    <span class="st_playing"></span>
+    <span class="toggle">
+        <span class="triangle"></span>
+    </span>
+    <ul class="menu">
+            <li class="fav" style="display:none">收藏</li>
+        <li class="share">分享</li>
+    </ul>
+</li>
+
+                            
+
+<li data-cid="3638742" data-cover="http://img6.douban.com/lpic/s4624056.jpg"
+    data-intro="为你推荐与 Sara Lov - Papa Was a Rodeo 相似的歌曲"
+    data-start="1638742g35d6g3638742"
+    class="channel" cid="3638742"
+        style="z-index:6"
+    >
+    <a class="chl_name"><span class='cname'>Papa Was a Rodeo 系 <span class="mhz">MHz</span></span></a>
+    <span class="st_playing"></span>
+    <span class="toggle">
+        <span class="triangle"></span>
+    </span>
+    <ul class="menu">
+            <li class="fav" style="display:none">收藏</li>
+        <li class="share">分享</li>
+    </ul>
+</li>
+
+                            
+
+<li data-cid="3528830" data-cover="http://img6.douban.com/lpic/s4600073.jpg"
+    data-intro="为你推荐与 Eminem / Rihanna - Love The Way You Lie (Part II) feat. Eminem 相似的歌曲"
+    data-start="1528830g6c29g3528830"
+    class="channel" cid="3528830"
+        style="z-index:5"
+    >
+    <a class="chl_name"><span class='cname'>Love The Way You Lie (Part II) feat. Eminem 系 <span class="mhz">MHz</span></span></a>
+    <span class="st_playing"></span>
+    <span class="toggle">
+        <span class="triangle"></span>
+    </span>
+    <ul class="menu">
+            <li class="fav" style="display:none">收藏</li>
+        <li class="share">分享</li>
+    </ul>
+</li>
+
+                            
+
+<li data-cid="3027380" data-cover="http://img6.douban.com/lpic/s2783063.jpg"
+    data-intro="为你推荐与 Tamas Wells - Valder Fields 相似的歌曲"
+    data-start="1027380g0f23g3027380"
+    class="channel" cid="3027380"
+        style="z-index:4"
+    >
+    <a class="chl_name"><span class='cname'>Valder Fields 系 <span class="mhz">MHz</span></span></a>
+    <span class="st_playing"></span>
+    <span class="toggle">
+        <span class="triangle"></span>
+    </span>
+    <ul class="menu">
+            <li class="fav" style="display:none">收藏</li>
+        <li class="share">分享</li>
+    </ul>
+</li>
+
+                    </ul>
+                </div>
+                <div class="chl_section"
+                style="display:none;"
+                >
+                    <h3 class="title">我的收藏<span class="line"></span></h3>
+                    <ul class="channel_list" id="fav_chls">
+                        
+                    </ul>
+                </div>
+                <div class="chl_section">
+                    <h3 class="title">品牌兆赫<span class="line"></span></h3>
+                    <ul class="channel_list" id="com_chls">
+                            
+
+<li data-cid="255" data-cover="http://img6.douban.com/img/fmadmin/small/1205516.jpg"
+    data-intro=""
+    data-start=""
+    class="channel" cid="255"
+        style="z-index:3"
+    >
+    <a class="chl_name"><span class='cname'>马路杀手救命 <span class="mhz">MHz</span></span></a>
+    <span class="st_playing"></span>
+    <span class="toggle">
+        <span class="triangle"></span>
+    </span>
+    <ul class="menu">
+        <li class="show-channel-detail">兆赫详情</li>
+        <li class="share">分享</li>
+    </ul>
+</li>
+
+                            
+
+<li data-cid="254" data-cover="http://img6.douban.com/img/fmadmin/small/1085613.jpg"
+    data-intro=""
+    data-start=""
+    class="channel" cid="254"
+        style="z-index:2"
+    >
+    <a class="chl_name"><span class='cname'>雷克萨斯大匠之夜 <span class="mhz">MHz</span></span></a>
+    <span class="st_playing"></span>
+    <span class="toggle">
+        <span class="triangle"></span>
+    </span>
+    <ul class="menu">
+        <li class="show-channel-detail">兆赫详情</li>
+        <li class="share">分享</li>
+    </ul>
+</li>
+
+                            
+
+<li data-cid="253" data-cover="http://img6.douban.com/img/fmadmin/small/1077113.jpg"
+    data-intro=""
+    data-start=""
+    class="channel" cid="253"
+        style="z-index:1"
+    >
+    <a class="chl_name"><span class='cname'>来电嘉旅，唤醒耳朵 <span class="mhz">MHz</span></span></a>
+    <span class="st_playing"></span>
+    <span class="toggle">
+        <span class="triangle"></span>
+    </span>
+    <ul class="menu">
+        <li class="show-channel-detail">兆赫详情</li>
+        <li class="share">分享</li>
+    </ul>
+</li>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+<div id="fm-section3">
+    <div id="ft-ads-slot"></div>
+
+    <div id="fm-footer">
+      <div class="bd">
+          <span class="copyright">
+            &copy; 2016 douban <a href="http://www.miibeian.gov.cn/" target="_blank">京ICP备11027288号</a> 网络视听许可证0110418号 京公网安备110105012274
+          </span>
+
+          <div id="fm-lnks-labs">
+            <span>广告合作: <a href="mailto:adfm@douban.com">adfm@douban.com</a></span>
+            <span>|</span>
+            <span><a href="http://labs.douban.com" target="_blank">FM游乐场</a></span>
+            <span>|</span>
+            <span><a href="/user_guide" target="_blank">FM用户手册</a></span>
+            <span>|</span>
+          </div>
+
+          <div id="fm-lnks-center" class="lnks">
+              <a href="/support/" target="_blank" hidefocus>豆瓣FM中心<i></i></a>
+          </div>
+
+          <div id="fm-lnks-panel">
+            <div class="lnks-fm">
+                <h3>豆瓣FM中心</h3>
+                <a href="/app?from_=" target="_blank">下载豆瓣FM</a><br>
+                <a href="http://help.douban.com/help/ask?category=music" target="_blank">给豆瓣FM提建议?</a><br>
+                <a href="/user_guide" target="_blank">豆瓣FM手册</a><br>
+                <a href="/support/" target="_blank">帮助中心</a><br>
+                <a href="/service/badgemaker" target="_blank">豆瓣FM秀</a><br>
+                <a href="http://douban.fm/musicgene" target="_blank">音乐基因</a><br>
+                <a href="http://www.douban.com/about?policy=disclaimer" target="_blank">免责声明</a>
+            </div>
+            <div class="lnks-db">
+                <h3>合作伙伴</h3>
+                <a href="http://www.wmg.com/" target="_blank">华纳</a><br>
+                <a href="http://www.universalmusic.com/" target="_blank">环球</a><br>
+                <a href="http://www.sonymusic.com.cn/" target="_blank">Sony Music</a><br>
+                <a href="http://www.emimusicpub.com/" target="_blank">EMI</a><br>
+                <a href="http://www.avexchina.com" target="_blank">艾回</a><br>
+                <a href="http://www.r2g.net/" target="_blank">源泉</a><br>
+                <a href="http://www.gold-typhoon.com.cn" target="_blank">金牌大风</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+    Do(function(){
+    var lnkHelp = $('#fm-footer .lnks a');
+    lnkHelp.click(function(e){
+        var el = $(e.currentTarget),
+        p = el.parent(),
+        panel = $('#fm-lnks-panel');
+
+      p.toggleClass('panel-active');
+      panel.toggle();
+
+      if ($("#fm-section2").length) {
+          // fix ie z-index bug.
+          if ($.browser.msie &&
+            p.hasClass('panel-active')) {
+              $('#fm-section2').css('zIndex', -1);
+          } else {
+              $('#fm-section2').css('zIndex', 30);
+          }
+      }
+      return false;
+    });
+    $('html').click(function(){
+      lnkHelp.parent().removeClass('panel-active');
+      $('#fm-lnks-panel').hide();
+      // fix ie z-index bug.
+      if ($.browser.msie) {
+        $('#fm-section2').css('zIndex', 30);
+      }
+    });
+
+    });
+    </script>
+
+
+
+<script type="template" id="register_form">
+    <style>.dui-dialog .dui-dialog-shd{-webkit-border-radius:0;-moz-border-radius:0;border-radius:0;opacity:1;filter:alpha(opacity=100);background:0}.dui-dialog .hd{padding:0}.dui-dialog .bd{padding:0!important;margin:0!important}.dui-dialog .dui-dialog-content{-webkit-border-radius:0;-moz-border-radius:0;border-radius:0;border:0;-webkit-box-shadow:0 0 10px rgba(0,0,0,0.2);-moz-box-shadow:0 0 10px rgba(0,0,0,0.2);box-shadow:0 0 10px rgba(0,0,0,0.2)}.dui-dialog .dui-dialog-close,.dui-dialog .dui-dialog-close:link,.dui-dialog .dui-dialog-close:visited,.dui-dialog .dui-dialog-close:hover,.dui-dialog .dui-dialog-close:active{color:#fff;font-size:9px}#register_block{letter-spacing:-4px;height:400px}#legend{font-size:18px;color:#333;padding:0}form.register{width:285px;padding:40px 35px 0 37px;letter-spacing:0;float:left}form .spec{background-color:#eef1f0;margin-top:12px;padding:8px 10px;position:relative}form .spec label{margin-right:25px}#user_name{ime-mode:disabled}form .item{color:#666}form .item .text{border:0 none;color:#333;background-color:#eef1f0;width:170px;position:absolute;left:63px;top:10px}form .item .tip{color:#888}form .item .text:focus{border:0 none;outline:0}form .item label{float:none}form .item input{margin:0}form .recsubmit{clear:both;padding-top:30px;position:relative}form .recsubmit #btn-submit{display:block;background-color:#9dd6c5;width:110px;height:35px;line-height:35px;text-align:center;border:0 none;color:#fff;font-size:14px;float:right;cursor:pointer;outline:0}form .recsubmit #btn-submit:hover{background-color:#bae2d6;color:#5a5a5a}form .recsubmit .loading{background:url(http://img6.douban.com/f/fm/c82b5ca7f9deb9e7a04f23c5a9314d2c346196e5/pics/ajax-loader.gif) no-repeat 0 0;width:16px;height:16px;position:absolute;top:40px;right:120px;display:none}.alternative{width:190px;height:400px;vertical-align:top;background-color:#5a5a5a;letter-spacing:0;float:right;color:#aaa;position:relative}.third-party-mod{position:absolute;left:25px;top:35px;width:160px}.third-party-mod ul{color:#c8f4e7;letter-spacing:-4px;margin-top:5px;height:19px;line-height:19px}.third-party-mod li{display:inline-block;vertical-align:top;*display:inline;zoom:1;*vertical-align:baseline;margin-right:5px;letter-spacing:0;*margin-right:3px;*font-size:8px}.third-party-mod a{color:#c8f4e7;margin-right:5px;font-size:12px;*margin-right:3px}.third-party-mod a:link{color:#c8f4e7}.third-party-mod a:visited{color:#c8f4e7}.third-party-mod a:hover{text-decoration:underline;background:0}.third-party-mod a:active{text-decoration:underline}div.captcha{width:130px;float:left;margin-right:5px;*margin-right:0}#register_block div.captcha label{margin-right:12px}#register_block div.captcha input.text{width:72px}img.captcha{margin-top:15px;cursor:pointer}.agreement{margin-top:9px;width:170px;float:left;*width:160px}.agreement a,.agreement a:link,.agreement a:hover{color:#5b9}.ending{background:url(http://img6.douban.com/f/fm/a2c70cc12980bb9063a6beb9606e20360b2299d0/pics/fm/home/finish_signup.png) no-repeat center center}.login-mod{position:absolute;left:25px;width:160px}.login-mod{bottom:25px}.login-mod p{line-height:8px;color:#aaa}.login-mod a{border:1px solid #666;display:block;width:130px;height:30px;padding-left:10px;line-height:30px;font-size:14px;margin-top:10px;color:#fff;cursor:pointer}.login-mod a:link{color:#fff}.login-mod a:visited{color:#fff}.login-mod a:hover{background-color:#666}.login-mod a:active{color:#fff}</style>
+    <div id="register_block">
+        <form class="register" method="post" action="/j/register">
+            <p id="legend">新用户注册</p>
+            <fieldset>
+                <div class="item spec">
+                    <label for="user_name">用户名</label>
+                    <input type="text" name="user_name" id="user_name" class="text tip" tabindex="1"
+                    placeholder="由英文和数字组成" />
+                </div>
+                <div class="item spec">
+                    <label for="password">密码</label>
+                    <input type="password" name="password" id="password" class="text" tabindex="2"
+                    placeholder="包含英文和数字，最少8位"/>
+                </div>
+                <div class="item spec">
+                    <label for="confirm_password">重复密码</label>
+                    <input type="password" name="confirm_password" id="confirm_password" class="text"
+                    tabindex="3"/>
+                </div>
+                
+<div class="item spec captcha">
+    <label for="captcha_solution">验证码</label>
+    <input type="text" name="captcha_solution" id="captcha_solution" class="text" tabindex="4"/>
+    <input type="hidden" name="captcha_id" />
+</div>
+<img alt="captcha" width="130" height="35" class="captcha" title="看不清楚?点图片可以换一个" />
+
+                <div class="item recsubmit">
+                    <div class="agreement">
+                        <input type="checkbox" name="agreement" id="agreement" tabindex="5" />
+                        <label for="agreement">
+                            阅读并同意《<a href="http://www.douban.com/about?policy=agreement" target="_blank">使用协议</a>》
+                        </label>
+                    </div>
+                    <span class="loading"></span>
+                    <input type="submit" id="btn-submit" value="完成注册" tabindex="6" />
+                </div>
+            </fieldset>
+        </form>
+        <div class="alternative">
+            <div class="third-party-mod">
+                <p>用其他帐号登录:</p>
+                <ul>
+                    <li>
+                        <a class="signin" href="http://douban.fm/partner/login?target=2" >新浪微博</a>·
+                    </li>
+                    <li>
+                        <a class="login_qq" href="/partner/login?target=6">QQ</a>
+                    </li>
+                    <li>
+                        <a class="signin" href="http://douban.fm/partner/login?target=5" >MSN</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="login-mod">
+                <p>已经有豆瓣FM账户?</p>
+                <p>
+                    <a target="_blank" class="lnk-login">现在登录</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</script>
+
+
+
+
+</div>
+
+<div class="send-song-to-phone">
+    <a href="javascript:;" id="send-song-btn">
+        <span>发送歌曲到手机</span>
+    </a>
+    <div id="simulate-sec" schid="">
+        <div class="wrapper">
+            <div id='simulate-btn'>
+                <span id="simulate-img"></span>
+                <span id="simulate-info">听相似歌曲</span>
+            </div>
+            <div id='simulate-hover'>
+                <span id="simulate-img"></span>
+                <span id="simulate-info">听相似歌曲</span>
+            </div>
+            <div id='simulate-ready'>
+                <span id='sim-info'>下一首将播放</span>
+                <span id='sim-song'>相似歌曲</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script id="song-to-phone-tmpl" type="template">
+    <div>
+        <div  class="vertical-line"></div>
+        <div class="song-to-phone-wrapper">
+            <div class="clearfix">
+                <div class="qcode-wrapper">
+                    <h3>用<a href="/app?from_=" target="_blank"><span class="emp">豆瓣FM App</span></a>扫码收听</h3>
+                    <div id="song-to-phone-qcode" class="qcode box-shadow">
+                    </div>
+                </div>
+                <div class="device-list-wrapper">
+                    {{if user}}
+                        {{if devices.length > 0}}
+                        <h3>选择要接收歌曲的设备</h3>
+                        <p class="warning">歌曲发送暂不支持 Android 设备</p>
+                        <ul class="device-list">
+                            {{each(i, d) devices }}
+                            <li>
+                                <a href="javascript:;" class="device" data-token="{{= d.token}}" data-song-id="{{= song.id}}">
+                                    <div class="box"></div>
+                                    <span class="device-name">{{= d.name}}</span>
+                                    <span class="success-tip">已发送</span>
+                                </a>
+                            </li>
+                            {{/each}}
+                        </ul>
+                        {{else}}
+                        <div class="no-devices">
+                            <p class="tip">在豆瓣FM App 上登录</p>
+                            <p>即可直接将歌曲发送到手机</p>
+                            <p class="warning">如果已经登录，请保持 App 上推送通知开关打开</p>
+                        </div>
+                        {{/if}}
+                    {{else}}
+                    <p class="login instruction"><a href="http://www.douban.com/accounts/login" class="lnk-login" target="_blank">登录</a></p>
+                    <p class="clearfix instruction">直接将歌曲发送到手机</p>                         {{/if}}
+                </div>
+            </div>
+            <div class="depiction">
+                <div class="inline song-cover">
+                    <img src={{= song.image}}>
+                </div>
+                <div class="inline big-arrow">
+                </div>
+                <div class="inline mobile-icon">
+                </div>
+                <p>{{= song.name}} - {{= song.artist}}</p>
+            </div>
+        </div>
+    </div>
+</script>
+
+<div id="fm-section2">
+    <div id="fm-sharing" class="fm-sharing">
+        <span class="share-label">分享这首歌</span>
+      <span class="share-sites"><span class="inner"></span></span>
+    </div>
+    <div id="fm-playlists">
+        <span class="share-label" data-base-url="https://music.douban.com/programmes/search">包含这首歌的歌单</span>
+    </div>
+</div>
+
+<div id="fm-section-app-entry">
+    <div id="fm-app-tip" class="fm-app-tip">
+    <div class="tip-show">
+    <span class="info">
+    手机上离线收听的豆瓣FM，让好音乐随时随地
+    </span>
+    <span class="cancel">x</span>
+    </div>
+    <i class="arrow"></i>
+    <i class="arrow upper"></i>
+    </div>
+    <div id="fm-app">
+        <a id="fm-app-link" href="/app?from_=" target="_blank">
+            <i class="icon-phone"></i>
+            4.0 来啦！来下载吧
+        </a>
+    </div>
+</div>
+
+<div id="fm-bg">
+    <iframe id="inter-ad" frameborder="0" width="100%" height="100%"></iframe>
+</div>
+
+<div id="ad-click-area"></div>
+
+<div id="fm-links"></div>
+
+
+
+
+
+
+
+<div id="fm-sidebar">
+    <div class="fm-side-inner">
+        <div class="fm-side-cont clearfix">
+            <div class="fm-side-hd">
+                <h2 class="fm-side-logo clearfix" id="fm-side-home">全部兆赫</h2>
+                <form id="side-search-form" method="GET" action="">
+                    <div class="side-search-inner">
+                        <input class="fm-side-search" id="fm-side-search" type="text" placeholder="搜索兆赫" />
+                        <input class="fm-side-search-btn" id="fm-side-search-btn" type="submit" value="" title="搜索" />
+                    </div>
+                </form>
+            </div>
+            <div id="fm-side-main">
+                
+                <div class="fm-show-off clearfix">
+                    <div id="ss-imgs" class="img">
+                        <img id="ss-img-0" data-i="0" src="http://img6.douban.com/lpic/s4717510.jpg">
+                        <img id="ss-img-1" data-i="1" src="http://img6.douban.com/lpic/s4188597.jpg">
+                        <img id="ss-img-2" data-i="2" src="http://img6.douban.com/lpic/s4624056.jpg">
+                        <img id="ss-img-3" data-i="3" src="http://img6.douban.com/lpic/s4600073.jpg">
+                        <img id="ss-img-4" data-i="4" src="http://img6.douban.com/lpic/s2783063.jpg">
+                        <img id="ss-img-5" data-i="5" src="http://img6.douban.com/img/fmadmin/chlBanner/1085613.jpg">
+                    </div>
+                    <div class="intro">
+                        <ul class="show-pagenav clearfix">
+                                <li data-i="0" class="on">1</li>
+                                <li data-i="1" class="">2</li>
+                                <li data-i="2" class="">3</li>
+                                <li data-i="3" class="">4</li>
+                                <li data-i="4" class="">5</li>
+                                <li data-i="5" class="">6</li>
+                        </ul>
+                        <div id="ss-intros">
+                            <div class="ss-intro" data-cid="2185725" id="ss-intro-0" data-start="185725gf7afg2185725">
+                                <h3 data-i="0">
+                                    <span>爱笑的眼睛 系</span><em data-cid="2185725">MHz</em>
+                                </h3>
+                                <p>为你推荐与 徐若瑄 - 爱笑的眼睛 相似的歌曲</p>
+                                <div class="meta">
+                                    <a class="side-show-detail" data-cid="2185725">兆赫详情</a>
+                                </div>
+                            </div>
+                            <div class="ss-intro" data-cid="3478123" id="ss-intro-1" data-start="1478123g45f8g3478123">
+                                <h3 data-i="1">
+                                    <span>Summer Rainbow 系</span><em data-cid="3478123">MHz</em>
+                                </h3>
+                                <p>为你推荐与 전수연 - Summer Rainbow 相似的歌曲</p>
+                                <div class="meta">
+                                    <a class="side-show-detail" data-cid="3478123">兆赫详情</a>
+                                </div>
+                            </div>
+                            <div class="ss-intro" data-cid="3638742" id="ss-intro-2" data-start="1638742g35d6g3638742">
+                                <h3 data-i="2">
+                                    <span>Papa Was a Rodeo 系</span><em data-cid="3638742">MHz</em>
+                                </h3>
+                                <p>为你推荐与 Sara Lov - Papa Was a Rodeo 相似的歌曲</p>
+                                <div class="meta">
+                                    <a class="side-show-detail" data-cid="3638742">兆赫详情</a>
+                                </div>
+                            </div>
+                            <div class="ss-intro" data-cid="3528830" id="ss-intro-3" data-start="1528830g6c29g3528830">
+                                <h3 data-i="3">
+                                    <span>Love The Way You Lie (Part II) feat. Eminem 系</span><em data-cid="3528830">MHz</em>
+                                </h3>
+                                <p>为你推荐与 Eminem / Rihanna - Love The Way You Lie (Part II) feat. Eminem 相似的歌曲</p>
+                                <div class="meta">
+                                    <a class="side-show-detail" data-cid="3528830">兆赫详情</a>
+                                </div>
+                            </div>
+                            <div class="ss-intro" data-cid="3027380" id="ss-intro-4" data-start="1027380g0f23g3027380">
+                                <h3 data-i="4">
+                                    <span>Valder Fields 系</span><em data-cid="3027380">MHz</em>
+                                </h3>
+                                <p>为你推荐与 Tamas Wells - Valder Fields 相似的歌曲</p>
+                                <div class="meta">
+                                    <a class="side-show-detail" data-cid="3027380">兆赫详情</a>
+                                </div>
+                            </div>
+                            <div class="ss-intro" data-cid="254" id="ss-intro-5" data-start="">
+                                <h3 data-i="5">
+                                    <span>雷克萨斯大匠之夜</span><em data-cid="254">MHz</em>
+                                </h3>
+                                <p></p>
+                                <div class="meta">
+                                    <p class="hot_songs">热门歌曲：狩猎/小白宫 / プリオシン海岸 / 旅路(夢中飛行)</p>
+                                    <span class="song_num">100首歌曲</span>
+                                    <a class="side-show-detail" data-cid="254">兆赫详情</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <ul class="fm-side-taglist clearfix">
+                    
+
+                        <li data-genre_id="335" >摇滚</li>
+                        <li data-genre_id="326" >古典</li>
+                        <li data-genre_id="327" >爵士</li>
+                        <li data-genre_id="337" >民谣/乡村</li>
+                        <li data-genre_id="331" >流行</li>
+                        <li data-genre_id="325" >电子</li>
+                        <li data-genre_id="328" >原声配乐</li>
+                        <li data-genre_id="332" >轻音乐</li>
+                        <li data-genre_id="334" >说唱</li>
+                        <li data-genre_id="330" >雷鬼</li>
+                        <li data-genre_id="329" >拉丁</li>
+                        <li data-genre_id="333" >世界音乐</li>
+                        <li data-genre_id="324" >布鲁斯</li>
+                        <li data-genre_id="336" >放克/灵歌/R&amp;B</li>
+                </ul>
+
+                <div style="zoom:1;clear:both;"></div>
+                <div class="fm-sidelist-wrapper clearfix">
+                    <script>
+                        window.hot_channels_json = [{"related_artists":[],"creator":{"url":"https:\/\/site.douban.com\/douban.fm\/","name":"豆瓣FM","id":1},"intro":"每天发现一首好听的歌","rec_reason":"","banner":"http://img6.douban.com\/img\/fmadmin\/chlBanner\/26383.jpg","id":1,"name":"华语","cover":"http://img6.douban.com\/img\/fmadmin\/icon\/26383.jpg","song_to_start":"","song_num":1189,"collected":"false","artist_id":null,"hot_songs":["难念的经","心动","外面的世界"]},{"related_artists":[],"creator":{"url":"https:\/\/site.douban.com\/douban.fm\/","name":"豆瓣FM","id":1},"intro":"关于欧美流行音乐的一切，就在这里了","rec_reason":"","banner":"http://img6.douban.com\/img\/fmadmin\/chlBanner\/26384.jpg","id":2,"name":"欧美","cover":"http://img6.douban.com\/img\/fmadmin\/icon\/26384.jpg","song_to_start":"","song_num":3599,"collected":"false","artist_id":null,"hot_songs":["Won't Go Home Without You","Glad You Came","The Saltwater Room"]},{"related_artists":[],"creator":{"url":"https:\/\/site.douban.com\/douban.fm\/","name":"豆瓣FM","id":1},"intro":"生于八零年代的我们，听着这些歌成长","rec_reason":"","banner":"http://img6.douban.com\/img\/fmadmin\/chlBanner\/26386.jpg","id":4,"name":"八零","cover":"http://img6.douban.com\/img\/fmadmin\/icon\/26386.jpg","song_to_start":"","song_num":883,"collected":"false","artist_id":null,"hot_songs":["She Will Be Loved","Never Grow Old","突然的自我"]},{"related_artists":[],"creator":{"url":"https:\/\/site.douban.com\/douban.fm\/","name":"豆瓣FM","id":1},"intro":"工作学习的时候听什么","rec_reason":"","banner":"http://img6.douban.com\/img\/fmadmin\/chlBanner\/27132.jpg","id":153,"name":"工作学习","cover":"http://img6.douban.com\/img\/fmadmin\/icon\/27132.jpg","song_to_start":"","song_num":0,"collected":"false","artist_id":null,"hot_songs":["The Show","Try Everything","Sugar"]},{"related_artists":[],"creator":{"url":"https:\/\/site.douban.com\/douban.fm\/","name":"豆瓣FM","id":1},"intro":"那些年我们心水的劲歌金曲","rec_reason":"","banner":"http://img6.douban.com\/img\/fmadmin\/chlBanner\/26388.jpg","id":6,"name":"粤语","cover":"http://img6.douban.com\/img\/fmadmin\/icon\/26388.jpg","song_to_start":"","song_num":2704,"collected":"false","artist_id":null,"hot_songs":["钟无艳","少女的祈祷","月半小夜曲"]},{"related_artists":[],"creator":{"url":"https:\/\/site.douban.com\/douban.fm\/","name":"豆瓣FM","id":1},"intro":"在属于你的放松地带，释放心灵","rec_reason":"","banner":"http://img6.douban.com\/img\/fmadmin\/chlBanner\/26391.jpg","id":9,"name":"轻音乐","cover":"http://img6.douban.com\/img\/fmadmin\/icon\/26391.jpg","song_to_start":"","song_num":2736,"collected":"false","artist_id":null,"hot_songs":["Song From A Secret Garden","A Lullaby Of Takeda","My Memory~「冬のソナタ」より"]},{"related_artists":[],"creator":{"url":"https:\/\/site.douban.com\/douban.fm\/","name":"豆瓣FM","id":1},"intro":"我不在喝咖啡，就在听咖啡兆赫。","rec_reason":"","banner":"http://img6.douban.com\/img\/fmadmin\/chlBanner\/26379.jpg","id":32,"name":"咖啡","cover":"http://img6.douban.com\/img\/fmadmin\/icon\/26379.jpg","song_to_start":"","song_num":1710,"collected":"false","artist_id":null,"hot_songs":["Vincent","What A Wonderful World","End Of The World"]},{"related_artists":[],"creator":{"url":"http:\/\/www.douban.com\/people\/48254923\/","name":"Bin's","id":48254923},"intro":"细听着别人的歌声，诉说着自己的故事。","rec_reason":"","banner":"http://img6.douban.com\/img\/fmadmin\/chlBanner\/27675.jpg","id":1000382,"name":"你的歌词我的故事","cover":"http://img6.douban.com\/img\/fmadmin\/icon\/27675.jpg","song_to_start":"","song_num":540,"collected":"false","artist_id":990382,"hot_songs":["矜持","原谅","如果有来生"]},{"related_artists":[],"creator":{"url":"http:\/\/www.douban.com\/people\/2546298\/","name":"rebecca0816","id":2546298},"intro":"浅吟清唱。","rec_reason":"","banner":"http://img6.douban.com\/img\/fmadmin\/chlBanner\/20653.jpg","id":1002891,"name":"看书浇花晒太阳","cover":"http://img6.douban.com\/img\/fmadmin\/icon\/20653.jpg","song_to_start":"","song_num":1228,"collected":"false","artist_id":992891,"hot_songs":["You Belong To Me","Wait For You","Valentine"]},{"related_artists":[],"creator":{"url":"https:\/\/site.douban.com\/douban.fm\/","name":"豆瓣FM","id":1},"intro":"","rec_reason":"","banner":"http://img6.douban.com\/img\/fmadmin\/chlBanner\/26392.jpg","id":13,"name":"爵士","cover":"http://img6.douban.com\/img\/fmadmin\/icon\/26392.jpg","song_to_start":"","song_num":4163,"collected":"false","artist_id":null,"hot_songs":["Quizás, Quizás, Quizás (Perhaps, Perhaps, Perhaps)","What A Wonderful World","Para Machuchar Meu Coração (To Hurt My Heart)"]}];
+                        window.fast_channels_json = [{"related_artists":[],"creator":{"url":"https:\/\/site.douban.com\/douban.fm\/","name":"豆瓣FM","id":1},"intro":"这里没有喧哗与吵闹，静下心来感受世界的美好","rec_reason":"","banner":"http://img6.douban.com\/img\/fmadmin\/chlBanner\/26375.jpg","id":76,"name":"小清新","cover":"http://img6.douban.com\/img\/fmadmin\/icon\/26375.jpg","song_to_start":"","song_num":180,"collected":"false","artist_id":null,"hot_songs":["月亮上的花园","痒","我 (国语版)"]},{"related_artists":[],"creator":{"url":"https:\/\/site.douban.com\/douban.fm\/","name":"豆瓣FM","id":1},"intro":"让你的耳朵吸收新鲜正能量","rec_reason":"","banner":"http://img6.douban.com\/img\/fmadmin\/chlBanner\/26376.jpg","id":61,"name":"新歌","cover":"http://img6.douban.com\/img\/fmadmin\/icon\/26376.jpg","song_to_start":"","song_num":"10000+","collected":"false","artist_id":null,"hot_songs":["See You Again - From \"Furious 7\" Soundtrack","Try Everything","Uptown Funk"]},{"related_artists":[],"creator":{"url":"https:\/\/site.douban.com\/douban.fm\/","name":"豆瓣FM","id":1},"intro":"我不在喝咖啡，就在听咖啡兆赫。","rec_reason":"","banner":"http://img6.douban.com\/img\/fmadmin\/chlBanner\/26379.jpg","id":32,"name":"咖啡","cover":"http://img6.douban.com\/img\/fmadmin\/icon\/26379.jpg","song_to_start":"","song_num":1710,"collected":"false","artist_id":null,"hot_songs":["Vincent","What A Wonderful World","End Of The World"]},{"related_artists":[],"creator":{"url":"https:\/\/site.douban.com\/douban.fm\/","name":"豆瓣FM","id":1},"intro":"古典乐也能听得轻松随性","rec_reason":"","banner":"http://img6.douban.com\/img\/fmadmin\/chlBanner\/26382.jpg","id":27,"name":"古典","cover":"http://img6.douban.com\/img\/fmadmin\/icon\/26382.jpg","song_to_start":"","song_num":2646,"collected":"false","artist_id":null,"hot_songs":["Humoresque","Por Una Cabeza","La Primavera; 1. Allegro"]},{"related_artists":[],"creator":{"url":"https:\/\/site.douban.com\/douban.fm\/","name":"豆瓣FM","id":1},"intro":"","rec_reason":"","banner":"http://img6.douban.com\/img\/fmadmin\/chlBanner\/26392.jpg","id":13,"name":"爵士","cover":"http://img6.douban.com\/img\/fmadmin\/icon\/26392.jpg","song_to_start":"","song_num":4163,"collected":"false","artist_id":null,"hot_songs":["Quizás, Quizás, Quizás (Perhaps, Perhaps, Perhaps)","What A Wonderful World","Para Machuchar Meu Coração (To Hurt My Heart)"]},{"related_artists":[],"creator":{"url":"https:\/\/site.douban.com\/douban.fm\/","name":"豆瓣FM","id":1},"intro":"James Blunt、Bob Dylan 以及 Taylor Swift","rec_reason":"","banner":"http://img6.douban.com\/img\/fmadmin\/chlBanner\/26390.jpg","id":8,"name":"民谣","cover":"http://img6.douban.com\/img\/fmadmin\/icon\/26390.jpg","song_to_start":"","song_num":3781,"collected":"false","artist_id":null,"hot_songs":["Some Dreams","You Belong To Me","Tom's Diner - DNA Version"]},{"related_artists":[],"creator":{"url":"https:\/\/site.douban.com\/douban.fm\/","name":"豆瓣FM","id":1},"intro":"在属于你的放松地带，释放心灵","rec_reason":"","banner":"http://img6.douban.com\/img\/fmadmin\/chlBanner\/26391.jpg","id":9,"name":"轻音乐","cover":"http://img6.douban.com\/img\/fmadmin\/icon\/26391.jpg","song_to_start":"","song_num":2736,"collected":"false","artist_id":null,"hot_songs":["Song From A Secret Garden","A Lullaby Of Takeda","My Memory~「冬のソナタ」より"]},{"related_artists":[],"creator":{"url":"https:\/\/site.douban.com\/douban.fm\/","name":"豆瓣FM","id":1},"intro":"彼时感动你的电影，此刻温暖你的声音","rec_reason":"","banner":"http://img6.douban.com\/img\/fmadmin\/chlBanner\/26395.jpg","id":10,"name":"电影原声","cover":"http://img6.douban.com\/img\/fmadmin\/icon\/26395.jpg","song_to_start":"","song_num":4377,"collected":"false","artist_id":null,"hot_songs":["The End Of The World","Le Papillon","Por Una Cabeza"]},{"related_artists":[],"creator":{"url":"https:\/\/site.douban.com\/douban.fm\/","name":"豆瓣FM","id":1},"intro":"更新鲜的歌曲，更新鲜的声音","rec_reason":"","banner":"http://img6.douban.com\/img\/fmadmin\/chlBanner\/26387.jpg","id":5,"name":"九零","cover":"http://img6.douban.com\/img\/fmadmin\/icon\/26387.jpg","song_to_start":"","song_num":874,"collected":"false","artist_id":null,"hot_songs":["そばにいるね","Valder Fields","有没有一首歌会让你想起我"]},{"related_artists":[],"creator":{"url":"https:\/\/site.douban.com\/douban.fm\/","name":"豆瓣FM","id":1},"intro":"那些年我们心水的劲歌金曲","rec_reason":"","banner":"http://img6.douban.com\/img\/fmadmin\/chlBanner\/26388.jpg","id":6,"name":"粤语","cover":"http://img6.douban.com\/img\/fmadmin\/icon\/26388.jpg","song_to_start":"","song_num":2704,"collected":"false","artist_id":null,"hot_songs":["钟无艳","少女的祈祷","月半小夜曲"]}];
+                        window.com_channels_json = [{"related_artists":[],"creator":{"url":"https:\/\/site.douban.com\/douban.fm\/","name":"豆瓣FM","id":1},"intro":"","rec_reason":"","banner":"http://img6.douban.com\/img\/fmadmin\/chlBanner\/1205516.jpg","id":255,"name":"马路杀手救命","cover":"http://img6.douban.com\/img\/fmadmin\/icon\/1205516.jpg","song_to_start":"","song_num":100,"collected":"false","artist_id":null,"hot_songs":["Summertrain","Try Everything","Hello"]},{"related_artists":[],"creator":{"url":"https:\/\/site.douban.com\/douban.fm\/","name":"豆瓣FM","id":1},"intro":"","rec_reason":"","banner":"http://img6.douban.com\/img\/fmadmin\/chlBanner\/1085613.jpg","id":254,"name":"雷克萨斯大匠之夜","cover":"http://img6.douban.com\/img\/fmadmin\/icon\/1085613.jpg","song_to_start":"","song_num":100,"collected":"false","artist_id":null,"hot_songs":["狩猎\/小白宫","プリオシン海岸","旅路(夢中飛行)"]},{"related_artists":[],"creator":{"url":"https:\/\/site.douban.com\/douban.fm\/","name":"豆瓣FM","id":1},"intro":"","rec_reason":"","banner":"http://img6.douban.com\/img\/fmadmin\/chlBanner\/1077113.jpg","id":253,"name":"来电嘉旅，唤醒耳朵","cover":"http://img6.douban.com\/img\/fmadmin\/icon\/1077113.jpg","song_to_start":"","song_num":100,"collected":"false","artist_id":null,"hot_songs":["历历万乡","斑马，斑马","吉姆餐厅"]}];
+                    </script>
+                    <h3 class="title">热门兆赫
+                    </h3>
+                    <div class="clearfix" id="hot_songs_sec"></div>
+                    <div style="zoom:1;clear:both;"></div>
+                    <h3 class="title">上升最快
+                    </h3>
+                    <div class="clearfix" id="fast_songs_sec"></div>
+                    <div style="zoom:1;clear:both;"></div>
+                        <h3 class="title">品牌兆赫</h3>
+                        <div class="clearfix" id="com_songs_sec"></div>
+                        <div style="zoom:1;clear:both;"></div>
+                </div>
+                <div style="zoom:1;clear:both;"></div>
+            </div>
+            <div id="fm-side-subcont" class="clearfix hide">
+
+            </div>
+        </div>
+    </div>
+    <div class="fm-sidectrl fm-ctrlline">
+        <div id="fm-sidebar-ctrl" title="展开全部兆赫" data-opt_title="收起全部兆赫"></div>
+    </div>
+</div>
+<div class="fm-side-scrollbar" style="display:none;">
+    <a class="scrllbar-slider">
+        <div class="ss-top"></div>
+    </a>
+    <div class="scrollbg"></div>
+</div>
+<div id="explore_tip" class="side_tip"> <em></em> <div>更多兆赫</div> </div>
+
+<div class="fm_short_tips hide"></div>
+<script>
+    Do.add('fmdrag', {path: "http://img6.douban.com/f/fm/6ea9418ce1d82f6ec4419d6009e7c263209cb7c0/js/fm/fm_jdrag.js", type:'js'});
+    Do.ready('mousewheel','template', 'helpers','fmdrag', 'report_dialog',function(){
+        var ss_number = 6;
+        (function(){var w=$.browser.mozilla&&$.browser.version,e=200;function B(D){window.ga&&window.ga.apply(null,D)}var A=null,h=null,m=null,u=null;function a(D){if(!D){return false}this._init(D)}a.prototype={_init:function(D){var E=this;E.pannel=D.pannel;E.scrollbar=D.scrollbar;E.scrollbar.data("o",E);E.scrollbar.bind("SHOW_SCROLLBAR",E.showScrollBar);E.scrollbar.bind("HIDE_SCROLLBAR",E.hideScrollBar);E.scrollbar.bind("RESIZE_SCROLLBAR",E.dealScrollBarSize);E.scrollbar.bind("START_SCROLLSTATUS",E.startScrollStatus);E.scrollbar.bind("STOP_SCROLLSTATUS",E.stopScrollStatus);E.scrollbar.bind("drag",E.dealScrollBarDrag);E.scrollbar.click(E.dealScrollBarClick);$.event.trigger("RESIZE_SCROLLBAR");E.scrollbar.find(".scrllbar-slider").draggable({axis:"y",snapMode:"inner",containment:"parent"}).click(function(F){F.stopPropagation()})},dealScrollBarSize:function(){var J;if(this.pannel){J=this}else{J=$(this).data("o")}var H=J.pannel.find(".fm-side-cont").outerHeight(),D=J.pannel.outerHeight(),I=J.scrollbar.outerHeight(),G=H/D,E=Math.floor(I/G),F=Math.floor(J.pannel.scrollTop()/G);J.barRatio=G;J.scrollbar.find(".scrllbar-slider").css({height:E,top:F})},dealScrollBarDrag:function(D){var E=$(this).data("o");$(".fm-side-inner").scrollTop(Math.floor(parseInt(E.scrollbar.find(".scrllbar-slider").css("top"),10)*E.barRatio))},dealScrollBarClick:function(D){var E=$(this).data("o");$(".fm-side-inner").scrollTop(Math.floor(D.pageY*E.barRatio));E.dealScrollBarSize()},startScrollStatus:function(D){$("html,#fm-sidebar, #fm-section, #fm-channel-list,#fm-section2,#fm-section3").bind("mousewheel",function(J,K,G,F){var I=J.target,E,H=$(".fm-side-inner").scrollTop();if($.browser.webkit){E=Math.abs(F)*50}else{if($.browser.mozilla){if(w>=3.5){E=Math.abs(F)*3}else{E=Math.abs(F)*30}}else{if($.browser.msie){if($.browser.version<8||$.browser.version>=6){E=Math.abs(F)*50}else{E=Math.abs(F)*10}}else{E=Math.abs(F)*10}}}$(".fm-side-inner").scrollTop(H-E*F);$.event.trigger("RESIZE_SCROLLBAR");return false})},stopScrollStatus:function(D){$("html,#fm-sidebar, #fm-section, #fm-channel-list,#fm-section2,#fm-section3").unbind("mousewheel")},showScrollBar:function(D){$.event.trigger("RESIZE_SCROLLBAR");$(this).data("o").scrollbar.fadeIn(500)},hideScrollBar:function(D){$(this).data("o").scrollbar.fadeOut(500)}};var z=new a({pannel:$(".fm-side-inner"),scrollbar:$(".fm-side-scrollbar")});$.event.trigger("HIDE_SCROLLBAR");var n=null;$(".fm-side-inner").delegate(".meta .creator","mouseenter mouseleave",function(E){var D=$(".fm_creator_tip");clearTimeout(n);if(E.type=="mouseenter"){var F=$(E.currentTarget).offset();n=setTimeout(function(){D.css("top",F.top+35);D.css("left",F.left-35);D.fadeIn(100)},1000)}else{clearTimeout(n);D.fadeOut(100)}});$("#side-search-form").submit(function(G){G.preventDefault();var F=$("#fm-side-search");var H=F.attr("placeholder");var E=F.val().replace(/(^\s*)|(\s*$)/g,"");if(E==H||E===""){F.val(" ");return false}else{var D={keyword:E};A=D;side_show_search(0,D)}});$("#fm-side-search").placeholder();$(".fm-side-inner").delegate(".longlist li, .fm-side-taglist li, .shortlist li, .detail-list li, b.sectitle","mouseenter mouseleave",function(D){if(D.type=="mouseleave"){$(D.currentTarget).removeClass("hover")}else{if(!$(D.currentTarget).hasClass("playing")){$(D.currentTarget).addClass("hover")}}});var x=null;$(".fm-sidelist-wrapper").delegate(".shortlist li","mouseenter mouseleave",function(F){var E=$(this);var D=$(".fm_short_tips");var G=E.position();clearTimeout(x);if(F.type=="mouseenter"){x=setTimeout(function(){D.css({left:G.left+55,top:G.top+E.height()}).removeClass("hide").html($(F.currentTarget).find(".hidetips").html())},250)}else{D.addClass("hide")}});$(".fm-side-inner").delegate(".detail-list li","click",function(H){var D,G,E,F;if(!$(H.target).is(".creator")){D=$(this);G={id:D.data("cid"),name:D.data("name"),cover:replace_cate(D.find("img").attr("src"),"small")};$(window).trigger("channel:switch",[G]);E=D.parent("ul");if(E.length){B(["send","event","Channel","Play In "+E.data("cate"),G.name])}}}).delegate(".shortlist-title, .longlist-title, .cover-wrap","click",function(){var D=$(this).parents("li"),F=D.data("name"),G=D.data("intro"),H=D.data("cover"),I=D.data("cid"),E=$(this).parents("ul");cate=E.data("cate"),data={id:I,name:F,intro:G,cover:replace_cate(D.find("img").attr("src"),"small")};$(window).trigger("channel:switch",[data]);if(E.length){B(["send","event","Channel","Play In "+cate,data.name])}});$("#ss-imgs img, #ss-intros h3").click(function(){var D=$(this).data("i"),F=$("#ss-intro-"+D),E={id:F.data("cid"),name:F.find("h3 span").text(),intro:F.find("p").text(),cover:replace_cate($("#ss-img-"+D).attr("src"),"small")};$(window).trigger("channel:switch",[E]);B(["send","event","Channel","Play In PromotionArea",E.name])});$("#fm-side-main").delegate(".fm-show-off","mouseenter",function(D){$(this).addClass("hover")}).delegate(".fm-show-off","mouseleave",function(D){$(this).removeClass("hover")});$(".fm-side-inner").scrollTop(0);$.event.trigger("RESIZE_SCROLLBAR");var l,f="0";var b=function(E,D){$("#ss-imgs img, .intro .ss-intro").css("z-index","1").hide();$("#ss-img-"+f+",#ss-intro-"+f).css("z-index","2").show();$("#ss-img-"+E+",#ss-intro-"+E).css("z-index","3").fadeIn(1000);$(".show-pagenav li").removeClass("on").eq(E).addClass("on");f=E;if(!D){v("ChannelShow","Render",$("#ss-intro-"+E).data("cid"))}};b(f,true);var k=function(){if(!ss_number){return}if(l){clearInterval(l)}l=setInterval(function(){var D=parseInt(f,10);D=D==ss_number-1?0:D+1;b(D)},4000)};$(".fm-show-off").hover(function(){if(l){clearInterval(l)}},k);$(".show-pagenav").delegate("li","mouseenter click",function(){var D=$(this).data("i");b(D)});function j(){var E=$("#fm-sidebar-ctrl");var D=E.data("opt_title");E.data("opt_title",E.attr("title"));E.attr("title",D)}var C=function(D){if(D=="close"){$.event.trigger("HIDE_SCROLLBAR");$("#fm-sidebar").animate({width:26},500,function(){$("#fm-sidebar").toggleClass("open");j()})}else{if(D=="open"){$.event.trigger("SHOW_SCROLLBAR");$("#fm-sidebar").animate({width:674},500,function(){$("#fm-sidebar").toggleClass("open");j()})}else{if(D=="init"){$.event.trigger("SHOW_SCROLLBAR");$("#fm-sidebar").animate({width:674},500)}}}if(!$("#fm-sidebar").hasClass("open")){k();$("#fm-channel-list").css("overflow-y","hidden");unbindPlayerListMW();$.event.trigger("START_SCROLLSTATUS")}else{if(l){clearInterval(l)}$("#fm-channel-list").css("overflow-y","auto");$.event.trigger("STOP_SCROLLSTATUS");bindPlayerListMW()}};if($("#fm-sidebar").hasClass("open")){C("init")}$(".fm-sidectrl").click(function(D){if($("#fm-sidebar").hasClass("open")){B(["send","event","Button","clicked","Hide Explore Panel"]);C("close")}else{B(["send","event","Button","clicked","Show Explore Panel"]);C("open")}});if(!$("#fm-sidebar").hasClass("open")){if($("#recent_chls.hidden_list").length){if(!get_cookie("openExpPan")){$("#explore_tip").fadeIn(function(){setTimeout(function(){$("#explore_tip").fadeOut("fast")},3000)})}}}window.check_playing_icon=function(){$("#fm-sidebar").find(".ss-intro h3 em, .ch_item, #channel-detail-head em, .shortlist-title em").each(function(){var D=$(this);if(D.data("cid")+""===now_play_channel){if(D.hasClass("playing")){return}D.removeClass("hover").addClass("playing");if(D.hasClass("ch_item")){D.append($('<div class="cover-playing"></div>'));if(D.hasClass("detail-list-ch")){D.find(".cover-wrap").append($('<div class="cover-mask-playing"></div>'))}}}else{if(!D.hasClass("playing")){return}if(D.hasClass("ch_item")){D.find(".cover-playing").remove();if(D.hasClass("detail-list-ch")){D.find(".cover-mask-playing").remove()}}D.removeClass("playing")}})};window.now_play_channel=null;$(window).bind("radio:start",function(D,E){window.now_play_channel=E.channel;check_playing_icon()});var p=20;var y=function(M,L,D,E){m=D;E=E?","+JSON.stringify(E):"";var I="",K=parseInt(D/p,10)+1,G="...",J=10;var F=function(N,O){return"<a href='javascript:;' onclick='"+M+"("+N+E+")'>"+O+"</a>"};var H=function(P,N){var O="";while(P<=N){O+=(P-1)*p==D?'<span class="now">'+P+"</span>":F((P-1)*p,P);P++}return O};I+=K==1?"<span>&lt;</span>":F((K-2)*p,"&lt;");if(K<J){if(L<=J){I+=H(1,L)}else{I+=H(1,J)+G}}else{if(L>K+4){I+=H(1,2)+G+H(K-4,K+4)+G}else{I+=H(1,2)+G+H(K-4,L)}}I+=K>=L?"<span>&gt;</span>":F(K*p,"&gt;");return I};var o=function(H,E,J,G,I,D,F){I=I||0;F=F||{};$.getJSON(H,{start:I,limit:p},function(O){var Q=$.template(null,$("#"+J).html()),L=$.tmpl(Q,$.extend({channels:O.data.channels},D)),M=y(G,O.data.total,I,D),K=$.template(null,$("#"+E).html()),P=$.extend({items:L[0].outerHTML,page_links:M},D);if(F.onNoChannels){if(!O.data.channels.length){F.onNoChannels()}}if(F.onChannels){if(O.data.channels.length){F.onChannels()}}var N=$("#fm-side-home");N.html('<em class="backicon"></em><b class="sectitle">返回首页</b>').addClass("subtitle");h="home";$("#fm-side-main").hide();$("#fm-side-subcont").fadeOut(0).html($.tmpl(K,P)).removeClass("hide").fadeIn(e);$("#fm-sidebar, .fm-side-inner, #fm-side-main").css("zoom",1.1).css("zoom",1);check_playing_icon();if(u){$(".fm-side-inner").scrollTop(u);u=null}else{$(".fm-side-inner").scrollTop(0)}$.event.trigger("RESIZE_SCROLLBAR")})};window.render_channel_detail=function(E,D,F){$.getJSON(E,function(H){if(H.status==true){var I=$("#"+D).template();var G=$("#fm-side-home");h=F;if(F==="home"){G.html('<em class="backicon"></em><b class="sectitle">返回首页</b>').addClass("subtitle")}else{if((F)&&(F!="home")){G.html('<em class="backicon"></em><b class="sectitle">返回列表</b>').addClass("subtitle")}}$("#fm-side-main").hide();$("#fm-side-subcont").fadeOut(0).html($.tmpl(I,H.data)).removeClass("hide").fadeIn(e);$("#fm-sidebar, .fm-side-inner, #fm-side-main").css("zoom",1.1).css("zoom",1);$(".fm-side-inner").scrollTop(0);check_playing_icon();$.event.trigger("RESIZE_SCROLLBAR")}else{alert(H.msg)}})};var i=$.template(null,$("#side-short-item-template").html()),t=$.tmpl(i,{channels:window.hot_channels_json,cate:"hotlist"}),s=$.tmpl(i,{channels:window.fast_channels_json,cate:"rising"});$("#hot_songs_sec").html(t);$("#fast_songs_sec").html(s);if(com_channels_json.length){var d=$.tmpl(i,{channels:window.com_channels_json});$("#com_songs_sec").html(d)}window.side_show_hot=function(D){o("/j/explore/hot_channels","side-hot-template","side-long-item-template","side_show_hot",D,{cate:"hotlist_more"})};window.side_show_fast=function(D){o("/j/explore/up_trending_channels","side-fast-template","side-long-item-template","side_show_fast",D,{cate:"rising_more"})};window.side_show_search=function(E,D){D=D||{};D.cate="search_result";u=null;o("/j/explore/search?query="+encodeURIComponent(D.keyword),"side-search-template","side-long-item-template","side_show_search",E,D,{onChannels:function(){B(["send","event","ChannelSearch","has result",D.keyword])},onNoChannels:function(){B(["send","event","ChannelSearch","no result",D.keyword])}})};window.side_show_genres=function(E,D){D=D||{};D.cate="genre_result";o("/j/explore/genre?gid="+D.gid,"side-genres-template","side-long-item-template","side_show_genres",E,D)};$("#fm-sidebar").delegate(".fm-side-taglist li","click",function(G){var H=$(this),F=H.data("genre_id"),E=H.text();B(["send","event","Genre","Click",E]);var D={gid:F};A=D;side_show_genres(0,D)}).delegate("a.creator","click",function(D){B(["send","event","兆赫制作人","Click",$(this).text()]);return true}).delegate(".side-show-detail","click",function(){var E=$(this),D=E.data("cid"),F=E.data("from");if(!F){F="home"}if(F!="home"){u=$(".fm-side-inner").scrollTop()}render_channel_detail("/j/explore/channel_detail?channel_id="+D,"side-channel-detail-template",F)});$("#fm-side-home").click(function(){var D=$(this);if(!D.hasClass("subtitle")){return false}if(h==="home"){D.html("全部兆赫").removeClass("subtitle");$("#fm-side-subcont").addClass("hide");$("#fm-side-main").fadeOut(0).removeClass("hide").fadeIn(e);$("#fm-side-subcont").html("");$(".fm-side-inner").css("zoom",1.1).css("zoom",1);$("#fm-sidebar").css("zoom",1.1).css("zoom",1);$("#fm-side-main").css("zoom",1.1).css("zoom",1);$.event.trigger("RESIZE_SCROLLBAR")}if(h==="hotlist_more"){side_show_hot(m)}if(h==="rising_more"){side_show_fast(m)}if(h==="genre_result"){side_show_genres(m,A||{})}if(h==="search_result"){side_show_search(m,A||{})}});var g=[],q=[],c=null;$("#fm-side-subcont").delegate("#show-author-channels","click",function(D){$("#arrow").attr("src","/pics/fm/open_channel/arrow-up.png");$("#show-author-channels").attr("id","cancel-shown");$("#author-meta-content").appendTo("#author-meta-wrapper").show()}).delegate("#cancel-shown","click",function(D){$("#author-meta-content").slideUp("fast",function(){$(this).hide()});$("#cancel-shown").attr("id","show-author-channels");$("#arrow").attr("src","/pics/fm/open_channel/arrow-down.png")}).delegate("#share-channel-btn","click",function(I){var J=$(this),F=J.data("cid"),D=J.data("name"),K=J.data("banner"),L=J.data("intro");chl_url=window.consts.FM_URL+"?cid="+F;var G={name:" "+D,href:chl_url,image:K,desc:L,apikey:"079055d6a0d5ddf816b10183e28199e8",target_type:"rec",target_action:0,object_kind:window.consts.CHL_REC_KIND,object_id:F,action_props:JSON.stringify({channel_url:chl_url,channel_title:D+" - 豆瓣FM"})};var E="http://www.douban.com/share/recommend?"+$.param(G);var H=window.open(E,"fm",["toolbar=0,status=0,resizable=1,width=500,height=360,left=",(screen.width-500)/2,",top=",(screen.height-360)/2].join(""));if(H){H.focus()}}).delegate(".fav-channel-btn","click",function(D){$el=$(this);var E=$el.data("cid");$.getJSON("/j/explore/fav_channel?cid="+E,function(G){if(G.status){if(!$(".channel[cid="+E+"]").length){var F=$("#channel-detail-head");name=F.text(),name=name.substring(0,name.indexOf(" M")),intro=F.data("intro"),cover=F.data("cover"),id=F.data("cid"),data={id:id,name:name,intro:intro,cover:cover};$(window).trigger("channel:favAddhide",[data]);$(".channel[cid="+E+"] .menu .unfav").removeClass("unfav").addClass("fav")}$(window).trigger("channel:fav",[E,1])}else{alert(G.msg)}})}).delegate(".unfav-channel-btn","click",function(D){$el=$(this);var E=$el.data("cid");$.getJSON("/j/explore/unfav_channel?cid="+E,function(F){if(F.status){if($(".channel[cid="+E+"]").length){$(window).trigger("channel:fav",[E,0])}}else{alert(F.msg)}})}).delegate(".add-tags-tip-wrapper","mouseenter",function(D){$("#add-tag-tip").show();$("#tag-plus").css("background","url(/pics/fm/home/plus2.png) no-repeat")}).delegate(".add-tags-tip-wrapper","mouseleave",function(D){$("#add-tag-tip").hide();$("#tag-plus").css("background","url(/pics/fm/home/plus.png) no-repeat")}).delegate(".add-tags-tip-wrapper","click",function(D){if(!globalConfig.uid){$(".lnk-login").trigger("click")}else{$("#channel-tags").hide();var E=$(this).data("cid");$(".my-hot-channel-tags").remove();$.get("/j/explore/get_my_tags?channel_id="+E,function(I){if(I.status==true){var H=$("#add-tags-input");H.focus();var F=I.data.user_hot_channel_tags;if(F.length==0){$("#my-tags-list").append('<span class="my-hot-channel-tags meta">你还没有添加过标签呢</span>')}else{var L=$("#my-hot-tags").template();$.tmpl(L,I.data).appendTo("#my-tags-list")}var J="",K=I.data.my_channel_tags;for(var G in K){J+=" "+K[G];H.val(J);H.trigger("keyup")}H.trigger("keyup")}});$("#adding-tags-wrapper").show();$("#added-tags").hide();$("#adding-tags").show()}}).delegate("#cancel-tag-adding, #close-tag-tip","click",function(D){clearTimeout(c);$("#tags-tip li").remove();$("#adding-tags-wrapper").hide();$("#tags-tip").fadeOut("fast",function(){$(this).hide()});$("#channel-tags").show();$("#add-tags-input").val("")}).delegate("#add-tags-input","keyup",function(K){var J=$(this).val().toLowerCase().split(" ");var D=$(".common-tags").map(function(){return $(this).text().toLowerCase()}).get();var E=$(".my-hot-channel-tags").map(function(){return $(this).text().toLowerCase()}).get();g=[];g=$(".tags-border").map(function(){return $(this).text().toLowerCase()}).get();var L=D.concat(E);for(var H in J){var F=J[H];if($.inArray(F,L)!=-1){var G=$.inArray(F,D);if(G==-1){G=$.inArray(F,E);$("#m"+G).addClass("tags-border");$("#m"+G).removeClass("tags").addClass("unclick-tag my-hot-channel-tags")}else{$("#c"+G).addClass("tags-border");$("#c"+G).removeClass("tags").addClass("unclick-tag");G=$.inArray(F,E);if(G!=-1){$("#m"+G).addClass("tags-border");$("#m"+G).removeClass("tags").addClass("unclick-tag my-hot-channel-tags")}}if($.inArray(F,g)==-1){g.push(F)}}}for(H=0;H<g.length;H++){q[H]=g[H]}for(var H in q){if($.inArray(q[H],J)==-1){var F=q[H];var G=$.inArray(F,D);if(G==-1){G=$.inArray(F,E);$("#m"+G).removeClass("tags-border");$("#m"+G).removeClass("unclick-tag").addClass("tags")}else{$("#c"+G).removeClass("tags-border");$("#c"+G).removeClass("unclick-tag").addClass("tags");G=$.inArray(F,E);if(G!=-1){$("#m"+G).removeClass("tags-border");$("#m"+G).removeClass("unclick-tag").addClass("tags")}}var I=$.inArray(F,g);if(I>-1){g.splice(I,1)}}}}).delegate(".tags","click",function(H){var D=$(this).text(),F=$("#add-tags-input"),E=F.val(),G=E+" "+D;F.focus();F.val(G);F.trigger("keyup")}).delegate(".unclick-tag","click",function(J){var E=$(this),G=E.text().toLowerCase(),H=$("#add-tags-input");tags_input=H.val().split(" ");var I=[];for(var F in tags_input){I.push(tags_input[F].toLowerCase())}var F=$.inArray(G,I);if(F!=-1){tags_input.splice(F,1)}var D=tags_input.join(" ");H.focus();H.val(D);H.trigger("keyup")}).delegate(".tags-data","hover",function(E){var D=$(this).text(),F=$(this).attr("id");if(E.type==="mouseenter"){if($.inArray(D,g)==-1){$("#"+F).addClass("tags-border")}}else{if($.inArray(D,g)==-1){$("#"+F).removeClass("tags-border")}}}).delegate("#submit-tags","click",function(E){var D=$("#add-tags-input").val(),F=$(this).data("cid");$.post_withck("/j/explore/add_channel_tags",{tags:D,cid:F},function(G){if(G){G=$.parseJSON(G);if(G.status==true){$("#adding-tags").hide();$("#added-tags").show();var H={tags:$.trim(D).split(" ")};if(H.tags[0]!=""){var I=$("#adding-success-tip").template();$.tmpl(I,H).appendTo("#added-tags")}$("#tags-tip").show();c=setTimeout(function(){$("#tags-tip li").remove();$("#adding-tags-wrapper").hide();$("#tags-tip").fadeOut("fast",function(){$(this).hide()});$("#channel-tags").show()},4000)}else{alert(G.msg)}}})}).delegate("#board-post-input","keyup focus",function(){var G=250,D=G-10,E=$(this).val(),F=E.length;$("#submit-post").show();if(F>=D&&F<=G){var I=G-F;$("#fake-button").hide();$("#input-tip").show().text("你还可以输入 "+I+" 个字")}else{if(F<D){$("#fake-button").hide();$("#input-tip").hide()}if(F>G){var H=F-G;$("#submit-post").hide();$("#fake-button").show();$("#input-tip").show().text("－ "+H)}}}).delegate("#submit-post","click",function(E){if(!globalConfig.uid){r=$(".lnk-login").trigger("click")}else{var F=$("#board-post-input").val(),D=$(this).data("cid");if(F.length==0){alert("内容别为空呀")}else{$.post_withck("/j/explore/add_board_post",{text:F,channel_id:D},function(H){if(H){H=$.parseJSON(H);if(H.status==true){var G=$("#channel-board-post").template();$.tmpl(G,H.data).prependTo("#board");$("#board-post-input").val("")}else{alert(H.msg)}}})}}}).delegate("#board li","mouseenter",function(G){var E=globalConfig.uid,F=$(this);author=F.data("author");if(E==author){var D=F.data("pid");$("#d"+D).show()}}).delegate("#board li","mouseleave",function(G){var E=globalConfig.uid,F=$(this);author=F.data("author");if(E==author){var D=F.data("pid");$("#d"+D).hide()}}).delegate(".delete","click",function(G){var F=confirm("确认要删除这条留言吗？");if(F==true){var D=$(this).data("pid"),E=$(this).data("author");$.post_withck("/j/explore/delete_board_post",{pid:D,author_id:E},function(H){if(H){H=$.parseJSON(H);if(H.status==true){$("#"+D).fadeOut(500,function(){$(this).remove()})}else{alert(H.msg)}}})}}).delegate("#channel-detail-head","click",function(){var D=$(this).text(),F=$(this).data("intro"),G=$(this).data("cover"),H=$(this).data("cid"),E={id:H,name:D.replace(/ MHz$/i,""),intro:F,cover:G};if(!E.name){E.name=D}$(window).trigger("channel:switch",[E]);B(["send","event","Channel","Play In channel detail-page",E.name])}).delegate(".channel-btn, .small-channel-btn","mouseenter mouseleave",function(D){if(D.type=="mouseenter"){$(this).addClass("btn-hover")}else{$(this).removeClass("btn-hover")}}).delegate("#report-channel-btn","click",function(){var D=$(this),F=D.data("cid"),E=window.consts.FM_URL+"?cid="+F;_generate_report_dialog({report_url:E})});$("#explore_tip").bind("SHOW_SCROLLBAR",function(){set_cookie({openExpPan:"Y"},365,"douban.fm");$(this).fadeOut(function(){$(this).remove()})});var v=(function(){var D={};return function(G,I,H){var F=D[H],E=new Date();if(!F||(E.getMinutes()-F.getMinutes())>=30){B(["send","event",G,I,H+""]);D[H]=E}}})()})();;
+    });
+</script>
+
+<!-- 热门兆赫模板 -->
+<script type="text/template" id="side-hot-template">
+    <div class="hotlist-head">
+        <span class="now">热门兆赫</span>
+        <span class="seperator"></span>
+        <a class="link" href="javascript:;" onclick="side_show_fast()">上升最快</a>
+    </div>
+    {{html items}}
+    <div class="page_links">
+        {{html page_links}}
+    </div>
+</script>
+
+<!-- 上升最快模板 -->
+<script type="text/template" id="side-fast-template">
+    <div class="hotlist-head">
+        <a class="link" href="javascript:;" onclick="side_show_hot()">热门兆赫</a>
+        <span class="seperator"></span>
+        <span class="now">上升最快</span>
+    </div>
+    {{html items}}
+    <div class="page_links">
+        {{html page_links}}
+    </div>
+</script>
+
+<!-- 搜索结果模板 -->
+<script type="text/template" id="side-search-template">
+    {{if (/<\/li>/i).exec(items) !== null}}
+    <div class="hotlist-head">
+        <h2 class="side-search-keyword">与“{{= keyword}}”相关的兆赫</h2>
+    </div>
+        {{html items}}
+        <div class="page_links">
+            {{html page_links}}
+        </div>
+    {{else}}
+        <p class="message">抱歉，没有找到与“{{= keyword}}”相关的兆赫</p>
+    {{/if}}
+</script>
+
+<!-- 流派列表模板 -->
+<script type="text/template" id="side-genres-template">
+    <div class="hotlist-head side-genresbar">
+        <ul class="fm-side-taglist clearfix fm-side-genresbar" id="side-genresbar">
+        <li data-genre_id="335"
+        {{if "335"==gid}} class="at" {{/if}} >摇滚</li>
+        <li data-genre_id="326"
+        {{if "326"==gid}} class="at" {{/if}} >古典</li>
+        <li data-genre_id="327"
+        {{if "327"==gid}} class="at" {{/if}} >爵士</li>
+        <li data-genre_id="337"
+        {{if "337"==gid}} class="at" {{/if}} >民谣/乡村</li>
+        <li data-genre_id="331"
+        {{if "331"==gid}} class="at" {{/if}} >流行</li>
+        <li data-genre_id="325"
+        {{if "325"==gid}} class="at" {{/if}} >电子</li>
+        <li data-genre_id="328"
+        {{if "328"==gid}} class="at" {{/if}} >原声配乐</li>
+        <li data-genre_id="332"
+        {{if "332"==gid}} class="at" {{/if}} >轻音乐</li>
+        <li data-genre_id="334"
+        {{if "334"==gid}} class="at" {{/if}} >说唱</li>
+        <li data-genre_id="330"
+        {{if "330"==gid}} class="at" {{/if}} >雷鬼</li>
+        <li data-genre_id="329"
+        {{if "329"==gid}} class="at" {{/if}} >拉丁</li>
+        <li data-genre_id="333"
+        {{if "333"==gid}} class="at" {{/if}} >世界音乐</li>
+        <li data-genre_id="324"
+        {{if "324"==gid}} class="at" {{/if}} >布鲁斯</li>
+        <li data-genre_id="336"
+        {{if "336"==gid}} class="at" {{/if}} >放克/灵歌/R&amp;B</li>
+        </ul>
+        <div style="clear:both;height:0;"></div>
+    </div>
+    {{html items}}
+    <div class="page_links">
+        {{html page_links}}
+    </div>
+</script>
+
+<!-- 长频道列表模板 -->
+<script type="text/template" id="side-long-item-template">
+    <ul class="fm-djlist longlist clearfix" data-cate="{{= cate }}">
+        {{each(i, chan) channels}}
+        <li class="ch_item" data-cid="{{= chan.id}}" data-intro="{{= chan.intro}}" data-cover="{{= chan.cover}}" data-name="{{= chan.name}}">
+            <div class="cover-wrap">
+                <div class="cover-overlay"></div>
+                <div class="cover-mask"></div>
+                <img class="cover" src="{{= chan.cover }}" />
+            </div>
+            <div class="cont">
+                <h4 class="title longlist-title" >{{= chan.name}}<em data-cid="{{= chan.id}}">MHz</em></h4>
+                <div class="intro">{{= chan.intro}}</div>
+                <div class="hotsongs"><em>热门歌曲：</em>{{= chan.hot_songs.join(" / ") }}</div>
+                <div class="meta">
+                    {{if chan.song_num}}
+                    <span class="song_num">{{= chan.song_num}}首歌曲</span>
+                    {{/if}}
+                    <a class="side-show-detail" data-cid="{{= chan.id}}" data-from="{{= cate}}">兆赫详情</a>
+                </div>
+            </div>
+            <div style="clear:both;height:0;"></div>
+        </li>
+        {{/each}}
+    </ul>
+</script>
+
+<!-- 短频道列表模板 -->
+<script type="text/template" id="side-short-item-template">
+    <ul class="fm-djlist clearfix shortlist" data-cate="{{= cate }}">
+        {{each(i, chan) channels}}
+        <li class="ch_item" data-cid="{{= chan.id}}" data-intro="{{= chan.intro}}" data-cover="{{= chan.cover}}" data-name="{{= chan.name}}">
+            <div class="cover-wrap">
+                <div class="cover-mask"></div>
+                <img class="cover" src="{{= chan.cover}}"/>
+            </div>
+            <div class="cont">
+                <h4 class="title shortlist-title">{{= chan.name}}<em data-cid="{{= chan.id}}">MHz</em></h4>
+                <div class="meta">
+                    {{if chan.song_num}}
+                    <span class="song_num">{{= chan.song_num}}首歌曲</span>
+                    {{/if}}
+                    <a class="side-show-detail" data-cid="{{= chan.id}}">兆赫详情</a>
+                </div>
+            </div>
+            <div class="hidetips">
+                {{if chan.intro.length }}
+                <p class="intro"><em>简介:</em>{{= chan.intro}}</p>
+                {{/if}}
+                <p class="hotsongs"><em>热门歌曲:</em>{{= chan.hot_songs.join(" / ") }}</p>
+            </div>
+        </li>
+        {{/each}}
+    </ul>
+</script>
+
+<!-- 兆赫详情模板 -->
+<script type="text/template" id="side-channel-detail-template">
+    <div id="side-channel-detail">
+        <h2 id="channel-detail-head" data-cid="{{= channel.id}}" data-intro="{{= channel.intro}}" data-cover="{{= channel.cover}}">{{= channel.name}} <em data-cid="{{= channel.id}}">MHz</em></h2>
+        <div class="clearfloat">
+            <div id="head-banner">
+                <img width="200px" src="{{= channel.banner}}" />
+            </div>
+            <div class="clearfloat">
+                <p class="intro">{{= channel.intro}}</p>
+                <table id="channel-meta">
+                    <tr>
+                        {{if channel.song_num}}
+                        <td>
+                            <span>{{= channel.song_num}}</span>
+                            <br />
+                            <span class="meta">歌曲</span>
+                        </td>
+                        {{/if}}
+                    </tr>
+                </table>
+                {{if !is_com}}
+                {{if !is_fav}}
+                <div id="fav-channel-btn" class="fav-channel-btn channel-btn" cid="{{= channel.id}}" data-cid="{{= channel.id}}" data-name="{{= channel.name}}" data-banner="{{= channel.banner}}" data-intro="{{= channel.intro}}">收	藏</div>
+                {{else}}
+                <div id="fav-channel-btn" class="fav-channel-btn channel-btn" cid="{{= channel.id}}" data-cid="{{= channel.id}}" data-name="{{= channel.name}}" data-banner="{{= channel.banner}}" data-intro="{{= channel.intro}}">取消收藏</div>
+                {{/if}}
+                {{/if}}
+                <div id="share-channel-btn" class="channel-btn" data-cid="{{= channel.id}}" data-name="{{= channel.name}}" data-banner="{{= channel.banner}}" data-intro="{{= channel.intro}}">分 享</div>
+                <div id="report-channel-btn" class="channel-btn" data-cid="{{= channel.id}}" style="visibility:hidden" >举报</div>
+            </div>
+        </div>
+        <div id="channel-tags" class="mt20">
+            {{if channel.tags.length == 0}}
+                <div class="add-tags-tip-wrapper" data-cid="{{= channel.id}}">
+                    <div id="add-tag-tip">
+                        <div class="text">为频道添加标签</div>
+                        <div class="img"></div>
+                    </div>
+                    <div id="tag-plus"></div>
+                </div>
+            {{else}}
+                <ul class="tag-list">
+                    {{each(i, tag) channel.tags}}
+                        <li class="all-tags">{{= tag}}</li>
+                    {{/each}}
+                    <li class="add-tags-tip-wrapper" data-cid="{{= channel.id}}">
+                        <div id="add-tag-tip">
+                            <div class="text">为频道添加标签</div>
+                            <div class="img"></div>
+                        </div>
+                        <div id="tag-plus"></div>
+                    </li>
+                </ul>
+            {{/if}}
+        </div>
+        <div id="adding-tags-wrapper" class="mt20">
+            <div id="tags-tip">
+                <h3>标签添加成功</h3>
+                <ul id="added-tags" class="tag-list mt10"></ul>
+                <br />
+                <div id="close-tag-tip" class="channel-btn small-channel-btn">关闭</div>
+            </div>
+            <div id="adding-tags">
+                <h3>常用标签</h3>
+                <ul class="tag-list mt10">
+                    {{each(i, tag) channel.tags}}
+                        <li id="c{{= i}}" class="tags-data tags all-tags common-tags">{{= tag}}</li>
+                    {{/each}}
+                </ul>
+                <div class="mt20">
+                    <h3>我的标签</h3>
+                    <ul id="my-tags-list" class="tag-list mt10">
+                    </ul>
+                    <input id="add-tags-input" type="text" name="new_tags" class="tags-input mt20" />
+                    <br />
+                    <div id="submit-tags" class="channel-btn small-channel-btn" data-cid="{{= channel.id}}">提 交</div>
+                    <a id="cancel-tag-adding" class="small-channel-btn cancel-btn ml10">取消</a>
+                </div>
+            </div>
+        </div>
+        <h3 class="mt50">关于制作者</h3>
+        <div id="author-meta-wrapper" class="clearfloat">
+            <div id="author-meta-head" class="clearfloat">
+                <div class="fleft">
+                    <a target="_blank" href="{{= channel.creator.url}}"><img class="vm icon" src="{{= channel.creator.pic}}" /></a>
+                    <a target="_blank" href="{{= channel.creator.url}}">{{= channel.creator.name}}</a>
+                </div>
+                <div id="author-meta-info">
+                    <div class="fright">
+                        {{if channel.creator.chls.length}}
+                            <a href="#" id="show-author-channels" class="mr20">{{= channel.creator.name}} 的其他兆赫 <img id="arrow" src="pics/fm/open_channel/arrow-down.png" class="vm"/></a>
+                        {{/if}}
+                            <a target="_blank" href="{{= channel.creator.url}}">豆瓣主页</a>
+                    </div>
+                </div>
+            </div>
+            <div id="author-meta-content">
+                <div id="line"></div>
+                <ul class="fm-djlist detail-list" data-cate="{{= channel.cate}}">
+                    {{each(i, c) channel.creator.chls}}
+                    <li data-cid="{{= c.id}}" data-name="{{= c.name}}" class="ch_item detail-list-ch">
+                        <div class="cover-wrap">
+                            <div class="cover-mask"></div>
+                            <img class="cover" src="{{= c.cover}}" />
+                        </div>
+                        <div class="cont">
+                            <h4 class="title"><span>{{= c.name}}</span>
+                            <em data-cid="{{= c.id}}">MHz</em></h4>
+                            {{each(j, t) c.tags}}
+                                <span class="meta other-ch-tags">&#35;{{= t}}</span>
+                            {{/each}}
+                        </div>
+                    </li>
+                    {{/each}}
+                </ul>
+            </div>
+        </div>
+        <div id="board-wrapper">
+            <div class="clearfloat mt50" style="width:569px;">
+                <h3>最近留言</h3>
+            </div>
+            <textarea id="board-post-input" name="post" type="text" / ></textarea>
+            <br />
+            <div class="clearfloat" id="submit-post-help">
+                <span id="input-tip"></span>
+                <div class="clearfloat">
+                    <div id="submit-post" class="channel-btn small-channel-btn" data-cid="{{= channel.id}}">提 交</div>
+                    <div id="fake-button" class="channel-btn small-channel-btn">提交</div>
+                </div>
+            </div>
+            <ul id="board">
+                {{each(i, post) channel.channel_board}}
+                    
+    <li id="{{= post.pid}}" class="clearfloat mt20" data-author="{{= post.author.id}}" data-pid="{{= post.pid}}">
+        <div class="icon">
+            <a href="{{= post.author.url}}"><img src="{{= post.author.pic}}" title="{{= post.author.name}}"/></a>
+        </div>
+        <div class="post-content clearfloat">
+            <a id="d{{= post.pid}}" data-pid="{{= post.pid}}" data-author="{{= post.author.id}}" class="delete" >删除</a>
+            <a target="_blank" href="{{= post.author.url}}">{{= post.author.name}}</a>
+            <span class="meta ml10">{{= post.time}}</span>
+            <p>{{= post.text}}</p>
+        </div>
+    </li>
+
+                {{/each}}
+            </ul>
+        </div>
+    </div>
+</script>
+
+<script type="text/template" id="channel-board-post">
+    
+    <li id="{{= post.pid}}" class="clearfloat mt20" data-author="{{= post.author.id}}" data-pid="{{= post.pid}}">
+        <div class="icon">
+            <a href="{{= post.author.url}}"><img src="{{= post.author.pic}}" title="{{= post.author.name}}"/></a>
+        </div>
+        <div class="post-content clearfloat">
+            <a id="d{{= post.pid}}" data-pid="{{= post.pid}}" data-author="{{= post.author.id}}" class="delete" >删除</a>
+            <a target="_blank" href="{{= post.author.url}}">{{= post.author.name}}</a>
+            <span class="meta ml10">{{= post.time}}</span>
+            <p>{{= post.text}}</p>
+        </div>
+    </li>
+
+</script>
+
+<script type="text/template" id="my-hot-tags">
+    {{each(i, v) user_hot_channel_tags}}
+        <li id="m{{= i}}" class="tags-data tags all-tags my-hot-channel-tags">{{= v}}</li>
+    {{/each}}
+</script>
+
+<script type="text/template" id="adding-success-tip">
+    {{each(i, v) tags}}
+    <li class="all-tags">{{= v}}</li>
+    {{/each}}
+</script>
+
+
+<script>
+Do.add('fm-bannerad', {path: 'http://img6.douban.com/f/fm/364b8638d16da3283a4ef2de0fbe8f378c26d72f/js/fm/fm_bannerad.js', type:'js'});
+Do.add('fm-rotate-ad', {path: 'http://img6.douban.com/f/fm/cd218a0f722643be3c49ea6474b4de619d8fdb92/js/fm/fm_rotate_ad.js', type:'js',
+    requires: ['fm-bannerad']});
+var bgad_dict = {'255': {'adid': '457', 'pic': 'http://img6.douban.com/rda/pic12770.jpg', 'divs': [{'width': '490.5', 'top': '0', 'height': '279', 'link': 'https://site.douban.com/c3xr/', 'left': '0'}, {'width': '490.5', 'top': '-6', 'height': '279', 'link': 'https://site.douban.com/c3xr/', 'left': '1367'}]}};
+var bgad_commercial_ids = ['255', '254', '253'];
+Do.add('fm-bgad', {path: 'http://img6.douban.com/f/fm/c6330827cfa385a578cc458a4da0ea8e120c9d1e/js/fm/fm_bgad.js', type:'js'});
+Do.add('fm-player', {path: 'http://img6.douban.com/f/fm/f585d1519b7401c50f59c26fc0e11de3c0758e44/js/fm/fm_player.js', type:'js',
+    requires: ['swfobject', 'fm-bgad', 'fm-rotate-ad', 'init_channel_list']});
+
+Do.ready('fm-bannerad', 'fm-bgad', function() {
+    initBannerAd({ad_source:"#fm-banner-ads",alt_slot:"#ft-ads-slot",shift_cb:function(a){if(a==="hide"){$("#fm-section3").css("padding-bottom",0);return}$("#fm-section3").css("padding-bottom",a==="banner"?"145px":0)}});var inter_ad=document.getElementById("inter-ad"),ad_click_area=document.getElementById("ad-click-area"),currChannel=$(".ch-list .selected").attr("cid");var getAnimBgAdUrl=function(a){if(bgad.has_channel_ad(a)){return bgad_dict[a]["pic"]}else{return""}};var turnOnAnimBgAd=function(a){if(a.indexOf("http://battlepit.douban.com/ad/")!=-1){inter_ad.contentWindow.location=a;$(inter_ad).width($(window).width());$(inter_ad).show();$(ad_click_area).show()}else{turnOffAnimBgAd()}};var turnOffAnimBgAd=function(){$(inter_ad).hide();$(ad_click_area).hide()};$(".channel_list .channel").click(function(){var a=getAnimBgAdUrl($(this).attr("cid"));if(a!=""){turnOnAnimBgAd(a)}else{turnOffAnimBgAd()}});$("#ad-click-area").click(function(){$(this).hide();$(inter_ad).width($(window).width()+1)});turnOnAnimBgAd(getAnimBgAdUrl(currChannel));
+});
+
+
+Do.add("jsuggest", {
+           path: "http://img6.douban.com/f/fm/ef53218058b8a98312a0e4767bbc33f5c452a5c9/js/fm/search_sugg.js",
+           type: "js",
+           require: ['jquery']
+});
+Do.add('jeffects', {
+           path: "http://img6.douban.com/f/fm/0b72b51097e710ea766bf3dc3e09a9592111758c/js/fm/lib/jquery-ui-effects.min.js",
+           type: "js",
+           require: ['jquery']
+});
+Do.add('init_channel_list', {
+    path: "http://img6.douban.com/f/fm/81647d19e09de97fa647a530686d0f9751333637/js/fm/init_channel_list.js",
+    type: "js",
+    requires: ['post_withck', 'helpers', 'jsuggest', 'template', 'jeffects']
+});
+
+Do.add('dialog-css', {path: 'http://img6.douban.com/f/shire/8377b9498330a2e6f056d863987cc7a37eb4d486/css/ui/dialog.css', type:'css'});
+Do.add('dialog', {path: 'http://img6.douban.com/f/shire/4b3bad5e25de78678d700dd5353570dce3e6bbcc/js/ui/dialog.js', type:'js', requires: ['dialog-css']});
+Do.add('qrcode', {path: 'http://img6.douban.com/f/fm/c4ab132ff4d3d64a83854c875ea79b8b541faf12/js/fm/lib/qrcode.min.js', type:'js'});
+Do.add('fmshare', {path: "http://img6.douban.com/f/fm/219fc7a89657fc95f26b631428d82c23e56b998e/js/fm/fm_share.js", type:'js', requires: ['qrcode', 'dialog']});
+Do.add('song-to-phone', {path: 'http://img6.douban.com/f/fm/7e50311f76bc95538862495c4b5bbc23255ac4a3/js/fm/send_song_to_phone.js',
+                        type: 'js', requires: ['qrcode', 'dialog']});
+Do.add('mousewheel', {path: "http://img6.douban.com/f/shire/ae35ccf5b71366894c4d067600f6aa4ae6e76b03/js/lib/jquery.mousewheel.js", type:'js'});
+Do.global('dialog', 'fm-player', 'http://img6.douban.com/f/shire/41aba3e7b1dcd2e34e73644aa6fb6e998e06d75a/js/lib/store.min.js');
+Do.add('report_dialog-css', {path: "http://img6.douban.com/f/shire/55b64317192d6f00c03c9ff3e397fe02bfa4437b/css/report_dialog.css", type:'css'});
+Do.add('report_dialog', {path: "http://img6.douban.com/f/shire/17ffde78bc768c1de53c46d5b5f7fb7f5893c10e/js/report_dialog.js", type:'js', requires: ['report_dialog-css', 'dialog']});
+
+var globalConfig = {
+  doubanHost: 'http://www.douban.com',
+  pageHost: 'http://douban.fm',
+  sig: '96c79c2d5a',
+  ajax_sig: '1fcbf2bd85',
+  login_check_url: 'http://douban.fm/j/check_loggedin'
+};
+
+Do.ready("mousewheel",function(){var k=(typeof FM==="undefined")?{}:FM,g="<em></em>",e=$("#fm-channel-list"),l=$("#fm-section3"),m=$("#fm-section, #fm-section2, #fm-bg, #fm-section-app-entry"),i=$("#fm-bg"),d=i.height(),n=i[0].offsetTop,j=[],f,b=$.browser.mozilla&&$.browser.version,a=navigator.userAgent.indexOf("Chrome")>0,c=l.offset().top;var h=function(r){var o=l.offset().top,p=n+d+70,q=o-p;if(q<=0){m.css("marginTop",q+"px")}else{m.css("marginTop",0)}$(".fm-side-inner").height($("html").height())};e.bind("scroll",h);$(window).bind("resize",h);window.bindPlayerListMW=function(){$("html, #fm-sidebar, #fm-section, #fm-channel-list, #fm-section2, #fm-section3, #fm-section-app-entry").bind("mousewheel",function(u,v,q,p){var s=u.target,r=e.scrollTop(),o;if($.browser.webkit){o=Math.abs(p)*100}else{if($.browser.mozilla){if(b>=3.5){o=Math.abs(p)*3}else{o=Math.abs(p)*30}}else{o=Math.abs(p)*10}}e.scrollTop(r-o*p);return false})};window.unbindPlayerListMW=function(){$("html, #fm-sidebar, #fm-section, #fm-channel-list, #fm-section2, #fm-section3, #fm-section-app-entry").unbind("mousewheel")};bindPlayerListMW();$(document).keydown(function(s){var o={32:"pause",70:"love",83:"skip"};var p=s.target.tagName.toLowerCase();var r=(p==="input"||p==="textarea");if(!r&&!s.altKey&&!s.ctrlKey&&!s.metaKey){var q=o[s.keyCode];if(q){s.preventDefault();DBR.act(q)}}return true})});
+
+// 登录注册链接点击事件
+Do.ready("http://img6.douban.com/f/fm/fe6122b7ee920344c05609f6f992f16875d85e69/js/fm/init_login_register.js");
+
+Do.ready("init_channel_list");
+
+Do.ready("helpers", function () {
+    initAutoHideMenu("#user_name", ".menu", {
+        root: $("#user_info .profile")
+    });
+});
+
+Do('fmshare', function(){
+    FM.initSongShare($('#fm-sharing'));
+});
+
+Do.ready('song-to-phone');
+
+Do.ready(function () {
+    $("#fm-header").delegate("#user_play_record a",
+        "click",
+        function (e) {
+            _gaq && _gaq.push(['_trackEvent', 'Play Record',
+                               'click', $(this).data('label')]);
+            return true;
+    }).delegate(".profile .menu .upgrade", "click", function(e) {
+        _gaq && _gaq.push(['_trackEvent', 'Upgrade', 'click']);
+        return true;
+    });
+});
+
+Do.ready("template", "helpers", function () {
+    $(window).bind(window.consts.LOGIN_EVENT, function (e, userInfo) {
+        window.flags.is_user_login = true;
+
+        var USER_INFO_TMPL = $.template(null, $("#tmpl_user_info").html());
+
+        $("#fm-header").find("#anony_nav").remove().end()
+        .find('#user_info').remove().end()
+        .prepend($.tmpl(USER_INFO_TMPL, userInfo));
+        window.user_record.init(userInfo.is_pro);
+
+        initAutoHideMenu("#user_name", ".menu", {
+            root: $("#user_info .profile")
+        });
+
+        // pro用户去广告 & 加pro icon
+        if(userInfo.is_pro) {
+            //TODO: is this method alive?
+            //     : who knows
+            disableBannerAd();
+            $('<i class="pro_icon"></i>').insertBefore($('#user_name').find('.arrow'));
+            $('#fm-download').show().addClass("enabled");
+        } else {
+            var display;
+            if ($.browser.msie  && parseInt($.browser.version, 10) <= 7) {
+                display = 'inline';
+            } else {
+                display = 'inline-block';
+            }
+            $('div.pro-promo').removeClass('hidden').css('display', display);
+        }
+
+        DBR.act("login", userInfo.id, userInfo.is_pro);
+        globalConfig.uid = userInfo.id;
+
+    });
+});
+
+Do.add("show_login", "http://img6.douban.com/f/fm/4c9a176eb6a9b175b6128bb203a7b05536e00a58/js/fm/show_login.js");
+Do("show_login", function() {
+});
+
+
+
+Do.add('reg-guide', {path: 'http://img6.douban.com/f/fm/a2ec094674686179d706514da6f982b343bd799e/js/fm/reg_guide.js', type:'js'});
+Do('reg-guide');
+
+
+</script>
+
+<div id="fm-banner-ads"><iframe id="fm-rotate-ad" src="about:blank" width="958" height="98" frameborder="0" scrolling="no" data-campaign-start="" data-campaign-end=""></iframe></div>
+<script type="template" id="tmpl_user_info">
+
+<div id="user_info">
+    {{if uid}}
+    <div class="profile">
+        <div class="menu_wrapper">
+            {{if third_party_info}}
+                {{if third_party_info.origin == S}}
+                <span class="sina_logo"></span>
+                {{else third_party_info.origin == M}}
+                <span class="msn_logo"></span>
+                {{else third_party_info.origin == Q}}
+                <span class="qq_logo"></span>
+                {{else}}
+                <span class="default_logo"></span>
+                {{/if}}
+            {{/if}}
+            <span id="user_name">{{= name }}
+                <i class="arrow"></i>
+            </span>
+            <div class="menu">
+                {{if !third_party_info}}
+                <a href="/settings/" target="_blank">设置</a>
+                {{/if}}
+                <a href="/settings/pro/" target="_blank" class="upgrade">付费服务</a>
+                <a href="/upgrade#gift" target="_blank" class="upgrade">赠送PRO</a>
+                <a href="/partner/logout?source=radio&ck={{= ck }}&no_login=y">退出</a>
+            </div>
+        </div>
+        {{if is_dj}}
+        <a href="/open_channel/mine" target="_blank">我的FM</a>
+        {{/if}}
+    </div>
+    <ul id="user_play_record">
+        <li>
+        <a href="/mine?type=played" data-label="累积收听" target="_blank">
+            累积收听<span id="rec_played">{{= play_record.played }}</span>首
+        </a>
+        </li>
+        <li>
+            <a href="/mine?type=liked" data-label="红心" target="_blank">红心</a>
+        </li>
+        <li>
+            <a href="/mine?type=faved_chl" data-label="收藏兆赫" target="_blank">收藏兆赫</a>
+        </li>
+    </ul>
+    <div class="pro-promo hidden">
+        <a href="/upgrade" target="_blank" class="pro-promo">升级到</a>
+    </div>
+    {{else}}
+    <div id="anony_nav">
+        <em></em>
+        <div class="fm-user-login">
+            <a href="http://www.douban.com/accounts/login" target="_blank" class="lnk-login">登录</a>
+            <i class="cutline"></i>
+            <a href="http://www.douban.com/accounts/register" target="_blank" class="lnk-register">马上注册</a>
+            <i class="cutline"></i>
+            <a href="/upgrade" target="_blank" class="pro-promo">
+                开启
+            </a>
+        </div>
+    </div>
+    {{/if}}
+</div>
+</script>
+
+
+<script type="template" id="tmpl_fav_addable_chls">
+{{each(i, chl) chls }}
+<li data-cid="{{= chl.id }}" data-cover="{{= chl.cover }}"
+    data-intro="{{= chl.intro }}"
+    data-start="{{= chl.song_to_start}}"
+    style="z-index:{{= exist_chl_num+chls.length-i }}"
+    class="channel" cid="{{= chl.id }}">
+    <a class="chl_name"><span class='cname'>{{= chl.name }} <span class="mhz">MHz</span></span></a>
+    <span class="st_playing"></span>
+    <span class="toggle">
+        <span class="triangle"></span>
+    </span>
+    <ul class="menu">
+        {{if chl.id < 2000000}}
+        <li class="show-channel-detail">兆赫详情</li>
+        {{/if}}
+        {{if is_fav}}
+            <li class="unfav unfav_del">取消收藏</li>
+        {{else}}
+            <li class="fav" style="display:none">收藏</li>
+        {{/if}}
+        <li class="share">分享</li>
+    </ul>
+</li>
+{{/each }}
+</script>
+
+<script type="template" id="tmpl_chls">
+{{each(i, chl) chls }}
+<li data-cid="{{= chl.id }}" data-cover="{{= chl.cover }}"
+    data-intro="{{= chl.intro }}"
+    data-start="{{= chl.song_to_start}}"
+    style="z-index:{{= exist_chl_num+chls.length-i }}"
+    class="channel" cid="{{= chl.id }}">
+    <a class="chl_name"><span class='cname'>{{= chl.name }} <span class="mhz">MHz</span></span></a>
+    <span class="st_playing"></span>
+    <span class="toggle">
+        <span class="triangle"></span>
+    </span>
+    <ul class="menu">
+        {{if chl.id < 2000000}}
+        <li class="show-channel-detail">兆赫详情</li>
+        {{/if}}
+        {{if chl.com_len == 0}}
+        {{/if}}
+        <li class="share">分享</li>
+    </ul>
+</li>
+{{/each }}
+</script>
+
+<script type='template' id='tmpl_chl_tag'>
+<div id='tmpl_chl_tag' class='tmpl_chl_tag'>
+<div id='cancel_tag_func'>x</div>
+<div id='tag_page_title'>选择标签来播放属于它的红心歌曲(测试中)</div>
+<div id='tags_div'>
+{{each(i, tag) tags}}
+<span class='tag_unselected' id='{{= tag.tag_id}}'>{{= tag.tag_name}}</span>
+{{/each }}
+</div>
+<div id='warning_info' class='warning_info'>
+<div id='warning_limited_tag'>最多用3个标签来描述你想听的歌</div>
+<div id='nosong_found'>没有找到歌曲。换换标签再试试</div>
+</div>
+<div><a href='#' id='start_tag_func' class='start_tag_func disabled'>启 动</a></div>
+</div>
+</script>
+
+<script type='template' id='tag_sugg_result'>
+<li id="{{= id}}">{{= title}}</li>
+</script>
+
+<script type='template' id='tmpl_person_tag_maindialog'>
+<div id='tmpl_person_tag_maindialog' class="tmpl_person_tag_maindialog">
+        <div class="tag-input-title">从艺术家/风格启动私人兆赫</div>
+        <a href="#" class="direct_start">直接听 ></a>
+        <div id="tags-to-create" class="tags-to-create">
+        <div id="tag-input-form" class="tag-input-form" method="get">
+             <div class='tag-show-div' id='tag-show-div'></div>
+             <input class="tag-input-inner" type="text">
+        </div>
+        </div>
+        <div class='warning_info'>
+            <div class="person_limited_tags">最多用3个标签来描述你想听的歌</div>
+            <div class="person_nosong_found">没有找到歌曲。换换标签再试试</div>
+            <div class="person_tag_repeat">标签已选中，不能重复点选</div>
+            <div class="person_tag_not_exist">没有找到你输入的标签，换一个试试</div>
+        </div>
+        <a href="#" class="start_private_tag">启 动</a>
+        <div class="alt_tags">
+            <div class="tag_div">
+            </div>
+        </div>
+</div>
+</script>
+
+<script type='tmpl' id='tmpl_person_tags'>
+<span class="tags" id="{{= id}}">{{= title }}</span>
+</script>
+
+<script type='template' id='tmpl_quickstart'>
+<div class="fm-quickstart">
+    <h6>或许你可以告诉豆瓣FM你喜欢的<a href="#" class="close">x</a></h6>
+    <form>
+    <input type="hidden" value="" class="query">
+    <div class="choose choose-song disabled">
+        <input type="text" placeholder="输入你喜欢的一首歌" class="text"
+            api="/j/song_suggest?q={query}" logtype="qs">
+        <input type="submit" value="启动" class="play">
+        <a href="#" class="mask"></a>
+    </div>
+    <div class="choose choose-artist disabled">
+        <div class="pager">
+            <a href="#" class="prev"></a>
+            <a href="#" class="next"></a>
+        </div>
+        <div class="artist-list">
+            <ul style="width:{{= Math.ceil(artists.length / 4) }}00%">
+            {{each(i, item) artists }}
+                <li>
+                    <a href="#{{= item.id }}" class="artist" title="{{= item.name }}">
+                        <span class="pic">
+                            <img src="{{= (item.img || 'http://pre7.douban.com/pics/music/musician/default-small.gif') }}" class="artist">
+                        </span>
+                        <span class="artist">{{= item.name }}</span>
+                    </a>
+                </li>
+            {{/each}}
+            </ul>
+        </div>
+        <div class="search">
+            <div class="hd">或者</div>
+            <input type="text" placeholder="输入你喜欢的一位艺术家" class="text"
+                api="/j/artists_suggest?q={query}" logtype="qa">
+            <input type="submit" value="启动" class="play">
+        </div>
+        <a href="#" class="mask"></a>
+    </div>
+    <div class="choose choose-tag disabled">
+        <ul>
+            {{each(i, item) genres }}
+            <li><a href="#{{= item.id }}" class="tag" title="{{= item.name }}">{{= item.name }}</a></li>
+            {{/each}}
+        </ul>
+        <input type="submit" value="启动" class="play">
+        <a href="#" class="mask"></a>
+    </div>
+    </form>
+</div>
+</script>
+
+<script type='template' id='tmpl_quickstart_search'>
+<ul>
+{{each(i, item) results }}
+    <li>
+        <a href="#{{= (item.id || item.cid) + '|' + (item.ssid || '') }}" class="title">{{= item.title || item.name }}</a>
+    {{if artist }}
+        <span class="artist">表演者：{{= item.artist }}</span>
+        <span class="album">专辑：{{= item.album }}</span>
+    {{/if}}
+    </li>
+{{/each}}
+</ul>
+</script>
+
+<script type="tmpl" id="tmpl_transfer_guide">
+    <div id="transfer-guide" class="top-guide">
+        <div class="top-guide-wrapper">
+            <div class="guide">
+                <span class="guide-title">未登录的你已经</span>
+                {{if userInfo.is_new_user}}
+                {{if transferInfo.days}}
+                <span class="guide-item days"><i></i>来过{{= transferInfo.days }}天</span>
+                {{/if}}
+                {{/if}}
+                {{if transferInfo.played}}
+                <span class="guide-item played"><i></i>累计收听{{= transferInfo.played }}首</span>
+                {{/if}}
+                {{if transferInfo.liked}}
+                <span class="guide-item liked"><i></i>加心{{= transferInfo.liked }}首</span>
+                {{/if}}
+                将这些记录导入到帐号 <span id="transfer-user-name">{{= userInfo.name}}</span> 中？
+                <span class="guide-acts">
+                    <a href="javascript:;" class="lnk-transfer">立即导入</a>
+                    <span class="transfer-status"></span>&nbsp;&nbsp;
+                    <a href="javascript:;" class="lnk-delete-data">清除记录</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script src="http://img6.douban.com/f/shire/14a5bb57277dd7ea5f19b8617cf7dcd82dd70a16/js/core/do/_init_.js" data-cfg-corelib="http://img6.douban.com/f/shire/72ced6df41d4d158420cebdd254f9562942464e3/js/jquery.min.js"></script>
+
+
+
+        <!-- COLLECTED JS -->
+    </body>
+</html>
+
+
+
+
+
+
+
+

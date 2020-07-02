@@ -1,0 +1,2467 @@
+<!DOCTYPE html>
+<html class="no-js" lang="pl" ng-controller="applicationCtrl">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Strona główna - tvp.pl - Telewizja Polska S.A.</title>
+  <meta name="description"
+        content="Na tvp.pl obejrzysz wiele programów Telewizji Polskiej, znajdziesz informacje, program tv, dowiesz się więcej o audycjach i gwiazdach telewizji publicznej.">
+  <meta name="keywords"
+        content="tvp polska telewizja publiczna tvp1 tvp2 tv hd kultura info polonia historia sport telewizji polskiej Strona główna Dla dzieci Linki vod.tvp.pl Rozrywka Linki Informacje lokalne Warszawa Wrocław Szczecin Rzeszów Opole Łódź Lublin Kraków Kielce Katowice Gorzów Wielkopolski Gdańsk Bydgoszcz Białystok Poznań Olsztyn Polecamy Pogoda Informacje polecane info Linki Sport najważniejsze informacje Linki Fotogalerie Biznes Biznes Linki Publicystyka Linki Kultura Linki Styl życia Linki Wiedza Linki Forum RSS beta opinie nowe informacje ">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="rating" content="general">
+  <meta name="robots" content="index, follow">
+  <!--NOTE: nie wiem skąd to jest (pewnie tvp dodało - więc w sumie można wyciąć)-->
+  <meta name="google-site-verification" content="eiN8V2SRcZGW8j52IKJR79rZaVitwEI0R_2uHWZbzPM"/>
+
+  <!--NOTE: windows8 -->
+  <meta name="application-name" content="TVP.PL">
+  <meta name="msapplication-tap-highlight" content="no"/>
+
+  <!--TODO: facebook OpenGraph.. trzeba dokończyć-->
+  <meta property="og:title" content="Strona główna - tvp.pl - Telewizja Polska S.A.">
+  <meta property="og:description"
+        content="Na tvp.pl obejrzysz wiele programów Telewizji Polskiej, znajdziesz informacje, program tv, dowiesz się więcej o audycjach i gwiazdach telewizji publicznej.">
+  <meta property="og:image" content="">
+  
+  <meta name="google-site-verification" content="aX1kgpf_C5YBEj2brKONKeGbHCEJIZ4TpkDmEpgSw0o" /> 
+
+  <link type="image/vnd.microsoft.icon" href="//s.tvp.pl/favicon.ico" rel="shortcut icon">
+  <link type="image/vnd.microsoft.icon" href="//s.tvp.pl/favicon.ico" rel="icon">
+
+  <!--NOTE: ustawienie że że monżna sensownie ustawiać to na homescreenie na ios-ie-->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="">
+
+  <!--  AVAILABILITY STYLES -->
+  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto:400,100,300,500,700&subset=latin,latin-ext">
+  <link rel="stylesheet" type="text/css" href="//s.tvp.pl/files/tvp.pl/styles/core.css?v=3" ng-if="normalView">
+  <link rel="stylesheet" type="text/css" href="//s.tvp.pl/files/tvp.pl/styles/index-page.css" ng-if="normalView || contrastView">
+  <link rel="stylesheet" type="text/css" ng-href="//s.tvp.pl/files/tvp.pl/styles/contrast-view.css" ng-if="contrastView">
+  <link rel="stylesheet" type="text/css" ng-href="//s.tvp.pl/files/tvp.pl/styles/text-reset-view.css" ng-if="textView">
+  
+  <script>var pp_gemius_identifier = new String('ncc1jTr4uSMyzkKkmEpbCqQ_fSUisHtwEzbHuFXT8Xf.t7');</script>
+  <script type="text/javascript" src="//tvpgapl.hit.gemius.pl/pp_gemius.js"></script>
+  <script>var gemius_identifier = new String('zIuQ0j.Rd5nc.QrF_5hEqMR7TMjKbKywnjmszz_JLrD.z7');</script>
+  <script type="text/javascript" src="//www.tvp.pl/gemius/gemius.js"></script>
+</head>
+<body id="background-wallpaper" >
+<!--[if lt IE 8]>
+<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
+  your browser</a> to improve your experience.</p>
+<![endif]-->
+
+<!-- HEADER SECTION -->
+<div class="site-wrapper">
+<header>  
+ <div class="header-wrapper-ad">
+  
+<section class="header-main" ng-controller="headerCtrl">
+
+  <!-- top links-->
+  <nav class="header-main__nav-tech">
+    
+    <a href="" class="nav-tech__availability" ng-click="toggleAvailability()">Dostępność</a>
+    <a href="#" data-ng-click="base64('https://www.tvp.pl/sess/ssologin.php?ref=');" class="nav-tech__log" ng-show="!is_login">Logowanie</a>
+    <a href="https://www.tvp.pl/sess/userinfo.php?show=strefa-widza" class="nav-tech__log" ng-show="is_login" data-ng-cloak>Witaj <span data-ng-bind="login_name"></span></a>
+    
+
+    <section class="nav-tech__availability-submenu" ng-show="AvailabilityMenuVisible" ng-cloak>
+      <a href="" ng-click="setAvailabilityLevel('normal')">wersja zwykła</a>
+      <a href="" ng-click="setAvailabilityLevel('text')">wersja tekstowa</a>
+      <a href="" ng-click="setAvailabilityLevel('contrast')">wersja o wysokim kontraście</a>
+    </section>
+
+    <section class="nav-tech__log-submenu hide">
+      <a href="0">Twój profil</a>
+      <a href="0">Wyloguj</a>
+    </section>
+  </nav>
+
+  <!--Site logo-->
+  <section class="header-main__logo-container">
+    <a href="//www.tvp.pl" class="header-main__logo" alt="TVP.pl"><span class="logo-tvppl-54">TVP.pl</span></a>
+    <span ng-click="states.showMobileMenu=!states.showMobileMenu" class="main-colapse-btn"><i class="fa fa-bars"></i></span>
+  </section>
+
+  <!--main "subsite" links-->
+  <nav class="header-main__nav-circles" style="padding-bottom: 11px;">
+    <!-- IMAGES AND SPRITES OR ICONS LIKE FONT AWESOME-->
+    <ul>
+      <li class="nav-circles__vod">
+        <a href="http://vod.tvp.pl">
+            <span class="fa-stack">
+              <i class="fa fa-play-circle fa-stack-1doc8x"></i>
+              <!-- <i class="fa fa-play fa-stack-1x fa-inverse"></i> -->
+            </span>
+          <em>VOD TVP na życzenie</em>
+        </a>
+      </li>
+      <li class="nav-circles__epg">
+        <a href="http://www.tvp.pl/program-telewizyjny">
+            <span class="fa-stack">
+              <i class="fa fa-circle fa-stack-1doc8x"></i>
+              <i class="fa fa-list fa-stack-1x fa-inverse"></i>
+            </span>
+          <em>Program telewizyjny</em>
+        </a>
+      </li>
+      <li class="nav-circles__tvp">
+        <a href="http://www.tvp.pl/serwisy">
+            <span class="fa-stack">
+              <i class="fa fa-circle fa-stack-1doc8x"></i>
+              <i class="fa fa-laptop fa-stack-1x fa-inverse"></i>
+            </span>
+          <em>Serwisy tvp.pl</em>
+        </a>
+      </li>
+      <li class="nav-circles__info">
+        <a href="http://centruminformacji.tvp.pl/">
+            <span class="fa-stack">
+              <i class="fa fa-circle fa-stack-1doc8x"></i>
+              <i class="fa fa-info fa-stack-1x fa-inverse"></i>
+            </span>
+          <em>Centrum Informacji TVP</em>
+        </a>
+      </li>
+        <li class="nav-circles__log login">
+    
+          <a href="#" data-ng-click="base64('https://www.tvp.pl/sess/ssologin.php?ref=');" data-ng-show="!is_login">
+              <span class="fa-stack">
+                <i class="fa fa-circle fa-stack-1doc8x"></i>
+                <i class="fa fa-user fa-stack-1x fa-inverse"></i>
+              </span>
+            <em>Logowanie</em>
+          </a>
+          <span data-ng-show="is_login" data-ng-cloak>
+              <span class="fa-stack" href="#"  title="Wyloguj">
+                <i class="fa fa-circle fa-stack-1doc8x"></i>
+                <i class="fa fa-sign-out fa-stack-1x fa-inverse"></i>
+              </span>
+              <em >Witaj, <span data-ng-bind="login_name"></span></em>
+          </span>
+          <ul data-ng-show="is_login">
+            <li><a href="https://www.tvp.pl/sess/userinfo.php?show=strefa-widza">Twój profil</a></li>
+            <li><a href="#" data-ng-click="base64('https://www.tvp.pl/sess/ssologin.php?action=logout&ref=');">Wyloguj</a></li>
+          </ul>
+
+        </li>
+    </ul>
+  </nav>
+
+  
+  <!--main menu-->
+  <nav class="header-main__nav-main colapse" data-ng-class="{true:'in', false:'colapse'}[states.showMobileMenu]">
+    <span class="caret-top"></span>
+    <ul>
+      <li>
+        <a href="http://www.tvp.info/">TVP.info</a>
+      </li>
+      <li>
+        <a href="http://kultura.tvp.pl/">Kultura</a>
+      </li>
+      <li>
+        <a href="http://sport.tvp.pl/">Sport</a>
+      </li>
+      <li>
+        <a href="http://rozrywka.tvp.pl/">Rozrywka</a>
+      </li>
+      <li class="nav-main__item--with-submenu" data-ng-class="{hover: menu.expanded=='ourown'}">
+        <span data-ng-tap="ourown">Nasze anteny</span>
+        <ul class="fx-fade-normal fx-speed-200" data-ng-show="menu.expanded=='ourown'">
+          <li><a href="http://tvp1.tvp.pl">TVP 1</a></li>
+          <li><a href="http://tvp2.tvp.pl">TVP 2</a></li>
+          <li><a href="http://www.tvp.info">TVP Info</a></li>
+          <li><a href="http://polonia.tvp.pl">TVP Polonia</a></li>
+          <li><a href="http://sport.tvp.pl">TVP Sport</a></li>
+          <li><a href="http://tvpkultura.tvp.pl">TVP Kultura</a></li>
+          <li><a href="http://historia.tvp.pl">TVP Historia</a></li>
+          <li><a href="http://hd.tvp.pl">TVP HD</a></li>
+          <li><a href="http://seriale.tvp.pl">TVP Seriale</a></li>
+          <li><a href="http://tvprozrywka.tvp.pl">TVP Rozrywka</a></li>
+          <li><a href="http://tvp3.tvp.pl">TVP 3</a></li>
+          <li><a href="http://tvpabc.tvp.pl">TVP abc</a></li>
+          <li><a href="http://www.tvpparlament.pl">TVP Parlament</a></li>
+        </ul>
+      </li>
+      <li class="nav-main__item--with-submenu regional" data-ng-class="{hover: menu.expanded=='regional'}">
+        <a href="#" onclick="return false;" data-ng-tap="regional">Regiony</a>
+        <span data-ng-tap="regional">Regiony</span>
+        <ul class="fx-fade-normal fx-speed-200" data-ng-show="menu.expanded=='regional'">
+          <li><a href="http://bialystok.tvp.pl">Białystok</a></li>
+          <li><a href="http://bydgoszcz.tvp.pl">Bydgoszcz</a></li>
+          <li><a href="http://gdansk.tvp.pl">Gdańsk</a></li>
+          <li><a href="http://gorzow.tvp.pl">Gorzów Wlkp.</a></li>
+          <li><a href="http://katowice.tvp.pl">Katowice</a></li>
+          <li><a href="http://kielce.tvp.pl">Kielce</a></li>
+          <li><a href="http://krakow.tvp.pl">Kraków</a></li>
+          <li><a href="http://lublin.tvp.pl">Lublin</a></li>
+          <li><a href="http://lodz.tvp.pl">Łódź</a></li>
+          <li><a href="http://olsztyn.tvp.pl">Olsztyn</a></li>
+          <li><a href="http://opole.tvp.pl">Opole</a></li>
+          <li><a href="http://poznan.tvp.pl">Poznań</a></li>
+          <li><a href="http://rzeszow.tvp.pl">Rzeszów</a></li>
+          <li><a href="http://szczecin.tvp.pl">Szczecin</a></li>
+          <li><a href="http://warszawa.tvp.pl">Warszawa</a></li>
+          <li><a href="http://wroclaw.tvp.pl">Wrocław</a></li>
+        </ul>
+        </li>
+    </ul>
+    <form action="//www.tvp.pl/szukaj" method="GET" class="header-main__search">
+      <fieldset role="search">
+        <input name="query" class="header-main__search__box" ng-model="search" type="search" placeholder="szukaj"/>
+      </fieldset>
+    </form>
+  </nav>
+
+</section> </div>
+  <!--slider-->
+  <div class="ad-container">
+   								<div id="adoceanmyaoqjohmqljjw"></div>
+						<div class="billboard-wrapper">
+				<div class="billboard-content">
+										<div id="adoceanmyaopflhloksgn"></div>
+										<div id="adoceanmyaomgcoolehlm"></div>
+										<div id="adoceanmyaotihritruex"></div>
+							</div>
+			</div>
+	 
+	
+  
+  </div>
+  <section class="main__slider swiper-container" data-np-swiper>
+  <a href="" class="arrow-left fotostory__slider-prev" ng-click="Swiper.prev('main')">
+    <span class="fa-lg fa-2x">
+      <div class="background"></div>
+      <i class="fa fa-angle-left fa-stack-1doc4x fa-inverse"></i>
+    </span>
+  </a>
+  <a href="" class="arrow-right fotostory__slider-next" ng-click="Swiper.next('main')">
+      <span class="fa-lg fa-2x">
+        <div class="background"></div>
+        <i class="fa fa-angle-right fa-stack-1doc4x fa-inverse"></i>
+      </span>
+  </a>
+  <div class="main__slide-wrapper swiper-wrapper" data-ng-mouseenter="Swiper.over('main')" data-ng-mouseleave="Swiper.out('main')">
+          <article class="main__slide main-slider__slide--active-slide swiper-slide">
+        <a href="http://sport.tvp.pl/25354054/legia-mistrzem-polski-puchary-dla-cracovii">
+          <img src="http://s.tvp.pl/images2/3/1/8/uid_3181339272f00bc2f657cc4fe23becfa1463338258177_width_1200_play_0_pos_0_gs_0_height_300.jpg" alt="Legia mistrzem Polski!">
+          <div>
+            <header>sport.tvp.pl</header>
+            <p>Legia mistrzem Polski!</p>
+            <footer>
+              <p>
+                                  Legia Warszawa wygrała przed własną publicznością z Pogonią Szczecin 3:0 (1:0) w ostatniej kolejce Ekstraklasy i po raz jedenasty wywalczyła mistrzostwo Polski.                                </p>
+            </footer>
+          </div>
+        </a>
+      </article>
+          <article class="main__slide main-slider__slide--active-slide swiper-slide">
+        <a href="http://vod.tvp.pl/25223294/odc-11">
+          <img src="http://s.tvp.pl/images2/0/3/a/uid_03ae3f7d5af593945a7957aa8d1808621463323019405_width_1200_play_0_pos_0_gs_0_height_300.jpg" alt="Która miłość prawdziwa?">
+          <div>
+            <header>„Bodo”</header>
+            <p>Która miłość prawdziwa?</p>
+            <footer>
+              <p>
+                                  Stało się. Ada przyjechała do Warszawy, ale... u boku Bodo jest Reri. Scenariusz „Czarnej perły”, który miał być napisany specjalnie dla tahitańskiej piękności, tak naprawdę jest historią miłości do innej kobiety. Której?                                </p>
+            </footer>
+          </div>
+        </a>
+      </article>
+          <article class="main__slide main-slider__slide--active-slide swiper-slide">
+        <a href="http://vod.tvp.pl/25041568/15052016">
+          <img src="http://s.tvp.pl/images2/9/a/e/uid_9ae79b7b978d28e2f2ca82b06a6d7c6e1463314217419_width_1200_play_0_pos_0_gs_0_height_300.jpg" alt="Tryumf z politycznym podtekstem">
+          <div>
+            <header>„Sąsiedzi”</header>
+            <p>Tryumf z politycznym podtekstem</p>
+            <footer>
+              <p>
+                                  Po raz pierwszy konkurs Eurowizji transmitowano w Chinach. To największe światowe show muzyczne wygrała Ukrainka. Jamala jest córką krymskiego Tatara i zaśpiewała piosenkę o tragedii swoich rodaków. Michał Szpak był ósmy. Kontrowersje wzbudziło zaś polityczne przesłanie zwycięskiego utworu.                                </p>
+            </footer>
+          </div>
+        </a>
+      </article>
+          <article class="main__slide main-slider__slide--active-slide swiper-slide">
+        <a href="http://www.barwyszczescia.tvp.pl/25327980/tomalowie-w-sadzie">
+          <img src="http://s.tvp.pl/images2/2/8/c/uid_28cf7a52a492b9af5bf0f5dea3025bf71463151682105_width_1200_play_0_pos_0_gs_0_height_300.jpg" alt="Tajemniczy świadek">
+          <div>
+            <header>„Barwy szczęścia”</header>
+            <p>Tajemniczy świadek</p>
+            <footer>
+              <p>
+                                  Na rozprawie w sprawie Mai, Sandra pojawia się w sądzie z nieznajomym młodym chłopakiem. Sabina i Andrzej zastanawiają się, kim on jest. Na odpowiedź nie muszą długo czekać. Zobacz scenę z nowego odcinka!                                </p>
+            </footer>
+          </div>
+        </a>
+      </article>
+          <article class="main__slide main-slider__slide--active-slide swiper-slide">
+        <a href="http://vod.tvp.pl/25158281/radek-wstepuje-do-zakonu">
+          <img src="http://s.tvp.pl/images2/7/3/f/uid_73fea0ee5a089a6512f8344b5504e2431463316154936_width_1200_play_0_pos_0_gs_0_height_300.jpg" alt="Ora et labora!">
+          <div>
+            <header>„Podróże z historią”</header>
+            <p>Ora et labora!</p>
+            <footer>
+              <p>
+                                  Żeby być bliżej historii, Radek Kotarski potrafi zrobić wiele. Tym razem musiał przywdziać mnisi habit i zapoznać się z surową regułą zakonu Cystersów. Nie każdy zdaje sobie sprawę, w jak wielkim stopniu ci mnisi przyczynili do rozwoju architektury, sztuki, nauki i rolnictwa w Polsce.                                </p>
+            </footer>
+          </div>
+        </a>
+      </article>
+          <article class="main__slide main-slider__slide--active-slide swiper-slide">
+        <a href="http://vod.tvp.pl/25030879/14052016-0800">
+          <img src="http://s.tvp.pl/images2/b/0/e/uid_b0eced9d275836a9595711216636ceb51463221048280_width_1200_play_0_pos_0_gs_0_height_300.jpg" alt="Indiański tytoń">
+          <div>
+            <header>„Rok w ogrodzie”</header>
+            <p>Indiański tytoń</p>
+            <footer>
+              <p>
+                                  Surfinia, Caskadia, Priscilla, Supertunia, Million Bells, Superbells... Petunie zachwycają obfitością kwiatów, a niektóre także pięknym zapachem. Niegdyś zapomniane, dziś wracają do łask i pięknie zdobią nasze balkony. Odmian tych roślin przybywa lawinowo. Jak je pielęgnować?                                </p>
+            </footer>
+          </div>
+        </a>
+      </article>
+      </div>
+  <div class="main__pagination"></div>
+</section>
+</header>
+
+<!-- baner -->
+
+<section class="banner-section">
+  </section>
+
+<!-- nie przegap -->
+<section class="do-not-miss">
+  <header class="do-not-miss__header">Nie przegap</header>
+  <div class="do-not-miss__slider swiper-container" data-np-swiper>
+    <ul class="do-not-miss__slide-wrapper swiper-wrapper fx-zoom-normal fx-speed-500">
+              <li class="do-not-miss__slide swiper-slide">
+        <a href="#"  onclick="return false;">
+          <article ng-controller="fxAnimation">
+            <figure ng-class="{hover: expanded}">
+                              <img src="http://s.tvp.pl/images2/6/2/a/uid_62a97d22221d5027be23b72834596b0f1463305797643_width_400_play_0_pos_0_gs_0_height_225.jpg" alt="Ginące cywilizacje – Mongołowie z pustyni Gobi"/>
+                            <figcaption ng-if="!expanded">
+                <header>
+                  <aside>
+                    
+                                                                                                                                                                                    <i class="logo-tvp-historia-32"></i>                                                                                                                        
+                                                                                                                                                                                                                                                                                                                                                    <time time-to-string="1463378100000"></time>
+                    <time class="mob-time" time-to-string="1463378100000"></time>
+                  </aside>
+                  <p>
+                    Ginące cywilizacje – Mongołowie z pustyni Gobi                  </p>
+                </header>
+              </figcaption>
+              <figcaption ng-if="expanded" class="fx-fade-normal fx-speed-200">
+                <header>
+                  <aside>
+                    
+                                                                                                                                                                                    <i class="logo-tvp-historia-32"></i>                                                                                                                        
+                                                                                                                                                                                                                                                                                                                                                    <time time-to-string="1463378100000"></time>
+                    <time class="mob-time" time-to-string="1463378100000"></time>
+                  </aside>
+                  <p>
+                    Ginące cywilizacje – Mongołowie z pustyni Gobi                  </p>
+                </header>
+                <section>
+                                      Ten odcinek opowiada o losach dzisiejszych Mongołów. Mongolia tak naprawdę uzyskała niepodległość dopiero w 1990 roku, po 670 latach niewoli. Dziś stara religia (buddyzm) i tradycje ludu stepów, ich historia i język stopniowo się odradzają.                                    </section>
+              </figcaption>
+            </figure>
+            
+          </article>
+          </a>
+        </li>
+              <li class="do-not-miss__slide swiper-slide">
+        <a href="http://pytanienasniadanie.tvp.pl/" >
+          <article ng-controller="fxAnimation">
+            <figure ng-class="{hover: expanded}">
+                              <img src="http://s.tvp.pl/images2/a/1/5/uid_a156859e29838f39e653455c479b66361463305677462_width_400_play_0_pos_0_gs_0_height_225.jpg" alt="Pytanie na śniadanie"/>
+                            <figcaption ng-if="!expanded">
+                <header>
+                  <aside>
+                    
+                                                            <i class="logo-tvp2-hd-32"></i>                                                                                                                                                                                                                                                
+                                                                                                                                                                                                                                                                                                                                                    <time time-to-string="1463378400000"></time>
+                    <time class="mob-time" time-to-string="1463378400000"></time>
+                  </aside>
+                  <p>
+                    Pytanie na śniadanie                  </p>
+                </header>
+              </figcaption>
+              <figcaption ng-if="expanded" class="fx-fade-normal fx-speed-200">
+                <header>
+                  <aside>
+                    
+                                                            <i class="logo-tvp2-hd-32"></i>                                                                                                                                                                                                                                                
+                                                                                                                                                                                                                                                                                                                                                    <time time-to-string="1463378400000"></time>
+                    <time class="mob-time" time-to-string="1463378400000"></time>
+                  </aside>
+                  <p>
+                    Pytanie na śniadanie                  </p>
+                </header>
+                <section>
+                                      Program służy pogłębianiu znajomości i upowszechnianiu kultury w zakresie muzyki, literatury, teatru i tańca. Jest źródłem wiedzy na temat wydarzeń także natury ekonomicznej i społecznej. Porady z dziedziny profilaktyki zdrowotnej, medycyny, prawa i mody.                                    </section>
+              </figcaption>
+            </figure>
+            
+          </article>
+          </a>
+        </li>
+              <li class="do-not-miss__slide swiper-slide">
+        <a href="http://abc.tvp.pl/" >
+          <article ng-controller="fxAnimation">
+            <figure ng-class="{hover: expanded}">
+                              <img src="http://s.tvp.pl/images2/4/5/c/uid_45c888a0c74fa598d4d11167c9b49bf01463325266940_width_400_play_0_pos_0_gs_0_height_225.jpg" alt="Masza i niedźwiedź – Nauczyciel tańca, odc. 46"/>
+                            <figcaption ng-if="!expanded">
+                <header>
+                  <aside>
+                    
+                                                                                                                                                                                                                                                                    <i class="logo-tvp-abc-32"></i>                                        
+                                                                                                                                                                                                                                                                                                                                                    <time time-to-string="1463387400000"></time>
+                    <time class="mob-time" time-to-string="1463387400000"></time>
+                  </aside>
+                  <p>
+                    Masza i niedźwiedź – Nauczyciel tańca, odc. 46                  </p>
+                </header>
+              </figcaption>
+              <figcaption ng-if="expanded" class="fx-fade-normal fx-speed-200">
+                <header>
+                  <aside>
+                    
+                                                                                                                                                                                                                                                                    <i class="logo-tvp-abc-32"></i>                                        
+                                                                                                                                                                                                                                                                                                                                                    <time time-to-string="1463387400000"></time>
+                    <time class="mob-time" time-to-string="1463387400000"></time>
+                  </aside>
+                  <p>
+                    Masza i niedźwiedź – Nauczyciel tańca, odc. 46                  </p>
+                </header>
+                <section>
+                                      Bohaterowie starej, rosyjskiej baśni: Masza i Niedźwiedź, w serii animowanej pod tym samym tytułem. Przygody niesfornej dziewczynki i cierpliwego niedźwiedzia. Zabawna historia kierowana nie tylko do dzieci. Znakomita rozrywka również dla dorosłych.                                    </section>
+              </figcaption>
+            </figure>
+            
+          </article>
+          </a>
+        </li>
+              <li class="do-not-miss__slide swiper-slide">
+        <a href="http://www.tvp.pl/historia/v4tvp-historia/v4listing-polecane/za-nasza-i-wasza-wolnosc/25315424" >
+          <article ng-controller="fxAnimation">
+            <figure ng-class="{hover: expanded}">
+                              <img src="http://s.tvp.pl/images2/d/1/f/uid_d1f656f7e71299de70f44ed8603990321463305538977_width_400_play_0_pos_0_gs_0_height_225.jpg" alt="Za naszą i waszą wolność"/>
+                            <figcaption ng-if="!expanded">
+                <header>
+                  <aside>
+                    
+                                                                                                                                                                                    <i class="logo-tvp-historia-32"></i>                                                                                                                        
+                                                                                                                                                                                                                                                                                                                                                    <time time-to-string="1463391900000"></time>
+                    <time class="mob-time" time-to-string="1463391900000"></time>
+                  </aside>
+                  <p>
+                    Za naszą i waszą wolność                  </p>
+                </header>
+              </figcaption>
+              <figcaption ng-if="expanded" class="fx-fade-normal fx-speed-200">
+                <header>
+                  <aside>
+                    
+                                                                                                                                                                                    <i class="logo-tvp-historia-32"></i>                                                                                                                        
+                                                                                                                                                                                                                                                                                                                                                    <time time-to-string="1463391900000"></time>
+                    <time class="mob-time" time-to-string="1463391900000"></time>
+                  </aside>
+                  <p>
+                    Za naszą i waszą wolność                  </p>
+                </header>
+                <section>
+                                      Film opowiada o udziale Polaków w bitwie o Monte Cassino i losach żołnierzy II Korpusu Polskich Sił Zbrojnych generała Władysława Andersa. W dokumencie wykorzystano materiały archiwalne dotyczące bitwy, pochodzące z różnych krajów.                                    </section>
+              </figcaption>
+            </figure>
+            
+          </article>
+          </a>
+        </li>
+              <li class="do-not-miss__slide swiper-slide">
+        <a href="http://kabarety.tvp.pl/" >
+          <article ng-controller="fxAnimation">
+            <figure ng-class="{hover: expanded}">
+                              <img src="http://s.tvp.pl/images2/8/7/0/uid_870a3835f1bcfdc0e70e7bb4a87e20a21463327687512_width_400_play_0_pos_0_gs_0_height_225.jpg" alt="Hity kabaretu (3) Kabaret LIMO to, co najlepsze cz. 1"/>
+                            <figcaption ng-if="!expanded">
+                <header>
+                  <aside>
+                    
+                                                                                                                                                                                                                                                <i class="logo-tvp-rozrywka-32"></i>                                                            
+                                                                                                                                                                                                                                                                                                                                                    <time time-to-string="1463394300000"></time>
+                    <time class="mob-time" time-to-string="1463394300000"></time>
+                  </aside>
+                  <p>
+                    Hity kabaretu (3) Kabaret LIMO to, co najlepsze cz. 1                  </p>
+                </header>
+              </figcaption>
+              <figcaption ng-if="expanded" class="fx-fade-normal fx-speed-200">
+                <header>
+                  <aside>
+                    
+                                                                                                                                                                                                                                                <i class="logo-tvp-rozrywka-32"></i>                                                            
+                                                                                                                                                                                                                                                                                                                                                    <time time-to-string="1463394300000"></time>
+                    <time class="mob-time" time-to-string="1463394300000"></time>
+                  </aside>
+                  <p>
+                    Hity kabaretu (3) Kabaret LIMO to, co najlepsze cz. 1                  </p>
+                </header>
+                <section>
+                                      Program montażowy, prezentujący w pigułce najciekawsze i najzabawniejsze skecze popularnych polskich kabaretów. W tym odcinku najlepsze skecze kabaretu Limo.                                    </section>
+              </figcaption>
+            </figure>
+            
+          </article>
+          </a>
+        </li>
+              <li class="do-not-miss__slide swiper-slide">
+        <a href="http://vod.tvp.pl/24959265/grzech-fatmagul" >
+          <article ng-controller="fxAnimation">
+            <figure ng-class="{hover: expanded}">
+                              <img src="http://s.tvp.pl/images2/d/5/6/uid_d5646c3c5503984fcda77d62d5a1d3f71463325864134_width_400_play_0_pos_0_gs_0_height_225.jpg" alt="Grzech Fatmagül, odc. 17"/>
+                            <figcaption ng-if="!expanded">
+                <header>
+                  <aside>
+                    
+                    <i class="logo-tvp1-hd-32"></i>                                                                                                                                                                                                                                                                                        
+                                                                                                                                                                                                                                                                                                                                                    <time time-to-string="1463400000000"></time>
+                    <time class="mob-time" time-to-string="1463400000000"></time>
+                  </aside>
+                  <p>
+                    Grzech Fatmagül, odc. 17                  </p>
+                </header>
+              </figcaption>
+              <figcaption ng-if="expanded" class="fx-fade-normal fx-speed-200">
+                <header>
+                  <aside>
+                    
+                    <i class="logo-tvp1-hd-32"></i>                                                                                                                                                                                                                                                                                        
+                                                                                                                                                                                                                                                                                                                                                    <time time-to-string="1463400000000"></time>
+                    <time class="mob-time" time-to-string="1463400000000"></time>
+                  </aside>
+                  <p>
+                    Grzech Fatmagül, odc. 17                  </p>
+                </header>
+                <section>
+                                      Meltem uspokaja się po rozmowie z Kerimem. Mustafa orientuje się, że ktoś go śledzi. Podejrzewa, że to sprawka Kerima. Złapany przez niego mężczyzna znowu rzuca podejrzenie, że działa na zlecenie Kerima. Wural odkrywa, że jego matka ma romans.                                    </section>
+              </figcaption>
+            </figure>
+            
+          </article>
+          </a>
+        </li>
+              <li class="do-not-miss__slide swiper-slide">
+        <a href="http://swiatsiekreci.tvp.pl" >
+          <article ng-controller="fxAnimation">
+            <figure ng-class="{hover: expanded}">
+                              <img src="http://s.tvp.pl/images2/c/8/9/uid_c89cf8b8f6416b241b2346398fb7dd641463328191640_width_400_play_0_pos_0_gs_0_height_225.jpg" alt="Świat się kręci (527)"/>
+                            <figcaption ng-if="!expanded">
+                <header>
+                  <aside>
+                    
+                    <i class="logo-tvp1-hd-32"></i>                                                                                                                                                                                                                                                                                        
+                                                                                                                                                                                                                                                                                                                                                    <time time-to-string="1463407200000"></time>
+                    <time class="mob-time" time-to-string="1463407200000"></time>
+                  </aside>
+                  <p>
+                    Świat się kręci (527)                  </p>
+                </header>
+              </figcaption>
+              <figcaption ng-if="expanded" class="fx-fade-normal fx-speed-200">
+                <header>
+                  <aside>
+                    
+                    <i class="logo-tvp1-hd-32"></i>                                                                                                                                                                                                                                                                                        
+                                                                                                                                                                                                                                                                                                                                                    <time time-to-string="1463407200000"></time>
+                    <time class="mob-time" time-to-string="1463407200000"></time>
+                  </aside>
+                  <p>
+                    Świat się kręci (527)                  </p>
+                </header>
+                <section>
+                                      Codzienny talk show informacyjny, w którym swoje stałe miejsce znajdują tematy społeczno-polityczne, naukowe, kulturalne, a także rozrywkowe.                                    </section>
+              </figcaption>
+            </figure>
+            
+          </article>
+          </a>
+        </li>
+              <li class="do-not-miss__slide swiper-slide">
+        <a href="http://vod.tvp.pl/1667844/klan" >
+          <article ng-controller="fxAnimation">
+            <figure ng-class="{hover: expanded}">
+                              <img src="http://s.tvp.pl/images2/a/b/5/uid_ab55421ebc65a80a91462040b8216d7d1463327321655_width_400_play_0_pos_0_gs_0_height_225.jpg" alt="Klan, odc. 2945"/>
+                            <figcaption ng-if="!expanded">
+                <header>
+                  <aside>
+                    
+                    <i class="logo-tvp1-hd-32"></i>                                                                                                                                                                                                                                                                                        
+                                                                                                                                                                                                                                                                                                                                                    <time time-to-string="1463414400000"></time>
+                    <time class="mob-time" time-to-string="1463414400000"></time>
+                  </aside>
+                  <p>
+                    Klan, odc. 2945                  </p>
+                </header>
+              </figcaption>
+              <figcaption ng-if="expanded" class="fx-fade-normal fx-speed-200">
+                <header>
+                  <aside>
+                    
+                    <i class="logo-tvp1-hd-32"></i>                                                                                                                                                                                                                                                                                        
+                                                                                                                                                                                                                                                                                                                                                    <time time-to-string="1463414400000"></time>
+                    <time class="mob-time" time-to-string="1463414400000"></time>
+                  </aside>
+                  <p>
+                    Klan, odc. 2945                  </p>
+                </header>
+                <section>
+                                      Monika odwiedza Daniela w więzieniu. Chłopak nadal nie chce pomocy od rodziny. Uważa, że znajduje się we właściwym miejscu. Mimo to Paweł nalega, by zatrudnić dobrego adwokata, aby bronił chłopaka. Beata chce wysłać Małgosię do ośrodka terapeutycznego.                                    </section>
+              </figcaption>
+            </figure>
+            
+          </article>
+          </a>
+        </li>
+          </ul>
+    <div class="pagination-wrapper">
+      <div class="do-not-miss__pagination right"></div>
+    </div>
+  </div>
+</section> 
+
+<section class="news-section">
+
+  <!--informacje--> 
+  <section class="information-section" ng-controller="informationsCtrl">
+  <header>
+    Informacje
+  </header>
+  <ul class="information-section__menu" ng-class="{menu_visible:News.menuVisible}">
+    <li><a href="javascript:" ng-click="News.get(191866)">Kraj</a></li>
+    <li><a href="javascript:" ng-click="News.get(191867)">Świat</a></li>
+    <li><a href="javascript:" ng-click="News.get(191868)">Biznes</a></li>
+    <li><a href="http://www.tvp.info/pogoda">Pogoda</a></li>
+  </ul>
+  <div class="menu-button" href="" ng-click="News.toggleMenu()">KATEGORIE</div>
+  <ul class="information-section__entries fx-zoom-normal fx-speed-500" ng-if="!!News.html" ng-bind-html="News.html" re-compile-html></ul>
+  <ul class="information-section__entries fx-zoom-normal fx-speed-500" ng-if="News.html === false">
+      <li class="information-section__first-entry video ">
+    <a href="http://www.tvp.info/25354635/legia-warszawa-mistrzem-polski-wielkie-swieto-w-stolicy">
+      <article ng-controller="fxAnimation">
+        <figure ng-class="{hover: expanded}">
+                      
+              <div class="image-wrapper">              
+                <div class="ir-169">
+                      <img src="http://s.tvp.pl/images2/8/2/9/uid_829000cfb68586bfaf461e823ac89eab1463334038812_width_640_play_0_pos_0_gs_0_height_360.jpg" alt="Legia Warszawa mistrzem Polski! Wielkie święto w stolicy"/>
+                </div>
+                              </div>
+            
+                      <figcaption ng-if="!expanded">
+            <header>Legia Warszawa mistrzem Polski! Wielkie święto w stolicy</header>
+          </figcaption>
+          <figcaption ng-if="expanded" class="fx-fade-normal fx-speed-200">
+                          <header>Legia Warszawa mistrzem Polski! Wielkie święto w stolicy</header>
+                        <section>
+                                                    Piłkarze Legii Warszawa wywalczyli tytuł mistrza Polski. Stołeczny zespół wygrał 3:0 z Pogonią Szczecin. „Wojskowi” z mistrzostwa kraju po raz ostatni, 10. w historii, cieszyli się dwa lata temu. W tym sezonie sięgnęli już po Puchar Polski, teraz mogą świętować mistrzostwo.                                  
+                          </section>
+          </figcaption>
+        </figure>
+      </article>
+    </a>
+  </li>
+      <li class="information-section__first-entry video ">
+    <a href="http://www.tvp.info/25355989/auto-spadlo-z-wiaduktu-na-tory-kolejowe-jedna-osoba-zginela-druga-w-stanie-krytycznym">
+      <article ng-controller="fxAnimation">
+        <figure ng-class="{hover: expanded}">
+                        <div class="image-wrapper">
+             
+                <div class="ir-43">
+                                      
+                      <img src="http://s.tvp.pl/images2/e/6/2/uid_e62357835a6288a86aa776a9d9fa8e601463339114278_width_200_play_6_pos_5_gs_0_height_150.jpg" alt="Auto spadło z wiaduktu na tory kolejowe. Jedna osoba zginęła, druga w stanie krytycznym"/>
+                    
+                                    </div>
+                              </div> 
+            
+                    <figcaption ng-if="!expanded">
+            <header>Auto spadło z wiaduktu na tory kolejowe. Jedna osoba zginęła, druga w stanie krytycznym</header>
+          </figcaption>
+          <figcaption ng-if="expanded" class="fx-fade-normal fx-speed-200">
+                          <header>Auto spadło z wiaduktu na tory kolejowe. Jedna osoba zginęła, druga w stanie krytycznym</header>
+                        <section>
+                                                    W Pałuczynie koło Inowrocławia samochód osobowy spadł z wiaduktu na tory kolejowe. Jedna osoba zginęła, druga jest w stanie krytycznym. Trasa kolejowa Poznań-Inowrocław była zablokowana.                                  
+                          </section>
+          </figcaption>
+        </figure>
+      </article>
+    </a>
+  </li>
+  <li class="">
+    <a href="http://www.tvp.info/25354417/belgijski-wywiad-obserwuje-60-zolnierzy-podejrzewani-o-kontakty-z-dzihadystami">
+      <article ng-controller="fxAnimation">
+        <figure ng-class="{hover: expanded}">
+                        <div class="image-wrapper">
+             
+                <div class="ir-43">
+                                        <img src="http://s.tvp.pl/images2/e/6/0/uid_e60a78d42309bd442ef713cdf51072171463332949485_width_200_play_0_pos_0_gs_0_height_150.jpg"  alt="Belgijski wywiad obserwuje 60 żołnierzy. Podejrzewani o kontakty z dżihadystami"/>
+                    
+                                  </div>
+                              </div> 
+            
+                    <figcaption ng-if="!expanded">
+            <header>Belgijski wywiad obserwuje 60 żołnierzy. Podejrzewani o kontakty z dżihadystami</header>
+          </figcaption>
+          <figcaption ng-if="expanded" class="fx-fade-normal fx-speed-200">
+                        <section>
+                                                    60 belgijskich żołnierzy jest pod obserwacją wojskowego wywiadu w związku z podejrzeniami o ekstremizm. Informację podała belgijska agencja prasowa powołując się na Ministerstwo Obrony.                                  
+                          </section>
+          </figcaption>
+        </figure>
+      </article>
+    </a>
+  </li>
+  <li class=" video ">
+    <a href="http://www.tvp.info/25350870/rzecznik-mon-o-liscie-b-ministrow-obrony-uderz-w-stol-a-nozyce-sie-odezwa">
+      <article ng-controller="fxAnimation">
+        <figure ng-class="{hover: expanded}">
+                        <div class="image-wrapper">
+             
+                <div class="ir-43">
+                                      
+                      <img src="http://s.tvp.pl/images2/c/a/7/uid_ca79d93ca025c21ab6b7573db9596f931463321648570_width_200_play_6_pos_5_gs_0_height_150.jpg" alt="Rzecznik MON o liście b. ministrów obrony: uderz w stół, a nożyce się odezwą"/>
+                    
+                                    </div>
+                              </div> 
+            
+                    <figcaption ng-if="!expanded">
+            <header>Rzecznik MON o liście b. ministrów obrony: uderz w stół, a nożyce się odezwą</header>
+          </figcaption>
+          <figcaption ng-if="expanded" class="fx-fade-normal fx-speed-200">
+                        <section>
+                                                    – To jest polityczny, buńczuczny list, zwykła zagrywka polityczna. Można powiedzieć – uderz w stół, a nożyce się odezwą – tak na antenie  TVP Info Bartłomiej Misiewicz, rzecznik prasowy MON komentował list byłych ministrów obrony, którzy domagają się dymisji Antoniego Macierewicza.                                  
+                          </section>
+          </figcaption>
+        </figure>
+      </article>
+    </a>
+  </li>
+  </ul>
+</section>
+  <!--kultura-->
+  <section class="culture-section">
+  <header>Kultura</header>
+  <ul class="culture-section__entries">
+  <li class="information-section__first-entry">
+    <a href="http://www.tvp.info/25328153/weekend-w-kinach-japonska-rodzina-i-zbuntowany-nastolatek">
+      <article ng-controller="fxAnimation">
+        <figure ng-class="{hover: expanded}">
+                      
+              <div class="image-wrapper">              
+                <div class="ir-169">
+                      <img src="http://s.tvp.pl/images2/f/6/9/uid_f694272fe9f5ea83726c50be980bc1081463239351487_width_640_play_0_pos_0_gs_0_height_360.jpg" alt="Pastelowa japońska opowieść"/>
+                </div>
+                              </div>
+            
+                      <figcaption ng-if="!expanded">
+            <header>Pastelowa japońska opowieść</header>
+          </figcaption>
+          <figcaption ng-if="expanded" class="fx-fade-normal fx-speed-200">
+                          <header>Pastelowa japońska opowieść</header>
+                        <section>
+                              Hirokazu Kore-eda przeniósł na kinowy ekran mangę Akimi Yoshidy. „Nasza młodsza siostra” – opowieść o czterech siostrach, które mieszkają pod jednym dachem, jest na wskroś japońska, a jednocześnie czuje się jej mocne pokrewieństwo np. z dramatami Czechowa.                            </section>
+          </figcaption>
+        </figure>
+      </article>
+    </a>
+  </li>
+  <li class="">
+    <a href="http://vod.tvp.pl/9667328/12052016">
+      <article ng-controller="fxAnimation">
+        <figure ng-class="{hover: expanded}">
+                        <div class="image-wrapper">
+             
+                <div class="ir-43">
+                                        <img src="http://s.tvp.pl/images2/4/7/e/uid_47ebe813dd65a98a3e8d61d2bc1e89de1463147548077_width_200_play_0_pos_0_gs_0_height_150.jpg"  alt="Najgorętsza teatralna premiera sezonu"/>
+                    
+                                  </div>
+                              </div> 
+            
+                    <figcaption ng-if="!expanded">
+            <header>Najgorętsza teatralna premiera sezonu</header>
+          </figcaption>
+          <figcaption ng-if="expanded" class="fx-fade-normal fx-speed-200">
+                        <section>
+                              Na deskach Teatru Powszechnego w Warszawie zostały wystawione „Księgi Jakubowe” w reż. Eweliny Marciniak na podstawie głośnej powieści Olgi Tokarczuk, która zrewolucjonizowała myślenie o polskiej historii.                            </section>
+          </figcaption>
+        </figure>
+      </article>
+    </a>
+  </li>
+  <li class="">
+    <a href="http://www.tvp.info/25300924/ruszyl-festiwal-filmowy-w-cannes-woody-allen-jestem-romantykiem">
+      <article ng-controller="fxAnimation">
+        <figure ng-class="{hover: expanded}">
+                        <div class="image-wrapper">
+             
+                <div class="ir-43">
+                                        <img src="http://s.tvp.pl/images2/7/7/2/uid_772099c48420d4c7171e0fe303e7cb131462994836513_width_200_play_0_pos_0_gs_0_height_150.jpg"  alt="Ruszył festiwal filmowy w Cannes"/>
+                    
+                                  </div>
+                              </div> 
+            
+                    <figcaption ng-if="!expanded">
+            <header>Ruszył festiwal filmowy w Cannes</header>
+          </figcaption>
+          <figcaption ng-if="expanded" class="fx-fade-normal fx-speed-200">
+                        <section>
+                              Jury w komplecie, gwiazdy na czerwonym dywanie i fetowany Woody Allen, który inauguruje festiwal pokazem swojego najnowszego, 46. w karierze filmu „Cafe Society” – w Cannes rozpoczęło się światowe święto kina. Walka o Złotą Palmę potrwa do 22 maja.                            </section>
+          </figcaption>
+        </figure>
+      </article>
+    </a>
+  </li>
+  <li class="">
+    <a href="http://tvpkultura.tvp.pl/25048432/dwa-teatrysopot-2016-akredytacje">
+      <article ng-controller="fxAnimation">
+        <figure ng-class="{hover: expanded}">
+                        <div class="image-wrapper">
+             
+                <div class="ir-43">
+                                        <img src="http://s.tvp.pl/images2/1/8/4/uid_18428c845b88b3ba230e7016b8f2cd5b1462968720572_width_200_play_0_pos_0_gs_0_height_150.jpg"  alt="Teatralne podsumowanie roku"/>
+                    
+                                  </div>
+                              </div> 
+            
+                    <figcaption ng-if="!expanded">
+            <header>Teatralne podsumowanie roku</header>
+          </figcaption>
+          <figcaption ng-if="expanded" class="fx-fade-normal fx-speed-200">
+                        <section>
+                              XVI Festiwal Teatru Polskiego Radia i Teatru Telewizji Polskiej „Dwa Teatry-Sopot 2016” odbędzie się w dniach 23-25 maja. Relacja z wydarzenia na stronach TVP.                            </section>
+          </figcaption>
+        </figure>
+      </article>
+    </a>
+  </li>
+  </ul>
+</section>
+  <!--Sport-->
+  <section class="sport-section" ng-controller="sportCtrl">
+  <header>
+    Sport
+  </header>
+  <ul class="sport-section__menu" ng-class="{menu_visible:sportMenuVisible}">
+    <li><a href="http://sport.tvp.pl/436230/pilka-nozna">Piłka nożna</a></li>
+    <li><a href="http://sport.tvp.pl/436306/tenis">Tenis</a></li>
+    <li><a href="http://sport.tvp.pl/436313/koszykowka">Koszykówka</a></li>
+    <li><a href="http://sport.tvp.pl/536353/moto">Moto</a></li>
+  </ul>
+  <div class="menu-button" href="" ng-click="toggleList()" >KATEGORIE</div>
+  <ul class="sport-section__entries">
+      <li class="information-section__first-entry">
+    <a href="http://sport.tvp.pl/25354054/legia-mistrzem-polski-puchary-dla-cracovii">
+      <article ng-controller="fxAnimation">
+        <figure ng-class="{hover: expanded}">
+                      
+              <div class="image-wrapper">              
+                <div class="ir-169">
+                      <img src="http://s.tvp.pl/images2/7/9/0/uid_7909c421de18db0c874ce2e0a88c52f51463338054261_width_640_play_0_pos_0_gs_0_height_360.jpg" alt="Legia mistrzem Polski. Puchary dla Cracovii"/>
+                </div>
+                              </div>
+            
+                      <figcaption ng-if="!expanded">
+            <header>Legia mistrzem Polski. Puchary dla Cracovii</header>
+          </figcaption>
+          <figcaption ng-if="expanded" class="fx-fade-normal fx-speed-200">
+                          <header>Legia mistrzem Polski. Puchary dla Cracovii</header>
+                        <section>
+                                                    Legia Warszawa wygrała przed własną publicznością z Pogonią Szczecin 3:0 (1:0) w ostatniej kolejce Ekstraklasy i po raz jedenasty wywalczyła mistrzostwo Polski. W równolegle rozegranym meczu drugi Piast przegrał w Gliwicach z trzecim Zagłębiem Lubin 0:1 (0:1). Czwarte miejsce, premiowane występem w eliminacjach Ligi Europejskiej, zajęła Cracovia, która pokonała u siebie Lechię Gdańsk 2:0 (1:0).                                  
+                          </section>
+          </figcaption>
+        </figure>
+      </article>
+    </a>
+  </li>
+  <li class=" video ">
+    <a href="http://sport.tvp.pl/25356269/kamil-stoch-dla-tvp-jestem-pozytywnie-zaskoczony-horngacherem">
+      <article ng-controller="fxAnimation">
+        <figure ng-class="{hover: expanded}">
+                        <div class="image-wrapper">
+             
+                <div class="ir-43">
+                                      
+                      <img src="http://s.tvp.pl/images2/1/2/c/uid_12ce8d87f4c01fa96dd8afbe7c3011351463341472052_width_200_play_6_pos_5_gs_0_height_150.jpg" alt="Stoch ocenia Horngachera: metody treningowe są inne"/>
+                    
+                                    </div>
+                                                                </div> 
+            
+                    <figcaption ng-if="!expanded">
+            <header>Stoch ocenia Horngachera: metody treningowe są inne</header>
+          </figcaption>
+          <figcaption ng-if="expanded" class="fx-fade-normal fx-speed-200">
+                        <section>
+                                                    Podwójny mistrz olimpijski z Soczi w rozmowie z Michałem Regulskim mówi urlopie w USA, treningach z nowym trenerem kadry – Stefanem Horngacherem – oraz celach na kolejny sezon.                                  
+                          </section>
+          </figcaption>
+        </figure>
+      </article>
+    </a>
+  </li>
+  <li class=" video ">
+    <a href="http://sport.tvp.pl/25357113/zbigniew-boniek-zaluje-ze-w-szerokiej-kadrze-nie-ma-mili-i-szukaly">
+      <article ng-controller="fxAnimation">
+        <figure ng-class="{hover: expanded}">
+                        <div class="image-wrapper">
+             
+                <div class="ir-43">
+                                      
+                      <img src="http://s.tvp.pl/images2/b/6/b/uid_b6b31ed9a4e1d7298bb9da49f532ab511463345529597_width_200_play_6_pos_5_gs_0_height_150.jpg" alt="Boniek: żałuję, że w kadrze nie ma Mili i Szukały"/>
+                    
+                                    </div>
+                                                                </div> 
+            
+                    <figcaption ng-if="!expanded">
+            <header>Boniek: żałuję, że w kadrze nie ma Mili i Szukały</header>
+          </figcaption>
+          <figcaption ng-if="expanded" class="fx-fade-normal fx-speed-200">
+                        <section>
+                                                    Prezes PZPN był gościem "Sportowej Niedzieli". Zbigniew Boniek rozmawiał z Pauliną Chylewską m.in. o zbliżających się mistrzostwach Europy we Francji i skomentował szeroką kadrę reprezentacji Polski. Adam Nawałka powołał 28 piłkarzy. Ostatecznie na Euro pojedzie 23.                                  
+                          </section>
+          </figcaption>
+        </figure>
+      </article>
+    </a>
+  </li>
+  <li class="">
+    <a href="http://sport.tvp.pl/25357479/media-nie-bylo-bomby-na-old-trafford">
+      <article ng-controller="fxAnimation">
+        <figure ng-class="{hover: expanded}">
+                        <div class="image-wrapper">
+             
+                <div class="ir-43">
+                                        <img src="http://s.tvp.pl/images2/9/5/d/uid_95dc483bc6d64a48acb0afc7b3c67b0e1463346764022_width_200_play_0_pos_0_gs_0_height_150.jpg"  alt="Media: nie było bomby na Old Trafford"/>
+                    
+                                  </div>
+                              </div> 
+            
+                    <figcaption ng-if="!expanded">
+            <header>Media: nie było bomby na Old Trafford</header>
+          </figcaption>
+          <figcaption ng-if="expanded" class="fx-fade-normal fx-speed-200">
+                        <section>
+                                                    Podejrzany przedmiot, którego kontrolowaną eksplozję przeprowadzono w niedzielę na stadionie Manchesteru United, był "niewiarygodnie podobny do ładunku wybuchowego", ale nie stwarzał realnego zagrożenia – poinformowała brytyjska policja. Według mediów była to "atrapa" – zostawiono ją przypadkowo po ćwiczeniach, które miały miejsce w środku tygodnia.                                  
+                          </section>
+          </figcaption>
+        </figure>
+      </article>
+    </a>
+  </li>
+  </ul>
+</section></section>
+
+<!--vod-->
+<section class="vod-section" ng-controller="vodCtrl">
+  <div class="header-wrapper">
+    <header>VOD</header>
+  </div>
+  <div class="header-navigation">
+    <nav>
+      <ul ng-class="{menu_visible:vodMenuVisible}">
+        <li><a href="http://vod.tvp.pl/filmy-fabularne">Filmy fabularne</a></li>
+        <li><a href="http://vod.tvp.pl/seriale">Seriale</a></li>
+        <li><a href="http://vod.tvp.pl/audycje">Audycje</a></li>
+        <li><a href="http://vod.tvp.pl/dokumenty">Dokumenty</a></li>
+        <li><a href="http://vod.tvp.pl/archiwa">Archiwa</a></li>
+        <li><a href="http://vod.tvp.pl/">Więcej</a></li>
+      </ul>
+      <div class="menu-button" href="" ng-click="toggleList()">KATEGORIE</div>
+    </nav>
+  </div>
+  <div class="vod-subsection-wrapper" ng-class="{'newest': newestActive, 'popular': popularActive }">
+    <section class="vod-separator"></section>
+    <section class="vod-popular vod-subsection" ng-class="{'vod-subsection-expanded': popularActive}">
+      <a class="vod-subsection-arrow right" ng-click="setVisibleSection('popular')">
+        <i class="fa fa-angle-right fa-stack-1x fa-inverse"></i>
+      </a>
+      <header class="vod-subsection-header" ng-click="setVisibleSection('popular')">
+        Popularne
+      </header>
+      <div class="vod-element-table">
+  <div class="vod-element-row">
+    <div class="vod-element-cell">
+                  <a href="http://www.tvp.pl/vod/seriale/komediowe/o-mnie-sie-nie-martw/sezon-4/odc-104/25198288" >
+          <article> 
+            <figure>
+              <div class="image-wrapper">
+                <div class="ir-43">
+                  <img src="http://s.tvp.pl/images2/a/8/b/uid_a8b9bb8c03680e5ca481a001ffbac9cc1462438355137_width_600_play_0_pos_0_gs_0_height_450.jpg"  alt="O mnie się nie martw, odc. 10/4"/>
+                </div>
+              </div>
+              <figcaption>
+                <header>
+                  <span>
+                                          
+                        O mnie się nie martw, odc. 10/4                                          </span>
+                                                        
+                 </header> 
+                <section>
+                  <span class="bl"> </span>
+                                      Marcinowi puszczają nerwy. W środku nocy jedzie do Łodzi, żeby z marszu porozmawiać z Kingą. Nie jest to łatwe dla obojga. Pozostawiona w Warszawie Iga może tylko czekać na dalszy rozwój sytuacji...                                    </section>
+              </figcaption>
+            </figure>               
+          </article>
+        </a>
+                                            </div>
+    <div class="vod-element-cell">
+      <ul>
+                                <li>
+          <a href="http://www.tvp.pl/vod/programy/rozrywka/konkurs-piosenki-eurowizji/wideo/eurowizja-2016-final/25168377" >
+            <article ng-controller="fxAnimation">
+              <figure ng-class="{hover: expanded}">
+                <div class="image-wrapper">
+                  <div class="ir-43">
+                    <img src="http://s.tvp.pl/images2/7/6/5/uid_7653212f87627472cabf6a4c962b68bf1463267985442_width_200_play_6_pos_5_gs_0_height_150.jpg"  alt="Eurowizja 2016 – Finał"/>
+                  </div>
+                                                                        </div>
+                <figcaption ng-if="!expanded">
+                  <header>
+                                          
+                      Eurowizja 2016 – Finał                                        </header>
+                </figcaption>
+                <figcaption ng-if="expanded" class="fx-fade-normal fx-speed-200">                     
+                  <section>
+                    <span class="bl"> </span>
+                                          Wielki finał Konkursu Piosenki Eurowizji w Sztokholmie. W koncercie występili zwycięzcy pierwszego i drugiego półfinału oraz wykonawcy z tzw. „wielkiej piątki” czyli: Niemiec, Hiszpanii, Francji, Wielkiej Brytanii i Włoch, oraz przedstawiciel gospodarzy – Szwecji. Zwycięzcą konkursu została reprezentantka Ukrainy – Jamala.                                        </section>
+                </figcaption>
+              </figure>               
+            </article>
+          </a>
+        </li>
+                          <li>
+          <a href="http://www.tvp.pl/vod/seriale/obyczajowe/na-dobre-i-na-zle/wideo/odc-637/24983055" >
+            <article ng-controller="fxAnimation">
+              <figure ng-class="{hover: expanded}">
+                <div class="image-wrapper">
+                  <div class="ir-43">
+                    <img src="http://s.tvp.pl/images2/0/9/d/uid_09ddfbe69bebae6161bc8dd05d25c3711462362380200_width_200_play_6_pos_5_gs_0_height_150.jpg"  alt="Na dobre i na złe, odc. 637"/>
+                  </div>
+                                                                        </div>
+                <figcaption ng-if="!expanded">
+                  <header>
+                                          
+                      Na dobre i na złe, odc. 637                                        </header>
+                </figcaption>
+                <figcaption ng-if="expanded" class="fx-fade-normal fx-speed-200">                     
+                  <section>
+                    <span class="bl"> </span>
+                                          Adam organizuje imprezę urodzinową dla Wiktorii, na której pani ordynator poznaje nowego chłopaka Blanki Matiego. Tymczasem Sylwia wychodzi ze szpitala, ale wciąż ma problemy z pamięcią.                                        </section>
+                </figcaption>
+              </figure>               
+            </article>
+          </a>
+        </li>
+                          <li>
+          <a href="http://www.tvp.pl/vod/seriale/obyczajowe/m-jak-milosc/odcinki-1201-/odc-1223/25199604" >
+            <article ng-controller="fxAnimation">
+              <figure ng-class="{hover: expanded}">
+                <div class="image-wrapper">
+                  <div class="ir-43">
+                    <img src="http://s.tvp.pl/images2/3/8/3/uid_3836237435c97e4a764583c1388b20c41462442279656_width_200_play_6_pos_5_gs_0_height_150.jpg"  alt="M jak miłość, odc. 1223"/>
+                  </div>
+                                                                        </div>
+                <figcaption ng-if="!expanded">
+                  <header>
+                                          
+                      M jak miłość, odc. 1223                                        </header>
+                </figcaption>
+                <figcaption ng-if="expanded" class="fx-fade-normal fx-speed-200">                     
+                  <section>
+                    <span class="bl"> </span>
+                                          Asia wychodzi w końcu ze szpitala, ale nie chce zamieszkać na nowo z Tomkiem. Chodakowski wpada na pomysł, by ukochana wyjechała razem z małym Wojtkiem na ferie do Anny, do siedliska. Policjant kolejny raz spotyka się także z Agnieszką. Gdy Olszewska mówi, że chce wrócić z córką do Szczecina, Tomek stanowczo się temu sprzeciwia.                                        </section>
+                </figcaption>
+              </figure>               
+            </article>
+          </a>
+        </li>
+                  </ul>
+    </div>
+  </div>
+</div>    </section>
+    <section class="vod-recommended vod-subsection" ng-class="{'vod-subsection-expanded': recommendedActive}">
+      <a class="vod-subsection-arrow right" ng-click="setVisibleSection('recommended')">
+        <i class="fa fa-angle-right fa-stack-1x fa-inverse"></i>
+      </a>
+      <a class="vod-subsection-arrow left" ng-click="setVisibleSection('recommended')">
+          <i class="fa fa-angle-left fa-stack-1x fa-inverse"></i>
+      </a>
+      <header class="vod-subsection-header" ng-click="setVisibleSection('recommended')">
+        Zobacz
+      </header>
+      <div class="vod-element-table">
+  <div class="vod-element-row">
+    <div class="vod-element-cell">
+                  <a href="http://www.tvp.pl/vod/programy/rozrywka/kocham-cie-polsko/wideo/odc-11/25031831" >
+          <article> 
+            <figure>
+              <div class="image-wrapper">
+                <div class="ir-43">
+                  <img src="http://s.tvp.pl/images2/d/8/3/uid_d834581643de5d73cf33bdc734f0ec3a1463254820034_width_600_play_0_pos_0_gs_0_height_450.jpg"  alt="Kocham Cię, Polsko, odc. 11"/>
+                </div>
+              </div>
+              <figcaption>
+                <header>
+                  <span>
+                                          
+                        Kocham Cię, Polsko, odc. 11                                          </span>
+                                                        
+                 </header> 
+                <section>
+                  <span class="bl"> </span>
+                                      Pojedynek aktorki vs piłkarze. Która drużyna okaże się lepsza, Kasia Cichopek, Weronika Rosati i Jolanta Fraszyńska czy może będą to Tomasz Hajto, Tomasz Iwan i Piotr Świerczewski?                                    </section>
+              </figcaption>
+            </figure>               
+          </article>
+        </a>
+                                            </div>
+    <div class="vod-element-cell">
+      <ul>
+                                <li>
+          <a href="http://www.tvp.pl/vod/seriale/komediowe/o-mnie-sie-nie-martw/sezon-4/odc-104/25198288" >
+            <article ng-controller="fxAnimation">
+              <figure ng-class="{hover: expanded}">
+                <div class="image-wrapper">
+                  <div class="ir-43">
+                    <img src="http://s.tvp.pl/images2/a/8/b/uid_a8b9bb8c03680e5ca481a001ffbac9cc1462438355137_width_200_play_6_pos_5_gs_0_height_150.jpg"  alt="O mnie się nie martw, odc. 10/4"/>
+                  </div>
+                                                                        </div>
+                <figcaption ng-if="!expanded">
+                  <header>
+                                          
+                      O mnie się nie martw, odc. 10/4                                        </header>
+                </figcaption>
+                <figcaption ng-if="expanded" class="fx-fade-normal fx-speed-200">                     
+                  <section>
+                    <span class="bl"> </span>
+                                          Marcinowi puszczają nerwy. W środku nocy jedzie do Łodzi, żeby z marszu porozmawiać z Kingą. Nie jest to łatwe dla obojga. Pozostawiona w Warszawie Iga może tylko czekać na dalszy rozwój sytuacji...                                        </section>
+                </figcaption>
+              </figure>               
+            </article>
+          </a>
+        </li>
+                          <li>
+          <a href="http://www.tvp.pl/vod/programy/publicystyka/prawde-mowiac/wideo/zbigniew-wodecki-15052016/25041625" >
+            <article ng-controller="fxAnimation">
+              <figure ng-class="{hover: expanded}">
+                <div class="image-wrapper">
+                  <div class="ir-43">
+                    <img src="http://s.tvp.pl/images2/5/2/4/uid_5242b2e49c8f3ea3de127431e1b134951463317274846_width_200_play_6_pos_5_gs_0_height_150.jpg"  alt="Prawdę mówiąc. Zbigniew Wodecki, 15.05.2016"/>
+                  </div>
+                                                                        </div>
+                <figcaption ng-if="!expanded">
+                  <header>
+                                          
+                      Prawdę mówiąc. Zbigniew Wodecki, 15.05.2016                                        </header>
+                </figcaption>
+                <figcaption ng-if="expanded" class="fx-fade-normal fx-speed-200">                     
+                  <section>
+                    <span class="bl"> </span>
+                                          – O wielu świetnych artystach, którzy dalej śpiewają, nikt nie słyszał. Ja miałem szczęście – mówi o sobie Zbigniew Wodecki. Dodaje, że odczuwa pewien dyskomfort, ponieważ przez lata kojarzono go z pszczółką Mają.                                        </section>
+                </figcaption>
+              </figure>               
+            </article>
+          </a>
+        </li>
+                          <li>
+          <a href="http://www.tvp.pl/vod/programy/rozrywka/konkurs-piosenki-eurowizji/wideo/eurowizja-2016-final/25168377" >
+            <article ng-controller="fxAnimation">
+              <figure ng-class="{hover: expanded}">
+                <div class="image-wrapper">
+                  <div class="ir-43">
+                    <img src="http://s.tvp.pl/images2/7/6/5/uid_7653212f87627472cabf6a4c962b68bf1463267985442_width_200_play_6_pos_5_gs_0_height_150.jpg"  alt="Eurowizja 2016 – Finał"/>
+                  </div>
+                                                                        </div>
+                <figcaption ng-if="!expanded">
+                  <header>
+                                          
+                      Eurowizja 2016 – Finał                                        </header>
+                </figcaption>
+                <figcaption ng-if="expanded" class="fx-fade-normal fx-speed-200">                     
+                  <section>
+                    <span class="bl"> </span>
+                                          Wielki finał Konkursu Piosenki Eurowizji w Sztokholmie. W koncercie występili zwycięzcy pierwszego i drugiego półfinału oraz wykonawcy z tzw. „wielkiej piątki” czyli: Niemiec, Hiszpanii, Francji, Wielkiej Brytanii i Włoch, oraz przedstawiciel gospodarzy – Szwecji. Zwycięzcą konkursu została reprezentantka Ukrainy – Jamala.                                        </section>
+                </figcaption>
+              </figure>               
+            </article>
+          </a>
+        </li>
+                  </ul>
+    </div>
+  </div>
+</div>    </section>
+    <section class="vod-newest vod-subsection" ng-class="{'vod-subsection-expanded': newestActive}">
+      <a class="vod-subsection-arrow left" ng-click="setVisibleSection('newest')">
+          <i class="fa fa-angle-left fa-stack-1x fa-inverse"></i>
+      </a>
+      <header class="vod-subsection-header" ng-click="setVisibleSection('newest')">
+        Najnowsze
+      </header>
+      <div class="vod-element-table">
+  <div class="vod-element-row">
+    <div class="vod-element-cell">
+                  <a href="http://www.tvp.pl/vod/seriale/obyczajowe/na-dobre-i-na-zle/wideo/odc-638/25184544" >
+          <article> 
+            <figure>
+              <div class="image-wrapper">
+                <div class="ir-43">
+                  <img src="http://s.tvp.pl/images2/6/6/2/uid_66279f9c60358f8a8c10379e064425041462981098872_width_600_play_0_pos_0_gs_0_height_450.jpg"  alt="Na dobre i na złe, odc. 638"/>
+                </div>
+              </div>
+              <figcaption>
+                <header>
+                  <span>
+                                          
+                        Na dobre i na złe, odc. 638                                          </span>
+                                                        
+                 </header> 
+                <section>
+                  <span class="bl"> </span>
+                                      Agata spotyka przypadkiem dawną znajomą z medycyny - Kaśkę. Dziewczyna, która dawniej była najlepszą studentką na roku, teraz jest bezdomna i ma problem z alkoholem. A doktor Woźnicka ratuje ją, gdy Kaśka o mało nie wpada pod pociąg.                                    </section>
+              </figcaption>
+            </figure>               
+          </article>
+        </a>
+                                            </div>
+    <div class="vod-element-cell">
+      <ul>
+                                <li>
+          <a href="http://www.tvp.pl/vod/seriale/obyczajowe/bodo/wideo/odc-12/25147633" >
+            <article ng-controller="fxAnimation">
+              <figure ng-class="{hover: expanded}">
+                <div class="image-wrapper">
+                  <div class="ir-43">
+                    <img src="http://s.tvp.pl/images2/e/f/7/uid_ef743996357d2595fa4656420141feeb1463146430516_width_200_play_6_pos_5_gs_0_height_150.jpg"  alt="Bodo, odc. 12"/>
+                  </div>
+                                                                        </div>
+                <figcaption ng-if="!expanded">
+                  <header>
+                                          
+                      Bodo, odc. 12                                        </header>
+                </figcaption>
+                <figcaption ng-if="expanded" class="fx-fade-normal fx-speed-200">                     
+                  <section>
+                    <span class="bl"> </span>
+                                          Bodo realizuje jeden z najwybitniejszych przedwojennych filmów „Strachy”. Zdobywa serca publiczności, występując wspólnie z Dymszą. Największą radość sprawia mu jednak przyjazd Ady, która decyduje się na rozstanie z Hansem.                                        </section>
+                </figcaption>
+              </figure>               
+            </article>
+          </a>
+        </li>
+                          <li>
+          <a href="http://www.tvp.pl/vod/seriale/komediowe/rodzinkapl/sezon-8/odc-180/24895638" >
+            <article ng-controller="fxAnimation">
+              <figure ng-class="{hover: expanded}">
+                <div class="image-wrapper">
+                  <div class="ir-43">
+                    <img src="http://s.tvp.pl/images2/9/1/b/uid_91bd1be0a8949bb1d1de8e8d802267e31460629194406_width_200_play_6_pos_5_gs_0_height_150.jpg"  alt="rodzinka.pl, odc. 180"/>
+                  </div>
+                                                                        </div>
+                <figcaption ng-if="!expanded">
+                  <header>
+                                          
+                      rodzinka.pl, odc. 180                                        </header>
+                </figcaption>
+                <figcaption ng-if="expanded" class="fx-fade-normal fx-speed-200">                     
+                  <section>
+                    <span class="bl"> </span>
+                                          Do Kacpra przychodzi korepetytorka, która wzbudza duże zainteresowanie Ludwika i Marka. Natalia jest zazdrosna, więc zmienia korepetytorkę na korepetytora. Ten za to bardzo interesuje Natalię i Marię.                                        </section>
+                </figcaption>
+              </figure>               
+            </article>
+          </a>
+        </li>
+                          <li>
+          <a href="http://www.tvp.pl/vod/seriale/obyczajowe/zagadka-hotelu-grand/wideo/odc-8/25175435" >
+            <article ng-controller="fxAnimation">
+              <figure ng-class="{hover: expanded}">
+                <div class="image-wrapper">
+                  <div class="ir-43">
+                    <img src="http://s.tvp.pl/images2/e/a/7/uid_ea7588ffed3dc8d5dad4a65a62a5758e1460222005692_width_200_play_6_pos_5_gs_0_height_150.jpg"  alt="Zagadka Hotelu Grand, odc. 8"/>
+                  </div>
+                                                                        </div>
+                <figcaption ng-if="!expanded">
+                  <header>
+                                          
+                      Zagadka Hotelu Grand, odc. 8                                        </header>
+                </figcaption>
+                <figcaption ng-if="expanded" class="fx-fade-normal fx-speed-200">                     
+                  <section>
+                    <span class="bl"> </span>
+                                          Stan Mercedes jest bardzo ciężki. Teresa Alarcón odbywa nieprzyjemną rozmowę z panem Bernardem, który w nieuczciwy sposób podkupuje jej personel. Na wieść o tym, że Belen jest w ciąży, pan Bernardo wycofuje swoją propozycję...                                        </section>
+                </figcaption>
+              </figure>               
+            </article>
+          </a>
+        </li>
+                  </ul>
+    </div>
+  </div>
+</div>    </section>
+    <section class="vod-separator"></section>
+  </div>
+  <section class="vod-separator-row"></section>
+</section>
+<!--najpopularniejsze serwisy-->
+<section class="most-popular-services">
+  <header class="most-popular-services__header">Najpopularniejsze serwisy tvp</header>
+  <div class="most-popular-services__slider swiper-container" data-np-swiper>
+    <ul class="most-popular-services__slide-wrapper swiper-wrapper">
+              <li class="most-popular-services__slide swiper-slide most-popular-services__slide--active">
+          <a href="http://eurowizja2015.tvp.pl">
+            <figure>
+              <div class="ir-169">
+                <img src="http://s.tvp.pl/images2/0/4/4/uid_0440ccfe309d75a4788407f87057df9d1463056769346_width_369_play_0_pos_0_gs_0_height_207.png" />
+              </div>
+              <figcaption>
+                <p>1</p>
+                                                                  <div class="icon-wrapper-neutral">
+                    <i class="fa fa-dot-circle-o fa-fw"></i>
+                  </div>
+                              </figcaption>
+            </figure>
+          </a>
+        </li>
+              <li class="most-popular-services__slide swiper-slide most-popular-services__slide--active">
+          <a href="http://nadobre.tvp.pl/">
+            <figure>
+              <div class="ir-169">
+                <img src="http://s.tvp.pl/images2/6/e/8/uid_6e88b95839087bf9d7ee9bf2b11517471448609477299_width_369_play_0_pos_0_gs_0_height_207.jpg" />
+              </div>
+              <figcaption>
+                <p>2</p>
+                                                  <div class="icon-wrapper-down">
+                    <i class="fa fa-arrow-down fa-fw"></i>
+                  </div>
+                                              </figcaption>
+            </figure>
+          </a>
+        </li>
+              <li class="most-popular-services__slide swiper-slide most-popular-services__slide--active">
+          <a href="http://mjakmilosc.tvp.pl/">
+            <figure>
+              <div class="ir-169">
+                <img src="http://s.tvp.pl/images2/2/5/0/uid_250312c1d61f25d76e98c9fb8e1f6b851449003589247_width_369_play_0_pos_0_gs_0_height_207.jpg" />
+              </div>
+              <figcaption>
+                <p>3</p>
+                                  <div class="icon-wrapper-up">
+                    <i class="fa fa-arrow-up fa-fw"></i>
+                  </div>
+                                                              </figcaption>
+            </figure>
+          </a>
+        </li>
+              <li class="most-popular-services__slide swiper-slide most-popular-services__slide--active">
+          <a href="http://wiadomosci.tvp.pl/">
+            <figure>
+              <div class="ir-169">
+                <img src="http://s.tvp.pl/images2/7/f/0/uid_7f09d874429af287d46d064399df7a3f1455714176339_width_369_play_0_pos_0_gs_0_height_207.png" />
+              </div>
+              <figcaption>
+                <p>4</p>
+                                                                  <div class="icon-wrapper-neutral">
+                    <i class="fa fa-dot-circle-o fa-fw"></i>
+                  </div>
+                              </figcaption>
+            </figure>
+          </a>
+        </li>
+              <li class="most-popular-services__slide swiper-slide most-popular-services__slide--active">
+          <a href="http://omniesieniemartw.tvp.pl/">
+            <figure>
+              <div class="ir-169">
+                <img src="http://s.tvp.pl/images2/9/4/d/uid_94db5274322a6d7590b84608fdfcdaff1405682738341_width_369_play_0_pos_0_gs_0_height_207.jpg" />
+              </div>
+              <figcaption>
+                <p>5</p>
+                                                                  <div class="icon-wrapper-neutral">
+                    <i class="fa fa-dot-circle-o fa-fw"></i>
+                  </div>
+                              </figcaption>
+            </figure>
+          </a>
+        </li>
+          </ul>
+  </div>
+  <div class="pagination-wrapper">
+    <div class="most-popular-services__pagination medium-hide"></div>  
+  </div>
+</section><section class="fotostory-and-entertainment-section">
+  <!--fotoreportarze -->
+  <section class="fotostory-section">
+  <header class="fotostory-section__header">Fotoreportaże</header>
+  <div class="fotostory__slider swiper-container" data-np-swiper>
+    <a href="" class="arrow-left fotostory__slider-prev" ng-click="Swiper.prev('fotostory')">
+      <span class="fa-stack fa-lg fa-2x">
+        <i class="fa fa-circle fa-stack-2x utils__fa--slider-nav-blue"></i>
+        <i class="fa fa-angle-left fa-stack-1doc4x fa-inverse"></i>
+      </span>
+    </a>
+    <a href="" class="arrow-right fotostory__slider-next" ng-click="Swiper.next('fotostory')">
+      <span class="fa-stack fa-lg fa-2x">
+        <i class="fa fa-circle fa-stack-2x utils__fa--slider-nav-blue"></i>
+        <i class="fa fa-angle-right fa-stack-1doc4x fa-inverse"></i>
+      </span>
+    </a>
+    <ul class="fotostory__slide-wrapper swiper-wprapper">
+              <li class="fotostory__slide swiper-slide fotostory__slide--active">
+          <a href="http://eurowizja.tvp.pl/25340856/wielki-final-eurowizji">
+            <figure>
+              <div class="ir-169">
+                <img src="http://s.tvp.pl/images2/2/7/2/uid_27281eb1bc51a30bda23c89187629ff01463267400342_width_700_play_0_pos_0_gs_0_height_395.jpg" >
+              </div>
+              <figcaption>
+                <header>Eurowizja: wielki finał</header>
+              </figcaption>
+            </figure>
+          </a>
+        </li>
+              <li class="fotostory__slide swiper-slide fotostory__slide--active">
+          <a href="http://bodo.tvp.pl/25296896/reri-vs-ada">
+            <figure>
+              <div class="ir-169">
+                <img src="http://s.tvp.pl/images2/f/f/f/uid_fff3af296d762951ac0c78a7c50fb1b91462975276766_width_700_play_0_pos_0_gs_0_height_395.jpg" >
+              </div>
+              <figcaption>
+                <header>Reri vs. Ada</header>
+              </figcaption>
+            </figure>
+          </a>
+        </li>
+              <li class="fotostory__slide swiper-slide fotostory__slide--active">
+          <a href="http://eurowizja.tvp.pl/25314543/ii-polfinal-eurowizji">
+            <figure>
+              <div class="ir-169">
+                <img src="http://s.tvp.pl/images2/a/3/f/uid_a3f8abc49747983816a7063a008717661463085375185_width_700_play_0_pos_0_gs_0_height_395.jpg" >
+              </div>
+              <figcaption>
+                <header>Eurowizja: ciąg dalszy emocji!</header>
+              </figcaption>
+            </figure>
+          </a>
+        </li>
+              <li class="fotostory__slide swiper-slide fotostory__slide--active">
+          <a href="http://eurowizja.tvp.pl/25278535/i-polfinal-eurowizji">
+            <figure>
+              <div class="ir-169">
+                <img src="http://s.tvp.pl/images2/7/b/1/uid_7b12584770bb97ebb542b96e17208ad31462912652187_width_700_play_0_pos_0_gs_0_height_395.jpg" >
+              </div>
+              <figcaption>
+                <header>I półfinał Eurowizji!</header>
+              </figcaption>
+            </figure>
+          </a>
+        </li>
+              <li class="fotostory__slide swiper-slide fotostory__slide--active">
+          <a href="http://eurowizja.tvp.pl/25248383/michal-szpak-droga-do-sztokholmu">
+            <figure>
+              <div class="ir-169">
+                <img src="http://s.tvp.pl/images2/8/6/2/uid_862cfb5b631f05648a947bc41814290b1462889813682_width_700_play_0_pos_0_gs_0_height_395.jpg" >
+              </div>
+              <figcaption>
+                <header>Michał Szpak: droga do Sztokholmu</header>
+              </figcaption>
+            </figure>
+          </a>
+        </li>
+          </ul>
+  </div>
+  <div class="pagination-wrapper">
+    <div class="fotostory__pagination"></div>
+  </div>
+</section>
+  <!--rozrywka-->
+  <section class="entertainment-section">
+  <header class="entertainment-section__header">Rozrywka</header>
+            
+        <div class="entertainment-section__first-entry">
+      
+          <a href="http://eurowizja.tvp.pl/25325806/final-australia-dami-im-sound-of-silence">
+      <article ng-controller="fxAnimation">
+        <figure ng-class="{hover: expanded}">
+          <div class="wrapper">
+            <div class="ir-43">
+                                                    
+                      <img src="http://s.tvp.pl/images2/4/9/2/uid_492936e78b1dc41adf83eaba8df292161463319360789_width_600_play_0_pos_0_gs_0_height_450.jpg" alt="O krok od zwycięstwa"/>
+                    
+                                    
+                          </div>
+
+                      </div>
+          <figcaption ng-if="!expanded">
+            <header>              O krok od zwycięstwa            </header>          </figcaption> 
+          <figcaption ng-if="expanded" class="fx-fade-normal fx-speed-200">
+                          <header>
+                O krok od zwycięstwa              </header>
+                        <section>
+                              W drugim występie w konkursie Eurowizji Australia było o krok od zwycięstwa. Widzów i jurorów uwiodła Dami Im i jej „Sound of Silence”.                            </section>
+          </figcaption>
+        </figure>
+      </article>
+    </a>
+
+          
+        </div>
+        <ul>
+      
+                      <li>
+      
+        <a href="http://pytanienasniadanie.tvp.pl/25338800/na-naszej-scenie-ray-wilson-not-long-till-the-springtime">
+      <article ng-controller="fxAnimation">
+        <figure ng-class="{hover: expanded}">
+          <div class="wrapper">
+            <div class="ir-43">
+                                                      <img src="http://s.tvp.pl/images2/c/8/d/uid_c8d39f18493463f87b1a44a489ed94b21463318443605_width_200_play_0_pos_0_gs_0_height_150.jpg" alt="Po prostu Ray Wilson"/>
+                    
+                                  
+                          </div>
+
+                      </div>
+          <figcaption ng-if="!expanded">
+                          Po prostu Ray Wilson                      </figcaption> 
+          <figcaption ng-if="expanded" class="fx-fade-normal fx-speed-200">
+                        <section>
+                              Na scenie Ray Wilson – wokalista legendarnej grupy Genesis – zakochany w Polsce. „Not Long Till The Springtime” w „Pytaniu na śniadanie”                            </section>
+          </figcaption>
+        </figure>
+      </article>
+    </a>
+
+              </li>
+      
+                    <li>
+      
+        <a href="http://kabarety.tvp.pl/25328924/grzegorz-halama-i-marek-grabie-bezdomni-szejkowie">
+      <article ng-controller="fxAnimation">
+        <figure ng-class="{hover: expanded}">
+          <div class="wrapper">
+            <div class="ir-43">
+                                                      <img src="http://s.tvp.pl/images2/f/1/d/uid_f1d16fb2c9e4fde5f81e3df54967604a1463317804877_width_200_play_0_pos_0_gs_0_height_150.jpg" alt="Wywiad z szejkiem"/>
+                    
+                                  
+                          </div>
+
+                      </div>
+          <figcaption ng-if="!expanded">
+                          Wywiad z szejkiem                      </figcaption> 
+          <figcaption ng-if="expanded" class="fx-fade-normal fx-speed-200">
+                        <section>
+                              Przeprowadzenie rozmowy z prawdziwym szejkiem to nie lada wyzwanie dla tłumacza… Grzegorz Halama i Marek Grabie w „Dzięki Bogu już weekend”                            </section>
+          </figcaption>
+        </figure>
+      </article>
+    </a>
+
+              </li>
+      
+                    <li>
+      
+        <a href="http://eurowizja.tvp.pl/25325748/final-belgia-laura-tesoro-whats-the-pressure">
+      <article ng-controller="fxAnimation">
+        <figure ng-class="{hover: expanded}">
+          <div class="wrapper">
+            <div class="ir-43">
+                                                      <img src="http://s.tvp.pl/images2/b/1/1/uid_b110e5cfe62bf7bd3adfee4ab918ed9e1463319888486_width_200_play_0_pos_0_gs_0_height_150.jpg" alt="Laura w finale"/>
+                    
+                                  
+                          </div>
+
+                      </div>
+          <figcaption ng-if="!expanded">
+                          Laura w finale                      </figcaption> 
+          <figcaption ng-if="expanded" class="fx-fade-normal fx-speed-200">
+                        <section>
+                              Tancerka, aktorka, prezenterka telewizyjna – 19-letnia Belgijka Laura Tesoro i jej „What's The Pressure” w finale Eurowizji.                            </section>
+          </figcaption>
+        </figure>
+      </article>
+    </a>
+
+              </li>
+      
+        </ul>
+</section></section>
+
+<!--teraz na antenie-->
+<section class="now-playing">
+  <div class="now-playing__more-button">
+    <a href="http://www.tvp.pl/program-telewizyjny?offset=0">
+      <i class="fa fa-desktop fa-fw"></i>
+      Program telewizyjny
+    </a>
+  </div>
+  <header>
+    Teraz na antenie
+    <a href="http://www.tvp.pl/program-telewizyjny" class="shop__full-shop">
+      Pełny program
+        <span class="fa-stack fa-lg">
+          <i class="fa fa-circle fa-stack-2x utils__fa--slider-nav-blue"></i>
+          <i class="fa fa-angle-right fa-stack-1doc4x fa-inverse"></i>
+        </span>
+    </a>
+  </header>
+  <ul>
+                                                        <li><article>
+            
+              <header>
+                <span class="channel-logo fa-fw">
+                  <i class="lna-tvp1-hd-32">TVP 1 HD</i>                                                                                                                                                                                                                      </span>
+                <p class="broadcasting-status">TRWA</p>
+                <section class="info">
+                  <div>02:25</div>
+                  <div class="icons-wrapper">
+                    <i class="icon-sound51-12" data-ng-show=""></i>
+                    <i class="icon-ad-12" data-ng-show=""></i>
+                    <i class="icon-camera-12" data-ng-show="" ></i><!--bez kamerki-->
+                    <i class="icon-captions-12" data-ng-show=""></i>
+                                          
+                        <i class="icon-smile-12" data-ng-show=""></i>
+                        <i class="icon-klucz-12" data-ng-show=""></i>
+                        <i class="icon-seven-12" data-ng-show=""></i>
+                        <i class="icon-sixteen-12" data-ng-show="1"></i>
+                        <i class="icon-twelve-12" data-ng-show=""></i>
+                      
+                                      </div>
+                </section>
+                <p>Rajska jabłoń</p>
+                                </p>
+              </header>
+          </article></li>
+                                                                                <li><article>
+            
+              <header>
+                <span class="channel-logo fa-fw">
+                                    <i class="lna-tvp2-hd-32">TVP 2 HD</i>                                                                                                                                                                                                    </span>
+                <p class="broadcasting-status">TRWA</p>
+                <section class="info">
+                  <div>03:15</div>
+                  <div class="icons-wrapper">
+                    <i class="icon-sound51-12" data-ng-show="1"></i>
+                    <i class="icon-ad-12" data-ng-show=""></i>
+                    <i class="icon-camera-12" data-ng-show="" ></i><!--bez kamerki-->
+                    <i class="icon-captions-12" data-ng-show=""></i>
+                                          
+                        <i class="icon-smile-12" data-ng-show=""></i>
+                        <i class="icon-klucz-12" data-ng-show=""></i>
+                        <i class="icon-seven-12" data-ng-show=""></i>
+                        <i class="icon-sixteen-12" data-ng-show="1"></i>
+                        <i class="icon-twelve-12" data-ng-show=""></i>
+                      
+                                      </div>
+                </section>
+                <p>Psychoza - odc 19/20</p>
+                                </p>
+              </header>
+          </article></li>
+                                                                                <li><article>
+            
+              <header>
+                <span class="channel-logo fa-fw">
+                                                      <i class="lna-tvp-info-32">TVP Info</i>                                                                                                                                                                                  </span>
+                <p class="broadcasting-status">TRWA</p>
+                <section class="info">
+                  <div>03:20</div>
+                  <div class="icons-wrapper">
+                    <i class="icon-sound51-12" data-ng-show=""></i>
+                    <i class="icon-ad-12" data-ng-show=""></i>
+                    <i class="icon-camera-12" data-ng-show="" ></i><!--bez kamerki-->
+                    <i class="icon-captions-12" data-ng-show=""></i>
+                                          
+                        <i class="icon-smile-12" data-ng-show=""></i>
+                        <i class="icon-klucz-12" data-ng-show=""></i>
+                        <i class="icon-seven-12" data-ng-show=""></i>
+                        <i class="icon-sixteen-12" data-ng-show=""></i>
+                        <i class="icon-twelve-12" data-ng-show="1"></i>
+                      
+                                      </div>
+                </section>
+                <p>Woronicza 17</p>
+                                </p>
+              </header>
+          </article></li>
+                                                                                <li><article>
+            
+              <header>
+                <span class="channel-logo fa-fw">
+                                                                        <i class="lna-tvp-polonia-32">TVP Polonia</i>                                                                                                                                                                </span>
+                <p class="broadcasting-status">TRWA</p>
+                <section class="info">
+                  <div>03:35</div>
+                  <div class="icons-wrapper">
+                    <i class="icon-sound51-12" data-ng-show=""></i>
+                    <i class="icon-ad-12" data-ng-show=""></i>
+                    <i class="icon-camera-12" data-ng-show="" ></i><!--bez kamerki-->
+                    <i class="icon-captions-12" data-ng-show=""></i>
+                                          
+                        <i class="icon-smile-12" data-ng-show=""></i>
+                        <i class="icon-klucz-12" data-ng-show=""></i>
+                        <i class="icon-seven-12" data-ng-show="1"></i>
+                        <i class="icon-sixteen-12" data-ng-show=""></i>
+                        <i class="icon-twelve-12" data-ng-show=""></i>
+                      
+                                      </div>
+                </section>
+                <p>Oczy w oczy - (9)</p>
+                                </p>
+              </header>
+          </article></li>
+                                                                                <li><article>
+            
+              <header>
+                <span class="channel-logo fa-fw">
+                                                                                          <i class="lna-tvp-sport-32">TVP Sport</i>                                                                                                                                              </span>
+                <p class="broadcasting-status">TRWA</p>
+                <section class="info">
+                  <div>00:45</div>
+                  <div class="icons-wrapper">
+                    <i class="icon-sound51-12" data-ng-show=""></i>
+                    <i class="icon-ad-12" data-ng-show=""></i>
+                    <i class="icon-camera-12" data-ng-show="" ></i><!--bez kamerki-->
+                    <i class="icon-captions-12" data-ng-show=""></i>
+                                      </div>
+                </section>
+                <p>Zakończenie dnia</p>
+                                </p>
+              </header>
+          </article></li>
+                                                                                <li><article>
+            
+              <header>
+                <span class="channel-logo fa-fw">
+                                                                                                            <i class="lna-tvp-kultura-32">TVP Kultura</i>                                                                                                                            </span>
+                <p class="broadcasting-status">TRWA</p>
+                <section class="info">
+                  <div>02:45</div>
+                  <div class="icons-wrapper">
+                    <i class="icon-sound51-12" data-ng-show=""></i>
+                    <i class="icon-ad-12" data-ng-show=""></i>
+                    <i class="icon-camera-12" data-ng-show="" ></i><!--bez kamerki-->
+                    <i class="icon-captions-12" data-ng-show=""></i>
+                                          
+                        <i class="icon-smile-12" data-ng-show=""></i>
+                        <i class="icon-klucz-12" data-ng-show=""></i>
+                        <i class="icon-seven-12" data-ng-show=""></i>
+                        <i class="icon-sixteen-12" data-ng-show="1"></i>
+                        <i class="icon-twelve-12" data-ng-show=""></i>
+                      
+                                      </div>
+                </section>
+                <p>W cieniu zła - Palacz</p>
+                                </p>
+              </header>
+          </article></li>
+                                                                                <li><article>
+            
+              <header>
+                <span class="channel-logo fa-fw">
+                                                                                                                              <i class="lna-tvp-historia-32">TVP Historia</i>                                                                                                          </span>
+                <p class="broadcasting-status">TRWA</p>
+                <section class="info">
+                  <div>03:35</div>
+                  <div class="icons-wrapper">
+                    <i class="icon-sound51-12" data-ng-show=""></i>
+                    <i class="icon-ad-12" data-ng-show=""></i>
+                    <i class="icon-camera-12" data-ng-show="" ></i><!--bez kamerki-->
+                    <i class="icon-captions-12" data-ng-show=""></i>
+                                          
+                        <i class="icon-smile-12" data-ng-show=""></i>
+                        <i class="icon-klucz-12" data-ng-show=""></i>
+                        <i class="icon-seven-12" data-ng-show=""></i>
+                        <i class="icon-sixteen-12" data-ng-show=""></i>
+                        <i class="icon-twelve-12" data-ng-show="1"></i>
+                      
+                                      </div>
+                </section>
+                <p>Rycerze i rabusie - odc. 4/7 - Uczeń mistrza Rumianka</p>
+                                </p>
+              </header>
+          </article></li>
+                                                                                <li><article>
+            
+              <header>
+                <span class="channel-logo fa-fw">
+                                                                                                                                                <i class="lna-tvp-hd-32">TVP HD</i>                                                                                        </span>
+                <p class="broadcasting-status">TRWA</p>
+                <section class="info">
+                  <div>03:40</div>
+                  <div class="icons-wrapper">
+                    <i class="icon-sound51-12" data-ng-show=""></i>
+                    <i class="icon-ad-12" data-ng-show=""></i>
+                    <i class="icon-camera-12" data-ng-show="" ></i><!--bez kamerki-->
+                    <i class="icon-captions-12" data-ng-show=""></i>
+                                          
+                        <i class="icon-smile-12" data-ng-show="1"></i>
+                        <i class="icon-klucz-12" data-ng-show=""></i>
+                        <i class="icon-seven-12" data-ng-show=""></i>
+                        <i class="icon-sixteen-12" data-ng-show=""></i>
+                        <i class="icon-twelve-12" data-ng-show=""></i>
+                      
+                                      </div>
+                </section>
+                <p>Podróże z historią - odc. 11 Legenda "Czarnej Wołgi"</p>
+                                </p>
+              </header>
+          </article></li>
+                                                                                <li><article>
+            
+              <header>
+                <span class="channel-logo fa-fw">
+                                                                                                                                                                  <i class="lna-tvp-seriale-32">TVP Seriale</i>                                                                      </span>
+                <p class="broadcasting-status">TRWA</p>
+                <section class="info">
+                  <div>03:40</div>
+                  <div class="icons-wrapper">
+                    <i class="icon-sound51-12" data-ng-show=""></i>
+                    <i class="icon-ad-12" data-ng-show="1"></i>
+                    <i class="icon-camera-12" data-ng-show="" ></i><!--bez kamerki-->
+                    <i class="icon-captions-12" data-ng-show=""></i>
+                                          
+                        <i class="icon-smile-12" data-ng-show=""></i>
+                        <i class="icon-klucz-12" data-ng-show=""></i>
+                        <i class="icon-seven-12" data-ng-show=""></i>
+                        <i class="icon-sixteen-12" data-ng-show=""></i>
+                        <i class="icon-twelve-12" data-ng-show="1"></i>
+                      
+                                      </div>
+                </section>
+                <p>Rodzinka.pl - odc. 147 "Milcząca większość" sezon 6</p>
+                                </p>
+              </header>
+          </article></li>
+                                                                                <li><article>
+            
+              <header>
+                <span class="channel-logo fa-fw">
+                                                                                                                                                                                    <i class="lna-tvp-rozrywka-32">TVP Rozrywka</i>                                                    </span>
+                <p class="broadcasting-status">TRWA</p>
+                <section class="info">
+                  <div>03:30</div>
+                  <div class="icons-wrapper">
+                    <i class="icon-sound51-12" data-ng-show=""></i>
+                    <i class="icon-ad-12" data-ng-show=""></i>
+                    <i class="icon-camera-12" data-ng-show="" ></i><!--bez kamerki-->
+                    <i class="icon-captions-12" data-ng-show=""></i>
+                                          
+                        <i class="icon-smile-12" data-ng-show="1"></i>
+                        <i class="icon-klucz-12" data-ng-show=""></i>
+                        <i class="icon-seven-12" data-ng-show=""></i>
+                        <i class="icon-sixteen-12" data-ng-show=""></i>
+                        <i class="icon-twelve-12" data-ng-show=""></i>
+                      
+                                      </div>
+                </section>
+                <p>Rozrywka Retro - Piosenki Mariana Kociniaka</p>
+                                </p>
+              </header>
+          </article></li>
+                                                                                <li><article>
+            
+              <header>
+                <span class="channel-logo fa-fw">
+                                                                                                                                                                                                                        <i class="lna-belsat-32">Belsat</i>                </span>
+                <p class="broadcasting-status">TRWA</p>
+                <section class="info">
+                  <div>02:35</div>
+                  <div class="icons-wrapper">
+                    <i class="icon-sound51-12" data-ng-show=""></i>
+                    <i class="icon-ad-12" data-ng-show=""></i>
+                    <i class="icon-camera-12" data-ng-show="" ></i><!--bez kamerki-->
+                    <i class="icon-captions-12" data-ng-show=""></i>
+                                      </div>
+                </section>
+                <p>Zakończenie dnia</p>
+                                </p>
+              </header>
+          </article></li>
+                                                                                <li><article>
+            
+              <header>
+                <span class="channel-logo fa-fw">
+                                                                                                                                                                                                      <i class="lna-tvp-abc-32">TVP Abc</i>                                  </span>
+                <p class="broadcasting-status">TRWA</p>
+                <section class="info">
+                  <div>23:10</div>
+                  <div class="icons-wrapper">
+                    <i class="icon-sound51-12" data-ng-show=""></i>
+                    <i class="icon-ad-12" data-ng-show=""></i>
+                    <i class="icon-camera-12" data-ng-show="" ></i><!--bez kamerki-->
+                    <i class="icon-captions-12" data-ng-show=""></i>
+                                      </div>
+                </section>
+                <p>Zakończenie dnia</p>
+                                </p>
+              </header>
+          </article></li>
+                              </ul>
+</section>
+<!--anteny regionalne-->
+
+<section class="regional-broadcast" id="modul-informacje" ng-controller="regionalBroadcastController">
+  <header>Anteny regionalne</header>
+  <div class="regional-broadcast__channel-select" data-ng-class="{hover: menu.expanded=='broadcast'}">
+    <a class="channel-selected" data-ng-tap="broadcast">
+      <i ng-class="Regional.chosen"></i>
+    </a>
+    <ul class="broadcast-select fx-fade-down fx-speed-200" data-ng-show="menu.expanded=='broadcast'">
+      <li ng-repeat="channel in Regional.list" ng-class="channel.classes">
+        <a href="javascript: void(0);" ng-click="Regional.set($index, channel.id)" data-ng-bind="channel.name"></a>
+      </li>
+    </ul>
+  </div>
+  <div class="regional-broadcast__articles" data-ng-show="!Regional.chosen">
+    <article class="regional-broadcast__now-playing">
+      <header>
+        <p class="status">TRWA</p>
+      </header>
+      <p class="regional-broadcast__now-playing-title">Aktualizacja...</p>
+    </article>
+    <article class="regional-broadcast__later">
+      <header>
+        <p class="status">PÓŹNIEJ</p>
+      </header>
+      <p class="regional-broadcast__now-playing-title">Aktualizacja...</p>
+    </article>
+  </div>
+  <div class="regional-broadcast__articles fx-fade-normal fx-speed-200" data-ng-show="!!Regional.chosen">
+    <article ng-repeat="item in Regional.items" ng-class="{'regional-broadcast__now-playing': item.mode === 'CURRENT', 'regional-broadcast__later': item.mode === 'NEXT'}" ng-if="!!Regional.items">
+      <a ng-href="http://www.tvp.pl/program-telewizyjny?offset=0&amp;ch1={{item.virtual_channel_id}}&amp;ch2=1729&amp;ch3=420">
+        <header>
+          <p class="status" ng-if="item.mode === 'CURRENT'">TRWA</p>
+          <p class="status" ng-if="item.mode === 'NEXT'">PÓŹNIEJ</p>
+          <p class="start-time" ng-bind="Display.actualTime(item)"></p>
+          <div class="icons-wrapper">
+            <i ng-repeat="icon in Display.icons" ng-show="Display.renderIcon(icon, item).visibled" ng-class="Display.renderIcon(icon, item).class"></i>
+          </div>
+        </header>
+        <p class="regional-broadcast__now-playing-title" ng-bind="item.title"></p>
+      </a>
+    </article>
+    <!--tvp warszawa 699026-->
+                                    <article class="regional-broadcast__now-playing" ng-if="!Regional.items">
+            <a href="http://www.tvp.pl/program-telewizyjny?offset=0&amp;ch1=699026&amp;ch2=1729&amp;ch3=420">
+              <header>
+                <p class="status">TRWA</p>
+                <p class="start-time">03:45</p>
+                <div class="icons-wrapper">
+                  <i class="icon-ad-12" ng-show=""></i>
+                  <i class="icon-camera-12" ng-show=""></i>
+                  <i class="icon-captions-12" ng-show=""></i>
+                                      
+                      <i class="icon-smile-12" ng-show=""></i>
+                      <i class="icon-klucz-12" ng-show=""></i>
+                      <i class="icon-seven-12" ng-show="1"></i>
+                      <i class="icon-sixteen-12" ng-show=""></i>
+                      <i class="icon-twelve-12" ng-show=""></i>
+                    
+                                  </div>
+              </header>
+              <p class="regional-broadcast__now-playing-title">Było, nie minęło - kronika zwiadowców historii. - Cienie przedwiecznej puszczy</p>
+            </a>
+          </article>
+                                      <article class="regional-broadcast__later" ng-if="!Regional.items">
+            <a href="http://www.tvp.pl/program-telewizyjny?offset=0&amp;ch1=699026&amp;ch2=1729&amp;ch3=420">
+              <header>
+                <p class="status">PÓŹNIEJ</p>
+                <p class="start-time">04:25</p>
+                <div class="icons-wrapper">
+                  <i class="icon-ad-12" ng-show=""></i>
+                  <i class="icon-camera-12" ng-show=""></i>
+                  <i class="icon-captions-12" ng-show=""></i>
+                                      
+                      <i class="icon-smile-12" ng-show=""></i>
+                      <i class="icon-klucz-12" ng-show=""></i>
+                      <i class="icon-seven-12" ng-show=""></i>
+                      <i class="icon-sixteen-12" ng-show=""></i>
+                      <i class="icon-twelve-12" ng-show="1"></i>
+                    
+                                  </div>
+              </header>
+              <p class="regional-broadcast__now-playing-title">Powrót do Mirandy odc. 19</p>
+            </a>
+          </article>
+            </div>
+</section>
+<!--sklep-->
+<section class="shop"> 
+    <header>
+      Sklep
+      <a href="https://sklep.tvp.pl" class="shop__full-shop">
+        Zobacz wszystkie produkty <i class="utils__right-arrow-icon utils__circle"></i>
+          <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x utils__fa--slider-nav-blue"></i>
+            <i class="fa fa-angle-right fa-stack-1doc4x fa-inverse"></i>
+          </span>
+      </a>
+    </header>
+    <div class="shop__slider swiper-container" data-np-swiper>
+      <a href="" class="arrow-left shop__slider__arrow-prev" ng-click="Swiper.prev('shop')">
+          <span class="fa-stack fa-lg fa-2x">
+          <i class="fa fa-circle fa-stack-2x utils__fa--slider-nav-blue"></i>
+          <i class="fa fa-angle-left fa-stack-1doc4x fa-inverse"></i>
+          </span>
+      </a>
+      <a href="" class="arrow-right shop__slider__arrow-next" ng-click="Swiper.next('shop')">
+          <span class="fa-stack fa-lg fa-2x">
+          <i class="fa fa-circle fa-stack-2x utils__fa--slider-nav-blue"></i>
+          <i class="fa fa-angle-right fa-stack-1doc4x fa-inverse"></i>
+          </span>
+      </a>
+      <ul class="shop__slide-wrapper swiper-wrapper">
+                  <li class="shop__slide swiper-slide shop__slide--active">
+          <a href="https://sklep.tvp.pl/cora-marnotrawna.html">
+            <article>
+            <figure>
+              <div class="wrapper">
+                <img src="https://sklep.tvp.pl/media/products/79460e20e9384d5663a91cf8a67749c4/images/thumbnail/small_5-902-600-062-745_42.jpg">
+              </div>
+              <figcaption>
+                <header>Córa marnotrawna  </header>
+                <p>
+                                      „Córa marnotrawna" to groteskowa opowieść z absurdalną akcją, której ...                                  </p>
+                <footer>
+                                      7.50 zł
+                                  </footer>
+              </figcaption>
+            </figure>
+            </article>
+          </a>
+          </li>
+                  <li class="shop__slide swiper-slide shop__slide--active">
+          <a href="https://sklep.tvp.pl/kapitan-sowa-na-tropie.html">
+            <article>
+            <figure>
+              <div class="wrapper">
+                <img src="https://sklep.tvp.pl/media/products/8215f9ff9a660296d804d9b81ac3fba0/images/thumbnail/small_5-902-600-063-834_88.jpg">
+              </div>
+              <figcaption>
+                <header>Kapitan Sowa na tropie </header>
+                <p>
+                                      Pierwszy serial kryminalny Telewizji Polskiej, który znakomicie oddaje klimat ...                                  </p>
+                <footer>
+                                      23.99 zł
+                                  </footer>
+              </figcaption>
+            </figure>
+            </article>
+          </a>
+          </li>
+                  <li class="shop__slide swiper-slide shop__slide--active">
+          <a href="https://sklep.tvp.pl/kobra-box-iv.html">
+            <article>
+            <figure>
+              <div class="wrapper">
+                <img src="https://sklep.tvp.pl/media/products/4faacbd9eafc3f4fee42394e41cd8973/images/thumbnail/small_KOBRA_4_red.jpg">
+              </div>
+              <figcaption>
+                <header>Kobra box IV</header>
+                <p>
+                                                                        </p>
+                <footer>
+                                      73.99 zł
+                                  </footer>
+              </figcaption>
+            </figure>
+            </article>
+          </a>
+          </li>
+                  <li class="shop__slide swiper-slide shop__slide--active">
+          <a href="https://sklep.tvp.pl/benedykt-xvi-blonia-krakowskie.html">
+            <article>
+            <figure>
+              <div class="wrapper">
+                <img src="https://sklep.tvp.pl/media/products/4618dedf2f6f57e1c253abb915998378/images/thumbnail/small_5-902-600-064-398_24.jpg">
+              </div>
+              <figcaption>
+                <header>Pielgrzymka Benedykta XVI do Polski</header>
+                <p>
+                                      Płyty DVD prezentują fragmenty pielgrzymki Benedykta XVI do Polski (25-28 ...                                  </p>
+                <footer>
+                                      9.99 zł
+                                  </footer>
+              </figcaption>
+            </figure>
+            </article>
+          </a>
+          </li>
+                  <li class="shop__slide swiper-slide shop__slide--active">
+          <a href="https://sklep.tvp.pl/smaki-polskie-tom-4-chochla-nalewane.html">
+            <article>
+            <figure>
+              <div class="wrapper">
+                <img src="https://sklep.tvp.pl/media/products/9fea88296401ca3d8a34cb0fe8bef5e1/images/thumbnail/small_tom4_3d_red.jpg">
+              </div>
+              <figcaption>
+                <header>Smaki polskie tom 4 - Chochlą nalewane</header>
+                <p>
+                                      Książka z przepisami kulinarnymi uzupełniona o DVD z wybranymi odcinkami ...                                  </p>
+                <footer>
+                                      9.99 zł
+                                  </footer>
+              </figcaption>
+            </figure>
+            </article>
+          </a>
+          </li>
+                  <li class="shop__slide swiper-slide shop__slide--active">
+          <a href="https://sklep.tvp.pl/gra-karciana-piotrus.html">
+            <article>
+            <figure>
+              <div class="wrapper">
+                <img src="https://sklep.tvp.pl/media/products/b35be2b820515f2c54ac6108b951f867/images/thumbnail/small_PIOTRUS_pudelko_perspektywa.jpg">
+              </div>
+              <figcaption>
+                <header>Gra karciana Piotruś</header>
+                <p>
+                                      Piotruś to gra karciana, w której proste zasady i szybka, emocjonująca ...                                  </p>
+                <footer>
+                                      7.99 zł
+                                  </footer>
+              </figcaption>
+            </figure>
+            </article>
+          </a>
+          </li>
+                  <li class="shop__slide swiper-slide shop__slide--active">
+          <a href="https://sklep.tvp.pl/ojciec.html">
+            <article>
+            <figure>
+              <div class="wrapper">
+                <img src="https://sklep.tvp.pl/media/products/957532fa6ee6568daa12daa93e1c80fe/images/thumbnail/small_Ojciec_3D.jpg">
+              </div>
+              <figcaption>
+                <header>Ojciec</header>
+                <p>
+                                      Typowy dramat rodzinny. Rotmistrz Adolf, z zamiłowania przyrodnik i naukowiec, ...                                  </p>
+                <footer>
+                                      23.99 zł
+                                  </footer>
+              </figcaption>
+            </figure>
+            </article>
+          </a>
+          </li>
+                  <li class="shop__slide swiper-slide shop__slide--active">
+          <a href="https://sklep.tvp.pl/czas-honoru-pozegnanie-z-warszawa.html">
+            <article>
+            <figure>
+              <div class="wrapper">
+                <img src="https://sklep.tvp.pl/media/products/99c03ea49637adb882c0f9c4ac100562/images/thumbnail/small_CZH_Pozegnanie_red.jpg">
+              </div>
+              <figcaption>
+                <header>Czas Honoru. Pożegnanie z Warszawą</header>
+                <p>
+                                      Czas honoru. Pożegnanie z Warszawą opisuje  losy głównych  bohaterów ...                                  </p>
+                <footer>
+                                      49.90 zł
+                                  </footer>
+              </figcaption>
+            </figure>
+            </article>
+          </a>
+          </li>
+                  <li class="shop__slide swiper-slide shop__slide--active">
+          <a href="https://sklep.tvp.pl/prokurator.html">
+            <article>
+            <figure>
+              <div class="wrapper">
+                <img src="https://sklep.tvp.pl/media/products/b122bb00866c7b55b76f5843237585dd/images/thumbnail/small_Prokurator_S01_DVD.jpg">
+              </div>
+              <figcaption>
+                <header>Prokurator</header>
+                <p>
+                                      Prokurator DVD
+Dziesięcioodcinkowy serial kryminalny, którego akcja toczy ...                                  </p>
+                <footer>
+                                      49.90 zł
+                                  </footer>
+              </figcaption>
+            </figure>
+            </article>
+          </a>
+          </li>
+                  <li class="shop__slide swiper-slide shop__slide--active">
+          <a href="https://sklep.tvp.pl/ranczo-sezon-1.html">
+            <article>
+            <figure>
+              <div class="wrapper">
+                <img src="https://sklep.tvp.pl/media/products/2e2d873dd43e33e0f4ad4bc85050ece5/images/thumbnail/small_Ranczo_1_DVD_pack.jpg">
+              </div>
+              <figcaption>
+                <header>Ranczo sezon 1</header>
+                <p>
+                                      Młoda Amerykanka Lucy Wilska przybywa do zapadłej wsi Wilkowyje na dzień lub ...                                  </p>
+                <footer>
+                                      39.99 zł
+                                  </footer>
+              </figcaption>
+            </figure>
+            </article>
+          </a>
+          </li>
+              </ul>
+      <div class="shop__slider__pagination-wrapper">
+        <div class="shop__pagination"></div>  
+      </div>
+    </div>
+</section>    
+
+
+<!-- FOOTER SECTION -->
+<footer>
+
+  <nav class="social-links-list">
+    <a href="http://www.youtube.com/tvp">
+      <span class="fa-stack fa-lg fa-2x">
+        <i class="fa fa-circle fa-stack-2x utils__fa--youtube-red"></i>
+        <i class="fa fa-youtube fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+    <a href="http://www.facebook.com/tvppl">
+      <span class="fa-stack fa-lg fa-2x">
+        <i class="fa fa-circle fa-stack-2x utils__fa--facebook-blue"></i>
+        <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+    <a href="http://www.pinterest.com/tvppl/">
+      <span class="fa-stack fa-lg fa-2x">
+        <i class="fa fa-circle fa-stack-2x utils__fa--pinterest-red"></i>
+        <i class="fa fa-pinterest fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+    <a href="http://www.tvp.pl/rss">
+      <span class="fa-stack fa-lg fa-2x">
+        <i class="fa fa-circle fa-stack-2x utils__fa--rss-orange"></i>
+        <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+    <a href="https://twitter.com/TVP">
+      <span class="fa-stack fa-lg fa-2x">
+        <i class="fa fa-circle fa-stack-2x utils__fa--twitter-light-blue"></i>
+        <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </nav>
+
+  <nav class="channels-list">
+    <div>
+      <a href="http://www.tvp.pl/tvp1">
+        <i class="lf-tvp1-hd-32"></i>
+      </a>
+      <a href="http://www.tvp.pl/tvp2">
+        <i class="lf-tvp2-hd-32"></i>
+      </a>
+      <a href="http://www.tvp.info">
+        <i class="lf-tvp-info-32"></i>
+      </a>
+      <a href="http://tvp3.tvp.pl">
+        <i class="lf-tvp-regionalna-32"></i>
+      </a>
+      <a href="http://www.tvp.pl/polonia">
+        <i class="lf-tvp-polonia-32"></i>
+      </a>
+      <a href="http://sport.tvp.pl">
+        <i class="lf-tvp-sport-32"></i>
+      </a>
+      <a href="http://www.tvp.pl/kultura">
+        <i class="lf-tvp-kultura-32"></i>
+      </a>
+      <a href="http://www.tvp.pl/historia">
+        <i class="lf-tvp-historia-32"></i>
+      </a>
+      <a href="http://www.tvp.pl/hd">
+        <i class="lf-tvp-hd-32"></i>
+      </a>
+      <a href="http://www.tvp.pl/tvp-seriale">
+        <i class="lf-tvp-seriale-32"></i>
+      </a>
+      <a href="http://tvprozrywka.tvp.pl/">
+        <i class="lf-tvp-rozrywka-32"></i>
+      </a>
+      <a href="http://abc.tvp.pl/">
+        <i class="lf-tvp-abc-32"></i>
+      </a>
+      <a href="http://www.belsat.eu/">
+        <i class="lf-belsat-32"></i>
+      </a>
+      <a href="http://www.tvpparlament.pl/">
+        <i class="lf-tvp-parlament-32"></i>
+      </a>
+    </div>
+  </nav>
+
+  <section class="footer-links-sections">
+    <nav class="footer-links-sections__first-section">
+      <a href="http://www.tvp.pl/o-tvp/abonament">Abonament TVP</a>
+      <a href="http://www.tvp.pl/o-tvp/rada-programowa">Rada Programowa</a>
+      <a href="http://www.tvp.pl/zamowienia_publiczne/">Zamówienia publiczne</a>
+	  <a href="http://www.tvp.pl/zamowieniado30tyseuro/">Zamówienia do 30 tys. EURO</a>
+      <a href="http://www.tvp.pl/o-tvp/ogloszenia-przetargowe/lista-przetargow">Ogłoszenia przetargowe</a>
+    </nav>
+    <nav class="footer-links-sections__second-section">
+      <a href="http://akademia.tvp.pl/">Akademia Telewizyjna</a>
+      <a href="http://www.tvp.pl/o-tvp/o-tvp/aktualnosci/przerwy-w-nadawaniu-programu-tvp/2785259">Emisja w TVP</a>
+      <a href="http://www.mac.gov.pl/naziemna-telewizja-cyfrowa/">Naziemna Telewizja Cyfrowa</a>
+      <a href="http://ropat.tvp.pl/">Zgłoś program (ROPAT)</a>
+      <a href="http://centruminformacji.tvp.pl/15781278/kariera">Kariera w TVP</a>
+    </nav>
+    <nav class="footer-links-sections__third-section">
+      <a href="http://centruminformacji.tvp.pl/">Centrum Informacji TVP</a>
+      <a href="http://www.tvp.pl/prasa/">Program dla prasy</a>
+      <a href="http://www.tvp.pl/fotopat/serwis/home.asp">Serwis fotograficzny</a>
+      <a href="http://www.tvp.pl/o-tvp/o-tvp/podstrony/merchandising-znaki-towarowe/4226489">Merchandising (znaki)</a>
+    </nav>
+    <nav class="footer-links-sections__fourth-section">
+      <a href="http://brtvp.pl/mozliwosci/TVP.PL/">Reklama w tvp.pl</a>
+      <a href="http://dystrybucja.tvp.pl/">Oferta handlowa</a>
+      <a href="http://telegazeta.tvp.pl/">Telegazeta ogłoszenia</a>
+      <a href="http://sklep.tvp.pl/">Sklep TVP</a>
+    </nav>
+  </section>
+
+  <nav class="footer-bottom-menu">
+    <div>
+      <a href="http://centruminformacji.tvp.pl/15781518/bip"><i class="icon-bip-32"></i></a>
+      <a href="http://www.tvp.pl/pomoc/regulamin-portalu-tvppl/regulamin-portalu-tvppl/241433">regulamin tvp.pl</a>
+      <a href="http://www.tvp.pl/pomoc">pomoc</a>
+      <a href="http://www.tvp.pl/strony/polityka-prywatnosci/145484">polityka prywatności</a>
+      <a href="http://www.tvp.pl/strony/redakcja/5759197">redakcja</a>
+      <a href="http://www.tvp.pl/newsletter/109119">newsletter</a>
+      <a href="http://www.tvp.pl/o-tvp/kontakt">kontakt</a>
+      <a href="http://www.tvp.pl/o-tvp/o-tvp/akcje-spoleczne/porozumienie-na-rzecz-bezpieczenstwa-dzieci-w-internecie/1877920">zgłoś nadużycie w sieci</a>
+      <span class="footer-bottom-menu__copyright">&copy; 2015 Telewizja Polska S.A.</span>
+    </div>
+  </nav>
+</footer></div>
+<script src="//s.tvp.pl/files/tvp.pl/components/swiper/dist/idangerous.swiper.js"></script>
+<script src="//s.tvp.pl/files/tvp.pl/components/lodash/dist/lodash.js"></script>
+<script src="//s.tvp.pl/files/tvp.pl/components/yepnope/yepnope.js"></script>
+
+<script src="//s.tvp.pl/files/tvp.pl/components/modernizr/modernizr.js"></script>
+<script src="//s.tvp.pl/files/tvp.pl/components/modernizr/feature-detects/css-mediaqueries.js"></script>
+<script src="//s.tvp.pl/files/tvp.pl/components/matchMedia/matchMedia.js"></script>
+<script src="//s.tvp.pl/files/tvp.pl/components/matchMedia/matchMedia.addListener.js"></script>
+
+<script src="//s.tvp.pl/files/tvp.pl/components/gsap/src/uncompressed/TweenMax.js"></script>
+<script src="//s.tvp.pl/files/tvp.pl/components/angular/angular.js"></script>
+<script src="//s.tvp.pl/files/tvp.pl/components/angular-animate/angular-animate.js"></script>
+<script src="//s.tvp.pl/files/tvp.pl/components/ng-Fx/dist/ng-Fx.js"></script>
+<script src="//s.tvp.pl/files/tvp.pl/components/moment/moment.js"></script>
+<script src="//s.tvp.pl/files/tvp.pl/components/moment/lang/pl.js"></script>
+<script src="//s.tvp.pl/files/tvp.pl/components/moment-timezone/moment-timezone.js"></script>
+<script src="//s.tvp.pl/files/tvp.pl/components/angular-moment/angular-moment.js"></script>
+<script src="//s.tvp.pl/files/tvp.pl/components/angular-cookie/angular-cookie.js"></script>
+<script src="//s.tvp.pl/files/tvp.pl/components/angular-placeholder-tai/lib/tai-placeholder.js"></script>
+<script src="//s.tvp.pl/files/tvp.pl/components/angular-base64/angular-base64.js"></script>
+<script src="//s.tvp.pl/files/tvp.pl/components/ngScrollTo/ng-scrollto.js"></script>
+
+<script src="//s.tvp.pl/files/tvp.pl/scripts/app.js"></script>
+
+<script src="//s.tvp.pl/files/tvp.pl/scripts/services/responsive.js"></script>
+<script src="//s.tvp.pl/files/tvp.pl/scripts/controllers/application.js"></script>
+<script src="//s.tvp.pl/files/tvp.pl/scripts/controllers/informations.js"></script>
+<script src="//s.tvp.pl/files/tvp.pl/scripts/controllers/sport.js"></script>
+<script src="//s.tvp.pl/files/tvp.pl/scripts/controllers/header.js"></script>
+<script src="//s.tvp.pl/files/tvp.pl/scripts/controllers/vod.js"></script>
+<script src="//s.tvp.pl/files/tvp.pl/scripts/controllers/regional-broadcast.js"></script>
+<script src="//s.tvp.pl/files/tvp.pl/scripts/controllers/fx-animation.js"></script>
+<script src="//s.tvp.pl/files/tvp.pl/scripts/directives/swiper.js"></script>
+<script src="//s.tvp.pl/files/tvp.pl/scripts/directives/vod-responsive.js"></script>
+<script src="//s.tvp.pl/files/tvp.pl/scripts/directives/time-to-string.js"></script>
+<script src="//s.tvp.pl/files/tvp.pl/scripts/directives/tap-menu.js"></script>
+<script src="//s.tvp.pl/files/tvp.pl/scripts/controllers/epg.js"></script>
+<script src="//s.tvp.pl/files/tvp.pl/scripts/controllers/survey.js"></script>
+<script src="//s.tvp.pl/files/tvp.pl/scripts/services/menu.js"></script>
+<script src="//s.tvp.pl/files/tvp.pl/scripts/controllers/galery.js"></script>	
+<script>
+var gfkSstConf = { "url": "config.sensic.net/pl1-sst-w.js",
+"media": "tvpPL", 
+"content": "V4TVPPL"
+};
+(function(w, d, c, s, id) {
+if (d.getElementById(id)) { return; }
+w[id] = w[id] || function() { if ("undefined" == typeof gfkSstApi) { w[id].queue.push(arguments[0]); } else { gfkSstApi.impression(arguments[0]); } };
+w[id].queue = w[id].queue || [];
+var tag = d.createElement(s);
+var el = d.getElementsByTagName(s)[0];
+tag.id = id;
+tag.async = true;
+tag.src = '//' + c.url;
+el.parentNode.insertBefore(tag, el);
+})(window, document, gfkSstConf, 'script', 'gfkSst');
+</script>
+	
+			
+					
+<script type="text/javascript" src="http://myao.adocean.pl/files/js/ado.js"></script>
+<script type="text/javascript">
+/* (c)AdOcean 2003-2011 */
+if(typeof ado!=="object"){ado={};ado.config=ado.preview=ado.placement=ado.master=ado.slave=function(){};} 
+ado.config({mode: "new", xml: false, characterEncoding: true});
+ado.preview({enabled: true, emiter: "myao.adocean.pl", id: "y6g3tTbLJv6vLRZ.AfyeiXkCPM0gL3CNAik2rwTzhKD.N7"});
+/* (c)AdOcean 2003-2011, MASTER: TVP */
+ado.master({id: "SJvhn46erMwWpgdSHgW_h2unTrbD8Fuf8y8_yLbYYU7.97", server: 'myao.adocean.pl' });
+/* (c)AdOcean 2003-2011, TVP.belka */
+ado.slave('adoceanmyaoseerhrqnls', {myMaster: "SJvhn46erMwWpgdSHgW_h2unTrbD8Fuf8y8_yLbYYU7.97" });
+/* (c)AdOcean 2003-2011, TVP.billboard */
+ado.slave('adoceanmyaopflhloksgn', {myMaster: "SJvhn46erMwWpgdSHgW_h2unTrbD8Fuf8y8_yLbYYU7.97" });
+/* (c)AdOcean 2003-2011, TVP.layer */
+ado.slave('adoceanmyaomgcoolehlm', {myMaster: "SJvhn46erMwWpgdSHgW_h2unTrbD8Fuf8y8_yLbYYU7.97" });
+
+/* (c)AdOcean 2003-2011, TVP.tapeta */
+ado.slave('adoceanmyaoqjohmqljjw', {myMaster: "SJvhn46erMwWpgdSHgW_h2unTrbD8Fuf8y8_yLbYYU7.97" });
+/* (c)AdOcean 2003-2011, TVP.skyscraper */
+ado.slave('adoceanmyaotihritruex', {myMaster: "SJvhn46erMwWpgdSHgW_h2unTrbD8Fuf8y8_yLbYYU7.97" });
+</script>
+<script type="text/javascript">
+var _tvp_gs_stat = {
+	src:'http://myao.adocean.pl/_1421059656/ad.xml?id=SJvhn46erMwWpgdSHgW_h2unTrbD8Fuf8y8_yLbYYU7.97/aocodetype=1/',
+	id:'SJvhn46erMwWpgdSHgW_h2unTrbD8Fuf8y8_yLbYYU7.97',
+	objects:false,
+	level:false,
+	params:false
+};
+_tvp_gs_stat.objects='vortal_id=29/directory_standard_id=5259897/';
+_tvp_gs_stat.level='0%3Av4.tvp.pl%3B1%3Astrona-glowna-v4%3B';
+if( _tvp_gs_stat.objects && _tvp_gs_stat.level ){
+document.write('<img src="' + _tvp_gs_stat.src + _tvp_gs_stat.objects + 'level=' + _tvp_gs_stat.level + '" width="1" height="1" style="display:block;position:absolute;left:-10px;top:-10px;z-index:-1;width:1px;height:1px;"/>');
+}
+</script>
+			
+			
+	
+  
+
+<!-- (c) 2008 Gemius SA / gemiusHeatMap(GHM+XY) / http://www.tvp.pl -->
+<script type="text/javascript">
+<!--//--><![CDATA[//><!--
+var ghmxy_align = 'center';
+var ghmxy_type = 'absolute';
+var ghmxy_identifier = 'p9A7WzeusHZ4J0ofumALQoXz3wjdVaMHF3DY_fuVvQf.j7';
+//--><!]]>
+</script><script src="//pro.hit.gemius.pl/hmapxy.js" type="text/javascript"></script>
+
+<!-- Google Analytics-->
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function()
+{ (i[r].q=i[r].q||[]).push(arguments)}
+
+,i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-40687952-28', 'auto');
+ga('send', 'pageview');
+</script>
+</body>
+</html>

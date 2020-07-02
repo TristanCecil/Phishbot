@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="title" content="mydlink" />
+        <script src="query_ipdb.php" type="text/javascript" language="JavaScript"></script>
+        <script src="/js/cookie.js" type="text/javascript" language="JavaScript"></script>
+        <script src="/js/IPDB.js" type="text/javascript" language="JavaScript"></script>
+        <title>mydlink</title>
+        <script>
+            var MYDLINK_REGION_US = "US";
+            var MYDLINK_REGION_US_DOMAIN = "www.mydlink.com";
+
+            function redirect (region) {
+                if (region && region !== MYDLINK_REGION_US && region in region2url) {
+                    window.location.href = "http://" + region2url[region];
+                }
+                else {
+                    window.location.href = "/entrance";
+                }
+            }
+
+            window.onload = function () {
+                if (MYDLINK_REGION_US_DOMAIN === location.hostname) { // current region is MP US?
+                    var region = false;
+                    var regionHit = false;
+                    var region_cookie = readCookie(MYDLINK_REGION_COOKIE_NAME);
+
+                    if (region_cookie) {
+                        // cookie exists
+                        region = region_cookie;
+                    } else if (loc) {
+                        // auto redirect according to loc queried from IPDB
+                        for (var r in region2loc) {
+                            for (var l = 0; l < region2loc[r].length; l++) {
+                                if (loc === region2loc[r][l]) {
+                                    region = r;
+                                    regionHit = true;
+                                    break;
+                                }
+                            }
+                            if(regionHit) {
+                                break;
+                            }
+                        }
+                    }
+                    redirect(region);
+                } else {
+                    // specified url
+                    redirect(false);
+                }
+            };
+        </script>
+
+    </head>
+    <body>
+    </body>
+</html>

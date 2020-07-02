@@ -1,0 +1,1083 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:fb="http://www.facebook.com/2010/fbml"
+      xmlns:og="http://opengraphprotocol.org/schema/"
+      xmlns:d="http://dictionary.com/2011/dml">
+<head>
+    <script>var CTSParams = {"infix":"","clkpage":"ref-home","clksite":"ref","clkld":0}</script>    <meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Cache-Control" content="no-cache"/>
+    <meta http-equiv="Pragma" content="no-cache"/>
+    <link rel="search" type="application/opensearchdescription+xml" href="http://www.reference.com/opensearch_desc.xml" title="Dictionary.com" />
+        <title>Reference.com - A Free Online Encyclopedia & Information Reference</title>
+            <meta name="description" content="Reference.com - a free online encyclopedia and information reference. Research articles from Columbia Encyclopedia and Encyclopedia Britannica." />
+        <meta name="keywords" content="Encyclopedia, reference, facts, knowledge, information, articles, biographies, famous people, history, dictionary, dictionary.com, word of the day" />
+        <meta property="og:title" content="Reference.com - A Free Online Encyclopedia & Information Reference"/>
+    <meta property="og:site_name" content="Reference.com"/>
+        <meta property="og:image" content="http://static.sfdict.com/refcloud/img/social_logo.png"/>
+        <meta property="fb:app_id" content= "124281907613554"/>
+    <meta property="fb:admins" content="100000304287730,109125464873" />
+    <link href="https://plus.google.com/105727935828537237592" rel="publisher">
+
+    <link rel="canonical" href="http://www.reference.com/"/>
+
+    <link rel="shortcut icon" href="http://static.sfdict.com/refcloud/favicon.ico"/>
+                <link rel="stylesheet" href="http://static.sfdict.com/app/css/topheavy_header_footer-f8c64.css" type="text/css" media="all"/>
+                
+        <link rel="stylesheet" href="http://static.sfdict.com/refcloud/css/home-62f34.css" type="text/css" media="all"/>
+
+           
+        <script type="text/javascript">
+    "use strict";
+
+    var adStart = Date.now(),
+        OX_dfp_ads = [["/23219321/iac.dict.refrnc.dw/homepage/homepage/homepage",["728x90"],"rcomPUHPTop-728x90",{'pos':'top','pos2':'728x90_1',}],["/23219321/iac.dict.refrnc.dw/homepage/homepage/homepage",["300x250"],"rcomPUHPTop-300x250",{'pos':'top','pos2':'300x250_1',}],["/23219321/iac.dict.refrnc.dw/homepage/homepage/homepage",["300x250"],"rcomPUHPBtm-300x251",{'pos':'bot','pos2':'300x250_2',}],],
+        attachScriptAsync, targetingComplete ,oxDone,
+        gptCallIntiated = false,
+        completedTargeting = {},
+        gptApp = gptApp || {},
+        googletag = googletag || {},
+        targetingEvtResponseTime = [];
+
+    gptApp.ads = gptApp.ads || [];
+    googletag.cmd = googletag.cmd || [];
+
+    attachScriptAsync = function(scriptInfo) {
+
+        /* Method to inject script dynamically to have async support */
+
+        var tag = document.createElement("script"),
+            p, node = document.getElementsByTagName("script")[0];
+
+        tag.async = true;
+
+        for (p in scriptInfo) {
+            if (scriptInfo.hasOwnProperty(p) && p != "src") {
+                tag[p] = scriptInfo[p];
+            }
+        }
+        tag.src = scriptInfo.src;
+        node.parentNode.insertBefore(tag, node);
+    };
+
+    gptApp.renderAds = function() {
+
+        /* Render ad slot display after all targeting setup Adslots are pushed into gptApp array  */
+        var len = gptApp.ads.length;
+        for (var i = 0 ; i < len ; i++) {
+            gptApp.ads[i]();
+        }
+
+        gptApp.ads.push = function(fn) {
+            if ("function" === typeof fn) {
+                setTimeout(fn, 0);
+            }
+        };
+    };
+
+    targetingComplete = function(event) {
+        // enable and render ads for GPT services call that now all targeting finished
+        completedTargeting[event] = true;
+
+        if(!gptCallIntiated ) {
+            // Measuring Each traget event time to calculate timeout
+            targetingEvtResponseTime.push(event+"|"+(Date.now() - adStart));
+
+            if ((completedTargeting.lot && completedTargeting.amz && completedTargeting.ox) || event == "fallback") {
+                gptCallIntiated = true;
+                googletag.cmd.push(function(){
+                    googletag.enableServices();
+                    googletag.pubads().setTargeting("perf", targetingEvtResponseTime);
+                });
+                gptApp.renderAds();
+            }
+        }
+    };
+
+    oxDone = function(events) {
+        /* Global Callback Function invoked by OpenX to inform price support */
+        googletag.cmd.push(function() {
+            //OPEN X GPT targeting Params
+            try {
+                OX.dfp_bidder.setOxTargeting(googletag.pubads().getSlots());
+            } catch (e) {}
+        });
+        targetingComplete("ox");
+    };
+
+    // Google Publisher Tag
+    attachScriptAsync({ src: "//www.googletagservices.com/tag/js/gpt.js"  });
+
+    // AMAZON Bidder Tag
+    attachScriptAsync({
+        src: "//c.amazon-adsystem.com/aax2/amzn_ads.js",
+        onload : function () {
+            try {
+                amznads.getAdsCallback('3067', function(){
+                    googletag.cmd.push(function() {
+                        // Amazon GPT targeting Params
+                        amznads.setTargetingForGPTAsync('yip4');
+                    });
+                    targetingComplete("amz");
+                }, 1000);
+            } catch (e) { /* ignore */ }
+        }
+    });
+
+    // LOTAME Measurement Tag For Dictionary.com
+    attachScriptAsync({
+        id: "LOTCC_4845",
+        src: "//tags.crwdcntrl.net/c/4845/cc.js?ns=_cc4845",
+        onload: function() {
+            try {
+                _cc4845.add("ctax", "Sites^Dictionary^Desktop Sites^ref^PageName^ref-home^^ref-home");
+                _cc4845.bcp();
+            } catch (e) {}
+        }
+    });
+
+    // Lotame Audience Tag for IAC Network
+    attachScriptAsync({
+        src: "//ad.crwdcntrl.net/5/c=4736/pe=y/var=ccauds",
+        onload :function() {
+            googletag.cmd.push(function() {
+                // Lotame GPT targeting Params
+                var dartCC, lpid, ltpid, cci, audience;
+                if (typeof(ccauds) != 'undefined' && ccauds.Profile) {
+                    dartCC = [];
+                    lpid = (typeof(ccauds.Profile.pid) != 'undefined') ? ccauds.Profile.pid : "";
+                    ltpid = (typeof(ccauds.Profile.tpid) != 'undefined') ? ccauds.Profile.tpid : "";
+                    audience = ((ccauds.Profile.Audiences || {})
+                        .Audience) || [];
+                    for (cci = 0; cci < audience.length; cci++) {
+                        dartCC.push(audience[cci].abbr);
+                    }
+                    googletag.pubads().setTargeting("lpid", lpid).setTargeting("ltpid", ltpid).setTargeting("lseg", dartCC);
+                }
+            });
+            targetingComplete("lot");
+        }
+    });
+
+    // OPEN X Bidder Tag
+    attachScriptAsync({
+        src: "//ox-d.ask.servedbyopenx.com/w/1.0/jstag?nc=23219321-dictionary",
+        onload: function() {
+            setTimeout(function() {
+                if (!('OX' in window)) {
+                    targetingComplete("ox");
+                }
+            }, 500);
+        }
+    });
+
+    // Fallback Method to invoke ad after 1000 miliseconds irrespective of targeting scripts
+
+    setTimeout(function() {
+        targetingComplete("fallback");
+    }, 1500);
+
+</script>
+
+<script>
+    function getRefValue(referrer) {
+        if(referrer.indexOf('dictionary.com') == -1 && referrer.indexOf('thesaurus.com') == -1 && referrer.indexOf('reference.com') == -1) {
+            return 'organic';
+        }
+        return 'direct';
+    }
+    function getRPV() {
+        return Math.floor((Math.random()*100)+1).toString();
+    }
+    function getDCRefValue() {
+        return encodeURIComponent(window.location.href);
+    }
+    function getDayofWeek() {
+        return new Date().getDay().toString();
+    }
+    
+    googletag.slots = {};
+    googletag.slotsCount = 3;
+    googletag.renderedAdsCount = 0;
+    /** Store spot data that has been already rendered **/
+    googletag.adsRenderedInfo = (function () {
+        var renderedAds = [];
+        return {
+            set: function(name, size) {
+                renderedAds[name] = {
+                    size: size
+                };
+            },
+            get: function(name) {
+                return renderedAds[name];
+            }
+        }
+    }());
+    googletag.cmd.push(function() {
+
+        googletag.slots["rcomPUHPTop-728x90"] = googletag.defineSlot("/23219321/iac.dict.refrnc.dw/homepage/homepage/homepage", [728,90], "rcomPUHPTop-728x90").addService(googletag.pubads()).setTargeting("pos", "top").setTargeting("pos2", "728x90_1").setTargeting("tx1", "homepage").setTargeting("tx2", "homepage").setTargeting("ptype", "homepage");googletag.slots["rcomPUHPTop-300x250"] = googletag.defineSlot("/23219321/iac.dict.refrnc.dw/homepage/homepage/homepage", [300,250], "rcomPUHPTop-300x250").addService(googletag.pubads()).setTargeting("pos", "top").setTargeting("pos2", "300x250_1").setTargeting("tx1", "homepage").setTargeting("tx2", "homepage").setTargeting("ptype", "homepage");googletag.slots["rcomPUHPBtm-300x251"] = googletag.defineSlot("/23219321/iac.dict.refrnc.dw/homepage/homepage/homepage", [300,250], "rcomPUHPBtm-300x251").addService(googletag.pubads()).setTargeting("pos", "bot").setTargeting("pos2", "300x250_2").setTargeting("tx1", "homepage").setTargeting("tx2", "homepage").setTargeting("ptype", "homepage");
+        googletag.pubads().setTargeting("ref", getRefValue(document.referrer)).setTargeting("lang","en").setTargeting("rpv", getRPV()).setTargeting("dc_ref", getDCRefValue()).setTargeting("loc", "US").setTargeting("ld", "0").setTargeting("dow", getDayofWeek());
+
+        var get_request_identifier = (function () {
+                return Math.random().toString(36).substr(2)
+            })(),
+            get_modified_page_url = (function () {
+                sep = window.location.search.length >= 0 && window.location.href.indexOf("?") !== -1 ? "&" : "?";
+                return window.location.href + sep + "rquid=" + get_request_identifier
+            })();
+
+        googletag.pubads().setTargeting("rquid",get_request_identifier);
+        googletag.pubads().setTargeting("page_url",get_modified_page_url);
+
+        
+                var adtest = location.search.match(new RegExp("[\?\&]adtest=([^\&]*)(\&?)","i"));
+        if(adtest != null && adtest[1] != "" ){
+            googletag.pubads().setTargeting("adtest",adtest[1]);
+        }
+
+                googletag.pubads().enableSingleRequest();
+                        googletag.pubads().enableAsyncRendering();
+                
+        googletag.adsLoaded = function () {
+            return googletag.renderedAdsCount >= googletag.slotsCount;
+        };
+        googletag.pubads().addEventListener('slotRenderEnded', function(data) {
+
+            var slotKey;
+
+            for (slotKey in googletag.slots) {
+                if(googletag.slots[slotKey] == data.slot) {
+                    break;
+                }
+            }
+
+            googletag.adsRenderedInfo.set(slotKey, data.size);
+
+            googletag.renderedAdsCount += 1;
+                    });
+    });
+</script>
+    <script type="text/javascript" src="http://static.sfdict.com/app/js/jquery-1.11.3.min-6ea01.js"></script>
+    <script type="text/javascript" src="http://static.sfdict.com/app/js/jquery-ui-1.11.4.min-d23d5.js"></script>
+                    <script type="text/javascript" src="http://static.sfdict.com/app/js/topheavy_header_footer-62ee0.js"></script>
+            <script type="text/javascript" src="http://static.sfdict.com/refcloud/js/home-97cb2.js"></script>
+
+
+    
+            
+            <script type="text/javascript">
+        var phpVarinJS = {
+            'flogoClick': 'http://track.reference.com/track/clickInner?site=ref&pageName=ref-home&ldid=0&target=ref-logo',
+            'prevWordsClick':'http://track.reference.com/track/clickInner?site=ref&pageName=ref-home&ldid=0&target=previous-words',
+            'socialClick':'http://track.reference.com/track/social?site=ref&pageName=ref-home&ldid=0',
+            'favoritesAppUrl':'http://app.dictionary.com/favorites',
+            'stickyFooter':'http://track.reference.com/track/stickyFooter?site=ref&pageName=ref-home&ldid=0',
+            'cornerPeelGif':'false',
+            'cornerPeelFlash':'false',
+            'gifCloseButtonImage':'',
+            'flashCloseButtonImage':'',
+            'cornerPeelGifHrefURL':'',
+            'cornerPeelFlashHrefURL':'',
+            'cornerPeelOpeninNewwindow':'false', 
+            'ReferenceHp':'reference',
+            'slideShowBaseURL':'http://ref.reference.com/',
+            'appDomainURL':'http://www.reference.com/',
+            'ldid':'0',
+            'appcoreURL':'http://app.dictionary.com/',
+            'slideShowCloseTrackURL': 'http://track.reference.com/track/close?site=ref&pageName=ref-home&ldid=0',
+            'subscriptionUrl': 'http://app.reference.com/api/ajaxmailer/subscription?pageName=ref-home&siteName=ref&ld=0&mseg=24',
+            'isUserUnder13' : false        };
+    </script>
+
+
+    <!-- Begin Quantcast Tag, part 1 -->
+<script type="text/javascript"> 
+  
+  var _qevents = _qevents || [];
+
+  (function() {
+   var elem = document.createElement('script');
+
+   elem.src = (document.location.protocol == "https:" ? "https://secure" : "http://edge") + ".quantserve.com/quant.js";
+   elem.async = true;
+   elem.type = "text/javascript";
+   var scpt = document.getElementsByTagName('script')[0];
+   scpt.parentNode.insertBefore(elem, scpt);  
+  })();
+</script>
+<!-- End Quantcast Tag, part 1 -->
+<script type='text/javascript'>
+    window.dataLayer = window.dataLayer || [];
+
+    dataLayer.push({
+        'event': 'pageview',
+        'device': 'Desktop',
+        'pageName': 'ref-home',
+        'LDid': '0',
+        'mseg': "24",
+        'sessionId': "VzeQrtGFUE9wcMv7",
+        'browserId': "VzeQrtGFUE93AUQi"    });
+</script>
+</head>
+<body>
+<!-- Google Tag Manager -->
+<noscript>
+    <iframe src="//www.googletagmanager.com/ns.html?id=GTM-P7B22H" height="0" width="0" style="display:none;visibility:hidden">
+    </iframe>
+</noscript>
+<script>
+    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;
+        j.src= '//www.googletagmanager.com/gtm.js?id='+i+dl;
+        f.parentNode.insertBefore(j, f);
+    })(window,document,'script','dataLayer','GTM-P7B22H');
+</script>
+<!-- End Google Tag Manager -->    
+    
+    
+<div id="ad_1x1" class="ad bannerad"></div>        
+<!-- Needed the below parameter for clicktale pixel immediate after body start-->
+<script type="text/javascript">var WRInitTime=(new Date()).getTime();</script>
+    <div id="topwrapper">
+<style type="text/css">
+    #main {
+        top: 0 !important;
+    }
+
+</style>
+<div id="header">
+    <div id="hdr">
+            <ul id="nav" class="reference">
+        <li class="dict"><span class="thvybrdr" style="float:left;"></span><a href="http://www.dictionary.com/" data-cts='{"linkId":"tqks0v","infix":"","domain":"reference.com","clkpage":"ref-home","clkmod":"dtab","clksite":"ref","clkld":0}'>Dictionary</a><span class="thvybrdr" style="float:left;"></span></li>
+        <li class="thes"><a href="http://www.thesaurus.com/" data-cts='{"linkId":"qxnxzj","infix":"","domain":"reference.com","clkpage":"ref-home","clkmod":"ttab","clksite":"ref","clkld":0}'>Thesaurus</a><span class="thvybrdr"></span></li>
+        <li class="trans"><a href="http://translate.reference.com/" data-cts='{"linkId":"s6ljc3","infix":"","domain":"reference.com","clkpage":"ref-home","clkmod":"trtab","clksite":"ref","clkld":0}'>Translate</a><span class="thvybrdr"></span></li>
+    </ul>
+        <div id="tpnv">
+                            <ul class="menu" >
+                                                                        <li><a id="loginHeaderLink" href="http://app.dictionary.com/login/core?source=header_ref&logindest=http://www.reference.com/">Log In</a></li>
+                            <li><a href="http://app.dictionary.com/signup/core?source=header_ref&logindest=http://www.reference.com/">Sign Up</a></li>
+                                                            </ul>
+                </div>
+</div>
+</div></div>
+
+<div id="botwrapper" class="botwrpreference">
+    <div id="bothdr">
+<h1 class="logo" > <a href="http://www.reference.com/" data-cts='{"linkId":"yg487x","infix":"","domain":"reference.com","clkpage":"ref-home","clkmod":"dkscr","clksite":"ref","clkld":0}'>Dictionary.com</a></h1>
+
+<!-- ALT LOG -->
+              
+                   
+              <form id="main_search" action="http://www.reference.com/dic" onsubmit="return formcheck();" class="search-form">
+                <fieldset>
+                    <div class="area-holder">
+                        <input size="40" id="q" value="" autoComplete="off" type="text" name="q" onclick="make_blank();" onkeypress="make_blank();"/>
+                        <input type="hidden" id="dq" value="'.$default_search_text.'"/>
+                        <input type="hidden" name="s" value="t" />
+                                            </div>
+                    <input type="submit" value="search" />
+                </fieldset>
+            </form>
+           
+            
+
+<!-- / -->
+
+ 
+
+    
+</div>
+</div>
+<!-- closing div for seasonwrp-->
+<div id="main">
+
+
+    <ul class="sub-nav">
+        <li><a href="http://blog.dictionary.com/"  class="nbl" data-cts='{"linkId":"prrhwm","infix":"","domain":"reference.com","clkpage":"","clkmod":"htwd","clksite":"ref","clkld":0}'>Our Blog</a></li>
+        <li><a href="http://www.reference.com/fun/crossword" data-cts='{"linkId":"dp2158","infix":"","domain":"reference.com","clkpage":"","clkmod":"dstmp","clksite":"ref","clkld":0}'>Daily Crossword</a></li>
+        <li><a href="http://www.reference.com/crossword/index.html" data-cts='{"linkId":"6g2ifa","infix":"","domain":"reference.com","clkpage":"","clkmod":"crslv","clksite":"ref","clkld":0}'>Crossword Solver</a></li>
+        <li><a href="http://www.reference.com/apps"  class="nbr" data-cts='{"linkId":"d874f6","infix":"","domain":"reference.com","clkpage":"","clkmod":"dmbl","clksite":"ref","clkld":0}'>Apps</a></li>
+    </ul>
+
+    <!-- banner-holder -->
+        <div class="banner-holder" style="width:728px;min-height:30px">
+        <div id="rcomPUHPTop-728x90"><script type="text/javascript">gptApp.ads.push( function() {googletag.cmd.push(function() { googletag.display("rcomPUHPTop-728x90"); });});</script></div>    </div>       
+        
+    <!-- popup -->
+            <!-- main-holder -->
+    <div class="main-holder">
+        <!-- side bar -->
+        <div id="sidebar">
+            <div class="sidebar-holder">
+                <div class="sidebar-frame">
+                    <!-- Word of the Day Section -->
+                    <div class="word-section">
+                       <h2>Word <em>of the</em> Day</h2>
+                        <a href="http://www.dictionary.com/wordoftheday/"  class="wotd"  style="font-size:20px" data-linkid="nx1fkx" >forthwith</a>                        					                                                     <a href="http://www.dictionary.com/wordoftheday/"  class="wotd_txt" data-linkid="nx1fkx" >immediately; at once; without delay.                            </a>
+                        <div>
+                       <a href="http://www.dictionary.com/wordoftheday/" data-linkid="nx1fkx" >More...</a>
+                                                <div id="aud">
+                            <span id="spk0"><embed id="speaker" width="17" height="15" align="texttop" flashvars="soundUrl=http%3A%2F%2Fstatic.sfdict.com%2Fdictstatic%2Fdictionary%2Faudio%2Fluna%2FF03%2FF0310800.mp3" salign="t" menu="false" loop="false" quality="high" src="http://static.sfdict.com/refcloud/img/speaker-8e975.swf" type="application/x-shockwave-flash"></span>                        </div>
+                                                </div>
+                        <form action="#" class="sign-form" onsubmit="return emailSignUp()">
+                           <fieldset>
+                               <label>SIGN UP:</label>
+                               <div class="form-holder">
+                                   <div class="area-holder">
+                                       <input id="emailTbox" type="text" value="email" onclick="signup_blank()"/>
+                                   </div>
+                                                                           <input type="submit" value="" class="img-holder" alt="">
+                                        
+                               </div>
+                           </fieldset>
+                        </form>
+
+                    <script type="text/javascript">
+                        wtd = "forthwith";
+                        wdesc = "immediately; at once; without delay.";
+                        wln = 'http://www.dictionary.com';
+                        window.fbAsyncInit = function () {
+                            FB.JSON.stringify = function (value) {
+                                return JSON.stringify(value)
+                            };
+                            FB.init({appId:'153887831292919', status:true, cookie:true, xfbml:true});
+                            FB.XFBML.parse();
+                        };
+                    </script>
+
+                        <div class="social-networks">
+                           <a id="fbSh" class="facebook"></a>
+                           <a id="fbTw" class="twitter" href="http://twitter.com/share?url=http%3A%2F%2Fwww.dictionary.com%2Fwordoftheday&text=RT @  Word of the Day - forthwith: immediately; at once; without delay.&via=dictionarycom"
+                                  rel="nofollow" target="_blank"></a>
+                            <div id="po_st">
+                                                                                                <a class="pinterest" href="https://plus.google.com/share?url=http://www.dictionary.com/wordoftheday/archive/2016/05/14.html?word=forthwith"
+                                   onclick="javascript:window.open(this.href,'', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;"></a>
+                                                            </div>
+                      </div>                           
+                       <div id="fb-root"></div>
+                       <div class="prev"><a id="prev_words" href="#prev-words" onclick="smoothscroll('prev-words')">Previous Words</a></div>
+                   </div>
+                    <div class="zigzag"></div>
+                                        <div class="gray-box">
+                        <h2 style="cursor: pointer;" onmousedown="moduleClickHandler(event,'http://dynamo.dictionary.com/games/315874/words-used-in-some-of-the-best-sentences-in-english-literature/match?mp_source=9q3oel','http://click.reference.com/click/rtourp?clksite=ref&clkpage=&clkld=&clkmod=newsEntry&clkdest=http%3A%2F%2Fdynamo.dictionary.com%2Fgames%2F315874%2Fwords-used-in-some-of-the-best-sentences-in-english-literature%2Fmatch%3Fmp_source%3D9q3oel')">Writers' Secrets</h2>
+                        <div class="gray-item">
+                            <h3 style="cursor: pointer;" onmousedown="moduleClickHandler(event,'http://dynamo.dictionary.com/games/315874/words-used-in-some-of-the-best-sentences-in-english-literature/match?mp_source=9q3oel','http://click.reference.com/click/rtourp?clksite=ref&clkpage=&clkld=&clkmod=newsEntry&clkdest=http%3A%2F%2Fdynamo.dictionary.com%2Fgames%2F315874%2Fwords-used-in-some-of-the-best-sentences-in-english-literature%2Fmatch%3Fmp_source%3D9q3oel')" class="gray-title">21 perfectly used words</h3>
+                            <p>Want to write beautiful sentences? Try learning words that other writers have used to perfection.</p>
+                            <a href="http://dynamo.dictionary.com/games/315874/words-used-in-some-of-the-best-sentences-in-english-literature/match?mp_source=9q3oel"  class="more" data-cts='{"linkId":"rtourp","infix":"","domain":"reference.com","clkpage":"","clkmod":"newsEntry","clksite":"ref","clkld":0}'>Start here</a>
+                        </div>
+                        <a class="gray-item" style="cursor: pointer;text-decoration: none; color: inherit;" onmousedown="moduleClickHandler(event,'http://quotes.dictionary.com/The_best_author_will_be_the_one_who','http://click.reference.com/click/smtdvk?clksite=ref&clkpage=&clkld=&clkmod=newsQuote&clkdest=http%3A%2F%2Fquotes.dictionary.com%2FThe_best_author_will_be_the_one_who')">
+                            <h3>The best author will be the one who is ashamed to become . . .</h3>
+                        </a>
+                        <a class="image-holder" style="display: block" onmousedown="moduleClickHandler(event,'http://quotes.dictionary.com/The_best_author_will_be_the_one_who','http://click.reference.com/click/smtdvk?clksite=ref&clkpage=&clkld=&clkmod=newsQuote&clkdest=http%3A%2F%2Fquotes.dictionary.com%2FThe_best_author_will_be_the_one_who')">
+                            <img style="cursor: pointer;" src="http://static.sfdict.com/assets/317-1978913-0.jpeg" width="50" height="50" />                            <p style="cursor: pointer;">Friedrich Nietzsche 1844 -1900</p>
+                        </a>
+                    </div>
+                                                            <!-- white-box -->
+                    <div id ="prev-words" class="white-box">
+                        <h2>Previous<br>Words <em>of the</em> Day</h2>
+<ul>
+
+<li><a  data-cts='{"linkId":"fttu0h","infix":"","domain":"dictionary.com","clkpage":"","clkmod":"pwotd","clksite":"ref","clkld":0,"ordinal":"1"}' data-ordinal="1" href="http://dictionary.reference.com/wordoftheday/2014/11/26/pabulum">pabulum</a>
+<li><a  data-cts='{"linkId":"fttu0h","infix":"","domain":"dictionary.com","clkpage":"","clkmod":"pwotd","clksite":"ref","clkld":0,"ordinal":"1"}' data-ordinal="1" href="http://dictionary.reference.com/wordoftheday/2014/11/25/nostomania">nostomania</a>
+<li><a  data-cts='{"linkId":"fttu0h","infix":"","domain":"dictionary.com","clkpage":"","clkmod":"pwotd","clksite":"ref","clkld":0,"ordinal":"1"}' data-ordinal="1" href="http://dictionary.reference.com/wordoftheday/2015/01/14/periphrasis">periphrasis</a>
+<li><a  data-cts='{"linkId":"fttu0h","infix":"","domain":"dictionary.com","clkpage":"","clkmod":"pwotd","clksite":"ref","clkld":0,"ordinal":"1"}' data-ordinal="1" href="http://dictionary.reference.com/wordoftheday/2015/02/27/ad%20hockery">ad hockery</a>
+<li><a  data-cts='{"linkId":"fttu0h","infix":"","domain":"dictionary.com","clkpage":"","clkmod":"pwotd","clksite":"ref","clkld":0,"ordinal":"2"}' data-ordinal="2" href="http://dictionary.reference.com/wordoftheday/2015/02/07/epistolize">epistolize</a>
+<li><a  data-cts='{"linkId":"fttu0h","infix":"","domain":"dictionary.com","clkpage":"","clkmod":"pwotd","clksite":"ref","clkld":0,"ordinal":"1"}' data-ordinal="1" href="http://dictionary.reference.com/wordoftheday/2014/12/30/evanesce">evanesce</a>
+<li><a  data-cts='{"linkId":"fttu0h","infix":"","domain":"dictionary.com","clkpage":"","clkmod":"pwotd","clksite":"ref","clkld":0,"ordinal":"1"}' data-ordinal="1" href="http://dictionary.reference.com/wordoftheday/2015/02/05/succorance">succorance</a>
+<li><a  data-cts='{"linkId":"fttu0h","infix":"","domain":"dictionary.com","clkpage":"","clkmod":"pwotd","clksite":"ref","clkld":0,"ordinal":"1"}' data-ordinal="1" href="http://dictionary.reference.com/wordoftheday/2014/11/13/horripilation">horripilation</a>
+<li><a  data-cts='{"linkId":"fttu0h","infix":"","domain":"dictionary.com","clkpage":"","clkmod":"pwotd","clksite":"ref","clkld":0,"ordinal":"1"}' data-ordinal="1" href="http://dictionary.reference.com/wordoftheday/2014/02/06/neologize">neologize</a>
+<li><a  data-cts='{"linkId":"fttu0h","infix":"","domain":"dictionary.com","clkpage":"","clkmod":"pwotd","clksite":"ref","clkld":0,"ordinal":"1"}' data-ordinal="1" href="http://dictionary.reference.com/wordoftheday/2015/02/06/tenebrific">tenebrific</a>
+<li><a  data-cts='{"linkId":"fttu0h","infix":"","domain":"dictionary.com","clkpage":"","clkmod":"pwotd","clksite":"ref","clkld":0,"ordinal":"1"}' data-ordinal="1" href="http://dictionary.reference.com/wordoftheday/2015/02/22/glitterati">glitterati</a>
+<li><a  data-cts='{"linkId":"fttu0h","infix":"","domain":"dictionary.com","clkpage":"","clkmod":"pwotd","clksite":"ref","clkld":0,"ordinal":"1"}' data-ordinal="1" href="http://dictionary.reference.com/wordoftheday/2014/12/13/whippersnapper">whippersnapper</a>
+<li><a  data-cts='{"linkId":"fttu0h","infix":"","domain":"dictionary.com","clkpage":"","clkmod":"pwotd","clksite":"ref","clkld":0,"ordinal":"1"}' data-ordinal="1" href="http://dictionary.reference.com/wordoftheday/2014/11/12/clowder">clowder</a>
+
+</ul>
+<a  data-cts='{"linkId":"fttu0h","infix":"","domain":"dictionary.com","clkpage":"","clkmod":"pwotd","clksite":"ref","clkld":0,"ordinal":"8"}' data-ordinal="8" href="http://dictionary.reference.com/wordoftheday">See More...</a>                    </div>
+                                        </div>
+                </div>
+            </div>
+            <!-- Two columns -->
+            <div id="twocolumns">
+                <!-- content -->
+                <div id="content">
+                                        <a href="http://dictionary.reference.com/slideshows/baby-animals#leveret" data-linkid="9q3oel" >                        <!-- gallery -->
+                        <ul class="gallery">
+                            <li class="active">
+                                <img src="http://static.sfdict.com/assets/4029-7779869-0.jpg" width="460" height="220" />                                <div class="text-box">
+                                    <div class="text-holder">
+                                        <h2>Sure they're cute, but what are they called?</h2>
+                                        <p></p>
+                                        <p>~Watch the slideshow on baby animals' names now</p>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </a>
+                                        <!-- two-columns -->
+                    <div class="two-columns">
+                        <!-- col -->
+                        <div class="col">
+                                                        <div class="word-box">
+                                <h2 class="title-reference" style="margin:0 0 13px;">
+   <a href="http://dictionary.reference.com/browse/Pneumonoultramicroscopicsilicovolcanoconiosis"  data-cts='{"linkId":"9emnlj","infix":"","domain":"dictionary.com","clkpage":"","clkmod":"hero2","clksite":"ref","clkld":0,"ordinal":"1"}' data-ordinal="1">
+
+
+   <a href="http://dictionary.reference.com/browse/Pneumonoultramicroscopicsilicovolcanoconiosis"  data-cts='{"linkId":"9emnlj","infix":"","domain":"dictionary.com","clkpage":"","clkmod":"hero2","clksite":"ref","clkld":0,"ordinal":"2"}' data-ordinal="1"><em>the</em> Definition</a></a>
+</h2>
+
+
+<a href="http://dictionary.reference.com/browse/Pneumonoultramicroscopicsilicovolcanoconiosis"  data-cts='{"linkId":"9emnlj","infix":"","domain":"dictionary.com","clkpage":"","clkmod":"hero2","clksite":"ref","clkld":0,"ordinal":"3"}' data-ordinal="2">
+   <img src="http://static.dictionary.com/homepage/carousel/September-2012/ruler.jpg" width="208" height="74" alt="Pneumonoultramicroscopicsilicovolcanoconiosis" />
+</a>
+
+<h3>
+   <a href="http://dictionary.reference.com/browse/Pneumonoultramicroscopicsilicovolcanoconiosis"  data-cts='{"linkId":"9emnlj","infix":"","domain":"dictionary.com","clkpage":"","clkmod":"hero2","clksite":"ref","clkld":0,"ordinal":"4"}' data-ordinal="3">
+       What is the longest word in the English language?
+
+   </a>
+</h3>
+<p>You may have heard that antidisestablishmentarianism is the longest word in English. It's not. 
+</p>
+<a class="more" href="http://dictionary.reference.com/browse/Pneumonoultramicroscopicsilicovolcanoconiosis"   data-ordinal="4">Find out what is here.
+</a>                                                            </div>
+                                                                                                                <div class="reference-box">
+                                <h3 class="title-reference">For <em>your</em> Reference</h3>
+<ul>
+<li><a href="http://dictionary.reference.com/help/faq/language/d70.html"  data-cts='{"linkId":"g9x14e","infix":"","domain":"dictionary.com","clkpage":"","clkmod":"hpref","clksite":"ref","clkld":0,"ordinal":"1"}' data-ordinal=1>What's the difference between affect and effect?</a></li>
+<li><a href="http://dictionary.reference.com/help/faq/language/d03.html"  data-cts='{"linkId":"g9x14e","infix":"","domain":"dictionary.com","clkpage":"","clkmod":"hpref","clksite":"ref","clkld":0,"ordinal":"2"}' data-ordinal=2>What's the difference between complacent and complaisant?</a></li>
+<li><a href="http://dictionary.reference.com/help/faq/language/e09.html"  data-cts='{"linkId":"g9x14e","infix":"","domain":"dictionary.com","clkpage":"","clkmod":"hpref","clksite":"ref","clkld":0,"ordinal":"3"}' data-ordinal=3>Where does the word <em>family</em> come from?</a></li>
+<li><a href="http://dictionary.reference.com/help/faq/language/g01.html"  data-cts='{"linkId":"g9x14e","infix":"","domain":"dictionary.com","clkpage":"","clkmod":"hpref","clksite":"ref","clkld":0,"ordinal":"4"}' data-ordinal=4>Is the letter Y a vowel or a consonant?</a></li>
+</ul>                            </div>
+                                                    </div>
+                    <!-- col -->
+
+                    <div class="col">
+                                                                        <div class="word-dynamo-box word-box">
+                            <h2 class="title-word-dynamo" style="margin:0 0 13px;">
+   <a href="http://dictionary.reference.com/browse/kine"  data-cts='{"linkId":"bofuu0","infix":"","domain":"dictionary.com","clkpage":"","clkmod":"hero3","clksite":"ref","clkld":0,"ordinal":"1"}' data-ordinal="1">
+
+
+   <a href="http://dictionary.reference.com/browse/kine"  data-cts='{"linkId":"bofuu0","infix":"","domain":"dictionary.com","clkpage":"","clkmod":"hero3","clksite":"ref","clkld":0,"ordinal":"2"}' data-ordinal="1"><em>the</em> Riddle</a></a>
+</h2>
+
+
+<a href="http://dictionary.reference.com/browse/kine"  data-cts='{"linkId":"bofuu0","infix":"","domain":"dictionary.com","clkpage":"","clkmod":"hero3","clksite":"ref","clkld":0,"ordinal":"3"}' data-ordinal="2">
+   <img src="http://static.dictionary.com/homepage/carousel/September-2012/share.jpg" width="208" height="74" alt="Kine" />
+</a>
+
+<h3>
+   <a href="http://dictionary.reference.com/browse/kine"  data-cts='{"linkId":"bofuu0","infix":"","domain":"dictionary.com","clkpage":"","clkmod":"hero3","clksite":"ref","clkld":0,"ordinal":"4"}' data-ordinal="3">
+     What English plural word does not contain <i>any</i> of the same letters as its singular equivalent?
+   </a>
+</h3>
+<p>  What weird word fits this description?
+</p>
+<a class="more" href="http://dictionary.reference.com/browse/kine"   data-ordinal="4">Find out now. </a>                        </div>
+                                                
+                                                    <div class="recents-box">
+                                    <h2>Recents <em>and</em> Favorites</h2>
+                                    <p>Create a free Dictionary.com account and keep track of your favorite words and search history.</p>
+                                    <a href="http://app.dictionary.com/signup/core?source=header_ref&logindest=http://www.reference.com/"  class="btn-sign" data-cts='{"linkId":"iggfvh","infix":"","domain":"reference.com","clkpage":"","clkmod":"hpNew","clksite":"ref","clkld":0}'><b>Sign up now!</b></a>
+                                                                    </div>
+
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="aside">
+                <script type="text/javascript">
+                    document.write("<h2>"+day+", <span class=\"mark\">"+mon+" "+date+"</span></h2>");                    
+                </script>                
+                                <!-- banner -->
+                                <div class="banner" style="width:300px;min-height:250px;">
+                    <div id="rcomPUHPTop-300x250"><script type="text/javascript">gptApp.ads.push( function() {googletag.cmd.push(function() { googletag.display("rcomPUHPTop-300x250"); });});</script></div>                </div>
+                                <!-- social-box -->
+                <div class="social-box">
+                    <h3>Reference.com Social</h3>
+                    <ul><li><a href="http://twitter.com/dictionarycom"  data-cts='{"linkId":"4r16v4","infix":"","domain":"dictionary.com","clkpage":"","clkmod":"hpSocial","clksite":"ref","clkld":0,"ordinal":"1"}' data-ordinal="1" >#dictionarycom</a>           <p><a href="http://twitter.com/dictionarycom/"  data-cts='{"linkId":"4r16v4","infix":"","domain":"dictionary.com","clkpage":"","clkmod":"hpSocial","clksite":"ref","clkld":0,"ordinal":"2"}' data-ordinal="2" style="color:black">Join the conversation! Follow us for our Word of the Day, contests, word facts and more.</a> <a href="http://twitter.com/dictionarycom"  data-cts='{"linkId":"4r16v4","infix":"","domain":"dictionary.com","clkpage":"","clkmod":"hpSocial","clksite":"ref","clkld":0,"ordinal":"3"}' data-ordinal="3" >Follow us for more</a></p>
+<p>&nbsp;</p></li><li><a href="http://facebook.com/dictionarycom"  data-cts='{"linkId":"4r16v4","infix":"","domain":"dictionary.com","clkpage":"","clkmod":"hpSocial","clksite":"ref","clkld":0,"ordinal":"4"}' data-ordinal="4">facebook.com/dictionarycom</a> <p> <a href="http://www.facebook.com/dictionarycom"  data-cts='{"linkId":"4r16v4","infix":"","domain":"dictionary.com","clkpage":"","clkmod":"hpSocial","clksite":"ref","clkld":0,"ordinal":"5"}' data-ordinal="5" style="color:black">Our Word of the Day fans create masterful prose every day -</a> <a href="http://facebook.com/dictionarycom"  data-cts='{"linkId":"4r16v4","infix":"","domain":"dictionary.com","clkpage":"","clkmod":"hpSocial","clksite":"ref","clkld":0,"ordinal":"6"}' data-ordinal="6">get involved and add your own!</a></p>       </li>    </ul>                </div>
+                                <!-- banner -->
+                                <div class="banner" style="width:300px;min-height:251px;">
+                    <div id="rcomPUHPBtm-300x251"><script type="text/javascript">gptApp.ads.push( function() {googletag.cmd.push(function() { googletag.display("rcomPUHPBtm-300x251"); });});</script></div>                </div>
+                                                <!-- popular-box -->
+                <div class="popular-box">
+                    <h3 class="popular-title">Words <em>in the</em> Wild</h3>
+<div class="column-holder">
+<div class="column">
+<p><em>Suspiciously strong searches:</em></p>
+
+<ul>
+<li><a href="http://dictionary.reference.com/browse/fiancee"  data-cts='{"linkId":"86gi5l","infix":"","domain":"dictionary.com","clkpage":"","clkmod":"popular","clksite":"ref","clkld":0,"ordinal":"2"}' data-ordinal="2">Fiancee</a></li>
+<li><a href="http://dictionary.reference.com/browse/irritable"  data-cts='{"linkId":"86gi5l","infix":"","domain":"dictionary.com","clkpage":"","clkmod":"popular","clksite":"ref","clkld":0,"ordinal":"2"}' data-ordinal="2">Irritable</a></li>
+<li><a href="http://dictionary.reference.com/browse/inflicted"  data-cts='{"linkId":"86gi5l","infix":"","domain":"dictionary.com","clkpage":"","clkmod":"popular","clksite":"ref","clkld":0,"ordinal":"2"}' data-ordinal="2">Inflicted</a></li>
+<li><a href="http://dictionary.reference.com/browse/outrageous"  data-cts='{"linkId":"86gi5l","infix":"","domain":"dictionary.com","clkpage":"","clkmod":"popular","clksite":"ref","clkld":0,"ordinal":"2"}' data-ordinal="2">Outrageous</a></li>
+<li><a href="http://dictionary.reference.com/browse/postpone"  data-cts='{"linkId":"86gi5l","infix":"","domain":"dictionary.com","clkpage":"","clkmod":"popular","clksite":"ref","clkld":0,"ordinal":"2"}' data-ordinal="2">Postpone</a></li>
+
+<li><a href="http://dictionary.reference.com/browse/impel"  data-cts='{"linkId":"86gi5l","infix":"","domain":"dictionary.com","clkpage":"","clkmod":"popular","clksite":"ref","clkld":0,"ordinal":"2"}' data-ordinal="2">Impel</a></li>
+<li><a href="http://dictionary.reference.com/browse/dignified"  data-cts='{"linkId":"86gi5l","infix":"","domain":"dictionary.com","clkpage":"","clkmod":"popular","clksite":"ref","clkld":0,"ordinal":"3"}' data-ordinal="3">Dignified</a></li>
+<li><a href="http://dictionary.reference.com/browse/timid"  data-cts='{"linkId":"86gi5l","infix":"","domain":"dictionary.com","clkpage":"","clkmod":"popular","clksite":"ref","clkld":0,"ordinal":"4"}' data-ordinal="4">Timid</a></li>
+<li><a href="http://dictionary.reference.com/browse/colossal"  data-cts='{"linkId":"86gi5l","infix":"","domain":"dictionary.com","clkpage":"","clkmod":"popular","clksite":"ref","clkld":0,"ordinal":"4"}' data-ordinal="4">Colossal</a></li>
+<li><a href="http://dictionary.reference.com/browse/linger"  data-cts='{"linkId":"86gi5l","infix":"","domain":"dictionary.com","clkpage":"","clkmod":"popular","clksite":"ref","clkld":0,"ordinal":"4"}' data-ordinal="4">Linger</a></li>
+</ul>
+
+</div>
+<div class="column">
+
+<h3>Unusual words for your holiday shopping:</h3>
+<ul>
+<li><a href="http://dictionary.reference.com/browse/catchpenny"  data-cts='{"linkId":"86gi5l","infix":"","domain":"dictionary.com","clkpage":"","clkmod":"popular","clksite":"ref","clkld":0,"ordinal":"7"}' data-ordinal="7">Catchpenny</a></li>
+<li><a href="http://dictionary.reference.com/browse/fungibility"  data-cts='{"linkId":"86gi5l","infix":"","domain":"dictionary.com","clkpage":"","clkmod":"popular","clksite":"ref","clkld":0,"ordinal":"8"}' data-ordinal="8">Fungibility</a></li>
+<li><a href="http://dictionary.reference.com/browse/Bonanza"  data-cts='{"linkId":"86gi5l","infix":"","domain":"dictionary.com","clkpage":"","clkmod":"popular","clksite":"ref","clkld":0,"ordinal":"9"}' data-ordinal="9">Bonanza</a></li>
+<li><a href="http://dictionary.reference.com/browse/spiel"  data-cts='{"linkId":"86gi5l","infix":"","domain":"dictionary.com","clkpage":"","clkmod":"popular","clksite":"ref","clkld":0,"ordinal":"10"}' data-ordinal="10">Spiel</a></li>
+<li><a href="http://dictionary.reference.com/browse/emporium"  data-cts='{"linkId":"86gi5l","infix":"","domain":"dictionary.com","clkpage":"","clkmod":"popular","clksite":"ref","clkld":0,"ordinal":"11"}' data-ordinal="11">Emporium</a></li>
+<li><a href="http://dictionary.reference.com/browse/galleria"  data-cts='{"linkId":"86gi5l","infix":"","domain":"dictionary.com","clkpage":"","clkmod":"popular","clksite":"ref","clkld":0,"ordinal":"11"}' data-ordinal="11">Galleria</a></li>
+<li><a href="http://dictionary.reference.com/browse/spendthrift"  data-cts='{"linkId":"86gi5l","infix":"","domain":"dictionary.com","clkpage":"","clkmod":"popular","clksite":"ref","clkld":0,"ordinal":"11"}' data-ordinal="11">Spendthrift</a></li>
+</ul>
+</div>
+</div>                </div>
+                            </div>
+       </div>
+    </div>
+    <div class="carousel-holder">
+    <div class="title-section">
+        <div class="btn-holder">
+            <div class="prev">prev</div>
+            <div class="next active">next</div>
+        </div>
+        <h3>Discover <em>Our</em> Greatest Slideshows</h3>
+    </div>
+    <div class="mask">
+        <ul class="carousel">
+                                <li>
+                        <a href="http://www.dictionary.com/slideshows/computer-terms"  class="inline" data-cts='{"linkId":"pdoku0","infix":"","domain":"reference.com","clkpage":"","clkmod":"contentPromo","clksite":"ref","clkld":0}'>
+                                                    <img width="130" height="140" id="slideImg1" style="cursor: pointer;border: medium none;" src="http://static.sfdict.com/assets/1143-3043716-9.jpg"/>
+                        
+                        </a>
+                        <div class="carousel-cont">
+                            <h3 class="h3-carousel-style">
+                                <a href="http://www.dictionary.com/slideshows/computer-terms"  class="block" data-cts='{"linkId":"pdoku0","infix":"","domain":"reference.com","clkpage":"","clkmod":"contentPromo","clksite":"ref","clkld":0}'>
+                                The mystery words on your screen                                </a>
+                            </h3>
+                            <a href="http://www.dictionary.com/slideshows/computer-terms" data-cts='{"linkId":"pdoku0","infix":"","domain":"reference.com","clkpage":"","clkmod":"contentPromo","clksite":"ref","clkld":0}'>Launch</a>
+                        </div>
+                    </li>
+                                        <li>
+                        <a href="http://www.dictionary.com/slideshows/mom-words"  class="inline" data-cts='{"linkId":"pdoku0","infix":"","domain":"reference.com","clkpage":"","clkmod":"contentPromo","clksite":"ref","clkld":0}'>
+                                                    <img width="130" height="140" id="slideImg2" style="cursor: pointer;border: medium none;" src="http://static.sfdict.com/assets/4183-8779851-0.jpg"/>
+                        
+                        </a>
+                        <div class="carousel-cont">
+                            <h3 class="h3-carousel-style">
+                                <a href="http://www.dictionary.com/slideshows/mom-words"  class="block" data-cts='{"linkId":"pdoku0","infix":"","domain":"reference.com","clkpage":"","clkmod":"contentPromo","clksite":"ref","clkld":0}'>
+                                Dear Mom: 5 Adjectives for...                                </a>
+                            </h3>
+                            <a href="http://www.dictionary.com/slideshows/mom-words" data-cts='{"linkId":"pdoku0","infix":"","domain":"reference.com","clkpage":"","clkmod":"contentPromo","clksite":"ref","clkld":0}'>Launch</a>
+                        </div>
+                    </li>
+                                        <li>
+                        <a href="http://www.dictionary.com/slideshows/q-without-u"  class="inline" data-cts='{"linkId":"pdoku0","infix":"","domain":"reference.com","clkpage":"","clkmod":"contentPromo","clksite":"ref","clkld":0}'>
+                                                    <img width="130" height="140" id="slideImg3" style="cursor: pointer;border: medium none;" src="http://static.sfdict.com/assets/4977-3600084-0.jpg"/>
+                        
+                        </a>
+                        <div class="carousel-cont">
+                            <h3 class="h3-carousel-style">
+                                <a href="http://www.dictionary.com/slideshows/q-without-u"  class="block" data-cts='{"linkId":"pdoku0","infix":"","domain":"reference.com","clkpage":"","clkmod":"contentPromo","clksite":"ref","clkld":0}'>
+                                Q Without U: 9 Must-Know Terms for...                                </a>
+                            </h3>
+                            <a href="http://www.dictionary.com/slideshows/q-without-u" data-cts='{"linkId":"pdoku0","infix":"","domain":"reference.com","clkpage":"","clkmod":"contentPromo","clksite":"ref","clkld":0}'>Launch</a>
+                        </div>
+                    </li>
+                                        <li>
+                        <a href="http://www.dictionary.com/slideshows/death-and-taxes"  class="inline" data-cts='{"linkId":"pdoku0","infix":"","domain":"reference.com","clkpage":"","clkmod":"contentPromo","clksite":"ref","clkld":0}'>
+                                                    <img width="130" height="140" id="slideImg4" style="cursor: pointer;border: medium none;" src="http://static.sfdict.com/assets/1805-2251644-1.jpg"/>
+                        
+                        </a>
+                        <div class="carousel-cont">
+                            <h3 class="h3-carousel-style">
+                                <a href="http://www.dictionary.com/slideshows/death-and-taxes"  class="block" data-cts='{"linkId":"pdoku0","infix":"","domain":"reference.com","clkpage":"","clkmod":"contentPromo","clksite":"ref","clkld":0}'>
+                                Death & Taxes: All We Can Do Is...                                </a>
+                            </h3>
+                            <a href="http://www.dictionary.com/slideshows/death-and-taxes" data-cts='{"linkId":"pdoku0","infix":"","domain":"reference.com","clkpage":"","clkmod":"contentPromo","clksite":"ref","clkld":0}'>Launch</a>
+                        </div>
+                    </li>
+                                        <li>
+                        <a href="http://www.dictionary.com/slideshows/horoscope"  class="inline" data-cts='{"linkId":"pdoku0","infix":"","domain":"reference.com","clkpage":"","clkmod":"contentPromo","clksite":"ref","clkld":0}'>
+                                                    <img width="130" height="140" id="slideImg5" style="cursor: pointer;border: medium none;" src="" class="not-loaded" data-src="http://static.sfdict.com/assets/6236-8849822-32.jpg"/>
+                        
+                        </a>
+                        <div class="carousel-cont">
+                            <h3 class="h3-carousel-style">
+                                <a href="http://www.dictionary.com/slideshows/horoscope"  class="block" data-cts='{"linkId":"pdoku0","infix":"","domain":"reference.com","clkpage":"","clkmod":"contentPromo","clksite":"ref","clkld":0}'>
+                                What's Your Sign? 14 Astrological...                                </a>
+                            </h3>
+                            <a href="http://www.dictionary.com/slideshows/horoscope" data-cts='{"linkId":"pdoku0","infix":"","domain":"reference.com","clkpage":"","clkmod":"contentPromo","clksite":"ref","clkld":0}'>Launch</a>
+                        </div>
+                    </li>
+                                        <li>
+                        <a href="http://www.dictionary.com/slideshows/money"  class="inline" data-cts='{"linkId":"pdoku0","infix":"","domain":"reference.com","clkpage":"","clkmod":"contentPromo","clksite":"ref","clkld":0}'>
+                                                    <img width="130" height="140" id="slideImg6" style="cursor: pointer;border: medium none;" src="" class="not-loaded" data-src="http://static.sfdict.com/assets/2095-2710145-36.jpg"/>
+                        
+                        </a>
+                        <div class="carousel-cont">
+                            <h3 class="h3-carousel-style">
+                                <a href="http://www.dictionary.com/slideshows/money"  class="block" data-cts='{"linkId":"pdoku0","infix":"","domain":"reference.com","clkpage":"","clkmod":"contentPromo","clksite":"ref","clkld":0}'>
+                                Dough, Clams, and Greenbacks:...                                </a>
+                            </h3>
+                            <a href="http://www.dictionary.com/slideshows/money" data-cts='{"linkId":"pdoku0","infix":"","domain":"reference.com","clkpage":"","clkmod":"contentPromo","clksite":"ref","clkld":0}'>Launch</a>
+                        </div>
+                    </li>
+                                        <li>
+                        <a href="http://www.dictionary.com/slideshows/baby-animals"  class="inline" data-cts='{"linkId":"pdoku0","infix":"","domain":"reference.com","clkpage":"","clkmod":"contentPromo","clksite":"ref","clkld":0}'>
+                                                    <img width="130" height="140" id="slideImg7" style="cursor: pointer;border: medium none;" src="" class="not-loaded" data-src="http://static.sfdict.com/assets/1174-9757434-13.png"/>
+                        
+                        </a>
+                        <div class="carousel-cont">
+                            <h3 class="h3-carousel-style">
+                                <a href="http://www.dictionary.com/slideshows/baby-animals"  class="block" data-cts='{"linkId":"pdoku0","infix":"","domain":"reference.com","clkpage":"","clkmod":"contentPromo","clksite":"ref","clkld":0}'>
+                                12 Strange Names of These Baby...                                </a>
+                            </h3>
+                            <a href="http://www.dictionary.com/slideshows/baby-animals" data-cts='{"linkId":"pdoku0","infix":"","domain":"reference.com","clkpage":"","clkmod":"contentPromo","clksite":"ref","clkld":0}'>Launch</a>
+                        </div>
+                    </li>
+                                        <li>
+                        <a href="http://www.dictionary.com/slideshows/egg-expressions"  class="inline" data-cts='{"linkId":"pdoku0","infix":"","domain":"reference.com","clkpage":"","clkmod":"contentPromo","clksite":"ref","clkld":0}'>
+                                                    <img width="130" height="140" id="slideImg8" style="cursor: pointer;border: medium none;" src="" class="not-loaded" data-src="http://static.sfdict.com/assets/4082-6785285-18.jpg"/>
+                        
+                        </a>
+                        <div class="carousel-cont">
+                            <h3 class="h3-carousel-style">
+                                <a href="http://www.dictionary.com/slideshows/egg-expressions"  class="block" data-cts='{"linkId":"pdoku0","infix":"","domain":"reference.com","clkpage":"","clkmod":"contentPromo","clksite":"ref","clkld":0}'>
+                                All in One Basket: 8 Eggcentric...                                </a>
+                            </h3>
+                            <a href="http://www.dictionary.com/slideshows/egg-expressions" data-cts='{"linkId":"pdoku0","infix":"","domain":"reference.com","clkpage":"","clkmod":"contentPromo","clksite":"ref","clkld":0}'>Launch</a>
+                        </div>
+                    </li>
+                                        <li>
+                        <a href="http://www.dictionary.com/slideshows/spring-fever"  class="inline" data-cts='{"linkId":"pdoku0","infix":"","domain":"reference.com","clkpage":"","clkmod":"contentPromo","clksite":"ref","clkld":0}'>
+                                                    <img width="130" height="140" id="slideImg9" style="cursor: pointer;border: medium none;" src="" class="not-loaded" data-src="http://static.sfdict.com/assets/1706-9739003-0.jpg"/>
+                        
+                        </a>
+                        <div class="carousel-cont">
+                            <h3 class="h3-carousel-style">
+                                <a href="http://www.dictionary.com/slideshows/spring-fever"  class="block" data-cts='{"linkId":"pdoku0","infix":"","domain":"reference.com","clkpage":"","clkmod":"contentPromo","clksite":"ref","clkld":0}'>
+                                Was spring actually called "Lent"...                                </a>
+                            </h3>
+                            <a href="http://www.dictionary.com/slideshows/spring-fever" data-cts='{"linkId":"pdoku0","infix":"","domain":"reference.com","clkpage":"","clkmod":"contentPromo","clksite":"ref","clkld":0}'>Launch</a>
+                        </div>
+                    </li>
+                                        <li>
+                        <a href="http://www.dictionary.com/slideshows/irish-creatures"  class="inline" data-cts='{"linkId":"pdoku0","infix":"","domain":"reference.com","clkpage":"","clkmod":"contentPromo","clksite":"ref","clkld":0}'>
+                                                    <img width="130" height="140" id="slideImg10" style="cursor: pointer;border: medium none;" src="" class="not-loaded" data-src="http://static.sfdict.com/assets/3794-7618446-7.jpg"/>
+                        
+                        </a>
+                        <div class="carousel-cont">
+                            <h3 class="h3-carousel-style">
+                                <a href="http://www.dictionary.com/slideshows/irish-creatures"  class="block" data-cts='{"linkId":"pdoku0","infix":"","domain":"reference.com","clkpage":"","clkmod":"contentPromo","clksite":"ref","clkld":0}'>
+                                Beyond Leprechauns: 7 Creatures of...                                </a>
+                            </h3>
+                            <a href="http://www.dictionary.com/slideshows/irish-creatures" data-cts='{"linkId":"pdoku0","infix":"","domain":"reference.com","clkpage":"","clkmod":"contentPromo","clksite":"ref","clkld":0}'>Launch</a>
+                        </div>
+                    </li>
+                            </ul>
+    </div>
+</div>
+
+    <!--Slideshow module-->
+    <script type="text/javascript">
+        if(queryStringVal('sshow')){
+            var slideshowurl= 'http://www.dictionary.com/slideshow/'+queryStringVal("sshow")+'?ldid=0';
+            if(queryStringVal('slide')){
+                var slideshowurl= 'http://www.dictionary.com/slideshow/'+queryStringVal("sshow")+'/'+queryStringVal("slide")+'?ldid=0';
+            }
+            openMyModal(slideshowurl);
+        }
+    </script>
+
+
+<style type="text/css">
+    .ra1-pw-buttonSprite-24 {
+        height: 20px !important;
+        width: 21px !important;
+        background-position: -2px -1058px !important
+    }
+
+    #po_st {
+        top: -2px !important
+    }
+</style>
+<!--Ipad Interstitial -->
+
+
+
+    <!-- Begin Quantcast Tag, part 2 -->
+<script type="text/javascript">
+if (typeof UserController === "undefined" || !UserController.isUnder13()) {
+    _qevents.push({qacct: "p-51zXP5Cc9sxvQ"});
+}
+</script>
+<noscript>
+<div style="display: none;"><img src="//pixel.quantserve.com/pixel/p-51zXP5Cc9sxvQ.gif" height="1" width="1" alt="Quantcast"/></div>
+</noscript>
+<!-- End Quantcast Tag, part 2 -->    <div id="trackingpixel" style="display:none">
+    <script type="text/javascript">
+var _comscore = _comscore || [];
+    _comscore.push({ c1: "2", c2: "6034776",c3:"",c4:(new String(window.location)).replace(/\?.*$/, "") });
+
+(function () {
+    var s = document.createElement("script"), el = document.getElementsByTagName("script")[0];
+    s.async = true;
+    s.src = (document.location.protocol == "https:" ? "https://sb" : "http://b") + ".scorecardresearch.com/beacon.js";
+    el.parentNode.insertBefore(s, el);
+})();
+</script>
+<noscript>
+    <img src="http://b.scorecardresearch.com/p?c1=2&c2=6034776&cv=2.0&cj=1" />
+</noscript>    </div>
+ 
+<!--  gutters -->
+
+</div> <!-- end #main -->
+<script type="text/javascript">var pageName = 'ref-home';</script>
+<script type="text/javascript" src="http://static.sfdict.com/app/js/gptSimpleRefresh-ac5d9.js"></script>
+<iframe id="spanids" style="width:1px;height:1px;margin-left:-10000;border:none;" src="http://spanids.dictionary.com/?bid=VzeQrtGFUE93AUQi&asid=VzeQrtGFUE9wcMv7&bidnew=1&asidnew=1&source=r&site=app"></iframe>     <footer class="footer-thin">
+    <div class="footer-container"  data-linkid='gy27eg'>
+        <div>
+            <ul class="footer-navbar">
+                <li class="footer-navbar-list">
+                    <a href="http://content.dictionary.com/">About</a>
+                </li>
+                <li class="footer-navbar-list">
+                    <a href="http://www.dictionary.com/terms">Terms</a>
+                </li>
+                <li class="footer-navbar-list">
+                    <a href="http://www.dictionary.com/privacy">Privacy</a>
+                </li>
+                <li class="footer-navbar-list">
+                    <a href="http://content.dictionary.com/about/careers">Careers</a>
+                </li>
+                <li class="footer-navbar-list">
+                    <a href="http://www.dictionary.com/apps">Apps</a>
+                </li>
+                <li class="footer-navbar-list">
+                    <a href="http://content.dictionary.com/about/contact">Contact Us</a>
+                </li>
+            </ul>
+            <div class="footer-copyright">
+                &copy;&nbsp;2016 Dictionary.com, LLC.
+            </div>
+        </div>
+    </div>
+</footer>
+<script>
+    /*global $, pageName, window */
+
+    var BCT = (function () {
+        'use strict';
+
+        var webTrackURL = 'http://track.reference.com/main.gif?ev=c&cl=%40%40LINKIDS%40%40&ci=%40%40ITEM%40%40&co=%40%40ORDINAL%40%40&ms=%40%40MSEG%40%40&ds=%40%40DESTINATION%40%40&rf=%40%40REFERRER%40%40&cb=%40%40CACHEBUSTER%40%40&pn=%40%40PAGENAME%40%40&st=ref&ab=&dc=desktop',
+            query, originalQuery;
+
+        
+        /**
+         * Returns data, which will be logged.
+         *
+         * NOTE:
+         * Possible, that empty array will be returned.
+         */
+        function getData(target) {
+            var ctsData,
+                closestLinkIDElement,
+                data = {};
+
+            ctsData = JSON.parse(target.getAttribute('data-cts'));
+            if (ctsData !== null) {
+                data.linkId = ctsData.linkId;
+                data.item = "";
+                data.ordinal = ctsData.ordinal;
+            } else {
+                closestLinkIDElement = target.closest('[data-linkid]');
+                if (null !== closestLinkIDElement && null === target.closest('[data-type]')) {
+                    data.linkId = closestLinkIDElement.getAttribute('data-linkid');
+                    data.ordinal = getOrdinal(target, closestLinkIDElement);
+                }
+            }
+            return data;
+        }
+
+        function getOrdinal(target, dataItem) {
+            var closestWithOrdinal,
+                value = '';
+
+            if (dataItem !== target) { // if element with linkid is not the anchor itself we are going deeper
+                closestWithOrdinal = target.closest('[data-ordinal]');
+                if (null !== closestWithOrdinal) {
+                    var links = closestWithOrdinal.querySelectorAll("a"),
+                        len = links.length;
+
+                    for (var i = 0; i < len; i++) {
+                        if (target === links[i]) {
+                            value = i + 1;
+                        }
+                    }
+                }
+            }
+            return value;
+        }
+
+        /**
+         * Returns data, which are generated always in the same way
+         */
+        function getCommonData(destination) {
+            var data = {};
+            data.cacheBuster = Math.floor((Math.random() * 899999999) + 100000000);
+            data.pageName = pageName;
+            data.mseg = getMsegValue();
+            data.destination = encodeURIComponent(destination);
+            return data;
+        }
+
+        /**
+         * Redirects user to destination
+         */
+        function redirectToDest(location) {
+            window.location = location;
+        }
+
+        /**
+         * Returns value of cookie based on name
+         */
+        function getCookieByName(name) {
+            var value = null,
+                cookies = document.cookie,
+                searchedCookie = cookies.indexOf(" " + name + "=");
+
+            // it's worth to check, if cookie is not first cookie
+            if (searchedCookie === -1) {
+                var checkFirstCookie = cookies.indexOf(name + "=");
+                searchedCookie = checkFirstCookie === 0 ? 0 : -1;
+            }
+
+            if (searchedCookie > -1) {
+                var startPositionOfValue = cookies.indexOf("=", searchedCookie) + 1,
+                    endPositionOfValue = cookies.indexOf(";", searchedCookie);
+
+                if (endPositionOfValue === -1) {
+                    endPositionOfValue = searchedCookie.length;
+                }
+
+                value = cookies.substring(startPositionOfValue,endPositionOfValue);
+            }
+
+            return value;
+        }
+
+        /**
+         * Returns value of mseg cookie
+         */
+        function getMsegValue() {
+            var msegVal;
+            if (typeof cookiesManager !== "undefined") {
+                msegVal = cookiesManager.getCookieValue("mseg");
+            } else {
+                msegVal = getCookieByName("mseg");
+            }
+
+            return msegVal || "";
+        }
+
+        /**
+         * Renders WebTrack URL
+         */
+        function renderWebTrackURL(data, destination) {
+            var commonData = getCommonData(destination);
+            return webTrackURL.replace('%40%40REFERRER%40%40', encodeURIComponent(document.referrer))
+                .replace('%40%40LINKIDS%40%40', data.linkId || "")
+                .replace('%40%40ITEM%40%40', data.item || "")
+                .replace('%40%40ORDINAL%40%40', data.ordinal || "")
+                .replace('%40%40CACHEBUSTER%40%40', commonData.cacheBuster || "")
+                .replace('%40%40PAGENAME%40%40', commonData.pageName || "")
+                .replace('%40%40MSEG%40%40', commonData.mseg || "")
+                .replace('%40%40DESTINATION%40%40', commonData.destination || "");
+        }
+
+        function logAndRedirect(data, destination) {
+            var logURL = renderWebTrackURL(data, destination),
+                image = new Image(),
+                timeout;
+
+            timeout = setTimeout(
+                function(){
+                    redirectToDest(destination);
+                },
+                2000
+            );
+
+            image.onload = image.onerror = function () {
+                clearTimeout(timeout);
+                redirectToDest(destination);
+            };
+
+            image.src = logURL;
+
+            return false;
+        }
+
+        /**
+         * Registers click event handler to body so it receives every click on anchor.
+         */
+        function attachHandler() {
+            var bodyTag = document.getElementsByTagName('body')[0];
+
+            bodyTag.on("click", 'a', function (elem, event) {
+                var target = event.target,
+                    enabled = target.closest('.cts-enabled'),
+                    disabled = target.closest('.cts-disabled'),
+                    destination = elem.getAttribute('href'),
+                    dataToLog;
+
+                if (typeof destination === "undefined") {
+                    return true;
+                }
+
+                if (target.hasClass('cts-clicked')) {
+                    return false;
+                }
+
+                //ACE-1060
+                if (disabled !== null && (enabled === null || disabled.childNodes.length < enabled.childNodes.length)) { return true }
+
+                dataToLog = getData(target);
+
+                // if object has no id it means that link shouldn't be tracked - follow the link
+                if (typeof dataToLog.linkId === "undefined") {
+                    return true;
+                }
+                event.preventDefault();
+
+                // mark this link as already clicked
+                target.addClass('cts-clicked');
+
+                return logAndRedirect(dataToLog, destination);
+            });
+        }
+
+        return {
+            attachHandler: attachHandler,
+            /**
+             * ::redirect() method is method used by oneClick module
+             */
+            redirect: function (ctsData, destinationHref, item) {
+                var data = {};
+                data.linkId = ctsData.linkId || ctsData.linkid;
+                data.item = item;
+                data.ordinal = '';
+                return logAndRedirect(data, destinationHref);
+            }
+        };
+    }());
+
+    /** Do the initial attachment to <body> links */
+    BCT.attachHandler();
+
+</script></body>
+</html>

@@ -1,0 +1,684 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <link rel="apple-touch-icon" href="/images/favicon/apple-touch-icon_57x57.png" sizes="57x57">
+<link rel="apple-touch-icon" href="/images/favicon/apple-touch-icon_60x60.png" sizes="60x60">
+<link rel="apple-touch-icon" href="/images/favicon/apple-touch-icon_72x72.png" sizes="72x72">
+<link rel="apple-touch-icon" href="/images/favicon/apple-touch-icon_76x76.png" sizes="76x76">
+<link rel="apple-touch-icon" href="/images/favicon/apple-touch-icon_114x114.png" sizes="114x114">
+<link rel="apple-touch-icon" href="/images/favicon/apple-touch-icon_120x120.png" sizes="120x120">
+<link rel="apple-touch-icon" href="/images/favicon/apple-touch-icon_144x144.png" sizes="144x144">
+<link rel="apple-touch-icon" href="/images/favicon/apple-touch-icon_152x152.png" sizes="152x152">
+<link rel="icon" href="/images/favicon/favicon-192x192.png" type="image/png" sizes="192x192">
+<link rel="icon" href="/images/favicon/favicon-160x160.png" type="image/png" sizes="160x160">
+<link rel="icon" href="/images/favicon/favicon-96x96.png" type="image/png" sizes="96x96">
+<link rel="icon" href="/images/favicon/favicon-32x32.png" type="image/png" sizes="32x32">
+<link rel="icon" href="/images/favicon/favicon-16x16.png" type="image/png" sizes="16x16">
+<link rel="icon" href="/favicon.ico">
+
+<!--[if lt IE 9]>
+<script type="text/javascript" src="js/lib/xCharts/es5-shim.min.js"></script>
+<script type="text/javascript" src="js/lib/xCharts/es5-sham.min.js"></script>
+<![endif]-->
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<title>Linkis.com - Customize links and share them easily</title>
+<meta name="title" content="Linkis.com - Customize links and share them easily" />
+<meta name="keywords" content="Linkis.com, links, url, mention, tweet, comment, like, social media, twitter, facebook, optimizer, social network, social media, autobranding, twitter automation tool" />
+<meta name="description" content="Linkis.com - customize and share links, get more feedback from your followers" /><link href="/favicon.ico" rel="icon" type="image/png" />
+<link href="/js/prod/secondary.css?1056" media="all" rel="stylesheet" type="text/css" />
+<script>
+    var LNG = {};
+    LNG['index.button.Save']    = 'Save';
+    LNG['index.button.Saving']  = 'Saving...';
+    LNG['index.button.Saved']   = 'Saved';
+    LNG['index.read_about']     = 'Read about the project';
+    LNG['index.hide_info']      = 'Hide this info';
+    LNG['settings.socials.addAccount'] = "Add";
+    LNG['settings.socials.deleteAccount'] = "Delete account";
+    LNG['settings.socials.urlPlaceholder'] = "Paste an URL or account username";
+    LNG['settings.socials.emptyUrl'] = "URL can not be empty";
+    LNG['settings.blacklist.add'] = "Add";
+    LNG['settings.successMsg'] = "Saved";
+    LNG['messages.error'] = "Error:";
+    LNG['messages.success'] = "Success:";
+    LNG['messages.emptyValue'] = "Value can not be empty";
+    LNG['messages.maxLength30'] = "Max length is 30 symbols";
+    LNG['messages.maxLength255'] = "Max length is 255 symbols";
+    LNG['twitter.widget.header'] = "New links shared with Linkis";
+    LNG['popups.choose_theme_color.title'] = "Choose the coloring option for this theme";
+    LNG['themes.colors.custom'] = "Custom";
+
+    LNG['settings.notice.change_tweets_on'] = "Autobranding is <b>on</b>";
+    LNG['settings.notice.change_tweets_off'] = "Autobranding is <b>off</b>";
+    LNG['settings.notice.autopost_on'] = "Daily tweet is <b>on</b>";
+    LNG['settings.notice.autopost_off'] = "Daily tweet is <b>off</b>";
+    LNG['settings.notice.show_aw_popup_on'] = "Visitors tracking is <b>on</b>";
+    LNG['settings.notice.show_aw_popup_off'] = "Visitors tracking is <b>off</b>";
+    LNG['settings.account.email.empty'] = "Email can not be empty.";
+
+    var customAuthRedirect = null;
+
+    
+    var addthis_config = window.addthis_config || {};
+    addthis_config.data_track_clickback = false;
+</script>
+
+<script type="text/javascript">
+
+
+    function __log(val){}
+
+    function hihit(id) {
+        if (id) {
+            var url = "http://stat.linkis.com/log.php?id=" + id + "&r=" + Math.round(100000 * Math.random());
+            var im = new Image();
+            im.src = url;
+        }
+    }
+
+
+function refreshPage()
+{
+    location.href = location.href.split('#')[0];
+    setTimeout(function(){
+        if (window.hihit) hihit(2580);
+    }, 10000);
+}
+function redirectPage(url)
+{
+    location.href = url;
+}
+function restoreUserAvatar(img, uid)
+{
+    img.onerror = null;
+    img.setAttribute('data-orig-image', img.src);
+    img.src = '/index/restore-avatar/uid/' + uid;
+
+}
+function lnEvent(action, label, category, params)
+{
+    
+    if($.isArray(action)) {
+        var hash   = lnEventGenerateHash((action[0][0] || '') + (action[0][1] || '') + (action[0][2] || ''));
+            action = JSON.stringify(action);
+    } else {
+        var hash = lnEventGenerateHash((action || '') + (label || '') + (category || ''));
+    }
+
+    var path = ['', 'index', 'ln-event'].join('/');
+    var e = function(str){ return str ? encodeURIComponent(str) : ''; };
+    var theme = window.LinkData ? LinkData.curTheme : 0;
+    var linkId = LnProf.page == 'index/show' && window.LinkData ? LinkData.id : 0;
+    var profId = LnProf.profId ? LnProf.profId : 0;
+    var version = window.LinkData ? LinkData.themeVersion : '';
+
+    params = params || {};
+
+    (new Image()).src = path +
+        '?c=' + e(category) +
+        '&a=' + e(action) +
+        '&l=' + e(label) +
+        '&t=' + e(theme) +
+        '&li=' + e(linkId) +
+        '&id=' + e(profId) +
+        '&h='  + hash +
+        '&v='  + e(version) +
+        '&p='  + e(JSON.stringify(params)) +
+        '&r=' + Math.random();
+}
+
+function lnEventGenerateHash(str) {
+    var hash = '';
+    var length = str.length;
+    var step = (length < 5) ? 2 : Math.floor(length / 5);
+
+    var codeSumFunction = function(codeSum) {
+        var num = 0;
+        for(var j = 0; j < codeSum.toString().length; j++) {
+            num += parseInt(codeSum.toString().substr(j, 1), 10);
+        }
+
+        return num;
+    };
+
+    var codeSum = 0;
+    for(var i = 0; i < length; i++) {
+        var char = str.substr(i, 1);
+
+        if(i % step == 0 && char != ' ') {
+            var num = codeSumFunction(codeSum);
+            hash += num + '' + char;
+            codeSum = 0;
+        } else {
+            codeSum += str.charCodeAt(i);
+        }
+    }
+
+    if(codeSum) hash += codeSumFunction(codeSum);
+
+    return hash;
+}
+
+</script>
+
+<script type="text/javascript">
+window.NL_APP_DATA = {
+    user:{
+        isLogged: false,
+        type: 'tw',
+        hasTw: true
+    },
+    redirect_after_auth: '/',
+    controller: 'index',
+    action: 'index',
+    cookies:{
+        notification_enabled: 'notification_enabled'
+    },
+    show_welcome_popup: 0,
+
+        
+    show_silent_popup_old_usr: 0,
+    stat_id: null,
+    nopopups: 0,
+    addThisSrc: 'http://s7.addthis.com/js/300/addthis_widget.js#async=1&pubid=',
+    addThisId: 'ra-513082ca32a826c6',
+    referrer_link: '',
+    referrer_name: '',
+    referrer_type: 0,
+    cookie_domain: '.linkis.com',
+	sessCookieName: 'LNSESS',
+    popupsHtml: {},
+    fbAppId: 318962828183539};
+var LnProf = {
+    profId: 0,
+    enabled: 1,
+    startedAt: 0,
+    startDuration: 0,
+    theme: 0,
+    err: [],
+    path: ['', 'index', 'save-ln-prof?'], // prevent simple url parsing
+    iframeLoad: false,
+    page: 'index/index',
+    recordId: 0,
+    reqQueue: [], // we use queue to send ajax requests one by one
+    reqProcessing: false,
+
+    request: function(src, startProfRequest)
+    {
+        if (LnProf.reqProcessing) {
+            // other request is active now -> just add our task to the queue and exit
+            this.reqQueue.push(src);
+            return;
+        }
+
+        LnProf.reqProcessing = true;
+
+        var xmlhttp = new XMLHttpRequest();
+
+        xmlhttp.open('GET', src + '&id=' + LnProf.profId, true);
+
+        xmlhttp.onreadystatechange = function() {
+
+            if (!startProfRequest) {
+                LnProf.reqProcessing = false;
+            }
+
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+
+                var response = JSON.parse(xmlhttp.responseText);
+
+                if (startProfRequest && response.profId) {
+                    // get `profId` from first response
+                    LnProf.profId        = response.profId;
+                    LnProf.startDuration = (new Date()).getTime() - LnProf.startedAt;
+
+                    // reset flag only if `start` request is ok
+                    LnProf.reqProcessing = false;
+                }
+            }
+
+            if (LnProf.reqQueue.length && !LnProf.reqProcessing) {
+                // there are other tasks in queue -> process next
+                LnProf.request(LnProf.reqQueue.shift());
+            }
+        };
+
+        xmlhttp.send(null);
+    },
+
+    // receive profId in this function
+    start: function()
+    {
+        LnProf.startedAt = (new Date()).getTime() ;
+
+        if (!LnProf.enabled)
+            return;
+
+        var src = LnProf.path.join('/') + 'type=start&page=' +
+            LnProf.page + '&time=' + LnProf.startedAt +
+            '&uri=' + encodeURIComponent(location.pathname + location.search + location.hash) + '&theme=' +
+            LnProf.theme + '&ref=' + NL_APP_DATA.referrer_link;
+
+        LnProf.request(src, true);
+    },
+    prodLoad: function(minifyVersion)
+    {
+        if (!LnProf.profId || !LnProf.enabled)
+            return;
+
+        var browser  = $.browser.platform + ' ' + $.browser.name + ' ' + $.browser.versionNumber;
+        var time     = (new Date()).getTime() - LnProf.startedAt;
+        var recordId = LnProf.recordId ? LnProf.recordId : 0;
+
+        var src = LnProf.path.join('/') + 'type=prod&browser=' + encodeURIComponent(browser) +
+            '&time=' + time + '&ver=' + (minifyVersion || '') + '&dur=' + LnProf.startDuration + '&recid=' + recordId;
+
+        LnProf.request(src);
+    },
+    stopApp: function()
+    {
+        hihit(3292);
+
+        if (!LnProf.profId || !LnProf.enabled)
+            return;
+
+        LnProf.request(LnProf.path.join('/') + 'type=stop-app&rnd=' + LnProf._rnd());
+    },
+    iframe: function()
+    {
+        var time = (new Date()).getTime() - LnProf.startedAt;
+        this.iframeLoad = time;
+
+        if (!LnProf.profId || !LnProf.enabled)
+            return;
+
+        LnProf.request(LnProf.path.join('/') + 'type=iframe&time=' + time + '&rnd=' + LnProf._rnd());
+    },
+    adblock: function()
+    {
+        if (!LnProf.profId || !LnProf.enabled)
+            return;
+
+        LnProf.request(LnProf.path.join('/') + 'type=adblock&adblock=1' + '&rnd=' + LnProf._rnd());
+    },
+    blocked: function(block)
+    {
+        if (!LnProf.profId || !LnProf.enabled)
+            return;
+
+        LnProf.request(LnProf.path.join('/') + 'type=blocked&block=' + block + '&rnd=' + LnProf._rnd());
+    },
+    popup: function(popup)
+    {
+        if (!LnProf.profId || !LnProf.enabled)
+            return;
+
+        var name;
+        if (typeof popup == 'string') {
+            name = popup;
+        } else if (popup && typeof popup == 'object') {
+            try {
+                name = popup.name || (popup.popupClass ? popup.popupClass.prototype.name : null);
+            } catch (e) {}
+        }
+
+        LnProf.request(LnProf.path.join('/') + 'type=popup&name=' + encodeURIComponent(name || 'noname') + '&rnd=' + LnProf._rnd());
+    },
+    onError: function(msg, file, line, col)
+    {
+        hihit(3282);
+        LnProf.err.push(msg+' in file '+file+' on line '+line+':'+col);
+        if (!LnProf.profId || !LnProf.enabled)
+            return;
+
+        var now   = (new Date()).getTime();
+        var error = JSON.stringify(arguments);
+
+        LnProf.request(LnProf.path.join('/') + 'type=error&time=' + now + '&error=' + encodeURIComponent(error));
+    },
+    getErrors: function()
+    {
+        return LnProf.err.join("\n");
+    },
+    _rnd: function() { return Math.round(100000 * Math.random()); }
+};
+
+LnProf.start();
+window.onerror = LnProf.onError;
+
+</script>
+</head>
+<body
+    data-controller="index"
+    data-action="index"
+    data-fb-app-id="318962828183539"
+    class="index_index guest"
+>
+
+
+<div class="user-guest">
+<div class="header">
+    
+
+<div class="went-wrong-popup  js-went-wrong-popup top-arrow" style="top: 8%; left: 45.3%; display: none;">
+    <a class="close-x" href="javascript:void(0);"></a>
+    <div class="popup-pad">
+        <strong>Before you're gone...</strong>
+		<span class="feedback-please">
+            Please mark a possible reason of your decision. That would help us make Linkis better.
+		</span>
+            <ul class="answer-variants">
+                                <li>
+                    <label>
+                        <input class="hidden-input" type="checkbox">
+                        <span class="fake-checkbox"></span>
+                        <span class="variant" data-answer-type = "1">I get complaints on Linkis from my followers</span>
+                    </label>
+                </li>
+                                <li>
+                    <label>
+                        <input class="hidden-input" type="checkbox">
+                        <span class="fake-checkbox"></span>
+                        <span class="variant" data-answer-type = "2">Linkis fails​ to load pages I share on Twitter</span>
+                    </label>
+                </li>
+                                <li>
+                    <label>
+                        <input class="hidden-input" type="checkbox">
+                        <span class="fake-checkbox"></span>
+                        <span class="variant" data-answer-type = "3">I don't want my content to be customized by apps</span>
+                    </label>
+                </li>
+                                <li>
+                    <label>
+                        <input class="hidden-input" type="checkbox">
+                        <span class="fake-checkbox"></span>
+                        <span class="variant" data-answer-type = "4">I don't like how Linkis pages look</span>
+                    </label>
+                </li>
+                                <li>
+                    <label>
+                        <input class="hidden-input" type="checkbox">
+                        <span class="fake-checkbox"></span>
+                        <span class="variant" data-answer-type = "5">Other (please, comment)</span>
+                    </label>
+                </li>
+                            </ul>
+            <textarea class="self-answer" placeholder="Add your comment (optional)" ></textarea>
+            <button class="send-answer js-send-feedback">Send</button>
+    </div>
+</div>
+<div class="overlay-blind" style="display: none"></div>
+
+<div class="header-insider">
+    <a class="logo" href="/">Linkis</a>
+
+    <div class="user-menu user-menu2">
+        
+        
+            <a href="/about" class="js-top-link-about " >About</a><a href="/faq" class="js-top-link-faq " >Faq</a><a href="/bookmarklet" class="js-top-link-bookmarklet " >Bookmarklet</a><a href="http://blog.linkis.com" class="js-top-link-blog " >Blog</a><a href="javascript:void(0);" class="twitter-login js-btn-signin-tw js-top-link-login " data-src="main page">Log in</a>
+            </div>
+</div>
+
+    <div class="inputs">
+        <div class="inputs-insider">
+            <form action="/url/create" method="post" class="sharer with-captcha js-short-form" data-from="from main page" autocomplete="off">
+                <input class="paste-url js-url-inp" type="text" name="url" placeholder="Paste a URL you want to share">
+                                <input type="submit" class="personalize active js-link-submit" value=""/>
+                <p class="error-message js-link-message"></p>
+                
+        <script src="https://www.google.com/recaptcha/api.js"></script>
+        <div class="g-recaptcha" data-sitekey="6LegsQATAAAAAGF0ywUFNkEi6SW58kXqhqfkFe1H"></div>
+                        <div class="loader js-link-loader hide" title="0">
+                    <svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                         width="40px" height="40px" viewBox="0 0 40 40" enable-background="new 0 0 40 40" xml:space="preserve">
+                      <path opacity="0.2" fill="#000" d="M20.201,5.169c-8.254,0-14.946,6.692-14.946,14.946c0,8.255,6.692,14.946,14.946,14.946
+                        s14.946-6.691,14.946-14.946C35.146,11.861,28.455,5.169,20.201,5.169z M20.201,31.749c-6.425,0-11.634-5.208-11.634-11.634
+                        c0-6.425,5.209-11.634,11.634-11.634c6.425,0,11.633,5.209,11.633,11.634C31.834,26.541,26.626,31.749,20.201,31.749z"/>
+                        <path fill="#000" d="M26.013,10.047l1.654-2.866c-2.198-1.272-4.743-2.012-7.466-2.012h0v3.312h0
+                        C22.32,8.481,24.301,9.057,26.013,10.047z">
+                            <animateTransform attributeType="xml"
+                                              attributeName="transform"
+                                              type="rotate"
+                                              from="0 20 20"
+                                              to="360 20 20"
+                                              dur="0.5s"
+                                              repeatCount="indefinite"/>
+                        </path>
+                      </svg>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="header-insider-2">
+        <h1>Boost your online presence</h1>
+        <h2>Impress your followers by sharing<br /> personalized web pages</h2>
+        <h3>Engage them into discussions, shares and retweets.<br/> Analyze their activity and improve your social presence</h3>
+        <a class="js-video-preview video-tour js-video-open" href="#">
+            <p class="video-heading">Take a look at Linkis</p>
+            <p>This video guide will help you discover all benefits of using Linkis as your casual URL and sites customizer</p>
+        </a>
+        <div class="modal-popup js-modal-popup">
+    <div class="popup-holder">
+	    <div class="popup-header">
+	    	<h3></h3>
+            <p class="header-descr js-theme-description"></p>
+	        <a href="javascript:void(0);" class="popup-close js-popup-close-default">Close</a>
+	    </div>
+        <a href="javascript:void(0);" class="popup-close js-popup-close-default">Close</a>
+
+        <div class="js-popups-html popups-html">
+                            <div class="js-index-video index-video-popup">
+	<div id="youtube-video"></div>
+</div>                    </div>
+
+    </div>
+</div>        <div class="twitter_search_widget">
+                        <div class="wiget-holder" style="height: 320px;">
+                <a class="twitter-timeline" height="320" data-chrome="nofooter" href="https://twitter.com/search?q=ln.is" data-widget-id="420890839582142464"></a>
+            </div>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+                            <span class="or-try"></span>
+                <a class="sign-up-with-twitter js-btn-signin-tw js-login-under-widget" data-src="from main page" href="javascript:void(0);"><span>Sign up with Twitter</span></a>
+                    </div>
+        <!-- <div class="video-popup js-video-preview"></div> -->
+    </div>
+</div>
+<div class="what-about">
+    <h4 id="about">~  WHAT IS THIS ALL ABOUT  ~</h4>
+    <h2>Linkis is the fastest way to personalize web pages you share</h2>
+    <h3>It's about taking you beyond regular URL shortening and tweeting: the point is to share not just<br> a customized link, but a customized page.</h3>
+</div>
+<div class="how-works">
+    <h4>~  HOW IT WORKS  ~</h4>
+    <h2>Linkis connects to your Twitter and does the job for you</h2>
+    <h3>It works as a Twitter App that automatically turns your shared links into personalized ones. <br>This allows you to stay connected to your readers all the way.</h3>
+</div>
+<div class="whats-cool"><div class="insider">
+        <h4>~  WHAT'S COOL ABOUT IT  ~</h4>
+        <div class="teaser">
+            <img src="/images/v3/whats2.png">
+            <div class="hover-text"><span>Pages you share are featured with unique social options to meet your needs</span></div>
+            <p>Instant personalization</p>
+        </div>
+        <div class="teaser">
+            <img src="/images/v3/whats1.png">
+            <div class="hover-text"><span>You don't need to customize <br> pages manually. Linkis does <br> all the job for you.</span></div>
+            <p>Autobranding feature</p>
+        </div>
+        <div class="teaser">
+            <img src="/images/v3/whats3.png">
+            <div class="hover-text"><span>Choose how the page should look like and what options it should have</span></div>
+            <p>Various themes</p>
+        </div>
+        <div class="teaser">
+            <img src="/images/v3/whats4.png">
+            <div class="hover-text"><span>Promote your project, site, blog, etc. with Linkis panel</span></div>
+            <p>Personal promotion</p>
+        </div>
+        <div class="teaser">
+            <img src="/images/v3/whats5.png">
+            <div class="hover-text"><span>Analyze your audience with the help of Linkis tools</span></div>
+            <p>Readers’ feedback</p>
+        </div>
+        <div class="teaser">
+            <img src="/images/v3/whats6.png">
+            <div class="hover-text"><span>All data you receive while using Linkis is kept safe in your account</span></div>
+            <p>History and stats</p>
+        </div>
+    </div></div>
+<div class="why-need"><div class="insider">
+        <h4>~  WHY DO I NEED IT  ~</h4>
+        <h2>Linkis boosts your online presence to encourage interaction</h2>
+        <div class="why-need-descr">
+            <p class="ber">Get reactions</p>
+            <p>Know what other people think about your content</p>
+        </div>
+        <div class="why-need-descr" style="width:288px">
+            <p class="ber">Stay in touch</p>
+            <p>Share your content and promote it on other websites</p>
+        </div>
+        <div class="why-need-descr">
+            <p class="ber">Analyze this</p>
+            <p>Keep your shared links in one storage and analyze their stats</p>
+        </div>
+    </div></div>
+    <div class="what-like">
+        <h4>~  WHAT IS IT LIKE  ~</h4>
+        <h2>Look at top links from Linkis</h2>
+        <div id="carousel-example-generic0" class="carousel slide" data-ride="carousel">
+            <!-- Wrapper for slides -->
+            <div class="carousel-inner">
+                                    <div class="item active">
+                        <a href="http://linkis.com/JfR0L" target="_blank" class="js-gallery-preview">
+                            <img src="http://ec2linkis.s3.amazonaws.com/top-links/JfR0L?v=3" alt="The Fujifilm X-Pro2 is a fantastic camera, but it's not for me">
+                        </a>
+                        <a href="http://linkis.com/JfR0L" class="under-carousel js-gallery-title" target="_blank">The Fujifilm X-Pro2 is a fantastic camera, but it's not for me</a>
+                        <p class="under-carousel2"><a href="http://linkis.com/JfR0L" target="_blank">http://linkis.com/JfR0L</a></p>
+                    </div>
+                                    <div class="item ">
+                        <a href="http://linkis.com/nT1g2" target="_blank" class="js-gallery-preview">
+                            <img src="http://ec2linkis.s3.amazonaws.com/top-links/nT1g2?v=2" alt="Budweiser wants to call itself ‘America’ this summer | Fox News">
+                        </a>
+                        <a href="http://linkis.com/nT1g2" class="under-carousel js-gallery-title" target="_blank">Budweiser wants to call itself ‘America’ this summer | Fox News</a>
+                        <p class="under-carousel2"><a href="http://linkis.com/nT1g2" target="_blank">http://linkis.com/nT1g2</a></p>
+                    </div>
+                                    <div class="item ">
+                        <a href="http://linkis.com/JumUc" target="_blank" class="js-gallery-preview">
+                            <img src="http://ec2linkis.s3.amazonaws.com/top-links/JumUc?v=2" alt="Newcastle relegated but did Everton throw the game?">
+                        </a>
+                        <a href="http://linkis.com/JumUc" class="under-carousel js-gallery-title" target="_blank">Newcastle relegated but did Everton throw the game?</a>
+                        <p class="under-carousel2"><a href="http://linkis.com/JumUc" target="_blank">http://linkis.com/JumUc</a></p>
+                    </div>
+                                    <div class="item ">
+                        <a href="http://linkis.com/GEF4h" target="_blank" class="js-gallery-preview">
+                            <img src="http://ec2linkis.s3.amazonaws.com/top-links/GEF4h?v=2" alt="Instagram">
+                        </a>
+                        <a href="http://linkis.com/GEF4h" class="under-carousel js-gallery-title" target="_blank">Instagram</a>
+                        <p class="under-carousel2"><a href="http://linkis.com/GEF4h" target="_blank">http://linkis.com/GEF4h</a></p>
+                    </div>
+                                    <div class="item ">
+                        <a href="http://linkis.com/MFITa" target="_blank" class="js-gallery-preview">
+                            <img src="http://ec2linkis.s3.amazonaws.com/top-links/MFITa?v=2" alt="‘Outlander’ Star Tobias Menzies Talks Black Jack Randall’s Return And Why It Went Off-Book">
+                        </a>
+                        <a href="http://linkis.com/MFITa" class="under-carousel js-gallery-title" target="_blank">‘Outlander’ Star Tobias Menzies Talks Black Jack Randall’s Return And Why It Went Off-Book</a>
+                        <p class="under-carousel2"><a href="http://linkis.com/MFITa" target="_blank">http://linkis.com/MFITa</a></p>
+                    </div>
+                                    <div class="item ">
+                        <a href="http://linkis.com/VbVoB" target="_blank" class="js-gallery-preview">
+                            <img src="http://ec2linkis.s3.amazonaws.com/top-links/VbVoB?v=2" alt="Instagram">
+                        </a>
+                        <a href="http://linkis.com/VbVoB" class="under-carousel js-gallery-title" target="_blank">Instagram</a>
+                        <p class="under-carousel2"><a href="http://linkis.com/VbVoB" target="_blank">http://linkis.com/VbVoB</a></p>
+                    </div>
+                            </div>
+            <!-- Controls -->
+            <a class="left carousel-control js-slide-gallery" href="#carousel-example-generic0" data-slide="prev">Previous</a>
+            <a class="right carousel-control js-slide-gallery" href="#carousel-example-generic0" data-slide="next">Next</a>
+        </div>
+    </div>
+    <div class="good-count">
+        <h4>~  We’re on a good count  ~</h4>
+        <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+            <!-- Indicators -->
+            <!-- Wrapper for slides -->
+            <div class="carousel-inner js-quotation">
+                                    <div class="item active">
+                        <p>Linkis is a service that helps you to share links in a moment and increase the productivity of your online activity.</p>
+                        <p><a target='_blank' href='http://zero3computers.com/blog/turn-twitter-powerful-analytics-tools'>Turn Your Twitter Into A Powerful Analytics Tool</a></p>
+                    </div>
+                                    <div class="item ">
+                        <p>It has to be the most exciting tool for link customization, twitter automation, curating and exchanging opinions all on one platform that I’ve seen rolled out in a very long time.</p>
+                        <p><a target='_blank' href='http://www.bogdanfiedur.info/linkis-review/'>Linkis Review - Can you say Wow?  I did!</a></p>
+                    </div>
+                            </div>
+            <ol class="carousel-indicators">
+                                    <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                                    <li data-target="#carousel-example-generic" data-slide-to="1" class=""></li>
+                            </ol>
+        </div>
+    </div>
+
+    <div class="sign-up-with-twitter-block">
+        <a class="sign-up-with-twitter js-btn-signin-tw js-login-bottom" data-src="from main page" href="javascript:void(0);"><span>Sign up with Twitter</span></a>
+        <p>It's free and safe</p>
+    </div>
+
+<div class="footer">
+    <div class="social">
+        <a class="tw js-footer-twitter" target="_blank" href="https://twitter.com/linkis_com"></a>
+        <a class="fb js-footer-facebook" target="_blank" href="http://www.facebook.com/Linkiscom"></a>
+        <a target="_blank" class="yt js-footer-youtube" href="http://www.youtube.com/user/Linkiscom"></a>
+        <a target="_blank" rel="publisher" class="gp js-footer-google-plus" href="https://plus.google.com/+Linkis_com"></a>
+    </div>
+    <div class="links">
+        <a href="/about" class="js-footer-about">About</a>
+        <a href="/faq" class="js-footer-faq">FAQ</a>
+        <a href="/privacy" class="js-footer-privacy">Privacy</a>
+        <a href="/terms" class="js-footer-terms">Terms</a>
+        <a href="/bookmarklet" class="js-footer-bookmarklet">Bookmarklet</a>
+        <a href="http://blog.linkis.com" class="js-footer-blog"> Blog</a>
+    </div>
+    <div class="copyright">&copy; Copyright 2016 by Linkis.com. All rights reserved.</div>
+</div>
+
+<script type="text/javascript">
+    LNG = window.LNG || {};
+    LNG['index.urlEmpty'] = " Please enter URL";
+    LNG['index.urlCreationError'] = " General error occured. Try again";
+</script>
+</div>
+
+
+    <script type='text/javascript'>
+    window.steal = { loaded:["prod/production.css"] };
+    </script>
+
+    <script src="/js/steal/steal.production.js?prod/production.js&892"></script>
+
+
+    <!-- UserVoice JavaScript SDK (only needed once on a page) -->
+    <script>(function(){var uv=document.createElement('script');uv.type='text/javascript';uv.async=true;uv.src='//widget.uservoice.com/KUBNH3g4sCUtmVUMMrmmA.js';var s=document.getElementsByTagName('script')[0];s.parentNode.insertBefore(uv,s)})()</script>
+
+    <!-- A tab to launch the Classic Widget -->
+    <script>
+        UserVoice = window.UserVoice || [];
+        UserVoice.push(['showTab', 'classic_widget', {
+            mode: 'full',
+            primary_color: '#cc6d00',
+            link_color: '#007dbf',
+            default_mode: 'support',
+            forum_id: 217881,
+            tab_label: 'Feedback',
+            tab_color: '#008bcc',
+            tab_position: 'middle-right',
+            tab_inverted: false
+        }]);
+    </script>
+
+</body>
+</html>

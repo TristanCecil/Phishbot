@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=GB2312">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>泡在网上的日子 - 做最好的移动开发社区</title>
+<meta name="description" content="一个有关安卓开发、iOS开发的网站,分享知识与技术。" />
+<meta name="keywords" content="安卓开发,移动开发,java" />
+
+<link href="/templets/jcodecraeer/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="/templets/jcodecraeer/css/new.css?v=1.0" rel="stylesheet" type="text/css">
+<script src="/templets/jcodecraeer/js/jquery-1.11.2.min.js"></script>
+<script language="javascript" type="text/javascript" src="/include/myajax.js"></script>
+<script src="/templets/jcodecraeer/bootstrap/js/bootstrap.min.js"></script> 
+<script language="javascript" type="text/javascript">
+<!--
+	function CheckLogin(){
+	  var taget_obj = document.getElementById('login_info');
+	  myajax = new MyAjax(taget_obj,false,false,'','','');
+	  myajax.SendGet2("/member/ajax_loginsta.php");
+	  DedeXHTTP = null;
+	}	
+-->
+</script>
+<script class="secret-source">
+function loadajaxFeedback(essayid)
+{
+	var taget_obj = $DE('ajaxfeedback_'+essayid);
+	if(taget_obj.innerHTML == '')
+	{
+		var waithtml = "<div style='line-height:30px'><img src='/images/loadinglit.gif' /></div>";
+		var myajax = new MyAjax(taget_obj, false, true, '', '', waithtml);
+		myajax.SendGet2("/plus/feedback_essay.php?essayid="+essayid+ "&action=loadfeedback&type=ajax");
+		var a=getElementsByClassName("feedback_mutex");
+		for(var i=0;i<a.length;i++){ 
+	       if(a[i] != taget_obj){
+			a[i].innerHTML = '';
+	       }	    			         
+		}
+		DedeXHTTP = null;
+	}else{
+		taget_obj.innerHTML = '';
+	}
+}
+function ajaxFeedbackPost(essayid)
+{
+
+	var formname = 'f = document.ajaxfeedback_'+essayid;
+	eval(formname);
+	//var f = document.formname;
+	//var f = f[0];
+	var nvalidate = '';
+	var nnotuser = '';
+ 
+	var taget_obj =getNewFeedBackItem($DE('newfeedback'+essayid)) ;
+	var waithtml = "<span style='line-height:30px'><img src='/images/loadinglit.gif' /> </span>";
+	eval('var msg = $DE("msg_'+essayid+'").value');
+	var myajax = new MyAjax(taget_obj, false, true, '', '', waithtml);
+	
+	myajax.sendlang = 'gb2312';
+	myajax.AddKeyN('action', 'send');
+	myajax.AddKeyN('essayid', essayid);
+	myajax.AddKeyN('type', 'ajax');
+	myajax.AddKeyN('msg', msg);
+	myajax.SendPost2('/plus/feedback_essay.php');
+	var textarea = $DE("msg_"+essayid);
+	textarea.value="";
+}
+
+function getNewFeedBackItem(obj) {
+	var div = document.createElement("div");
+	obj.insertBefore(div,obj.firstChild);
+	return div;
+}
+
+$(document).ready(function(){
+	setSN('c_list');
+	setSN('c_list1');
+	setSN('c_list2');
+	setSN('c_list3');	
+
+});
+
+
+function setSN(e){
+	var ul = document.getElementById(e);
+	var lis= ul.getElementsByTagName('li');
+	for(var i=0,l=lis.length;i<l;i++){
+		var tHTML = lis[i].innerHTML
+		lis[i].innerHTML = '<span>'+(i+1)+'</span>'+tHTML;
+		if(i < 5){
+			 var dot = lis[i].getElementsByTagName('span')[0];
+			 dot.style.background="#86ae6a";
+			 dot.style.color="#ffffff";
+		}
+	}
+}
+</script>
+
+</head>
+<body>
+<div class="header">  
+	<div class="headercon container clearfix">
+        <div class="row">
+            <div class="col-md-12">
+            	<!-- 导航部分 -->
+                <a class="logo-t" href="/"><img width="181" src="/templets/jcodecraeer/images/logo.png"></a>
+                <ul class="nav-ul">
+                	<li id="nav-index"><a href="/" >首页</a></li>
+                    <li id="nav-code"><a href="/plus/list.php?tid=31" >代码</a></li>
+                    <li id="nav-feed"><a class="" href="/plus/freelist.php?lid=12" >话题</a></li>
+                    <li id="nav-ask"><a class="" href="/ask" >问答</a></li>
+                    <li id="nav-tag"><a href="/tags.php" class="trigger">标签</a></li>
+                    <li><a href="/about.html" class="">关于</a></li>
+                </ul>
+                <!-- 导航部分 end -->
+                
+                <!-- 搜索-下拉 -->
+                <div class="header_right">
+                	<div class="search_start">
+                         <div class="search_cont">
+                            <form action="/plus/search.php" method="get">
+                            	<input type="hidden" name="kwtype" value="0" />
+                                <input type="text" name="q" class="in_search" autocomplete="off" value="搜索"/>
+                                <input type="submit" class="in_submit" />
+        						<span class="glyphicon glyphicon-search icon-search"></span>
+                            </form>
+                        </div>
+                    </div>
+                    <!-- 消息下拉 -->
+                    <div class="header_right_msg z">  
+                        <!-- 登录 -->
+                        <div class="right_login" id="login_info">
+                            <a class="l" href="/member/login.php">登录</a>
+                            <a href="/member/reg_new.php">注册</a>
+                        </div>
+                        <!-- 登录 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script language="javascript" type="text/javascript">CheckLogin();</script>
+<script language="javascript" type="text/javascript">
+  $(function(){
+	
+	$(".in_search").click(function(){
+		$(".search_cont").addClass('ser').animate({
+			width:200,
+		},200);
+		if($(this).val() == '搜索'){
+			$(".in_search").val('');
+		}
+	})
+	$(".in_search").blur(function(){
+		if($(this).val() !== ''){
+			return false;
+		}
+		$(".search_cont").removeClass('ser').animate({
+			width:90,
+		},200);
+		$(".in_search").val('搜索');
+	});
+	
+});
+</script>
+
+<div   id="navMenu"> 
+	<div class="container" >  
+		<div class="row">
+			<div class="col-md-12">
+				<ul id="nav" >
+				<!-- all -->
+				
+					<li><a href='/plus/list.php?tid=4'  rel='dropmenu4'><span>综合资讯</span></a></li>
+				
+					<li><a href='/plus/list.php?tid=6'  rel='dropmenu6'><span>程序设计</span></a></li>
+				
+					<li><a href='/plus/list.php?tid=16'  rel='dropmenu16'><span>安卓开发</span></a></li>
+				
+					<li><a href='/plus/list.php?tid=5'  rel='dropmenu5'><span>前端开发</span></a></li>
+				
+					<li><a href='/plus/list.php?tid=27'  rel='dropmenu27'><span>IOS开发</span></a></li>
+				
+					<li><a href='/plus/list.php?tid=14' ><span>数据库</span></a></li>
+				
+					<li><a href='/plus/list.php?tid=15' ><span>开发日志</span></a></li>
+				
+					<li><a href='/plus/list.php?tid=32'  rel='dropmenu32'><span>应用推荐</span></a></li>
+				
+					<li><a href='/plus/list.php?tid=9' ><span>每日一站</span></a></li>
+				
+				
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type='text/javascript' src='/images/js/dropdown.js'></script>
+<div class="drop" id="dropmenu4">
+                    <ul>
+                      
+                      <li>
+                        <a href="/plus/list.php?tid=8" id="architecture">IT业界</a>
+                      </li>
+                      
+                      <li>
+                        <a href="/plus/list.php?tid=21" id="architecture">移动互联</a>
+                      </li>
+                      
+                      <li>
+                        <a href="/plus/list.php?tid=22" id="architecture">社交网络</a>
+                      </li>
+                      
+                      <li>
+                        <a href="/plus/list.php?tid=24" id="architecture">电子商务</a>
+                      </li>
+                      
+                      <li>
+                        <a href="/plus/list.php?tid=17" id="architecture">安卓资讯</a>
+                      </li>
+                       
+                    </ul>
+
+  </div><div class="drop" id="dropmenu6">
+                    <ul>
+                      
+                      <li>
+                        <a href="/plus/list.php?tid=2" id="architecture">php</a>
+                      </li>
+                      
+                      <li>
+                        <a href="/plus/list.php?tid=7" id="architecture">java</a>
+                      </li>
+                      
+                      <li>
+                        <a href="/plus/list.php?tid=12" id="architecture">程序员</a>
+                      </li>
+                      
+                      <li>
+                        <a href="/plus/list.php?tid=20" id="architecture">设计模式|算法</a>
+                      </li>
+                      
+                      <li>
+                        <a href="/plus/list.php?tid=23" id="architecture">Scala语言</a>
+                      </li>
+                       
+                    </ul>
+
+  </div><div class="drop" id="dropmenu16">
+                    <ul>
+                      
+                      <li>
+                        <a href="/plus/list.php?tid=18" id="architecture">android开发</a>
+                      </li>
+                      
+                      <li>
+                        <a href="/plus/list.php?tid=25" id="architecture">android官方课程</a>
+                      </li>
+                      
+                      <li>
+                        <a href="/plus/list.php?tid=33" id="architecture">Android Studio</a>
+                      </li>
+                      
+                      <li>
+                        <a href="/a/androidweekly/" id="architecture">Android开发周报</a>
+                      </li>
+                      
+                      <li>
+                        <a href="/plus/list.php?tid=36" id="architecture">android初级教程</a>
+                      </li>
+                       
+                    </ul>
+
+  </div><div class="drop" id="dropmenu5">
+                    <ul>
+                      
+                      <li>
+                        <a href="/plus/list.php?tid=1" id="architecture">JavaScript</a>
+                      </li>
+                      
+                      <li>
+                        <a href="/plus/list.php?tid=3" id="architecture">CSS教程</a>
+                      </li>
+                      
+                      <li>
+                        <a href="/plus/list.php?tid=28" id="architecture">jQuery Mobile</a>
+                      </li>
+                      
+                      <li>
+                        <a href="/plus/list.php?tid=10" id="architecture">web设计</a>
+                      </li>
+                      
+                      <li>
+                        <a href="/plus/list.php?tid=19" id="architecture">EXT JS开发框架</a>
+                      </li>
+                      
+                      <li>
+                        <a href="/plus/list.php?tid=26" id="architecture">HTML5/CSS3</a>
+                      </li>
+                       
+                    </ul>
+
+  </div><div class="drop" id="dropmenu27">
+                    <ul>
+                      
+                      <li>
+                        <a href="/plus/list.php?tid=30" id="architecture">文章教程</a>
+                      </li>
+                       
+                    </ul>
+
+  </div><div class="drop" id="dropmenu14">
+                    <ul>
+                       
+                    </ul>
+
+  </div><div class="drop" id="dropmenu15">
+                    <ul>
+                       
+                    </ul>
+
+  </div><div class="drop" id="dropmenu32">
+                    <ul>
+                      
+                      <li>
+                        <a href="/plus/list.php?tid=34" id="architecture">插件</a>
+                      </li>
+                       
+                    </ul>
+
+  </div><div class="drop" id="dropmenu9">
+                    <ul>
+                       
+                    </ul>
+
+  </div>
+<script type="text/javascript">cssdropdown.startchrome("navMenu")</script>  
+<div class="container">
+	<div class="row bgf" style="padding-top:5px;">
+		<div class="col-md-12">
+			<script src='/plus/fuckblok.php?aid=36' language='javascript'></script>
+		</div>		
+	</div>
+	<div class="row pt10 bgf">
+		<div class="col-md-5">
+			<div id="carousel-example-captions" class="carousel slide" data-ride="carousel">
+			  <ol class="carousel-indicators">
+				<li data-target="#carousel-example-captions" data-slide-to="0" class="active"></li>
+				<li data-target="#carousel-example-captions" data-slide-to="1"></li>
+				<li data-target="#carousel-example-captions" data-slide-to="2"></li>
+				<li data-target="#carousel-example-captions" data-slide-to="3"></li>
+				<li data-target="#carousel-example-captions" data-slide-to="4"></li>
+			  </ol>
+			  <div class="carousel-inner" role="listbox">
+			  	<div class="item active">
+				  <a href="/a/wangzhantuijian/waiwenfanyi/2016/0602/4328.html"  target="_blank" title="「谷歌教父」谢尔盖·布林，世界第一互联网巨头的创新原力！">
+					<img  style="height:300px;"     src="/uploads/allimg/160602/223U22092-6.jpg"   alt="「谷歌教父」谢尔盖·布林，世界第一互联网巨头的创新原力！"  title="「谷歌教父」谢尔盖·布林，世界第一互联网巨头的创新原力！"   />
+				  </a>
+				  <div class="carousel-caption">
+					<h3>「谷歌教父」谢尔盖·布林，世界第一互联网巨头的创新原力！</h3>
+					 
+				  </div>
+				</div>
+				
+			  	<div class="item">
+				  <a href="/a/wangzhantuijian/waiwenfanyi/2016/0602/4321.html"  target="_blank" title="提前点亮Computex2016华硕机器人Zenbo亮相">
+					<img  style="height:300px;"     src="/uploads/allimg/160602/0109545c4-0.jpg"   alt="提前点亮Computex2016华硕机器人Zenbo亮相"  title="提前点亮Computex2016华硕机器人Zenbo亮相"   />
+				  </a>
+				  <div class="carousel-caption">
+					<h3>提前点亮Computex2016华硕机器人Zenbo亮相</h3>
+					 
+				  </div>
+				</div>
+<div class="item">
+				  <a href="/a/anzhuokaifa/anzhuozixun/2016/0519/4275.html"  target="_blank" title="完整回顾 Google I/O 2016 大会发布的 10 样新玩意">
+					<img  style="height:300px;"     src="/uploads/160519/1-16051Z954414b.png"   alt="完整回顾 Google I/O 2016 大会发布的 10 样新玩意"  title="完整回顾 Google I/O 2016 大会发布的 10 样新玩意"   />
+				  </a>
+				  <div class="carousel-caption">
+					<h3>完整回顾 Google I/O 2016 大会发布的 10 样新玩意</h3>
+					 
+				  </div>
+				</div>
+<div class="item">
+				  <a href="/a/chengxusheji/chengxuyuan/2016/0427/4189.html"  target="_blank" title="【译】互联网公司真的是「看重能力，不看重学历」吗？">
+					<img  style="height:300px;"     src="/uploads/20160427/1461756767928066.jpg"   alt="【译】互联网公司真的是「看重能力，不看重学历」吗？"  title="【译】互联网公司真的是「看重能力，不看重学历」吗？"   />
+				  </a>
+				  <div class="carousel-caption">
+					<h3>【译】互联网公司真的是「看重能力，不看重学历」吗？</h3>
+					 
+				  </div>
+				</div>
+<div class="item">
+				  <a href="/a/wangzhantuijian/waiwenfanyi/2016/0417/4156.html"  target="_blank" title="谷歌推出自动单车">
+					<img  style="height:300px;"     src="/uploads/20160417/1460900832175010.png"   alt="谷歌推出自动单车"  title="谷歌推出自动单车"   />
+				  </a>
+				  <div class="carousel-caption">
+					<h3>谷歌推出自动单车</h3>
+					 
+				  </div>
+				</div>
+
+			  </div>
+			  <a class="left carousel-control" href="#carousel-example-captions" role="button" data-slide="prev">
+				<span class="glyphicon glyphicon-chevron-left"></span>
+				<span class="sr-only">Previous</span>
+			  </a>
+			  <a class="right carousel-control" href="#carousel-example-captions" role="button" data-slide="next">
+				<span class="glyphicon glyphicon-chevron-right"></span>
+				<span class="sr-only">Next</span>
+			  </a>
+			</div>		
+ 			
+		</div>
+		<div class="col-md-3">
+			<ul class="arclist y">
+			   <li>
+				 <a href="/a/anzhuokaifa/anzhuozixun/2016/0602/4327.html"  target="_blank" title="安卓开发者们受邀为Chrome OS做好准备">
+					 安卓开发者们受邀为Chrome OS做好准备
+				 </a>
+				</li>
+<li>
+				 <a href="/a/anzhuokaifa/anzhuozixun/2016/0527/4303.html"  target="_blank" title="Android赢了Java官司 谷歌笑了 甲骨文称还要上诉">
+					 Android赢了Java官司 谷歌笑了 甲骨文称还要上诉
+				 </a>
+				</li>
+<li>
+				 <a href="/a/wangzhantuijian/yidonghulian/2016/0531/4315.html"  target="_blank" title="数据暗示：开发者正对Apple Watch失去兴趣">
+					 数据暗示：开发者正对Apple Watch失去兴趣
+				 </a>
+				</li>
+<li>
+				 <a href="/a/anzhuokaifa/anzhuozixun/2016/0519/4282.html"  target="_blank" title="Google 发表 Daydream VR 平台，并为 Android N 提供一个高性能">
+					 Google 发表 Daydream VR 平台，并为 Android N 提供一个高性能
+				 </a>
+				</li>
+<li>
+				 <a href="/a/wangzhantuijian/waiwenfanyi/2016/0419/4161.html"  target="_blank" title="Google正考虑用苹果的Swift语言开发Android，同语言双平台开发不">
+					 Google正考虑用苹果的Swift语言开发Android，同语言双平台开发不
+				 </a>
+				</li>
+<li>
+				 <a href="/a/wangzhantuijian/waiwenfanyi/2016/0317/4063.html"  target="_blank" title="程序员的新搭档——护眼利器WiT台灯">
+					 程序员的新搭档——护眼利器WiT台灯
+				 </a>
+				</li>
+<li>
+				 <a href="/a/anzhuokaifa/anzhuozixun/2016/0216/3966.html"  target="_blank" title="Android Marshmallow系统占比首次超1.0%">
+					 Android Marshmallow系统占比首次超1.0%
+				 </a>
+				</li>
+<li>
+				 <a href="/a/wangzhantuijian/yidonghulian/2016/0126/3913.html"  target="_blank" title="在 Google 看来，应用商店都将消亡，而搜索永存">
+					 在 Google 看来，应用商店都将消亡，而搜索永存
+				 </a>
+				</li>
+
+			</ul> 	
+		</div>
+		<div class="col-md-4">
+		<!-- Nav tabs -->
+			<ul class="nav nav-tabs" role="tablist">
+			  <li role="presentation" class="active"><a href="#week" role="tab" data-toggle="tab">本周</a></li>
+			  <li role="presentation"><a href="#month" role="tab" data-toggle="tab">本月</a></li>
+			  <li role="presentation"><a href="#all" role="tab" data-toggle="tab">总排行</a></li>
+			  <li role="presentation"><a href="#random" role="tab" data-toggle="tab">随机推荐</a></li>
+			</ul>
+
+			<!-- Tab panes -->
+			<div class="tab-content">
+			     <div role="tabpanel" class="tab-pane active" id="week"> 
+					 <ul id="c_list" class="arclist clearfix">
+					  <li class="title"><a href="/a/anzhuokaifa/androidkaifa/2016/0730/4537.html" target="_blank" title="Y-bao/PullRefreshView 2.0 通用弹性阻尼 和 下拉刷新、上拉加载控件">Y-bao/PullRefreshView 2.0 通用弹性阻…</a></li>
+<li class="title"><a href="/IOS/2016/0801/4541.html" target="_blank" title="[译] 高效的 iOS 应用版本支持方法">[译] 高效的 iOS 应用版本支持方法</a></li>
+
+					 </ul>				 
+				 </div>
+			     <div role="tabpanel" class="tab-pane" id="month">
+					 <ul id="c_list1" class="arclist clearfix">
+					  <li class="title"><a href="/a/anzhuokaifa/androidkaifa/2016/0713/4498.html" target="_blank" title="React Native是原生开发的末日吗？">React Native是原生开发的末日吗？</a></li>
+<li class="title"><a href="/a/anzhuokaifa/androidkaifa/2016/0711/4490.html" target="_blank" title="Music Player:从UI方案到代码">Music Player:从UI方案到代码</a></li>
+<li class="title"><a href="/a/anzhuokaifa/androidkaifa/2016/0719/4507.html" target="_blank" title="《Android 开发工程师面试指南》">《Android 开发工程师面试指南》</a></li>
+<li class="title"><a href="/a/anzhuokaifa/androidkaifa/2016/0726/4529.html" target="_blank" title="ANDROID SDK 源码解析项目">ANDROID SDK 源码解析项目</a></li>
+<li class="title"><a href="/a/anzhuokaifa/androidkaifa/2016/0717/4504.html" target="_blank" title="Android中美丽的下划线">Android中美丽的下划线</a></li>
+<li class="title"><a href="/a/anzhuokaifa/androidkaifa/2016/0717/4502.html" target="_blank" title="从零开始打造一个Android 3D立体旋转容器">从零开始打造一个Android 3D立体旋转容…</a></li>
+<li class="title"><a href="/a/anzhuokaifa/androidkaifa/2016/0712/4494.html" target="_blank" title="功能强大的Vitamio视频播放器教程">功能强大的Vitamio视频播放器教程</a></li>
+<li class="title"><a href="/a/anzhuokaifa/androidkaifa/2016/0713/4496.html" target="_blank" title="Android一款UI体验好、定制性强的水波加载控件WaveProgressView">Android一款UI体验好、定制性强的水波加…</a></li>
+
+					 </ul>
+				 </div>
+			     <div role="tabpanel" class="tab-pane" id="all">
+					 <ul id="c_list2" class="arclist clearfix">
+					  <li class="title"><a href="/a/anzhuokaifa/androidkaifa/2014/1118/2006.html" target="_blank" title="android：ToolBar详解（手把手教程）">android：ToolBar详解（手把手教程）</a></li>
+<li class="title"><a href="/a/anzhuokaifa/androidkaifa/2015/0106/2275.html" target="_blank" title="OkHttp使用教程">OkHttp使用教程</a></li>
+<li class="title"><a href="/a/anzhuokaifa/androidkaifa/2014/0925/1713.html" target="_blank" title="android官方侧滑菜单DrawerLayout详解">android官方侧滑菜单DrawerLayout详解</a></li>
+<li class="title"><a href="/a/anzhuokaifa/androidkaifa/2012/1212/703.html" target="_blank" title="Android Canvas绘图详解（图文）">Android Canvas绘图详解（图文）</a></li>
+<li class="title"><a href="/a/anzhuokaifa/androidkaifa/2015/0105/2264.html" target="_blank" title="android Spinner控件详解">android Spinner控件详解</a></li>
+<li class="title"><a href="/a/anzhuokaifa/androidkaifa/2014/0731/1639.html" target="_blank" title="picasso-强大的Android图片下载缓存库">picasso-强大的Android图片下载缓存库</a></li>
+<li class="title"><a href="/a/anzhuokaifa/androidkaifa/2014/0506/1614.html" target="_blank" title="android开源图表库MPAndroidChart（曲线图、直方图、饼状图）">android开源图表库MPAndroidChart（曲线…</a></li>
+<li class="title"><a href="/a/anzhuokaifa/androidkaifa/2014/1107/1930.html" target="_blank" title="hellocharts-android开源图表库（效果非常好）">hellocharts-android开源图表库（效果非…</a></li>
+
+					 </ul>
+				 </div>
+			     <div role="tabpanel" class="tab-pane" id="random">
+					 <ul id="c_list3" class="arclist clearfix">
+					 <li class="title"><a href="/a/androidweekly/2014/1211/2144.html" target="_blank" title="android 周报128期">android 周报128期</a></li>
+<li class="title"><a href="/IOS/2016/0120/3894.html" target="_blank" title="GLCalendarView - 一个可自定义的日期区间选择器">GLCalendarView - 一个可自定义的日期区…</a></li>
+<li class="title"><a href="/a/anzhuokaifa/androidkaifa/2014/1119/2016.html" target="_blank" title=" Android美女拼图游戏"> Android美女拼图游戏</a></li>
+<li class="title"><a href="/a/phpjiaocheng/2012/0304/7.html" target="_blank" title="PHP引号的正确使用方式介绍">PHP引号的正确使用方式介绍</a></li>
+<li class="title"><a href="/a/phpjiaocheng/2013/0821/1518.html" target="_blank" title="dede助手小工具helper是如何载入的？">dede助手小工具helper是如何载入的？</a></li>
+<li class="title"><a href="/a/chengxusheji/java/2013/0627/1396.html" target="_blank" title=" java线程安全总结"> java线程安全总结</a></li>
+<li class="title"><a href="/a/anzhuokaifa/androidkaifa/2014/1102/1892.html" target="_blank" title=" ActionBar样式详解"> ActionBar样式详解</a></li>
+<li class="title"><a href="/a/anzhuokaifa/androidkaifa/2015/1130/3733.html" target="_blank" title="Android动态加载进阶 代理Activity模式">Android动态加载进阶 代理Activity模式</a></li>
+
+					 </ul>			  
+			    </div>
+			</div>
+ 
+				
+		</div>
+    </div>  
+		
+    <!--专题-->	
+	<div class="row pt10  bgf">
+		<div class="col-md-12">
+		   <ul class="imgscroll">
+				<li class="clearfix">
+						<a href='/a/anzhuokaifa/androidkaifa/2015/0811/3290.html'><img class="special_topic_image"  style="background:url(/templets/jcodecraeer/images/loading.gif) no-repeat center;"   src="/uploads/150811/1-150Q1200446439.png"   data-url="/uploads/150811/1-150Q1200446439.png" /></a>
+						<div class="imginfo">
+							<a class="special_topic_title" href='/a/anzhuokaifa/androidkaifa/2015/0811/3290.html'>Android Data Binding</a> 
+						</div>
+					</li>
+<li class="clearfix">
+						<a href='/a/anzhuokaifa/androidkaifa/2015/0629/3119.html'><img class="special_topic_image"  style="background:url(/templets/jcodecraeer/images/loading.gif) no-repeat center;"   src="/uploads/150629/1-150629124334a8.png"   data-url="/uploads/150629/1-150629124334a8.png" /></a>
+						<div class="imginfo">
+							<a class="special_topic_title" href='/a/anzhuokaifa/androidkaifa/2015/0629/3119.html'>手动实现布局过渡效果</a> 
+						</div>
+					</li>
+<li class="clearfix">
+						<a href='/a/anzhuokaifa/androidkaifa/2015/0608/3019.html'><img class="special_topic_image"  style="background:url(/templets/jcodecraeer/images/loading.gif) no-repeat center;"   src="/uploads/150608/1-15060QT10SN.png"   data-url="/uploads/150608/1-15060QT10SN.png" /></a>
+						<div class="imginfo">
+							<a class="special_topic_title" href='/a/anzhuokaifa/androidkaifa/2015/0608/3019.html'>谷歌安卓开发指导教程</a> 
+						</div>
+					</li>
+<li class="clearfix">
+						<a href='/a/anzhuokaifa/androidkaifa/2015/0430/2815.html'><img class="special_topic_image"  style="background:url(/templets/jcodecraeer/images/loading.gif) no-repeat center;"   src="/uploads/160106/1-160106013A9345.png"   data-url="/uploads/160106/1-160106013A9345.png" /></a>
+						<div class="imginfo">
+							<a class="special_topic_title" href='/a/anzhuokaifa/androidkaifa/2015/0430/2815.html'>RxJava</a> 
+						</div>
+					</li>
+<li class="clearfix">
+						<a href='/a/anzhuokaifa/androidkaifa/2015/0418/2745.html'><img class="special_topic_image"  style="background:url(/templets/jcodecraeer/images/loading.gif) no-repeat center;"   src="/uploads/allimg/150418/1-15041Q04H10-L.png"   data-url="/uploads/allimg/150418/1-15041Q04H10-L.png" /></a>
+						<div class="imginfo">
+							<a class="special_topic_title" href='/a/anzhuokaifa/androidkaifa/2015/0418/2745.html'>安卓性能优化系列</a> 
+						</div>
+					</li>
+	
+				<li class="clearfix">
+					<div class="blockmore">
+						<a href=''><img src="/templets/jcodecraeer/images/iconfont-right-thin.png" /> </a>
+						
+					</div>
+				</li>
+		   </ul>
+		</div>
+	</div>	
+
+    <!--文章-->	
+	<div class="row pt10 bgf">	
+		<div class="col-md-8">	
+		    <div class="clearfix" style="margin-top:25px;">
+			   <h2 class="z" style="padding-left:10px;">精华文章</h2>  <a class="seemore y" style="margin-right:10px;" href="/essence/">查看更多</a>
+			</div>		
+			<ul class="archive-list" style="border:none;border-right:solid 1px #efefef;margin-top:15px; background:#ffffff;">
+				<li class="archive-item clearfix">
+					<a href="/a/anzhuokaifa/androidkaifa/2016/0726/4529.html"  title="ANDROID SDK 源码解析项目">
+						
+                    	<div class='covercon'> <img   src='/uploads/20160726/1469501109171051-lp.jpg' class='cover imgloadinglater' style='display: block;' /> </div>				
+                    		
+					</a>
+					
+					<div class="archive-text">
+						<div class="archive-detail">
+							<h3><a  href="/a/anzhuokaifa/androidkaifa/2016/0726/4529.html"  title="ANDROID SDK 源码解析项目" >ANDROID SDK 源码解析项目</a></h3>
+							<p>android sdk 源码解析——旨在帮助Android开发者更好的学习Android！地址： https://github.com/LittleFriendsGroup/AndroidSdkSourceAnalysis 已发布文章 第一期 Class 分析者 校对者 版本 发布时间 Binder源码解析 xdtianyu xdtianyu android api 23 2016/ </p>
+							<div class="archive-info clearfix">
+								<ul>
+									<li class="list-user">
+										<a href="" target="_blank">
+											<img src="/templets/jcodecraeer/images/iconfont-morentouxiang.png">
+											<strong>泡在网上的日子</strong>
+										</a>
+									</li>
+									<li class="list-tag"><span><a href='/tags.php?/源码/' class='tag'>源码</a>,<a href='/tags.php?/SDK/' class='tag'>SDK</a> </span></li>
+									<li class="list-msg">
+							            <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+							            <span class="glyphicon-class">1710</span>
+										<span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
+          								<span class="glyphicon-class">2</span>							            
+										<span class="glyphicon glyphicon-bookmark" aria-hidden="true"></span>
+										<span class="glyphicon-class">15</span>
+									</li>
+
+								</ul>
+							</div>
+							<div class="archive-data">
+					        	<span class="glyphicon glyphicon-time" aria-hidden="true"></span>
+ 								<span class="glyphicon-class">16-07-26</span>
+							</div>
+
+						</div>
+					</div>
+				</li>
+<li class="archive-item clearfix">
+					<a href="/a/anzhuokaifa/androidkaifa/2016/0726/4527.html"  title="Robinhood团队谈字符滚动控件Ticker的实现">
+						
+                    	<div class='covercon'> <img   src='/uploads/20160726/1469496421962362-lp.gif' class='cover imgloadinglater' style='display: block;' /> </div>				
+                    		
+					</a>
+					
+					<div class="archive-text">
+						<div class="archive-detail">
+							<h3><a  href="/a/anzhuokaifa/androidkaifa/2016/0726/4527.html"  title="Robinhood团队谈字符滚动控件Ticker的实现" >Robinhood团队谈字符滚动控件Ticker的实现</a></h3>
+							<p>用户体验至上是 Robinhood（罗宾侠) 工程师团队的最高原则之一。我们相信一个直观的用户体验可以帮助我们区别于其它app并且帮助我们从一个传统金融巨头转向一个移动端优先的经纪商。我们非常感激的是设计驱动开发的努力被消费者和业界所认同，并且也让 iOS </p>
+							<div class="archive-info clearfix">
+								<ul>
+									<li class="list-user">
+										<a href="" target="_blank">
+											<img src="/templets/jcodecraeer/images/iconfont-morentouxiang.png">
+											<strong>泡在网上的日子</strong>
+										</a>
+									</li>
+									<li class="list-tag"><span> </span></li>
+									<li class="list-msg">
+							            <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+							            <span class="glyphicon-class">1113</span>
+										<span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
+          								<span class="glyphicon-class">0</span>							            
+										<span class="glyphicon glyphicon-bookmark" aria-hidden="true"></span>
+										<span class="glyphicon-class">6</span>
+									</li>
+
+								</ul>
+							</div>
+							<div class="archive-data">
+					        	<span class="glyphicon glyphicon-time" aria-hidden="true"></span>
+ 								<span class="glyphicon-class">16-07-26</span>
+							</div>
+
+						</div>
+					</div>
+				</li>
+<li class="archive-item clearfix">
+					<a href="/a/anzhuokaifa/androidkaifa/2016/0717/4504.html"  title="Android中美丽的下划线">
+						
+                    	<div class='covercon'> <img   src='/uploads/160717/1-160GGKK2512.png' class='cover imgloadinglater' style='display: block;' /> </div>				
+                    		
+					</a>
+					
+					<div class="archive-text">
+						<div class="archive-detail">
+							<h3><a  href="/a/anzhuokaifa/androidkaifa/2016/0717/4504.html"  title="Android中美丽的下划线" >Android中美丽的下划线</a></h3>
+							<p>原文链接 : A better underline for Android 原文作者 : Romain Guy 译文出自 : 掘金翻译计划 译者 : jamweak 校对者: yifili09 ， whyalwaysmea 在过去两年里，我经常发现一些尝试去如何提高有关在网页中渲染下划线文本修饰的 文章 和 库 。此类问题也同样 </p>
+							<div class="archive-info clearfix">
+								<ul>
+									<li class="list-user">
+										<a href="" target="_blank">
+											<img src="/templets/jcodecraeer/images/iconfont-morentouxiang.png">
+											<strong>泡在网上的日子</strong>
+										</a>
+									</li>
+									<li class="list-tag"><span><a href='/tags.php?/下划线/' class='tag'>下划线</a> </span></li>
+									<li class="list-msg">
+							            <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+							            <span class="glyphicon-class">1391</span>
+										<span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
+          								<span class="glyphicon-class">0</span>							            
+										<span class="glyphicon glyphicon-bookmark" aria-hidden="true"></span>
+										<span class="glyphicon-class">5</span>
+									</li>
+
+								</ul>
+							</div>
+							<div class="archive-data">
+					        	<span class="glyphicon glyphicon-time" aria-hidden="true"></span>
+ 								<span class="glyphicon-class">16-07-17</span>
+							</div>
+
+						</div>
+					</div>
+				</li>
+<li class="archive-item clearfix">
+					<a href="/a/anzhuokaifa/androidkaifa/2016/0717/4502.html"  title="从零开始打造一个Android 3D立体旋转容器">
+						
+                    	<div class='covercon'> <img   src='/uploads/20160717/1468734666252252-lp.gif' class='cover imgloadinglater' style='display: block;' /> </div>				
+                    		
+					</a>
+					
+					<div class="archive-text">
+						<div class="archive-detail">
+							<h3><a  href="/a/anzhuokaifa/androidkaifa/2016/0717/4502.html"  title="从零开始打造一个Android 3D立体旋转容器" >从零开始打造一个Android 3D立体旋转容器</a></h3>
+							<p>原文地址： http://blog.csdn.net/mr_immortalz/article/details/51918560 github 代码下载地址 ： https://github.com/ImmortalZ/StereoView 嗯，2个月没有写博客，是要好好反省下，趁着放暑假把这两个月看的东西好好沉淀下。嗯，就立下这个Flag，希望不要 </p>
+							<div class="archive-info clearfix">
+								<ul>
+									<li class="list-user">
+										<a href="" target="_blank">
+											<img src="/templets/jcodecraeer/images/iconfont-morentouxiang.png">
+											<strong>泡在网上的日子</strong>
+										</a>
+									</li>
+									<li class="list-tag"><span><a href='/tags.php?/3D/' class='tag'>3D</a>,<a href='/tags.php?/旋转/' class='tag'>旋转</a> </span></li>
+									<li class="list-msg">
+							            <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+							            <span class="glyphicon-class">1361</span>
+										<span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
+          								<span class="glyphicon-class">5</span>							            
+										<span class="glyphicon glyphicon-bookmark" aria-hidden="true"></span>
+										<span class="glyphicon-class">8</span>
+									</li>
+
+								</ul>
+							</div>
+							<div class="archive-data">
+					        	<span class="glyphicon glyphicon-time" aria-hidden="true"></span>
+ 								<span class="glyphicon-class">16-07-17</span>
+							</div>
+
+						</div>
+					</div>
+				</li>
+<li class="archive-item clearfix">
+					<a href="/a/anzhuokaifa/androidkaifa/2016/0713/4498.html"  title="React Native是原生开发的末日吗？">
+						
+                    	<div class='covercon'> <img   src='/uploads/20160713/1468403990295671.jpeg' class='cover imgloadinglater' style='display: block;' /> </div>				
+                    		
+					</a>
+					
+					<div class="archive-text">
+						<div class="archive-detail">
+							<h3><a  href="/a/anzhuokaifa/androidkaifa/2016/0713/4498.html"  title="React Native是原生开发的末日吗？" >React Native是原生开发的末日吗？</a></h3>
+							<p>人们把React Native看作是一次编写随处运行的一个解决方案，理论上可以加快那些需要同时为iOS和Android平台编写的app的开发速度，同时让web开发者也能轻松编写本地应用，但是 React Native是你下个项目的最佳选择吗？ 什么是React Native React Native 是当 </p>
+							<div class="archive-info clearfix">
+								<ul>
+									<li class="list-user">
+										<a href="" target="_blank">
+											<img src="/templets/jcodecraeer/images/iconfont-morentouxiang.png">
+											<strong>泡在网上的日子</strong>
+										</a>
+									</li>
+									<li class="list-tag"><span><a href='/tags.php?/React Native/' class='tag'>React Native</a> </span></li>
+									<li class="list-msg">
+							            <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+							            <span class="glyphicon-class">4619</span>
+										<span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
+          								<span class="glyphicon-class">6</span>							            
+										<span class="glyphicon glyphicon-bookmark" aria-hidden="true"></span>
+										<span class="glyphicon-class">3</span>
+									</li>
+
+								</ul>
+							</div>
+							<div class="archive-data">
+					        	<span class="glyphicon glyphicon-time" aria-hidden="true"></span>
+ 								<span class="glyphicon-class">16-07-13</span>
+							</div>
+
+						</div>
+					</div>
+				</li>
+<li class="archive-item clearfix">
+					<a href="/a/anzhuokaifa/androidkaifa/2016/0711/4490.html"  title="Music Player:从UI方案到代码">
+						
+                    	<div class='covercon'> <img   src='/uploads/20160711/1468179957135283-lp.gif' class='cover imgloadinglater' style='display: block;' /> </div>				
+                    		
+					</a>
+					
+					<div class="archive-text">
+						<div class="archive-detail">
+							<h3><a  href="/a/anzhuokaifa/androidkaifa/2016/0711/4490.html"  title="Music Player:从UI方案到代码" >Music Player:从UI方案到代码</a></h3>
+							<p>部分开发者在UI方案稍微有点复杂的时候会觉得很难去写代码。他们之中的许多人都会在写代码的时候跳过许多重要的UI效果或者动画，致使最终结果跟原始的方案相差很远。
+
+本文谈谈如何针对UI方案写代码，跳过一些基本的细节，重点关注transition与动画。 </p>
+							<div class="archive-info clearfix">
+								<ul>
+									<li class="list-user">
+										<a href="" target="_blank">
+											<img src="/templets/jcodecraeer/images/iconfont-morentouxiang.png">
+											<strong>泡在网上的日子</strong>
+										</a>
+									</li>
+									<li class="list-tag"><span> </span></li>
+									<li class="list-msg">
+							            <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+							            <span class="glyphicon-class">2878</span>
+										<span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
+          								<span class="glyphicon-class">3</span>							            
+										<span class="glyphicon glyphicon-bookmark" aria-hidden="true"></span>
+										<span class="glyphicon-class">12</span>
+									</li>
+
+								</ul>
+							</div>
+							<div class="archive-data">
+					        	<span class="glyphicon glyphicon-time" aria-hidden="true"></span>
+ 								<span class="glyphicon-class">16-07-11</span>
+							</div>
+
+						</div>
+					</div>
+				</li>
+<li class="archive-item clearfix">
+					<a href="/a/anzhuokaifa/androidkaifa/2016/0701/4401.html"  title=" RecyclerView剖析——续一">
+						
+                    	<div class='covercon'> <img   src='/uploads/20160701/1467302483736101-lp.png' class='cover imgloadinglater' style='display: block;' /> </div>				
+                    		
+					</a>
+					
+					<div class="archive-text">
+						<div class="archive-detail">
+							<h3><a  href="/a/anzhuokaifa/androidkaifa/2016/0701/4401.html"  title=" RecyclerView剖析——续一" > RecyclerView剖析——续一</a></h3>
+							<p>原文出处： 曾志刚的csdn博客 前言 前文 已经在整体上对RecyclerView的实现作出了剖析，但是有些细节上，我并没有做太过深入的解释，“续一”将针对RecyclerView的动画作更深入剖析。同样，文中所示源码版本为23.2.0。本文欢迎转载，不需要注明出处。 prepos </p>
+							<div class="archive-info clearfix">
+								<ul>
+									<li class="list-user">
+										<a href="" target="_blank">
+											<img src="/templets/jcodecraeer/images/iconfont-morentouxiang.png">
+											<strong>泡在网上的日子</strong>
+										</a>
+									</li>
+									<li class="list-tag"><span><a href='/tags.php?/RecyclerView/' class='tag'>RecyclerView</a>,<a href='/tags.php?/源码/' class='tag'>源码</a> </span></li>
+									<li class="list-msg">
+							            <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+							            <span class="glyphicon-class">1485</span>
+										<span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
+          								<span class="glyphicon-class">0</span>							            
+										<span class="glyphicon glyphicon-bookmark" aria-hidden="true"></span>
+										<span class="glyphicon-class">3</span>
+									</li>
+
+								</ul>
+							</div>
+							<div class="archive-data">
+					        	<span class="glyphicon glyphicon-time" aria-hidden="true"></span>
+ 								<span class="glyphicon-class">16-07-01</span>
+							</div>
+
+						</div>
+					</div>
+				</li>
+<li class="archive-item clearfix">
+					<a href="/a/anzhuokaifa/androidkaifa/2016/0630/4400.html"  title=" RecyclerView剖析">
+						
+                    	<div class='covercon'> <img   src='/uploads/20160630/1467301496550763-lp.png' class='cover imgloadinglater' style='display: block;' /> </div>				
+                    		
+					</a>
+					
+					<div class="archive-text">
+						<div class="archive-detail">
+							<h3><a  href="/a/anzhuokaifa/androidkaifa/2016/0630/4400.html"  title=" RecyclerView剖析" > RecyclerView剖析</a></h3>
+							<p>原文出处： 曾志刚的csdn博客 。 简介 本文将从RecyclerView实现原理并结合源码详细分析这个强大的控件。阅读本文要求：1、熟悉 Android 控件绘制，2、了解动画，3、了解Scroller，4、You`re a fucking kind person。本文所示源码版本是23.2.0。本文欢迎转载 </p>
+							<div class="archive-info clearfix">
+								<ul>
+									<li class="list-user">
+										<a href="" target="_blank">
+											<img src="/templets/jcodecraeer/images/iconfont-morentouxiang.png">
+											<strong>泡在网上的日子</strong>
+										</a>
+									</li>
+									<li class="list-tag"><span><a href='/tags.php?/RecyclerView/' class='tag'>RecyclerView</a>,<a href='/tags.php?/源码/' class='tag'>源码</a> </span></li>
+									<li class="list-msg">
+							            <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+							            <span class="glyphicon-class">2151</span>
+										<span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
+          								<span class="glyphicon-class">1</span>							            
+										<span class="glyphicon glyphicon-bookmark" aria-hidden="true"></span>
+										<span class="glyphicon-class">5</span>
+									</li>
+
+								</ul>
+							</div>
+							<div class="archive-data">
+					        	<span class="glyphicon glyphicon-time" aria-hidden="true"></span>
+ 								<span class="glyphicon-class">16-06-30</span>
+							</div>
+
+						</div>
+					</div>
+				</li>
+  				
+			</ul>			
+		</div>
+		<div class="col-md-4">		 
+			
+			<div class="clearfix" style="margin:25px 0;">
+			   <h2>最近随笔</h2>
+			</div>
+			<ul class="feed_list clearfix">
+			    <li class="clearfix"> 
+  	 <a class="head" target="_blank"  href="/member/index.php?uid=呦黑蛋儿"><img src="/uploads/userup/8499/myface.jpg"  width="40" height="40" /></a>
+  	<div class="content">
+        <p class="body"> 
+	        <a target="_blank"  href="/member/index.php?uid=呦黑蛋儿">
+				呦黑蛋儿 
+			</a>
+          永远年轻,永远热泪盈眶 
+        </p>
+        <span class="time">4天前 </span>
+        <span class="feedback"><a href='javascript:loadajaxFeedback(443);'> (回复 1) </a></span>
+	</div>
+	<div id="ajaxfeedback_443" class="feedback_mutex"  ></div>
+</li>
+
+<li class="clearfix"> 
+  	 <a class="head" target="_blank"  href="/member/index.php?uid=呦黑蛋儿"><img src="/uploads/userup/8499/myface.jpg"  width="40" height="40" /></a>
+  	<div class="content">
+        <p class="body"> 
+	        <a target="_blank"  href="/member/index.php?uid=呦黑蛋儿">
+				呦黑蛋儿 
+			</a>
+          永远年轻,永远热泪盈眶 
+        </p>
+        <span class="time">4天前 </span>
+        <span class="feedback"><a href='javascript:loadajaxFeedback(442);'> (回复  ) </a></span>
+	</div>
+	<div id="ajaxfeedback_442" class="feedback_mutex"  ></div>
+</li>
+
+<li class="clearfix"> 
+  	 <a class="head" target="_blank"  href="/member/index.php?uid=Abuser"><img src="/uploads/userup/8496/myface.jpg"  width="40" height="40" /></a>
+  	<div class="content">
+        <p class="body"> 
+	        <a target="_blank"  href="/member/index.php?uid=Abuser">
+				Abuser 
+			</a>
+          如果我站在朝阳上 能否脱去昨日的惆怅 单薄语言能否传达我所有的牵挂 若有天我不复勇 
+        </p>
+        <span class="time">4天前 </span>
+        <span class="feedback"><a href='javascript:loadajaxFeedback(441);'> (回复  ) </a></span>
+	</div>
+	<div id="ajaxfeedback_441" class="feedback_mutex"  ></div>
+</li>
+
+<li class="clearfix"> 
+  	 <a class="head" target="_blank"  href="/member/index.php?uid=张..."><img src="/member/templets/images/dfboy.png"  width="40" height="40" /></a>
+  	<div class="content">
+        <p class="body"> 
+	        <a target="_blank"  href="/member/index.php?uid=张...">
+				张... 
+			</a>
+          不会偷懒的程序员不是好的程序员 
+        </p>
+        <span class="time">5天前 </span>
+        <span class="feedback"><a href='javascript:loadajaxFeedback(440);'> (回复  ) </a></span>
+	</div>
+	<div id="ajaxfeedback_440" class="feedback_mutex"  ></div>
+</li>
+
+<li class="clearfix"> 
+  	 <a class="head" target="_blank"  href="/member/index.php?uid=钰清"><img src="/uploads/userup/8432/myface.jpg"  width="40" height="40" /></a>
+  	<div class="content">
+        <p class="body"> 
+	        <a target="_blank"  href="/member/index.php?uid=钰清">
+				钰清 
+			</a>
+          努力！ 
+        </p>
+        <span class="time">7天前 </span>
+        <span class="feedback"><a href='javascript:loadajaxFeedback(439);'> (回复  ) </a></span>
+	</div>
+	<div id="ajaxfeedback_439" class="feedback_mutex"  ></div>
+</li>
+
+<li class="clearfix"> 
+  	 <a class="head" target="_blank"  href="/member/index.php?uid=钰清"><img src="/uploads/userup/8432/myface.jpg"  width="40" height="40" /></a>
+  	<div class="content">
+        <p class="body"> 
+	        <a target="_blank"  href="/member/index.php?uid=钰清">
+				钰清 
+			</a>
+          努力！ 
+        </p>
+        <span class="time">8天前 </span>
+        <span class="feedback"><a href='javascript:loadajaxFeedback(438);'> (回复  ) </a></span>
+	</div>
+	<div id="ajaxfeedback_438" class="feedback_mutex"  ></div>
+</li>
+
+<li class="clearfix"> 
+  	 <a class="head" target="_blank"  href="/member/index.php?uid=钰清"><img src="/uploads/userup/8432/myface.jpg"  width="40" height="40" /></a>
+  	<div class="content">
+        <p class="body"> 
+	        <a target="_blank"  href="/member/index.php?uid=钰清">
+				钰清 
+			</a>
+          努力！ 
+        </p>
+        <span class="time">8天前 </span>
+        <span class="feedback"><a href='javascript:loadajaxFeedback(437);'> (回复  ) </a></span>
+	</div>
+	<div id="ajaxfeedback_437" class="feedback_mutex"  ></div>
+</li>
+
+<li class="clearfix"> 
+  	 <a class="head" target="_blank"  href="/member/index.php?uid=ShawnWang"><img src="/uploads/userup/8430/myface.jpg"  width="40" height="40" /></a>
+  	<div class="content">
+        <p class="body"> 
+	        <a target="_blank"  href="/member/index.php?uid=ShawnWang">
+				ShawnWang 
+			</a>
+          今天第一次来到这里，我来到这里，就是为了学习、分享、共同进步、很高兴认识大家！我 
+        </p>
+        <span class="time">8天前 </span>
+        <span class="feedback"><a href='javascript:loadajaxFeedback(436);'> (回复  ) </a></span>
+	</div>
+	<div id="ajaxfeedback_436" class="feedback_mutex"  ></div>
+</li>
+
+
+      		</ul>
+	        <!--周报-->	
+			<div  style="background:#7CCD7C; margin:0;color:#fff;text-align:center;">
+				<h2><a href="/a/androidweekly/" style="display:inline-block;color:#fff;line-height:60px;width:100%;text-decoration:none;height:60px;">安卓开发周报</a></h2>
+			</div> 		 	
+			<div class="clearfix">	
+				
+			</div>
+		    <div class="clearfix" style="margin:25px 0;">
+			   <h2 class="z">最新问答</h2>
+			</div>
+
+			<ul class="asklist">
+			 
+				<li class="mgt10">
+				    <div class="clearfix">
+						<a  class="z" href="/ask/?ct=question&askaid=115" target="_blank" title="DEDECMS提示信息怎么修改">DEDECMS提示信息怎么修改</a>					
+					</div>
+					<div class="info">
+					    
+					   <span class="time"> 16-08-03 </span>
+					</div>
+				</li>
+			 
+				<li class="mgt10">
+				    <div class="clearfix">
+						<a  class="z" href="/ask/?ct=question&askaid=114" target="_blank" title="Android webview的内存泄露问题">Android webview的内存泄露问题</a>					
+					</div>
+					<div class="info">
+					    
+					   <span class="time"> 16-07-27 </span>
+					</div>
+				</li>
+			 
+				<li class="mgt10">
+				    <div class="clearfix">
+						<a  class="z" href="/ask/?ct=question&askaid=113" target="_blank" title="控件的background透明度变化">控件的background透明度变化</a>					
+					</div>
+					<div class="info">
+					    
+					   <span class="time"> 16-07-23 </span>
+					</div>
+				</li>
+			 
+				<li class="mgt10">
+				    <div class="clearfix">
+						<a  class="z" href="/ask/?ct=question&askaid=111" target="_blank" title="Glide加载很多网络大图，内存溢出">Glide加载很多网络大图，内存溢出</a>					
+					</div>
+					<div class="info">
+					    
+					   <span class="time"> 16-07-21 </span>
+					</div>
+				</li>
+			
+			</ul>
+
+			<div  style="padding-left:10px;">	
+				<script src='/plus/fuckblok.php?aid=30' language='javascript'></script>	
+			</div>			
+					
+		</div>		
+	</div>
+
+</div>
+ 
+
+<div class="footer">
+	<div class="container">	
+		<div class="row clearfix">
+			<div class="col-md-12">
+				<div class="copyright z">
+					<p>Copyright  2011 - 2016 jcodecraeer.com All Rights Reversed.</p>
+					<p>蜀ICP备12021840号-1</p>
+					<p>本站文章用于学习交流</p>
+				</div>
+				<div class="footer-nav y">	
+					<ul class="clearfix">
+						<li><a href="http://weibo.com/u/2711441293" target="_blank">新浪微博</a></li>
+						<li>qq群一161644793</li>
+						<li>qq群二98711210</li> 
+					</ul>
+					<ul class="clearfix">
+						<li><a href="/sitemap/" target="_blank">网站地图</a></li>	
+						<li>				
+						<script type="text/javascript">
+						var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+						document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F2f2ac530df20294f718580cea710780e' type='text/javascript'%3E%3C/script%3E"));
+						</script> 
+						</li>	 
+					</ul>			
+				</div>
+			</div>
+		</div>
+	</div>	
+</div>
+</body>
+</html>

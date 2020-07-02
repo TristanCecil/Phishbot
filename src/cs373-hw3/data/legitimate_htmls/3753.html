@@ -1,0 +1,818 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="Content-Style-Type" content="text/css" />
+	<meta http-equiv="Content-Script-Type" content="text/javascript" />
+	<meta name="description" content="さくらインターネットは、国内最大級の大容量・高速バックボーンを誇る自社運営データセンターを活かして、レンタルサーバ（ホスティング）、専用サーバ、ドメイン、データセンター（コロケーション）、インターネット接続サービスをご提供しています。" />
+	<meta name="keywords" content="さくらインターネット,サービスサイト,レンタルサーバ,ホスティング,共有サーバ,共用サーバ,専用サーバ,占有サーバ,ハウジング,データセンター,コロケーション,アウトソーシング,インターネット,SAKURA Internet,さくら,sakura" />
+	<title>さくらインターネット｜サーバーホスティングサービス</title>
+	<link rel="stylesheet" type="text/css" href="/resource/css/common.css" />
+    
+	<!--[if lt IE 8]>
+		<link rel="stylesheet" type="text/css" href="/resource/css/common-ie.css" />
+	<![endif]-->
+	<link rel="stylesheet" type="text/css" href="css/index.css" />
+	<!--[if lt IE 8]>
+		<link rel="stylesheet" type="text/css" href="css/index-ie.css" />
+	<![endif]-->
+	<!--
+	<script type="text/javascript" src="/resource/js/prototype.js"></script>
+	<script type="text/javascript" src="/resource/js/aspSearch.js"></script>
+	-->
+    
+	<script type="text/javascript" src="/resource/js/jquery.js"></script>
+    
+    <!--case RSS-->
+	<script type="text/javascript" src="js/jquery.js"></script>
+	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+	<!--
+	 <script type="text/javascript" src="js/rss.js"></script>
+	-->    
+    
+	<script type="text/javascript" src="/resource/js/common.js"></script>
+	<script type="text/javascript" src="/resource/js/easing.js"></script>
+	<script type="text/javascript" src="/resource/js/jquery.roundabout.js"></script>
+	<script type="text/javascript" src="/resource/js/iepngfix_tilebg.js"></script>
+	<script type="text/javascript" src="/resource/js/moment-with-locales.min.js"></script>
+	<script type="text/javascript" src="js/index.js"></script>
+
+
+
+<script type="text/javascript">//<![CDATA[
+(function($) {
+
+	// Get case
+	var caseUrl = "/external_service/case.sakura.ad.jp/feed/json?";
+	var caseNum = 6;
+	var caseCount = 0;
+	var i = 0;
+
+	$.ajax({
+		url: caseUrl,
+		dataType: 'jsonp',
+		success: function (data) {
+			jQuery.each(data, function(i, entry){
+
+				var photo = '<img src="' + entry.photo.replace(/http:\/\//,'/external_service/') + '">';
+				var date= moment(entry.date);
+				var logo = '<img src="' + entry.logo.replace(/http:\/\//,'/external_service/') + '">';
+				var title = entry.title;
+				var url= entry.permalink;
+
+				$('.case_summary .col_wrap').append(
+					'<div class="col-4 post">\
+              <div class="title_relative">\
+                <div class="photo"><a href="'+ url +'" target="_blank">'+photo+'</a></div>\
+									</div>\
+						<div class="detail">\
+									<div class="logo"><a href="'+ url +'" target="_blank">'+ logo +'</a></div>\
+									<div class="meta">'+ date.format('YYYY年MM月DD日') + '</div>\
+									<div class="title f_w-bold"><a href="'+ url +'" target="_blank" class="txtlink">'+ title +'</a></div>\
+						</div>\
+					</div>'
+				);
+
+				caseCount++;
+				if(caseCount >= caseNum) {
+					return false;
+				}
+			});
+		}
+	});
+
+	//Get press
+	var article = [];
+	var url = "/press/list.json";
+	var pressNum = 3;
+	var pressCount = 0;
+
+	$.ajax({
+		url: url,
+		dataType: 'json',
+		success: function (data) {
+			jQuery.each(data.items, function(i, entry){
+
+				article.push(
+					'<dt>' + entry.date.replace(/-/g, '/') + '</dt>' +
+					'<dd><a href="' + entry.url + '" class="txtlink">' + entry.title + '</a></dd>'
+				);
+
+				pressCount++;
+				if(pressCount >= pressNum) {
+					return false;
+				}
+
+			});
+
+			$('#press-release dl').append(article.join(""));
+
+		}
+	});
+
+})(jQuery);
+//]]></script>
+
+	<!--OGP for socialmedia-->
+	<meta property="fb:app_id" content="438802689525808">
+	<meta property="og:title" content="さくらインターネット">
+	<meta property="og:type" content="website">
+	<meta property="og:description" content="レンタルサーバーやクラウドなど、ホスティングからハウジングまで幅広いデータセンターサービスを提供し、皆さまのインターネットとビジネスをつなげます。">
+	<meta property="og:url" content="https://www.sakura.ad.jp/">
+	<meta property="og:site_name" content="さくらインターネット">
+	<meta property="og:image" content="https://www.sakura.ad.jp/images/icon_ogp.gif">
+</head>
+<body>
+<!-- Google Tag Manager -->
+<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-PLMJ2F"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-PLMJ2F');</script>
+<!-- End Google Tag Manager -->
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-3213428-2', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+	<div id="wrapper">
+
+		<!-- ↓header -->
+		
+<!-- 価格表示スクリプト -->
+
+
+<script type="text/javascript">
+<!--
+	function InputDefault(areaname,checkvalue,formname){
+		if(document.forms[formname].elements[areaname].value == checkvalue){
+			document.forms[formname].elements[areaname].value = "";
+		}
+	}
+	function OutputReturn(areaname,checkvalue,formname){
+		if(document.forms[formname].elements[areaname].value == ""){
+			document.forms[formname].elements[areaname].value = checkvalue;
+		}
+	}
+	var orgCharsetForm = document.charset;
+	window.onbeforeunload = function(){
+		document.charset=orgCharsetForm;
+	}
+	function buttonSearch(){
+		document.charset='UTF-8';
+		document.search.submit();
+		document.charset=orgCharsetForm;
+	}
+// -->
+</script>
+
+<noscript>
+	<div id="jsoff"><img src="/resource/images/icon_alert.png" alt="">一部のコンテンツ内容が表示されない場合は、JavaScriptをオンにしてご覧ください</div>
+</noscript>
+
+<!-- include header -->
+<div id="header">
+	<div id="header-top">
+		<div class="inner">
+			<div id="site-logo"><a href="http://www.sakura.ad.jp/" title="サービスサイトTOP"><img src="https://secure.sakura.ad.jp/resource/images/site-logo.gif" width="172" height="51" alt="SAKURA Internet" /></a>
+			</div>
+			<div id="hnavi">
+				<ul>
+					<li class="service"><a href="http://www.sakura.ad.jp/"><img src="https://secure.sakura.ad.jp/resource/images/hnavi_service.gif" width="79" height="39" alt="サービス情報" class="rollover" /></a></li>
+					<li class="support"><a href="https://help.sakura.ad.jp/app/home"><img src="https://secure.sakura.ad.jp/resource/images/hnavi_support.gif" width="79" height="39" alt="サポート情報" class="rollover" /></a></li>
+
+					<li class="corporat"><a href="http://www.sakura.ad.jp/corporate/"><img src="https://secure.sakura.ad.jp/resource/images/hnavi_corporat.gif" width="56" height="39" alt="企業情報" class="rollover" /></a></li>
+
+					<li class="recruit"><a href="http://www.sakura.ad.jp/recruit/"><img src="https://secure.sakura.ad.jp/resource/images/hnavi_recruit.gif" width="56" height="39" alt="採用情報" class="rollover" /></a></li>
+					<li class="member-login"><a href="https://secure.sakura.ad.jp/menu/" target="_blank"><img src="https://secure.sakura.ad.jp/resource/images/hnavi_member-login.gif" width="130" height="39" alt="会員メニューログイン" class="rollover" /></a></li>
+					<li class="sitemap"><a href="http://www.sakura.ad.jp/sitemap/"><img src="https://secure.sakura.ad.jp/resource/images/hnavi_sitemap.gif" width="80" height="39" alt="サイトマップ" class="rollover" /></a></li>
+					<li><a href="http://search.sakura.ad.jp/search?site=81BHNZWF&design=1&charset=UTF-8&group=1&file_type=14&query=&x=10&y=13"><img src="https://secure.sakura.ad.jp/resource/images/hnavi_search2.gif" width="84" height="38" alt="サイト内検索" class="rollover" /></a></li>
+					<!--
+					<li class="sitenavi">
+						<div id="hsearch_box">
+<form name="SS_searchForm" id="SS_searchForm" action="http://search.sakura.ad.jp/search" method="get" enctype="application/x-www-form-urlencoded">
+<input type="hidden" name="site" value="81BHNZWF" />
+<input type="hidden" name="charset" value="UTF-8" />
+<input type="hidden" name="group" value="1" />
+<input type="hidden" name="design" value="1" />
+<label id="hsearch_caption" class="hsearch-textbox" for="hsearch_text">
+<input type="text" name="query" value="" id="SS_searchQuery" maxlength="100" autocomplete="off" />
+</label>
+<span class="hsearch_btnbox">
+<input type="image" src="https://secure.sakura.ad.jp/resource/images/hbtn_search.gif" id="hsearch_btn" name="Go" class="hsearch_btn" alt="検索" />
+</span>
+</form>
+						</div>
+					</li>
+					-->
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div id="header-gnavi">
+		<div class="inner">
+			<ul>
+				<li class="rental"><a class="" href="http://www.sakura.ne.jp/">レンタルサーバ</a></li>
+				<li class="vps"><a class="" href="http://vps.sakura.ad.jp/">VPS</a></li>
+				<li class="cloud"><a class="" href="http://cloud.sakura.ad.jp/">クラウド</a></li>
+				<li class="exclusive"><a class="" href="http://server.sakura.ad.jp/">専用サーバ</a></li>
+				<li class="datacenter"><a class="" href="http://datacenter.sakura.ad.jp/">データセンター</a></li>
+				<li class="services"><a class="" href="http://www.sakura.ad.jp/services/">独自ドメイン取得</a></li>
+				<li class="apply"><a class="" href="http://www.sakura.ad.jp/apply/">お申し込み</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+		<!-- ↓contents -->
+		<div id="contents">
+			<div id="contents-inner">
+				<!-- ↓main-navi -->
+				<div id="main-navi" class="killmg">
+					<div class="inner" id="pr-area">
+						<ul class="pr-img">
+                        <li><a href="http://vps.sakura.ad.jp/"><img src="images/visual/baremetal.jpg" alt="ベアメタルプラン" class="rollover" /></a></li>
+                        <li><a href="http://cloud.sakura.ad.jp/"><img src="images/visual/cloud.png" alt="さくらのクラウド" class="rollover" /></a></li>
+                        <li><a href="https://ssl.sakura.ad.jp/"><img src="images/visual/ssl.jpg" alt="さくらのSSL" class="rollover" /></a></li>
+						<li><a href="https://iot.sakura.ad.jp/"><img src="images/visual/iot.jpg" alt="さくらのIoT　Platform" class="rollover" /></a></li>
+						<li><a href="http://www.sakura.ad.jp/function/etc/cdn/"><img src="images/visual/cdn.jpg" alt="コンテンツ配信サービス" class="rollover" /></a></li>
+                        <!--<li><a href="http://vps.sakura.ad.jp/"><img src="images/visual/vps.jpg" alt="さくらのVPS" class="rollover" /></a></li>-->
+                        <li><a href="http://server.sakura.ad.jp/"><img src="images/visual/dedicated.png" alt="さくらの専用サーバ" class="rollover" /></a></li>
+						<!--<li><a href="http://solution.sakura.ad.jp/windows_vps/index.html" target="_blank"><img src="images/visual/winvps.jpg" alt="さくらのVPS for Windows Server" class="rollover" /></a></li>-->
+						<!--<li><a href="http://enterprise.sakura.ad.jp/lp/azure_pack/"><img src="images/visual/azure_pack.jpg" alt="さくらのプライベートクラウドサービス powered by Windows Azure Pack 提供開始！" class="rollover" /></a></li>-->
+						<!--<li><a href="http://www.sakura.ad.jp/ir/"><img src="images/visual/section_transfer.jpg" alt="東京証券取引所市場第一部へ市場変更いたしました" class="rollover" /></a></li>-->
+						<!--<li><a href="http://enterprise.sakura.ad.jp/lp/azure_pack/"><img src="images/visual/azure_pack.jpg" alt="さくらのプライベートクラウドサービス powered by Windows Azure Pack 提供開始！" class="rollover" /></a></li>-->
+						<!--<li><a href="http://www.sakura.ne.jp/managedserver/"><img src="images/visual/managedserver_newplan.png" alt="さくらのマネージドサーバ" class="rollover" /></a></li>-->						
+						<!--<li><a href="http://www.sakura.ne.jp/"><img src="images/visual/rentalup.png" alt="さくらのレンタルサーバ" class="rollover" /></a></li>-->
+						<!--<li><a href="http://enterprise.sakura.ad.jp/storage_solution/storage.html" target="_blank"><img src="images/visual/enterprise.jpg" alt="さくら for エンタープライズ" class="rollover" /></a></li>-->
+						<!-- <li><a href="http://knowledge.sakura.ad.jp/case-study/?=adjp_top"><img src="images/visual/casestudy.jpg" alt="事例紹介" class="rollover" /></a></li> -->
+						</ul>
+						<ul class="thum-navi">
+                        	<li><a href="http://www.sakura.ne.jp/">レンタルサーバ</a></li>
+						<li><a href="http://vps.sakura.ad.jp/">VPS</a></li>
+						<li><a href="http://server.sakura.ad.jp/">専用サーバ</a></li>
+						<li><a href="http://cloud.sakura.ad.jp/">クラウド</a></li>
+						<li><a href="http://enterprise.sakura.ad.jp">エンタープライズ</a></li>
+						<!--<li><a href="http://datacenter.sakura.ad.jp/remotehousing/">リモートハウジング</a></li>-->
+						<!--<li><a href="http://knowledge.sakura.ad.jp/case-study/?=adjp_top">事例紹介</a></li>-->
+						</ul>
+						<p id="btn-prev"><a href="#" id="img-prev"><img src="images/btn_index-prev.png" width="75" height="250" alt="" /></a></p>
+						<p id="btn-next"><a href="#" id="img-next"><img src="images/btn_index-next.png" width="75" height="250" alt="" /></a></p>
+					</div>
+					<noscript>
+					<div class="inner" id="no-script">
+						<div class="no-script-inner">
+							<ul class="clearfix">
+							<li>
+								<div class="left"><img src="images/visual/vps-off.jpg" width="110" height="110" alt="" /></div>
+								<div class="right">
+									<p class="name"><a href="http://vps.sakura.ad.jp/">さくらのVPS</a></p>
+									<p>4つのプランと選べるOS、すぐに始められる仮想専用サーバ。</p>
+								</div>
+							</li>
+							<li>
+								<div class="left"><img src="images/visual/dedicated-off.jpg" width="110" height="110" alt="" /></div>
+								<div class="right">
+									<p class="name"><a href="http://server.sakura.ad.jp/dedicated/">さくらの専用サーバ</a></p>
+									<p>物理サーバの性能とクラウドの使い勝手を兼ね備えた全く新しい専用サーバ</p>
+								</div>
+							</li>
+							<li>
+								<div class="left"><img src="images/visual/enterprise-off.jpg" width="110" height="110" alt="" /></div>
+								<div class="right">
+									<p class="name"><a href="http://enterprise.sakura.ad.jp">さくら for エンタープライズ</a></p>
+									<p>BCP（事業継続）、DR（ディザスタリカバリ）対策ニーズにお応えする、エンタープライズ向けデータセンターサービス</p>
+								</div>
+							</li>
+							<li>
+								<div class="left"><img src="images/visual/rentalserver-off.gif" width="110" height="110" alt="" /></div>
+								<div class="right">
+									<p class="name"><a href="http://www.sakura.ne.jp/rentalserver/">さくらのレンタルサーバ</a></p>
+									<p>データベース（MySQL）機能強化</p>
+								</div>
+							</li>
+							<li>
+								<div class="left"><img src="images/visual/cloud-off.gif" width="110" height="110" alt="" /></div>
+								<div class="right">
+									<p class="name"><a href="http://cloud.sakura.ad.jp/">さくらのクラウド</a></p>
+									<p>高性能サーバと拡張性の高いネットワークを、圧倒的なコストパフォーマンスで実現した「開発者志向のシンプルクラウド」、提供開始！</p>
+								</div>
+							</li>
+							<li>
+								<div class="left"><img src="images/visual/casestudy-off.jpg" width="110" height="110" alt="" /></div>
+								<div class="right">
+									<p class="name"><a href="http://knowledge.sakura.ad.jp/case-study/?=adjp_top">事例紹介</a></p>
+									<p>さくらインターネットのサービス利用事例をご紹介</p>
+								</div>
+							</li>
+							</ul>
+						</div>
+					</div>
+					</noscript>
+				</div>
+				<!--メインナビゲーション-->
+
+				<div id="sub-navi">
+					<div class="sub-navi-inner">
+						<div class="inner relative" id="navi-sub" style="height:15px;">
+							<a href="/services/home/" class="rollover absolute" style="top:9px;left:-05px;"><img src="images/navi_sub-individual.gif" alt="個人のお客様おすすめサービス" /></a>
+							<a href="/services/corporate/" class="rollover absolute" style="top:9px;left:230px;"><img src="images/navi_sub-corporate.gif" alt="法人のお客様おすすめサービス" /></a>
+							<a href="/services/" class="rollover absolute" style="top:10px;left:470px;"><img src="images/navi_sub-service.gif" alt="サービス一覧" /></a>
+						</div>
+						<!--/navi-sub-->
+						<div class="inner" id="navi-category">
+							<ul class="clearfix">
+							<li class="rental"><a href="http://www.sakura.ne.jp/" class="rollover"><img src="images/navi_cate-rentalserver.gif" width="192" height="80" alt="レンタルサーバ 運用保守はさくらにおまかせ、できることイロイロ" /></a></li>
+							<li class="vps"><a href="http://vps.sakura.ad.jp/" class="rollover"><img src="images/navi_cate-vps.gif" width="192" height="80" alt="VPS 完全仮想化を実現した、新世代の仮想専用サーバ" /></a></li>
+							<li class="cloud"><a href="http://cloud.sakura.ad.jp/" class="rollover"><img src="images/navi_cate-cloud.gif" width="192" height="80" alt="クラウド コストパフォーマンスに優れた開発者志向のシンプルクラウド" /></a></li>
+							<li class="exclusive"><a href="http://server.sakura.ad.jp/" class="rollover"><img src="images/navi_cate-exclusive.gif" width="192" height="80" alt="専用サーバ 自社運営データセンターと業界トップクラスの高速・大容量バックボーン" /></a></li>
+							<li class="datacenter"><a href="http://datacenter.sakura.ad.jp/" class="rollover"><img src="images/navi_cate-datacenter.gif" width="192" height="80" alt="データセンター 堅牢なファシリティとともに「安心」と「快適」を提供します" /></a></li>
+							</ul>
+						</div>
+						<!--/#navi-category-->
+					</div>
+				</div>
+				<!--/サブナビゲーション-->
+
+				<div id="maincontents">
+					<!-- ↓mainarea -->
+					<div id="main-area">
+
+						<div class="sub-section-block clearfix">
+							<div class="section-block" id="news">
+								<h2>
+									お知らせ
+									<span class="btn"><a class="rollover" href="/rss/info.rdf"><img src="/resource/images/btn_rss.gif" width="60" height="20" alt="RSS" /></a></span>
+								</h2>
+								<div class="article-block">
+<dl>
+          			<dt class="fst">2016/05/12</dt>
+		<dd class="fst"><a href="/news/sakurainfo/newsentry.php?id=1285" class="txtlink">さくらのクラウド 「イベントログ」機能のベータ版提供開始のお知らせ</a></dd>
+			<dt class="fst">2016/05/10</dt>
+		<dd class="fst"><a href="/news/sakurainfo/newsentry.php?id=1241" class="txtlink">さくらのレンタルサーバ「さくらぽけっと」のバージョンアップのお知らせ</a></dd>
+			<dt class="fst">2016/04/26</dt>
+		<dd class="fst"><a href="/news/sakurainfo/newsentry.php?id=1258" class="txtlink">【重要(4月26日15:00更新)】マイクロソフト社のルート証明書情報更新による「シマンテックSSLサーバ証明書」への影響...</a></dd>
+			<dt class="fst">2016/04/25</dt>
+		<dd class="fst"><a href="/news/sakurainfo/newsentry.php?id=1275" class="txtlink">【重要】EC-CUBE 3.0系における脆弱性について</a></dd>
+			<dt class="fst">2016/04/25</dt>
+		<dd class="fst"><a href="/news/sakurainfo/newsentry.php?id=1278" class="txtlink">2016年5月の連休に伴う請求書発送等の遅延について</a></dd>
+	      </dl>
+<p><a href="/news/sakurainfo/newsindex.php" class="txtlink">お知らせの一覧</a></p>
+
+</div>
+							</div>
+							<!--/お知らせ-->
+							<div class="section-block" id="press-release">
+								<h2>プレスリリース</h2>
+								<div class="article-block">
+									<dl>
+
+									</dl>
+									<p><a href="/press/" class="txtlink">プレスリリースの一覧</a></p>
+								</div>
+							</div>
+                           
+							<!--/プレスリリース-->
+						</div>
+
+						<div class="section-block" id="event">
+							<h2>イベント・セミナー・パートナー情報</h2>
+							<div class="article-block">
+<dl>
+        			<dt class="fst">2016/05/28</dt>
+		<dd class="fst"><a href="/news/sakurainfo/newsentry.php?id=1283" class="txtlink">「オープンソースカンファレンス2016 Nagoya」（愛知）に出展、プラットフォーム事業部 伊東が登壇いたします</a></dd>
+			<dt class="fst">2016/05/27</dt>
+		<dd class="fst"><a href="/news/sakurainfo/newsentry.php?id=1271" class="txtlink">「第2回志ある経営者研究会」（大阪）にて、弊社代表 田中が登壇いたします</a></dd>
+			<dt class="fst">2016/05/26</dt>
+		<dd class="fst"><a href="/news/sakurainfo/newsentry.php?id=1280" class="txtlink">インフラエンジニア向けセミナー『「ハイブリッドクラウド」による最適なインフラ設計とは？』（東京）を開催い...</a></dd>
+			<dt class="fst">2016/05/24</dt>
+		<dd class="fst"><a href="/news/sakurainfo/newsentry.php?id=1282" class="txtlink">さくらのクラウドで超高速WordPress仮想マシン「KUSANAGI」を使う無料セミナー（東京）にて、クラウド開発室 横田が登...</a></dd>
+			<dt class="fst">2016/05/21</dt>
+		<dd class="fst"><a href="/news/sakurainfo/newsentry.php?id=1287" class="txtlink">「PHPカンファレンス福岡 2016」（福岡）にて、広報宣伝室 油井が登壇いたします</a></dd>
+			<dt class="fst">2016/05/19</dt>
+		<dd class="fst"><a href="/news/sakurainfo/newsentry.php?id=1281" class="txtlink">「さくらのサーバインフラ初心者勉強会＠大阪」を開催、クラウド開発室 大喜多が講師を務めます</a></dd>
+			<dt class="fst">2016/05/17</dt>
+		<dd class="fst"><a href="/news/sakurainfo/newsentry.php?id=1286" class="txtlink">「さくらクラブ 鹿児島 Arukas勉強会 & 質問会」（鹿児島）にて、インターネットサービス事業部 山田が講師を務めます</a></dd>
+	  </dl>
+<p><a href="/news/sakurainfo/newsindex_event.php" class="txtlink">イベント・セミナー情報の一覧</a></p>
+
+</div>
+						</div>
+						<!-- イベント・セミナー情報 -->
+
+						<div class="section-block" id="casestudy">
+
+							<h2>導入事例・構成例</h2>
+							<div class="float-list clearfix">
+							<div class="row case_summary">
+								<div class="col_wrap cfix">
+								</div>
+							</div>
+							</div>
+
+							<p class="foot"><a href="http://case.sakura.ad.jp/" class="txtlink" target="_blank">導入事例・構成例の一覧</a></p>
+
+
+							<div class="cBanner01">
+								<a href="https://secure.sakura.ad.jp/request_form/lp/biz/" target="_blank"><img src="/images/banner_bizlp.jpg" width="740" height="142" alt="さくらのビジネスパートナー" class="brightover" /></a>
+							</div>
+							<div>
+							<a href="http://partner.sakura.ad.jp/" target="_blank"><img src="/images/banner_partner.png" width="740" height="142" alt="さくらのビジネスパートナー" class="brightover" /></a>
+							</div>
+						</div>
+						<!--/事例紹介-->
+
+						<div class="section-block" id="privacy-block">
+							<h2 class="bgheader">プライバシー、およびセキュリティに対する取り組み</h2>
+							<div class="float-list">
+								<div class="option-block">
+									<div class="inner set-2column-block">
+										<div class="set-2column-left">
+											<div class="p-mark">
+                                            		<a href="http://privacymark.jp/" target="_blank"><img src="/resource/images/fimg_p-mark.gif" alt="プライバシーマーク" width="60" height="60" /></a>
+                                                    </div>
+										</div>
+										<div class="set-2column-right">
+											<p class="name"><a href="http://privacymark.jp/" target="_blank" class="txtlink outlink"><span>プライバシーマーク制度</span></a></p>
+											<p>さくらインターネットは、2006年7月にJIPDECのプライバシーマーク認証を取得、個人情報保護に取り組んでいます。</p>
+										</div>
+									</div>
+								</div>
+								<div class="option-block">
+									<div class="inner set-2column-block">
+										<div class="set-2column-left">
+											<a href="/privacy/iso27001.html"><img src="/resource/images/fimg_iso-mark.gif" width="120" height="90" alt="ISO27001認証マーク" /></a>
+										</div>
+										<div class="set-2column-right" style="width:205px;">
+											<p class="name"><a href="/privacy/iso27001.html" class="txtlink">ISMS</a></p>
+											<p>さくらインターネットの全事業所、データセンターではISO27001認証を取得、継続的に情報セキュリティ管理を行っています。</p>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!--プライバシー・セキュリティ-->
+
+						<div class="section-block">
+							<h2 class="bgheader">関連サイト</h2>
+							<div class="foot-bnr-list">
+								<ul class="clearfix">
+								<li><a href="http://tanaka.sakura.ad.jp/" target="_blank"><img src="/resource/images/bnr_tanaka.gif" width="180" height="60" class="brightover" alt="さくらインターネット創業日記" /></a></li>
+								<li><a href="http://research.sakura.ad.jp/" target="_blank"><img src="/resource/images/bnr_research.gif" width="180" height="60" class="brightover" alt="さくらインターネット研究所ブログ" /></a></li>
+								<li><a href="http://enterprise.sakura.ad.jp" target="_blank"><img src="/resource/images/bnr_side-enterprise.jpg" width="180" height="60" class="brightover" alt="さくら for エンタープライズ" /></a></li>
+								<li><a href="http://www.sakura.ad.jp/recruit/" target="_blank"><img src="/resource/images/bnr_employ.gif" width="180" height="60" class="brightover" alt="採用情報 サービス開発エンジニア インフラエンジニア ほか多数募集中" /></a></li>
+								</ul>
+								<br />
+
+								<ul class="clearfix">
+								<li><a href="http://www.facebook.com/SAKURA.Internet" target="_blank"><img src="/resource/images/bnr_facebook.gif" width="180" height="60" class="brightover" alt="さくらインターネット公式Facebookページ」" /></a></li>
+								<li><a href="http://twitter.com/sakura_pr" target="_blank"><img src="/resource/images/bnr_side-prtweet.gif" width="180" height="60" class="brightover" alt="さくらインターネット 広報の公式アカウント" /></a></li>
+								<li><a href="http://twitter.com/sakura_server" target="_blank"><img src="/resource/images/bnr_server.gif" width="180" height="60" class="brightover" alt="開発の中の人アカウント" /></a></li>
+								<li><a href="https://twitter.com/sakura_ope" target="_blank"><img src="/resource/images/bnr_server1.gif" width="180" height="60" class="brightover" alt="もう1つの中の人アカウント" /></a></li>
+								</ul>
+                                <br />
+                                <ul class="clearfix">
+								<li><a href="http://knowledge.sakura.ad.jp/" target="_blank"><img src="/resource/images/bnr_knowledge.gif" width="180" height="60" class="brightover" alt="サクラノナレッジ" /></a></li>
+								<li><a href="http://case.sakura.ad.jp/" target="_blank"><img src="/resource/images/bnr_case.png" width="180" height="60" class="brightover" alt="さくらの導入事例・構成例" /></a></li>
+								<li><a href="http://marina127.sakura.ne.jp/blog/" target="_blank"><img src="/resource/images/bnr_beginner.png" width="180" height="60" class="brightover" alt="まりなの超初心者講座"></a></li>
+								</ul>
+							</div>
+						</div>
+						<!--/関連サイト-->
+
+		<div class="fb-likebox">
+			<iframe src="//www.facebook.com/plugins/likebox.php?href=http%3A%2F%2Fwww.facebook.com%2FSAKURA.Internet&amp;width=735&amp;height=184&amp;show_faces=true&amp;colorscheme=light&amp;stream=false&amp;border_color&amp;header=false" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:735px; height:258px;" allowTransparency="true"></iframe>
+		</div>
+
+					</div>
+					<!--/メインエリア-->
+
+					<!-- ↓right-navi -->
+					<div id="right-navi">
+						<div id="site_navi_corporate" class="site_navi-block">
+							<p class="head"><a href="/corporate/">コーポレートサイト</a></p>
+							<p class="desc">さくらインターネットの会社概要、IR、採用情報です。</p>
+							<p class="sub_link"><a href="/ir/news.html">IRニュース</a></p>
+						</div>
+						<!--/コーポレートサイト-->
+						<div id="site_navi_support" class="site_navi-block">
+							<p class="head"><a href="https://help.sakura.ad.jp/" onClick="javascript:_gaq.push(['_trackPageview', this.href]);">サポートサイト</a></p>
+							<p class="desc">お知らせ、よくある質問などをまとめています。</p>
+							<p class="sub_link"><a href="http://support.sakura.ad.jp/mainte/?service=all" onClick="javascript:_gaq.push(['_trackPageview', this.href]);">メンテナンス・障害情報</a></p>
+						</div>
+						<!--/サポートサイト-->
+						<div class="bnr-list">
+							<p class="head">おすすめコンテンツ</p>
+							<ul>
+							<li><a href="https://secure.sakura.ad.jp/request_form/lp/biz/" target="_blank"><img src="/resource/images/banner_biz.jpg" width="180" height="60" class="brightover" alt="法人のお客様はこちら" /></a></li>
+                            <li><a href="http://case.sakura.ad.jp/" target="_blank"><img src="/resource/images/bnr_case.png" alt="さくらの導入事例・構成例" width="180" height="60" class="brightover"></a></li>
+                            <li><a href="http://enterprise.sakura.ad.jp/lp/azure_pack/"><img src="/resource/images/bnr_azurepack.jpg" alt="さくらのプライベートクラウドサービス powered by Windows Azure Pack 提供開始！" width="180" height="60" class="brightover"></a></li>
+							<li><a href="/services/datacenter/networkfacility/"><img src="/resource/images/bnr_sakura-datacenter.gif" width="180" height="60" alt="さくらインターネットのデータセンター" class="brightover" /></a></li>
+							<li><a href="/function/"><img src="/resource/images/bnr_function.gif" width="180" height="60" alt="機能・オプション紹介" class="brightover" /></a></li>
+							<li><a href="https://secure.sakura.ad.jp/request_form/download/" target="_blank" onClick="javascript:_gaq.push(['_trackPageview', this.href]);"><img src="/resource/images/bar_dw.png" width="180" height="60" alt="資料請求フォーム" class="brightover" /></a></li>
+							<li><a href="https://secure.sakura.ad.jp/request_form/sakurainfo/"><img src="/resource/images/bnr_sakurainfo.gif" alt="さくらのおしらせ" class="brightover" /></a></li>
+							<li><a href="http://partner.sakura.ad.jp/" target="_blank"><img src="/resource/images/banner_partner2.png" alt="さくらのビジネスパートナー" class="brightover" /></a></li>
+							<li><a href="http://knowledge.sakura.ad.jp/" target="_blank"><img src="/resource/images/bnr_knowledge.gif" alt="サクラノナレッジ" class="brightover"></a></li>
+							<li><a href="http://marina127.sakura.ne.jp/blog/" target="_blank"><img src="/resource/images/bnr_beginner.png" width="180" height="60" alt="まりなの超初心者講座" class="brightover"></a></li>
+							</ul>
+						</div>
+						<!--/おすすめコンテンツ-->
+					</div>
+					<!--/右枠-->
+				</div>
+				<!--/メインコンテンツ-->
+			</div>
+
+			<div id="contents-foot">
+				<div id="contents-foot-inner">
+					<div class="inner">
+						<ul class="bread">
+						<li><strong>サービスサイト</strong></li>
+						</ul>
+						<div id="pagetop"><a href="#wrapper"><img src="/resource/images/btn_pagetop.gif" width="120" height="50" class="rollover" alt="ページの先頭へ" /></a></div>
+					</div>
+				</div>
+			</div>
+			<!--/contents-foot-->
+		</div>
+		<!--/contents-->
+
+		<!-- ↓footer -->
+		<!-- include footer -->
+
+<div id="footer">
+
+	<div id="footer-fnavi">
+
+		<div class="inner">
+
+			<div id="footer-fnavi-service">
+
+				<p class="head"><a href="http://www.sakura.ad.jp/">サービスサイト</a></p>
+
+				<ul class="fnvi1">
+
+					<li class="category rental"><a href="http://www.sakura.ne.jp/">レンタルサーバ</a>
+
+						<ul>
+
+							<li><a href="http://www.sakura.ne.jp/lite.html">さくらのレンタルサーバ ライト</a></li>
+
+							<li><a href="http://www.sakura.ne.jp/standard.html">さくらのレンタルサーバ スタンダード</a></li>
+
+							<li><a href="http://www.sakura.ne.jp/premium.html">さくらのレンタルサーバ プレミアム</a></li>
+
+							<li><a href="http://www.sakura.ne.jp/business.html">さくらのレンタルサーバ ビジネス</a></li>
+
+							<li><a href="http://www.sakura.ne.jp/pro.html">さくらのレンタルサーバ ビジネスプロ</a></li>
+
+							<li><a href="http://www.sakura.ne.jp/managedserver/">さくらのマネージドサーバ（専有プラン）</a></li>
+
+							<li><a href="http://www.sakura.ne.jp/plans.html">各レンタルサーバサービスの機能比較</a></li>
+
+							<li><a href="http://www.sakura.ne.jp/mail/">さくらのメールボックス</a></li>
+
+							<li><a href="http://www.sakura.ne.jp/domain/">独自ドメイン取得・管理</a></li>
+
+						</ul>
+
+					</li>
+
+				</ul>
+
+				<ul class="fnvi2">
+
+					<li class="category exclusive"><a href="http://vps.sakura.ad.jp/">VPS（さくらのVPS）</a>
+
+						<ul>
+
+							<li><a href="http://vps.sakura.ad.jp/specification.html">料金・サービス仕様</a></li>
+
+						</ul>
+
+					</li>
+
+					<li class="category vps"><a href="http://cloud.sakura.ad.jp/">クラウド（さくらのクラウド） </a>
+
+						<ul>
+
+							<li><a href="http://cloud.sakura.ad.jp/payment/index.html">サービス仕様</a></li>
+
+						</ul>
+
+					</li>
+
+					<li class="category exclusive"><a href="http://server.sakura.ad.jp/">専用サーバ（ホスティング）</a>
+
+						<ul>
+
+							<li><a href="http://server.sakura.ad.jp/">さくらの専用サーバ</a>
+
+								<ul>
+
+									<li class="btm"><a href="http://server.sakura.ad.jp/specification/">サービス仕様・料金</a></li>
+
+								</ul>
+
+							</li>
+
+							<li><a href="http://server.sakura.ad.jp/platform.html">専用サーバ Platform</a>
+
+								<ul>
+
+									<li class="btm"><a href="http://server.sakura.ad.jp/platform_st/">専用サーバ Platform St</a></li>
+
+									<li class="btm"><a href="http://server.sakura.ad.jp/platform/">専用サーバ Platform Ad</a></li>
+
+								</ul>
+
+							</li>
+
+						</ul>
+
+					</li>
+
+				</ul>
+
+				<ul class="fnvi3">
+
+					<li class="category datacenter"><a href="http://datacenter.sakura.ad.jp/">データセンター</a>
+
+						<ul>
+
+							<li><a href="http://datacenter.sakura.ad.jp/housing/">ハウジングサービス</a></li>
+
+							<li><a href="http://datacenter.sakura.ad.jp/remotehousing/">リモートハウジング</a></li>
+
+						</ul>
+
+					</li>
+
+					<li class="category services"><a href="http://www.sakura.ad.jp/function/etc/hybrid.html">ハイブリッド接続</a></li>
+
+					<li class="category services"><a href="http://www.sakura.ad.jp/services/">サービス一覧</a></li>
+
+					<li class="category function"><a href="http://www.sakura.ad.jp/function/">機能・オプション紹介</a></li>
+
+					<li class="category networkfacility"><a href="http://www.sakura.ad.jp/services/datacenter/networkfacility/">さくらインターネットのデータセンター</a></li>
+
+					<li class="category case"><a href="http://www.sakura.ad.jp/casestudy/">導入事例</a></li>
+
+					<li class="category dakara"><a href="http://www.sakura.ad.jp/dakara-sakura/">だからさくら</a></li>
+
+
+
+				</ul>
+
+			</div>
+
+			<div id="footer-fnavi-others">
+
+				<ul class="fnvi4">
+
+					<li class="category support">
+
+						<p class="head"><a href="https://help.sakura.ad.jp/app/home">サポートサイト</a></p>
+
+						<ul>
+
+							<li><a href="https://help.sakura.ad.jp/app/answers/detail/a_id/2004" target="_blank" onClick="javascript:_gaq.push(['_trackPageview', this.href]);">e-mail query (in English)</a></li>
+
+						</ul>
+
+					</li>
+
+					<li class="category corporate">
+
+						<p class="head"><a href="http://www.sakura.ad.jp/corporate/">コーポレートサイト</a></p>
+
+						<ul>
+
+							<li><a href="http://www.sakura.ad.jp/corporate/corp/">企業情報</a></li>
+
+							<li><a href="http://www.sakura.ad.jp/ir/">株主・投資家情報</a></li>
+
+							<li><a href="http://www.sakura.ad.jp/recruit/">採用情報</a></li>
+
+						</ul>
+
+					</li>
+
+					<li class="category">
+
+						<p class="head"><a href="http://enterprise.sakura.ad.jp/">エンタープライズサイト</a></p>
+
+					</li>
+
+					<li class="category">
+
+						<p class="head"><a href="http://knowledge.sakura.ad.jp/" target="_blank">さくらのナレッジ</a></p>
+
+					</li>
+
+				</ul>
+
+			</div>
+
+			<div class="p-mark"><div style="background-color:#FFF;"><a href="http://privacymark.jp/" target="_blank"><img src="https://secure.sakura.ad.jp/resource/images/fimg_p-mark.gif" width="60" height="60" alt="プライバシーマーク" style="margin:15px;" /></a></div></div>
+
+			<div class="iso-mark"><a href="http://www.sakura.ad.jp/privacy/iso27001.html"><img src="https://secure.sakura.ad.jp/resource/images/fimg_iso-mark.gif" width="120" height="90" alt="ISO27001認証マーク" /></a></div>
+
+		</div>
+
+	</div>
+
+	<div id="footer-btm">
+
+		<div class="inner">
+
+			<ul>
+
+				<li><a href="http://www.sakura.ad.jp/about/">本サイトご利用にあたって</a></li>
+
+				<li><a href="http://www.sakura.ad.jp/privacy/">個人情報保護ポリシー</a></li>
+
+				<li><a href="http://www.sakura.ad.jp/agreement/">約款</a></li>
+
+			</ul>
+
+			<div id="copyright"></div>
+
+		</div>
+
+	</div>
+
+</div>
+
+
+
+<!-- SyncSerach -->
+
+<script type="text/javascript">
+
+if (location .protocol == "https:") {
+
+document.write(unescape('%3Cscript src="https://ssl.syncsearch.jp/common/js/suggest.js" type="text/javascript"%3E%3C/script%3E'));
+
+} else {
+
+document.write(unescape('%3Cscript src="http://pro.syncsearch.jp/common/js/suggest.js" type="text/javascript"%3E%3C/script%3E'));
+
+}
+
+</script>
+
+<script type="text/javascript">
+
+SYNCSEARCH_SITE="81BHNZWF";
+
+SYNCSEARCH_GROUP=1;
+
+</script>
+
+<!-- SyncSerach -->
+
+
+
+<!-- BEGIN:調査用のタグです -->
+
+<a href="mailto:elen@sns.srs.ne.jp"></a>
+
+<!-- END:調査用のタグです -->
+
+	</div>
+	<!--/wrapper-->
+
+	<!-- Google Code for A_TOP リスティング Remarketing List -->
+	<div style="background:#444;">
+	<script type="text/javascript">
+	/* <![CDATA[ */
+	var google_conversion_id = 1052729172;
+	var google_conversion_language = "en";
+	var google_conversion_format = "3";
+	var google_conversion_color = "666666";
+	var google_conversion_label = "C76uCLSw8wEQ1L799QM";
+	var google_conversion_value = 0;
+	/* ]]> */
+	</script>
+	<script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js">
+	</script>
+	<noscript>
+	<div style="display:inline;">
+	<img height="1" width="1" style="border-style:none;" alt="" src="//www.googleadservices.com/pagead/conversion/1052729172/?label=C76uCLSw8wEQ1L799QM&amp;guid=ON&amp;script=0"/>
+	</div>
+	</noscript>
+	</div>
+
+</body>
+</html>

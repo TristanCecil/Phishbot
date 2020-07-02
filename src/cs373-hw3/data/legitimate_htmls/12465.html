@@ -1,0 +1,2638 @@
+
+
+	
+		
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Услуги МГТС для дома</title>
+    <script src="/bitrix/templates/mgts/js/jquery-1.12.4.min.js"></script>
+	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <link href="/bitrix/templates/mgts/jquery.bxslider.css" type="text/css" rel="stylesheet">
+    <link href="/bitrix/templates/mgts/stacktable.css" type="text/css" rel="stylesheet">
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link href="/bitrix/templates/.default/components/bitrix/menu/bx-bottom-menu/style.css?1463685338581" type="text/css"  data-template-style="true"  rel="stylesheet" />
+<link href="/bitrix/templates/mgts/template_styles.css?1469477740124368" type="text/css"  data-template-style="true"  rel="stylesheet" />
+<script type="text/javascript">var _ba = _ba || []; _ba.push(["aid", "53ecec2e0857b2f578c2e6e295d79546"]); _ba.push(["host", "mgts.ru"]); (function() {var ba = document.createElement("script"); ba.type = "text/javascript"; ba.async = true;ba.src = (document.location.protocol == "https:" ? "https://" : "http://") + "bitrix.info/ba.js";var s = document.getElementsByTagName("script")[0];s.parentNode.insertBefore(ba, s);})();</script>
+
+
+        <script src="/bitrix/templates/mgts/owl-carousel/owl.carousel.min.js"></script>
+    <script src="/bitrix/templates/mgts/js/main.js"></script>
+    <script src="/bitrix/templates/mgts/js/ControlScriptsV011.js"></script>
+    <script src="/bitrix/templates/mgts/js/FooterScriptsV011.js"></script>
+
+    <script src="/bitrix/templates/mgts/js/mgts.maps.js"></script>
+    <script src="/bitrix/templates/mgts/js/jquery.bxslider.min.js"></script>
+    <script src="/bitrix/templates/mgts/js/device.min.js"></script>
+    <script src="/bitrix/templates/mgts/js/stacktable.min.js"></script>
+    <script src="/bitrix/templates/mgts/js/mgts.countryChooser.js"></script>
+    <script src="/bitrix/templates/mgts/js/jquery.blockUI.js"></script>
+    <script src="/bitrix/templates/mgts/js/mustache.js"></script>
+
+    <!--[if lt IE 9]>
+    <script src="/bitrix/templates/mgts/js/html5shiv.js"></script>
+    <script src="/bitrix/templates/mgts/js/css3-mediaqueries.js"></script>
+    <script src="/bitrix/templates/mgts/js/script-ie.js"></script>
+    <![endif]-->
+    <script>
+        CountryChooser.res.getCountriesUrl='/bitrix/templates/mgts/js/countryList.json';
+    </script>
+        <script>
+        $(function () {
+            $("button[data-send=1], a[data-send=1]").click(function () {
+                var th=$(this);
+                var url=window.location.pathname;
+                url=url.substr(1);
+                pref='s1';
+                if (pref=='s1'){
+                    pref='msk';
+                } else {
+                    pref='MO';
+                }
+
+                if (url=='home/internet/tariffs/'||url=='home/phone/tariff/'||url=='home/mobile/tariffs/'||url=='home/os/tariffs/'||url=='home/video/tariffs_video/'||url=='business/mobile/mobile_tariffs/'){
+                    var active_tabs=$(".tabs-toggle li.active").attr('id');
+                    switch (active_tabs){
+                        case 'li_23':
+                            pref_label='Bezlim';
+                            break;
+
+                        case 'li_22':
+                            pref_label='Abon';
+                            break;
+
+                        case 'li_21':
+                            pref_label='WO_phone';
+                            break;
+
+                        case 'li_1':
+                            pref_label='buy';
+                            break;
+
+                        case 'li_2':
+                            pref_label='rent';
+                            break;
+
+                        default:
+                            pref_label='like';
+                            break;
+                    }
+
+                    var price=th.closest('.tariff-group-item, .pack-block').find('.price b').html();
+                    if (price==undefined){
+                        price=th.closest('.popup').find('.price b').html();
+                        if (price==undefined){
+                            label='';
+                        } else {
+                            price = price.split(' ');
+                            price = $.trim(price[0]);
+
+                            suf_label = 'popup_msk';
+                            if (pref == 'msk') {
+                                var label = pref_label + '_' + price + '_' + suf_label;
+                            } else {
+                                var speed = th.closest('.tariff-group-item').find('h3 b').html();
+                                var label = speed + '_' + price + '_MO';
+                            }
+                        }
+                    } else {
+                        price=$.trim(price);
+                        suf_label='msk';
+                        if (pref == 'msk') {
+                            var label = pref_label + '_' + price + '_' + suf_label;
+                        } else {
+                            var speed = th.closest('.tariff-group-item').find('h3 b').html();
+                            if (speed==undefined){
+                                var label = pref_label + '_' + price + '_MO';
+                            } else {
+                                var label = speed + '_' + price + '_MO';
+                            }
+                        }
+                    }
+                }
+
+                if (url=='home/internet/bundle/'||url=='home/tv/bundle/'||url=='home/phone/bundle/'){
+                    var active_tabs=$(".tabs-toggle li.active").attr('id');
+                    switch (active_tabs){
+                        case 'li_35':
+                            pref_label='Bezlim';
+                            break;
+
+                        case 'li_36':
+                            pref_label='Abon';
+                            break;
+
+                        case 'li_37':
+                            pref_label='WO_phone';
+                            break;
+
+                        default:
+                            pref_label='like';
+                            break;
+                    }
+                    var price=th.closest('.pack-block').find('.price b').html();
+                    if (price==undefined){
+                        price=th.closest('.popup').find('.price b').html();
+                        if (price==undefined){
+                            label='';
+                        } else {
+                            price=price.split(' ');
+                            price=price[0];
+
+                            suf_label='popup_msk';
+                            if (pref=='msk'){
+                                var label=pref_label+'_'+price+'_'+suf_label;
+                            } else {
+                                var speed=th.closest('.tariff-group-item').find('h3 b').html();
+                                var label=speed+'_'+price+'_MO';
+                            }
+                        }
+
+                    } else {
+                        suf_label='msk';
+                        if (pref=='msk'){
+                            var label=pref_label+'_'+price+'_'+suf_label;
+                        } else {
+                            var speed=th.closest('.tariff-group-item').find('h3 b').html();
+                            var label=speed+'_'+price+'_MO';
+                        }
+                    }
+
+                }
+
+                if (url=='home/internet/adsl/'){
+                    var price=th.closest('.tariff-group-item, .pack-blocks').find('.tariff-item-price b, .price b').html();
+                    if (price==undefined){
+                        price=th.closest('.popup').find('.price b').html();
+                        if (price==undefined){
+                            label='';
+                        } else {
+                            price = price.split(' ');
+                            price = price[0];
+
+                            suf_label = 'popup_msk';
+                            if (pref=='msk'){
+                                var label='like_'+price+'_'+suf_label;
+                            } else {
+                                var speed=th.closest('.tariff-group-item').find('h3 b').html();
+                                var label=speed+'_'+price+'_MO';
+                            }
+                        }
+                    } else {
+                        suf_label='msk';
+                        if (pref=='msk'){
+                            var label='like_'+price+'_'+suf_label;
+                        } else {
+                            var speed=th.closest('.tariff-group-item').find('h3 b').html();
+                            var label=speed+'_'+price+'_MO';
+                        }
+                    }
+
+                }
+
+                if (url=='home/tv/tariffs/'){
+                    var price=th.closest('.tariff-group-item, .pack-blocks').find('.tariff-item-price b, .price b').html();
+                    if (price==undefined){
+                        price=th.closest('.popup').find('.price b').html();
+                        if (price==undefined) {
+                            label = '';
+                        } else {
+                            price = price.split(' ');
+                            price = price[0];
+
+                            suf_label = 'popup_msk';
+                            if (pref=='msk'){
+                                var label='like_'+price+'_'+suf_label;
+                            } else {
+                                var label='like_'+price+'_MO';
+                            }
+                        }
+                    } else {
+                        suf_label='msk';
+                        if (pref=='msk'){
+                            var label='like_'+price+'_'+suf_label;
+                        } else {
+                            var label='like_'+price+'_MO';
+                        }
+                    }
+
+                }
+
+                if (label==undefined){
+                    var price=th.closest('.tariff-group-item, .pack-block').find('.tariff-item-price b, .price b').html();
+                    if (price!=undefined) {
+                        label = 'like_' + price + '_' + pref;
+                    }
+                }
+
+                $.ajax({
+                    url: '/home/button.php',
+                    type: 'post',
+                    data: {domain: pref, url: url, full: window.location.href, label: label},
+                    success: function (res) {
+						//alert(res);return;
+                        if (res!='') {
+                            $("#orderUsr").attr('onclick', res).click();
+                        }
+                    }
+                })
+            });
+        })
+    </script>
+</head>
+<body>
+<!-- Google Tag Manager -->
+<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-5G32FM"
+                  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-5G32FM');</script>
+<!-- End Google Tag Manager -->
+
+<!-- Google Analytics -->
+<script>
+    (function(i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] || function() {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
+        a = s.createElement(o), m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+    ga('create', 'UA-12816426-1', 'auto', {'allowLinker': true});
+    ga('require', 'displayfeatures');
+    ga('require', 'linkid', 'linkid.js');
+    ga('send', 'pageview');
+</script>
+<!-- Google Analytics -->
+<!--  AdRiver code START. Type:counter(zeropixel) Site: mgts.ru SZ: main PZ: 0 BN: 0 --><script type="text/javascript">
+var RndNum4NoCash = Math.round(Math.random() * 1000000000);
+var ar_Tail='unknown'; if (document.referrer) ar_Tail = escape(document.referrer);
+document.write('<img src="' + ('https:' == document.location.protocol ? 'https:' : 'http:') + '//ad.adriver.ru/cgi-bin/rle.cgi?' + 'sid=203901&sz=main&bt=21&pz=0&rnd=' + RndNum4NoCash + '&tail256=' + ar_Tail + '" border=0 width=1 height=1 style="visibility: hidden; position: absolute;">')
+</script><noscript><img src="//ad.adriver.ru/cgi-bin/rle.cgi?sid=203901&sz=main&bt=21&pz=0&rnd=1558564736" border=0 width=1 height=1></noscript><!--  AdRiver code END  --><script type="text/javascript">
+		function ar_sendPixel(sz, url) {
+			var src = 'http://ad.adriver.ru/cgi-bin/rle.cgi?sid=203901&sz=' + sz + '&bt=21&pz=0&rnd=' + Math.round(Math.random() * 1000000000);
+			if(document.createElement && document.body){ var i = document.createElement('img'); i.onload = function(){location.href=url}; i.style.position = 'absolute'; i.style.width = i.style.height = '0px'; i.src = src; document.body.insertBefore(i, document.body.firstChild);}else{ var i = new Image(); i.onload = function(){location.href=url}; i.src = src }
+		}
+</script>
+
+
+
+<div class="menu-mobile-l mobile-block">
+    <div class="icon-show-menu2">
+        <span></span>
+        <span></span>
+    </div>
+    <div class="logo-line clearfix">
+        <a href="#" class="logo-mob-menu"><img src="/bitrix/templates/mgts/images/logo.png" alt="МГТС"></a>
+        <div class="telephone-number">8 495 <b>636-0-636</b></div>
+    </div>
+    <div class="ico-box clearfix">
+        <div class="one-block">
+            <div class="wrapper-ico">
+                <a href="#"><i class="card-mob-menu"></i></a>
+            </div>
+            <p>
+                <a href="#">Способы<br/>оплаты</a>
+            </p>
+        </div>
+        <div class="one-block">
+            <div class="wrapper-ico">
+                <a href="#"><i class="mark-mob-menu"></i></a>
+            </div>
+            <p>
+                <a href="#">Центры<br/>продаж</a>
+            </p>
+        </div>
+        <div class="one-block">
+            <div class="wrapper-ico">
+                <a href="#"><i class="desktop-mob-menu"></i></a>
+            </div>
+            <p>
+                <a href="#">Электронный</br>счет</a>
+            </p>
+        </div>
+    </div>
+<a href="/business/orderb2b/" class="private-cabinet" style="margin-bottom:20px;">Оставить заявку</a>
+    <a href="https://lk.mgts.ru" class="private-cabinet">Личный кабинет</a>
+        <ul class="mobile-menu-toggle">
+                <li class="active">
+            <a href="/home/">Для дома</a>
+            <div class="btn-toggle"></div>
+            <ul>
+                                <li class="">
+                    <a href="/home/internet/">Интернет</a>
+                    <div class="btn-toggle"></div>
+                    <ul>
+                                                <li class=""><a href="/home/internet/actions/">Акции</a></li>
+                                                <li class=""><a href="/home/internet/tariffs/">Тарифы</a></li>
+                                                <li class=""><a href="/home/internet/bundle/">Пакеты</a></li>
+                                                <li class=""><a href="/home/internet/services/">Дополнительные услуги</a></li>
+                                                <li class=""><a href="/home/internet/bonus/">Бонусная программа</a></li>
+                                                <li class=""><a href="/home/internet/technology/">Технология GPON</a></li>
+                                                <li class=""><a href="/home/internet/adsl/">Технология ADSL</a></li>
+                                                <li class=""><a href="/home/internet/equipment/">Оборудование</a></li>
+                                                <li class=""><a href="/home/tv/actions/">Акции</a></li>
+                                                <li class=""><a href="/home/tv/tariffs/">Тарифы</a></li>
+                                                <li class=""><a href="/home/tv/bundle/">Пакеты</a></li>
+                                                <li class=""><a href="/home/tv/personal/">Персональное ТВ</a></li>
+                                                <li class=""><a href="/home/tv/vod/">Видео по запросу</a></li>
+                                                <li class=""><a href="/home/tv/services/">Дополнительные услуги</a></li>
+                                                <li class=""><a href="/home/tv/program/">ТВ-программа</a></li>
+                                                <li class=""><a href="/home/tv/equipment/">Оборудование</a></li>
+                                                <li class=""><a href="/home/phone/actions/">Акции</a></li>
+                                                <li class=""><a href="/home/phone/tariff/">Тарифы</a></li>
+                                                <li class=""><a href="/home/phone/bundle/">Пакеты</a></li>
+                                                <li class=""><a href="/home/phone/services/">Дополнительные услуги</a></li>
+                                                <li class=""><a href="/home/phone/bonus/">Бонусная программа</a></li>
+                                                <li class=""><a href="/home/phone/calls/">Междугородная связь</a></li>
+                                                <li class=""><a href="/home/phone/contract/">Договоры</a></li>
+                                                <li class=""><a href="/home/mobile/actions/">Акции</a></li>
+                                                <li class=""><a href="/home/mobile/tariffs/">Тарифы</a></li>
+                                                <li class=""><a href="/home/mobile/bundle/">Пакеты</a></li>
+                                                <li class=""><a href="/home/mobile/mobile_MNP/">В МГТС со своим номером</a></li>
+                                                <li class=""><a href="/home/mobile/mobile_internet/">Интернет и звонки</a></li>
+                                                <li class=""><a href="/home/mobile/mobile_services/">Услуги</a></li>
+                                                <li class=""><a href="/home/mobile/roaming/">Роуминг и межгород</a></li>
+                                                <li class=""><a href="/home/mobile/shortnum/">Короткие номера</a></li>
+                                                <li class=""><a href="/home/os/actions/">Акции</a></li>
+                                                <li class=""><a href="/home/os/tariffs/">Тарифы</a></li>
+                                                <li class=""><a href="/home/os/signalling/">Оборудование</a></li>
+                                                <li class=""><a href="/home/os/maintenance/">Обслуживание</a></li>
+                                                <li class=""><a href="/home/os/faq/">Вопросы и ответы</a></li>
+                                                <li class=""><a href="/home/video/actions/">Акции</a></li>
+                                                <li class=""><a href="/home/video/tariffs_video/">Тарифы</a></li>
+                                                <li class=""><a href="/home/video/equipment_video/">Оборудование</a></li>
+                                            </ul>
+                </li>
+                                <li class="">
+                    <a href="/home/tv/">Телевидение</a>
+                    <div class="btn-toggle"></div>
+                    <ul>
+                                                <li class=""><a href="/home/internet/actions/">Акции</a></li>
+                                                <li class=""><a href="/home/internet/tariffs/">Тарифы</a></li>
+                                                <li class=""><a href="/home/internet/bundle/">Пакеты</a></li>
+                                                <li class=""><a href="/home/internet/services/">Дополнительные услуги</a></li>
+                                                <li class=""><a href="/home/internet/bonus/">Бонусная программа</a></li>
+                                                <li class=""><a href="/home/internet/technology/">Технология GPON</a></li>
+                                                <li class=""><a href="/home/internet/adsl/">Технология ADSL</a></li>
+                                                <li class=""><a href="/home/internet/equipment/">Оборудование</a></li>
+                                                <li class=""><a href="/home/tv/actions/">Акции</a></li>
+                                                <li class=""><a href="/home/tv/tariffs/">Тарифы</a></li>
+                                                <li class=""><a href="/home/tv/bundle/">Пакеты</a></li>
+                                                <li class=""><a href="/home/tv/personal/">Персональное ТВ</a></li>
+                                                <li class=""><a href="/home/tv/vod/">Видео по запросу</a></li>
+                                                <li class=""><a href="/home/tv/services/">Дополнительные услуги</a></li>
+                                                <li class=""><a href="/home/tv/program/">ТВ-программа</a></li>
+                                                <li class=""><a href="/home/tv/equipment/">Оборудование</a></li>
+                                                <li class=""><a href="/home/phone/actions/">Акции</a></li>
+                                                <li class=""><a href="/home/phone/tariff/">Тарифы</a></li>
+                                                <li class=""><a href="/home/phone/bundle/">Пакеты</a></li>
+                                                <li class=""><a href="/home/phone/services/">Дополнительные услуги</a></li>
+                                                <li class=""><a href="/home/phone/bonus/">Бонусная программа</a></li>
+                                                <li class=""><a href="/home/phone/calls/">Междугородная связь</a></li>
+                                                <li class=""><a href="/home/phone/contract/">Договоры</a></li>
+                                                <li class=""><a href="/home/mobile/actions/">Акции</a></li>
+                                                <li class=""><a href="/home/mobile/tariffs/">Тарифы</a></li>
+                                                <li class=""><a href="/home/mobile/bundle/">Пакеты</a></li>
+                                                <li class=""><a href="/home/mobile/mobile_MNP/">В МГТС со своим номером</a></li>
+                                                <li class=""><a href="/home/mobile/mobile_internet/">Интернет и звонки</a></li>
+                                                <li class=""><a href="/home/mobile/mobile_services/">Услуги</a></li>
+                                                <li class=""><a href="/home/mobile/roaming/">Роуминг и межгород</a></li>
+                                                <li class=""><a href="/home/mobile/shortnum/">Короткие номера</a></li>
+                                                <li class=""><a href="/home/os/actions/">Акции</a></li>
+                                                <li class=""><a href="/home/os/tariffs/">Тарифы</a></li>
+                                                <li class=""><a href="/home/os/signalling/">Оборудование</a></li>
+                                                <li class=""><a href="/home/os/maintenance/">Обслуживание</a></li>
+                                                <li class=""><a href="/home/os/faq/">Вопросы и ответы</a></li>
+                                                <li class=""><a href="/home/video/actions/">Акции</a></li>
+                                                <li class=""><a href="/home/video/tariffs_video/">Тарифы</a></li>
+                                                <li class=""><a href="/home/video/equipment_video/">Оборудование</a></li>
+                                            </ul>
+                </li>
+                                <li class="">
+                    <a href="/home/phone/">Домашний телефон</a>
+                    <div class="btn-toggle"></div>
+                    <ul>
+                                                <li class=""><a href="/home/internet/actions/">Акции</a></li>
+                                                <li class=""><a href="/home/internet/tariffs/">Тарифы</a></li>
+                                                <li class=""><a href="/home/internet/bundle/">Пакеты</a></li>
+                                                <li class=""><a href="/home/internet/services/">Дополнительные услуги</a></li>
+                                                <li class=""><a href="/home/internet/bonus/">Бонусная программа</a></li>
+                                                <li class=""><a href="/home/internet/technology/">Технология GPON</a></li>
+                                                <li class=""><a href="/home/internet/adsl/">Технология ADSL</a></li>
+                                                <li class=""><a href="/home/internet/equipment/">Оборудование</a></li>
+                                                <li class=""><a href="/home/tv/actions/">Акции</a></li>
+                                                <li class=""><a href="/home/tv/tariffs/">Тарифы</a></li>
+                                                <li class=""><a href="/home/tv/bundle/">Пакеты</a></li>
+                                                <li class=""><a href="/home/tv/personal/">Персональное ТВ</a></li>
+                                                <li class=""><a href="/home/tv/vod/">Видео по запросу</a></li>
+                                                <li class=""><a href="/home/tv/services/">Дополнительные услуги</a></li>
+                                                <li class=""><a href="/home/tv/program/">ТВ-программа</a></li>
+                                                <li class=""><a href="/home/tv/equipment/">Оборудование</a></li>
+                                                <li class=""><a href="/home/phone/actions/">Акции</a></li>
+                                                <li class=""><a href="/home/phone/tariff/">Тарифы</a></li>
+                                                <li class=""><a href="/home/phone/bundle/">Пакеты</a></li>
+                                                <li class=""><a href="/home/phone/services/">Дополнительные услуги</a></li>
+                                                <li class=""><a href="/home/phone/bonus/">Бонусная программа</a></li>
+                                                <li class=""><a href="/home/phone/calls/">Междугородная связь</a></li>
+                                                <li class=""><a href="/home/phone/contract/">Договоры</a></li>
+                                                <li class=""><a href="/home/mobile/actions/">Акции</a></li>
+                                                <li class=""><a href="/home/mobile/tariffs/">Тарифы</a></li>
+                                                <li class=""><a href="/home/mobile/bundle/">Пакеты</a></li>
+                                                <li class=""><a href="/home/mobile/mobile_MNP/">В МГТС со своим номером</a></li>
+                                                <li class=""><a href="/home/mobile/mobile_internet/">Интернет и звонки</a></li>
+                                                <li class=""><a href="/home/mobile/mobile_services/">Услуги</a></li>
+                                                <li class=""><a href="/home/mobile/roaming/">Роуминг и межгород</a></li>
+                                                <li class=""><a href="/home/mobile/shortnum/">Короткие номера</a></li>
+                                                <li class=""><a href="/home/os/actions/">Акции</a></li>
+                                                <li class=""><a href="/home/os/tariffs/">Тарифы</a></li>
+                                                <li class=""><a href="/home/os/signalling/">Оборудование</a></li>
+                                                <li class=""><a href="/home/os/maintenance/">Обслуживание</a></li>
+                                                <li class=""><a href="/home/os/faq/">Вопросы и ответы</a></li>
+                                                <li class=""><a href="/home/video/actions/">Акции</a></li>
+                                                <li class=""><a href="/home/video/tariffs_video/">Тарифы</a></li>
+                                                <li class=""><a href="/home/video/equipment_video/">Оборудование</a></li>
+                                            </ul>
+                </li>
+                                <li class="">
+                    <a href="/home/mobile/">Мобильный телефон</a>
+                    <div class="btn-toggle"></div>
+                    <ul>
+                                                <li class=""><a href="/home/internet/actions/">Акции</a></li>
+                                                <li class=""><a href="/home/internet/tariffs/">Тарифы</a></li>
+                                                <li class=""><a href="/home/internet/bundle/">Пакеты</a></li>
+                                                <li class=""><a href="/home/internet/services/">Дополнительные услуги</a></li>
+                                                <li class=""><a href="/home/internet/bonus/">Бонусная программа</a></li>
+                                                <li class=""><a href="/home/internet/technology/">Технология GPON</a></li>
+                                                <li class=""><a href="/home/internet/adsl/">Технология ADSL</a></li>
+                                                <li class=""><a href="/home/internet/equipment/">Оборудование</a></li>
+                                                <li class=""><a href="/home/tv/actions/">Акции</a></li>
+                                                <li class=""><a href="/home/tv/tariffs/">Тарифы</a></li>
+                                                <li class=""><a href="/home/tv/bundle/">Пакеты</a></li>
+                                                <li class=""><a href="/home/tv/personal/">Персональное ТВ</a></li>
+                                                <li class=""><a href="/home/tv/vod/">Видео по запросу</a></li>
+                                                <li class=""><a href="/home/tv/services/">Дополнительные услуги</a></li>
+                                                <li class=""><a href="/home/tv/program/">ТВ-программа</a></li>
+                                                <li class=""><a href="/home/tv/equipment/">Оборудование</a></li>
+                                                <li class=""><a href="/home/phone/actions/">Акции</a></li>
+                                                <li class=""><a href="/home/phone/tariff/">Тарифы</a></li>
+                                                <li class=""><a href="/home/phone/bundle/">Пакеты</a></li>
+                                                <li class=""><a href="/home/phone/services/">Дополнительные услуги</a></li>
+                                                <li class=""><a href="/home/phone/bonus/">Бонусная программа</a></li>
+                                                <li class=""><a href="/home/phone/calls/">Междугородная связь</a></li>
+                                                <li class=""><a href="/home/phone/contract/">Договоры</a></li>
+                                                <li class=""><a href="/home/mobile/actions/">Акции</a></li>
+                                                <li class=""><a href="/home/mobile/tariffs/">Тарифы</a></li>
+                                                <li class=""><a href="/home/mobile/bundle/">Пакеты</a></li>
+                                                <li class=""><a href="/home/mobile/mobile_MNP/">В МГТС со своим номером</a></li>
+                                                <li class=""><a href="/home/mobile/mobile_internet/">Интернет и звонки</a></li>
+                                                <li class=""><a href="/home/mobile/mobile_services/">Услуги</a></li>
+                                                <li class=""><a href="/home/mobile/roaming/">Роуминг и межгород</a></li>
+                                                <li class=""><a href="/home/mobile/shortnum/">Короткие номера</a></li>
+                                                <li class=""><a href="/home/os/actions/">Акции</a></li>
+                                                <li class=""><a href="/home/os/tariffs/">Тарифы</a></li>
+                                                <li class=""><a href="/home/os/signalling/">Оборудование</a></li>
+                                                <li class=""><a href="/home/os/maintenance/">Обслуживание</a></li>
+                                                <li class=""><a href="/home/os/faq/">Вопросы и ответы</a></li>
+                                                <li class=""><a href="/home/video/actions/">Акции</a></li>
+                                                <li class=""><a href="/home/video/tariffs_video/">Тарифы</a></li>
+                                                <li class=""><a href="/home/video/equipment_video/">Оборудование</a></li>
+                                            </ul>
+                </li>
+                                <li class="">
+                    <a href="/home/os/">Охрана</a>
+                    <div class="btn-toggle"></div>
+                    <ul>
+                                                <li class=""><a href="/home/internet/actions/">Акции</a></li>
+                                                <li class=""><a href="/home/internet/tariffs/">Тарифы</a></li>
+                                                <li class=""><a href="/home/internet/bundle/">Пакеты</a></li>
+                                                <li class=""><a href="/home/internet/services/">Дополнительные услуги</a></li>
+                                                <li class=""><a href="/home/internet/bonus/">Бонусная программа</a></li>
+                                                <li class=""><a href="/home/internet/technology/">Технология GPON</a></li>
+                                                <li class=""><a href="/home/internet/adsl/">Технология ADSL</a></li>
+                                                <li class=""><a href="/home/internet/equipment/">Оборудование</a></li>
+                                                <li class=""><a href="/home/tv/actions/">Акции</a></li>
+                                                <li class=""><a href="/home/tv/tariffs/">Тарифы</a></li>
+                                                <li class=""><a href="/home/tv/bundle/">Пакеты</a></li>
+                                                <li class=""><a href="/home/tv/personal/">Персональное ТВ</a></li>
+                                                <li class=""><a href="/home/tv/vod/">Видео по запросу</a></li>
+                                                <li class=""><a href="/home/tv/services/">Дополнительные услуги</a></li>
+                                                <li class=""><a href="/home/tv/program/">ТВ-программа</a></li>
+                                                <li class=""><a href="/home/tv/equipment/">Оборудование</a></li>
+                                                <li class=""><a href="/home/phone/actions/">Акции</a></li>
+                                                <li class=""><a href="/home/phone/tariff/">Тарифы</a></li>
+                                                <li class=""><a href="/home/phone/bundle/">Пакеты</a></li>
+                                                <li class=""><a href="/home/phone/services/">Дополнительные услуги</a></li>
+                                                <li class=""><a href="/home/phone/bonus/">Бонусная программа</a></li>
+                                                <li class=""><a href="/home/phone/calls/">Междугородная связь</a></li>
+                                                <li class=""><a href="/home/phone/contract/">Договоры</a></li>
+                                                <li class=""><a href="/home/mobile/actions/">Акции</a></li>
+                                                <li class=""><a href="/home/mobile/tariffs/">Тарифы</a></li>
+                                                <li class=""><a href="/home/mobile/bundle/">Пакеты</a></li>
+                                                <li class=""><a href="/home/mobile/mobile_MNP/">В МГТС со своим номером</a></li>
+                                                <li class=""><a href="/home/mobile/mobile_internet/">Интернет и звонки</a></li>
+                                                <li class=""><a href="/home/mobile/mobile_services/">Услуги</a></li>
+                                                <li class=""><a href="/home/mobile/roaming/">Роуминг и межгород</a></li>
+                                                <li class=""><a href="/home/mobile/shortnum/">Короткие номера</a></li>
+                                                <li class=""><a href="/home/os/actions/">Акции</a></li>
+                                                <li class=""><a href="/home/os/tariffs/">Тарифы</a></li>
+                                                <li class=""><a href="/home/os/signalling/">Оборудование</a></li>
+                                                <li class=""><a href="/home/os/maintenance/">Обслуживание</a></li>
+                                                <li class=""><a href="/home/os/faq/">Вопросы и ответы</a></li>
+                                                <li class=""><a href="/home/video/actions/">Акции</a></li>
+                                                <li class=""><a href="/home/video/tariffs_video/">Тарифы</a></li>
+                                                <li class=""><a href="/home/video/equipment_video/">Оборудование</a></li>
+                                            </ul>
+                </li>
+                                <li class="">
+                    <a href="/home/video/">Видеонаблюдение</a>
+                    <div class="btn-toggle"></div>
+                    <ul>
+                                                <li class=""><a href="/home/internet/actions/">Акции</a></li>
+                                                <li class=""><a href="/home/internet/tariffs/">Тарифы</a></li>
+                                                <li class=""><a href="/home/internet/bundle/">Пакеты</a></li>
+                                                <li class=""><a href="/home/internet/services/">Дополнительные услуги</a></li>
+                                                <li class=""><a href="/home/internet/bonus/">Бонусная программа</a></li>
+                                                <li class=""><a href="/home/internet/technology/">Технология GPON</a></li>
+                                                <li class=""><a href="/home/internet/adsl/">Технология ADSL</a></li>
+                                                <li class=""><a href="/home/internet/equipment/">Оборудование</a></li>
+                                                <li class=""><a href="/home/tv/actions/">Акции</a></li>
+                                                <li class=""><a href="/home/tv/tariffs/">Тарифы</a></li>
+                                                <li class=""><a href="/home/tv/bundle/">Пакеты</a></li>
+                                                <li class=""><a href="/home/tv/personal/">Персональное ТВ</a></li>
+                                                <li class=""><a href="/home/tv/vod/">Видео по запросу</a></li>
+                                                <li class=""><a href="/home/tv/services/">Дополнительные услуги</a></li>
+                                                <li class=""><a href="/home/tv/program/">ТВ-программа</a></li>
+                                                <li class=""><a href="/home/tv/equipment/">Оборудование</a></li>
+                                                <li class=""><a href="/home/phone/actions/">Акции</a></li>
+                                                <li class=""><a href="/home/phone/tariff/">Тарифы</a></li>
+                                                <li class=""><a href="/home/phone/bundle/">Пакеты</a></li>
+                                                <li class=""><a href="/home/phone/services/">Дополнительные услуги</a></li>
+                                                <li class=""><a href="/home/phone/bonus/">Бонусная программа</a></li>
+                                                <li class=""><a href="/home/phone/calls/">Междугородная связь</a></li>
+                                                <li class=""><a href="/home/phone/contract/">Договоры</a></li>
+                                                <li class=""><a href="/home/mobile/actions/">Акции</a></li>
+                                                <li class=""><a href="/home/mobile/tariffs/">Тарифы</a></li>
+                                                <li class=""><a href="/home/mobile/bundle/">Пакеты</a></li>
+                                                <li class=""><a href="/home/mobile/mobile_MNP/">В МГТС со своим номером</a></li>
+                                                <li class=""><a href="/home/mobile/mobile_internet/">Интернет и звонки</a></li>
+                                                <li class=""><a href="/home/mobile/mobile_services/">Услуги</a></li>
+                                                <li class=""><a href="/home/mobile/roaming/">Роуминг и межгород</a></li>
+                                                <li class=""><a href="/home/mobile/shortnum/">Короткие номера</a></li>
+                                                <li class=""><a href="/home/os/actions/">Акции</a></li>
+                                                <li class=""><a href="/home/os/tariffs/">Тарифы</a></li>
+                                                <li class=""><a href="/home/os/signalling/">Оборудование</a></li>
+                                                <li class=""><a href="/home/os/maintenance/">Обслуживание</a></li>
+                                                <li class=""><a href="/home/os/faq/">Вопросы и ответы</a></li>
+                                                <li class=""><a href="/home/video/actions/">Акции</a></li>
+                                                <li class=""><a href="/home/video/tariffs_video/">Тарифы</a></li>
+                                                <li class=""><a href="/home/video/equipment_video/">Оборудование</a></li>
+                                            </ul>
+                </li>
+                                <li class="">
+                    <a href="/home/%23%2F%2Fhelp.mgts.ru/">Помощь</a>
+                    <div class="btn-toggle"></div>
+                    <ul>
+                                                <li class=""><a href="/home/internet/actions/">Акции</a></li>
+                                                <li class=""><a href="/home/internet/tariffs/">Тарифы</a></li>
+                                                <li class=""><a href="/home/internet/bundle/">Пакеты</a></li>
+                                                <li class=""><a href="/home/internet/services/">Дополнительные услуги</a></li>
+                                                <li class=""><a href="/home/internet/bonus/">Бонусная программа</a></li>
+                                                <li class=""><a href="/home/internet/technology/">Технология GPON</a></li>
+                                                <li class=""><a href="/home/internet/adsl/">Технология ADSL</a></li>
+                                                <li class=""><a href="/home/internet/equipment/">Оборудование</a></li>
+                                                <li class=""><a href="/home/tv/actions/">Акции</a></li>
+                                                <li class=""><a href="/home/tv/tariffs/">Тарифы</a></li>
+                                                <li class=""><a href="/home/tv/bundle/">Пакеты</a></li>
+                                                <li class=""><a href="/home/tv/personal/">Персональное ТВ</a></li>
+                                                <li class=""><a href="/home/tv/vod/">Видео по запросу</a></li>
+                                                <li class=""><a href="/home/tv/services/">Дополнительные услуги</a></li>
+                                                <li class=""><a href="/home/tv/program/">ТВ-программа</a></li>
+                                                <li class=""><a href="/home/tv/equipment/">Оборудование</a></li>
+                                                <li class=""><a href="/home/phone/actions/">Акции</a></li>
+                                                <li class=""><a href="/home/phone/tariff/">Тарифы</a></li>
+                                                <li class=""><a href="/home/phone/bundle/">Пакеты</a></li>
+                                                <li class=""><a href="/home/phone/services/">Дополнительные услуги</a></li>
+                                                <li class=""><a href="/home/phone/bonus/">Бонусная программа</a></li>
+                                                <li class=""><a href="/home/phone/calls/">Междугородная связь</a></li>
+                                                <li class=""><a href="/home/phone/contract/">Договоры</a></li>
+                                                <li class=""><a href="/home/mobile/actions/">Акции</a></li>
+                                                <li class=""><a href="/home/mobile/tariffs/">Тарифы</a></li>
+                                                <li class=""><a href="/home/mobile/bundle/">Пакеты</a></li>
+                                                <li class=""><a href="/home/mobile/mobile_MNP/">В МГТС со своим номером</a></li>
+                                                <li class=""><a href="/home/mobile/mobile_internet/">Интернет и звонки</a></li>
+                                                <li class=""><a href="/home/mobile/mobile_services/">Услуги</a></li>
+                                                <li class=""><a href="/home/mobile/roaming/">Роуминг и межгород</a></li>
+                                                <li class=""><a href="/home/mobile/shortnum/">Короткие номера</a></li>
+                                                <li class=""><a href="/home/os/actions/">Акции</a></li>
+                                                <li class=""><a href="/home/os/tariffs/">Тарифы</a></li>
+                                                <li class=""><a href="/home/os/signalling/">Оборудование</a></li>
+                                                <li class=""><a href="/home/os/maintenance/">Обслуживание</a></li>
+                                                <li class=""><a href="/home/os/faq/">Вопросы и ответы</a></li>
+                                                <li class=""><a href="/home/video/actions/">Акции</a></li>
+                                                <li class=""><a href="/home/video/tariffs_video/">Тарифы</a></li>
+                                                <li class=""><a href="/home/video/equipment_video/">Оборудование</a></li>
+                                            </ul>
+                </li>
+                            </ul>
+        </li>
+                <li class="">
+            <a href="/business/">Для бизнеса</a>
+            <div class="btn-toggle"></div>
+            <ul>
+                                <li class="">
+                    <a href="/business/digital_office/">Малому бизнесу</a>
+                    <div class="btn-toggle"></div>
+                    <ul>
+                                                <li class=""><a href="/business/internet/actionsb2b/">Акции</a></li>
+                                                <li class=""><a href="/business/internet/gpon/">Интернет GPON</a></li>
+                                                <li class=""><a href="/business/internet/adsl/">Интернет ADSL</a></li>
+                                                <li class=""><a href="/business/internet/radioethernet/">Интернет по радиоканалу</a></li>
+                                                <li class=""><a href="/business/internet/vpn/">VPN</a></li>
+                                                <li class=""><a href="/business/internet/support/">Компьютерная помощь</a></li>
+                                                <li class=""><a href="/business/internet/contract/">Порядок подключения</a></li>
+                                                <li class=""><a href="/business/tv/channels/">ТВ-каналы</a></li>
+                                                <li class=""><a href="/business/tv/tariffs/">Тарифы</a></li>
+                                                <li class=""><a href="/business/tv/equipment/">Оборудование</a></li>
+                                                <li class=""><a href="/business/phone/tariff/">Тарифы</a></li>
+                                                <li class=""><a href="/business/phone/ypts/">Корпоративные АТС</a></li>
+                                                <li class=""><a href="/business/phone/calls/">Междугородная связь</a></li>
+                                                <li class=""><a href="/business/phone/information-service/">Служба 09</a></li>
+                                                <li class=""><a href="/business/phone/services/">Дополнительные услуги</a></li>
+                                                <li class=""><a href="/business/phone/extra/">Оформление</a></li>
+                                                <li class=""><a href="/business/mobile/actions/">Акции</a></li>
+                                                <li class=""><a href="/business/mobile/mobile_tariffs/">Тарифы</a></li>
+                                                <li class=""><a href="/business/mobile/mobile_services/">Дополнительные услуги</a></li>
+                                                <li class=""><a href="/business/virtual/tariffs_virtual/">Тарифы</a></li>
+                                                <li class=""><a href="/business/virtual/equipment/">Оборудование</a></li>
+                                                <li class=""><a href="/business/virtual/faq_virtual/">Вопросы и ответы</a></li>
+                                                <li class=""><a href="/business/os/actionsb2b/">Акции</a></li>
+                                                <li class=""><a href="/business/os/tariff/">Тарифы</a></li>
+                                                <li class=""><a href="/business/os/signalling/">Оборудование</a></li>
+                                                <li class=""><a href="/business/os/maintenance/">Обслуживание</a></li>
+                                                <li class=""><a href="/business/os/faq/">Вопросы</a></li>
+                                                <li class=""><a href="/business/video/tariffs/">Тарифы</a></li>
+                                                <li class=""><a href="/business/video/equipment_video/">Оборудование</a></li>
+                                                <li class=""><a href="/business/video/%23https%3A%2F%2Flogin.mgts.ru%2Famserver%2FUI%2FLogin/">Личный кабинет</a></li>
+                                            </ul>
+                </li>
+                                <li class="">
+                    <a href="/business/internet/">Интернет</a>
+                    <div class="btn-toggle"></div>
+                    <ul>
+                                                <li class=""><a href="/business/internet/actionsb2b/">Акции</a></li>
+                                                <li class=""><a href="/business/internet/gpon/">Интернет GPON</a></li>
+                                                <li class=""><a href="/business/internet/adsl/">Интернет ADSL</a></li>
+                                                <li class=""><a href="/business/internet/radioethernet/">Интернет по радиоканалу</a></li>
+                                                <li class=""><a href="/business/internet/vpn/">VPN</a></li>
+                                                <li class=""><a href="/business/internet/support/">Компьютерная помощь</a></li>
+                                                <li class=""><a href="/business/internet/contract/">Порядок подключения</a></li>
+                                                <li class=""><a href="/business/tv/channels/">ТВ-каналы</a></li>
+                                                <li class=""><a href="/business/tv/tariffs/">Тарифы</a></li>
+                                                <li class=""><a href="/business/tv/equipment/">Оборудование</a></li>
+                                                <li class=""><a href="/business/phone/tariff/">Тарифы</a></li>
+                                                <li class=""><a href="/business/phone/ypts/">Корпоративные АТС</a></li>
+                                                <li class=""><a href="/business/phone/calls/">Междугородная связь</a></li>
+                                                <li class=""><a href="/business/phone/information-service/">Служба 09</a></li>
+                                                <li class=""><a href="/business/phone/services/">Дополнительные услуги</a></li>
+                                                <li class=""><a href="/business/phone/extra/">Оформление</a></li>
+                                                <li class=""><a href="/business/mobile/actions/">Акции</a></li>
+                                                <li class=""><a href="/business/mobile/mobile_tariffs/">Тарифы</a></li>
+                                                <li class=""><a href="/business/mobile/mobile_services/">Дополнительные услуги</a></li>
+                                                <li class=""><a href="/business/virtual/tariffs_virtual/">Тарифы</a></li>
+                                                <li class=""><a href="/business/virtual/equipment/">Оборудование</a></li>
+                                                <li class=""><a href="/business/virtual/faq_virtual/">Вопросы и ответы</a></li>
+                                                <li class=""><a href="/business/os/actionsb2b/">Акции</a></li>
+                                                <li class=""><a href="/business/os/tariff/">Тарифы</a></li>
+                                                <li class=""><a href="/business/os/signalling/">Оборудование</a></li>
+                                                <li class=""><a href="/business/os/maintenance/">Обслуживание</a></li>
+                                                <li class=""><a href="/business/os/faq/">Вопросы</a></li>
+                                                <li class=""><a href="/business/video/tariffs/">Тарифы</a></li>
+                                                <li class=""><a href="/business/video/equipment_video/">Оборудование</a></li>
+                                                <li class=""><a href="/business/video/%23https%3A%2F%2Flogin.mgts.ru%2Famserver%2FUI%2FLogin/">Личный кабинет</a></li>
+                                            </ul>
+                </li>
+                                <li class="">
+                    <a href="/business/tv/">Телевидение</a>
+                    <div class="btn-toggle"></div>
+                    <ul>
+                                                <li class=""><a href="/business/internet/actionsb2b/">Акции</a></li>
+                                                <li class=""><a href="/business/internet/gpon/">Интернет GPON</a></li>
+                                                <li class=""><a href="/business/internet/adsl/">Интернет ADSL</a></li>
+                                                <li class=""><a href="/business/internet/radioethernet/">Интернет по радиоканалу</a></li>
+                                                <li class=""><a href="/business/internet/vpn/">VPN</a></li>
+                                                <li class=""><a href="/business/internet/support/">Компьютерная помощь</a></li>
+                                                <li class=""><a href="/business/internet/contract/">Порядок подключения</a></li>
+                                                <li class=""><a href="/business/tv/channels/">ТВ-каналы</a></li>
+                                                <li class=""><a href="/business/tv/tariffs/">Тарифы</a></li>
+                                                <li class=""><a href="/business/tv/equipment/">Оборудование</a></li>
+                                                <li class=""><a href="/business/phone/tariff/">Тарифы</a></li>
+                                                <li class=""><a href="/business/phone/ypts/">Корпоративные АТС</a></li>
+                                                <li class=""><a href="/business/phone/calls/">Междугородная связь</a></li>
+                                                <li class=""><a href="/business/phone/information-service/">Служба 09</a></li>
+                                                <li class=""><a href="/business/phone/services/">Дополнительные услуги</a></li>
+                                                <li class=""><a href="/business/phone/extra/">Оформление</a></li>
+                                                <li class=""><a href="/business/mobile/actions/">Акции</a></li>
+                                                <li class=""><a href="/business/mobile/mobile_tariffs/">Тарифы</a></li>
+                                                <li class=""><a href="/business/mobile/mobile_services/">Дополнительные услуги</a></li>
+                                                <li class=""><a href="/business/virtual/tariffs_virtual/">Тарифы</a></li>
+                                                <li class=""><a href="/business/virtual/equipment/">Оборудование</a></li>
+                                                <li class=""><a href="/business/virtual/faq_virtual/">Вопросы и ответы</a></li>
+                                                <li class=""><a href="/business/os/actionsb2b/">Акции</a></li>
+                                                <li class=""><a href="/business/os/tariff/">Тарифы</a></li>
+                                                <li class=""><a href="/business/os/signalling/">Оборудование</a></li>
+                                                <li class=""><a href="/business/os/maintenance/">Обслуживание</a></li>
+                                                <li class=""><a href="/business/os/faq/">Вопросы</a></li>
+                                                <li class=""><a href="/business/video/tariffs/">Тарифы</a></li>
+                                                <li class=""><a href="/business/video/equipment_video/">Оборудование</a></li>
+                                                <li class=""><a href="/business/video/%23https%3A%2F%2Flogin.mgts.ru%2Famserver%2FUI%2FLogin/">Личный кабинет</a></li>
+                                            </ul>
+                </li>
+                                <li class="">
+                    <a href="/business/phone/">Телефон</a>
+                    <div class="btn-toggle"></div>
+                    <ul>
+                                                <li class=""><a href="/business/internet/actionsb2b/">Акции</a></li>
+                                                <li class=""><a href="/business/internet/gpon/">Интернет GPON</a></li>
+                                                <li class=""><a href="/business/internet/adsl/">Интернет ADSL</a></li>
+                                                <li class=""><a href="/business/internet/radioethernet/">Интернет по радиоканалу</a></li>
+                                                <li class=""><a href="/business/internet/vpn/">VPN</a></li>
+                                                <li class=""><a href="/business/internet/support/">Компьютерная помощь</a></li>
+                                                <li class=""><a href="/business/internet/contract/">Порядок подключения</a></li>
+                                                <li class=""><a href="/business/tv/channels/">ТВ-каналы</a></li>
+                                                <li class=""><a href="/business/tv/tariffs/">Тарифы</a></li>
+                                                <li class=""><a href="/business/tv/equipment/">Оборудование</a></li>
+                                                <li class=""><a href="/business/phone/tariff/">Тарифы</a></li>
+                                                <li class=""><a href="/business/phone/ypts/">Корпоративные АТС</a></li>
+                                                <li class=""><a href="/business/phone/calls/">Междугородная связь</a></li>
+                                                <li class=""><a href="/business/phone/information-service/">Служба 09</a></li>
+                                                <li class=""><a href="/business/phone/services/">Дополнительные услуги</a></li>
+                                                <li class=""><a href="/business/phone/extra/">Оформление</a></li>
+                                                <li class=""><a href="/business/mobile/actions/">Акции</a></li>
+                                                <li class=""><a href="/business/mobile/mobile_tariffs/">Тарифы</a></li>
+                                                <li class=""><a href="/business/mobile/mobile_services/">Дополнительные услуги</a></li>
+                                                <li class=""><a href="/business/virtual/tariffs_virtual/">Тарифы</a></li>
+                                                <li class=""><a href="/business/virtual/equipment/">Оборудование</a></li>
+                                                <li class=""><a href="/business/virtual/faq_virtual/">Вопросы и ответы</a></li>
+                                                <li class=""><a href="/business/os/actionsb2b/">Акции</a></li>
+                                                <li class=""><a href="/business/os/tariff/">Тарифы</a></li>
+                                                <li class=""><a href="/business/os/signalling/">Оборудование</a></li>
+                                                <li class=""><a href="/business/os/maintenance/">Обслуживание</a></li>
+                                                <li class=""><a href="/business/os/faq/">Вопросы</a></li>
+                                                <li class=""><a href="/business/video/tariffs/">Тарифы</a></li>
+                                                <li class=""><a href="/business/video/equipment_video/">Оборудование</a></li>
+                                                <li class=""><a href="/business/video/%23https%3A%2F%2Flogin.mgts.ru%2Famserver%2FUI%2FLogin/">Личный кабинет</a></li>
+                                            </ul>
+                </li>
+                                <li class="">
+                    <a href="/business/mobile/">Мобильная связь</a>
+                    <div class="btn-toggle"></div>
+                    <ul>
+                                                <li class=""><a href="/business/internet/actionsb2b/">Акции</a></li>
+                                                <li class=""><a href="/business/internet/gpon/">Интернет GPON</a></li>
+                                                <li class=""><a href="/business/internet/adsl/">Интернет ADSL</a></li>
+                                                <li class=""><a href="/business/internet/radioethernet/">Интернет по радиоканалу</a></li>
+                                                <li class=""><a href="/business/internet/vpn/">VPN</a></li>
+                                                <li class=""><a href="/business/internet/support/">Компьютерная помощь</a></li>
+                                                <li class=""><a href="/business/internet/contract/">Порядок подключения</a></li>
+                                                <li class=""><a href="/business/tv/channels/">ТВ-каналы</a></li>
+                                                <li class=""><a href="/business/tv/tariffs/">Тарифы</a></li>
+                                                <li class=""><a href="/business/tv/equipment/">Оборудование</a></li>
+                                                <li class=""><a href="/business/phone/tariff/">Тарифы</a></li>
+                                                <li class=""><a href="/business/phone/ypts/">Корпоративные АТС</a></li>
+                                                <li class=""><a href="/business/phone/calls/">Междугородная связь</a></li>
+                                                <li class=""><a href="/business/phone/information-service/">Служба 09</a></li>
+                                                <li class=""><a href="/business/phone/services/">Дополнительные услуги</a></li>
+                                                <li class=""><a href="/business/phone/extra/">Оформление</a></li>
+                                                <li class=""><a href="/business/mobile/actions/">Акции</a></li>
+                                                <li class=""><a href="/business/mobile/mobile_tariffs/">Тарифы</a></li>
+                                                <li class=""><a href="/business/mobile/mobile_services/">Дополнительные услуги</a></li>
+                                                <li class=""><a href="/business/virtual/tariffs_virtual/">Тарифы</a></li>
+                                                <li class=""><a href="/business/virtual/equipment/">Оборудование</a></li>
+                                                <li class=""><a href="/business/virtual/faq_virtual/">Вопросы и ответы</a></li>
+                                                <li class=""><a href="/business/os/actionsb2b/">Акции</a></li>
+                                                <li class=""><a href="/business/os/tariff/">Тарифы</a></li>
+                                                <li class=""><a href="/business/os/signalling/">Оборудование</a></li>
+                                                <li class=""><a href="/business/os/maintenance/">Обслуживание</a></li>
+                                                <li class=""><a href="/business/os/faq/">Вопросы</a></li>
+                                                <li class=""><a href="/business/video/tariffs/">Тарифы</a></li>
+                                                <li class=""><a href="/business/video/equipment_video/">Оборудование</a></li>
+                                                <li class=""><a href="/business/video/%23https%3A%2F%2Flogin.mgts.ru%2Famserver%2FUI%2FLogin/">Личный кабинет</a></li>
+                                            </ul>
+                </li>
+                                <li class="">
+                    <a href="/business/virtual/">Виртуальная АТС</a>
+                    <div class="btn-toggle"></div>
+                    <ul>
+                                                <li class=""><a href="/business/internet/actionsb2b/">Акции</a></li>
+                                                <li class=""><a href="/business/internet/gpon/">Интернет GPON</a></li>
+                                                <li class=""><a href="/business/internet/adsl/">Интернет ADSL</a></li>
+                                                <li class=""><a href="/business/internet/radioethernet/">Интернет по радиоканалу</a></li>
+                                                <li class=""><a href="/business/internet/vpn/">VPN</a></li>
+                                                <li class=""><a href="/business/internet/support/">Компьютерная помощь</a></li>
+                                                <li class=""><a href="/business/internet/contract/">Порядок подключения</a></li>
+                                                <li class=""><a href="/business/tv/channels/">ТВ-каналы</a></li>
+                                                <li class=""><a href="/business/tv/tariffs/">Тарифы</a></li>
+                                                <li class=""><a href="/business/tv/equipment/">Оборудование</a></li>
+                                                <li class=""><a href="/business/phone/tariff/">Тарифы</a></li>
+                                                <li class=""><a href="/business/phone/ypts/">Корпоративные АТС</a></li>
+                                                <li class=""><a href="/business/phone/calls/">Междугородная связь</a></li>
+                                                <li class=""><a href="/business/phone/information-service/">Служба 09</a></li>
+                                                <li class=""><a href="/business/phone/services/">Дополнительные услуги</a></li>
+                                                <li class=""><a href="/business/phone/extra/">Оформление</a></li>
+                                                <li class=""><a href="/business/mobile/actions/">Акции</a></li>
+                                                <li class=""><a href="/business/mobile/mobile_tariffs/">Тарифы</a></li>
+                                                <li class=""><a href="/business/mobile/mobile_services/">Дополнительные услуги</a></li>
+                                                <li class=""><a href="/business/virtual/tariffs_virtual/">Тарифы</a></li>
+                                                <li class=""><a href="/business/virtual/equipment/">Оборудование</a></li>
+                                                <li class=""><a href="/business/virtual/faq_virtual/">Вопросы и ответы</a></li>
+                                                <li class=""><a href="/business/os/actionsb2b/">Акции</a></li>
+                                                <li class=""><a href="/business/os/tariff/">Тарифы</a></li>
+                                                <li class=""><a href="/business/os/signalling/">Оборудование</a></li>
+                                                <li class=""><a href="/business/os/maintenance/">Обслуживание</a></li>
+                                                <li class=""><a href="/business/os/faq/">Вопросы</a></li>
+                                                <li class=""><a href="/business/video/tariffs/">Тарифы</a></li>
+                                                <li class=""><a href="/business/video/equipment_video/">Оборудование</a></li>
+                                                <li class=""><a href="/business/video/%23https%3A%2F%2Flogin.mgts.ru%2Famserver%2FUI%2FLogin/">Личный кабинет</a></li>
+                                            </ul>
+                </li>
+                                <li class="">
+                    <a href="/business/os/">Охрана</a>
+                    <div class="btn-toggle"></div>
+                    <ul>
+                                                <li class=""><a href="/business/internet/actionsb2b/">Акции</a></li>
+                                                <li class=""><a href="/business/internet/gpon/">Интернет GPON</a></li>
+                                                <li class=""><a href="/business/internet/adsl/">Интернет ADSL</a></li>
+                                                <li class=""><a href="/business/internet/radioethernet/">Интернет по радиоканалу</a></li>
+                                                <li class=""><a href="/business/internet/vpn/">VPN</a></li>
+                                                <li class=""><a href="/business/internet/support/">Компьютерная помощь</a></li>
+                                                <li class=""><a href="/business/internet/contract/">Порядок подключения</a></li>
+                                                <li class=""><a href="/business/tv/channels/">ТВ-каналы</a></li>
+                                                <li class=""><a href="/business/tv/tariffs/">Тарифы</a></li>
+                                                <li class=""><a href="/business/tv/equipment/">Оборудование</a></li>
+                                                <li class=""><a href="/business/phone/tariff/">Тарифы</a></li>
+                                                <li class=""><a href="/business/phone/ypts/">Корпоративные АТС</a></li>
+                                                <li class=""><a href="/business/phone/calls/">Междугородная связь</a></li>
+                                                <li class=""><a href="/business/phone/information-service/">Служба 09</a></li>
+                                                <li class=""><a href="/business/phone/services/">Дополнительные услуги</a></li>
+                                                <li class=""><a href="/business/phone/extra/">Оформление</a></li>
+                                                <li class=""><a href="/business/mobile/actions/">Акции</a></li>
+                                                <li class=""><a href="/business/mobile/mobile_tariffs/">Тарифы</a></li>
+                                                <li class=""><a href="/business/mobile/mobile_services/">Дополнительные услуги</a></li>
+                                                <li class=""><a href="/business/virtual/tariffs_virtual/">Тарифы</a></li>
+                                                <li class=""><a href="/business/virtual/equipment/">Оборудование</a></li>
+                                                <li class=""><a href="/business/virtual/faq_virtual/">Вопросы и ответы</a></li>
+                                                <li class=""><a href="/business/os/actionsb2b/">Акции</a></li>
+                                                <li class=""><a href="/business/os/tariff/">Тарифы</a></li>
+                                                <li class=""><a href="/business/os/signalling/">Оборудование</a></li>
+                                                <li class=""><a href="/business/os/maintenance/">Обслуживание</a></li>
+                                                <li class=""><a href="/business/os/faq/">Вопросы</a></li>
+                                                <li class=""><a href="/business/video/tariffs/">Тарифы</a></li>
+                                                <li class=""><a href="/business/video/equipment_video/">Оборудование</a></li>
+                                                <li class=""><a href="/business/video/%23https%3A%2F%2Flogin.mgts.ru%2Famserver%2FUI%2FLogin/">Личный кабинет</a></li>
+                                            </ul>
+                </li>
+                                <li class="">
+                    <a href="/business/video/">Видеонаблюдение</a>
+                    <div class="btn-toggle"></div>
+                    <ul>
+                                                <li class=""><a href="/business/internet/actionsb2b/">Акции</a></li>
+                                                <li class=""><a href="/business/internet/gpon/">Интернет GPON</a></li>
+                                                <li class=""><a href="/business/internet/adsl/">Интернет ADSL</a></li>
+                                                <li class=""><a href="/business/internet/radioethernet/">Интернет по радиоканалу</a></li>
+                                                <li class=""><a href="/business/internet/vpn/">VPN</a></li>
+                                                <li class=""><a href="/business/internet/support/">Компьютерная помощь</a></li>
+                                                <li class=""><a href="/business/internet/contract/">Порядок подключения</a></li>
+                                                <li class=""><a href="/business/tv/channels/">ТВ-каналы</a></li>
+                                                <li class=""><a href="/business/tv/tariffs/">Тарифы</a></li>
+                                                <li class=""><a href="/business/tv/equipment/">Оборудование</a></li>
+                                                <li class=""><a href="/business/phone/tariff/">Тарифы</a></li>
+                                                <li class=""><a href="/business/phone/ypts/">Корпоративные АТС</a></li>
+                                                <li class=""><a href="/business/phone/calls/">Междугородная связь</a></li>
+                                                <li class=""><a href="/business/phone/information-service/">Служба 09</a></li>
+                                                <li class=""><a href="/business/phone/services/">Дополнительные услуги</a></li>
+                                                <li class=""><a href="/business/phone/extra/">Оформление</a></li>
+                                                <li class=""><a href="/business/mobile/actions/">Акции</a></li>
+                                                <li class=""><a href="/business/mobile/mobile_tariffs/">Тарифы</a></li>
+                                                <li class=""><a href="/business/mobile/mobile_services/">Дополнительные услуги</a></li>
+                                                <li class=""><a href="/business/virtual/tariffs_virtual/">Тарифы</a></li>
+                                                <li class=""><a href="/business/virtual/equipment/">Оборудование</a></li>
+                                                <li class=""><a href="/business/virtual/faq_virtual/">Вопросы и ответы</a></li>
+                                                <li class=""><a href="/business/os/actionsb2b/">Акции</a></li>
+                                                <li class=""><a href="/business/os/tariff/">Тарифы</a></li>
+                                                <li class=""><a href="/business/os/signalling/">Оборудование</a></li>
+                                                <li class=""><a href="/business/os/maintenance/">Обслуживание</a></li>
+                                                <li class=""><a href="/business/os/faq/">Вопросы</a></li>
+                                                <li class=""><a href="/business/video/tariffs/">Тарифы</a></li>
+                                                <li class=""><a href="/business/video/equipment_video/">Оборудование</a></li>
+                                                <li class=""><a href="/business/video/%23https%3A%2F%2Flogin.mgts.ru%2Famserver%2FUI%2FLogin/">Личный кабинет</a></li>
+                                            </ul>
+                </li>
+                            </ul>
+        </li>
+                <li class="">
+            <a href="/for-operators/">Операторам связи</a>
+            <div class="btn-toggle"></div>
+            <ul>
+                                <li class="">
+                    <a href="/for-operators/telehouse/">Телехаус</a>
+                    <div class="btn-toggle"></div>
+                    <ul>
+                                                <li class=""><a href="/for-operators/lks_kr/service/">Услуги</a></li>
+                                                <li class=""><a href="/for-operators/lks_kr/lks/">Согласование</a></li>
+                                                <li class=""><a href="/for-operators/lks_kr/tariffs/">Тарифы</a></li>
+                                                <li class=""><a href="/for-operators/lks_kr/demontazh/">Демонтаж кабеля связи</a></li>
+                                                <li class=""><a href="/for-operators/lks_kr/contract/">Оформление договора</a></li>
+                                                <li class=""><a href="/for-operators/tfop/tariffs/">Тарифы</a></li>
+                                                <li class=""><a href="/for-operators/tfop/service/">Услуги</a></li>
+                                                <li class=""><a href="/for-operators/tfop/condition/">Условия присоединения</a></li>
+                                            </ul>
+                </li>
+                                <li class="">
+                    <a href="/for-operators/lks_kr/">Аренда ресурсов</a>
+                    <div class="btn-toggle"></div>
+                    <ul>
+                                                <li class=""><a href="/for-operators/lks_kr/service/">Услуги</a></li>
+                                                <li class=""><a href="/for-operators/lks_kr/lks/">Согласование</a></li>
+                                                <li class=""><a href="/for-operators/lks_kr/tariffs/">Тарифы</a></li>
+                                                <li class=""><a href="/for-operators/lks_kr/demontazh/">Демонтаж кабеля связи</a></li>
+                                                <li class=""><a href="/for-operators/lks_kr/contract/">Оформление договора</a></li>
+                                                <li class=""><a href="/for-operators/tfop/tariffs/">Тарифы</a></li>
+                                                <li class=""><a href="/for-operators/tfop/service/">Услуги</a></li>
+                                                <li class=""><a href="/for-operators/tfop/condition/">Условия присоединения</a></li>
+                                            </ul>
+                </li>
+                                <li class="">
+                    <a href="/for-operators/spd/">Передача данных</a>
+                    <div class="btn-toggle"></div>
+                    <ul>
+                                                <li class=""><a href="/for-operators/lks_kr/service/">Услуги</a></li>
+                                                <li class=""><a href="/for-operators/lks_kr/lks/">Согласование</a></li>
+                                                <li class=""><a href="/for-operators/lks_kr/tariffs/">Тарифы</a></li>
+                                                <li class=""><a href="/for-operators/lks_kr/demontazh/">Демонтаж кабеля связи</a></li>
+                                                <li class=""><a href="/for-operators/lks_kr/contract/">Оформление договора</a></li>
+                                                <li class=""><a href="/for-operators/tfop/tariffs/">Тарифы</a></li>
+                                                <li class=""><a href="/for-operators/tfop/service/">Услуги</a></li>
+                                                <li class=""><a href="/for-operators/tfop/condition/">Условия присоединения</a></li>
+                                            </ul>
+                </li>
+                                <li class="">
+                    <a href="/for-operators/tfop/">Пропуск трафика</a>
+                    <div class="btn-toggle"></div>
+                    <ul>
+                                                <li class=""><a href="/for-operators/lks_kr/service/">Услуги</a></li>
+                                                <li class=""><a href="/for-operators/lks_kr/lks/">Согласование</a></li>
+                                                <li class=""><a href="/for-operators/lks_kr/tariffs/">Тарифы</a></li>
+                                                <li class=""><a href="/for-operators/lks_kr/demontazh/">Демонтаж кабеля связи</a></li>
+                                                <li class=""><a href="/for-operators/lks_kr/contract/">Оформление договора</a></li>
+                                                <li class=""><a href="/for-operators/tfop/tariffs/">Тарифы</a></li>
+                                                <li class=""><a href="/for-operators/tfop/service/">Услуги</a></li>
+                                                <li class=""><a href="/for-operators/tfop/condition/">Условия присоединения</a></li>
+                                            </ul>
+                </li>
+                                <li class="">
+                    <a href="/for-operators/other_net/">Аренда сторонних сетей</a>
+                    <div class="btn-toggle"></div>
+                    <ul>
+                                                <li class=""><a href="/for-operators/lks_kr/service/">Услуги</a></li>
+                                                <li class=""><a href="/for-operators/lks_kr/lks/">Согласование</a></li>
+                                                <li class=""><a href="/for-operators/lks_kr/tariffs/">Тарифы</a></li>
+                                                <li class=""><a href="/for-operators/lks_kr/demontazh/">Демонтаж кабеля связи</a></li>
+                                                <li class=""><a href="/for-operators/lks_kr/contract/">Оформление договора</a></li>
+                                                <li class=""><a href="/for-operators/tfop/tariffs/">Тарифы</a></li>
+                                                <li class=""><a href="/for-operators/tfop/service/">Услуги</a></li>
+                                                <li class=""><a href="/for-operators/tfop/condition/">Условия присоединения</a></li>
+                                            </ul>
+                </li>
+                            </ul>
+        </li>
+                <li class="">
+            <a href="/budgetorg/">Гос. организациям</a>
+            <div class="btn-toggle"></div>
+            <ul>
+                                <li class="">
+                    <a href="/budgetorg/internet/">Интернет</a>
+                    <div class="btn-toggle"></div>
+                    <ul>
+                                                <li class=""><a href="/budgetorg/internet/actionsb2g/">Акции</a></li>
+                                                <li class=""><a href="/budgetorg/internet/gpon/">Интернет GPON</a></li>
+                                                <li class=""><a href="/budgetorg/internet/adsl/">Интернет ADSL</a></li>
+                                                <li class=""><a href="/budgetorg/internet/vpn/">Виртуальные частные сети</a></li>
+                                                <li class=""><a href="/budgetorg/internet/modem/">Оборудование и установка</a></li>
+                                                <li class=""><a href="/budgetorg/tv/channels/">ТВ-каналы</a></li>
+                                                <li class=""><a href="/budgetorg/tv/tariffs/">Тарифы</a></li>
+                                                <li class=""><a href="/budgetorg/tv/equipment/">Оборудование</a></li>
+                                                <li class=""><a href="/budgetorg/phone/tariff/">Тарифы</a></li>
+                                                <li class=""><a href="/budgetorg/phone/calls/">Междугородная свзяь</a></li>
+                                                <li class=""><a href="/budgetorg/phone/information-service/">Служба 09</a></li>
+                                                <li class=""><a href="/budgetorg/phone/contract/">Оформление договора</a></li>
+                                                <li class=""><a href="/budgetorg/phone/services/">Дополнительные услуги</a></li>
+                                                <li class=""><a href="/budgetorg/virtual/tariffs_virtual/">Тарифы</a></li>
+                                                <li class=""><a href="/budgetorg/virtual/equipment/">Оборудование</a></li>
+                                                <li class=""><a href="/budgetorg/virtual/faq_virtual/">Вопросы и ответы</a></li>
+                                                <li class=""><a href="/budgetorg/os/alarm_button/">Тревожная кнопка</a></li>
+                                                <li class=""><a href="/budgetorg/os/signalling/">Оборудование</a></li>
+                                                <li class=""><a href="/budgetorg/os/maintenance/">Обслуживание</a></li>
+                                            </ul>
+                </li>
+                                <li class="">
+                    <a href="/budgetorg/tv/">Телевидение</a>
+                    <div class="btn-toggle"></div>
+                    <ul>
+                                                <li class=""><a href="/budgetorg/internet/actionsb2g/">Акции</a></li>
+                                                <li class=""><a href="/budgetorg/internet/gpon/">Интернет GPON</a></li>
+                                                <li class=""><a href="/budgetorg/internet/adsl/">Интернет ADSL</a></li>
+                                                <li class=""><a href="/budgetorg/internet/vpn/">Виртуальные частные сети</a></li>
+                                                <li class=""><a href="/budgetorg/internet/modem/">Оборудование и установка</a></li>
+                                                <li class=""><a href="/budgetorg/tv/channels/">ТВ-каналы</a></li>
+                                                <li class=""><a href="/budgetorg/tv/tariffs/">Тарифы</a></li>
+                                                <li class=""><a href="/budgetorg/tv/equipment/">Оборудование</a></li>
+                                                <li class=""><a href="/budgetorg/phone/tariff/">Тарифы</a></li>
+                                                <li class=""><a href="/budgetorg/phone/calls/">Междугородная свзяь</a></li>
+                                                <li class=""><a href="/budgetorg/phone/information-service/">Служба 09</a></li>
+                                                <li class=""><a href="/budgetorg/phone/contract/">Оформление договора</a></li>
+                                                <li class=""><a href="/budgetorg/phone/services/">Дополнительные услуги</a></li>
+                                                <li class=""><a href="/budgetorg/virtual/tariffs_virtual/">Тарифы</a></li>
+                                                <li class=""><a href="/budgetorg/virtual/equipment/">Оборудование</a></li>
+                                                <li class=""><a href="/budgetorg/virtual/faq_virtual/">Вопросы и ответы</a></li>
+                                                <li class=""><a href="/budgetorg/os/alarm_button/">Тревожная кнопка</a></li>
+                                                <li class=""><a href="/budgetorg/os/signalling/">Оборудование</a></li>
+                                                <li class=""><a href="/budgetorg/os/maintenance/">Обслуживание</a></li>
+                                            </ul>
+                </li>
+                                <li class="">
+                    <a href="/budgetorg/phone/">Телефон</a>
+                    <div class="btn-toggle"></div>
+                    <ul>
+                                                <li class=""><a href="/budgetorg/internet/actionsb2g/">Акции</a></li>
+                                                <li class=""><a href="/budgetorg/internet/gpon/">Интернет GPON</a></li>
+                                                <li class=""><a href="/budgetorg/internet/adsl/">Интернет ADSL</a></li>
+                                                <li class=""><a href="/budgetorg/internet/vpn/">Виртуальные частные сети</a></li>
+                                                <li class=""><a href="/budgetorg/internet/modem/">Оборудование и установка</a></li>
+                                                <li class=""><a href="/budgetorg/tv/channels/">ТВ-каналы</a></li>
+                                                <li class=""><a href="/budgetorg/tv/tariffs/">Тарифы</a></li>
+                                                <li class=""><a href="/budgetorg/tv/equipment/">Оборудование</a></li>
+                                                <li class=""><a href="/budgetorg/phone/tariff/">Тарифы</a></li>
+                                                <li class=""><a href="/budgetorg/phone/calls/">Междугородная свзяь</a></li>
+                                                <li class=""><a href="/budgetorg/phone/information-service/">Служба 09</a></li>
+                                                <li class=""><a href="/budgetorg/phone/contract/">Оформление договора</a></li>
+                                                <li class=""><a href="/budgetorg/phone/services/">Дополнительные услуги</a></li>
+                                                <li class=""><a href="/budgetorg/virtual/tariffs_virtual/">Тарифы</a></li>
+                                                <li class=""><a href="/budgetorg/virtual/equipment/">Оборудование</a></li>
+                                                <li class=""><a href="/budgetorg/virtual/faq_virtual/">Вопросы и ответы</a></li>
+                                                <li class=""><a href="/budgetorg/os/alarm_button/">Тревожная кнопка</a></li>
+                                                <li class=""><a href="/budgetorg/os/signalling/">Оборудование</a></li>
+                                                <li class=""><a href="/budgetorg/os/maintenance/">Обслуживание</a></li>
+                                            </ul>
+                </li>
+                                <li class="">
+                    <a href="/budgetorg/virtual/">Виртуальная АТС</a>
+                    <div class="btn-toggle"></div>
+                    <ul>
+                                                <li class=""><a href="/budgetorg/internet/actionsb2g/">Акции</a></li>
+                                                <li class=""><a href="/budgetorg/internet/gpon/">Интернет GPON</a></li>
+                                                <li class=""><a href="/budgetorg/internet/adsl/">Интернет ADSL</a></li>
+                                                <li class=""><a href="/budgetorg/internet/vpn/">Виртуальные частные сети</a></li>
+                                                <li class=""><a href="/budgetorg/internet/modem/">Оборудование и установка</a></li>
+                                                <li class=""><a href="/budgetorg/tv/channels/">ТВ-каналы</a></li>
+                                                <li class=""><a href="/budgetorg/tv/tariffs/">Тарифы</a></li>
+                                                <li class=""><a href="/budgetorg/tv/equipment/">Оборудование</a></li>
+                                                <li class=""><a href="/budgetorg/phone/tariff/">Тарифы</a></li>
+                                                <li class=""><a href="/budgetorg/phone/calls/">Междугородная свзяь</a></li>
+                                                <li class=""><a href="/budgetorg/phone/information-service/">Служба 09</a></li>
+                                                <li class=""><a href="/budgetorg/phone/contract/">Оформление договора</a></li>
+                                                <li class=""><a href="/budgetorg/phone/services/">Дополнительные услуги</a></li>
+                                                <li class=""><a href="/budgetorg/virtual/tariffs_virtual/">Тарифы</a></li>
+                                                <li class=""><a href="/budgetorg/virtual/equipment/">Оборудование</a></li>
+                                                <li class=""><a href="/budgetorg/virtual/faq_virtual/">Вопросы и ответы</a></li>
+                                                <li class=""><a href="/budgetorg/os/alarm_button/">Тревожная кнопка</a></li>
+                                                <li class=""><a href="/budgetorg/os/signalling/">Оборудование</a></li>
+                                                <li class=""><a href="/budgetorg/os/maintenance/">Обслуживание</a></li>
+                                            </ul>
+                </li>
+                                <li class="">
+                    <a href="/budgetorg/ypts/">Корпоративные АТС</a>
+                    <div class="btn-toggle"></div>
+                    <ul>
+                                                <li class=""><a href="/budgetorg/internet/actionsb2g/">Акции</a></li>
+                                                <li class=""><a href="/budgetorg/internet/gpon/">Интернет GPON</a></li>
+                                                <li class=""><a href="/budgetorg/internet/adsl/">Интернет ADSL</a></li>
+                                                <li class=""><a href="/budgetorg/internet/vpn/">Виртуальные частные сети</a></li>
+                                                <li class=""><a href="/budgetorg/internet/modem/">Оборудование и установка</a></li>
+                                                <li class=""><a href="/budgetorg/tv/channels/">ТВ-каналы</a></li>
+                                                <li class=""><a href="/budgetorg/tv/tariffs/">Тарифы</a></li>
+                                                <li class=""><a href="/budgetorg/tv/equipment/">Оборудование</a></li>
+                                                <li class=""><a href="/budgetorg/phone/tariff/">Тарифы</a></li>
+                                                <li class=""><a href="/budgetorg/phone/calls/">Междугородная свзяь</a></li>
+                                                <li class=""><a href="/budgetorg/phone/information-service/">Служба 09</a></li>
+                                                <li class=""><a href="/budgetorg/phone/contract/">Оформление договора</a></li>
+                                                <li class=""><a href="/budgetorg/phone/services/">Дополнительные услуги</a></li>
+                                                <li class=""><a href="/budgetorg/virtual/tariffs_virtual/">Тарифы</a></li>
+                                                <li class=""><a href="/budgetorg/virtual/equipment/">Оборудование</a></li>
+                                                <li class=""><a href="/budgetorg/virtual/faq_virtual/">Вопросы и ответы</a></li>
+                                                <li class=""><a href="/budgetorg/os/alarm_button/">Тревожная кнопка</a></li>
+                                                <li class=""><a href="/budgetorg/os/signalling/">Оборудование</a></li>
+                                                <li class=""><a href="/budgetorg/os/maintenance/">Обслуживание</a></li>
+                                            </ul>
+                </li>
+                                <li class="">
+                    <a href="/budgetorg/os/">Охрана</a>
+                    <div class="btn-toggle"></div>
+                    <ul>
+                                                <li class=""><a href="/budgetorg/internet/actionsb2g/">Акции</a></li>
+                                                <li class=""><a href="/budgetorg/internet/gpon/">Интернет GPON</a></li>
+                                                <li class=""><a href="/budgetorg/internet/adsl/">Интернет ADSL</a></li>
+                                                <li class=""><a href="/budgetorg/internet/vpn/">Виртуальные частные сети</a></li>
+                                                <li class=""><a href="/budgetorg/internet/modem/">Оборудование и установка</a></li>
+                                                <li class=""><a href="/budgetorg/tv/channels/">ТВ-каналы</a></li>
+                                                <li class=""><a href="/budgetorg/tv/tariffs/">Тарифы</a></li>
+                                                <li class=""><a href="/budgetorg/tv/equipment/">Оборудование</a></li>
+                                                <li class=""><a href="/budgetorg/phone/tariff/">Тарифы</a></li>
+                                                <li class=""><a href="/budgetorg/phone/calls/">Междугородная свзяь</a></li>
+                                                <li class=""><a href="/budgetorg/phone/information-service/">Служба 09</a></li>
+                                                <li class=""><a href="/budgetorg/phone/contract/">Оформление договора</a></li>
+                                                <li class=""><a href="/budgetorg/phone/services/">Дополнительные услуги</a></li>
+                                                <li class=""><a href="/budgetorg/virtual/tariffs_virtual/">Тарифы</a></li>
+                                                <li class=""><a href="/budgetorg/virtual/equipment/">Оборудование</a></li>
+                                                <li class=""><a href="/budgetorg/virtual/faq_virtual/">Вопросы и ответы</a></li>
+                                                <li class=""><a href="/budgetorg/os/alarm_button/">Тревожная кнопка</a></li>
+                                                <li class=""><a href="/budgetorg/os/signalling/">Оборудование</a></li>
+                                                <li class=""><a href="/budgetorg/os/maintenance/">Обслуживание</a></li>
+                                            </ul>
+                </li>
+                            </ul>
+        </li>
+            </ul>
+</div>
+
+<div class="bg-under-mob mobile-block"></div>
+<div class="wrapper-page-all">
+
+    <div class="popup-wrap" style="display: none" id="geochooser">
+        <div class="popup">
+            <a href="#" class="close"></a>
+            <h3>
+                <b>Выберите регион</b>
+            </h3>
+            <ul id="regionList" class="regions-list">
+                                                    <li>
+                        <a href="#" data-id="85" data-domain="//balashiha.mgts.ru">Балашиха</a>
+                    </li>
+                                        <li>
+                        <a href="#" data-id="14" data-domain="//bronnitsy.mgts.ru">Бронницы</a>
+                    </li>
+                                        <li>
+                        <a href="#" data-id="11" data-domain="//golicino.mgts.ru">Голицыно</a>
+                    </li>
+                                        <li>
+                        <a href="#" data-id="15" data-domain="//zhukovski.mgts.ru">Жуковский</a>
+                    </li>
+                                        <li>
+                        <a href="#" data-id="16" data-domain="//krasnoarmeisk.mgts.ru">Красноармейск</a>
+                    </li>
+                                        <li>
+                        <a href="#" data-id="20" data-domain="//krasnogorsk.mgts.ru">Красногорский р-н (Красногорск)</a>
+                    </li>
+                                        <li>
+                        <a href="#" data-id="12" data-domain="//vidnoe.mgts.ru">Ленинский р-н (Видное)</a>
+                    </li>
+                                        <li>
+                        <a href="#" data-id="17" data-domain="//lobnya.mgts.ru">Лобня</a>
+                    </li>
+                                        <li>
+                        <a href="#" data-id="874" data-domain="//mgts.ru">Москва</a>
+                    </li>
+                                        <li>
+                        <a href="#" data-id="21" data-domain="//mytishi.mgts.ru">Мытищинский р-н (Мытищи)</a>
+                    </li>
+                                        <li>
+                        <a href="#" data-id="18" data-domain="//odintsovo.mgts.ru">Одинцовский р-н</a>
+                    </li>
+                                        <li>
+                        <a href="#" data-id="13" data-domain="//pushkino.mgts.ru">Пушкинский р-н</a>
+                    </li>
+                                        <li>
+                        <a href="#" data-id="19" data-domain="//ramenskoe.mgts.ru">Раменский р-н (Раменское)</a>
+                    </li>
+                                        <li>
+                        <a href="#" data-id="24" data-domain="//s-posad.mgts.ru">Сергиев Посад</a>
+                    </li>
+                                        <li>
+                        <a href="#" data-id="22" data-domain="//solnechnogorsk.mgts.ru">Солнечногорский р-н (Андреевка)</a>
+                    </li>
+                                        <li>
+                        <a href="#" data-id="25" data-domain="//chehov.mgts.ru">Чехов</a>
+                    </li>
+                    
+
+            </ul><!-- regions-list -->
+        </div><!-- popup -->
+    </div>
+
+    <div class="popup-wrap" style="display: none" id="geoPlate">
+        <div class="popup">
+            <a href="#" class="close" onclick="mgts.maxmindGeo.hideGeoPlate()"></a>
+            <div class="region-approve">
+                <p>Вы находитесь в регионе <span id="regionName"></span></p>
+                <div class="submit">
+                    <div class="form-box">
+                        <button type="submit" onclick="mgts.maxmindGeo.saveGeoCookie(mgts.maxmindGeo.targetRegion.Id); mgts.maxmindGeo.redirectToTargetDomain(mgts.maxmindGeo.targetRegion.Id);">Да</button>
+                    </div>
+                    <div class="form-box">
+                        <div class="button-note"><a href="#" onclick="mgts.maxmindGeo.hideGeoPlate(); mgts.maxmindGeo.showGeoChooser()">Изменить регион</a></div>
+                    </div>
+                </div>
+            </div>
+        </div><!-- popup -->
+    </div>
+
+    <header>
+        <div class="head-bar">
+            <div class="container clearfix">
+                <div class="cabinet-link"><a href="https://lk.mgts.ru" onclick="mgts.track.google.event('Banner', 'banner_lk_Moscow');mgts.track.yandex('banner2');return true;" target="_blank">Личный кабинет</a></div><!-- cabinet-link -->
+                <div class="region-link">
+                    <a class="dynamic" href="#" id="selectUserRegion">Москва</a>
+                </div>
+                <!-- region-link -->
+                
+<nav>
+<ul>
+
+
+        <li class="active">
+            <a href="/home/">Для дома</a>
+        </li>
+
+        
+        <li class="">
+            <a href="/business/">Для бизнеса</a>
+        </li>
+
+        
+        <li class="">
+            <a href="/for-operators/">Операторам связи</a>
+        </li>
+
+        
+        <li class="">
+            <a href="/budgetorg/">Гос. организациям</a>
+        </li>
+
+        
+</ul>
+</nav>
+            </div>
+            <!-- container -->
+        </div>
+        <!-- head-bar -->
+        <div class="container clearfix">
+            <button class="menu-l-open mobile-block">
+                <span class="icon-show-menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </span>
+            </button>
+            <div class="main-nav">
+                <div class="request-box">
+                    <span class="phone">8 495 636-0-636</span><button onclick="dataLayer.push({'event': 'ButtonConnect','mobButtonConName': 'connect','header': 'Moscow','menuCategory': 'edinaya'});ga('send', 'event', 'Moscow', 'header', 'edinaya');ga('send', 'pageview', 'virtual/Moscow/edinaya');ar_sendPixel('podkljuchit_v_shapke', '/gpon/check/');"><span>Подключить</span></button>                </div>
+                <!-- request-box -->
+                <a href="/" class="logo">
+                    <img src="/bitrix/templates/mgts/images/logo.png" alt="МГТС">
+                </a>
+
+                <!--hot-links-->
+                <div class="hot-links">
+                    <a class="hot-links_item payment-link" href="/home/payments/">Способы<br>оплаты</a><a class="hot-links_item sales-centers-link" href="/home/service-centres/">Центры<br>продаж</a><a class="hot-links_item hot-links_item__help" href="//help.mgts.ru/">Помощь</a><a class="hot-links_item invoice-link" href="//invoice.mgts.ru/">Электронный<br>счет</a>
+                </div>
+                <!--/hot-links-->
+            </div>
+            <!-- main-nav -->
+        </div>
+        <!-- container -->
+        
+<!--sub-nav-->
+<div class="sub-nav">
+    <!--sub-nav-menu-->
+    <ul class="sub-nav-menu">
+
+        
+            
+
+            
+            
+        
+            
+
+            
+                            <!--li-->
+                <li class="">
+                    <a href="/home/internet/">Интернет</a>
+
+            
+        
+                                <!--sub-nav-level-->
+                    <ul class="sub-nav-level " data="/home/internet==/home/">
+
+            
+
+            
+                <li class=""><a href="/home/internet/actions/">Акции</a></li>
+
+            
+            
+        
+            
+
+            
+                <li class=""><a href="/home/internet/tariffs/">Тарифы</a></li>
+
+            
+            
+        
+            
+
+            
+                <li class=""><a href="/home/internet/bundle/">Пакеты</a></li>
+
+            
+            
+        
+            
+
+            
+                <li class=""><a href="/home/internet/services/">Дополнительные услуги</a></li>
+
+            
+            
+        
+            
+
+            
+            
+        
+            
+
+            
+            
+        
+            
+
+            
+            
+        
+            
+
+            
+            
+        
+            
+
+            
+            
+        
+            
+
+            
+            
+        
+            
+
+            
+            
+        
+            
+
+            
+            
+        
+            
+
+            
+            
+        
+            
+
+            
+                <li class=""><a href="/home/internet/bonus/">Бонусная программа</a></li>
+
+            
+            
+        
+            
+
+            
+                <li class=""><a href="/home/internet/technology/">Технология GPON</a></li>
+
+            
+            
+        
+            
+
+            
+                <li class=""><a href="/home/internet/adsl/">Технология ADSL</a></li>
+
+            
+            
+        
+            
+
+            
+            
+        
+            
+
+            
+                <li class=""><a href="/home/internet/equipment/">Оборудование</a></li>
+
+            
+            
+        
+            
+
+            
+            </ul><!--sub-nav-level--></li><!--/li-->                <!--li-->
+                <li class="">
+                    <a href="/home/tv/">Телевидение</a>
+
+            
+        
+                                <!--sub-nav-level-->
+                    <ul class="sub-nav-level " data="/home/tv==/home/">
+
+            
+
+            
+                <li class=""><a href="/home/tv/actions/">Акции</a></li>
+
+            
+            
+        
+            
+
+            
+                <li class=""><a href="/home/tv/tariffs/">Тарифы</a></li>
+
+            
+            
+        
+            
+
+            
+            
+        
+            
+
+            
+            
+        
+            
+
+            
+            
+        
+            
+
+            
+                <li class=""><a href="/home/tv/bundle/">Пакеты</a></li>
+
+            
+            
+        
+            
+
+            
+                <li class=""><a href="/home/tv/personal/">Персональное ТВ</a></li>
+
+            
+            
+        
+            
+
+            
+            
+        
+            
+
+            
+            
+        
+            
+
+            
+                <li class=""><a href="/home/tv/vod/">Видео по запросу</a></li>
+
+            
+            
+        
+            
+
+            
+                <li class=""><a href="/home/tv/services/">Дополнительные услуги</a></li>
+
+            
+            
+        
+            
+
+            
+            
+        
+            
+
+            
+            
+        
+            
+
+            
+            
+        
+            
+
+            
+            
+        
+            
+
+            
+                <li class=""><a href="/home/tv/program/">ТВ-программа</a></li>
+
+            
+            
+        
+            
+
+            
+                <li class=""><a href="/home/tv/equipment/">Оборудование</a></li>
+
+            
+            
+        
+            
+
+            
+            
+        
+            
+
+            
+            </ul><!--sub-nav-level--></li><!--/li-->                <!--li-->
+                <li class="">
+                    <a href="/home/phone/">Домашний телефон</a>
+
+            
+        
+                                <!--sub-nav-level-->
+                    <ul class="sub-nav-level " data="/home/phone==/home/">
+
+            
+
+            
+                <li class=""><a href="/home/phone/actions/">Акции</a></li>
+
+            
+            
+        
+            
+
+            
+                <li class=""><a href="/home/phone/tariff/">Тарифы</a></li>
+
+            
+            
+        
+            
+
+            
+                <li class=""><a href="/home/phone/bundle/">Пакеты</a></li>
+
+            
+            
+        
+            
+
+            
+                <li class=""><a href="/home/phone/services/">Дополнительные услуги</a></li>
+
+            
+            
+        
+            
+
+            
+            
+        
+            
+
+            
+            
+        
+            
+
+            
+            
+        
+            
+
+            
+            
+        
+            
+
+            
+            
+        
+            
+
+            
+                <li class=""><a href="/home/phone/bonus/">Бонусная программа</a></li>
+
+            
+            
+        
+            
+
+            
+                <li class=""><a href="/home/phone/calls/">Междугородная связь</a></li>
+
+            
+            
+        
+            
+
+            
+            
+        
+            
+
+            
+            
+        
+            
+
+            
+            
+        
+            
+
+            
+                <li class=""><a href="/home/phone/contract/">Договоры</a></li>
+
+            
+            
+        
+            
+
+            
+            
+        
+            
+
+            
+            </ul><!--sub-nav-level--></li><!--/li-->                <!--li-->
+                <li class="">
+                    <a href="/home/mobile/">Мобильный телефон</a>
+
+            
+        
+                                <!--sub-nav-level-->
+                    <ul class="sub-nav-level " data="/home/mobile==/home/">
+
+            
+
+            
+                <li class=""><a href="/home/mobile/actions/">Акции</a></li>
+
+            
+            
+        
+            
+
+            
+                <li class=""><a href="/home/mobile/tariffs/">Тарифы</a></li>
+
+            
+            
+        
+            
+
+            
+            
+        
+            
+
+            
+                <li class=""><a href="/home/mobile/bundle/">Пакеты</a></li>
+
+            
+            
+        
+            
+
+            
+                <li class=""><a href="/home/mobile/mobile_MNP/">В МГТС со своим номером</a></li>
+
+            
+            
+        
+            
+
+            
+                <li class=""><a href="/home/mobile/mobile_internet/">Интернет и звонки</a></li>
+
+            
+            
+        
+            
+
+            
+            
+        
+            
+
+            
+            
+        
+            
+
+            
+                <li class=""><a href="/home/mobile/mobile_services/">Услуги</a></li>
+
+            
+            
+        
+            
+
+            
+                <li class=""><a href="/home/mobile/roaming/">Роуминг и межгород</a></li>
+
+            
+            
+        
+            
+
+            
+                <li class=""><a href="/home/mobile/shortnum/">Короткие номера</a></li>
+
+            
+            
+        
+            
+
+            
+            </ul><!--sub-nav-level--></li><!--/li-->                <!--li-->
+                <li class="">
+                    <a href="/home/os/">Охрана</a>
+
+            
+        
+                                <!--sub-nav-level-->
+                    <ul class="sub-nav-level " data="/home/os==/home/">
+
+            
+
+            
+                <li class=""><a href="/home/os/actions/">Акции</a></li>
+
+            
+            
+        
+            
+
+            
+                <li class=""><a href="/home/os/tariffs/">Тарифы</a></li>
+
+            
+            
+        
+            
+
+            
+                <li class=""><a href="/home/os/signalling/">Оборудование</a></li>
+
+            
+            
+        
+            
+
+            
+                <li class=""><a href="/home/os/maintenance/">Обслуживание</a></li>
+
+            
+            
+        
+            
+
+            
+                <li class=""><a href="/home/os/faq/">Вопросы и ответы</a></li>
+
+            
+            
+        
+            
+
+            
+            </ul><!--sub-nav-level--></li><!--/li-->                <!--li-->
+                <li class="">
+                    <a href="/home/video/">Видеонаблюдение</a>
+
+            
+        
+                                <!--sub-nav-level-->
+                    <ul class="sub-nav-level " data="/home/video==/home/">
+
+            
+
+            
+                <li class=""><a href="/home/video/actions/">Акции</a></li>
+
+            
+            
+        
+            
+
+            
+                <li class=""><a href="/home/video/tariffs_video/">Тарифы</a></li>
+
+            
+            
+        
+            
+
+            
+                <li class=""><a href="/home/video/equipment_video/">Оборудование</a></li>
+
+            
+            
+        
+            
+
+            
+            </ul><!--sub-nav-level--></li><!--/li-->                <!--li-->
+                <li class="">
+                    <a href="//help.mgts.ru">Помощь</a>
+
+            
+        
+            
+
+            
+            
+        
+    </ul>
+    <!--sub-nav-menu-->
+</div>
+<!--/sub-nav-->    </header>
+<div style="display:none">
+	</div>
+
+<!--<div class="">-->    <!--<ul class="">-->
+        
+<!--promo-->
+<section class="promo">
+    <!--request-form-->
+    <div class="request-form">
+        <!--container-->
+        <div class="container">
+            <!--request-form-->
+            <div class="request-form">
+                <!--container-->
+                <div class="container">
+                                    </div>
+                <!-- /container -->
+            </div>
+            <!-- /request-block -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /request-block -->
+    <script type="text/javascript">
+        mgts.gponBanner.initBanner();
+    </script>
+    
+<div class="promo-slider">
+	 
+         <div>
+             <a href="/home/internet/actions/12161/" onclick="mgts.track.google.event('Banner', 'banner_main Для любителей погонять | Москва');mgts.track.yandex('banner1');return true;"> <img src="/upload/iblock/7c5/7c51ad36a8f7698f89893cae86f5fc79.jpg" alt="Этим летом ты не устоишь"> </a>
+         </div>
+
+         
+         <div>
+             <a href="/home/mobile/actions/12186/" onclick="mgts.track.google.event('Banner', 'banner_main Для любителей погонять | Москва');mgts.track.yandex('banner1');return true;"> <img src="/upload/iblock/52b/52bab6299ad15478c1004997b16fe78d.jpg" alt="Есть 20 рублей? Есть Интернет!"> </a>
+         </div>
+
+         
+         <div>
+             <a href="/home/tv/actions/13598/" onclick="mgts.track.google.event('Banner', 'banner_main Для любителей погонять | Москва');mgts.track.yandex('banner1');return true;"> <img src="/upload/iblock/9fc/9fc0313a3946091e1b62a19480f3ad9e.jpg" alt="Все на футбол!"> </a>
+         </div>
+
+         
+         <div>
+             <a href="/home/internet/actions/13692/" onclick="mgts.track.google.event('Banner', 'banner_main Для любителей погонять | Москва');mgts.track.yandex('banner1');return true;"> <img src="/upload/iblock/31b/31b98836865e112dfe5b537114f2b543.jpg" alt="Открывай любые окна"> </a>
+         </div>
+
+         
+         <div>
+             <a href="/home/video/action/12172/" onclick="mgts.track.google.event('Banner', 'banner_main Для любителей погонять | Москва');mgts.track.yandex('banner1');return true;"> <img src="/upload/iblock/c03/c03d978c86193c14bb9a3383132705df.jpg" alt="5"> </a>
+         </div>
+
+         
+         <div>
+             <a href="/home/internet/actions/12163/" onclick="mgts.track.google.event('Banner', 'banner_main Для любителей погонять | Москва');mgts.track.yandex('banner1');return true;"> <img src="/upload/iblock/829/829a6e128a4c27008c5a5a57aa4d9945.jpg" alt="2"> </a>
+         </div>
+
+         
+         <div>
+             <a href="/home/internet/actions/1005/" onclick="mgts.track.google.event('Banner', 'banner_main Для любителей погонять | Москва');mgts.track.yandex('banner1');return true;"> <img src="/upload/iblock/843/843f00cfce124645a54d0bc4c60df7d3.png" alt="4"> </a>
+         </div>
+
+         </div>
+<br></section>
+<!-- promo -->
+
+<!--advantages-columns-->
+<section class="advantages-columns main-columns">
+
+    <!--container-->
+<div class="container">
+    <!-- columns -->
+    <div class="columns clearfix">
+
+        
+                <a href="/home/internet/actions/1011/" class="column bottomBanner">
+                    <h4>Невозможно<br>отвлечься,<br>когда ты<br>онлайн!</h4>
+                    <p>
+	Интернет везде<br>
+	со скидкой<br>
+	более 40%
+</p><!--                    <a class="adv-link"  onclick="mgts.track.google.event('Banner', 'banner_mini ЛК Деньги| Москва');mgts.track.yandex('banner2');return true;">Подробнее</a>&nbsp;-->
+                    <span class="adv-link">Подробнее</span>&nbsp;
+                    <img alt="Image" src="/upload/iblock/244/2444110ad5146780fe310db5e7d2f1f9.jpg">
+                </a>
+
+                
+                <a href="/home/internet/actions/13692/" class="column bottomBanner">
+                    <h4>Открывай <br>любые окна</h4>
+                    <p>
+	 Антивирус для всех устройств <br>
+	 Скидка 50%
+</p><!--                    <a class="adv-link"  onclick="mgts.track.google.event('Banner', 'banner_mini ЛК Деньги| Москва');mgts.track.yandex('banner2');return true;">Подробнее</a>&nbsp;-->
+                    <span class="adv-link">Подробнее</span>&nbsp;
+                    <img alt="Image" src="/upload/iblock/db5/db565d257fadb3a8cfe58c301b05ac06.jpg">
+                </a>
+
+                
+                <a href="/home/tv/actions/13598/" class="column bottomBanner">
+                    <h4>Все на футбол!</h4>
+                    <p>
+	ТВ-пакет Плюс Футбол за 1 рубль
+</p><!--                    <a class="adv-link"  onclick="mgts.track.google.event('Banner', 'banner_mini ЛК Деньги| Москва');mgts.track.yandex('banner2');return true;">Подробнее</a>&nbsp;-->
+                    <span class="adv-link">Подробнее</span>&nbsp;
+                    <img alt="Image" src="/upload/iblock/d9c/d9c289b8afd141002c30494529f810e1.jpg">
+                </a>
+
+                
+    </div>
+    <!-- /columns -->
+</div>
+<!--container-->
+
+</section>
+<!-- advantages-columns -->
+
+<!-- gpon-promo -->
+<section class="gpon-promo">
+    <section class="gpon-promo">
+<div class="gpon-promo-header">
+<div class="container">
+<h2><span>Преимущества высокоскоростного Интернета</span></h2>
+</div>
+</div>
+<!-- gpon-promo-header -->
+<div class="gpon-promo-slider">
+<div class="switcher" id="bx-pager">
+<div class="container">
+<ul>
+<li class="active"><a data-slide-index="0" href="/home/internet/tariffs/">40 <small>Мбит/с</small></a><span class="switcher-tail">&nbsp;</span></li>
+<li><a class="active" data-slide-index="1" href="/home/internet/tariffs/">60 <small>Мбит/с</small></a><span class="switcher-tail">&nbsp;</span></li>
+<li><a data-slide-index="2" href="/home/internet/tariffs/">100 <small>Мбит/с</small></a><span class="switcher-tail">&nbsp;</span></li>
+<li><a data-slide-index="3" href="/home/internet/tariffs/">350 <small>Мбит/с</small></a><span class="switcher-tail">&nbsp;</span></li>
+<li><a data-slide-index="4" href="/home/internet/tariffs/">500 <small>Мбит/с</small></a><span class="switcher-tail">&nbsp;</span></li>
+</ul>
+</div>
+</div>
+<!-- switcher -->
+<div class="slider-images">
+<ul>
+<li><img alt="Slide" src="/upload/images/baner_mgts_1_1360.jpg" /></li>
+<li><img alt="Slide" src="/upload/images/baner_mgts_2_1360.jpg" /></li>
+<li><img alt="Slide" src="/upload/images/baner_mgts_3_1360.jpg" /></li>
+<li><img alt="Slide" src="/upload/images/baner_mgts_4_1360.jpg" /></li>
+<li><img alt="Slide" src="/upload/images/baner_mgts_5_1360.jpg" /></li>
+</ul>
+</div>
+<!-- slider-images --></div>
+<!-- gpon-promo-slider --></section>
+<!-- gpon-promo -->
+</section>
+<!-- /gpon-promo -->
+
+<!--news-block-->
+<section class="news-block">
+            <div class="container">
+            <h2>Новости МГТС</h2>
+        </div>
+        <!--news-slider-->
+        <div class="news-slider">
+            <!-- container -->
+            <div class="container">
+                <!--controls-->
+                <div class="controls">
+                    <div class="nav-elems">
+                    </div>
+                </div>
+                <!-- controls -->
+                <!--news-list-->
+                <div class="news-list">
+
+
+                    
+                        <div>
+                            <span class="date">21 Июля</span>
+                            <a href="/company/press/news/54308/">Вниманию абонентов Домашнего ТВ!</a>
+                        </div>
+
+                        
+                        <div>
+                            <span class="date">20 Июля</span>
+                            <a href="/company/press/news/55729/">Москвичи стали больше внимания уделять безопасности интернет-данных</a>
+                        </div>
+
+                        
+                        <div>
+                            <span class="date">01 Июля</span>
+                            <a href="/company/press/news/39840/">Обновление услуги «Цифровое ТВ»</a>
+                        </div>
+
+                        
+                        <div>
+                            <span class="date">30 Июня</span>
+                            <a href="/company/press/news/37600/">МГТС объявляет решения годового общего собрания акционеров</a>
+                        </div>
+
+                        
+                        <div>
+                            <span class="date">20 Июня</span>
+                            <a href="/company/press/news/26029/">Изменения на домашнем ТВ</a>
+                        </div>
+
+                        
+                        <div>
+                            <span class="date">20 Июня</span>
+                            <a href="/company/press/news/25986/">Программа поддержки малого и среднего бизнеса от МГТС — лауреат премии «Права потребителей и качество обслуживания»</a>
+                        </div>
+
+                        
+                        <div>
+                            <span class="date">15 Июня</span>
+                            <a href="/company/press/news/37728/">Новые возможности Бонусной программы МГТС для участников программы лояльности «20% возвращаются»!</a>
+                        </div>
+
+                        
+                        <div>
+                            <span class="date">15 Июня</span>
+                            <a href="/company/press/news/21904/">Установи сигнализацию и получи скидку 70% на контрольный прибор</a>
+                        </div>
+
+                        
+                        <div>
+                            <span class="date">06 Июня</span>
+                            <a href="/company/press/news/15491/">Видеонаблюдение от МГТС – продукт года на Safety Leaders Awards 2016 </a>
+                        </div>
+
+                        
+                        <div>
+                            <span class="date">01 Июня</span>
+                            <a href="/company/press/news/13182/">Смотрите чемпионат Европы по футболу в HD-качестве и без рекламы всего за 1 рубль!</a>
+                        </div>
+
+                        
+                        <div>
+                            <span class="date">01 Июня</span>
+                            <a href="/company/press/news/13888/">Телеканал Food Network и Анна Олсон приглашают на фестиваль Taste of Moscow</a>
+                        </div>
+
+                        
+                        <div>
+                            <span class="date">23 Мая</span>
+                            <a href="/company/press/news/12870/">МГТС предлагает домашний и мобильный интернет без абонентской платы</a>
+                        </div>
+
+                        
+                        <div>
+                            <span class="date">20 Мая</span>
+                            <a href="/company/press/news/9189/">МГТС помогает реконструировать зал радиоэлектроники и связи Политехнического музея</a>
+                        </div>
+
+                        
+                        <div>
+                            <span class="date">20 Мая</span>
+                            <a href="/company/press/news/12132/">МГТС предлагает клиентам собственную бонусную программу</a>
+                        </div>
+
+                        
+                        <div>
+                            <span class="date">22 Апреля</span>
+                            <a href="/company/press/news/6/">Видеокамера приедет сама!</a>
+                        </div>
+
+                        
+                        <div>
+                            <span class="date">18 Апреля</span>
+                            <a href="/company/press/news/7/">Смотрите новые телеканалы на домашнем ТВ!</a>
+                        </div>
+
+                        
+                        <div>
+                            <span class="date">18 Апреля</span>
+                            <a href="/company/press/news/14266/">Смотрите новые телеканалы на домашнем ТВ!</a>
+                        </div>
+
+                        
+                        <div>
+                            <span class="date">15 Апреля</span>
+                            <a href="/company/press/news/9/">МГТС меняет стоимость на ряде тарифных планов услуги доступа к сети Интернет по технологии GPON</a>
+                        </div>
+
+                        
+                        <div>
+                            <span class="date">15 Апреля</span>
+                            <a href="/company/press/news/8/">МГТС меняет скорость доступа в сеть Интернет по технологии GPON на ряде тарифных планов</a>
+                        </div>
+
+                        
+                        <div>
+                            <span class="date">05 Апреля</span>
+                            <a href="/company/press/news/11911/">Встречайте новый телеканал «СемьЯ»!</a>
+                        </div>
+
+                        
+                        <div>
+                            <span class="date">05 Апреля</span>
+                            <a href="/company/press/news/11910/">Москвичи получат вознаграждение за информацию о воровстве кабеля</a>
+                        </div>
+
+                        
+                        <div>
+                            <span class="date">01 Апреля</span>
+                            <a href="/company/press/news/11908/">Viasat Premium HD: при подключении в апреле – скидка 50%!</a>
+                        </div>
+
+                        
+                        <div>
+                            <span class="date">31 Марта</span>
+                            <a href="/company/press/news/11907/">Встречайте новый телеканал «НАШЕ ТВ»!</a>
+                        </div>
+
+                        
+                        <div>
+                            <span class="date">30 Марта</span>
+                            <a href="/company/press/news/11906/">20 Гб мобильного интернета получат клиенты МГТС</a>
+                        </div>
+
+                        
+                        <div>
+                            <span class="date">22 Марта</span>
+                            <a href="/company/press/news/11902/">Число пользователей пакетов услуг МГТС на сети GPON за год выросло в 1,6 раза</a>
+                        </div>
+
+                        
+                        <div>
+                            <span class="date">18 Марта</span>
+                            <a href="/company/press/news/11901/">С 31 марта 2016 изменяется состав телеканалов услуги «Домашнее ТВ»</a>
+                        </div>
+
+                        
+                        <div>
+                            <span class="date">29 Февраля</span>
+                            <a href="/company/press/news/11900/">Новые каналы в пакете Viasat Рremium HD!</a>
+                        </div>
+
+                        
+                        <div>
+                            <span class="date">26 Февраля</span>
+                            <a href="/company/press/news/11898/">Теперь оплатить Единый счёт от МГТС можно и по номеру мобильного телефона</a>
+                        </div>
+
+                        
+                        <div>
+                            <span class="date">20 Февраля</span>
+                            <a href="/company/press/news/11896/">МГТС меняет стоимость на ряде тарифных планов услуги Домашний Интернет по технологии GPON</a>
+                        </div>
+
+                        
+                        <div>
+                            <span class="date">18 Февраля</span>
+                            <a href="/company/press/news/11895/">МГТС увеличит скорость на ряде тарифных планов услуги Домашний Интернет по технологии GPON</a>
+                        </div>
+
+                        
+                        <div>
+                            <span class="date">12 Февраля</span>
+                            <a href="/company/press/news/11894/">Услуги МГТС с экономией до 40% доступны в сети Телефон.ру</a>
+                        </div>
+
+                        
+                        <div>
+                            <span class="date">25 Января</span>
+                            <a href="/company/press/news/11890/">Встречайте новые спортивные телеканалы!</a>
+                        </div>
+
+                        
+                        <div>
+                            <span class="date">20 Января</span>
+                            <a href="/company/press/news/11889/">МГТС меняет скорость доступа в сеть Интернет по технологии GPON на ряде тарифных планов</a>
+                        </div>
+
+                        
+                        <div>
+                            <span class="date">20 Января</span>
+                            <a href="/company/press/news/11888/">МГТС меняет стоимость на ряде тарифных планов услуги доступа к сети Интернет по технологии GPON</a>
+                        </div>
+
+                        
+                        <div>
+                            <span class="date">24 Декабря</span>
+                            <a href="/company/press/news/11887/">Изменяется состав  тематической группы «Телеканалы «СПОРТ»</a>
+                        </div>
+
+                        
+                        <div>
+                            <span class="date">24 Декабря</span>
+                            <a href="/company/press/news/11886/">Вместо подарков партнерам – «Киноёлка» детям</a>
+                        </div>
+
+                        
+                        <div>
+                            <span class="date">23 Декабря</span>
+                            <a href="/company/press/news/11885/">Новогодний  ТЕЛЕподарок для абонентов домашнего ТВ!</a>
+                        </div>
+
+                        
+                        <div>
+                            <span class="date">21 Декабря</span>
+                            <a href="/company/press/news/11882/">Обновляется услуга «Цифровое ТВ» для юридических лиц</a>
+                        </div>
+
+                        
+                        <div>
+                            <span class="date">21 Декабря</span>
+                            <a href="/company/press/news/11883/">С 24 декабря 2015 года изменяется состав телеканалов услуги «Домашнее ТВ»</a>
+                        </div>
+
+                        
+                        <div>
+                            <span class="date">14 Декабря</span>
+                            <a href="/company/press/news/11880/">Клиенты МГТС помогут сохранить леса России</a>
+                        </div>
+
+                        
+                        <div>
+                            <span class="date">14 Декабря</span>
+                            <a href="/company/press/news/11878/">МГТС победила в премии Customer eXperience Awards 2015</a>
+                        </div>
+
+                        
+                        <div>
+                            <span class="date">09 Декабря</span>
+                            <a href="/company/press/news/11876/">МГТС поможет малому и среднему бизнесу оптимизировать ИТ-расходы</a>
+                        </div>
+
+                        
+                        <div>
+                            <span class="date">07 Декабря</span>
+                            <a href="/company/press/news/11875/">МГТС открывает год отечественного кино в Москве</a>
+                        </div>
+
+                        
+                        <div>
+                            <span class="date">04 Декабря</span>
+                            <a href="/company/press/news/11874/">Окунитесь в море ярких впечатлений вместе с телеканалом «Морской»!</a>
+                        </div>
+
+                        
+                        <div>
+                            <span class="date">04 Декабря</span>
+                            <a href="/company/press/news/11873/">МГТС победила в премии The Moscow Times Awards</a>
+                        </div>
+
+                        
+                        <div>
+                            <span class="date">02 Декабря</span>
+                            <a href="/company/press/news/11877/">Встречайте обновленную линейку мобильных тарифов Smart от МГТС!</a>
+                        </div>
+
+                        
+                        <div>
+                            <span class="date">01 Декабря</span>
+                            <a href="/company/press/news/11870/">«Новогодний киносерпантин» - телепраздник для всех!</a>
+                        </div>
+
+                        
+                        <div>
+                            <span class="date">01 Декабря</span>
+                            <a href="/company/press/news/11871/">МГТС создала дирекцию по закупкам и административным вопросам и назначила Артема Блинова директором нового подразделения.</a>
+                        </div>
+
+                        
+                        <div>
+                            <span class="date">30 Ноября</span>
+                            <a href="/company/press/news/11869/">Встречайте новый телеканал Bollywood!</a>
+                        </div>
+
+                        
+                        <div>
+                            <span class="date">27 Ноября</span>
+                            <a href="/company/press/news/11868/">МГТС признали самым динамично развивающимся оператором связи в России</a>
+                        </div>
+
+                        
+                </div>
+                <!-- news-list -->
+            </div>
+            <!-- /container -->
+        </div>
+        <!--/news-slider -->
+    </section>
+<!--/news-block--><!--</ul>-->
+<!--</div>-->		<!--</div>-->
+	    	<!--</div>-->
+<!--</div>-->
+
+
+
+<footer>
+    <div class="footer-note">
+        <div class="container">
+            <ul class="footer-links">
+                <li><a href="/company/">О компании</a>&nbsp;&nbsp;<a href="/company/career/">Работа в МГТС</a>&nbsp;&nbsp;<strong> &nbsp;&nbsp;Обратная связь&nbsp;<a
+                            href="mailto:help@mgts.ru">help@mgts.ru</a></strong></li>
+            </ul>
+            <!-- footer-links -->
+            <div class="search-bar">
+                <div class="text-input">
+                    <form action="/search" id="search-form" method="get">
+                        <button class="search-btn" onclick="$('#search-form').submit(); return false;">Искать</button>
+                        <input type="text" name="q" data-hint="Поиск">
+                    </form>
+                </div>
+            </div>
+            <!-- search-bar -->
+            <div class="phone-lines">
+                <span><b>Линия качества 8 495 700-77-77</b></span>
+            </div>
+            <!-- phone-lines -->
+        </div>
+        <!-- container -->
+    </div>
+    <!-- footer-note -->
+    <div class="container">
+        <div class="apps-foot-block">
+            <div class="apps-foot-container clearfix">
+                <h5 style="color: #1a1a1a;"><b>Мобильные приложения</b></h5>
+
+                <div class="mobile-apps-box">
+                    <div class="mobile-apps">
+                        <p>Личный кабинет</p>
+                        <ul>
+                            <li>
+                                <div><span class="apps-icon apple"></span>
+
+                                    <div class="apps-link"><a class="name" href="https://appsto.re/ru/iAuI9.i"
+                                                              target="_blank"> Загрузите в App Store </a></div>
+                                </div>
+                            </li>
+                            <li>
+                                <div><span class="apps-icon google"></span>
+
+                                    <div class="apps-link"><a class="name"
+                                                              href="https://play.google.com/store/apps/details?id=ru.mgts.lk"
+                                                              target="_blank"> Загрузите в Google Play </a></div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="mobile-apps">
+                        <p>Видеонаблюдение для дома</p>
+                        <ul>
+                            <li>
+                                <div><span class="apps-icon apple"></span>
+
+                                    <div class="apps-link"><a class="name"
+                                                              href="https://itunes.apple.com/ru/app/mgts.mycam/id984461181"
+                                                              target="_blank"> Загрузите в App Store </a></div>
+                                </div>
+                            </li>
+                            <li>
+                                <div><span class="apps-icon google"></span>
+
+                                    <div class="apps-link"><a class="name"
+                                                              href="https://play.google.com/store/apps/details?id=ru.netris.mgts.mycam"
+                                                              target="_blank"> Загрузите в Google Play </a></div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="mobile-apps" style="display: none;">
+                        <p>Видеонаблюдение</p>
+                        <ul>
+                            <li>
+                                <div><span class="apps-icon apple"></span>
+
+                                    <div class="apps-link"><a class="name"> Загрузите в App Store </a></div>
+                                </div>
+                            </li>
+                            <li>
+                                <div><span class="apps-icon google"></span>
+
+                                    <div class="apps-link"><a class="name"> Загрузите в Google Play </a></div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br/><!-- mobile-links -->
+        <div class="footer-nav clearfix">
+            <div class="column">
+    <h5><b>Компания МГТС</b></h5>
+    
+<ul>
+
+			<li><a href="/company/press/">Пресс-центр</a></li>
+		
+			<li><a href="/company/career/">Вакансии</a></li>
+		
+			<li><a href="/company/documents/">Документы</a></li>
+		
+			<li><a href="/company/social/">Социальная ответственность</a></li>
+		
+			<li><a href="/company/contacts/">Контакты</a></li>
+		
+			<li><a href="http://pansionatiskra.ru/camp/">Детский лагерь Искра</a></li>
+		
+			<li><a href="/company/amt/">ЗАО АМТ</a></li>
+		
+
+</ul>
+</div>
+<!-- column -->
+<div class="column">
+    <h5><b>Акционерам и инвесторам</b></h5>
+     
+<ul>
+
+			<li><a href="/company/investors/disclose/">Раскрытие информации</a></li>
+		
+			<li><a href="/company/investors/stockholder/">Общие собрания акционеров</a></li>
+		
+			<li><a href="/company/investors/quotations/">Котировки ценных бумаг</a></li>
+		
+			<li><a href="/company/investors/dividend/">Дивиденды</a></li>
+		
+
+</ul>
+</div>
+<!-- column -->
+<div class="column">
+    <h5><b>Для партнеров</b></h5>
+     
+<ul>
+
+			<li><a href="/partner/adv/">Реклама</a></li>
+		
+			<li><a href="/partner/for-builders/">Застройщикам</a></li>
+		
+			<li><a href="/partner/tsg/">Управляющим компаниям и ТСЖ</a></li>
+		
+			<li><a href="/partner/rent/">Аренда от МГТС</a></li>
+		
+			<li><a href="/partner/purchase/">Закупки</a></li>
+		
+			<li><a href="/partner/lcc/">Допуск в ЛСС</a></li>
+		
+			<li><a href="/partner/realization/">Реализация ТМЦ</a></li>
+		
+
+</ul>
+</div>
+<!-- column -->
+<div class="column">
+    <h5><b>Помощь</b></h5>
+    
+<ul>
+
+			<li><a href="/home/phone/usefulnumbers/">Полезные номера</a></li>
+		
+			<li><a href="http://help.mgts.ru">Помощь абонентам</a></li>
+		
+			<li><a href="/company/documents/neispravnosty/">Сроки устранения неисправностей</a></li>
+		
+			<li><a href="/home/phone/information-service/">Cправка 09 и 009</a></li>
+		
+			<li><a href="/home/help/safety/">Безопасность</a></li>
+		
+
+</ul>
+</div>
+            <!-- column -->
+            <div class="column">
+                <h5>&nbsp;</h5>
+            </div>
+            <div class="column">
+                <ul>
+                </ul>
+            </div>
+            <!-- column --></div>
+        <br/><!-- footer-nav -->
+        <div class="social-links_foot-box">
+            <div class="copy">© 2016, официальный сайт ПАО МГТС</div> 
+            <div class="social-links">
+                <p>Мы в социальных сетях</p>
+                <ul>
+                    <li><a class="vkontakte" href="http://vk.com/mgts" target="_blank">vkontakte</a></li>
+                    <li><a class="facebook" href="https://www.facebook.com/mgts.ru" target="_blank">facebook</a></li>
+                    <li><a class="odnoklassniki" href="https://www.ok.ru/mgts.ru" target="_blank">odnoklassniki</a></li>
+                    <li><a class="twitter" href="https://twitter.com/mgts_official"  target="_blank">twitter</a></li>
+                    <li><a class="mailru" href="http://my.mail.ru/community/mgts/" target="_blank">mailru</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- container -->
+</footer>
+</div>
+
+<script type="text/javascript" src="/bundles/js/code_map.js?v=1"></script><!-- Yandex.Metrika counter -->
+<div style="display: none">
+    <script type="text/javascript">
+        (function (w, c) {
+            (w[c] = w[c] || []).push(function () {
+                try {
+                    w.yaCounter6233287 = new Ya.Metrika({
+                        id: 6233287,
+                        enableAll: true,
+                        trackHash: true,
+                        webvisor: true,
+                        params: window.yaParams || {}
+                    });
+                }
+                catch (e) {
+                }
+            });
+        })(window, "yandex_metrika_callbacks");
+    </script>
+</div>
+<script src="//mc.yandex.ru/metrika/watch.js" type="text/javascript"></script>
+<noscript>
+    <div>
+        <img src="//mc.yandex.ru/watch/6233287" style="position: absolute; left: -9999px;" alt=""/>
+    </div>
+</noscript><!-- /Yandex.Metrika counter -->
+
+<!-- Код тега ремаркетинга Google -->
+<!--------------------------------------------------
+С помощью тега ремаркетинга запрещается собирать информацию, по которой можно идентифицировать личность пользователя. Также запрещается размещать тег на страницах с контентом деликатного характера. Подробнее об этих требованиях и о настройке тега читайте на странице http://google.com/ads/remarketingsetup.
+--------------------------------------------------->
+<script type="text/javascript">
+    /* <![CDATA[ */
+    var google_conversion_id = 982610527;
+    var google_custom_params = window.google_tag_params;
+    var google_remarketing_only = true;
+    /* ]]> */
+</script>
+<script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js">
+</script>
+<noscript>
+    <div style="display:inline;">
+        <img height="1" width="1" style="border-style:none;" alt=""
+             src="//googleads.g.doubleclick.net/pagead/viewthroughconversion/982610527/?value=0&amp;guid=ON&amp;script=0"/>
+    </div>
+</noscript>
+
+
+
+</body>
+
+</html>

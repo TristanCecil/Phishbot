@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Firedrive | Free Cloud Storage for Everyone</title>
+    <meta name="description" content="Firedrive is a cloud storage platform that gives you 20GB of space for free. You can access your content anywhere, on any device, right in the browser. No downloads required!">
+
+    <link rel="stylesheet" type="text/css" href="http://static.firedrive.com/css/style_index.css?1">
+    <script type="text/javascript">
+      window.ie_indexpage = true;
+    </script>
+    <meta charset="utf-8">
+
+<!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+<!--[if lt IE 9]>
+  <script src="https://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+<!--[if lt IE 7]><link rel="stylesheet" href="http://static.firedrive.com/css/ie6.min.css?1"><![endif]-->
+
+<link href="http://static.firedrive.com/images/favicon.ico" rel="shortcut icon" />
+<link rel="stylesheet" type="text/css" href='http://static.firedrive.com/css/open_sans_font.css?1'>
+<link rel="stylesheet" type="text/css" href="http://static.firedrive.com/css/style.css?1" />
+<link rel="stylesheet" type="text/css" href="http://static.firedrive.com/css/admin.css?1" />
+<link rel="stylesheet" type="text/css" href="http://static.firedrive.com/css/jplayer.firedrive.css?1" />
+<link rel="stylesheet" type="text/css" href="http://static.firedrive.com/css/token-input.css?1" />
+<link rel="stylesheet" type="text/css" href="http://static.firedrive.com/css/jquery.customScroll.css?1" />
+<link rel="stylesheet" type="text/css" href="http://static.firedrive.com/css/flexpaper.css?1" />
+<link rel="stylesheet" type="text/css" href="http://static.firedrive.com/css/jquery.plupload.queue.css?1" />
+<script type="text/javascript" src="http://static.firedrive.com/js/ZeroClipboard.min.js?1"></script>
+<script type="text/javascript">
+
+    function returnSetVariables(variablename){
+        var var_Array = new Array();
+        var_Array['static_content_path']    = "http://static.firedrive.com";
+        var_Array['www_domain']             = "https://www.firedrive.com";
+        var_Array['protocol']               = "https://";
+        var_Array['plain_domain']           = "firedrive.com";
+        var_Array['static_rev']             = "1";
+
+        return var_Array[variablename];
+      }
+
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script type="text/javascript" src="http://static.firedrive.com/js/bootstrap.min.js?1"></script>
+<script type="text/javascript" src="http://static.firedrive.com/js/jquery-ui-1.10.4.custom.js?1"></script>
+<script type="text/javascript" src="http://static.firedrive.com/player/jwplayer.js?1"></script>
+<script type="text/javascript" src="http://static.firedrive.com/player/jwplayer.html5.js?1"></script>
+<script type="text/javascript" src="http://static.firedrive.com/js/minified_header.js?1"></script>
+<script type="text/javascript" src="http://static.firedrive.com/js/browserplus-min.js?1"></script>
+<script>jwplayer.key="vtLvnV4DIqSNAFXtCS5TRoXd3sBgOixAmveFyQ==";</script>
+
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47568140-1', 'auto');
+    ga('send', 'pageview');
+
+</script>    <script type="text/javascript" src="http://static.firedrive.com/js/index.js?1"></script>
+    <script type="text/javascript">
+	
+	  $(window).load(function() {
+        resizeIndexImages();
+        $('#first').css('visibility','visible').hide().fadeIn();
+                  if(typeof _gaq !== 'undefined'){
+              _gaq.push(['_trackEvent', 'index_shown_anon_user', 'view']);
+          }
+              });
+
+      var mousewheelevt = (/Firefox/i.test(navigator.userAgent)) ? "DOMMouseScroll" : "mousewheel" //FF doesn't recognize mousewheel as of FF3.x
+      $(document).bind(mousewheelevt, function(ee){
+          var evnt = ee || window.event //equalize event object     
+          evnt = evnt.originalEvent ? evnt.originalEvent : evnt; //convert to originalEvent if possible               
+          //var delta2 = evnt.detail ? evnt.detail*(-40) : evnt.wheelDelta //check for detail first, because it is used by Opera and FF
+
+          if(evnt.detail){
+            var delta2 = evnt.detail*(-40);
+          }
+          else{
+            var delta2 = evnt.wheelDelta;
+          }
+
+          if(delta2 > 0){
+                if(!window.scrollRunning){
+                  window.scrollRunning = true;
+                  in_scrollUp();
+                  setTimeout(function() {
+                    window.scrollRunning = false;
+                  }, 500);
+                }
+          } else {
+            if(!window.scrollRunning){
+              window.scrollRunning = true;
+              in_scrollDown();
+              setTimeout(function() {
+                window.scrollRunning = false;
+              }, 500);
+            }
+          }   
+        }
+      );
+
+
+
+      $(document).ready(function() {
+		  $('a[rel="publisher"]').hide();
+		resizeIndexImages();
+        document.body.scrollTop = document.documentElement.scrollTop = 0;
+        window.currentWindow = 0;
+        window.scrollRunning = false;
+
+        $('#menu li').click(function(e){ 
+            $('.active').removeClass('active');
+            $(this).addClass('active');
+            window.currentWindow = parseInt($(this).attr('rel'));
+            $.scrollTo($('#section'+window.currentWindow), 500);
+            checkMenu();
+        });
+
+        $('.learnmorebtn').click(function(e){ 
+          in_scrollDown();
+        });
+
+        $('.section').height($(window).height());
+
+       setTimeout(function() { $('#social_top_icon').css('visibility','visible').hide().fadeIn('fast'); }, 500);
+
+        $(document).keydown(function(e){
+          if($('.shadow_container').is(':visible') === false){
+            if (e.keyCode == 38) { 
+               in_scrollUp();
+               return false;
+            }
+            if (e.keyCode == 40) { 
+               in_scrollDown();
+               return false;
+            }
+          }
+        });
+      });
+
+      $(window).resize(function() {
+        $('.section').height($(window).height());
+        $.scrollTo($('#section'+window.currentWindow), 0);
+        resizeIndexImages();
+      });
+
+      function resizeIndexImages(){
+        $('.image_resize').each(function(i, val){
+          var theImage = $(this);
+          var currentWidth = parseInt($(this).width());
+          var image_url = $(this).css('background-image'),
+          image;
+
+          // Remove url() or in case of Chrome url("")
+          image_url = image_url.match(/^url\("?(.+?)"?\)$/);
+
+          if (image_url[1]) {
+              image_url = image_url[1];
+              image = new Image();
+
+              // just in case it is not already loaded
+              $(image).load(function () {
+                  var divided = image.width/currentWidth;
+                  var newHeight = (image.height / divided);
+                  $(theImage).height(newHeight);
+              });
+              image.src = image_url;
+          }
+        });
+      }
+
+      function in_scrollUp(){
+        if(window.currentWindow != 0){
+            window.currentWindow = window.currentWindow -1;
+            $.scrollTo($('#section'+window.currentWindow), 500);
+            checkMenu();
+        }
+      }
+
+      function in_scrollDown(){
+        if(window.currentWindow != 6){
+            window.currentWindow = window.currentWindow +1;
+            $.scrollTo($('#section'+window.currentWindow), 500);
+            checkMenu();
+        }
+      }
+
+      function checkMenu(){
+        $('.active').removeClass('active');
+        $('.black_active').removeClass('black_active');
+
+        $('#in_sel'+window.currentWindow).addClass('active');
+
+        if(window.currentWindow != 0 && window.currentWindow != 2 && window.currentWindow != 4){
+          $('#menu li').css('border-color', 'black');
+          $('#in_sel'+window.currentWindow).addClass('black_active');
+        }
+        else{
+          $('#menu li').css('border-color', 'white');
+        }
+
+        if(window.currentWindow != 0){
+          showGreyMenu();
+        }
+        else{
+          hideGreyMenu();
+        }
+      }
+
+      function showGreyMenu(){
+        if($('#in_grey_header').is(':visible') == false){
+          $('#in_grey_header').fadeIn();
+        }
+        $('.header_logo_container_large').animate({left: '100px'},500);
+      }
+
+      function hideGreyMenu(){
+        $('#in_grey_header').fadeOut();
+        $('.header_logo_container_large').animate({left: '50%'},500);
+      }
+
+     </script>
+  </head>
+  <body class="application" id="application">
+  <!-- Logged Out -->
+<div class="navbar navbar-fixed-top"> 
+  <div class="navbar-inner">
+    <div class="container">
+      <div class="header_logo_container"><a href="#"></a></div>
+      <a class="btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        <span class="i-bar"></span>
+        <span class="i-bar"></span>
+        <span class="i-bar"></span>
+      </a>
+      <div class="topleft_buttons">
+        <span class="upload_icon" id="upload_icon"><i></i><a href="#" id="upload" trans='up'>Upload</a></span>
+      </div>
+      <div class="topright_buttons">
+<!--        <span id='anonymode_icon'></span>-->
+<!--        <span id='anonymode_info'><div id='anonymode_arrow'></div><span id='anonymode_close'></span><b>You are currently browsing anonymously.</b> <br><br>Data saved on anonymous accounts can be lost if your internet browser loses the cookie. <Br> Please register to have your data secured.<br><br><a target='_self' href="https://--><!--/signup" id='anonybtn'>Register Now</a></span>-->
+<!--        -->
+<!--          <span id='lang_icon_con'>-->
+<!--          <div id='lang_icon' class='lang_item_en'><i></i><div class="lang arrow-down-white"></div></div>-->
+<!--          <div id='lang_menu_con'>-->
+<!--            <div class='lang_item' id='lang_item_en' rel='en'><i></i>English</div>-->
+<!--            <div class='lang_item' id='lang_item_de' rel='de'><i></i>Deutsch</div>-->
+<!--            <div class='lang_item' id='lang_item_es' rel='es'><i></i>Español</div>-->
+<!--            <div class='lang_item' id='lang_item_fr' rel='fr'><i></i>Français</div>-->
+<!--            <div class='lang_item' id='lang_item_it' rel='it'><i></i>Italian</div>-->
+<!--            <div class='lang_item' id='lang_item_pt' rel='pt'><i></i>Português</div>-->
+<!--            <div class='lang_item' id='lang_item_tr' rel='tr'><i></i>Türkçe</div>-->
+<!--            <div class='lang_item' id='lang_item_ar' rel='ar'><i></i>العربية</div>-->
+<!--          </div>-->
+<!--        </span>-->
+        
+        <span id="login_top_icon"><a id="login_icon_under" href="#" trans='lg'>Log In</a>
+          <div id="login_container">
+            <div class="login_header" trans='lg'>Log In</div><div class="clearer"></div>
+            <div class="shadow_container">
+              <div class="login_box_arrow"></div>
+              <form method="post" class="form-horizontal" action="#">
+                <div class="login_container_upper">
+                  <label for="username" class="control-label">Username or Email</label>
+                  <input type="text" id="username" size="20" name="user">
+                  <label for="password" class="control-label">Password</label>
+                  <input type="password" id="password" size="20" name="pass">
+                  <label><span class="remember_label"> Stay Signed In </span><input type="checkbox" id="remember" value="1" name="remember"></label>
+                  <a class="forgot_pass" href="#">Forgot Password</a>
+                </div>
+                <div class="login_container_lower">
+                  <!--<span class="loginwith_label">Sign Up with</span>
+                  <a id='login_facebook' href="#"></a>
+                  <a id='login_twitter' href="#"></a>
+                  <a id='login_google' href="#"></a>-->
+                  <input type="submit" class="login_btn_form" id="header_login_btn" value="Log In" name="login_submit">
+                  <span class='login_fb_btn_divider_text'>or</span>
+                  <div class='mg_fb_signup_top'>
+                    <div class='mg_fb_signup_top_btn'>Sign In With Facebook</div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </span>
+        <span id="signup_top_icon" rel='myfiles_signup'></span>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- / Logged Out -->
+
+<div id="uploader_catcher"></div>
+<div id="login_modal_catcher"></div>
+<div id="mustreg_modal_catcher"></div>
+<div class='clearer'></div>      
+<div id="index_blue_div">
+  <ul id="menu">
+    <li rel='0' id='in_sel0' class='active'></li>
+    <li rel='1' id='in_sel1'></li>
+    <li rel='2' id='in_sel2'></li>
+    <li rel='3' id='in_sel3'></li>
+    <li rel='4' id='in_sel4'></li>
+    <li rel='5' id='in_sel5'></li>
+    <li rel='6' id='in_sel6'></li>
+  </ul>
+  <div id="index_blue_hover"><i></i></div>
+  <div class="section" id="section0">
+      <div id="in_grey_header">
+      </div>
+      <div class="intro" id="first">
+        <h1>Easily Store & Share your BIG Files with Anyone.</h1>
+        <div class="fdcloud image_resize">
+            <a href="//www.firedrive.com/myfiles#upload"></a>
+        </div>
+        <p><strong>Get 20GB Free</strong></p><br>
+        <p>Press on the cloud or drag &amp; drop anywhere on this screen to start!</p>
+      </div>
+  <div class="main_buttons_wrap">
+  <a href="#" class="signupbtn">Get 20GB Free</a>
+  <div class="learnmorebtn">Learn More</div>
+  </div>
+  <div class="bottomfade"></div>
+  </div>
+  <div class="section" id="section1">
+      <div class="intro" id="second">
+        <h1>Whenever, <strong>Wherever</strong></h1>
+        <p>Place your files on Firedrive and access them from any of your devices.</p>
+        <p>Share and manage them whenever you want, wherever you go.</p>
+        <img class="slide_img" src="http://static.firedrive.com/images/slide1_img.png">
+        <br>
+        <p>Firedrive for the web, on any device.</p>
+      </div>
+  </div>
+  <div class="section" id="section2">
+    <div class="intro" id="third">
+      <h1>Sharing on <strong>Steroids</strong></h1>
+      <p>Share your photos, videos, songs and documents safely knowing</p> 
+      <p>everything you store is automatically private. You decide</p> 
+      <p>what you want to share and with whom you wanna share it.</p>
+      <img class="slide_img" src="http://static.firedrive.com/images/slide2_img.png">
+      <br>
+      <p>Set passwords for any file and folder. <strong><a href='/features/sharing'>Learn More...</a></strong></p>
+    </div>
+  </div>
+  <div class="section" id="section3">
+    <div class="intro" id="fourth">
+      <h1>Groups for the people</h1>
+      <p>Use groups to privately share your files between friends, family or co-workers.</p> 
+      <p>Chat &amp; collaberate with members and control who does what.</p> 
+      <img class="slide_img" src="http://static.firedrive.com/images/slide3_img.png">
+      <br>
+      <p>Add as many people and space as you need.<strong><a href='/features/groups'>Learn more...</a></strong></p>
+      </p>
+    </div>
+  </div>
+  <div class="section" id="section4">
+    <div class="intro" id="fifth">
+      <h1>Filedrop it like it’s hot!</h1>
+      <p>Let your friends, teammates or co-workers drop files right into </p> 
+      <p>your Firedrive. Everything is private with complete</p> 
+      <p>control of all accessibility.</p>
+      <img class="slide_img" src="http://static.firedrive.com/images/slide4_img.png">
+      <br>
+      <p>Create login credentials or let anyone send you something. <strong><a href='/features/filedrop'>Learn more...</a></strong></p>
+      </p>
+    </div>
+  </div>
+  <div class="section" id="section5">
+    <div class="intro" id="sixth">
+      <h1>Publish your private files to the public</h1>
+      <p>Put your photos, videos, songs &amp; documents out there for the world to see.</p> 
+      <p>Have others follow you and keep up with your file activity.</p>
+      <img class="slide_img" src="http://static.firedrive.com/images/slide5_img.png">
+    </div>
+  </div>
+  <div class="section" id="section6">
+    <div class="intro" id="seventh">
+      <h1>Do <strong>more</strong> with less</h1>
+      <p>Firedrive can open over 150+ file types so you can </p> 
+      <p>view them through any browser or device.</p>
+<div class="morewrap">
+<p class="more"><strong>Beautiful &amp; Intuitive</strong>
+<br><br>
+Simple and easy to use, 
+everything you do just 
+makes sense.</p><p class="more"><strong>Safe &amp; Secure</strong>
+<br><br>Firedrive uses industry standard
+encryption to safeguard your 
+account.</p>
+<p class="more"><strong>Social by design</strong>
+<br><br>Showcase, receive feedback 
+&amp; discuss your work 
+  publicly with others.</p>
+  </div>
+  <a href="#" class="signupbtn2">Get 20GB Free</a>
+
+  <div class="footer0wrap">
+  <a class="footerlink" href="#">About</a>
+<a class="footerlink" href="#">Help</a>
+  <a class="footerlink" href="#">Contact Us</a>
+  <a class="footerlink" href="#">Terms &amp; Conditions</a>
+  <a class="footerlink" href="#">Privacy</a>
+</div>
+  
+    </div>
+  </div>
+</div>
+ <a href="https://plus.google.com/116894487195815589628" rel="publisher">Google+</a>
+</body>
+</html>

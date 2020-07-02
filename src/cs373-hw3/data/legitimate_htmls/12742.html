@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <noscript>
+            <meta http-equiv="refresh" content="0;URL=/nextgen/">
+        </noscript>
+
+        <!--[if lte IE 7]><script>location.href = '/nextgen/ie7.html'</script><![endif]-->
+        <script>
+
+            var dest = getRedirectUrl(location);
+            if (dest !== location.href) location.href = dest;
+
+            function getRedirectUrl(location) {
+                var hostname = location.hostname;
+                    search = location.search,
+                    hash = location.hash,
+                    m = /(?:(.*)\.)?(\d+)\.(.*[a-zA-Z].*)/.exec(hostname);
+
+                if (m && m[3]) {
+                    search += (search ? '&' : '?') + 'firm=' + m[2] + (m[1] ? '&afd=' + hostname : '');
+                    hostname = 'secure.' + m[3];
+                } else if (!/^([^.]+|[\d.]+|.+\.creativesol\.com)$/.test(hostname)) {
+                    hostname = 'secure.' + hostname.replace(/^(www|secure)\./, '');
+                }
+
+                return 'https://' + hostname + '/nextgen/' + search + hash;
+            }
+        </script>
+    </head>
+    <body></body>
+</html>

@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en" xmlns:ng="http://angularjs.org">
+    <head>
+        <!--the below is needed for Angular's $cookieStore to set and remove cookies from the correct path-->
+        <base href="/">
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" id="responsive-viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+
+        <link rel="stylesheet" href="https://static.werally.com/1.106.0/styles/sassified/vendors.9207801c.css">
+
+        <link rel="stylesheet" href="https://static.werally.com/1.106.0/styles/sassified/rally.571593f0.css">
+
+        <!--[if IE 8]><link rel="stylesheet" type="text/css" href="https://static.werally.com/1.106.0/styles/sassified/ie8.css" /><![endif]-->
+        <!--[if IE 9]><link rel="stylesheet" type="text/css" href="https://static.werally.com/1.106.0/styles/sassified/ie9.css" /><![endif]-->
+
+        <link type="image/png" rel="icon" href="/img/favicon.ico"/>
+
+    </head>
+
+    <body ng-app="robo" setup-viewport focus-indicator
+            ng-class="{
+            'rightSide opened':showMobileMenu,
+            'bigFooter': footer.disclaimer,
+            'focusIndicatorOff': !isTabButtonActive
+            }">
+        <div ui-view aria-hidden="{{hideBodyContent}}"></div>
+
+        <!-- cannot be concated -->
+        <script src="//maps.googleapis.com/maps/api/js?libraries=geometry&key=AIzaSyAV5mvvPx4i8sXHi1DEgZOC5YcO-nQ1hTY&sensor=false"></script>
+
+        <!--[if lte IE 9]>
+        <script src="https://static.werally.com/1.106.0/scripts/ie89.ae3c8fbd.js"></script>
+        <![endif]-->
+
+        <script type="text/javascript">
+            var BROWSER_IS;
+            var userAgent = navigator.userAgent.toLowerCase();
+
+            if ( userAgent.indexOf('safari') >= 0 && userAgent.indexOf('chrome') < 0 ) BROWSER_IS = 'safari';
+            else if ( userAgent.indexOf('msie 1') >= 0 ) BROWSER_IS = 'ie10'; // IE10+
+            else if ( userAgent.indexOf('msie 9') >= 0 ) BROWSER_IS = 'ie9';
+            else if ( userAgent.indexOf('msie') >= 0 ) {
+                var desiredLocation = window.location;
+                window.location = '/browser-not-supported?url=' + desiredLocation;
+            }
+
+            // In IE8 and below, if we leave a console.log in code the browser will give an error and Javascript will
+            // stop executing from that point on.  Make a fake console.log to just swallow the message
+            if (!window.console) {
+                window.console = {
+                    error: function(text) {},
+                    log: function(text) {},
+                    warn: function(text) {}
+                };
+            }
+        </script>
+
+        <!-- cdnresultblock -->
+
+        <script src="https://static.werally.com/1.106.0/scripts/bower.vendors.dc240e3e.js"></script>
+
+        <script src="https://static.werally.com/1.106.0/scripts/modernizr.36406901.js"></script>
+
+        <script src="https://static.werally.com/1.106.0/scripts/index.app.f02d89bc.js"></script>
+
+        <script type="text/javascript">
+            // Asynchronously load Silverpop, so we don't block the site from loading when their server is down.
+            $.Rally.loadSilverpopAnalytics();
+
+            $('document').ready( function() {
+                // Stop all button interaction if it has the class, 'disabled'
+                // If any placeholders (IE8)
+                $(document).on('click', '.disabled', function(){
+                    return false;
+                }).on('click', 'input[type="submit"]', function(){
+                    var $submit = $(this),
+                            $inputs = $submit.parents('form').first().find('input[placeholder], textarea[placeholder]');
+
+                    $inputs.each(function(index, item){
+                        var $item = $(item),
+                                val = $item.val(),
+                                placeholder = $item.attr('placeholder');
+
+                        if (val === placeholder) {
+                            $item.val('');
+                        }
+                    });
+                    return true;
+                });
+            });
+
+            // Setup Angular Mini Profile
+            angular.element(document).ready(function(){
+                $.Rally.setupMiniProfile('.userName:not(.ng-scope)');
+            });
+
+            // Setup dashboard tabs
+            $.Rally.setupDashboardTabs();
+        </script>
+    <!-- CDN JS Local Fallback -->
+<script>
+window.angular || document.write('' +
+'<script src="/scripts/ie89.ae3c8fbd.js"><\/script>' +
+'<script src="/scripts/bower.vendors.dc240e3e.js"><\/script>' +
+'<script src="/scripts/modernizr.36406901.js"><\/script>' +
+'<script src="/scripts/index.app.f02d89bc.js"><\/script>'
+);
+</script>
+<script type="text/javascript">
+//<![CDATA[
+(function() {
+var _analytics_scr = document.createElement('script');
+_analytics_scr.type = 'text/javascript'; _analytics_scr.async = true; _analytics_scr.src = '/_Incapsula_Resource?SWJIYLWA=2977d8d74f63d7f8fedbea018b7a1d05&ns=1';
+var _analytics_elem = document.getElementsByTagName('script')[0]; _analytics_elem.parentNode.insertBefore(_analytics_scr, _analytics_elem);
+})();
+// ]]>
+</script></body>
+</html>

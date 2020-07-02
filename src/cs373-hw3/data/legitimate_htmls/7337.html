@@ -1,0 +1,663 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Acceso a la banca online de Ibercaja</title>
+<link href="../css/kexboard.css" rel="stylesheet" type="text/css">
+<link href="../css/keyboard.css" rel="stylesheet" type="text/css">
+<link href="../css/fonts_nuevo.css" rel="stylesheet" type="text/css">
+<link href="../css/style_nuevo.css" rel="stylesheet" type="text/css">
+<script src="../css/SpryAssets/SpryTabbedPanels.js" type="text/javascript"></script>
+<link href="../css/SpryAssets/SpryTabbedPanels.css" rel="stylesheet" type="text/css">
+<script src="../js/keyboard.js" type="text/javascript"></script>
+<link rel="shortcut icon" href="../favicon.ico">
+<script>
+
+	if (top.document.location.href != document.location.href){
+		top.document.location.href = document.location.href; 
+	}
+	
+	var cajaSeleccionada;
+	var altura_inicial;
+	//altura_inicial = document.body.scrollHeight;	
+	
+	function createPopup(sU, iW, iH, sS, sN) {
+	  if (!sN) sN = 'NewWindow';
+	  if (!sS) sS = 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes';
+	  if (!iW) iW = 700;
+	  if (!iH) iH = 400;
+	  sS += ',width=' + iW + ', height=' + iH;
+	  sS += ',left=' + (screen.width - iW) / 2 + ', top=' + (screen.height - iH) / 2;
+	  window.open(sU, sN, sS);
+
+}
+function cambiar_estilo(pestana){
+	    if (pestana == "ibe") {
+	        pestana = "ibd"
+	    }
+	switch (pestana) {
+	    case 'ibd':
+	        document.getElementById('capaibd').className = "TabbedPanelsTabComun TabbedPanelsTabSelectedStart";
+	        document.getElementById('capaibdend').className = "TabbedPanelsTabSelectedEnd";
+	        document.getElementById('capatarjetas').className = "TabbedPanelsTabComun";
+	        document.getElementById('capadnie').className = "TabbedPanelsTabComun";
+	        document.getElementById('capatarjetasend').className = "";
+	        document.getElementById('capadnieend').className = "";
+	        document.getElementById('formularioibd').style.display = "block";
+	        document.getElementById('formulariotarjetas').style.display = "none";
+	        document.getElementById('formulariodnie').style.display = "none";
+	        document.getElementById('formularioibd').className = "TabbedPanelsContentVisible";
+	        document.getElementById('codeibd').focus();
+
+	        if ("" != '') {
+	            document.getElementById('pibd').style.color = "#0065b0";
+	            document.getElementById('ptar').style.color = "#888888";
+	            document.getElementById('pdnie').style.color = "#888888";
+	        }
+
+	        switch ("") {
+	            case '1185':
+	                return TestModalErroresCaja3('../html/AyudaAcceso.html', 'Ayuda acceso', 700, 250);
+	                break;
+	            case '1186':
+	                return TestModalErroresCaja3('../html/AyudaAcceso.html', 'Ayuda acceso', 700, 250);
+	                break;
+	        }
+	        break;
+
+        case 'tar':
+            
+                    document.getElementById('capatarjetas').className = "TabbedPanelsTabComun TabbedPanelsTabSelectedStart";                    
+                    document.getElementById('capatarjetasend').className = "TabbedPanelsTabSelectedEnd";
+                    document.getElementById('capaibd').className = "TabbedPanelsTabComun";
+                    document.getElementById('capadnie').className = "TabbedPanelsTabComun";
+                    document.getElementById('capaibdend').className = "";
+                    document.getElementById('capadnieend').className = "";
+                    document.getElementById('formularioibd').style.display = "none";
+                    document.getElementById('formulariotarjetas').style.display = "block";
+                    document.getElementById('formulariotarjetas').className = "TabbedPanelsContentVisible";
+                    document.getElementById('formulariodnie').style.display = "none";
+                    document.getElementById('codetar').focus();
+
+                    if ("" != '') {
+                        document.getElementById('pibd').style.color = "#888888";
+                        document.getElementById('ptar').style.color = "#0065b0";
+                        document.getElementById('pdnie').style.color = "#888888";            
+                    }
+                    break;
+
+        case 'dnie':
+                    
+			        document.getElementById('capatarjetas').className = "TabbedPanelsTabComun";
+			        document.getElementById('capaibd').className = "TabbedPanelsTabComun";
+			        document.getElementById('capatarjetasend').className = "";
+			        document.getElementById('capaibdend').className = "";
+			        document.getElementById('capadnie').className = "TabbedPanelsTabComun TabbedPanelsTabSelectedStart";
+			        document.getElementById('capadnieend').className = "TabbedPanelsTabSelectedEnd";
+			        document.getElementById('mensajeInterior').innerHTML = '';
+			        document.getElementById('formulariodnie').className = "TabbedPanelsContentVisible";
+			        document.getElementById('capadnie').className = "TabbedPanelsTabComun TabbedPanelsTabSelectedStart";
+			        document.getElementById('capadnieend').className = "TabbedPanelsTabSelectedEnd";
+			        document.getElementById('mensajeInterior').innerHTML = '';
+
+			        if ("" != '') {
+			            document.getElementById('pibd').style.color = "#888888";
+			            document.getElementById('ptar').style.color = "#888888";
+			            document.getElementById('pdnie').style.color = "#0065b0";
+			        }
+			        
+			        break;
+	        }		
+}	
+	function dnieinvoke () {
+		document.getElementById('advertencia').style.visibility  = "hidden"
+		var nKey
+		var ieKey
+		
+		if (nKey == 13 || ieKey == 13) 
+		{
+			nKey = 0; 
+			ieKey = 0;
+			return false;
+		}		
+		mensajeCambiar(1,'Accediendo a la lista de certificados ...');
+	   //Cargamos el Websigner en el iFrame
+	    document.getElementById("webSigner").src = "login2.asp";
+	    return false;
+	}
+	function visualizar_texto(){
+		document.getElementById('advertencia').style.visibility  = "visible"
+	}
+	function mensajeCambiar (estado,texto){
+	    var capa = document.getElementById("mensajeExterior");
+	    var capa2 = document.getElementById("mensajeInterior");
+	    if (capa != null)
+	    {
+	        if (estado==0){capa.className="oculta";}
+	        else capa.className="mensaje";
+	        
+	        if (texto) capa2.innerHTML=texto;
+	    }        
+	}
+	function Rellenarcaja(pstrtecla,pstrnombrecaja){
+		switch(pstrtecla)
+		{
+			case "borrar":
+				var clave;
+				
+				switch (cajaSeleccionada){
+				
+					case "codeibd":
+						document.Formulario.codeibd.focus();
+						clave=document.Formulario.codeibd.value;
+						document.Formulario.codeibd.value = clave.substring(0,clave.length-1);
+						break;
+					case "claveibd":
+						document.Formulario.claveibd.focus();
+						clave=document.Formulario.claveibd.value;
+						document.Formulario.claveibd.value = clave.substring(0,clave.length-1);
+						break;
+					case "codetar":
+						document.Formulario.codetar.focus();
+						clave=document.Formulario.codetar.value;
+						document.Formulario.codetar.value = clave.substring(0,clave.length-1);
+						break;
+					case "clavetar":
+						document.Formulario.clavetar.focus();
+						clave=document.Formulario.clavetar.value;
+						document.Formulario.clavetar.value = clave.substring(0,clave.length-1);
+						break;
+				}
+				/*if(pstrnombrecaja == "ibd"){
+					clave=document.Formulario.claveibd.value;
+					document.Formulario.claveibd.value = clave.substring(0,clave.length-1);		
+				}else{
+					clave=document.Formulario.clavetar.value
+					document.Formulario.clavetar.value = clave.substring(0,clave.length-1);		
+				}*/
+			  break;			
+			default:
+				switch (cajaSeleccionada){
+				
+					case "codeibd":
+						document.Formulario.codeibd.focus();
+						document.Formulario.codeibd.value=document.Formulario.codeibd.value + pstrtecla;
+						break;
+					case "claveibd":
+						document.Formulario.claveibd.focus();
+						document.Formulario.claveibd.value=document.Formulario.claveibd.value + pstrtecla;
+						break;
+					case "codetar":
+						document.Formulario.codetar.focus();
+						document.Formulario.codetar.value=document.Formulario.codetar.value + pstrtecla;
+						break;
+					case "clavetar":
+						document.Formulario.clavetar.focus();
+						document.Formulario.clavetar.value=document.Formulario.clavetar.value + pstrtecla;
+						break;
+				}
+				
+				/*if(pstrnombrecaja == "ibd"){
+					document.Formulario.claveibd.value=document.Formulario.claveibd.value + pstrtecla;
+				}else{
+					document.Formulario.clavetar.value=document.Formulario.clavetar.value + pstrtecla;
+				}*/
+		}		
+	}
+	function Login(pestaniaseleccionada){
+		createKeyboards();		
+		switch(pestaniaseleccionada)
+		{
+			case "ibd":
+				document.Formulario.f1.value=document.Formulario.claveibd.value;
+				document.Formulario.codidentific.value=document.Formulario.codeibd.value;	
+			    break;			
+			case "tar":
+				document.Formulario.PIN.value=document.Formulario.clavetar.value;
+				document.Formulario.CODIDENTIFIC2.value=document.Formulario.codetar.value;
+				/******/
+				document.Formulario.IdOperacion.value = "8000_0"
+			    document.Formulario.Canal.value = "TAR"
+			    break;
+        }
+        document.Formulario.submit();
+	}
+	
+	function visualizar_textoDNIE(){	
+			
+		document.getElementById('mensajeExterior').className="mensaje";
+    }
+
+	function getDocHeight() {
+    var D = document;
+    return Math.max(
+        Math.max(D.body.scrollHeight, D.documentElement.scrollHeight),
+        Math.max(D.body.offsetHeight, D.documentElement.offsetHeight),
+        Math.max(D.body.clientHeight, D.documentElement.clientHeight)
+    );
+}
+	
+	function ajustaPantalla()
+	{
+		document.body.style.height = "690";
+	   //Para explorer no ponemos esto ya que él pone por defecto scroll si se necesita,en cambio en el resto
+	   //de navegadores si hay que ponerlo porque sino se corta la pantalla. 
+	   var navegador = navigator.appName 
+	   if (navegador != "Microsoft Internet Explorer"){
+			document.body.style.overflow = "auto";
+	   }
+		
+		document.getElementById("codeibd").focus();
+		var capaPrincipal = document.getElementById('all');
+		documentHeight = getDocHeight();
+		//alert('capaPrincipal.scrollHeight ' + capaPrincipal.scrollHeight);
+		//var topMargin = Math.floor((document.documentElement.clientHeight - capaPrincipal.scrollHeight) / 2);	
+		var topMargin = Math.floor((documentHeight - capaPrincipal.scrollHeight) / 2);	
+		
+		document.getElementById('all').style.marginTop=(topMargin+'px');
+
+		//Borramos los datos en el caso de que el usuario haya seleccionado en el navegador que guarde sus datos.
+		//user_pref ("wallet.crypto.autocompleteoverride", true);//Para Mozilla.
+		document.Formulario.codeibd.value="";
+		document.Formulario.claveibd.value="";
+		document.Formulario.codetar.value="";
+		document.Formulario.clavetar.value = "";
+		document.getElementById("codeibd").setAttribute("autocomplete", "off");
+		document.getElementById("claveibd").setAttribute("autocomplete", "off");
+		document.getElementById("codetar").setAttribute("autocomplete", "off");
+		document.getElementById("clavetar").setAttribute("autocomplete", "off");
+	}
+	function TestModal(direccionurl,titulo,anchura) {
+		//document.getElementById("menuIzqServicio").style.display="none";
+		 var url = direccionurl;
+		 var iframe = $('<iframe   src="' + url + '" frameborder="0" />');
+	         iframe.dialog({autoOpen: true,
+	                        title: titulo,
+	                        width: anchura,
+	                        height: 600,
+	                        modal: true,
+	                        resizable: false
+	       }).width(anchura - 12).height(500 - 15);
+	 }
+	 function TestModalSinAspa(direccionurl, titulo, anchura) {
+       var url = direccionurl;
+       var anchuraiframe = anchura - 40;
+       var iframe = $('<iframe id="TestModalSinAspa" name="TestModalSinAspa" src="' + url + '" frameborder="0" scrolling="no" height="230" width="' + anchuraiframe + '"></iframe>');
+       iframe.dialog({ autoOpen: true,
+           title: titulo,
+           width: anchura,
+           height: 250,
+           modal: true,
+           resizable: false
+       }).width(anchura - 12).height(250 - 15).parent('.ui-dialog').find('.ui-dialog-titlebar-close').hide();
+   }
+   function TestModalErroresCaja3(direccionurl, titulo, anchura, altura) {
+       var url = direccionurl;
+       var anchuraiframe = anchura - 40;
+       var iframe = $('<iframe id="TestModalSinAspa" name="TestModalSinAspa" src="' + url + '" frameborder="0" scrolling="no" height="230" width="' + anchuraiframe + '"></iframe>');
+       iframe.dialog({ autoOpen: true,
+           title: titulo,
+           width: anchura,
+           height: altura,
+           modal: true,
+           resizable: false
+       }).width(anchura -12).height(altura);
+   }
+	/* 
+	$(document).ready(function() {
+                $('#FormDialog').dialog({ bgiframe: true, width: 830, height: 800, modal: true, autoOpen: false, position: 'center' });  
+	});
+	*/
+	 
+	function closeCapaTelefonosDeInteres(){
+		document.getElementById("textocapa").style.display="";
+	    $("#divTelefonosDeInteres").css('display','none');
+	}
+	function showCapaTarifas(url){
+	   $("#simplemodal-container").css('display','');
+	   $("#simplemodal-overlay").css('display','');
+	   document.location.href = "#";
+    }
+	function closeCapaTarifas(){
+	    $("#simplemodal-container").css('display','none');
+	    $("#simplemodal-overlay").css('display','none');
+	    document.location.href = "#";
+	}
+	function stopRKey(evt) { 
+	  var evt = (evt) ? evt : ((event) ? event : null); 
+	  var node = (evt.target) ? evt.target : ((evt.srcElement) ? evt.srcElement : null);
+	  if ((evt.keyCode == 13) && ((node.type == "text") || (node.type == "password"))) { return false; }
+
+    }
+    document.onkeypress = stopRKey;
+</script>
+<script src="../js/Jquery.min.Js" type="text/javascript"></script>
+<script src="../js/Jquery-ui.min.Js" type="text/javascript"></script>
+<link rel="stylesheet" href="../css/jquery-ui.css" type="text/css" media="all" />
+<script src="../js/oficinas.js" type="text/javascript"></script>
+</head>
+<body style="background-color:transparent;" scroll="auto" onload="createKeyboards();ajustaPantalla();">
+<form id="Formulario" name="Formulario" method="post" autocomplete="off" action="Modulodirector.Asp">
+
+		<input type=hidden name=maquina value="-">
+	
+<input type="hidden" name=IdOperacion value="0001_0">
+<input type="hidden" name=Dispositivo value="INTR">
+<input type="hidden" name=Canal value="IBE">
+<input type="hidden" name=Idioma value="ES">
+<input type="hidden" name=Entidad value="2085">
+<input type="hidden" name=Entorno value="ID"><!-- Parametros del login -->
+<input type="hidden" name=ValidacionPin value="S">	
+<input type="hidden" name=pagina value="ID"> <!-- Parametros necesarios para implementar los pagos desde una web externa -->
+<input type="hidden" name="EsExterno" value="0">
+<input type="hidden" name="CodigoExterno" value="">
+<input type="hidden" name="DatosExternos" value="">
+<input type="hidden" name="ID" value="317911197">
+<input type="hidden" name="PIN" >
+<input type="hidden" name="CODIDENTIFIC2" >
+<input type="hidden" name="f1" id="f1">
+<input type="hidden" name="codidentific" id="codidentific">
+<input type="hidden" name="dato1" id="dato1">
+	<!-- all 997 ancho -->
+<center>
+	<div id="all">
+	<!-- ancho --><div id="ancho">
+			<!-- cabecera --><div id="cabecera">
+				<!-- cabecera izqda --><div id="cableft">
+					<div id="logo">
+						<a href="/ibercaja/"><img src="../images/logo_directo2.png" alt=""/></a>
+					</div>
+
+					<center><div id="fecha" name="fecha">23 Mayo 2016</div></center>
+
+				</div><!-- /cabecera izqda -->
+				<!-- cabecera central --><div id="cabright">
+					<div id="slogan"><a href="#"><img src="../images/pajarico.png" alt="" height="35px"/></div>
+				</div><!-- /cabecera central -->
+				<!-- cabecera dcha -->
+				<div id="cabrightderecha">
+					<div id="sloganderecha" style="*padding-top:24px;"><img src="../images/reloj.png" alt="" /><!--<img src="../imagenes/NuevoFormato/slogan-icon-1.gif" alt="" />--><!--<span>24 Horas por Internet</span></a>--></div>
+				</div><!-- /cabecera dcha -->
+
+			</div><!-- /cabecera -->
+
+			<!-- menutop --><div id="menutop"><div id="menutop">
+</div></div><!-- /menutop -->
+
+			<!-- centro --><div id="centrointerior">
+
+				<!-- columna izqda --><div id="colizqda"><div id="colizqdainnershadow">
+		<div id="colizqdainner">
+			<div class="banner205">
+			<!--<a href="interior.php">--><img src="../images/bann1cortado.png" style="padding-top:5px;" usemap="#map"/><!--</a>-->
+			<map name="map">
+				<area shape="rect" coords="7,48,168,61" href="javascript:createPopup('https://www.ibercaja.es/forms/contratacionIBDP/producto/contratacion-IBDP/contratacion/?home=1', 1050, 800)" />
+				<area shape="rect" coords="6,80,185,105" href="javascript:createPopup('../Html/IncidenciasClaves.html', 700, 500)" />
+				<!--<area shape="rect" coords="126,191,174,204" href="javascript:createPopup('https://www.ibercaja.es/formularios/ibercajadirecto/solicitud_contacta_ibd.php', 650, 400)" />
+				<area shape="rect" coords="124,209,170,224" href="javascript:createPopup('https://www.ibercaja.es/formularios/ibercajadirecto/solicitud_contacta_ibd.php', 650, 400)" />-->
+				<area shape="rect" coords="6,273,176,261" href="javascript:createPopup('https://www.ibercaja.es/particulares/recomendaciones-seguridad/',1024,768)" />
+				<area shape="rect" coords="3,336,90,366" href="javascript:createPopup('https://play.google.com/store/apps/details?id=es.ibercaja.ibercajaapp',1024,768)" />
+				<area shape="rect" coords="93,336,182,366" href="javascript:createPopup('https://itunes.apple.com/us/app/ibercaja/id515972019?l=es&ls=1&mt=8',1024,768)" />
+				<!--<area shape="rect" coords="36,345,159,408" href="javascript:createPopup('https://seal.verisign.com/getseal?host_name=www1.ibercajadirecto.com&amp;size=M&amp;use_flash=YES&amp;use_transparent=NO&amp;lang=es', 650, 600)" />-->
+			</map>	
+			
+			<!--Esta imagen hay que comentarla cuando se suba a real porque es para simular el verisign en desarrollo/pruebas-->
+			<!--<img src="../images/verisign_desarrollo.jpg"/>-->
+			<script src="https://seal.verisign.com/getseal?host_name=www1.ibercajadirecto.com&amp;size=M&amp;use_flash=YES&amp;use_transparent=NO&amp;lang=es"></script>		
+			</div>
+				<div id="menuIzqServicio" style="z-index:1000;">
+  				<a href="#" id="textocapa" class="main">ESTAMOS A<br>SU SERVICIO</a>
+				<div id="caja" name="caja" class="caja" style="z-index:100; position:relative;">
+					<div style="width:130px;height:120px;float:left; border-right:1px dotted #cccccc;padding:8px;text-align:center;">
+					  <img src="../images/btFaq.png" alt=""><br>
+					  <a href="javascript:createPopup('https://www.ibercaja.es/particulares/preguntas-frecuentes/ibercaja-directo/',1050, 800);" class="underline">PREGUNTAS FRECUENTES</a><br/>
+					  Ibercaja Directo,<br>financiación,<br>productos...
+					</div>
+					<div style="width:130px;height:120px;float:left; border-right:1px dotted #cccccc;padding:8px;text-align:center;">
+					  <img src="../images/btInfo.png" alt=""><br>
+					  <a href="javascript:createPopup('https://www.ibercaja.es/particulares/preguntas-frecuentes/lo-mas-consultado/',1050, 800);" class="underline">RESPONDEMOS A SUS CONSULTAS</a><br/>
+					  Productos,<br>promociones, Ibercaja<br>Directo...
+					</div>
+					<div style="width:130px;height:120px;float:left; border-right:1px dotted #cccccc;padding:8px;text-align:center;">
+					  <img src="../images/btTelefono.png" alt=""><br>
+					  <a href="javascript:createPopup('https://www.ibercaja.es/particulares/contactenos/telefonos-interes/',1050, 800);" class="underline">902 11 12 21</a><br/>
+					  Consulte otros<br>teléfonos de interés
+					</div>
+					<div style="width:110px;height:120px;float:left;padding:8px;text-align:center;">
+					  <img src="../images/btLocation.png" alt=""><br>
+					  <a href="javascript:createPopup('https://www.ibercaja.es/oficinas/',1050, 800);" class="underline">RED DE OFICINAS Y CAJEROS</a><br/>
+					</div>
+					<div style="clear:both;"></div>
+					<div style="clear:both;"></div>
+					<!--MENÚ ANTERIOR-->
+					<!--<div style="width:180px;height:120px;float:left; border-right:1px dotted #cccccc;padding:4px;text-align:center;">
+					  <img src="../images/icoAtencionCliente_home.png" alt=""><br>
+					  <a href="javascript:createPopup('https://www.ibercaja.es/forms/informacionDirecto/',1050, 800);" class="underline">Consultas Ibercaja Directo</a><br/>
+					  Particulares<br>Negocios
+					</div>
+					<div style="width:180px;height:120px;float:left; border-right:1px dotted #cccccc;padding:4px;text-align:center;">
+					  <img src="../images/icoTelefono.png" alt=""><br>
+					  <a href="javascript:createPopup('https://www.ibercaja.es/particulares/contactenos/telefonos-interes/',1050, 800);" class="underline">Teléfonos de Interés</a><br>
+
+					  Información General<br>Tarjetas<br>Banca a Distancia<br>Otros
+					</div>
+					<div style="width:180px;height:120px;float:left;padding:4px;text-align:center;">
+					  <img src="../images/icoRedCajeros.png" alt="" /><br/>
+					  <a href="javascript:createPopup('https://www.ibercaja.es/oficinas/index.php',1050, 800);" class="underline">Red de Cajeros y Oficinas</a><br/>
+					  Su oficina más cercana<br/>El teléfono de su oficina<br/>Cajeros con venta de entradas
+					</div>-->
+				</div>
+	       </div>
+			<div id="FormDialog" title="Formulario de Solicitud" style="z-index:9999; display:none; height:550px; overflow: hidden; margin:0px; padding:0px; border:0px; text-align:right;">
+				<iframe id="IFrameFormDialog" src="#" scrolling="yes" allowtransparency="true" marginwidth="0" marginheight="0" frameborder="0" vspace="0" hspace="0" style="border-top-width:0px;border-top:#ffffff 1px solid;z-index:9999; overflow:auto; width:100%; height:100%;  margin:0px; padding:0px;"></iframe>
+			</div> 
+			<div id="divTelefonosDeInteres" style="width:100%; height:100%; position:absolute; top: 0px; left:0px; padding-top:30px; text-align:center; z-index:9999; display:none; background-color:Transparent; text-align: center;">
+			    <div style="width: 665px; display: block; margin: 0 auto; position: relative; text-align: left;" >
+			        <img src="../images/close_button.png" alt="" onclick="closeCapaTelefonosDeInteres();" style="display: block; top: 36px; left: 626px; position: absolute; cursor:pointer;"/>
+			        <div id="divBlancoTlf" style="display:block; width:500px; height:50px; position:absolute; background-color:white;top:440px;left:75px;"></div>
+			        <iframe id="IFrameTelefonosDeInteres" src="#" allowtransparency="true" scrolling="no" marginwidth="0" marginheight="0" frameborder="0" vspace="0" hspace="0" style="background-color:Transparent; overflow:hidden; width:665px; height:524px;  margin:0px; padding:0px; "></iframe>
+			    </div>
+			    <!--allowtransparency="true"-->
+			</div>
+			<div id="divCajerosYOficinas" style="width:100%;  height:550px;*height:700px; position:absolute; top: 0px; left:0px; padding-top:-10px; text-align:center; z-index:9999; display:none; background-color:Transparent !important;">
+	            <img src="../images/close_button2.png" onclick="integracion.oficinas.close()" style="cursor:pointer;position:absolute;padding-left:700px;padding-top:55px;" />
+	            <iframe id="IFrameCajerosYOficinas" allowtransparency="true" scrolling="no" marginwidth="0" marginheight="0" frameborder="0" vspace="0" hspace="0" style="background-color:Transparent !important; overflow:hidden; width:850px; height:820px;  margin:0px; padding:0px;"></iframe>    
+			</div>
+		<!--<script src="https://seal.verisign.com/getseal?host_name=www1.ibercajadirecto.com&amp;size=M&amp;use_flash=YES&amp;use_transparent=NO&amp;lang=es"></script>-->
+</div>
+
+</div></div><!-- /columna izqda -->
+			<img src="../images/sombralat.png" class="sombramenu"/>
+			<!-- dcha --><div id="dcha">
+					<!-- acceso --><div id="acceso">
+						
+<!-- acceso included -->
+<div id="TabbedPanels1" class="TabbedPanels">
+  <ul class="TabbedPanelsTabGroup" >
+    <li class="TabbedPanelsTab" tabindex="0" onclick="javascript:cambiar_estilo('ibd');">
+		<div id="capaibd" class="TabbedPanelsTabComun TabbedPanelsTabSelectedStart">
+            <a id="apartados" onclick="javascript:visualizar_texto('ibd');" href="#"><p id="pibd">Acceso <br/><font size="2px">Ibercaja Directo</font></p></a> 
+        </div>
+        <div id="capaibdend" class="TabbedPanelsTabSelectedEnd" style="width:6px;display:block;">
+    </li>
+    <li class="TabbedPanelsTab" tabindex="0" onclick="javascript:cambiar_estilo('tar');">
+		<div id="capatarjetas" class="TabbedPanelsTabComun">
+            <a id="apartados" onclick="javascript:visualizar_texto('tar');" href="#"><p id="ptar">Acceso<br/><font size="2px">Tarjetas</font></p></a> 
+        </div>
+       <div id="capatarjetasend" class="" style="width:6px;display:block;">
+     </li>
+   <li class="TabbedPanelsTab" tabindex="0" onclick="javascript:cambiar_estilo('dnie');">
+    <div id="capadnie" class="TabbedPanelsTabComun">
+            <a id="apartados" onclick="javascript:visualizar_textoDNIE();" href="#"><p id="pdnie">Acceso <br/><font size="2px">DNI-e</font></p></a>
+        </div>
+		<div id="capadnieend" class="" style="width:6px;display:block;">
+     </li>
+  </ul>
+  <div class="TabbedPanelsContentGroup">
+    <!-- primer panel --><div id="formularioibd"><div class="TabbedPanelsContent">
+		<!-- sombrapanel --><div class="sombrapanel">
+		<!-- fondopanel --><div class="fondopanel">
+			<div>
+				<div id="accesoform" style="padding:20px;*padding-bottom:0px;*padding-left:20px;*padding-right:0px;*padding-top:15px;height:95px;">
+					<!--<form name="form1" method="post" action="">-->
+						  <div class="label" style="float:left;width:35%;*width:40%;padding-top:10px;*padding-top:18px;">
+								  <p>C&oacute;digo Identificaci&oacute;n Usuario <br/><br/>
+									Clave de Acceso </p>
+						  </div>
+						  <div class="inpu" style="float:left;width:49%;*width:40%;text-align:left;padding-left:36px;*padding-left:6px;">
+						  <br/>
+								<div style="padding-right:15px;"><input class="biginput" type="text" name="codeibd" id="codeibd" autocomplete="off" onfocus='determinarFocus("codeibd")' onkeypress="javascript: stopRKey();";></div>
+								<div style="padding-right:15px;"><input type="password" class="biginputpasslogin" name="claveibd" id="claveibd" autocomplete="off" onfocus='determinarFocus("claveibd")' onkeypress="javascript: stopRKey();";></div>
+						  </div>
+						  <div id="ayudayboton" style="width:89%">
+							
+							<p><a href="javascript:Login('ibd')" id="entraribd" name="entraribd" class="boton">&nbsp</a></p>
+							<!--<p><A onclick="return createPopup('../Html/Openclave.html', 700, 300);" href="#" >Ayuda acceso</a></p>-->
+							<p>
+								<a id="ayudaacceso" style="font-size:10px;" href="javascript:createPopup('../html/AyudaAcceso.html', 700, 250)">Ayuda acceso</a><br>
+								<a id="ayudaacceso" style="font-size:10px;" href="javascript:createPopup('../Html/IncidenciasClaves.html', 700, 500)">Incidencias claves</a>
+							</p>
+							
+						</div>
+					<!--</form>-->
+				</div>		
+				<center>
+				<div class="keyboard">
+				    <div id="keys_blocks_ibd" class="keys_blocks">
+				    </div>
+				</div>
+			</div>
+			<div class="clr"></div> </div><!-- /fondopanel -->
+			<div class="clr"></div> </div><!-- /sombrapanel -->
+			<div class="clr"></div>
+    </div></div><!-- /primer panel -->
+    <!-- primer panel --><div id="formulariotarjetas"><div class="TabbedPanelsContent">
+		<!-- sombrapanel --><div class="sombrapanel">
+		<!-- fondopanel --><div class="fondopanel">
+			<div>
+				<div id="accesoform" style="padding:20px;height:95px;">
+					<!--<form name="form1" method="post" action="">-->
+						  <div class="label" style="float:left;width:40%;*width:43%;padding-top:10px;*padding-top:14px;">
+								  <p>D.N.I (sin letra) <br/><br/>
+									PIN Tarjeta o Clave de acceso</p>
+						  </div>
+						  <div class="inputarjetas" style="float:left;width:49%;*width:40%;text-align:left;">
+								<div style="padding-right:15px;*padding-right:10px;"><input class="biginput" type="text" name="codetar" id="codetar" autocomplete="off" onfocus='determinarFocus("codetar")' onkeypress="javascript: stopRKey();";></div>
+								<div style="padding-right:15px;*padding-right:10px;"><input type="password" class="biginputpasslogin" name="clavetar" id="clavetar" autocomplete="off" onfocus='determinarFocus("clavetar")' onkeypress="javascript: stopRKey();";></div>
+							</div>
+							<div id="ayudaybotontar" style="width:89%">
+								<p><a href="javascript:Login('tar')" id="entrartar" name="entrartar" class="boton" >&nbsp</a></p>
+								<p><a id="ayudaaccesotar" href="javascript:createPopup('../html/DniPin.html',700,350)" style="font-size:10px;">Ayuda acceso</a></p>
+						  </div>
+					<!--</form>-->
+				</div>
+				<div class="clr"></div>
+				<div class="keyboardtar">
+				    <div id="keys_blocks_tar" class="keys_blocks">
+				    </div>
+				</div>
+			</div>
+			<!--<div class="clr"></div>--> </div><!-- /fondopanel -->
+			<div class="clr"></div> </div><!-- /sombrapanel -->
+			<div class="clr"></div>
+    </div></div><!-- /primer panel -->
+    <div id="formulariodnie"><div class="TabbedPanelsContent">
+		<!-- sombrapanel --><div class="sombrapanelelectronico">
+			<!-- fondopanel --><div class="fondopanel">
+						<div>
+							
+							<div class="clr"></div>
+				<div id="keyboard2"><!-- teclado include -->
+				<br/>
+				<br/>
+				<br/>
+				<div class="oculta" id="mensajeExterior">
+					<table border = "0"> 
+		        			  <tr>
+								<td align="left" valign="top" colspan="2">
+		        				    <A style="font-size: 10px;" href="#" onClick="return dnieinvoke()">
+		        				    <b><u>Acceso con DNI electrónico.</u></b></a>
+									<!--<div class="label" style="float:left;padding-top:10px;*padding-top:18px;">
+		        				    Sólo clientes dados de alta en Ibercaja Directo</div>-->
+		        			    	</td>
+		        			  </tr>
+								<tr><td class="link" align="left">Sólo clientes dados de alta en Ibercaja Directo</td></tr>
+  		        			  <tr>
+  		        			    <td align="left" valign="top" >
+
+									
+								<A style="font-size: 10px;" href="javascript:createPopup('../html/DNIelectronico.html', 850, 750);"><B><u>¿Cómo funciona?</u></B></A>
+								</td>
+								<td style="padding:0px" align="left" valign="top"><input type="image" src = "../imagenes/EnlaceEDNI.jpg" onClick="return dnieinvoke()"></td>
+		        			    
+		        			  </tr>
+		        			</table>
+				<div class="gris"><div class="mensajeint" id="mensajeInterior"></div></div>
+</div>
+<!-- /teclado include -->
+</div>
+						</div>
+			 </div><!-- /fondopanel -->
+			 </div><!-- /sombrapanel -->
+			 </br>
+    </div></div><!-- /primer panel -->
+</div></div>
+<!-- /acceso included -->
+						<iframe id="webSigner" name="webSigner" style="border:0;" height="0" width="0" src="../html/blanco.html"></iframe>
+						<div id="advertencia" style="position:relative;top:-9px;" name="advertencia"><p>Puede utilizar el teclado de su ordenador o el teclado virtual de esta p&aacute;gina.</p></div>
+						</div>
+</div><!-- /acceso -->
+				</div><!-- /dcha -->			
+				<!-- pie --><div id="pielogin"><div id="pie1"><!-- include pie.php -->
+				<br/>
+	<div class="navegadores">
+		<a href="https://www.ibercaja.es/cgcp/" target="_blank">C.G.C. PROTOCOLIZADAS</a> - <a href="javascript:showCapaTarifas(0);">TARIFAS</a> - <a href="https://www3.ibercajadirecto.com/htmanuncio/nm025738a.pdf" target="_blank">TABLÓN DE ANUNCIOS</a> - <a href="https://www.ibercaja.es/particulares/ayuda/condiciones-de-uso/" target="_blank">AVISO LEGAL</a> - <a href="https://www.ibercaja.es/forms/revocacion/?home=1" target="_blank">REVOCACIÓN</a> - <a href="https://www.ibercaja.es/particulares/contactenos/atencion-cliente/" target="_blank">ATENCIÓN AL CLIENTE</a> - <a href="javascript:createPopup('../html/RequerimientosMinimos.html', 700, 450)">REQUISITOS MÍNIMOS</a>	
+	</div>
+	<div id="address">Ibercaja Banco S.A. -IBERCAJA - NIF:A-99319030. Domicilio Social: Pza. Basilio Para&iacute;so, 2. 50008-Zaragoza<br/>
+	Entidad de Cr&eacute;dito inscrita en el Registro Especial del Banco de Espa&ntilde;a; C&oacute;digo B.E. :2085.&nbsp;&nbsp;&nbsp;&nbsp;&copy; Ibercaja 2011
+	</div>
+	
+
+	<div class="clr"></div>
+	
+<!-- /include pie.php --></div></div><!-- /pie -->
+
+		  </div><!-- /centro -->
+
+	</div><!-- /ancho -->
+	<br />
+</div><!-- /all --></center>
+<script type="text/javascript">
+<!--
+var TabbedPanels1 = new Spry.Widget.TabbedPanels("TabbedPanels1");
+//-->
+</script>
+
+<div id="simplemodal-overlay" class="simplemodal-overlay" style="position: absolute; left: 0px; top: 0px; z-index: 1001; height: 100%; width: 100%; display:none;">
+</div>
+
+<div id="simplemodal-container" class="simplemodal-container" style="padding: 0px; border: none; z-index: 1002; height: 135px; position: absolute; left: 50%; top: 50%; margin:-67px 0 0 -156px; display:none;">
+	<a class="modalCloseImg simplemodal-close" title="Close"></a>
+	<div tabindex="-1" class="simplemodal-wrap" style="height: 100%; outline: 0px; width: 100%; overflow: visible; ">
+		<div style="background-color: white; border: 1px solid rgb(170, 170, 170); text-align: right; z-index: 1000; min-width: 400px; min-height: 80px; position: absolute; " id="divTarifas" class="simplemodal-data">
+			<div style="margin: 40px 50px 30px 20px;">
+				<a href="https://www3.ibercajadirecto.com/htmanuncio/2085i00d.pdf" style="color: black; text-decoration: none;" target="_blank">FOLLETO OFICIAL DE COMISIONES <img src="../images/pdf_icon.gif"></a>
+				<br><br>
+				<a href="https://www3.ibercajadirecto.com/htmanuncio/Tarifas Cajas de Seguridad.pdf" style="color: black; text-decoration: none;" target="_blank">TARIFAS CAJAS DE SEGURIDAD <img src="../images/pdf_icon.gif"></a>
+				<!--<br><br>
+				<a href="https://www.ibercaja.es/pub/pdf/folleto_tarifas.pdf" style="color: black; text-decoration: none;" target="_blank">TARIFAS MERCADO DE VALORES (Hasta el 28-02-2014)<img src="../images/pdf_icon.gif"></a>
+				-->
+				<br><br>
+				<a href="http://www.ibercaja.es/pub/pdf/folleto_tarifas_20140505.pdf" style="color: black; text-decoration: none;" target="_blank">TARIFAS MERCADO DE VALORES <img src="../images/pdf_icon.gif"></a>
+			</div>
+			<div style="position:absolute; text-align:right; width:100%; top: 4px; right: 4px;">
+				<a href="javascript:closeCapaTarifas(0);" class="simplemodal-close">
+					<img src="../images/simplemodal_close.gif" alt="">
+				</a>
+			</div>
+		</div>
+	</div>
+</div>
+</form>
+</body>
+</html>

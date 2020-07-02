@@ -1,0 +1,2568 @@
+<!DOCTYPE html>
+<!--[if lte IE 7]> <html class="ie7" lang="en-US"> <![endif]-->  
+<!--[if IE 8]>     <html class="ie8" lang="en-US"> <![endif]-->  
+<!--[if IE 9]>     <html class="ie9" lang="en-US"> <![endif]-->  
+<!--[if !IE]><!--> <html lang="en-US">             <!--<![endif]--> 
+
+<head>
+
+<!-- Meta Tags -->
+<!--[if ie]><meta content='IE=edge' http-equiv='X-UA-Compatible'/><![endif]-->
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" /> 
+<meta name="HandheldFriendly" content="true" /> 
+<meta name="revisit-after" content="7 DAYS">
+<meta name="robots" content="All">
+<meta name=“description” content="YOU Technology is the industry's largest digital coupon, offer, and specialized content network of choice. In 2007, YOU Technology paved the way for digital coupons by launching the first entirely digital, load-to-card, coupon program that integrated directly with POS. Today, YOU Technology powers a digital coupon, offer and specialized content network that engages more than 24 million users shopping at more than 10,000 retail stores with more than 3 billion digital coupon and offer clips.">
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.js"></script> 
+<!-- jQuery library (served from Google) -->
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<link href="http://www.you.net/wp-includes/css/animation/styles.css" media="screen" rel="Stylesheet">
+<script type="text/javascript" charset="utf-8">
+
+            var isDebug=0;
+
+            var nextLoadTimeCheck=1000;
+            var call_duration=(isDebug==1)?1000*10:1000*60*10;
+            var speed=0;
+            var displayedValue=0;
+            var speedChanged=0;
+            var previousV=0;
+            var lastLoaded=0;
+            var isReady=0;
+            var def_refresh_rate=40;
+            var refresh_rate=def_refresh_rate;
+            var isInit=1;
+            var nextLoadTime=0;
+            var currentN=0;
+            var gapWithServer=0;
+            var inError=0;
+
+            //contral number board position
+            $(window).resize(function(){
+                centralizeTxt();
+            });
+            $(window).resize();
+            $(document).ready(function() {
+                centralizeTxt();
+            });
+
+            //start loading number
+            function initFunc(){
+                centralizeTxt();
+                ajaxFunction();
+            }
+
+            //check if reach next load time and trigger service call
+            function timeTick(){
+                if(nextLoadTime!=0&&nextLoadTime<new Date().getTime()+gapWithServer&&inError==0&&isReady!=0){
+                    ajaxFunction();
+                }
+                var t=setTimeout("timeTick()",nextLoadTimeCheck);
+            }
+            var counter=0;
+
+            //error recovery. retry every 5min
+            function errorRecovery(){
+                if(inError==0)
+                {
+                    return;
+                }
+                counter++;
+                setStatus("Error occurred while sync with server. Retry at:"+new Date(nextLoadTime));
+                if(nextLoadTime!=0&&nextLoadTime<new Date().getTime()+gapWithServer&&isReady!=0){
+                    ajaxFunction();
+
+                }
+                else{
+                    var t=setTimeout("errorRecovery()",1000);
+                }
+            }
+
+            function callingControl(){
+                ajaxFunction();
+
+                var t=setTimeout("callingControl()",call_duration);
+            }
+
+            //control number board position
+            function centralizeTxt(){
+                    $('.tablestyle').css({
+                        position:'absolute',
+                        width:$(window).width()-20,
+
+                        top:(2)
+                    });
+
+
+            }
+
+            //local refresh. Increase {Speed} every {refresh rate}
+            function doRefreshNumber(){
+                refreshNumber();
+                var t=setTimeout(doRefreshNumber,refresh_rate);
+            }
+
+            //do the refresh
+            function refreshNumber(){
+                if(isReady&&inError==0){
+                    //displayedValue+=speed;
+                    if(currentN!=0){
+                        displayedValue=previousV+((new Date().getTime()-lastLoaded-30000+gapWithServer)/refresh_rate)*speed;
+                        pushNumbers(parseInt(displayedValue));
+                    }
+
+                    centralizeTxt();
+                }
+            }
+
+
+            //service call
+            function getXMLObject()  //XML OBJECT
+            {
+               var xmlHttp = false;
+               try {
+                 xmlHttp = new ActiveXObject("Msxml2.XMLHTTP")  // For Old Microsoft Browsers
+               }
+               catch (e) {
+                 try {
+                   xmlHttp = new ActiveXObject("Microsoft.XMLHTTP")  // For Microsoft IE 6.0+
+                 }
+                 catch (e2) {
+                   xmlHttp = false   // No Browser accepts the XMLHTTP Object then false
+                 }
+               }
+               if (!xmlHttp && typeof XMLHttpRequest != "undefined") {
+                 xmlHttp = new XMLHttpRequest();        //For Mozilla, Opera Browsers
+               }
+               return xmlHttp;  // Mandatory Statement returning the ajax object created
+            }
+
+            var xmlhttp = new getXMLObject();   //xmlhttp holds the ajax object
+            var currentValue;
+
+            //Servicecall body
+            function ajaxFunction() {
+                isReady=0;
+
+              if(xmlhttp) {
+                var queryString="";
+                if(getQueryString()["action"]!=undefined){
+                    //removed
+                //  if(getQueryString()["action"]=="killSession")
+                //      queryString="?action="+getQueryString()["action"];
+                }
+                //if(document.domain !== "you"){
+                    //var url = '/p/getCouponDownload',
+                    //var url = '/wp-content/themes/mobius/js/downloads.json'
+                //}else{
+                    var url = "http://www.you.net/ytstats/p/getCouponDownload";
+                //}
+                xmlhttp.open("GET",url,true); //gettime will be the servlet name
+               xmlhttp.onreadystatechange  = handleServerResponse;
+                xmlhttp.setRequestHeader("Content-Type", "application/json");
+                //xmlhttp.overrideMimeType('application/json');
+                xmlhttp.send(null);
+              }
+            }
+
+
+            function getQueryString(){
+                  var result = {}, queryString = location.search.substring(1),
+                      re = /([^&=]+)=([^&]*)/g, m;
+
+                  while (m = re.exec(queryString)) {
+                    result[decodeURIComponent(m[1])] = decodeURIComponent(m[2]);
+                  }
+
+                  return result;    
+            }
+
+            function handleServerResponse() {
+
+               if (xmlhttp.readyState == 4) {
+                 if(xmlhttp.status == 200) {
+                try{
+                    //console.info('received result');
+                    inError=0;
+                    var responseResult=jQuery.parseJSON(xmlhttp.responseText);
+                    previousV=responseResult.previousValue;
+                    //safety check from api returning zero
+                    currentN=responseResult.currentNumber;
+                     if(currentN === 0){
+                        currentN = previousV + 5000;
+                    }
+                    lastLoaded=responseResult.lastLoaded;
+                    if(responseResult.lastLoaded==0){
+                        lastLoaded=new Date().getTime();
+                    }
+                    speed=responseResult.speed;
+                     //safety check from api returning negative speed
+                     if(speed < 1){
+                        speed = 1;
+                    }
+                    refresh_rate=responseResult.refreshRate;
+                    nextLoadTime=(lastLoaded+call_duration)+30000;
+                    gapWithServer=responseResult.serverTime-new Date().getTime();
+
+                    if(currentN==0){//if second load havn't started
+                        displayedValue=previousV;
+                        pushNumbers(parseInt(displayedValue));
+                        centralizeTxt();
+                        speed=0;
+
+                        if(getQueryString()['debug']=="true"){
+                        setStatus("Server data is not ready yet. Last Time load:"+new Date(lastLoaded)+";<br>Next Load from Local(timestamp in ms):"+new Date(nextLoadTime)+"<br>Previous Value:"+previousV);
+                        }
+                        isReady=1;
+                    }
+                    else{ //normal
+                            var latestValue=previousV+((new Date().getTime()-lastLoaded-30000+gapWithServer)/refresh_rate)*speed;
+                            if(getQueryString()['debug']=="true"){
+                                    setStatus("Latest Number:"+latestValue+"<br>Current Value:"+currentN+";<br>Based on value at:"+new Date(lastLoaded)+";<br>Increase per millisecond:"+speed+";<br>local refresh Rate:"+refresh_rate+";<br>time passed(ms):"+(new Date().getTime()-lastLoaded)+";<br>Previous Number:"+previousV+";<br>Next Load From Local:"+new Date(nextLoadTime));
+                            }
+                            else{
+                                setStatus("");
+                            }
+
+                            displayedValue=latestValue;
+                            isReady=1;
+                    }
+
+                    if(isInit==1){
+                        doRefreshNumber();
+                        timeTick();
+                        //var t=setTimeout("callingControl()",nextLoadTime);
+                        isInit=0;
+
+                    }
+                    }
+                    catch(err){
+                        gapWithServer=0;
+                        isReady=1;
+                        inError=1;
+                        nextLoadTime=new Date().getTime()+300000;//(lastLoaded+call_duration)+30000
+                        errorRecovery();
+                    }
+                 }
+                 else { //error occured, start 5 min retry
+                        gapWithServer=0;
+                        isReady=1;
+                        inError=1;
+                        nextLoadTime=new Date().getTime()+300000;//(lastLoaded+call_duration)+30000
+                        errorRecovery();
+                        //setStatus("Error during AJAX call. Retry at: "+new Date(nextLoadTime));
+
+                 }
+               }
+            }
+            function setStatus(text){
+
+                $('.statusbar').empty();
+                $('.statusbar').append("<div class='statustext' >"+text+"</div>");
+            }
+
+            function pushNumbers(number){
+                var txtNumber=number.toString();
+                var temp=txtNumber.substring(0,1);
+
+                if(txtNumber.length>1){
+                    for(var i=1;i<txtNumber.length;i++){
+                        temp+=","+txtNumber.substring(i,i+1);
+                    }
+                }
+                var numberArray=temp.split(',');
+                $('.container2').empty();
+                $('.container2').width(10);
+                for(var k=numberArray.length;k>0;k--){
+
+                    var div="<div class='"+((k==numberArray.length)?"last":"")+"item itemfont itemcolor' id='item"+(numberArray.size-k)+"' >"+numberArray[k-1]+"</div>";
+                    $('.container2').append(div);
+                    $('.container2').width($('.container2').width()+26);
+                    if((numberArray.length-k+1)%3==0&&numberArray.length!=k&&k!=1){
+                        var commaDiv="<div class='commaItem itemfont itemcolor' id='itemcomma'>,</div>";
+                            $('.container2').append(commaDiv);
+                            $('.container2').width($('.container2').width()+5);
+                    }
+                }
+            }
+        </script>
+
+<!--[if lt IE 10]>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.js"></script> 
+<link href="http://www.you.net/wp-includes/css/animation/styles_ie9.css" media="screen" rel="Stylesheet">
+<script type="text/javascript" src="http://www.you.net/wp-includes/js/animation/ie9.js"></script>
+<! [endif]--> 
+
+<script>
+$(document).ready(function(){
+    $("#more_news_btn").click(function(){
+        $("#more_news").toggle(500);
+    });
+});
+</script>
+<!--favicicon-->
+<link rel="shortcut icon" href="" />
+<link rel="apple-touch-icon" href="" />
+
+<!--Website Title-->
+
+<title>YOU Technology &#8211; Captivating Digital Coupons</title>
+<link rel="alternate" type="application/rss+xml" title="YOU Technology &raquo; Feed" href="http://www.you.net/?feed=rss2" />
+<link rel="alternate" type="application/rss+xml" title="YOU Technology &raquo; Comments Feed" href="http://www.you.net/?feed=comments-rss2" />
+<link rel="alternate" type="application/rss+xml" title="YOU Technology &raquo; Why YOU Comments Feed" href="http://www.you.net/?feed=rss2&#038;page_id=40" />
+		<script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/72x72\/","ext":".png","source":{"concatemoji":"http:\/\/www.you.net\/wp-includes\/js\/wp-emoji-release.min.js?ver=4.4.2"}};
+			!function(a,b,c){function d(a){var c,d=b.createElement("canvas"),e=d.getContext&&d.getContext("2d"),f=String.fromCharCode;return e&&e.fillText?(e.textBaseline="top",e.font="600 32px Arial","flag"===a?(e.fillText(f(55356,56806,55356,56826),0,0),d.toDataURL().length>3e3):"diversity"===a?(e.fillText(f(55356,57221),0,0),c=e.getImageData(16,16,1,1).data.toString(),e.fillText(f(55356,57221,55356,57343),0,0),c!==e.getImageData(16,16,1,1).data.toString()):("simple"===a?e.fillText(f(55357,56835),0,0):e.fillText(f(55356,57135),0,0),0!==e.getImageData(16,16,1,1).data[0])):!1}function e(a){var c=b.createElement("script");c.src=a,c.type="text/javascript",b.getElementsByTagName("head")[0].appendChild(c)}var f,g;c.supports={simple:d("simple"),flag:d("flag"),unicode8:d("unicode8"),diversity:d("diversity")},c.DOMReady=!1,c.readyCallback=function(){c.DOMReady=!0},c.supports.simple&&c.supports.flag&&c.supports.unicode8&&c.supports.diversity||(g=function(){c.readyCallback()},b.addEventListener?(b.addEventListener("DOMContentLoaded",g,!1),a.addEventListener("load",g,!1)):(a.attachEvent("onload",g),b.attachEvent("onreadystatechange",function(){"complete"===b.readyState&&c.readyCallback()})),f=c.source||{},f.concatemoji?e(f.concatemoji):f.wpemoji&&f.twemoji&&(e(f.twemoji),e(f.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script>
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+<link rel='stylesheet' id='themeone-shortcodes-css'  href='http://www.you.net/wp-content/plugins/themeone-shortcodes/shortcodes/css/shortcodes.css?ver=4.4.2' type='text/css' media='all' />
+<link rel='stylesheet' id='linecons-css'  href='http://www.you.net/wp-content/plugins/themeone-shortcodes/shortcodes/css/linecons.css?ver=4.4.2' type='text/css' media='all' />
+<link rel='stylesheet' id='pixelicons-css'  href='http://www.you.net/wp-content/plugins/themeone-shortcodes/shortcodes/css/pixelicons.css?ver=4.4.2' type='text/css' media='all' />
+<link rel='stylesheet' id='contact-form-7-css'  href='http://www.you.net/wp-content/plugins/contact-form-7/includes/css/styles.css?ver=4.3.1' type='text/css' media='all' />
+<link rel='stylesheet' id='rs-plugin-settings-css'  href='http://www.you.net/wp-content/plugins/revslider/public/assets/css/settings.css?ver=5.0.9' type='text/css' media='all' />
+<style id='rs-plugin-settings-inline-css' type='text/css'>
+#rs-demo-id {}
+</style>
+<link rel='stylesheet' id='js_composer_front-css'  href='http://www.you.net/wp-content/plugins/js_composer/assets/css/js_composer.css?ver=4.7.4' type='text/css' media='all' />
+<link rel='stylesheet' id='uaf_client_css-css'  href='http://www.you.net/wp-content/uploads/useanyfont/uaf.css?ver=1459485476' type='text/css' media='all' />
+<link rel='stylesheet' id='main-styles-css'  href='http://www.you.net/wp-content/themes/mobius/style.css?ver=4.4.2' type='text/css' media='all' />
+<link rel='stylesheet' id='font-awesome-css'  href='http://www.you.net/wp-content/plugins/js_composer/assets/lib/bower/font-awesome/css/font-awesome.min.css?ver=4.7.4' type='text/css' media='screen' />
+<link rel='stylesheet' id='icomoon-css'  href='http://www.you.net/wp-content/themes/mobius/css/icomoon.css?ver=4.4.2' type='text/css' media='all' />
+<link rel='stylesheet' id='steadysets-css'  href='http://www.you.net/wp-content/themes/mobius/css/steadysets.css?ver=4.4.2' type='text/css' media='all' />
+<link rel='stylesheet' id='mediaelementplayer-css'  href='http://www.you.net/wp-content/themes/mobius/css/mediaelementplayer.css?ver=4.4.2' type='text/css' media='all' />
+<!--[if lte IE 7]>
+<link rel='stylesheet' id='font-awesome-ie7-css'  href='http://www.you.net/wp-content/themes/mobius/css/font-awesome-ie7.min.css?ver=4.4.2' type='text/css' media='all' />
+<![endif]-->
+<!--[if lte IE 8]>
+<link rel='stylesheet' id='ie7-support-css'  href='http://www.you.net/wp-content/themes/mobius/css/ie7support.css?ver=4.4.2' type='text/css' media='all' />
+<![endif]-->
+<link rel='stylesheet' id='mobius-grid-css-css'  href='http://www.you.net/wp-content/themes/mobius/includes/mobius-grid/mobius-grid.css?ver=4.4.2' type='text/css' media='all' />
+<link rel='stylesheet' id='redux-google-fonts-mobius-css'  href='http://fonts.googleapis.com/css?family=Open+Sans%3A400%2C600%2C700&#038;subset=latin&#038;ver=1460654642' type='text/css' media='all' />
+<link rel='stylesheet' id='jetpack_css-css'  href='http://www.you.net/wp-content/plugins/jetpack/css/jetpack.css?ver=3.9.6' type='text/css' media='all' />
+<link rel='stylesheet' id='wpgmaps-style-css'  href='http://www.you.net/wp-content/plugins/wp-google-maps/css/wpgmza_style.css?ver=6.3.05' type='text/css' media='all' />
+<link rel='stylesheet' id='like-styles-css'  href='http://www.you.net/wp-content/themes/mobius/includes/post-like/post-like.css?ver=4.4.2' type='text/css' media='all' />
+<script type='text/javascript' src='http://www.you.net/wp-includes/js/jquery/jquery.js?ver=1.11.3'></script>
+<script type='text/javascript' src='http://www.you.net/wp-includes/js/jquery/jquery-migrate.min.js?ver=1.2.1'></script>
+<script type='text/javascript' src='http://www.you.net/wp-content/plugins/revslider/public/assets/js/jquery.themepunch.tools.min.js?ver=5.0.9'></script>
+<script type='text/javascript' src='http://www.you.net/wp-content/plugins/revslider/public/assets/js/jquery.themepunch.revolution.min.js?ver=5.0.9'></script>
+<script type='text/javascript' src='http://www.you.net/wp-content/themes/mobius/js/modernizr.js?ver=2.7.1'></script>
+<script type='text/javascript' src='http://www.you.net/wp-content/themes/mobius/js/preloader.js?ver=1.0'></script>
+<link rel='https://api.w.org/' href='http://www.you.net/?rest_route=/' />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://www.you.net/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://www.you.net/wp-includes/wlwmanifest.xml" /> 
+<meta name="generator" content="WordPress 4.4.2" />
+<link rel="canonical" href="http://www.you.net/" />
+<link rel='shortlink' href='http://wp.me/P7rpLa-E' />
+<style type='text/css'>img#wpstats{display:none}</style><style type="text/css">                                    </style><style type="text/css">
+		.to-lb-overlay,
+		#search-overlay {
+			background: #ffffff;
+		}
+		.website-logo img {
+			min-height: 50%;
+			max-height: 50%;
+		}
+		@media screen and (max-width: 480px) {	
+		.website-logo img {
+			min-height: 40%;
+			max-height: 40%;
+		}
+		}
+		#single-post-section article a,
+		#single-portfolio-section article a {
+			color: #06aace;
+		}
+		#single-post-section article a:hover,
+		#single-portfolio-section article a:hover {
+			color: initial !important;
+		}
+		
+		.headerColor {
+			background: #072130;
+			color: #cccccc;
+		}
+		#header .cart-counter *,
+		#header .wishlist-link *,
+		#header-container input.search,
+		.search-close .fa-times {
+			color: #cccccc;
+		}
+		.headerColor2 {
+			background: #cccccc;
+			color: #072130;
+		}
+		.header-mobile .sliding-sidebar-open,
+		.search-button.no-nav {
+			color: #cccccc;
+		}
+		.trans.dark .sliding-menu-open *,
+		.trans.dark .sliding-sidebar-open * {
+			fill: #44515a;
+		}
+		.trans.light .sliding-menu-open *,
+		.trans.light .sliding-sidebar-open * {
+			fill: #ffffff;
+		}
+		
+		#to-slider {
+			background: #072130;
+		}
+		/*#footer-bottom,
+		#footer-bottom #copyright,
+		#footer-bottom #footer-social a {
+			color: #EBEBEB;
+		}*/
+		
+		
+		.sidebarColor {
+			background: #ffffff;
+		}
+		
+		#sliding-menu {
+			background: #ffffff;
+		}
+		#sliding-menu-overlay {
+			background: ;
+			opacity: 0.00;
+		}
+		#left-nav {
+			background: #F5F6FA;
+		}
+		.dark #left-nav > ul > li > a,
+		.dark #left-nav li:hover > a,
+		.dark #left-nav li:hover > a i,
+		.dark #left-menu-shop li a,
+		.dark #left-nav li.back-sub-menu span,
+		.dark #left-nav li.back-sub-menu i,
+		.dark #left-nav .left-cart-counter:hover *,
+		.dark #left-nav .to-wishlist-counter:hover * {
+			color: #01aace;
+		}
+		.light #left-nav > ul > li > a,
+		.light #left-nav li:hover > a,
+		.light #left-nav li:hover > a i,
+		.light #left-menu-shop li a,
+		.light #left-nav li.back-sub-menu span,
+		.light #left-nav li.back-sub-menu i,
+		.light #left-nav .left-cart-counter:hover *,
+		.light #left-nav .to-wishlist-counter:hover * {
+			color: #ffffff;
+		}
+		.sliding-menu-open *,
+		.sliding-sidebar-open * {
+			fill: #cccccc;
+		}
+		#left-nav ul li:before {
+			background: #dddddd;
+		}
+		#left-nav ul li.current-menu-item:before ,
+		#left-nav ul li.current_page_ancestor:before {
+			background: #01aace;
+		}
+		
+		
+		body.dark, .dark p, .dark div, .dark a,
+		#header .buttons a,
+		#header .quantity {
+			color: #44515a;
+		}
+		.dark h1, .dark h2, .dark h3 , .dark h4, .dark h5, .dark h6,
+		.dark h1 a, .dark h2 a, .dark h3 a, .dark h4 a, .dark h5 a, .dark h6 a,
+		.dark.to-slide .to-slide-content-inner *,
+		.dark dt,
+		.dark .post-title a,
+		.dark .summary .posted_in,
+		#header .widget_shopping_cart_content .cart_list a,
+		.dark table.cart td.product-name a,
+		.dark .woocommerce-tabs ul.tabs li,
+		.dark .comment-list .comment-author,
+		.dark .comment-list .comment-author a,
+		.dark .to-pie-chart span,
+		.dark .to-progress-bar-title strong,
+		/*.dark .to-counter-number span,
+		.dark .to-counter-number-desc,*/
+		.dark .to-sc-twitter-icon,
+		.dark li.active-tab {
+			color: #01aace;
+		}
+		.dark .widget a {
+			color: #01aace;
+		}
+		.dark .widget a:hover {
+			color: #01aace;
+		}
+		.dark.to-page-heading-img-true * {
+			color: #01aace;
+		}
+		.dark .to-grid-filters-button svg * {
+			fill: #44515a;
+		}
+		
+		.dark .post-info .post-date .date {
+			color: #01aace;
+		}
+		.dark .post-info .post-date .month {
+			color: #227D94;
+		}
+		.dark .post-info .post-date .year {
+			color: #44515a;
+		}
+		.dark .owl-page.active span,
+		.dark .owl-page:hover span {
+			background: #44515a;
+		}
+		.dark .isotope-pages li.active,
+		.dark .isotope-pages li:hover {
+			background: #44515a !important;
+		}body.light, .light p, .light div, .light a {
+			color: #ffffff;
+		}
+		.light h1, .light h2, .light h3, .light h4, .light h5, .light h6,
+		.light h1 a, .light h2 a, .light h3 a, .light h4 a, .light h5 a, .light h6 a,
+		.light.to-slide .to-slide-content-inner *,
+		.light dt,
+		.light .post-title a,
+		.light .summary .posted_in,
+		.light table.cart td.product-name a,
+		.light .woocommerce-tabs ul.tabs li,
+		.light .comment-list .comment-author,
+		.light .comment-list .comment-author a,
+		.light .to-pie-chart span,
+		.light .to-progress-bar-title strong,
+		/*.light .to-counter-number span,
+		.light .to-counter-number-desc,*/
+		.light .to-sc-twitter-icon,
+		.light li.active-tab {
+			color: #ffffff;
+		}
+		.light .widget a {	
+			color: #FFFFFF;
+		}
+		.light .widget a:hover {
+			color: #01aace;
+		}
+		.light.to-page-heading-img-true * {
+			color: #fff;
+		}
+		.light .to-grid-filters-button svg * {
+			fill: #ffffff;
+		}
+		
+		.light .post-info .post-date .date {
+			color: #ffffff;
+		}
+		.light .post-info .post-date .month {
+			color: #FFFFFF;
+		}
+		.light .post-info .post-date .year {
+			color: #ffffff;
+		}
+		.light .owl-page.active span,
+		.light .owl-page:hover span {
+			background: #ffffff;
+		}
+		.light .isotope-pages li.active,
+		.light .isotope-pages li:hover {
+			background: #ffffff !important;
+		}
+		.light.to-page-heading .subtitle {
+			color: #f3f5f8;
+		}
+		body,
+		#body-overlay,
+		#outer-container,
+		#inner-container,
+		.comment-list li,
+		.comment-list li.comment > #respond {
+			background: #ffffff;
+		}
+		
+		#preloader,
+		#header .widget_shopping_cart .cart_list li:hover,
+		#to-crumbs-overlay,
+		#to-author-bio-overlay,
+		.to-grid-filter-overlay,
+		code,
+		.wp-caption,
+		.to-team-carousel.circle .to-member-social li,
+		.to-progress-bar-holder {
+			background: #F5F6FA;
+		}
+		.grid-home-page .next-container {
+			background: #F5F6FA !important;
+		}
+		
+		.mejs-controls,
+		.to-audio-player,
+		#current-player-mini {
+			background: #2B2D2F;
+			color: #ffffff;
+		}
+		.to-item.blog .to-item-cat:hover {
+			background: #2B2D2F !important;
+			color: #ffffff !important;
+		}
+		.to-audio-player i,
+		.to-audio-player span,
+		.mejs-controls .mejs-playpause-button,
+		.mejs-controls .mejs-button button,
+		.mejs-controls .mejs-currenttime,
+		.mejs-controls .mejs-duration {
+			color: #ffffff !important;
+		}
+		
+		.accentBg,
+		.accentBgHover:hover,
+		.mejs-time-current,
+		.mejs-volume-current,
+		.mejs-horizontal-volume-current,
+		div.wpcf7-response-output,
+		.woocommerce-info,
+		.woocommerce-info *,
+		.woocommerce .single_add_to_cart_button,
+		.wishlist_table .add_to_cart,
+		.woocommerce .woocommerce-message,
+		.woocommerce .woocommerce-message a,
+		.woocommerce .woocommerce-error,
+		.woocommerce .woocommerce-error a,
+		.woocommerce .product-wrap:hover .product_type_simple:hover,
+		.woocommerce .product-wrap:hover .add_to_cart_button:hover,
+		.woocommerce .widget_layered_nav_filters ul li a:hover,
+		.woocommerce-page .widget_layered_nav_filters ul li a:hover,
+		.widget_price_filter .ui-slider .ui-slider-range,
+		#slider_per_page .ui-slider-range,
+		select option:hover,
+		.chosen-container ul.chosen-results li.highlighted,
+		.active {
+			background: #01aace !important;
+			color: #ffffff !important;
+		}
+		::selection {
+			background: #01aace !important;
+			color: #ffffff !important;
+		}
+		::-moz-selection {
+			background: #01aace !important;
+			color: #ffffff !important;
+		}
+		.woocommerce .single_add_to_cart_button,
+		.wishlist_table .add_to_cart {
+			border-color: #01aace !important; 
+		}
+		.csstransforms .loading {
+			border-left: 3px solid rgba(1,170,206,0.2);
+			border-right: 3px solid rgba(1,170,206,0.2);
+			border-bottom: 3px solid rgba(1,170,206,0.2);
+			border-top: 3px solid #01aace;
+		}
+		.csstransforms .next-container.load {
+			border-top: 2px solid #01aace;
+		}
+		.to-item.active {
+			background: none !important;
+		}
+		
+		.button:hover,
+		input[type=submit]:hover,
+		input[type="button"]:hover,
+		input[type=submit]:hover,
+		.header-pages li.active,
+		#header .buttons a:hover,
+		#header .total .amount,
+		#header .widget_shopping_cart_content .cart_list a:hover,
+		.grid-filter-title:hover, 
+		.no-touch .isotopeFilters-title:hover, 
+		.grid-home-page .next-container:hover,
+		.to-grid-filter-title.actived,
+		.to-item-overlay,
+		.widget .tagcloud a:hover,
+		.light .widget.widget_tag_cloud a:hover,
+		.post-tags a:hover,
+		.sliding-menu-open:hover > div,
+		.widget.widget_tag_cloud a:hover,
+		.comment-list .reply a:hover,
+		.dark .comment-list .comment-author a:hover,
+		input[type=submit]:hover, 
+		button[type=submit]:hover,
+		.to-page-nav li.active a,
+		.to-page-nav li a:hover,
+		.page-numbers .current,
+		.page-numbers a:hover,
+		.accentColor,
+		.accentColorHover:hover,
+		a.accentColor,
+		a:not(.to-button):hover,
+		.required,
+		input[type=checkbox]:checked:before,
+		input[type=radio]:checked:before,
+		#header-container.trans.light .search-button:hover .fa-search,
+		#header-container.trans.dark .search-button:hover .fa-search,
+		.widget.widget_rss cite,
+		.widget.widget_calendar #today,
+		.required,
+		.wpcf7-form .wpcf7-not-valid-tip,
+		#comment-status,
+		.comment-awaiting-moderation,
+		.comment-list .comment-meta a:hover,
+		#cancel-comment-reply-link:hover,
+		#to-crumbs a:hover,
+		#portfolio-all-items:hover i,
+		.to-item-meta a:hover *,
+		.to-excerpt-more:hover,
+		.to-search-item-content h4 a:hover,
+		.to-testimonial .to-testimonial-autor-desc,
+		.to-team-carousel .to-member-social li a,
+		.to-quote .fa-quote-left,
+		.post-like:hover i,
+		.post-like.liked,
+		.post-like.liked i,
+		.dark .post-like.liked,
+		.dark .widget a.post-like.no-liked:hover i,
+		.post-like .icon-to-x,
+		.ui-menu-item:hover .title,
+		.grid-home-page .to-grid-filter-title:hover,
+		.blog-page .to-grid-filter-title:hover,
+		.portfolio-page .to-grid-filter-title:hover,
+		.no-touch .to-item.blog h2:hover,
+		.no-touch .to-item.blog .to-item-author:hover,
+		.no-touch .to-item.blog .to-item-comments:hover,
+		.to-masonry .to-item.tall .to-excerpt-masonry:hover,
+		.to-item-title-hover,
+		.to-item-dot:before,
+		.to-item-dot .before,
+		.single-product-summary .amount,
+		#comment-status p,
+		.widget .total .amount,
+		.woocommerce ul.products li.product h3:hover,
+		a.woocommerce-review-link,
+		a.woocommerce-review-link .count,
+		.woocommerce ul.products li.product .price .amount, 
+		.woocommerce-page ul.products li.product .price .amount,
+		.woocommerce div.product .stock,
+		.woocommerce-page div.product .stock,
+		tbody .cart_item .product-name,
+		.order-total .amount,
+		.lost_password a,
+		.posted_in a,
+		.post-cat-holder a,
+		.post-tag-holder a,
+		.actived {
+			color:  #01aace;
+		}
+		.to-item.blog.quote.center h2:hover,
+		.to-item.blog.link.center h2:hover,
+		.woocommerce-tabs .tabs li.active,
+		.woocommerce-tabs .tabs li:hover,
+		.no-menu-assigned:hover,
+		#current-player.close .mejs-playpause-button:hover,
+		.tweet-link-color,
+		.stars .active,
+		.featured .to-ptable-header h5 {
+			color:  #01aace !important;
+		}
+		.to-search-item .to-excerpt-more:hover {
+			color:  #01aace !important;
+		}
+		.sliding-menu-open:hover *,
+		.sliding-sidebar-open:hover *,
+		#left-menu-button:hover * {
+			fill:  #01aace !important; 
+		}
+		#call-to-action:hover *,
+		#left-menu-button:hover * {
+			color: #ffffff !important;
+		}
+		
+		.grid-home-page .to-grid-filter-title:hover,
+		.blog-page .to-grid-filter-title:hover,
+		.portfolio-page .to-grid-filter-title:hover {
+			color:  #01aace !important;
+		}
+		.to-item .to-item-overlay,
+		.to-item.blog .to-item-wrapper,
+		.to-item.blog .to-item-social {
+			background: #ffffff;
+		}
+		
+		.to-item.blog .to-item-content h2 {
+			color: #01aace;
+		}
+		.to-item .excerpt,
+		.to-item .to-item-social,
+		.to-item.portfolio:not(.portstyle2) .to-item-cats {
+			color: #44515a;
+		}
+		.to-item.blog .to-item-cat {
+			background: #01aace;
+		}
+		.to-item.blog.center:not(.portstyle2) .to-item-information,
+		.to-item.blog.center:not(.portstyle2) .to-item-information a {
+			color: #e4e4e4;
+		}
+		.to-item.portfolio:not(.portstyle2) .to-item-wrapper,
+		.to-item.portfolio:not(.portstyle2) h2,
+		.to-item.portfolio:not(.portstyle2) h2 a {
+			color: #01aace;
+		}
+		.to-item.center:not(.portstyle2) .to-item-content,	
+		.to-item.blog.center h2 a {
+			color: #ffffff !important;
+		}
+		.to-item.blog.quote.center h2,
+		.to-item.blog.link.center h2 {
+			color: #01aace !important;
+		}
+		.to-item.portfolio h2:hover,
+		.to-item.portfolio a:hover {
+			color: #01aace !important;
+		}
+		.to-item .to-item-lightbox-link,
+		.to-item .to-item-lightbox-link i,
+		.to-item .to-item-content-link,
+		.to-item .to-item-content-link i,
+		.to-item .to-item-audio-link,
+		.to-item .to-item-audio-link i {
+			color: #44515a;
+		}
+		.to-item.portfolio .to-item-lightbox-link:hover,
+		.to-item.portfolio .to-item-lightbox-link:hover i,
+		.to-item.portfolio .to-item-content-link:hover,
+		.to-item.portfolio .to-item-content-link:hover i,
+		.to-item.portfolio .to-item-audio-link:hover,
+		.to-item.portfolio .to-item-audio-link:hover i {
+			color: #01aace;
+		}
+		.to-item.blog.quote .to-item-content,
+		.to-item.blog.link .to-item-content {
+			background: #ffffff;
+		}
+		.blog-grid-fullwidth .to-item.blog.quote .to-item-content,
+		.blog-grid-fullwidth .to-item.blog.link .to-item-content,
+		.grid-home-page .to-item.blog.quote .to-item-content,
+		.grid-home-page .to-item.blog.link .to-item-content {
+			background: #f3f5f8;
+		}
+		
+		.ui-autocomplete {
+			background: #191919 !important;
+		}
+		.ui-menu, 
+		.ui-menu .ui-menu-item,
+		.image-autocomplete {
+			background: rgba(31,31,31,0.95); 
+			color: #EBEBEB;
+		}
+		.ui-menu-item .desc {
+			color: #C1C1C1;
+		}
+		.ui-menu-item .ui-corner-all:hover,
+		.ui-menu-item .ui-corner-all.ui-state-focus {
+			background: rgba(0,0,0,.25) !important;
+		}
+		.ui-menu-item .fa-pencil {
+			background: rgba(0,0,0,0.15);
+		}
+		
+		#header-container.trans.light #top-nav > ul > li,
+		#header-container.trans.light .sliding-sidebar-open,
+		#header-container.trans.light .search-button .fa-search,
+		#header.trans.light .to-wishlist-counter i,
+		#header.trans.light .to-wishlist-counter span,
+		#header.trans.light .cart-counter i,
+		#header.trans.light .cart-counter span {
+			color: #ffffff;
+		}
+		#header-container.trans.light .sliding-menu-open *,
+		#header-container.trans.light .sliding-sidebar-open * {
+			fill: #ffffff;
+		}
+		#header-container.trans.dark #top-nav > ul > li,
+		#header-container.trans.dark .sliding-sidebar-open,
+		#header-container.trans.dark .search-button .fa-search,
+		#header.trans.dark .to-wishlist-counter i,
+		#header.trans.dark .to-wishlist-counter span,
+		#header.trans.dark .cart-counter i,
+		#header.trans.dark .cart-counter span {
+			color: #313131;
+		}
+		#header-container.trans.dark .sliding-menu-open *,
+		#header-container.trans.dark .sliding-sidebar-open * {
+			fill: #313131;
+		}
+		#header .widget_shopping_cart,
+		.woocommerce .cart-notification,
+		#header .wishlist-notification,
+		#header .cart-notification,
+		#top-nav .sub-menu {
+			background: #0a1924;
+			color: #ffffff;
+		}
+		#top-nav > ul > .megamenu > .sub-menu > li > a,
+		#top-nav .sub-menu li:hover > a {
+			color: #59585b;
+		}
+		#top-nav ul ul .current-menu-item > a,
+		#top-nav > ul > .megamenu > .sub-menu > li:hover > a,
+		#top-nav > ul > .megamenu > .sub-menu > li.current-menu-item:hover > a  {
+			color: #01aace !important;
+		}
+		#top-nav > ul > .megamenu > .sub-menu > li.current-menu-item > a {
+			color: inherit !important;
+		}
+		#top-nav > ul > li > a.hover {
+			border-color: #01aace;
+		}
+		
+		.dark *,
+		.dark table tbody tr td:first-child,
+		.dark .widget.widget_pages li a,
+		.dark .widget.widget_nav_menu li a {
+			border-color: #dddddd;
+		}
+		.light *,
+		.light table tbody tr td:first-child,
+		.light .widget.widget_pages li a,
+		.light .widget.widget_nav_menu li a {
+			border-color: #dddddd;
+		}
+		.comment-list .parent:after,
+		.comment-list .children:before,
+		.comment-list .children:after {
+			border-color: #f3f5f8;
+		}
+		
+		#sliding-sidebar .widget .no-post-like-image {
+			background-color: #D4D4D4 !important;
+		}
+		.button,
+		input[type="button"],
+		input[type=submit],
+		.header-pages li, 
+		.grid-filter-title, 
+		.no-touch .isotopeFilters-title, 
+		.grid-home-page .next-container,
+		.to-grid-filter-title,
+		.to-item-overlay,
+		.widget .tagcloud a,
+		.light .widget.widget_tag_cloud a,
+		.post-tags a,
+		.sliding-menu-open:hover > div,
+		.widget.widget_tag_cloud a,
+		.comment-list .reply a,
+		input[type=submit], 
+		button[type=submit],
+		.to-page-nav li a,
+		.to-page-nav li a {
+			color: inherit;
+		}
+		
+		
+		.light .to-icon.full-bg {
+			background: #3F3F3F;
+		}
+		.dark .to-icon.full-bg {
+			background: #FBFBFB;
+		}
+				
+		.woocommerce ul.products li.product h3:hover,
+		.woocommerce .product-desc-inner .button,
+		.woocommerce .product-desc-inner .button:hover {
+			color: #01aace !important;
+		}
+		</style>		<style type="text/css">.recentcomments a{display:inline !important;padding:0 !important;margin:0 !important;}</style>
+		<meta name="generator" content="Powered by Visual Composer - drag and drop page builder for WordPress."/>
+<!--[if lte IE 9]><link rel="stylesheet" type="text/css" href="http://www.you.net/wp-content/plugins/js_composer/assets/css/vc_lte_ie9.css" media="screen"><![endif]--><!--[if IE  8]><link rel="stylesheet" type="text/css" href="http://www.you.net/wp-content/plugins/js_composer/assets/css/vc-ie8.css" media="screen"><![endif]--><meta name="generator" content="Powered by Slider Revolution 5.0.9 - responsive, Mobile-Friendly Slider Plugin for WordPress with comfortable drag and drop interface." />
+
+<!-- Jetpack Open Graph Tags -->
+<meta property="og:type" content="website" />
+<meta property="og:title" content="YOU Technology" />
+<meta property="og:description" content="Captivating Digital Coupons" />
+<meta property="og:url" content="http://www.you.net/" />
+<meta property="og:site_name" content="YOU Technology" />
+<meta property="og:image" content="https://s0.wp.com/i/blank.jpg" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary" />
+
+<!-- BEGIN Typekit Fonts for WordPress -->
+
+<!-- END Typekit Fonts for WordPress -->
+
+<style type="text/css" title="dynamic-css" class="options-output">body,p,#left-nav li a,#top-nav ul ul li a,.widget.widget_nav_menu li a{font-family:"Open Sans";font-weight:400;font-style:normal;font-size:19px;}#top-nav > ul > li > a{font-family:"Open Sans";font-weight:normal;font-style:normal;font-size:17px;}h1, .to-page-heading .title, .single-title{font-family:"Open Sans";line-height:96px;font-weight:normal;font-style:normal;font-size:96px;}h2, .woocommerce div.product div.summary h1{font-family:"Open Sans";line-height:65px;font-weight:normal;font-style:normal;font-size:65px;}h3, .woocommerce-tabs h2, .cart-collaterals h2{font-family:"Open Sans";line-height:32px;font-weight:normal;font-style:normal;font-size:23px;}h4{font-family:"Open Sans";line-height:28px;font-weight:normal;font-style:normal;font-size:23px;}h5{font-family:"Open Sans";line-height:25px;font-weight:normal;font-style:normal;font-size:25px;}h6{font-family:"Open Sans";line-height:20px;font-weight:600;font-style:normal;font-size:14px;}.to-slide .to-slide-content-inner h1{font-family:"Open Sans";line-height:60px;font-weight:700;font-style:normal;font-size:60px;}.to-item h2, .post-title{font-family:"Open Sans";font-weight:600;font-style:normal;}.to-page-nav li a, .woocommerce-pagination a, .woocommerce-pagination span, .dark .post-info .post-date .date, .to-counter-number,.to-step-number,.to-step-back,.to-pie-chart span,.to-progress-bar strong,.to-ptable .to-ptable-cost, .to-process .to-step-nb{font-family:"Open Sans";font-weight:400;font-style:normal;}</style><style type="text/css" data-type="vc_shortcodes-custom-css">.vc_custom_1458502077193{padding-bottom: 25px !important; }.vc_custom_1457897535762{border: 0px solid #ffffff !important;}.vc_custom_1459186547309{padding-top: 150px !important;}.vc_custom_1459186557761{padding-top: 150px !important;}.vc_custom_1459808067310{padding-top: 150px; background-color: #01aace !important;}.vc_custom_1459808096458{background-color: #01aace !important;}</style><noscript><style> .wpb_animate_when_almost_visible { opacity: 1; }</style></noscript>
+
+</head>
+
+<body class="home page page-id-40 page-template-default dark wpb-js-composer js-comp-ver-4.7.4 vc_responsive" onload="initFunc();">
+
+    <div id="wrapper-scroll">
+        <div id="textarea-scroll"></div>
+    </div>
+	
+    	<div id="preloader">
+					<img class="to-loader-logo" src="http://www.you.net/wp-content/uploads/2016/03/New_Logo_New_Colors-1-500x249.png" alt=""/>
+		        <div class="to-loader">
+        <svg width="60px" height="60px" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+			<path class="to-loader-circlebg"
+				fill="none"
+				stroke="#dddddd"
+				stroke-width="4"
+				stroke-linecap="round"
+				d="M40,10C57.351,10,71,23.649,71,40.5S57.351,71,40.5,71 S10,57.351,10,40.5S23.649,10,40.5,10z"/>
+            <path id='to-loader-circle'
+				fill="none"
+				stroke="#01aace"
+				stroke-width="4"
+				stroke-linecap="round"
+				stroke-dashoffset="192.61"
+				stroke-dasharray="192.61 192.61"
+				d="M40,10C57.351,10,71,23.649,71,40.5S57.351,71,40.5,71 S10,57.351,10,40.5S23.649,10,40.5,10z"
+			/>
+        </svg>
+        </div>
+    </div>
+        
+       
+	<div id="sliding-menu" class="dark" >	
+    	<div id="sliding-menu-overlay"></div>
+    	<div id="sliding-menu-inner">	
+        	        	<div id="sliding-menu-logo"><a href="http://www.you.net"><img class="to-loader-logo" src="http://www.you.net/wp-content/uploads/2016/02/YOU_logo_high_res-e1455058226311.png" alt=""/></a></div>
+                    	<nav id="left-nav">
+                <ul class="left-menu">
+                	<li id="menu-item-4141" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-4141"><a href="#why_you" class="menu-link-noparent">Why YOU</a></li>
+<li id="menu-item-4136" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-4136"><a href="#solutions" class="menu-link-noparent">Solutions</a></li>
+<li id="menu-item-4137" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-4137"><a href="#press" class="menu-link-noparent">News</a></li>
+<li id="menu-item-4949" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-4949"><a href="#company" class="menu-link-noparent">Company</a></li>
+<li id="menu-item-5061" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5061"><a href="#team" class="menu-link-noparent">Team</a></li>
+<li id="menu-item-4138" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-4138"><a href="#careers" class="menu-link-noparent">Careers</a></li>
+<li id="menu-item-4139" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-4139"><a href="#contact" class="menu-link-noparent">Contact</a></li>
+                </ul>
+        	</nav>
+            			            <div id="menu-widget">
+            <div id="text-4" class="widget widget_text">			<div class="textwidget"><div style="height:30px"></div></div>
+		</div><div id="text-5" class="widget widget_text"><h4>Let&#8217;s Connect</h4>			<div class="textwidget">1000 Marina Blvd.<br>
+Suite 300<br>
+Brisbane, CA 94005<br><br>
+Phone: 650-624-3800<br>
+Fax: 650-624-3899<br>
+Email: <a href="mailto:info@you.net">info@you.net</a><br>
+
+<div style="margin: 30px 0 0 -17px">
+
+<div id="footer-social" style="text-align: left;"><a target="_self" href="mailto:info@you.net" ><i class="fa fa-envelope" style="color:#01aace;"></i></a><a target="_blank" href="https://www.facebook.com/You-Technology-204056963288341/timeline?ref=page_internal" ><i class="fa fa-facebook" style="color:#01aace;"></i></a><a target="_blank" href="https://www.linkedin.com/company/you-technology-brand-services-formerly-known-as-softcoin?trk=tyah&trkInfo=clickedVertical%3Acompany%2CclickedEntityId%3A525304%2Cidx%3A3-1-4%2CtarId%3A1456189827377%2Ctas%3AYou+Tech" ><i class="fa fa-linkedin" style="color:#01aace;"></i></a></div></div></div>
+		</div>            </div>
+			        	<div id="overflow-player"></div>
+        	<!-- <div id="current-player">
+        		<div id="current-cover"></div>
+        		<div id="current-player-overlay">
+            		<div id="current-title"></div>
+            		<div id="current-artist"></div>
+            	</div>
+                <i class="current-player-close icon-to-x accentColorHover"></i>
+                <div id="current-player-mini">
+                    <i class="current-player-open icon-to-right-arrow-thin accentColorHover"></i>
+                </div>
+              <audio class="menu-player">
+                    <source type="audio/mp3" src="http://www.you.net/wp-content/themes/mobius/audio/blank.mp3" />
+                    <source type="audio/ogg" src="http://www.you.net/wp-content/themes/mobius/audio/blank.ogg" />
+                    <source type="audio/aac" src="http://www.you.net/wp-content/themes/mobius/audio/blank.aac" />
+                </audio> 
+			</div> -->
+        </div>
+	</div>
+    
+	    
+    <div id="body-overlay"></div>
+    
+        
+        
+    <header id="header" class="header-menu fixed clearfix"  data-header-type="header-menu" data-header-rezise="true" data-header-height="80" data-header-max-height="100" data-menu-link="1">
+            <div id="header-overlay-slider" style="opacity:1.00;" ></div>
+            <div id="header-overlay" class="headerColor"  style="opacity:1.00;"></div>
+            <div id="header-container" style="height:100px;" class="section-container">
+				<div class="sliding-menu-open">
+					<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="20" height="30">
+						<rect x="1" y="9" width="18" height="2.5"></rect>
+						<rect x="1" y="15" width="18" height="2.5"></rect>
+						<rect x="1" y="21" width="18" height="2.5"></rect>
+					</svg>
+				</div> 
+            	<div class="website-logo">
+                	<a href="http://www.you.net">
+                   		                			<img class="logo-dark" src="http://www.you.net/wp-content/uploads/2016/02/YOU_logo_high_res_white.png" alt=""/>
+                                                                        <img class="logo-light" src="http://www.you.net/wp-content/uploads/2016/03/YOU_logo_high_res_blue-1.png" alt=""/>
+                        					</a>
+                </div>
+				<nav id="top-nav" class="headerColor">
+                    <ul class="top-menu">
+						<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-4141"><a href="#why_you"><span>Why YOU</span></a></li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-4136"><a href="#solutions"><span>Solutions</span></a></li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-4137"><a href="#press"><span>News</span></a></li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-4949"><a href="#company"><span>Company</span></a></li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5061"><a href="#team"><span>Team</span></a></li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-4138"><a href="#careers"><span>Careers</span></a></li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-4139"><a href="#contact"><span>Contact</span></a></li>
+ 
+                        											</ul>   
+				</nav>
+                				            </div>
+            
+            <div id="to-woo-icons-menu">
+                                    </div>
+            <div id="cantPlay" class="accentBg"><i class="fa fa-times"></i>  It can't be played in your browser. Download <a class="dlSong no-ajaxy" href=""><i class="fa fa-download"></i></a></div>
+    </header>
+    
+         
+        
+    <div id="search-container" class="dark">
+    	<div id="search-inner" class="section-container">
+			
+
+<form action="http://www.you.net" method="GET" id="searchform" data-noresult="No results found">
+	<input type="text" class="field search ajaxify-search" name="s" id="s" autocomplete="off" placeholder="Start Typing..." />
+    <i class="fa fa-times accentColorHover"></i>
+			<a class="search_results_ajax" id="search_results_click" href="?s="></a>
+	</form>        	<div class="search-results"></div>
+        </div>
+        <div id="search-overlay"></div>
+        <div id="search-msg"></div>
+    </div>
+    
+    	<div id="scrollToTop">
+    	<div id="scrollToTop-inner">
+            <div id="scrollToTop-overlay" class="accentBgHover">
+                <i class="fa fa-angle-up"></i>
+            </div>
+        </div>
+    </div>
+        
+    <div class="loading-container">
+        <div class="loading"></div>
+	</div>
+    
+    	   
+    <div id="outer-container" >
+        <div id="push-anim-overlay"></div>
+        <div id="vc-spacer" style="height:100px;"></div>
+           <div id="inner-container" class="dark">
+            	        		<div id="header-spacer" style="height:100px;background:#072130"></div>
+        
+        <div  style="background:#072130"><div class="   vc_row wpb_row vc_row-fluid txt-center equal-height  vc_row-o-full-height vc_row-o-content-top"  ><div class="section-container">
+	<div class="vc_col-sm-12 wpb_column vc_column_container   "  >
+		<div class="wpb_wrapper">
+			
+	<div class="wpb_text_column wpb_content_element  wpb_animate_when_almost_visible wpb_top-to-bottom">
+		<div class="wpb_wrapper">
+			<div class="container">
+<div class="threeb"></div>
+<div id="bubble-wrap">
+<div class="bubble bubble0"><svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42 43"><path class="bug" id="bug0" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M26.445 3.27L38.61 15.165c3.142 3.07 3.19 8.104.117 11.242L26.814 38.562c-3.074 3.14-8.113 3.19-11.254.123L3.392 26.787c-3.142-3.07-3.194-8.102-.12-11.24L15.19 3.388C18.263.25 23.304.195 26.444 3.27z"></path></svg></div>
+<div class="bubble bubble1"><svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42 43"><path class="heart" id="heart1" d="M22.85 37.476L8.678 23.804c-.18-.16-5.178-4.724-5.178-10.176C3.5 6.976 7.565 3 14.356 3c3.975 0 7.7 3.135 9.493 4.906C25.642 6.134 29.367 3 33.34 3 40.132 3 44.2 6.976 44.2 13.63c0 5.45-4.998 10.016-5.2 10.22L24.85 37.475c-.273.272-.637.408-1 .408-.365 0-.728-.134-1-.408z"></path></svg></div>
+<div class="bubble bubble2"><svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42 43"><path class="bug" id="bug2" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M26.445 3.27L38.61 15.165c3.142 3.07 3.19 8.104.117 11.242L26.814 38.562c-3.074 3.14-8.113 3.19-11.254.123L3.392 26.787c-3.142-3.07-3.194-8.102-.12-11.24L15.19 3.388C18.263.25 23.304.195 26.444 3.27z"></path></svg></div>
+<div class="bubble bubble3"><svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42 43"><path class="heart" id="heart3" d="M22.85 37.476L8.678 23.804c-.18-.16-5.178-4.724-5.178-10.176C3.5 6.976 7.565 3 14.356 3c3.975 0 7.7 3.135 9.493 4.906C25.642 6.134 29.367 3 33.34 3 40.132 3 44.2 6.976 44.2 13.63c0 5.45-4.998 10.016-5.2 10.22L24.85 37.475c-.273.272-.637.408-1 .408-.365 0-.728-.134-1-.408z"></path></svg></div>
+<div class="bubble bubble4"><svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42 43"><path class="heart" id="heart4" d="M22.85 37.476L8.678 23.804c-.18-.16-5.178-4.724-5.178-10.176C3.5 6.976 7.565 3 14.356 3c3.975 0 7.7 3.135 9.493 4.906C25.642 6.134 29.367 3 33.34 3 40.132 3 44.2 6.976 44.2 13.63c0 5.45-4.998 10.016-5.2 10.22L24.85 37.475c-.273.272-.637.408-1 .408-.365 0-.728-.134-1-.408z"></path></svg></div>
+<div class="bubble bubble5"><svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42 43"><path class="bug" id="bug5" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M26.445 3.27L38.61 15.165c3.142 3.07 3.19 8.104.117 11.242L26.814 38.562c-3.074 3.14-8.113 3.19-11.254.123L3.392 26.787c-3.142-3.07-3.194-8.102-.12-11.24L15.19 3.388C18.263.25 23.304.195 26.444 3.27z"></path></svg></div>
+<div class="bubble bubble6"><svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42 43"><path class="bug" id="bug6" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M26.445 3.27L38.61 15.165c3.142 3.07 3.19 8.104.117 11.242L26.814 38.562c-3.074 3.14-8.113 3.19-11.254.123L3.392 26.787c-3.142-3.07-3.194-8.102-.12-11.24L15.19 3.388C18.263.25 23.304.195 26.444 3.27z"></path></svg></div>
+<div class="bubble bubble7"><svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42 43"><path class="bug" id="bug7" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M26.445 3.27L38.61 15.165c3.142 3.07 3.19 8.104.117 11.242L26.814 38.562c-3.074 3.14-8.113 3.19-11.254.123L3.392 26.787c-3.142-3.07-3.194-8.102-.12-11.24L15.19 3.388C18.263.25 23.304.195 26.444 3.27z"></path></svg></div>
+<div class="bubble bubble8"><svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42 43"><path class="heart" id="heart8" d="M22.85 37.476L8.678 23.804c-.18-.16-5.178-4.724-5.178-10.176C3.5 6.976 7.565 3 14.356 3c3.975 0 7.7 3.135 9.493 4.906C25.642 6.134 29.367 3 33.34 3 40.132 3 44.2 6.976 44.2 13.63c0 5.45-4.998 10.016-5.2 10.22L24.85 37.475c-.273.272-.637.408-1 .408-.365 0-.728-.134-1-.408z"></path></svg></div>
+<div class="bubble bubble9"><svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42 43"><path class="bug" id="bug9" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M26.445 3.27L38.61 15.165c3.142 3.07 3.19 8.104.117 11.242L26.814 38.562c-3.074 3.14-8.113 3.19-11.254.123L3.392 26.787c-3.142-3.07-3.194-8.102-.12-11.24L15.19 3.388C18.263.25 23.304.195 26.444 3.27z"></path></svg></div>
+<div class="bubble bubble10"><svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42 43"><path class="bug" id="bug10" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M26.445 3.27L38.61 15.165c3.142 3.07 3.19 8.104.117 11.242L26.814 38.562c-3.074 3.14-8.113 3.19-11.254.123L3.392 26.787c-3.142-3.07-3.194-8.102-.12-11.24L15.19 3.388C18.263.25 23.304.195 26.444 3.27z"></path></svg></div>
+<div class="bubble bubble11"><svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42 43"><path class="heart" id="heart11" d="M22.85 37.476L8.678 23.804c-.18-.16-5.178-4.724-5.178-10.176C3.5 6.976 7.565 3 14.356 3c3.975 0 7.7 3.135 9.493 4.906C25.642 6.134 29.367 3 33.34 3 40.132 3 44.2 6.976 44.2 13.63c0 5.45-4.998 10.016-5.2 10.22L24.85 37.475c-.273.272-.637.408-1 .408-.365 0-.728-.134-1-.408z"></path></svg></div>
+<div class="bubble bubble12"><svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42 43"><path class="bug" id="bug12" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M26.445 3.27L38.61 15.165c3.142 3.07 3.19 8.104.117 11.242L26.814 38.562c-3.074 3.14-8.113 3.19-11.254.123L3.392 26.787c-3.142-3.07-3.194-8.102-.12-11.24L15.19 3.388C18.263.25 23.304.195 26.444 3.27z"></path></svg></div>
+<div class="bubble bubble13"><svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42 43"><path class="heart" id="heart13" d="M22.85 37.476L8.678 23.804c-.18-.16-5.178-4.724-5.178-10.176C3.5 6.976 7.565 3 14.356 3c3.975 0 7.7 3.135 9.493 4.906C25.642 6.134 29.367 3 33.34 3 40.132 3 44.2 6.976 44.2 13.63c0 5.45-4.998 10.016-5.2 10.22L24.85 37.475c-.273.272-.637.408-1 .408-.365 0-.728-.134-1-.408z"></path></svg></div>
+<div class="bubble bubble14"><svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42 43"><path class="bug" id="bug14" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M26.445 3.27L38.61 15.165c3.142 3.07 3.19 8.104.117 11.242L26.814 38.562c-3.074 3.14-8.113 3.19-11.254.123L3.392 26.787c-3.142-3.07-3.194-8.102-.12-11.24L15.19 3.388C18.263.25 23.304.195 26.444 3.27z"></path></svg></div>
+<div class="bubble bubble15"><svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42 43"><path class="heart" id="heart15" d="M22.85 37.476L8.678 23.804c-.18-.16-5.178-4.724-5.178-10.176C3.5 6.976 7.565 3 14.356 3c3.975 0 7.7 3.135 9.493 4.906C25.642 6.134 29.367 3 33.34 3 40.132 3 44.2 6.976 44.2 13.63c0 5.45-4.998 10.016-5.2 10.22L24.85 37.475c-.273.272-.637.408-1 .408-.365 0-.728-.134-1-.408z"></path></svg></div>
+<div class="bubble bubble16"><svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42 43"><path class="heart" id="heart16" d="M22.85 37.476L8.678 23.804c-.18-.16-5.178-4.724-5.178-10.176C3.5 6.976 7.565 3 14.356 3c3.975 0 7.7 3.135 9.493 4.906C25.642 6.134 29.367 3 33.34 3 40.132 3 44.2 6.976 44.2 13.63c0 5.45-4.998 10.016-5.2 10.22L24.85 37.475c-.273.272-.637.408-1 .408-.365 0-.728-.134-1-.408z"></path></svg></div>
+<div class="bubble bubble17"><svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42 43"><path class="heart" id="heart17" d="M22.85 37.476L8.678 23.804c-.18-.16-5.178-4.724-5.178-10.176C3.5 6.976 7.565 3 14.356 3c3.975 0 7.7 3.135 9.493 4.906C25.642 6.134 29.367 3 33.34 3 40.132 3 44.2 6.976 44.2 13.63c0 5.45-4.998 10.016-5.2 10.22L24.85 37.475c-.273.272-.637.408-1 .408-.365 0-.728-.134-1-.408z"></path></svg></div>
+<div class="bubble bubble18"><svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42 43"><path class="heart" id="heart18" d="M22.85 37.476L8.678 23.804c-.18-.16-5.178-4.724-5.178-10.176C3.5 6.976 7.565 3 14.356 3c3.975 0 7.7 3.135 9.493 4.906C25.642 6.134 29.367 3 33.34 3 40.132 3 44.2 6.976 44.2 13.63c0 5.45-4.998 10.016-5.2 10.22L24.85 37.475c-.273.272-.637.408-1 .408-.365 0-.728-.134-1-.408z"></path></svg></div>
+<div class="bubble bubble19"><svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42 43"><path class="heart" id="heart19" d="M22.85 37.476L8.678 23.804c-.18-.16-5.178-4.724-5.178-10.176C3.5 6.976 7.565 3 14.356 3c3.975 0 7.7 3.135 9.493 4.906C25.642 6.134 29.367 3 33.34 3 40.132 3 44.2 6.976 44.2 13.63c0 5.45-4.998 10.016-5.2 10.22L24.85 37.475c-.273.272-.637.408-1 .408-.365 0-.728-.134-1-.408z"></path></svg></div>
+<div class="bubble bubble20"><svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42 43"><path class="bug" id="bug20" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M26.445 3.27L38.61 15.165c3.142 3.07 3.19 8.104.117 11.242L26.814 38.562c-3.074 3.14-8.113 3.19-11.254.123L3.392 26.787c-3.142-3.07-3.194-8.102-.12-11.24L15.19 3.388C18.263.25 23.304.195 26.444 3.27z"></path></svg></div>
+<div class="bubble bubble21"><svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42 43"><path class="bug" id="bug21" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M26.445 3.27L38.61 15.165c3.142 3.07 3.19 8.104.117 11.242L26.814 38.562c-3.074 3.14-8.113 3.19-11.254.123L3.392 26.787c-3.142-3.07-3.194-8.102-.12-11.24L15.19 3.388C18.263.25 23.304.195 26.444 3.27z"></path></svg></div>
+<div class="bubble bubble22"><svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42 43"><path class="heart" id="heart22" d="M22.85 37.476L8.678 23.804c-.18-.16-5.178-4.724-5.178-10.176C3.5 6.976 7.565 3 14.356 3c3.975 0 7.7 3.135 9.493 4.906C25.642 6.134 29.367 3 33.34 3 40.132 3 44.2 6.976 44.2 13.63c0 5.45-4.998 10.016-5.2 10.22L24.85 37.475c-.273.272-.637.408-1 .408-.365 0-.728-.134-1-.408z"></path></svg></div>
+<div class="bubble bubble23"><svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42 43"><path class="bug" id="bug23" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M26.445 3.27L38.61 15.165c3.142 3.07 3.19 8.104.117 11.242L26.814 38.562c-3.074 3.14-8.113 3.19-11.254.123L3.392 26.787c-3.142-3.07-3.194-8.102-.12-11.24L15.19 3.388C18.263.25 23.304.195 26.444 3.27z"></path></svg></div>
+<div class="bubble bubble24"><svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42 43"><path class="heart" id="heart24" d="M22.85 37.476L8.678 23.804c-.18-.16-5.178-4.724-5.178-10.176C3.5 6.976 7.565 3 14.356 3c3.975 0 7.7 3.135 9.493 4.906C25.642 6.134 29.367 3 33.34 3 40.132 3 44.2 6.976 44.2 13.63c0 5.45-4.998 10.016-5.2 10.22L24.85 37.475c-.273.272-.637.408-1 .408-.365 0-.728-.134-1-.408z"></path></svg></div>
+<div class="bubble bubble25"><svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42 43"><path class="bug" id="bug25" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M26.445 3.27L38.61 15.165c3.142 3.07 3.19 8.104.117 11.242L26.814 38.562c-3.074 3.14-8.113 3.19-11.254.123L3.392 26.787c-3.142-3.07-3.194-8.102-.12-11.24L15.19 3.388C18.263.25 23.304.195 26.444 3.27z"></path></svg></div>
+<div class="bubble bubble26"><svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42 43"><path class="bug" id="bug26" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M26.445 3.27L38.61 15.165c3.142 3.07 3.19 8.104.117 11.242L26.814 38.562c-3.074 3.14-8.113 3.19-11.254.123L3.392 26.787c-3.142-3.07-3.194-8.102-.12-11.24L15.19 3.388C18.263.25 23.304.195 26.444 3.27z"></path></svg></div>
+<div class="bubble bubble27"><svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42 43"><path class="heart" id="heart27" d="M22.85 37.476L8.678 23.804c-.18-.16-5.178-4.724-5.178-10.176C3.5 6.976 7.565 3 14.356 3c3.975 0 7.7 3.135 9.493 4.906C25.642 6.134 29.367 3 33.34 3 40.132 3 44.2 6.976 44.2 13.63c0 5.45-4.998 10.016-5.2 10.22L24.85 37.475c-.273.272-.637.408-1 .408-.365 0-.728-.134-1-.408z"></path></svg></div>
+<div class="bubble bubble28"><svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42 43"><path class="heart" id="heart28" d="M22.85 37.476L8.678 23.804c-.18-.16-5.178-4.724-5.178-10.176C3.5 6.976 7.565 3 14.356 3c3.975 0 7.7 3.135 9.493 4.906C25.642 6.134 29.367 3 33.34 3 40.132 3 44.2 6.976 44.2 13.63c0 5.45-4.998 10.016-5.2 10.22L24.85 37.475c-.273.272-.637.408-1 .408-.365 0-.728-.134-1-.408z"></path></svg></div>
+<div class="bubble bubble29"><svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42 43"><path class="bug" id="bug29" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M26.445 3.27L38.61 15.165c3.142 3.07 3.19 8.104.117 11.242L26.814 38.562c-3.074 3.14-8.113 3.19-11.254.123L3.392 26.787c-3.142-3.07-3.194-8.102-.12-11.24L15.19 3.388C18.263.25 23.304.195 26.444 3.27z"></path></svg></div>
+<div class="bubble bubble30"><svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42 43"><path class="bug" id="bug30" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M26.445 3.27L38.61 15.165c3.142 3.07 3.19 8.104.117 11.242L26.814 38.562c-3.074 3.14-8.113 3.19-11.254.123L3.392 26.787c-3.142-3.07-3.194-8.102-.12-11.24L15.19 3.388C18.263.25 23.304.195 26.444 3.27z"></path></svg></div>
+<div class="bubble bubble31"><svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42 43"><path class="bug" id="bug31" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M26.445 3.27L38.61 15.165c3.142 3.07 3.19 8.104.117 11.242L26.814 38.562c-3.074 3.14-8.113 3.19-11.254.123L3.392 26.787c-3.142-3.07-3.194-8.102-.12-11.24L15.19 3.388C18.263.25 23.304.195 26.444 3.27z"></path></svg></div>
+<div class="bubble bubble32"><svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42 43"><path class="heart" id="heart32" d="M22.85 37.476L8.678 23.804c-.18-.16-5.178-4.724-5.178-10.176C3.5 6.976 7.565 3 14.356 3c3.975 0 7.7 3.135 9.493 4.906C25.642 6.134 29.367 3 33.34 3 40.132 3 44.2 6.976 44.2 13.63c0 5.45-4.998 10.016-5.2 10.22L24.85 37.475c-.273.272-.637.408-1 .408-.365 0-.728-.134-1-.408z"></path></svg></div>
+<div class="bubble bubble33"><svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42 43"><path class="bug" id="bug33" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M26.445 3.27L38.61 15.165c3.142 3.07 3.19 8.104.117 11.242L26.814 38.562c-3.074 3.14-8.113 3.19-11.254.123L3.392 26.787c-3.142-3.07-3.194-8.102-.12-11.24L15.19 3.388C18.263.25 23.304.195 26.444 3.27z"></path></svg></div>
+<div class="bubble bubble34"><svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42 43"><path class="heart" id="heart34" d="M22.85 37.476L8.678 23.804c-.18-.16-5.178-4.724-5.178-10.176C3.5 6.976 7.565 3 14.356 3c3.975 0 7.7 3.135 9.493 4.906C25.642 6.134 29.367 3 33.34 3 40.132 3 44.2 6.976 44.2 13.63c0 5.45-4.998 10.016-5.2 10.22L24.85 37.475c-.273.272-.637.408-1 .408-.365 0-.728-.134-1-.408z"></path></svg></div>
+<div class="bubble bubble35"><svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42 43"><path class="heart" id="heart35" d="M22.85 37.476L8.678 23.804c-.18-.16-5.178-4.724-5.178-10.176C3.5 6.976 7.565 3 14.356 3c3.975 0 7.7 3.135 9.493 4.906C25.642 6.134 29.367 3 33.34 3 40.132 3 44.2 6.976 44.2 13.63c0 5.45-4.998 10.016-5.2 10.22L24.85 37.475c-.273.272-.637.408-1 .408-.365 0-.728-.134-1-.408z"></path></svg></div>
+<div class="bubble bubble36"><svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42 43"><path class="heart" id="heart36" d="M22.85 37.476L8.678 23.804c-.18-.16-5.178-4.724-5.178-10.176C3.5 6.976 7.565 3 14.356 3c3.975 0 7.7 3.135 9.493 4.906C25.642 6.134 29.367 3 33.34 3 40.132 3 44.2 6.976 44.2 13.63c0 5.45-4.998 10.016-5.2 10.22L24.85 37.475c-.273.272-.637.408-1 .408-.365 0-.728-.134-1-.408z"></path></svg></div>
+<div class="bubble bubble37"><svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42 43"><path class="bug" id="bug37" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M26.445 3.27L38.61 15.165c3.142 3.07 3.19 8.104.117 11.242L26.814 38.562c-3.074 3.14-8.113 3.19-11.254.123L3.392 26.787c-3.142-3.07-3.194-8.102-.12-11.24L15.19 3.388C18.263.25 23.304.195 26.444 3.27z"></path></svg></div>
+<div class="bubble bubble38"><svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42 43"><path class="heart" id="heart38" d="M22.85 37.476L8.678 23.804c-.18-.16-5.178-4.724-5.178-10.176C3.5 6.976 7.565 3 14.356 3c3.975 0 7.7 3.135 9.493 4.906C25.642 6.134 29.367 3 33.34 3 40.132 3 44.2 6.976 44.2 13.63c0 5.45-4.998 10.016-5.2 10.22L24.85 37.475c-.273.272-.637.408-1 .408-.365 0-.728-.134-1-.408z"></path></svg></div>
+<div class="bubble bubble39"><svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42 43"><path class="bug" id="bug39" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M26.445 3.27L38.61 15.165c3.142 3.07 3.19 8.104.117 11.242L26.814 38.562c-3.074 3.14-8.113 3.19-11.254.123L3.392 26.787c-3.142-3.07-3.194-8.102-.12-11.24L15.19 3.388C18.263.25 23.304.195 26.444 3.27z"></path></svg></div>
+<div class="bubble bubble40"><svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42 43"><path class="bug" id="bug40" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M26.445 3.27L38.61 15.165c3.142 3.07 3.19 8.104.117 11.242L26.814 38.562c-3.074 3.14-8.113 3.19-11.254.123L3.392 26.787c-3.142-3.07-3.194-8.102-.12-11.24L15.19 3.388C18.263.25 23.304.195 26.444 3.27z"></path></svg></div>
+<div class="bubble bubble41"><svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42 43"><path class="bug" id="bug41" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M26.445 3.27L38.61 15.165c3.142 3.07 3.19 8.104.117 11.242L26.814 38.562c-3.074 3.14-8.113 3.19-11.254.123L3.392 26.787c-3.142-3.07-3.194-8.102-.12-11.24L15.19 3.388C18.263.25 23.304.195 26.444 3.27z"></path></svg></div>
+<div class="bubble bubble42"><svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42 43"><path class="heart" id="heart42" d="M22.85 37.476L8.678 23.804c-.18-.16-5.178-4.724-5.178-10.176C3.5 6.976 7.565 3 14.356 3c3.975 0 7.7 3.135 9.493 4.906C25.642 6.134 29.367 3 33.34 3 40.132 3 44.2 6.976 44.2 13.63c0 5.45-4.998 10.016-5.2 10.22L24.85 37.475c-.273.272-.637.408-1 .408-.365 0-.728-.134-1-.408z"></path></svg></div>
+<div class="bubble bubble43"><svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42 43"><path class="heart" id="heart43" d="M22.85 37.476L8.678 23.804c-.18-.16-5.178-4.724-5.178-10.176C3.5 6.976 7.565 3 14.356 3c3.975 0 7.7 3.135 9.493 4.906C25.642 6.134 29.367 3 33.34 3 40.132 3 44.2 6.976 44.2 13.63c0 5.45-4.998 10.016-5.2 10.22L24.85 37.475c-.273.272-.637.408-1 .408-.365 0-.728-.134-1-.408z"></path></svg></div>
+<div class="bubble bubble44"><svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42 43"><path class="bug" id="bug44" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M26.445 3.27L38.61 15.165c3.142 3.07 3.19 8.104.117 11.242L26.814 38.562c-3.074 3.14-8.113 3.19-11.254.123L3.392 26.787c-3.142-3.07-3.194-8.102-.12-11.24L15.19 3.388C18.263.25 23.304.195 26.444 3.27z"></path></svg></div>
+<div class="bubble bubble45"><svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42 43"><path class="bug" id="bug45" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M26.445 3.27L38.61 15.165c3.142 3.07 3.19 8.104.117 11.242L26.814 38.562c-3.074 3.14-8.113 3.19-11.254.123L3.392 26.787c-3.142-3.07-3.194-8.102-.12-11.24L15.19 3.388C18.263.25 23.304.195 26.444 3.27z"></path></svg></div>
+<div class="bubble bubble46"><svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42 43"><path class="heart" id="heart46" d="M22.85 37.476L8.678 23.804c-.18-.16-5.178-4.724-5.178-10.176C3.5 6.976 7.565 3 14.356 3c3.975 0 7.7 3.135 9.493 4.906C25.642 6.134 29.367 3 33.34 3 40.132 3 44.2 6.976 44.2 13.63c0 5.45-4.998 10.016-5.2 10.22L24.85 37.475c-.273.272-.637.408-1 .408-.365 0-.728-.134-1-.408z"></path></svg></div>
+<div class="bubble bubble47"><svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42 43"><path class="bug" id="bug47" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M26.445 3.27L38.61 15.165c3.142 3.07 3.19 8.104.117 11.242L26.814 38.562c-3.074 3.14-8.113 3.19-11.254.123L3.392 26.787c-3.142-3.07-3.194-8.102-.12-11.24L15.19 3.388C18.263.25 23.304.195 26.444 3.27z"></path></svg></div>
+<div class="bubble bubble48"><svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42 43"><path class="bug" id="bug48" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M26.445 3.27L38.61 15.165c3.142 3.07 3.19 8.104.117 11.242L26.814 38.562c-3.074 3.14-8.113 3.19-11.254.123L3.392 26.787c-3.142-3.07-3.194-8.102-.12-11.24L15.19 3.388C18.263.25 23.304.195 26.444 3.27z"></path></svg></div>
+<div class="bubble bubble49"><svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42 43"><path class="heart" id="heart49" d="M22.85 37.476L8.678 23.804c-.18-.16-5.178-4.724-5.178-10.176C3.5 6.976 7.565 3 14.356 3c3.975 0 7.7 3.135 9.493 4.906C25.642 6.134 29.367 3 33.34 3 40.132 3 44.2 6.976 44.2 13.63c0 5.45-4.998 10.016-5.2 10.22L24.85 37.475c-.273.272-.637.408-1 .408-.365 0-.728-.134-1-.408z"></path></svg></div>
+<div class="bubble bubble50"><svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42 43"><path class="bug" id="bug50" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M26.445 3.27L38.61 15.165c3.142 3.07 3.19 8.104.117 11.242L26.814 38.562c-3.074 3.14-8.113 3.19-11.254.123L3.392 26.787c-3.142-3.07-3.194-8.102-.12-11.24L15.19 3.388C18.263.25 23.304.195 26.444 3.27z"></path></svg></div>
+</div>
+<h1 id="white">Power the Experience</h1>
+<h3 id="light-grey">Win shoppers&#8217; hearts with captivating digital coupons, offers and content.</h3>
+<div id="ticker_row_new">
+<div class="main" id="main">
+<div class="container2" id="container2"/></div>
+</div>
+<div id="ticker_label">Celebrating 3+ Billion Digital Coupons Clipped by Shoppers</div>
+</div>
+<div class="vc_row wpb_row vc_inner vc_row-fluid"><div class="wpb_column vc_column_container vc_col-sm-12"><div class="wpb_wrapper"></p>
+<div id="actn_btns"><a target="_self" class="to-button regular standard rounded to-button-fill   " data-bgcolor="#ffffff" data-color="#01aace" style="color:#ffffff;background:#01aace;border-color:#01aace" href="#contact"><span style="color:#ffffff;">Let's Connect</span></a><a target="_self" class="to-button regular standard rounded to-button-border   " data-bgcolor="#01aace" data-color="#01aace" style="color:#01aace;background:#ffffff;border-color:#01aace" href="#why_you"><span style="color:#01aace;">Learn More</span></a></div>
+<p></div></div></div>
+<div id="down_arrow"><a href="#why_you"><i class="to-icon fa fa-angle-down fa-4x    " data-anim-icon="bounce" style="color:#ccc;"  data-color="#ccc"><i class="to-icon-overlay"  ></i></i></a></div>
+</div>
+
+		</div>
+	</div>
+
+		</div> 
+	</div> 
+</div></div><section class="side-section left vc_row wpb_row vc_row-fluid hand txt-center  " ><div class="side-section-image no-repeat" style="background-image:url();"></div><div class="section-container "><div class="col col-6 side-col">
+	<div class="vc_col-sm-12 wpb_column vc_column_container   "  >
+		<div class="wpb_wrapper">
+			<div class="vc_row wpb_row vc_inner vc_row-fluid"><div class="wpb_column vc_column_container vc_col-sm-12"><div class="wpb_wrapper"></div></div></div>
+		</div> 
+	</div> 
+</div></div></section><div class="   vc_row wpb_row vc_row-fluid aisle txt-center  "  ><div class="section-container">
+	<div class="vc_col-sm-12 wpb_column vc_column_container   "  >
+		<div class="wpb_wrapper">
+			<div class="vc_row wpb_row vc_inner vc_row-fluid"><div class="wpb_column vc_column_container vc_col-sm-12 vc_col-lg-offset-2 vc_col-lg-8 vc_col-md-12 vc_col-xs-12"><div class="wpb_wrapper">
+	<div class="wpb_text_column wpb_content_element  wpb_animate_when_almost_visible wpb_bottom-to-top passion_padding">
+		<div class="wpb_wrapper">
+			<span id="why_you" class="sta-anchor " aria-hidden="true"></span>
+<h2>Passion + Innovation</h2>
+<p><span id="light-grey">YOU Technology is the industry’s largest digital coupon, offer, and specialized content network of choice. In 2007, YOU Technology paved the way for digital coupons by launching the first entirely digital, load-to-card, coupon program that integrated directly with POS. Today, YOU Technology powers a digital coupon, offer and specialized content network that engages more than 24 million users shopping at more than 10,000 retail stores with more than 3 billion digital coupon and offer clips.</span></p>
+
+		</div>
+	</div>
+</div></div></div><div class="vc_row wpb_row vc_inner vc_row-fluid"></div>
+		</div> 
+	</div> 
+</div></div><div class="   vc_row wpb_row vc_row-fluid diamonds txt-left  "  ><div class="section-container">
+	<div class="vc_col-sm-12 wpb_column vc_column_container   "  >
+		<div class="wpb_wrapper">
+			<div class="vc_row wpb_row vc_inner vc_row-fluid"><div class="wpb_column vc_column_container vc_col-sm-12 vc_col-lg-offset-0 vc_col-lg-8 vc_col-md-12 vc_col-xs-12"><div class="wpb_wrapper">
+	<div class="wpb_text_column wpb_content_element  wpb_animate_when_almost_visible wpb_left-to-right">
+		<div class="wpb_wrapper">
+			<span id="why_you" class="sta-anchor " aria-hidden="true"></span>
+<h2 id="white">Proven Results</h2>
+
+		</div>
+	</div>
+</div></div></div><div class="vc_row wpb_row vc_inner vc_row-fluid facts_padding"><div class="wpb_column vc_column_container vc_col-sm-6 vc_col-xs-12"><div class="wpb_wrapper">
+	<div class="wpb_text_column wpb_content_element  wpb_animate_when_almost_visible wpb_left-to-right">
+		<div class="wpb_wrapper">
+			<div id="stat1">
+<div class="fact"><span class="to-counter-holder txt-left" data-counter="10" data-counter-speed="1300"><span class="to-counter-number left"><span class="to-count-number">0</span></span> </span>+K</div>
+<div class="label">Retail Store Network</div>
+</div>
+<div id="stat2">
+<div class="fact"><span class="to-counter-holder txt-left" data-counter="24" data-counter-speed="1300"><span class="to-counter-number left"><span class="to-count-number">0</span></span> </span>+M</div>
+<div class="label">Engaged User Base</div>
+</div>
+<div id="stat3">
+<div class="fact"><span class="to-counter-holder txt-left" data-counter="42" data-counter-speed="1300"><span class="to-counter-number left"><span class="to-count-number">0</span></span> </span>%</div>
+<div class="label">Redemption Growth Rate</div>
+</div>
+<div id="stat4">
+<div class="fact"><span class="to-counter-holder txt-left" data-counter="600" data-counter-speed="1300"><span class="to-counter-number left"><span class="to-count-number">0</span></span> </span>+M</div>
+<div class="label">Dollars Saved by Shoppers</div>
+</div>
+
+		</div>
+	</div>
+</div></div><div class="wpb_column vc_column_container vc_col-sm-6"><div class="wpb_wrapper">
+	<div class="wpb_text_column wpb_content_element  wpb_animate_when_almost_visible wpb_right-to-left">
+		<div class="wpb_wrapper">
+			<div id="stat2">
+<div class="fact"><span class="to-counter-holder txt-left" data-counter="100" data-counter-speed="1300"><span class="to-counter-number left"><span class="to-count-number">0</span></span> </span>+M</div>
+<div class="label">Household Reach</div>
+</div>
+<div id="stat3">
+<div class="fact"><span class="to-counter-holder txt-left" data-counter="13" data-counter-speed="1300"><span class="to-counter-number left"><span class="to-count-number">0</span></span> </span>%</div>
+<div class="label">Redemption Rate<br />
+(vs 0.4% for paper coupons)</div>
+</div>
+
+		</div>
+	</div>
+</div></div></div>
+		</div> 
+	</div> 
+</div></div><div class="   vc_row wpb_row vc_row-fluid platform txt-center  "  ><div class="section-container">
+	<div class="vc_col-sm-12 wpb_column vc_column_container   "  >
+		<div class="wpb_wrapper">
+			<div class="vc_row wpb_row vc_inner vc_row-fluid vc_custom_1458502077193"><div class="wpb_column vc_column_container vc_col-sm-12 vc_col-lg-offset-2 vc_col-lg-8 vc_col-md-12 vc_col-xs-12"><div class="wpb_wrapper">
+	<div class="wpb_text_column wpb_content_element  wpb_animate_when_almost_visible wpb_bottom-to-top">
+		<div class="wpb_wrapper">
+			<span id="solutions" class="sta-anchor " aria-hidden="true"></span>
+<h2 id="light">Platform of Choice</h2>
+<p><span id="dark-text">With each clip and shopper engagement, YOU Technology has built a wealth of actionable data and insights. With this knowledge, expertise and tenacious client focus, YOU Technology is committed to win the hearts of shoppers on behalf of its retailers with compelling digital engagements offered at the right place, in the right way, at the right time.</span></p>
+
+		</div>
+	</div>
+</div></div></div><div class="vc_row wpb_row vc_inner vc_row-fluid"><div class="wpb_column vc_column_container vc_col-sm-4 vc_col-lg-4 vc_col-md-4 vc_col-xs-12"><div class="wpb_wrapper">
+	<div class="wpb_text_column wpb_content_element  wpb_animate_when_almost_visible wpb_left-to-right">
+		<div class="wpb_wrapper">
+			<i class="to-icon devices-laptop fa-4x    " data-anim-icon="bounce" style="color:#81b841;"  data-color="#81b841"><i class="to-icon-overlay"  ></i></i>
+<div id="feature">
+<div id="feature_title">Self-Service Solution</div>
+<div id="feature_text">Create, distribute and publish digital coupons and offers with a multi-channel reach</div>
+</div>
+
+		</div>
+	</div>
+</div></div><div class="wpb_column vc_column_container vc_col-sm-4 vc_col-lg-4 vc_col-md-4 vc_col-xs-12"><div class="wpb_wrapper">
+	<div class="wpb_text_column wpb_content_element  wpb_animate_when_almost_visible wpb_appear">
+		<div class="wpb_wrapper">
+			<i class="to-icon icon-et-trophy fa-4x    " data-anim-icon="bounce" style="color:#fbb815;"  data-color="#fbb815"><i class="to-icon-overlay"  ></i></i>
+<div id="feature">
+<div id="feature_title">Content Integrity</div>
+<div id="feature_text">Fight fraud and ensure quality and performance of digital coupons and engagements</div>
+</div>
+
+		</div>
+	</div>
+</div></div><div class="wpb_column vc_column_container vc_col-sm-4 vc_col-lg-4 vc_col-md-4 vc_col-xs-12"><div class="wpb_wrapper">
+	<div class="wpb_text_column wpb_content_element  wpb_animate_when_almost_visible wpb_right-to-left">
+		<div class="wpb_wrapper">
+			<i class="to-icon general-cogs fa-4x    " data-anim-icon="bounce" style="color:#e96f9f;"  data-color="#e96f9f"><i class="to-icon-overlay"  ></i></i>
+<div id="feature">
+<div id="feature_title">Fully Integrated</div>
+<div id="feature_text">Configure to meet system requirements and approval flows</div>
+</div>
+
+		</div>
+	</div>
+</div></div></div><div class="vc_row wpb_row vc_inner vc_row-fluid"><div class="wpb_column vc_column_container vc_col-sm-4"><div class="wpb_wrapper">
+	<div class="wpb_text_column wpb_content_element  wpb_animate_when_almost_visible wpb_left-to-right">
+		<div class="wpb_wrapper">
+			<i class="to-icon icon-et-layers fa-4x    " data-anim-icon="bounce" style="color:#5e9545;"  data-color="#5e9545"><i class="to-icon-overlay"  ></i></i>
+<div id="feature">
+<div id="feature_title">Complex Offer Types</div>
+<div id="feature_text">Support points-based, promotional, continuity, BXGY and several more offer types</div>
+</div>
+
+		</div>
+	</div>
+</div></div><div class="wpb_column vc_column_container vc_col-sm-4"><div class="wpb_wrapper">
+	<div class="wpb_text_column wpb_content_element  wpb_animate_when_almost_visible wpb_appear">
+		<div class="wpb_wrapper">
+			<i class="to-icon business-chart-up fa-4x    " data-anim-icon="bounce" style="color:#e67e23;"  data-color="#e67e23"><i class="to-icon-overlay"  ></i></i>
+<div id="feature">
+<div id="feature_title">Predictive Analytics</div>
+<div id="feature_text">Take the guesswork out of campaign budgeting with data-driven prediction tools</div>
+</div>
+
+		</div>
+	</div>
+</div></div><div class="wpb_column vc_column_container vc_col-sm-4"><div class="wpb_wrapper">
+	<div class="wpb_text_column wpb_content_element  wpb_animate_when_almost_visible wpb_right-to-left">
+		<div class="wpb_wrapper">
+			<i class="to-icon media-sliders-side fa-4x    " data-anim-icon="bounce" style="color:#c92b7a;"  data-color="#c92b7a"><i class="to-icon-overlay"  ></i></i>
+<div id="feature">
+<div id="feature_title">Real-Time Management</div>
+<div id="feature_text">Dynamically monitor and fine-tune coupons, offers and other engagements in real-time</div>
+</div>
+
+		</div>
+	</div>
+</div></div></div><div class="vc_row wpb_row vc_inner vc_row-fluid vc_custom_1457897535762"><div class="wpb_column vc_column_container vc_col-sm-4"><div class="wpb_wrapper">
+	<div class="wpb_text_column wpb_content_element  wpb_animate_when_almost_visible wpb_appear">
+		<div class="wpb_wrapper">
+			<i class="to-icon icon-et-target fa-4x    " data-anim-icon="bounce" style="color:#356a34;"  data-color="#356a34"><i class="to-icon-overlay"  ></i></i>
+<div id="feature">
+<div id="feature_title">Targeting &amp; Segmentation</div>
+<div id="feature_text">Personalize the right coupon to the right shopper with attribution-based optimization</div>
+</div>
+
+		</div>
+	</div>
+</div></div><div class="wpb_column vc_column_container vc_col-sm-4"><div class="wpb_wrapper">
+	<div class="wpb_text_column wpb_content_element  wpb_animate_when_almost_visible wpb_right-to-left">
+		<div class="wpb_wrapper">
+			<i class="to-icon business-pie-chart fa-4x    " data-anim-icon="bounce" style="color:#d2572a;"  data-color="#d2572a"><i class="to-icon-overlay"  ></i></i>
+<div id="feature">
+<div id="feature_title">Reporting</div>
+<div id="feature_text">Measure key performance indicators with ad-hoc reporting and analytics</div>
+</div>
+
+		</div>
+	</div>
+</div></div><div class="wpb_column vc_column_container vc_col-sm-4"><div class="wpb_wrapper">
+	<div class="wpb_text_column wpb_content_element  wpb_animate_when_almost_visible wpb_left-to-right">
+		<div class="wpb_wrapper">
+			<i class="to-icon devices-headset fa-4x    " data-anim-icon="bounce" style="color:#a21d46;"  data-color="#a21d46"><i class="to-icon-overlay"  ></i></i>
+<div id="feature">
+<div id="feature_title">Shopper Care Center</div>
+<div id="feature_text">Empower loyalty team with simple-to-use customer service tools</div>
+</div>
+
+		</div>
+	</div>
+</div></div></div>
+		</div> 
+	</div> 
+</div></div><div class="parallax-container   vc_row wpb_row vc_row-fluid secure_approach txt-center equal-height "  ><div class="parallax-container-inner no-repeat" style="background-image:url();" ></div><div class="parallax-container-overlay" ></div><div class="parallax-container-overlay-color" style="background-color:#072130;opacity :0.7;filter: Alpha(Opacity=70);"></div><div class="section-container">
+	<div class="vc_col-sm-12 wpb_column vc_column_container   "  >
+		<div class="wpb_wrapper">
+			<div class="vc_row wpb_row vc_inner vc_row-fluid"><div class="wpb_column vc_column_container vc_col-sm-8"><div class="wpb_wrapper">
+	<div class="wpb_text_column wpb_content_element  wpb_animate_when_almost_visible wpb_left-to-right">
+		<div class="wpb_wrapper">
+			<h2 id="white" style="text-align: left;">Secure Approach</h2>
+<p style="text-align: left;"><span id="white">YOU Technology’s approach to digital coupons and offers doesn’t rely on bar codes or any other external factor that can be copied during the coupon or offer’s lifecycle. Set up in advance and fully integrated with POS, shoppers must present a loyalty card or unique ID at checkout in order to redeem coupons and offers. This truly digital approach fights fraud by eliminating counterfeit coupons and unlawful redemptions, subsequently saving retailers millions of dollars.</span></p>
+
+		</div>
+	</div>
+</div></div><div class="wpb_column vc_column_container vc_col-sm-4"><div class="wpb_wrapper">
+	<div class="wpb_single_image wpb_content_element vc_align_center">
+		<div class="wpb_wrapper">
+			
+			<div class="vc_single_image-wrapper  "><img class="vc_single_image-img " src="http://www.you.net/wp-content/uploads/2014/06/lock-icon-4-100x103.png" width="100" height="103" alt="lock-icon" title="lock-icon" /></div>
+		</div> 
+	</div> </div></div></div><div class="vc_row wpb_row vc_inner vc_row-fluid vc_custom_1459186547309"><div class="wpb_column vc_column_container vc_col-sm-4"><div class="wpb_wrapper">
+	<div class="wpb_single_image wpb_content_element vc_align_center">
+		<div class="wpb_wrapper">
+			
+			<div class="vc_single_image-wrapper  "><img class="vc_single_image-img " src="http://www.you.net/wp-content/uploads/2014/06/icon-stars-3-100x103.png" width="100" height="103" alt="icon-stars" title="icon-stars" /></div>
+		</div> 
+	</div> </div></div><div class="wpb_column vc_column_container vc_col-sm-8"><div class="wpb_wrapper">
+	<div class="wpb_text_column wpb_content_element  wpb_animate_when_almost_visible wpb_right-to-left">
+		<div class="wpb_wrapper">
+			<h2 id="white" style="text-align: left;">Experience that Wins</h2>
+<p style="text-align: left;"><span id="white">YOU Technology’s targeting and segmentation engine and program expertise partner with retailers to build the best shopper engagement experience for capturing loyalty. Leveraging market research, shopper behavior and transactional data, YOU Technology equips its retailers with the ability to dynamically respond and engage their shoppers along the entire shopper journey – delighting their shoppers with captivating digital coupons, offers and specialized content, how they want, where they want and when they want them, all in real-time.</span></p>
+
+		</div>
+	</div>
+</div></div></div><div class="vc_row wpb_row vc_inner vc_row-fluid vc_custom_1459186557761"><div class="wpb_column vc_column_container vc_col-sm-8"><div class="wpb_wrapper">
+	<div class="wpb_text_column wpb_content_element  wpb_animate_when_almost_visible wpb_left-to-right">
+		<div class="wpb_wrapper">
+			<h2 id="white" style="text-align: left;">Tenacious Focus</h2>
+<p style="text-align: left;"><span id="white">YOU Technology’s solutions embrace the philosophy that nothing should stand between a shopper and her retailer. With a self-service, highly customizable digital distribution and publication platform plus effortless integration options, YOU Technology empowers retailers to present the best possible multi-channel shopper engagement experience while preserving a retailer-centric brand presence.</span></p>
+
+		</div>
+	</div>
+</div></div><div class="wpb_column vc_column_container vc_col-sm-4"><div class="wpb_wrapper">
+	<div class="wpb_single_image wpb_content_element vc_align_center">
+		<div class="wpb_wrapper">
+			
+			<div class="vc_single_image-wrapper  "><img class="vc_single_image-img " src="http://www.you.net/wp-content/uploads/2014/06/lock-heart-2-100x103.png" width="100" height="103" alt="lock-heart" title="lock-heart" /></div>
+		</div> 
+	</div> </div></div></div>
+		</div> 
+	</div> 
+</div></div><div class="   vc_row wpb_row vc_row-fluid testimonial_section txt-center equal-height "  ><div class="section-container">
+	<div class="vc_col-sm-12 wpb_column vc_column_container txt-center  "  >
+		<div class="wpb_wrapper">
+			
+	<div class="wpb_text_column wpb_content_element ">
+		<div class="wpb_wrapper">
+			<h2 style="text-align: center;">Don&#8217;t Just Take Our Word for It</h2>
+<div class="to-testimonial" data-auto-play="7500" data-pagination="true" data-navigation="false"><blockquote class="to-testimonial-item"><p >Since the introduction of our Click2Card coupon program here at Big Y, we have seen increased usage and engagement numbers on our mobile app and customer portal. Our consumers are proving to us that they love digital coupons; we continue to see higher clip rates and redemption numbers with the program. YOU Technology also gives us a platform to deliver private label coupons AND exclusive manufacturer coupons to our consumers, which creates even more excitement when it comes to saving money at Big Y! In the past we had to print our private label coupons and distribute them in-store, now we just direct consumers online!</p><span class="to-testimonial-author ">Garrett Yargeau, </span><span class="to-testimonial-autor-desc " style="color:#01aace">Social Media Specialist, Big Y Foods, Inc.</span></blockquote><blockquote class="to-testimonial-item"><p >A true and responsive partner, You Technology has provided excellent, 24/7 service during our four-year relationship. Digital coupons have contributed to the growth of our loyalty program and driven Digital Engagement across all of our platforms.  In 2015, digital coupon clips more than tripled over the prior year. We expect that positive growth to continue over the next year and we look forward to growing together with You Technology.</p><span class="to-testimonial-author ">Lisa Haley, </span><span class="to-testimonial-autor-desc " style="color:#01aace">Manager, Digital Commerce & Innovation, WakeFern Food Corp.</span></blockquote></div>
+
+		</div>
+	</div>
+
+		</div> 
+	</div> 
+</div></div>
+<div class="   vc_row wpb_row vc_row-fluid news_section txt-center  "  >
+	<div class="vc_col-sm-12 wpb_column vc_column_container txt-center  "  >
+		<div class="wpb_wrapper">
+			
+	<div class="wpb_text_column wpb_content_element ">
+		<div class="wpb_wrapper">
+			<span id="press" class="sta-anchor " aria-hidden="true"></span>
+<h2 style="text-align: center;">In the News</h2>
+
+		</div>
+	</div>
+<div class="vc_row wpb_row vc_inner vc_row-fluid news_article"></p>
+<div class="news_article wpb_column vc_column_container vc_col-sm-12 vc_col-lg-3 vc_col-md-6 vc_col-xs-12"><div class="wpb_wrapper">
+	<div class="wpb_text_column wpb_content_element ">
+		<div class="wpb_wrapper">
+			<p style="text-align: left;"><i class="to-icon icon-et-newspaper fa-3x    "  style="color:#44515A;"  data-color="#44515A"><i class="to-icon-overlay"  ></i></i></p>
+<div id="feature_title" style="text-align: left;">If I Knew Then&#8230;</div>
+<div id="feature_text_sm" style="text-align: left;">Crain&#8217;s &#8211; May 14, 2016</div>
+<p id="feature_text" style="text-align: left;">The Mistake: I was 29 and a relatively new manager. I was managing a small software engineering team at a company called Cullinet, one of the early startups. Cullinet and IBM had two of the only database management systems. At the time, they were one of the early success stories of the industry—until all of a sudden we were being leapfrogged. <a href="http://www.crains.com/if-i-knew-then/cheryl-black/you-technology" target="_blank">more</a></p>
+
+		</div>
+	</div>
+</div></div>
+<div class="news_article wpb_column vc_column_container vc_col-sm-12 vc_col-lg-3 vc_col-md-6 vc_col-xs-12"><div class="wpb_wrapper">
+	<div class="wpb_text_column wpb_content_element ">
+		<div class="wpb_wrapper">
+			<p style="text-align: left;"><i class="to-icon icon-et-newspaper fa-3x    "  style="color:#44515A;"  data-color="#44515A"><i class="to-icon-overlay"  ></i></i></p>
+<div id="feature_title" style="text-align: left;">YOU Technology Reaches 3 Billion Digital Coupon Clips</div>
+<div id="feature_text_sm" style="text-align: left;">Marketwired &#8211; April 06, 2016</div>
+<p id="feature_text" style="text-align: left;">YOU Technology, LLC, the United States&#8217; leading digital coupon provider behind some of the top names in grocery and retail, today announced that shoppers have clipped more than 3 billion unique digital coupons from its network since November 2009. This has saved American families upwards of $600 million through strictly paperless coupons. <a href="http://finance.yahoo.com/news/technology-reaches-3-billion-digital-123000615.html" target="_blank">more</a></p>
+
+		</div>
+	</div>
+</div></div>
+<div class="news_article wpb_column vc_column_container vc_col-sm-12 vc_col-lg-3 vc_col-md-6 vc_col-xs-12"><div class="wpb_wrapper">
+	<div class="wpb_text_column wpb_content_element ">
+		<div class="wpb_wrapper">
+			<p style="text-align: left;"><i class="to-icon icon-et-newspaper fa-3x    "  style="color:#44515A;"  data-color="#44515A"><i class="to-icon-overlay"  ></i></i></p>
+<div id="feature_title" style="text-align: left;">How Is Predictive Analytics Being Used in Grocery?</div>
+<div id="feature_text_sm" style="text-align: left;">http://www.shoppertech.org/ &#8211; March 26, 2016</div>
+<p id="feature_text" style="text-align: left;">What is the number one area that grocers should focus on with predictive analytics? There are many areas for predictive analytics of course but the number one area should be Targeted Promotions and Campaigns. This area would involve the use of predictive analytics to assess &#8212; and fine-tune over time &#8212; which customer segments are most lucrative, sensitive to promotions and best served in ways that they are driven to shop more and more frequently. <a href="http://www.shoppertech.org/EXPERTS032416.html" target="_blank">more</a></p>
+
+		</div>
+	</div>
+</div></div>
+<div class="news_article wpb_column vc_column_container vc_col-sm-12 vc_col-lg-3 vc_col-md-6 vc_col-xs-12"><div class="wpb_wrapper"><br />
+
+	<div class="wpb_text_column wpb_content_element ">
+		<div class="wpb_wrapper">
+			<p style="text-align: left;"><i class="to-icon icon-et-newspaper fa-3x    "  style="color:#44515A;"  data-color="#44515A"><i class="to-icon-overlay"  ></i></i></p>
+<div id="feature_title" style="text-align: left;">How to combat coupon fraud</div>
+<div id="feature_text_sm" style="text-align: left;">BizReport, Ecommerce &#8211; February 29, 2016</div>
+<p id="feature_text" style="text-align: left;">Coupons continue to be a strong tool for retailers to use both online and offline, but in the digital space, coupon fraud is becoming a bigger problem. Kristina: How big a problem is coupon fraud? Cheryl Black, CEO of YOU Technology: We often view it as a subtle issue, but it&#8217;s a problem that&#8217;s costing U.S. retailers and manufacturers hundreds of millions of dollars in lost revenue each year.  <a href="http://www.bizreport.com/2016/02/how-to-combat-coupon-fraud.html" target="_blank">more</a></p>
+
+		</div>
+	</div>
+</div></div><br />
+</div>
+<div class="to-toggle-holder clearfix"><h5 class="to-toggle-title"><span class="to-toggle-open"><i class="icon-to-plus accentColorHover"></i></span>More News</h5><div class="to-toggle-content" >
+<div class="vc_row wpb_row vc_inner vc_row-fluid news_article"><br />
+<div class="news_article wpb_column vc_column_container vc_col-sm-12 vc_col-lg-3 vc_col-md-6 vc_col-xs-12"><div class="wpb_wrapper">
+	<div class="wpb_text_column wpb_content_element ">
+		<div class="wpb_wrapper">
+			<p style="text-align: left;"><i class="to-icon icon-et-newspaper fa-3x    "  style="color:#44515A;"  data-color="#44515A"><i class="to-icon-overlay"  ></i></i></p>
+<div id="feature_title" style="text-align: left;">The Only Time It&#8217;s Okay To Pass Up a Great Opportunity</div>
+<div id="feature_text_sm" style="text-align: left;">Fortune.com, Commentary &#8211; February 20, 2016</div>
+<p id="feature_text" style="text-align: left;">It will be worth the initial loss. The Leadership Insider network is an online community where the most thoughtful and influential people in business contribute answers to timely questions about careers and leadership. Today’s answer to the question: What did you learn from your biggest failure? is written by Cheryl Black, CEO of YOU Technology. <a href="http://fortune.com/2016/02/20/pass-up-great-opportunity/" target="_blank">more</a></p>
+
+		</div>
+	</div>
+</div></div>
+<div class="news_article wpb_column vc_column_container vc_col-sm-12 vc_col-lg-3 vc_col-md-6 vc_col-xs-12"><div class="wpb_wrapper">
+	<div class="wpb_text_column wpb_content_element ">
+		<div class="wpb_wrapper">
+			<p style="text-align: left;"><i class="to-icon icon-et-newspaper fa-3x    "  style="color:#44515A;"  data-color="#44515A"><i class="to-icon-overlay"  ></i></i></p>
+<div id="feature_title" style="text-align: left;">ProfNet Experts Available On Oil Volatility, Retirement Planning, Career Tips And More</div>
+<div id="feature_text_sm" style="text-align: left;">TheStreet.com, PR Newswire &#8211; January 11, 2016</div>
+<p id="feature_text" style="text-align: left;">Consumers&#8217; adoption rate for digital devices, especially mobile, is growing and it has impacted their shopping behavior. Because consumers are attached to a digital gadget almost all the time, retailers are enhancing their strategy on how to reach to consumers more effectively (and starting to focus more on digital marketing); hence, consumer packaged goods will eventually shift their budget from free-standing inserts to digital coupon. <a href="http://www.thestreet.com/story/13419715/1/profnet-experts-available-on-oil-volatility-retirement-planning-career-tips-and-more.html" target="_blank">more</a></p>
+
+		</div>
+	</div>
+</div></div>
+<div class="news_article wpb_column vc_column_container vc_col-sm-12 vc_col-lg-3 vc_col-md-6 vc_col-xs-12"><div class="wpb_wrapper">
+	<div class="wpb_text_column wpb_content_element ">
+		<div class="wpb_wrapper">
+			<p style="text-align: left;"><i class="to-icon icon-et-newspaper fa-3x    "  style="color:#44515A;"  data-color="#44515A"><i class="to-icon-overlay"  ></i></i></p>
+<div id="feature_title" style="text-align: left;">What Is the Forecast for FSI and Digital Offers in 2016?</div>
+<div id="feature_text_sm" style="text-align: left;">CPGmatters &#8211; January 1, 2016</div>
+<p id="feature_text" style="text-align: left;">Digital coupons will become a more integral piece of a retailer’s promotional mix. Because of the security and flexibility that they offer, they will be used to provide the sharpest of price points to loyal consumers. Retailers and CPGs can track (at very granular level) what is happening with digital coupons. They can see how a coupon is viewed, selected, redeemed and shared &#8211; where, how and by whom. This is not possible with paper coupons/FSIs. <a href="http://www.cpgmatters.com/Coupons010416.html" target="_blank">more</a></p>
+
+		</div>
+	</div>
+</div></div>
+<div class="news_article wpb_column vc_column_container vc_col-sm-12 vc_col-lg-3 vc_col-md-6 vc_col-xs-12"><div class="wpb_wrapper">
+	<div class="wpb_text_column wpb_content_element ">
+		<div class="wpb_wrapper">
+			<p style="text-align: left;"><i class="to-icon icon-et-newspaper fa-3x    "  style="color:#44515A;"  data-color="#44515A"><i class="to-icon-overlay"  ></i></i></p>
+<div id="feature_title" style="text-align: left;">Fighting the Fraud: The Paper Coupon Black Hole</div>
+<div id="feature_text_sm" style="text-align: left;">Progressive Grocer &#8211; December 23, 2015</div>
+<p id="feature_text" style="text-align: left;">Imagine a problem so big &#8212; yet so subtle &#8212; that it’s costing U.S. retailers and manufacturers hundreds of millions of dollars per year. <a href="http://www.progressivegrocer.com/departments/technology/fighting-fraud-paper-coupon-black-hole?nopaging=1" target="_blank">more</a></p>
+
+		</div>
+	</div>
+</div></div><br />
+</div>
+<div class="vc_row wpb_row vc_inner vc_row-fluid news_article"><br />
+<div class="news_article wpb_column vc_column_container vc_col-sm-12 vc_col-lg-3 vc_col-md-6 vc_col-xs-12"><div class="wpb_wrapper">
+	<div class="wpb_text_column wpb_content_element ">
+		<div class="wpb_wrapper">
+			<p style="text-align: left;"><i class="to-icon icon-et-newspaper fa-3x    "  style="color:#44515A;"  data-color="#44515A"><i class="to-icon-overlay"  ></i></i></p>
+<div id="feature_title" style="text-align: left;">Progressive Grocer&#8217;s &#8211; Top Women in Grocery</div>
+<div id="feature_text_sm" style="text-align: left;">Progressive Grocer, Magazine &#8211; June 18, 2015</div>
+<p id="feature_text" style="text-align: left;">Black oversees all operations, engineering, sales and finance, legal and HR functions of the company, whose systems allow digital coupons to be loaded onto frequent-shopper cards for instore redemption. She managed the transition of YOU Technology from an independently owned company to Kroger ownership, protecting YOU Technology&#8217;s other retailer clients&#8217; privacy and confidentiality. <a href="http://magazine.progressivegrocer.com/i/522351-jun-2015/47" target="_blank">more</a></p>
+
+		</div>
+	</div>
+</div></div>
+<div class="news_article wpb_column vc_column_container vc_col-sm-12 vc_col-lg-3 vc_col-md-6 vc_col-xs-12"><div class="wpb_wrapper">
+	<div class="wpb_text_column wpb_content_element ">
+		<div class="wpb_wrapper">
+			<p style="text-align: left;"><i class="to-icon icon-et-newspaper fa-3x    "  style="color:#44515A;"  data-color="#44515A"><i class="to-icon-overlay"  ></i></i></p>
+<div id="feature_title" style="text-align: left;">Mobile, Mobile, Mobile</div>
+<div id="feature_text_sm" style="text-align: left;">Mark Heckman Consulting, Commentary &#8211; April 24, 2015</div>
+<p id="feature_text" style="text-align: left;">During a recent panel discussion* on the topic of digital coupons, I asked Ajay Amlani, General Manager and Founder of You Technology what his three top areas of priority in terms of increasing the efficacy and volume of digital coupons and content in the coming year. His answer, without hesitation was adamantly -Mobile, Mobile and Mobile! <a href="http://mheckman.com/hitting-the-mark/mobile-mobile-mobile/" target="_blank">more</a></p>
+
+		</div>
+	</div>
+</div></div>
+<div class="news_article wpb_column vc_column_container vc_col-sm-12 vc_col-lg-3 vc_col-md-6 vc_col-xs-12"><div class="wpb_wrapper">
+	<div class="wpb_text_column wpb_content_element ">
+		<div class="wpb_wrapper">
+			<p style="text-align: left;"><i class="to-icon icon-et-newspaper fa-3x    "  style="color:#44515A;"  data-color="#44515A"><i class="to-icon-overlay"  ></i></i></p>
+<div id="feature_title" style="text-align: left;">10 Entrepreneurs Who Can&#8217;t Be Overshadowed by Men&#8211;Even in Silicon Valley</div>
+<div id="feature_text_sm" style="text-align: left;">http://www.inc.com &#8211; December 18, 2014</div>
+<p id="feature_text" style="text-align: left;">San Francisco girl power. It probably doesn&#8217;t surprise you that there are a lot of fast-growing companies in San Francisco. But with all the talk of gender inequality in the Bay Area, these women are challenging stereotypes and taking on their male counterparts in Silicon Valley with zeal. Click through to take a gander at SF&#8217;s fastest-growing, women-led private companies. <a href="http://www.inc.com/rebecca-borison/inc5000-women-san-francisco.html" target="_blank">more</a></p>
+
+		</div>
+	</div>
+</div></div>
+<div class="news_article wpb_column vc_column_container vc_col-sm-12 vc_col-lg-3 vc_col-md-6 vc_col-xs-12"><div class="wpb_wrapper">
+	<div class="wpb_text_column wpb_content_element ">
+		<div class="wpb_wrapper">
+			<p style="text-align: left;"><i class="to-icon icon-et-newspaper fa-3x    "  style="color:#44515A;"  data-color="#44515A"><i class="to-icon-overlay"  ></i></i></p>
+<div id="feature_title" style="text-align: left;">YOU Technology: Helping Retailers Provide Digital Coupons to Shoppers</div>
+<div id="feature_text_sm" style="text-align: left;">Coupons Daily &#8211; November 18, 2014</div>
+<p id="feature_text" style="text-align: left;">Known as one of the most successful (if not, the best) digital coupon networks on the Internet, YOU Technology makes the couponing experience quite stress-free for customers and retailers. The company builds a platform for retailers to deliver the right coupons to the right customers at the right time. Instead of hunting down different coupons from sites all over the web and mobile apps, customers are directed to retailer-branded digital locations and can pick through a plethora of coupons for a specific store of their choice, while retailers increase online and in-store purchases.<a href="http://www.couponsdaily.com/blog/you-technology-the-invisible-network-helping-retailers-to-enable-digital-coupons-for-their-shoppers/" target="_blank">more</a></p>
+
+		</div>
+	</div>
+</div></div><br />
+</div>
+<div class="vc_row wpb_row vc_inner vc_row-fluid news_article"><br />
+<div class="news_article wpb_column vc_column_container vc_col-sm-12 vc_col-lg-3 vc_col-md-6 vc_col-xs-12"><div class="wpb_wrapper">
+	<div class="wpb_text_column wpb_content_element ">
+		<div class="wpb_wrapper">
+			<p style="text-align: left;"><i class="to-icon icon-et-newspaper fa-3x    "  style="color:#44515A;"  data-color="#44515A"><i class="to-icon-overlay"  ></i></i></p>
+<div id="feature_title" style="text-align: left;">Fastest Growing San Francisco Companies</div>
+<div id="feature_text_sm" style="text-align: left;">UnitedLayer &#8211; October 15, 2014</div>
+<p id="feature_text" style="text-align: left;">Greater San Francisco, or the &#8220;Bay Area&#8221;, is a Hotbed of Innovation. Some of the greatest technical inventions originated between Berkeley and San Jose. To provide a clear view of the companies behind the amazing work proliferating in our region, we at UnitedLayer put together a map of the 100 Fastest Growing San Francisco Companies. We hope it will inspire some camaraderie and conversion among us all.  <a href="https://unitedlayer.com/fastest-growing-san-francisco-companies" target="_blank">more</a></p>
+
+		</div>
+	</div>
+</div></div>
+<div class="news_article wpb_column vc_column_container vc_col-sm-12 vc_col-lg-3 vc_col-md-6 vc_col-xs-12"><div class="wpb_wrapper">
+	<div class="wpb_text_column wpb_content_element ">
+		<div class="wpb_wrapper">
+			<p style="text-align: left;"><i class="to-icon icon-et-newspaper fa-3x    "  style="color:#44515A;"  data-color="#44515A"><i class="to-icon-overlay"  ></i></i></p>
+<div id="feature_title" style="text-align: left;">Digital Coupons: Where Are We Going?</div>
+<div id="feature_text_sm" style="text-align: left;">Andnowuknow.com Produce Industry News &#8211; April 28, 2014</div>
+<p id="feature_text" style="text-align: left;">Believe it or not, the produce industry is becoming increasingly embedded within the digital age. It seems like any time I visit my local Safeway, I see people swiping away on their smartphones as they browse the produce aisles, looking up the latest deals as they shop. What is this tech phenomenon? Digital coupons. We’ve come a long way since those flimsy, paper-based coupons, and retailers like Safeway, Kroger, and Meijer are realizing the same thing. <a href="http://www.andnowuknow.com/headlines/digital-coupons-where-are-we-going/11629/christofer-oberst" target="_blank">more</a></p>
+
+		</div>
+	</div>
+</div></div>
+<div class="news_article wpb_column vc_column_container vc_col-sm-12 vc_col-lg-3 vc_col-md-6 vc_col-xs-12"><div class="wpb_wrapper">
+	<div class="wpb_text_column wpb_content_element ">
+		<div class="wpb_wrapper">
+			<p style="text-align: left;"><i class="to-icon icon-et-newspaper fa-3x    "  style="color:#44515A;"  data-color="#44515A"><i class="to-icon-overlay"  ></i></i></p>
+<div id="feature_title" style="text-align: left;">What Kroger’s Acquisition of Digital Coupouner YOU Technology Means for its Strategy</div>
+<div id="feature_text_sm" style="text-align: left;">The Motley Fool &#8211; March 14, 2014</div>
+<p id="feature_text" style="text-align: left;">After barely letting the ink dry on the completion of its mega merger with Harris Teeter, Kroger (NYSE: KR ) is at it again. The Cincinnati-based grocer struck a deal to acquire YOU Technology Brand Services, a digital-coupon marketing company with thousands of retailers on its platform. The price tag on the deal wasn’t disclosed, but Jeff Talbot, Kroger’s vice president of customer loyalty, took some time to discuss strategy with me. <a href="http://www.fool.com/investing/general/2014/03/14/why-krogers-acquisition-of-digital-coupouner-you-t.aspx" target="_blank">more</a></p>
+
+		</div>
+	</div>
+</div></div>
+<div class="news_article wpb_column vc_column_container vc_col-sm-12 vc_col-lg-3 vc_col-md-6 vc_col-xs-12"><div class="wpb_wrapper">
+	<div class="wpb_text_column wpb_content_element ">
+		<div class="wpb_wrapper">
+			<p style="text-align: left;"><i class="to-icon icon-et-newspaper fa-3x    "  style="color:#44515A;"  data-color="#44515A"><i class="to-icon-overlay"  ></i></i></p>
+<div id="feature_title" style="text-align: left;">Kroger’s Outstanding Performance Is Set to Continue</div>
+<div id="feature_text_sm" style="text-align: left;">The Motley Fool &#8211; March 12, 2014</div>
+<p id="feature_text" style="text-align: left;">Kroger (NYSE: KR ), one of the largest grocery retailers and the biggest supermarket operator in the U.S., has been on a roll, with shares up 17% year to date. The growing demand for organic and natural products and grocery items has led Kroger to jump onto the organic foods bandwagon. Moreover, with the acquisition of Harris Teeter Supermarkets complete, Kroger is set to continue its growth momentum. <a href="http://www.fool.com/investing/general/2014/05/12/krogers-outstanding-performance-is-set-to-continue.aspx" target="_blank">more</a></p>
+
+		</div>
+	</div>
+</div></div></div>
+</div></div>
+		</div> 
+	</div> 
+</div><div class="   vc_row wpb_row vc_row-fluid company_section txt-center  "  >
+	<div class="vc_col-sm-12 wpb_column vc_column_container   "  >
+		<div class="wpb_wrapper">
+			<div class="vc_row wpb_row vc_inner vc_row-fluid"><div class="wpb_column vc_column_container vc_col-sm-12 vc_col-lg-offset-2 vc_col-lg-8 vc_col-md-12 vc_col-xs-12"><div class="wpb_wrapper">
+	<div class="wpb_text_column wpb_content_element  wpb_animate_when_almost_visible wpb_bottom-to-top">
+		<div class="wpb_wrapper">
+			<span id="company" class="sta-anchor " aria-hidden="true"></span>
+<h2 id="white">Mission</h2>
+<div id="mission">
+<h3 id="white"><strong>We dedicate</strong></h3>
+<p>ourselves to building the best products for our retailers to captivate and engage their shoppers with relevant offers delivered how they want, where they want and when they want – replacing paper and saving trees.
+</p></div>
+<div id="mission">
+<h3 id="white"><strong>We commit</strong></h3>
+<p>to innovation and best-in-class execution, tenaciously.
+</p></div>
+<div id="mission">
+<h3 id="white"><strong>We advocate</strong></h3>
+<p>within and on behalf of our retailer partners, amplifying their strategy.
+</p></div>
+
+		</div>
+	</div>
+</div></div></div><div class="vc_row wpb_row vc_inner vc_row-fluid vc_custom_1459808067310"><div class="wpb_column vc_column_container vc_col-sm-12 vc_custom_1459808096458"><div class="wpb_wrapper"></p>
+<h2 id="white">Meet the Team</h2>
+<span id="team" class="sta-anchor " aria-hidden="true"></span>
+<div class="magicwall">
+<ul class="magicwall-grid">
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/6.jpg" class="fixed">
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/7.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>Cheryl Black<br />CEO</p>
+</div>
+</div>
+</li>
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/12.jpg" class="fixed">
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/13.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>Ajay Amlani<br />EVP Corporate Development</p>
+</div>
+</div>
+</li>
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/18.jpg" class="fixed">
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/19.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>Reena Kapoor<br />Executive</p>
+</div>
+<div></li>
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/4.jpg" class="fixed">
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/5.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>Allison Mercurio<br />Executive</p>
+</div>
+</div>
+</li>
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/8.jpg" class="fixed">
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/9.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>Hemanga Nath<br />Executive</p>
+</div>
+</div>
+</li>
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/10.jpg" class="fixed">
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/11.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>Sandi Lomeli-Rose<br />Executive</p>
+</div>
+</div>
+</li>
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/1.jpg" class="fixed">
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/2.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>Cassie Davis<br />Executive</p>
+</div>
+</div>
+</li>
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/134.jpg" class="fixed">
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/135.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>Brandon Armstrong<br />Executive</p>
+</div>
+</div>
+</li>
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/14.jpg">
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/15.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>Carla Fuentes<br />Client Services</p>
+</div>
+</div>
+</li>
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/16.jpg">
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/17.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>Erin Taylor<br />Client Services</p>
+</div>
+</div>
+</li>
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/20.jpg">
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/21.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>Leanne Villanueva<br />Accounting &#038; Finance</p>
+</div>
+</div>
+</li>
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/22.jpg">
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/23.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>Jennifer Pandey<br />Client Services</p>
+</div>
+</div>
+</li>
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/24.jpg">
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/25.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>Natassja Sacdalan<br />Client Services</p>
+</div>
+</div>
+</li>
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/26.jpg">
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/27.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>Helen Yu<br />Client Services</p>
+</div>
+</div>
+</li>
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/28.jpg">
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/29.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>Eamon Newton<br />Client Services</p>
+</div>
+</div>
+</li>
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/32.jpg">
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/33.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>Katrina Yap<br />Client Services</p>
+</div>
+</div>
+</li>
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/32-copy.jpg">
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/33-copy.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>Julie Nelson<br />Engineering</p>
+</div>
+</div>
+</li>
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/34.jpg">
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/35.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>Nicole Correia<br />Client Services</p>
+</div>
+</div>
+</li>
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/30.jpg">
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/31a.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>Van Tran<br />Interactive Services</p>
+</div>
+</div>
+</li>
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/38.jpg">
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/39.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>Jaqueline Madriaga<br />Client Services</p>
+</div>
+</div>
+</li>
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/40.jpg">
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/41.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>Caroline Gee<br />Client Services</p>
+</div>
+</div>
+</li>
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/42.jpg">
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/43.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>Avinash Sridhar<br />Engineering</p>
+</div>
+</div>
+</li>
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/36.jpg">
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/37.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>Meredith Dodge<br />Interactive Services</p>
+</div>
+</div>
+</li>
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/44.jpg">
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/45.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>Bhaskar Pothireddy<br />Engineering</p>
+</div>
+</div>
+</li>
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/46.jpg">
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/47.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>Maya Mirt<br />Client Services</p>
+</div>
+</div>
+</li>
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/48.jpg">
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/49.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>Ameena Rafanan<br />Product Management</p>
+</div>
+</li>
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/50.jpg">
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/51.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>Brian Pecko<br />Product Management</p>
+</div>
+</div>
+</li>
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/53.jpg">
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/52.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>Mary Levander<br />Client Services</p>
+</div>
+</div>
+</li>
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/55.jpg">
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/54.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>Ric Robins<br />Interactive Services</p>
+</div>
+</div>
+</li>
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/57.jpg">
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/56.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>Meggan Clark<br />Client Services</p>
+</div>
+</div>
+</li>
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/58.jpg">
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/59.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>Patricia Johnson<br />Client Services</p>
+</div>
+</div>
+</li>
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/61.jpg">
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/60.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>Mike Comb<br />Engineering</p>
+</div>
+</div>
+</li>
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/62.jpg">
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/63.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>David Cox-Espenlaub<br />Interactive Services</p>
+</div>
+</div>
+</li>
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/64.jpg">
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/65.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>Sripriya Appachar<br />Engineering</p>
+</div>
+</div>
+</li>
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/66.jpg">
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/67.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>Sukanya Karunakaran<br />Engineering</p>
+</div>
+</div>
+</li>
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/68.jpg">
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/69.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>Sudeshna Jaltar<br />Engineering</p>
+</div>
+</div>
+</li>
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/70.jpg">
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/71.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>Shanthi Maturi<br />Engineering</p>
+</div>
+</div>
+</li>
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/72.jpg">
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/73.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>Srija Bethu<br />Engineering</p>
+</div>
+</div>
+</li>
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/74.jpg">
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/75.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>Derek Shek<br />Engineering</p>
+</div>
+</div>
+</li>
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/76.jpg">
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/77.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>Mario Ledesma<br />Engineering</p>
+</div>
+</div>
+</li>
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/79.jpg">
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/78.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>Jayanti Modigunta<br />Engineering</p>
+</div>
+</div>
+</li>
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/81.jpg">
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/80.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>Jesse Spencer<br />Engineering</p>
+</div>
+</div>
+</li>
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/82.jpg">
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/83.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>Minoo Parivash<br />Engineering</p>
+</div>
+</div>
+</li>
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/84.jpg">
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/85.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>Greg Hoskin<br />Interactive Services</p>
+</div>
+</div>
+</li>
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/86.jpg">
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/87.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>Deepak Agrawal<br />Engineering</p>
+</div>
+</div>
+</li>
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/88.jpg">
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/89.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>Morris Delgado<br />Engineering</p>
+</div>
+</div>
+</li>
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/91.jpg">
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/90.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>Mohammad Alam<br />Engineering</p>
+</div>
+</div>
+</li>
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/93.jpg">
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/92.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>Glen Gerod<br />Engineering</p>
+</div>
+</div>
+</li>
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/95.jpg">
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/94.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>Srini Gundapu<br />Engineering</div>
+</div>
+</li>
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/97.jpg">
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/96.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>Katie Franz<br />Engineering</div>
+</div>
+</li>
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/98.jpg">
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/99.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>Johann Lynch<br />Engineering</p>
+</div>
+</div>
+</li>
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/100.jpg">
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/101.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>Alex Abarca<br />Engineering</p>
+</div>
+</div>
+</li>
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/102.jpg">
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/103.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>Zil Shah<br />Engineering</p>
+</div>
+</div>
+</li>
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/104.jpg">
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/105.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>Mary Ann Galindo<br />Executive</p>
+</div>
+</div>
+</li>
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/106.jpg">
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/107.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>Sarah Buecher<br />Client Services</p>
+</div>
+</div>
+</li>
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/108.jpg">
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/109.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>Ryan Kunda<br />Accounting &#038; Finance</p>
+</div>
+</div>
+</li>
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/110.jpg">
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/111.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>Pravesh Kumar<br />Engineering</p>
+</div>
+</div>
+</li>
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/112.jpg">
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/113.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>Stewart Lin<br />Product Management</p>
+</div>
+</div>
+</li>
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/114.jpg">
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/115.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>Fabio Bullara<br />Engineering</p>
+</div>
+</div>
+</li>
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/116.jpg">
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/117.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>Kyle McGillicuddy-Penna<br />Engineering</p>
+</div>
+</div>
+</li>
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/118.jpg">
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/119.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>Earl Bingham<br />Engineering</p>
+</div>
+</div>
+</li>
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/120.jpg">
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/121.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>Michelle Yu<br />Interactive Services</p>
+</div>
+</div>
+</li>
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/122.jpg">
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/123.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>Ashish Sharma<br />Engineering</p>
+</div>
+</div>
+</li>
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/124.jpg">
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/125.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>Michael Lim<br />Engineering</p>
+</div>
+</div>
+</li>
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/126.jpg">
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/127.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>Sam Hui<br />Product Management</p>
+</div>
+</div>
+</li>
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/128.jpg">
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/129.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>Joe Wu<br />Engineering</div>
+</div>
+</li>
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/130.jpg">
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/131.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>Subhash Pattani<br />Engineering</p>
+</div>
+</div>
+</li>
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/132.jpg" >
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/133.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>Eric Chiang<br />Engineering</p>
+</div>
+</div>
+</li>
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/136.jpg">
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/137.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>Allie Rose<br />Client Services</p>
+</div>
+</div>
+</li>
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/138.jpg">
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/139.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>Oleksandr Ryzhuk<br />Engineering</p>
+</div>
+</div>
+</li>
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/140.jpg">
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/141.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>Elizabeth DiRoma<br />Client Services</p>
+</div>
+</div>
+</li>
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/142.jpg">
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/143.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>Kate Grzeca<br />Client Services</p>
+</div>
+</div>
+</li>
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/144.jpg">
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/145.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>Darren Adkinson<br />Engineering</p>
+</div>
+</div>
+</li>
+<li data-thumb="http://you.net/2016/wp-content/uploads/2016/03/teamphotos/146.jpg">
+<div class="hover-content vcenter" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/teamphotos/147.jpg)">
+<div class="title">
+<div class="team_title_bg"></div>
+<p>Shahdi Mokhtara<br />Client Services</p>
+</div>
+</div>
+</li>
+</ul>
+</div>
+<p></div></div></div>
+		</div> 
+	</div> 
+</div><div class="parallax-container   vc_row wpb_row vc_row-fluid   "  ><div class="parallax-container-inner no-repeat" style="background-image:url(http://you.net/2016/wp-content/uploads/2016/03/9.-GS1_8981.jpg);" ></div><div class="parallax-container-overlay" ></div><div class="parallax-container-overlay-color" style="background-color:#072130;opacity :0.6;filter: Alpha(Opacity=60);"></div><div class="section-container">
+	<div class="vc_col-sm-12 wpb_column vc_column_container   "  >
+		<div class="wpb_wrapper">
+			<div class="vc_row wpb_row vc_inner vc_row-fluid"><div class="careers_section wpb_column vc_column_container vc_col-sm-12 vc_col-lg-offset-2 vc_col-lg-8 vc_col-xs-12"><div class="wpb_wrapper">
+	<div class="wpb_text_column wpb_content_element  wpb_animate_when_almost_visible wpb_bottom-to-top">
+		<div class="wpb_wrapper">
+			<span id="careers" class="sta-anchor " aria-hidden="true"></span>
+<h2 id="white" style="text-align: center;">YO! We&#8217;re Looking for U!</h2>
+<p id="white" style="text-align: center;">Who’s the power behind YOU Technology? Awesome people that’s who! Without our dedicated team, there would be no YOU Technology (and more shoppers would still be killing trees with paper coupons). We embrace everyone’s brainpower (from intern to CEO) and the ideas they bring to the table. We value a culture where everyone can simply be themselves and be heard. As the old saying goes, we work hard … and play hard! We turn ideas into reality … and we never stop learning. We drink a lot of coffee and eat a lot of snacks (you should see our snack room) while brainstorming on IM, in conference rooms, at each other’s desks and on our way to the restroom. We deliver top-notch service to our retailers and make no apologies for the fun we have while doing it.</p>
+<div style="text-align: center;"><a target="_blank" class="to-button regular standard rounded to-button-line   .no-ajaxy" data-bgcolor="#01aace" data-color="#ffffff" style="color:#01aace;background:#ffffff;border-color:#ffffff" href="https://theapplicantmanager.com/careers?co=yn"><span style="color:#01aace;">View Careers</span></a></div>
+
+		</div>
+	</div>
+</div></div></div>
+		</div> 
+	</div> 
+</div></div><div class="   vc_row wpb_row vc_row-fluid map   "  >
+	<div class="vc_col-sm-12 wpb_column vc_column_container   "  >
+		<div class="wpb_wrapper">
+			<div class="vc_row wpb_row vc_inner vc_row-fluid"><div class="wpb_column vc_column_container vc_col-sm-12 vc_col-lg-6 vc_col-md-6 vc_col-xs-12"><div class="wpb_wrapper">
+	<div class="wpb_text_column wpb_content_element  wpb_animate_when_almost_visible wpb_left-to-right">
+		<div class="wpb_wrapper">
+			<div id="contactform">
+<div id="contact"></div>
+<h2 id="white">Let&#8217;s Connect</h2>
+<div role="form" class="wpcf7" id="wpcf7-f96-p40-o1" lang="en-US" dir="ltr">
+<div class="screen-reader-response"></div>
+<form action="/#wpcf7-f96-p40-o1" method="post" class="wpcf7-form" novalidate="novalidate">
+<div style="display: none;">
+<input type="hidden" name="_wpcf7" value="96" />
+<input type="hidden" name="_wpcf7_version" value="4.3.1" />
+<input type="hidden" name="_wpcf7_locale" value="en_US" />
+<input type="hidden" name="_wpcf7_unit_tag" value="wpcf7-f96-p40-o1" />
+<input type="hidden" name="_wpnonce" value="c976f6d4a7" />
+</div>
+<p id="white">Your Full Name<span>*</span><br />
+<span class="wpcf7-form-control-wrap your-name"><input type="text" name="your-name" value="" size="40" class="wpcf7-form-control wpcf7-text wpcf7-validates-as-required" aria-required="true" aria-invalid="false" /></span> </p>
+<p id="white">Company<br />
+<span class="wpcf7-form-control-wrap your-company"><input type="text" name="your-company" value="" size="40" class="wpcf7-form-control wpcf7-text" aria-invalid="false" /></span> </p>
+<p id="white">Your Email<span>*</span><br />
+<span class="wpcf7-form-control-wrap your-email"><input type="email" name="your-email" value="" size="40" class="wpcf7-form-control wpcf7-text wpcf7-email wpcf7-validates-as-required wpcf7-validates-as-email" aria-required="true" aria-invalid="false" /></span> </p>
+<p id="white">Area of Interest<br />
+<span class="wpcf7-form-control-wrap your-message"><textarea name="your-message" cols="40" rows="5" class="wpcf7-form-control wpcf7-textarea" aria-invalid="false"></textarea></span>  </p>
+<p><input type="submit" value="Connect" class="wpcf7-form-control wpcf7-submit submit-btn to-button regular standard rounded to-button-line" /></p>
+<div class="wpcf7-response-output wpcf7-display-none"></div></form></div></div>
+
+		</div>
+	</div>
+</div></div><div class="wpb_column vc_column_container vc_col-sm-12 vc_col-lg-6 vc_col-md-6 vc_col-xs-12"><div class="wpb_wrapper">
+	<div class="wpb_text_column wpb_content_element ">
+		<div class="wpb_wrapper">
+			<span id="Contact" class="sta-anchor " aria-hidden="true"></span>
+<div class="contact">
+<h3 id="white" style="font-weight: bold;">YOU Technology, LLC.</h3>
+<p>YOU Technology’s offices are situated just south of San Francisco in Brisbane, CA overlooking the beautiful San Francisco bay.</p>
+<p class="column-small"><strong>Headquarters:</strong><br />
+1000 Marina Blvd.<br />
+Suite 300<br />
+Brisbane, CA 94005</p>
+<p class="column-small"><strong style="font-weight: bold;">Phone:</strong> 650-624-3800<br />
+<strong>Fax:</strong> 650-624-3899<br />
+<strong>Email:</strong> <a href="mailto:info@you.net">info@you.net</a></div>
+
+		</div>
+	</div>
+</div></div></div>
+		</div> 
+	</div> 
+</div><div class="   vc_row wpb_row vc_row-fluid  equal-height "  >
+	<div class="vc_col-sm-12 wpb_column vc_column_container   "  >
+		<div class="wpb_wrapper">
+			
+	<div class="wpb_text_column wpb_content_element ">
+		<div class="wpb_wrapper">
+			<div id="color_bar">
+<div id="color1"></div>
+<div id="color2"></div>
+<div id="color3"></div>
+<div id="color4"></div>
+<div id="color5"></div>
+<div id="color6"></div>
+<div id="color7"></div>
+<div id="color8"></div>
+<div id="color9"></div>
+<div id="color10"></div>
+<div id="color11"></div>
+<div id="color12"></div>
+<div id="color13"></div>
+<div id="color14"></div>
+<div id="color15"></div>
+<div id="color16"></div>
+<div id="color17"></div>
+<div id="color18"></div>
+<div id="color19"></div>
+<div id="color20"></div>
+</div>
+
+		</div>
+	</div>
+
+		</div> 
+	</div> 
+</div>
+</div>	        
+	<footer id="footer">
+
+    	        
+        
+
+		<div id="footer-top" style="background: #072130">
+        
+        	
+			<div id="footer-inner-top" class="section-container dark">
+                
+				                
+                <div class="marg col col-12">
+		              <div id="text-6" class="widget widget_text">			<div class="textwidget"><div id="footer-social"><a target="_self" href="mailto:info@you.net" ><i class="fa fa-envelope"></i></a><a target="_blank" href="https://www.facebook.com/You-Technology-204056963288341/timeline?ref=page_internal" ><i class="fa fa-facebook"></i></a><a target="_blank" href="https://www.linkedin.com/company/you-technology-brand-services-formerly-known-as-softcoin?trk=tyah&trkInfo=clickedVertical%3Acompany%2CclickedEntityId%3A525304%2Cidx%3A3-1-4%2CtarId%3A1456189827377%2Ctas%3AYou+Tech" ><i class="fa fa-linkedin"></i></a></div></div>
+		</div><div id="nav_menu-2" class="widget widget_nav_menu"><div class="menu-you-tech-nav-container"><ul id="menu-you-tech-nav-2" class="menu"><li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-4141"><a href="#why_you">Why YOU</a></li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-4136"><a href="#solutions">Solutions</a></li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-4137"><a href="#press">News</a></li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-4949"><a href="#company">Company</a></li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5061"><a href="#team">Team</a></li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-4138"><a href="#careers">Careers</a></li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-4139"><a href="#contact">Contact</a></li>
+</ul></div></div>				</div>
+				
+				<div class="marg col col-12">
+		             <div id="text-7" class="widget widget_text">			<div class="textwidget"></div>
+		</div>				</div>
+				
+								
+				 
+                
+			</div>
+		</div>
+		
+                
+		<div id="footer-bottom" style="background: #072130"><div id="footer-inner-bottom" class="section-container"><div class="col col-12 col-last"><div id="copyright" style="color:#EBEBEB" >© Copyright 2016, YOU Technology, LLC</div></div></div></div>
+	</footer>
+    
+    </div><!-- #inner-container -->
+</div> <!-- #outer-container -->  
+
+
+<!-- MagicWall Javascript file -->
+<script type="text/javascript"  src="http://you.net/2016/wp-includes/js/jquery/jquery.easing.min.js"></script>
+<script type="text/javascript"  src="http://you.net/2016/wp-includes/js/teampage/jquery.magicwall.min.js"></script>
+<script type="text/javascript">
+jQuery(document).ready(function(){
+    jQuery(".magicwall").magicWall({
+	    maxItemHeight: 150,
+	    maxItemWidth: 160,
+	    pauseOnHover: false,
+	    animations:" ",
+	    photoCount: 63,
+	    fixedClass: "fixed",
+	    excludedAnimations:"*"
+	   });
+});
+</script>
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-12116402-1', 'you.net');
+  ga('send', 'pageview');
+
+</script>	<div style="display:none">
+	</div>
+<!--[if lt IE 9]>
+<script type='text/javascript' src='http://www.you.net/wp-content/plugins/themeone-shortcodes/shortcodes/js/excanvas.js?ver=2.0'></script>
+<![endif]-->
+<script type='text/javascript' src='http://www.you.net/wp-content/plugins/themeone-shortcodes/shortcodes/js/easypiechart.js?ver=2.1.3'></script>
+<script type='text/javascript' src='http://www.you.net/wp-content/plugins/themeone-shortcodes/shortcodes/js/jquery.appear.js?ver=1.0'></script>
+<script type='text/javascript' src='http://www.you.net/wp-content/plugins/themeone-shortcodes/shortcodes/js/themeone-shortcodes.js?ver=1.0'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var ajax_var = {"url":"http:\/\/www.you.net\/wp-admin\/admin-ajax.php","nonce":"0d3bb1661b"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='http://www.you.net/wp-content/themes/mobius/includes/post-like/post-like.js?ver=1.0'></script>
+<script type='text/javascript' src='http://www.you.net/wp-content/themes/mobius/includes/ajax-comments/ajax-comments.js?ver=1.0'></script>
+<script type='text/javascript' src='http://www.you.net/wp-content/plugins/contact-form-7/includes/js/jquery.form.min.js?ver=3.51.0-2014.06.20'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var _wpcf7 = {"loaderUrl":"http:\/\/www.you.net\/wp-content\/plugins\/contact-form-7\/images\/ajax-loader.gif","recaptchaEmpty":"Please verify that you are not a robot.","sending":"Sending ..."};
+/* ]]> */
+</script>
+<script type='text/javascript' src='http://www.you.net/wp-content/plugins/contact-form-7/includes/js/scripts.js?ver=4.3.1'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var sta_settings = {"distance":"200","speed":"1000"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='http://www.you.net/wp-content/plugins/scroll-to-anchor/includes/../js/scroll-to-anchor.min.js?ver=4.4.2'></script>
+<script type='text/javascript' src='http://www.you.net/wp-content/plugins/js_composer/assets/js/js_composer_front.js?ver=4.7.4'></script>
+<script type='text/javascript' src='http://s0.wp.com/wp-content/js/devicepx-jetpack.js?ver=201620'></script>
+<script type='text/javascript' src='http://s.gravatar.com/js/gprofiles.js?ver=2016Mayaa'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var WPGroHo = {"my_hash":""};
+/* ]]> */
+</script>
+<script type='text/javascript' src='http://www.you.net/wp-content/plugins/jetpack/modules/wpgroho.js?ver=4.4.2'></script>
+<script type='text/javascript' src='http://www.you.net/wp-content/themes/mobius/js/smoothscroll.js?ver=1.2.1'></script>
+<script type='text/javascript' src='http://www.you.net/wp-content/themes/mobius/js/history.js?ver=1.0'></script>
+<script type='text/javascript' src='http://www.you.net/wp-content/themes/mobius/js/ajaxify.js?ver=1.0.1'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var mejsL10n = {"language":"en-US","strings":{"Close":"Close","Fullscreen":"Fullscreen","Download File":"Download File","Download Video":"Download Video","Play\/Pause":"Play\/Pause","Mute Toggle":"Mute Toggle","None":"None","Turn off Fullscreen":"Turn off Fullscreen","Go Fullscreen":"Go Fullscreen","Unmute":"Unmute","Mute":"Mute","Captions\/Subtitles":"Captions\/Subtitles"}};
+var _wpmejsSettings = {"pluginPath":"\/wp-includes\/js\/mediaelement\/"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='http://www.you.net/wp-includes/js/mediaelement/mediaelement-and-player.min.js?ver=2.18.1'></script>
+<script type='text/javascript' src='http://www.you.net/wp-content/themes/mobius/js/owl.carousel.js?ver=1.3.2'></script>
+<script type='text/javascript' src='http://www.you.net/wp-content/themes/mobius/js/easing.js?ver=1.3'></script>
+<script type='text/javascript' src='http://www.you.net/wp-content/themes/mobius/js/hammer.js?ver=1.0.7'></script>
+<script type='text/javascript' src='http://www.you.net/wp-content/themes/mobius/js/isotope.js?ver=1.5.25'></script>
+<script type='text/javascript' src='http://www.you.net/wp-content/themes/mobius/js/sly.js?ver=1.2.2'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var to_ajaxurl = "http:\/\/www.you.net\/wp-admin\/admin-ajax.php";
+/* ]]> */
+</script>
+<script type='text/javascript' src='http://www.you.net/wp-content/themes/mobius/js/custom.js?ver=1.0'></script>
+<script type='text/javascript' src='http://www.you.net/wp-includes/js/comment-reply.min.js?ver=4.4.2'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var wp_ajax = {"url":"http:\/\/www.you.net\/wp-admin\/admin-ajax.php","nonce":"0a85c3157a"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='http://www.you.net/wp-content/themes/mobius/includes/mobius-grid/mobius-grid.js?ver=1.0'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var ajaxsearch = {"url":"http:\/\/www.you.net\/wp-admin\/admin-ajax.php","nonce":"0a85c3157a"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='http://www.you.net/wp-content/themes/mobius/includes/ajax-search/search_autocomplete.js?ver=1.0'></script>
+<script type='text/javascript' src='http://www.you.net/wp-includes/js/wp-embed.min.js?ver=4.4.2'></script>
+<script type='text/javascript' src='http://www.you.net/wp-content/plugins/js_composer/assets/lib/waypoints/waypoints.min.js?ver=4.7.4'></script>
+<script type="text/javascript">
+	 (function($) {
+	 "use strict";                                    })(jQuery);
+	  </script><script type='text/javascript' src='http://stats.wp.com/e-201620.js' async defer></script>
+<script type='text/javascript'>
+	_stq = window._stq || [];
+	_stq.push([ 'view', {v:'ext',j:'1:3.9.6',blog:'109968232',post:'40',tz:'0',srv:'www.you.net'} ]);
+	_stq.push([ 'clickTrackerInit', '109968232', '40' ]);
+</script>
+
+
+
+</body>
+</html>

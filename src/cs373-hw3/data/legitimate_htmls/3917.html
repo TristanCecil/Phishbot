@@ -1,0 +1,1613 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ko" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="X-UA-Compatible" content="IE=8" />
+<meta name="autocomplete" content="off" />
+<meta name="author" content="이글루스" />
+<meta name="keywords" content="이글루스, 이글루, egloo, egloos, 블로그, blog" />
+<meta name="description" content="블로그 전문 이글루스-자유로운 스킨편집, 생활의 기록 라이프로그, 쉽게 올리고 멋지게 보는 포토로그, 꿈을 가꾸는 가든, 강력한 통계, PDF 백업을 지원, 성인 전용, 스팸차단 기능 내장, 검색노출 여부 선택으로 쾌적하고 편안한 블로그 환경 제공" />
+<title>블로그 전문 이글루스!! - egloos.com</title>
+<link href="http://md.egloos.com/img/favicon.ico" rel="shortcut icon"/>
+<link rel="apple-touch-icon-precomposed" href="http://md.egloos.com/img/egloos_144.png" />
+
+<script type="text/javascript" src="http://md.egloos.com/js/lib/prototype_v1511.js"></script>
+<script type="text/javascript" src="http://md.egloos.com/js/www/home/MainValleyTheme.js?ver=2.7.1"></script>
+<script type="text/javascript" src="http://md.egloos.com/js/common/LoginUtil.js?ver=2.0"></script>
+<script type="text/javascript" src="http://md.egloos.com/js/common/StringUtil.js?ver=1.011"></script>
+<link rel="stylesheet" href="http://md.egloos.com/css/www/egloos_main.css?ver=2.7.28" type="text/css" /> 
+<link rel="stylesheet" href="http://md.egloos.com/css/common/header.css?ver=2.7.1" type="text/css" />
+<link rel="stylesheet" href="http://md.egloos.com/css/search/main_search.css?ver=2.7.1" type="text/css" />
+<script type="text/javascript">
+    var ESTatTrackerCookieDomain = "egloos.com";
+    var ESTatTrackerPageView = false;
+    var ESTatTracker = ESTatTracker || [];
+ </script>
+<script type="text/javascript">
+	window.onload = function() {
+		var userid = document.getElementById('userid').value;
+		var userpwd = document.getElementById('userpwd').value;
+		if(userid.length > 0 ) {
+			$('userid_l').style.display = 'none';
+		}
+		if(userpwd.length > 0 ) {
+			$('userpwd_l').style.display = 'none';
+		}
+	};
+
+</script>
+</head>
+<body>
+<div id="wrap">
+    <!-- header -->
+    	<script type="text/javascript">
+	<!--
+		function zumSearch(form) {
+			var kwd = form.query;
+			var method = form.method;
+			if(kwd) {
+				var findstr = kwd.value;
+				findstr = findstr.replace(/(^\s*)|(\s*$)/gi,"");
+				if(findstr == "") {
+					alert("검색어를 넣어주세요");
+					kwd.focus();
+					return false;
+				}
+				
+				var searchUrl = "http://search.zum.com/search.zum?method=" + method.value + "&query=" + encodeURIComponent(kwd.value) + "&qm=f_typing.egloos";
+				window.open(searchUrl, "_blank");
+			}
+		}
+
+		function setSearchOption(method) {
+	    	var option = document.getElementById("selected_search_option");
+	    	var search_method = document.getElementById("search_method");
+	    	if(method == "egloo")
+	    	{
+	        	option.innerHTML = "이글루검색";
+	        	search_method.value = "egloos.channel";
+	    	} else {
+	    		option.innerHTML = "포스트검색";
+	    		search_method.value = "egloos.post";
+	    	}
+		}
+		
+		function handleThumbError(imgElm) {
+			if(imgElm.src.indexOf('_t.') == -1) {
+				imgElm.src = 'http://md.egloos.com/img/x.gif';
+			}
+			else {
+				imgElm.src = imgElm.src.replace('_t', '');
+			}
+		}
+		
+		function buttonOver(imgElm, imgSrc){
+		    imgElm.src = imgSrc;
+		    imgElm.style.cursor = "pointer"
+		}
+	    
+		function buttonOut(imgElm, imgSrc){
+			imgElm.src = imgSrc;
+		}
+
+        function checkKeyword(form) {
+            var keyword = form.kwd.value;
+            keyword = keyword.replace(/(^\s*)|(\s*$)/gi,"");
+            if(keyword == "") {
+                alert("검색어를 입력해 주세요");
+                return false;
+            }else if(keyword == "검색어를 입력하세요."){
+                alert("검색어를 입력해 주세요");
+                return false;
+            }else {
+                form.kwd.value = keyword;
+                return true;            
+            }
+        }
+        var UI_themeList =
+    	{
+    		el     : null,
+    		target : null, 
+
+    		addEvent : function (element, name, fn, capture)
+    		{
+    			if (typeof element.addEventListener === "function")
+    			{
+    				element.addEventListener(name, fn, capture);
+    			}
+    			else if (element.attachEvent)
+    			{
+    				element.attachEvent("on" + name, fn);
+    			}
+    		},
+
+    		layerOn : function ()
+    		{
+    			//this.el.getElementsByTagName("a")[0].blur();
+
+    			var bOn  = this.target.style.display;
+    			if (bOn === "none")
+    			{
+    				this.el.className = "on";
+    				this.target.style.display = "block";
+
+    				var THIS   = this;
+    				var moveFn = function(e) { THIS.savePointerXY.call(THIS, e); };
+
+    				this.addEvent(document, "mousemove", moveFn, true);
+    			}
+    			else
+    			{
+    				this.layerOff();
+    			}
+
+    			return false;
+    		},
+
+    		layerOff : function ()
+    		{
+    			this.el.className = "";
+    			this.target.style.display = "none";
+    		},
+
+    		getAbsPosAndScale : function (element)
+    		{
+    			var curleft = curtop = curWidth = curHeight = 0;
+    			curWidth = element.offsetWidth;
+    			curHeight = element.offsetHeight;
+    			try {
+    				if (element && element.offsetParent)
+    				{
+    					do {
+    						curleft += element.offsetLeft;
+    						curtop += element.offsetTop;
+    					} while (element = element.offsetParent);
+    				}
+    			} catch(ex) {}
+
+    			return { left: curleft, top: curtop, width: curWidth, height: curHeight };
+    		},
+
+    		getMouseXY : function (e)
+    		{
+    			if (e.pageX || e.pageY)
+    			{
+    				return {x : e.pageX, y : e.pageY};
+    			}
+    			return {
+    				x : e.clientX + document.body.scrollLeft - document.body.clientLeft, 
+    				y : e.clientY + document.body.scrollTop  - document.body.clientTop
+    			};
+    		},
+
+    		chkMouseIn : function(x, y, element)
+    		{
+    			var physicalData = this.getAbsPosAndScale(element);
+    			if (x >= physicalData.left && x <= (physicalData.left + physicalData.width) && y >= physicalData.top && y <= (physicalData.top + physicalData.height))
+    			{
+    				return true;
+    			}
+    			else
+    			{
+    				return false;
+    			}
+    		},
+
+    		savePointerXY : function (e)
+    		{
+    			if (this.target.style.display == "block")
+    			{
+    				e = e || window.event;
+
+    				var mousexy       = this.getMouseXY(e);
+    				var bIsOverTarget = this.chkMouseIn(mousexy["x"], mousexy["y"], this.target);
+    				var bIsOverMenu   = this.chkMouseIn(mousexy["x"], mousexy["y"], this.el.getElementsByTagName("a")[0]);
+
+    				if (bIsOverTarget === false && bIsOverMenu === false)
+    				{
+    					this.layerOff();
+    				}
+    			}
+    		},
+
+    		init : function (option)
+    		{
+    			this.el     = document.getElementById(option.menu);
+    			this.target = document.getElementById(option.target);
+
+    			var THIS = this;
+    			var fn = function (e)
+    			{
+    				THIS.layerOn.call(THIS, e);
+    			};
+
+    			this.addEvent(this.el, "click", fn);
+    		}
+    	};
+
+    	try{
+        	document.execCommand('BackgroundImageCache',false,true);
+        }catch(e){}
+
+        function statClickMain(str) {
+        } 
+	//-->
+	</script>
+		
+<div id="header">
+        <div class="gnb_sub">
+                    <a href="http://sec.egloos.com/login.php?returnurl=http://www.egloos.com/myegloo.php">내이글루</a> |
+            <a href="http://sec.egloos.com/login.php?returnurl=http://valley.egloos.com/my/">마이리더</a> |
+            <a href="http://sec.egloos.com/login.php?returnurl=http://www.egloos.com/myegloo.php?gubun=photo">포토로그</a> |
+            <a href="http://sec.egloos.com/login.php?returnurl=http%3A%2F%2Fegloos.com%2Findex.php" class="last">로그인</a>
+                </div>
+
+        <div class="gnb_wrap">
+            <div class="navigator">
+                <h1><a href="http://www.egloos.com" title="블로그 전문! 이글루스"><img src="http://md.egloos.com/img/www/main_v2011/ico_egloos_logo.gif" alt="egloos" height="41" width="123" /></a></h1>
+                <ul> <!-- 활성화시 li에 on 클래스 -->
+                    <li class=""><a href="http://valley.egloos.com" class="valley">밸리</a></li>
+                    <li id="gnb_theme" class=""><a href="#n" class="theme">테마목록</a></li> 
+                    <li class=""><a href="http://valley.egloos.com/center" class="skin">스킨&amp;위젯</a></li>
+                    <li class=""><a href="http://valley.egloos.com/center/apps" class="apps">앱스</a></li>
+                </ul>
+            </div>
+        
+            <div id="search_wrap" >
+                <form id="search" name="search" onsubmit="zumSearch(this);return false;">
+                    <div class="s_kind">
+                        <ul class="search_option" >
+                            <li style="cursor:default;" id="selected_search_option">포스트검색</li>
+                            <li>
+                                <ul class="search_option_layer" >
+                                    <li class="first"><a href="#" onclick="setSearchOption('blog'); document.getElementById('query').focus(); return false;">포스트검색</a></li>
+                                    <li><a href="#" onclick="setSearchOption('egloo'); document.getElementById('query').focus(); return false;">이글루검색</a></li>                            
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="s_box">
+                        <fieldset>
+                            <legend>통합검색 입력</legend>
+                            <input type="text" class="search_input" id="query" name="query"  title="검색어 입력" value=""/>
+                            <input type="hidden" id="search_method" name="method" value="egloos.post" />
+                            <button type="submit" class="search_btn" title="검색"><span>검색</span></button>    
+                        </fieldset>
+                    </div>
+                </form>
+                <p class="sign"><a href="http://www.zum.com" target="_blank"><img src="http://md.egloos.com/img/search/txt_power.png" alt=""></a></p>
+            </div>
+            <!-- [E] : 검색창 -->
+        
+            <!-- 테마목록 레이어 -->
+            <div id="gnb_theme_list" class="layer_theme" style="display:none;">
+                <div class="layer_line">
+				
+                	<ul>
+						<li class="viewall"><a href="http://valley.egloos.com">전체인기글</a></li>
+		    				<li><a href="http://valley.egloos.com/theme/movie">영화</a></li>
+		    				<li><a href="http://valley.egloos.com/theme/entertainment">방송&amp;연예</a></li>
+		    				<li><a href="http://valley.egloos.com/theme/game">게임</a></li>
+		    				<li><a href="http://valley.egloos.com/theme/animation">애니메이션</a></li>
+		    				<li><a href="http://valley.egloos.com/theme/comic">만화</a></li>
+		    				<li><a href="http://valley.egloos.com/theme/book">도서</a></li>
+		    				<li><a href="http://valley.egloos.com/theme/music">음악</a></li>
+		    				<li><a href="http://valley.egloos.com/theme/performance">공연&amp;전시</a></li>
+		    				<li><a href="http://valley.egloos.com/theme/food">음식</a></li>
+					</ul>
+					<ul>
+		    				<li><a href="http://valley.egloos.com/theme/pet">애완반려동물</a></li>
+		    				<li><a href="http://valley.egloos.com/theme/travel">여행</a></li>
+		    				<li><a href="http://valley.egloos.com/theme/photo">사진</a></li>
+		    				<li><a href="http://valley.egloos.com/theme/fashion">패션&amp;뷰티</a></li>
+		    				<li><a href="http://valley.egloos.com/theme/love">연애</a></li>
+		    				<li><a href="http://valley.egloos.com/theme/gag">개그</a></li>
+		    				<li><a href="http://valley.egloos.com/theme/daily">일상</a></li>
+		    				<li><a href="http://valley.egloos.com/theme/baby">육아</a></li>
+		    				<li><a href="http://valley.egloos.com/theme/technology">IT</a></li>
+		    				<li><a href="http://valley.egloos.com/theme/earlyadopter">얼리어답터</a></li>
+					</ul>
+					<ul>
+		    				<li><a href="http://valley.egloos.com/theme/shopping">지름</a></li>
+		    				<li><a href="http://valley.egloos.com/theme/auto">자동차</a></li>
+		    				<li><a href="http://valley.egloos.com/theme/sports">스포츠</a></li>
+		    				<li><a href="http://valley.egloos.com/theme/news">뉴스비평</a></li>
+		    				<li><a href="http://valley.egloos.com/theme/society">인문사회</a></li>
+		    				<li><a href="http://valley.egloos.com/theme/history">역사</a></li>
+		    				<li><a href="http://valley.egloos.com/theme/world">세계</a></li>
+		    				<li><a href="http://valley.egloos.com/theme/science">과학</a></li>
+		    				<li><a href="http://valley.egloos.com/theme/toy">토이</a></li>
+		    				<li><a href="http://valley.egloos.com/theme/creation">창작</a></li>
+					</ul>
+					<ul class="last">
+		    				<li><a href="http://valley.egloos.com/theme/flea">벼룩시장</a></li>
+		    				<li><a href="http://valley.egloos.com/theme/qna">지식Q&amp;A</a></li>
+		    				<li><a href="http://valley.egloos.com/theme/egloos">이글루스</a></li>
+		    				<li><a href="http://valley.egloos.com/theme/sotong">소통밸리</a></li>
+					</ul>        
+                    <p class="txt_help">'밸리리더'를 이용하시면, 창이동 없이 빠르고 가볍게 보실 수 있습니다. <a href="http://valley.egloos.com/reader/">밸리리더열기</a></p>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript">
+			UI_themeList.init({ menu : "gnb_theme", target : "gnb_theme_list" });
+		</script>
+    </div>
+    <!-- header //-->
+
+    <!-- container -->
+    <div id="container">
+        <!-- section_top -->
+        <div class="section_top">
+            <!-- 밸리 실시간 인기글 -->
+            <div class="valley_real_popular">
+                <div class="top_area">
+                    <h2><span class="blind">밸리 전체 인기글</span></h2>
+                    <a href="http://valley.egloos.com" target="_blank" class="btn_more">더보기</a>
+                    <a href="http://valley.egloos.com/reader/" target="_blank" class="valleyreader"><span class="blind">밸리리더</span></a>
+                </div>
+
+                <!-- 밸리 실시간 인기글 리스트 -->
+                <ul class="valley_list">
+                					<li>
+                        <div class="valley_list_wrap no_img">
+                            <div class="over"></div>
+                                                        <dl>
+                                <dt><a href="http://kaid.egloos.com/3176670" target="_blank">박태환이 리우에 갈 수 있을려나?</a></dt>
+                                <dd><a href="http://kaid.egloos.com/3176670" target="_blank">[취재파일] 박태환, 사실상 무산된 연기 요청   박태환과 체육회의'치킨게임'.. 향후 시나리오는   박태환 CAS 중재제소, 얻을 것 없는 무리수         박태환측에선 기존 두 사례   CAS 2011/O/2422 : IOC서 '약 걸린놈은 다음 올림픽 출전 자격 박탈(=오사카룰)' 했다가 USOC(미국 올림픽 위원회)서 클레임 걸어서 짜진 사건CAS 2011/A/2658 : 영국 BOA(영국 올림픽 협회)에서 '약 걸린놈은 올림픽 출전자격 영구 박탈' 걸어놨는데 저건땜에 다 풀리게 되자 빡쳐서 WADA상대로 약쟁이 OUT 시비걸었다가 짜진건  가 아무래도 자기한테 유리하니까 나도 뎀벼서 자격 따보자! 이거 같은데   [출전자격 n년 박탈과 다음 올림픽 박탈이 다르다! 라는 내로남불 원리가 적용되진 </a></dd>
+                            </dl>
+                            <div class="info_user">
+                                <span class="thumb_user"><img src="http://profile.egloos.net/d0049526_33.jpg" alt="파군성" onerror="this.src='http://md.egloos.com/img/www/user_thumb_default.png';"/><span class="bg_circle"></span></span>
+                                <a href="http://kaid.egloos.com" target="_blank" class="user_id">파군성</a><small> | </small>
+                                <a href="http://valley.egloos.com/theme/sports" target="_blank" class="cate">스포츠</a>
+                            </div>
+                        </div>
+                    </li>
+									<li>
+                        <div class="valley_list_wrap no_img">
+                            <div class="over"></div>
+                                                        <dl>
+                                <dt><a href="http://mungmung2.egloos.com/2204789" target="_blank">끝내는 정상적인 인간이라면 다 화를 내게 돼</a></dt>
+                                <dd><a href="http://mungmung2.egloos.com/2204789" target="_blank">“괴벨스가 이런 말을 했어. 전쟁에서 승리하려면 반드시 국민들에게 낙관적 전망을 심어줘야 한다고. 우리는전쟁 중이었어. 그 지긋지긋한 가난과 싸우고 있었어. 일자무식의농촌 출신 병사들이라도 말이야, 저기가 고지라고, 저기만넘으면 된다고, 저걸 넘으면 넌 위대한 전사가 되는 거라고 북돋워주면 다 그걸 넘어. 자기들끼리 군가를 부르고 ‘조금만 참자, 버티자’ 고 외치면서. 그런 때 사람들은 애를 낳아. 여자들은 짧은 치마를 입고 남자들을유혹해. 자기 미래를 낙관하니까. 하루에 열두 시간을 일하고돌아와도 몇 년 뒤에 보답이 더 크게 돌아올 걸 확신하면 피로가 금방 가시지. 그런 흥분이 경제도 움직이는거야.그런데 멍청한 놈들이 그런열광을 불러일으킬 생각은 않고 요즘 젊은이들은 패기가 없다느니, 뭘 포기한 세대라느니</a></dd>
+                            </dl>
+                            <div class="info_user">
+                                <span class="thumb_user"><img src="http://profile.egloos.net/f0009177_33.jpg" alt="한멍멍" onerror="this.src='http://md.egloos.com/img/www/user_thumb_default.png';"/><span class="bg_circle"></span></span>
+                                <a href="http://mungmung2.egloos.com" target="_blank" class="user_id">한멍멍</a><small> | </small>
+                                <a href="http://valley.egloos.com/theme/book" target="_blank" class="cate">도서</a>
+                            </div>
+                        </div>
+                    </li>
+									<li>
+                        <div class="valley_list_wrap no_img">
+                            <div class="over"></div>
+                                                        <dl>
+                                <dt><a href="http://toshuha.egloos.com/6001671" target="_blank">1.1 패치 후에도 여전한 비발디 브라우저 버그</a></dt>
+                                <dd><a href="http://toshuha.egloos.com/6001671" target="_blank">비발디 브라우저의 버그-웹상에서 텍스트 입력시  1.1 패치가 공개된 지 오래되었고 그동안 자잘한 업데이트도 이루어졌다. 게다가 1.2 버전 스냅샷은 진작부터 준비되었으며, 정식버전이 될 그 날을 손꼽아 기다리고 있다. 하지만 여전히 이글루스를 비롯한 웹상 텍스트 에디터나 웹오피스를 제공하는 사이트들과 비발디는 상성이 잘 맞지 않는다. 그건 바로 예전에 언급한 이 버그가 아직도 해결되지 않았기 때문이다.  당장 이글루스에서 글을 쓸 때도 나는 텍스트 에디터의 단축키를 못 쓴다. 그걸 쓰면 난데없이 북마크 창(Ctrl+B)이나 바로 전에 닫았던 탭이 다시 열리기(Ctrl+Z) 때문이다. 게다가 글을 처음 써서 올릴 때는 괜찮은데 그 상태로 좀 전에 쓴 글을 수정하려고 하면 백스페이스 키를 쓸 수가 없다. 이 </a></dd>
+                            </dl>
+                            <div class="info_user">
+                                <span class="thumb_user"><img src="http://profile.egloos.net/c0204619_33.jpg" alt="시원한인생" onerror="this.src='http://md.egloos.com/img/www/user_thumb_default.png';"/><span class="bg_circle"></span></span>
+                                <a href="http://toshuha.egloos.com" target="_blank" class="user_id">시원한인생</a><small> | </small>
+                                <a href="http://valley.egloos.com/theme/technology" target="_blank" class="cate">IT</a>
+                            </div>
+                        </div>
+                    </li>
+									<li>
+                        <div class="valley_list_wrap ">
+                            <div class="over"></div>
+                                                        <a href="http://metgabi.egloos.com/9849211" target="_blank" class="thumb_photo" target="_blank"><img src="http://thumbnail.egloos.net/203x123/http://pds21.egloos.com/pds/201605/16/57/a0317057_5739c5e91a647.jpg" alt="검은 사제들 (2015)" onerror="this.src='http://md.egloos.com/thumbnail.gif';" /><span class="img_border"></span></a>
+                                                        <dl>
+                                <dt><a href="http://metgabi.egloos.com/9849211" target="_blank">검은 사제들 (2015)</a></dt>
+                                <dd><a href="http://metgabi.egloos.com/9849211" target="_blank">   '곡성'을 보고 분노한 나는 집에 돌아오자마자 이 영화를 유료 결제한다. 그리고 분노를 넘어 체한 듯 답답했던 명치가 시원해짐을 느낀다. 까스활명수를 몇 병 들이킨 듯 개운한 영화다.    보여주고자 하는 바가 명확하고 제 갈 길을 관객에게 정확히 제시하며 그 길로 안전하게, 하지만 스릴 넘치고 재미나게 이끈다. 새로운 시대의 한국형 오컬트 장르 영화의 가능성을 봤다.    그러나 동시에 좌절감을 느꼈다. 가뭄에 콩 나듯이라도 들려오던 '퇴마록'의 리메이크판 이야기가 어쩐지 쏙 들어갈 것만 같은 불길한 예감이 들었기 때문이다. 강동원이 현암, 김윤석이 박신부인 퇴마록을 보고싶어졌다.    사제복이 강동원을 입었다는 세간의 평가에 동의한다. 장동건, 원빈이 아시아식으로 잘생긴 남자 배우의 끝판왕이라면 강동</a></dd>
+                            </dl>
+                            <div class="info_user">
+                                <span class="thumb_user"><img src="http://profile.egloos.net/a0317057_33.jpg" alt="멧가비" onerror="this.src='http://md.egloos.com/img/www/user_thumb_default.png';"/><span class="bg_circle"></span></span>
+                                <a href="http://metgabi.egloos.com" target="_blank" class="user_id">멧가비</a><small> | </small>
+                                <a href="http://valley.egloos.com/theme/movie" target="_blank" class="cate">영화</a>
+                            </div>
+                        </div>
+                    </li>
+				                </ul>
+                <!--// 밸리 실시간 인기글 리스트 -->
+
+            </div>
+            <!--// 밸리 실시간 인기글 -->
+
+        </div>
+        <!--// section_top -->
+
+        <!-- section_bottom -->
+        <div class="section_bottom">
+
+            <!-- col_left -->
+            <div class="col_left">
+
+                <!-- 광고영역 728*90 -->
+                <div class="main_banner_wrap1">
+			        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+					<!-- egloos_main_center_728x90 -->
+					<ins class="adsbygoogle"
+					     style="display:inline-block;width:728px;height:90px"
+					     data-ad-client="ca-pub-3333975338202750"
+					     data-ad-slot="9347075025"></ins>
+					<script>
+					(adsbygoogle = window.adsbygoogle || []).push({});
+					</script>
+                </div>
+                <!-- 광고영역 //-->
+
+                <!-- 테마별 최근글 -->
+                <div class="valley_theme_popular">
+
+                    <div class="top_area">
+                        <h2><span class="blind">테마별 최근글</span></h2>
+                        <ul class="cate">
+                        
+							<li class="themeList on"><a href="javascript:void(0);" onclick="Page.Theme.changeRecentTheme(this, 'food');">음식</a>|</li>
+							<li class="themeList "><a href="javascript:void(0);" onclick="Page.Theme.changeRecentTheme(this, 'movie');">영화</a>|</li>
+							<li class="themeList "><a href="javascript:void(0);" onclick="Page.Theme.changeRecentTheme(this, 'sports');">스포츠</a>|</li>
+							<li class="themeList "><a href="javascript:void(0);" onclick="Page.Theme.changeRecentTheme(this, 'travel');">여행</a>|</li>
+							<li class="themeList "><a href="javascript:void(0);" onclick="Page.Theme.changeRecentTheme(this, 'fashion');">패션&amp;뷰티</a>|</li>
+							<li class="themeList "><a href="javascript:void(0);" onclick="Page.Theme.changeRecentTheme(this, 'gag');">개그</a>|</li>
+							<li class="themeList "><a href="javascript:void(0);" onclick="Page.Theme.changeRecentTheme(this, 'earlyadopter');">얼리어답터</a></li>                        </ul>
+                                                <a href="http://sec.egloos.com/login.php?returnurl=http%3A%2F%2Fwww.egloos.com%2F" class="theme_setting"><span class="blind">관심테마설정</span></a>
+                                            </div>
+
+                    <!-- 관심 테마 설정 레이어 -->
+                    <form id="configmytheme" method="post" action="/exec/mobile/theme_config_exec.php">
+                        <div class="config_my_theme_list" id="config_my_theme_list" style="display:none">
+                            <h3>관심 테마 설정</h3>
+                            <p class="txt01">원하시는 테마를 선택하시면 이후 방문 시 선택하신 테마의 인기글을 볼 수 있습니다.<br><strong>테마 선택은 7개까지 가능</strong>하며, ‘선택 안 함’ 으로 할 경우 가장 인기있는 7개의 테마가 노출됩니다.</p>
+                            <ul>
+                                <!-- 체크시 li에 checked클래스 추가 -->
+                                
+									<li class=""><input type="checkbox" id="checkid00"  value="movie" onclick="Page.Theme.checkConfigMyThemeCount(this);" name="theme[]"/> <label for="checkid00">영화</label></li>
+									<li class=""><input type="checkbox" id="checkid01"  value="entertainment" onclick="Page.Theme.checkConfigMyThemeCount(this);" name="theme[]"/> <label for="checkid01">방송&amp;연예</label></li>
+									<li class=""><input type="checkbox" id="checkid02"  value="game" onclick="Page.Theme.checkConfigMyThemeCount(this);" name="theme[]"/> <label for="checkid02">게임</label></li>
+									<li class=""><input type="checkbox" id="checkid03"  value="animation" onclick="Page.Theme.checkConfigMyThemeCount(this);" name="theme[]"/> <label for="checkid03">애니메이션</label></li>
+									<li class=""><input type="checkbox" id="checkid04"  value="comic" onclick="Page.Theme.checkConfigMyThemeCount(this);" name="theme[]"/> <label for="checkid04">만화</label></li>
+									<li class=""><input type="checkbox" id="checkid05"  value="book" onclick="Page.Theme.checkConfigMyThemeCount(this);" name="theme[]"/> <label for="checkid05">도서</label></li>
+									<li class=""><input type="checkbox" id="checkid06"  value="music" onclick="Page.Theme.checkConfigMyThemeCount(this);" name="theme[]"/> <label for="checkid06">음악</label></li>
+									<li class=""><input type="checkbox" id="checkid07"  value="performance" onclick="Page.Theme.checkConfigMyThemeCount(this);" name="theme[]"/> <label for="checkid07">공연&amp;전시</label></li>
+									<li class=""><input type="checkbox" id="checkid08"  value="food" onclick="Page.Theme.checkConfigMyThemeCount(this);" name="theme[]"/> <label for="checkid08">음식</label></li>
+									<li class=""><input type="checkbox" id="checkid09"  value="pet" onclick="Page.Theme.checkConfigMyThemeCount(this);" name="theme[]"/> <label for="checkid09">애완반려동물</label></li>
+									<li class=""><input type="checkbox" id="checkid10"  value="travel" onclick="Page.Theme.checkConfigMyThemeCount(this);" name="theme[]"/> <label for="checkid10">여행</label></li>
+									<li class=""><input type="checkbox" id="checkid11"  value="photo" onclick="Page.Theme.checkConfigMyThemeCount(this);" name="theme[]"/> <label for="checkid11">사진</label></li>
+									<li class=""><input type="checkbox" id="checkid12"  value="fashion" onclick="Page.Theme.checkConfigMyThemeCount(this);" name="theme[]"/> <label for="checkid12">패션&amp;뷰티</label></li>
+									<li class=""><input type="checkbox" id="checkid13"  value="love" onclick="Page.Theme.checkConfigMyThemeCount(this);" name="theme[]"/> <label for="checkid13">연애</label></li>
+									<li class=""><input type="checkbox" id="checkid14"  value="gag" onclick="Page.Theme.checkConfigMyThemeCount(this);" name="theme[]"/> <label for="checkid14">개그</label></li>
+									<li class=""><input type="checkbox" id="checkid15"  value="daily" onclick="Page.Theme.checkConfigMyThemeCount(this);" name="theme[]"/> <label for="checkid15">일상</label></li>
+									<li class=""><input type="checkbox" id="checkid16"  value="baby" onclick="Page.Theme.checkConfigMyThemeCount(this);" name="theme[]"/> <label for="checkid16">육아</label></li>
+									<li class=""><input type="checkbox" id="checkid17"  value="technology" onclick="Page.Theme.checkConfigMyThemeCount(this);" name="theme[]"/> <label for="checkid17">IT</label></li>
+									<li class=""><input type="checkbox" id="checkid18"  value="earlyadopter" onclick="Page.Theme.checkConfigMyThemeCount(this);" name="theme[]"/> <label for="checkid18">얼리어답터</label></li>
+									<li class=""><input type="checkbox" id="checkid19"  value="shopping" onclick="Page.Theme.checkConfigMyThemeCount(this);" name="theme[]"/> <label for="checkid19">지름</label></li>
+									<li class=""><input type="checkbox" id="checkid20"  value="auto" onclick="Page.Theme.checkConfigMyThemeCount(this);" name="theme[]"/> <label for="checkid20">자동차</label></li>
+									<li class=""><input type="checkbox" id="checkid21"  value="sports" onclick="Page.Theme.checkConfigMyThemeCount(this);" name="theme[]"/> <label for="checkid21">스포츠</label></li>
+									<li class=""><input type="checkbox" id="checkid22"  value="news" onclick="Page.Theme.checkConfigMyThemeCount(this);" name="theme[]"/> <label for="checkid22">뉴스비평</label></li>
+									<li class=""><input type="checkbox" id="checkid23"  value="society" onclick="Page.Theme.checkConfigMyThemeCount(this);" name="theme[]"/> <label for="checkid23">인문사회</label></li>
+									<li class=""><input type="checkbox" id="checkid24"  value="history" onclick="Page.Theme.checkConfigMyThemeCount(this);" name="theme[]"/> <label for="checkid24">역사</label></li>
+									<li class=""><input type="checkbox" id="checkid25"  value="world" onclick="Page.Theme.checkConfigMyThemeCount(this);" name="theme[]"/> <label for="checkid25">세계</label></li>
+									<li class=""><input type="checkbox" id="checkid26"  value="science" onclick="Page.Theme.checkConfigMyThemeCount(this);" name="theme[]"/> <label for="checkid26">과학</label></li>
+									<li class=""><input type="checkbox" id="checkid27"  value="toy" onclick="Page.Theme.checkConfigMyThemeCount(this);" name="theme[]"/> <label for="checkid27">토이</label></li>
+									<li class=""><input type="checkbox" id="checkid28"  value="creation" onclick="Page.Theme.checkConfigMyThemeCount(this);" name="theme[]"/> <label for="checkid28">창작</label></li>
+									<li class=""><input type="checkbox" id="checkid29"  value="flea" onclick="Page.Theme.checkConfigMyThemeCount(this);" name="theme[]"/> <label for="checkid29">벼룩시장</label></li>
+									<li class=""><input type="checkbox" id="checkid30"  value="qna" onclick="Page.Theme.checkConfigMyThemeCount(this);" name="theme[]"/> <label for="checkid30">지식Q&amp;A</label></li>
+									<li class=""><input type="checkbox" id="checkid31"  value="egloos" onclick="Page.Theme.checkConfigMyThemeCount(this);" name="theme[]"/> <label for="checkid31">이글루스</label></li>
+									<li class=""><input type="checkbox" id="checkid32"  value="sotong" onclick="Page.Theme.checkConfigMyThemeCount(this);" name="theme[]"/> <label for="checkid32">소통밸리</label></li>                                <li class="noselect"><input type="checkbox" name="" id="disablechk" checked name="disablechk" onclick="Page.Theme.disableConfigMyTheme('configmytheme');"/> <label for="disablechk">선택안함</label></li>
+                            </ul>
+                            <div class="theme_btn">
+                                <a class="save" title="관심테마설정 저장하기" href="javascript:void(0);" onclick="Page.Theme.enableConfigMyTheme('configmytheme');">저장</a>
+                                <a class="cancel" title="관심테마설정 취소하기" href="javascript:void(0);" onclick="Page.Theme.showConfigMyThemeList();">취소</a>
+                            </div>
+                        </div>
+                    </form>
+                    <!--// 관심 테마 설정 레이어 -->
+					
+					<ul class="valley_list show" id="valley_list_food">
+						<li class="top left">
+							<div class="valley_list_wrap">
+								<a href="http://prettier.egloos.com/4113919" class="thumb_photo" target="_blank"><img src="http://thumbnail.egloos.net/175x118/http://pds27.egloos.com/pds/201605/17/12/a0047112_5739f05e773b0.jpg" alt="이탈리안 음식을 분위기있게 즐기고 싶을때, 연남동 &lt;폰테벨라 FONTEBELLA&gt;" onerror="this.src='http://md.egloos.com/thumbnail.gif';"/><span class="img_border"></span></a>
+							<dl>
+								<dt><a href="http://prettier.egloos.com/4113919" target="_blank">이탈리안 음식을 분위기있게 즐기고 싶을때, 연남동 &lt;폰테벨라 FONTEBELLA&gt;</a></dt>
+								<dd><a href="http://prettier.egloos.com/4113919" target="_blank"> 부산에서 친한 지인이 상경한 날. 왠지 이왕이면 서울 핫플레이스를 소개해줘야 할것 같은 기쁜 부담감을 가졌던 날, 우리 일행은 연남동으로 향했다.   연남동을 잘 알고있는 또 다른 지인의 인도에 우리는 아씨씨 라는 매장으로 갔다.   그런데 웬걸, 주말이라 그런지 자리가 없다 ㅠㅠ 좌절하고 있는 우리에게 매장 직원분이 아씨씨 바로 근처의 2호점 FONTEBELLA로 안내해 주셨다.        오 외관부터 상당히 분위기 있다.   야외 테라스에서 음식을 먹어도 좋겠다 생각했는데 이날은 바람이 많이 불어서 포기. 다음에는 꼭 테라스에 앉아봐야지.   날이 더워지는건 싫지만 테라스에서 음식을 먹을 수 있는 따스한 날들이라 또 좋기도 하다.     기본 세팅을 보고 다들 식기가 예쁘다고 칭찬했다.   나는 미적 </a></dd>
+							</dl>
+							<div class="info_user">
+								by <a href="http://prettier.egloos.com" class="user_id" target="_blank">아름다운</a>
+							</div>
+							</div>
+						</li>
+						<li class="top">
+							<div class="valley_list_wrap">
+								<a href="http://prettier.egloos.com/4113914" class="thumb_photo" target="_blank"><img src="http://thumbnail.egloos.net/175x118/http://pds26.egloos.com/pds/201605/17/12/a0047112_5739e86a216f8.jpg" alt="저렴하게 인도커리를 먹고싶을땐 안암동 &lt;베나레스&gt;" onerror="this.src='http://md.egloos.com/thumbnail.gif';"/><span class="img_border"></span></a>
+							<dl>
+								<dt><a href="http://prettier.egloos.com/4113914" target="_blank">저렴하게 인도커리를 먹고싶을땐 안암동 &lt;베나레스&gt;</a></dt>
+								<dd><a href="http://prettier.egloos.com/4113914" target="_blank">   학교다닐 때 친구의 손에 이끌려 진짜 인도사람이 한다는 정통 인도음식점에 간 적이 있었다.   그리고 처음 먹어본 인도식 커리는 향신료가 너무 세서 내 입맛에 맞지 않았었다. 그후로 누가 내게 가리는 음식이 뭐냐고 물어볼때마다 나는 인도커리 못먹는다고 대답했었다.   그랬던 내가 이 음식점을 가고나서 인도커리에 눈을 떠버렸다. 바로 그 맛집을 이번에 다시 가게 되었다.   안암동에 위치한 "베나레스"라는 매장이다.   위치는 참살이길 중간인데, 참살이길은 안암역 3번출구에서 안암오거리까지 이어지는 먹자골목 비슷한 대로(?)다.     비를 뚫고 도착한 매장에는 사람이 가득했다. 마지막 테이블에 착석 후 세팅을 살펴보았다.      요렇게 인증샷 이벤트, 카페후기 이벤트 등을 진행하고 있었다.   (절대 </a></dd>
+							</dl>
+							<div class="info_user">
+								by <a href="http://prettier.egloos.com" class="user_id" target="_blank">아름다운</a>
+							</div>
+							</div>
+						</li>
+						<li class="top right">
+							<div class="valley_list_wrap">
+								<a href="http://freequency.egloos.com/7202478" class="thumb_photo" target="_blank"><img src="http://thumbnail.egloos.net/175x118/http://pds21.egloos.com/pds/201605/16/06/b0017206_573943f1947a9.jpg" alt="새 그릇 써보기, Bavarian Winterling China." onerror="this.src='http://md.egloos.com/thumbnail.gif';"/><span class="img_border"></span></a>
+							<dl>
+								<dt><a href="http://freequency.egloos.com/7202478" target="_blank">새 그릇 써보기, Bavarian Winterling China.</a></dt>
+								<dd><a href="http://freequency.egloos.com/7202478" target="_blank"> 지난 주 이스테잇 세일에서 사온 바바리안 윈터링. 몇가지만 써봤는데, 일단은 다 맘에 들었다. 커피잔도 내 손 안에 딱 들어오는 사이즈에. 으하하. 흰 색에 금박에 클래식한 디자인이 잘 어울린다!  사진 찍느라 오늘도 거품이 다 죽었음.  브레드 접시. 한때(그리고 요새도) 꽤 유행했던 프로방스 스타일의 접시처럼 가장자리가 이러케이러케.. 음.. 부드러운 곡선..+ 금박! ㅎㅎ   길거리 토스트. 계란에 얇게 채썬 양배추 듬뿍.  요건 샐러드 보울. 보울이라고 하기엔 깊이가 아주 있진 않은데, 하여튼 이쁘다.  레터스, 오이, 당근, 토마토 가든 샐러드. 한국 찰토마토처럼 고소하고 달았다-!!!   드레싱은 애니의 올가닉 로스티드 마늘. 짭짤하고 은근한 단맛에 맛있다. 음.. </a></dd>
+							</dl>
+							<div class="info_user">
+								by <a href="http://freequency.egloos.com" class="user_id" target="_blank">skalsy85</a>
+							</div>
+							</div>
+						</li>
+						<li class="left">
+							<div class="valley_list_wrap">
+								<a href="http://u2cap.egloos.com/6001800" class="thumb_photo" target="_blank"><img src="http://thumbnail.egloos.net/175x118/http://pds25.egloos.com/pds/201605/17/89/c0047789_5739ea327dd97.jpg" alt="더운날.. 더운날!!!" onerror="this.src='http://md.egloos.com/thumbnail.gif';"/><span class="img_border"></span></a>
+							<dl>
+								<dt><a href="http://u2cap.egloos.com/6001800" target="_blank">더운날.. 더운날!!!</a></dt>
+								<dd><a href="http://u2cap.egloos.com/6001800" target="_blank">      ...에는 냉면이져. 네. 물냉이 짱임돠. 하앜하앜  오랜만에 먹어보니 넘나 맛나네요!      .....그런데 면이다보니까 12시 언저리에는 배고픔. -_ㅠ</a></dd>
+							</dl>
+							<div class="info_user">
+								by <a href="http://u2cap.egloos.com" class="user_id" target="_blank">이젤론</a>
+							</div>
+							</div>
+						</li>
+						<li class="">
+							<div class="valley_list_wrap">
+								<a href="http://hyemint.egloos.com/5870126" class="thumb_photo" target="_blank"><img src="http://thumbnail.egloos.net/175x118/http://pds25.egloos.com/pds/201605/16/69/c0065369_5739d728da3a7.jpg" alt="[2016] 그 간의 밥상기록 " onerror="this.src='http://md.egloos.com/thumbnail.gif';"/><span class="img_border"></span></a>
+							<dl>
+								<dt><a href="http://hyemint.egloos.com/5870126" target="_blank">[2016] 그 간의 밥상기록 </a></dt>
+								<dd><a href="http://hyemint.egloos.com/5870126" target="_blank">     아침 밥상바바파파 도너츠/ 커피와 우유  수면등 욕심이 나서요 며칠 도너츠를 많이 먹었다.    남편의 야식/ 대용량 요구르트  마트에서 발견하고 나서잽싸게 장바구니에 담았다.   퇴근 선물이라고요렇게 테이블에 올려놨더니남편은 피식 웃는다.    금요일 저녁밥상  -백미밥/ 부대찌개-달걀말이/ 배추김치/ 우엉조림/ 채소절임/고추장아찌    남편이 일찍 퇴근을 했다.  저녁 7시 반쯤 집에 도착했는데결혼하고 지금까지 5년 여를 살면서이 시간에 집에 온 건, 정말 드문 일.  기분이 좋아서 룰루랄라. 오랜만에 맥주도 꺼냈다.    얼큰한 찌개를 먹을 때는달걀말이가 꼭 있어야할 것 같은 느낌.두두도 같이 먹었다.    부대찌개내가 먹고 싶어서 끓인 김치찌개  햄과 소시지는 3종류. 내가 좋아하는 쑥갓도 넉</a></dd>
+							</dl>
+							<div class="info_user">
+								by <a href="http://hyemint.egloos.com" class="user_id" target="_blank">hyemint</a>
+							</div>
+							</div>
+						</li>
+						<li class="right">
+							<div class="valley_list_wrap">
+								<a href="http://silkyblue.egloos.com/1435841" class="thumb_photo" target="_blank"><img src="http://thumbnail.egloos.net/175x118/http://pds27.egloos.com/pds/201605/17/59/c0103259_5739e4435b567.jpg" alt="[로손/편의점] 토리카와교자 (鶏皮ぎょうざ)" onerror="this.src='http://md.egloos.com/thumbnail.gif';"/><span class="img_border"></span></a>
+							<dl>
+								<dt><a href="http://silkyblue.egloos.com/1435841" target="_blank">[로손/편의점] 토리카와교자 (鶏皮ぎょうざ)</a></dt>
+								<dd><a href="http://silkyblue.egloos.com/1435841" target="_blank">   로손의 토리카와 교자.  토리카와를 그대로 보면 닭껍질로 만든  교자인듯합니다.  검색해봤더니 굳이 로손이 아니더라도  토리카와교자(鶏皮ぎょうざ)라는걸 일본인들은 먹는거 같아요..  닭껍질로 만두를 만들다니 신기하네요      생긴건 유부초밥처럼 생겼습니다  가격은 제코미 60엔.  싼만큼 엄청 작아요..    한입베이문 소감..  상당히 맛있습니다!  만두피도 밀가루가 아니라서  바삭바삭 고기맛인데다가  안에 육즙까지...  닭껍질 만두.. 혁명이네요..  다만 60엔짜리라서  한입 먹으면 끝나버리는게 아쉽습니다  다음에 4개정도 사서 먹어야겠어여..  만두피가 닭고기라니.. 일본인들.. 천재야..  </a></dd>
+							</dl>
+							<div class="info_user">
+								by <a href="http://silkyblue.egloos.com" class="user_id" target="_blank">빵꼬얌</a>
+							</div>
+							</div>
+						</li>
+						<li class="bottom left">
+							<div class="valley_list_wrap">
+								<a href="http://a160cm45kg.egloos.com/5870120" class="thumb_photo" target="_blank"><img src="http://thumbnail.egloos.net/175x118/http://pds27.egloos.com/pds/201605/16/50/c0054850_5739c4a00bff4.jpg" alt="20160511 간사이공항 스키야, 미스터도넛" onerror="this.src='http://md.egloos.com/thumbnail.gif';"/><span class="img_border"></span></a>
+							<dl>
+								<dt><a href="http://a160cm45kg.egloos.com/5870120" target="_blank">20160511 간사이공항 스키야, 미스터도넛</a></dt>
+								<dd><a href="http://a160cm45kg.egloos.com/5870120" target="_blank">             요시노야에서는 후쿠시마산 쌀을 쓴다고 했다. 스키야도. 간사이공항에 마츠야카페가 있대서 열심히 찾았으나 실패하고 그냥 스키야로 왔다. 가격이 만만해서 규동과 부타동을 함께 주문.     일본여행 하면 이러한 규동을 먹어줘야지~는 개뿔. 맛없어. 가난한 여행자는 못 될 거 같다. 돈 잘 벌어 잘 사먹거나, 편의점 빵과 컵라면으로 끼니를 떼우는 한이 있어도. 규동은... 바이바이!    잠시 구경만하려던 미스터도넛 매장엔 빵이 아주 예쁘장한 모습으로 기다리고 있어 참지 못하고 구매해버렸다. 오리지날 폰데링은 부드러운 맛. 쫀득한 한국의 폰데링이랑 차이가 있다. 둘 다 좋아!</a></dd>
+							</dl>
+							<div class="info_user">
+								by <a href="http://a160cm45kg.egloos.com" class="user_id" target="_blank">애교J</a>
+							</div>
+							</div>
+						</li>
+						<li class="bottom">
+							<div class="valley_list_wrap">
+								<a href="http://a160cm45kg.egloos.com/5870119" class="thumb_photo" target="_blank"><img src="http://thumbnail.egloos.net/175x118/http://pds27.egloos.com/pds/201605/16/50/c0054850_5739c4452d0fc.jpg" alt="20160511 두 번이나 방문, 시장스시! 또!" onerror="this.src='http://md.egloos.com/thumbnail.gif';"/><span class="img_border"></span></a>
+							<dl>
+								<dt><a href="http://a160cm45kg.egloos.com/5870119" target="_blank">20160511 두 번이나 방문, 시장스시! 또!</a></dt>
+								<dd><a href="http://a160cm45kg.egloos.com/5870119" target="_blank">               맛없는 오코노미야키나 먹고 한국에 돌아가긴 싫어서 지갑을 털어 초큼만 더 환전하고 시장스시로 다시 갔다. 연어와 장어 와사비 빼고! 간장을 바르고 아름다운 자태를 한참 쳐다보다가, 먹으면서 차오르는 행복감에 몸서리쳤음! 연어 추가요!!!     한국가면 초밥 어떻게 먹지...?? (별 수 있나. 직접 해 먹어야지~ 연어 필렛 콘부즈시에 대해 검색 중)</a></dd>
+							</dl>
+							<div class="info_user">
+								by <a href="http://a160cm45kg.egloos.com" class="user_id" target="_blank">애교J</a>
+							</div>
+							</div>
+						</li>
+						<li class="bottom right">
+							<div class="valley_list_wrap">
+								<a href="http://prologueH.egloos.com/9849294" class="thumb_photo" target="_blank"><img src="http://thumbnail.egloos.net/175x118/http://pds25.egloos.com/pds/201605/17/58/a0334358_5739e12409b4e.jpg" alt="160505 한강진 &lt;부자피자 Pizzeria D'Buzza&gt; 2호점" onerror="this.src='http://md.egloos.com/thumbnail.gif';"/><span class="img_border"></span></a>
+							<dl>
+								<dt><a href="http://prologueH.egloos.com/9849294" target="_blank">160505 한강진 &lt;부자피자 Pizzeria D'Buzza&gt; 2호점</a></dt>
+								<dd><a href="http://prologueH.egloos.com/9849294" target="_blank">       감베로니 프리띠 11,200원 마스카포네 피자 18,100원 라자냐 클라시카 19,800원   Cheesy한 음식이 먹고 싶다는 친구의 요청에 고민하다 간 이태원 부자피자 2호점! 원래도 유명했지만 이제는 너무나 유명해진 피제리아인데 나도 간만에 갔다. 다소 애매한 오후 4시였는데도 테이블이 듬성듬성 차있었다. 잔잔한 음악, 고소한 냄새, 조용히 들리는 말소리까지. 분위기도 완전 좋았고 1호점에 비해 밝고 넓어서 여유로운 식사가 가능했다.   둘다 배가 고파서 이것저것 메뉴를 시켰는데 에피타이저는 감베로니 프리띠. 원래는 깔라마리 프리띠(쭈꾸미 튀김)이 먹고싶었는데 친구가 원한 새우 튀김으로 주문. 느끼하지는 않고 고소하긴한데 가격이ㅋㅋ 껍질도 조금 난감. 담엔 안머겅. 피자는 마스카포네, 그리고</a></dd>
+							</dl>
+							<div class="info_user">
+								by <a href="http://prologueH.egloos.com" class="user_id" target="_blank">미이미</a>
+							</div>
+							</div>
+						</li>
+					</ul>
+					<ul class="valley_list hidden" id="valley_list_movie">
+						<li class="top left">
+							<div class="valley_list_wrap">
+								<a href="http://est46.egloos.com/4113921" class="thumb_photo" target="_blank"><img src="http://md.egloos.com/thumbnail.gif" data-src="http://thumbnail.egloos.net/175x118/http://pds26.egloos.com/pds/201605/17/28/a0007328_5739f79e0de99.jpg" alt="오늘의 전단지: 160516" onerror="this.src='http://md.egloos.com/thumbnail.gif';"/><span class="img_border"></span></a>
+							<dl>
+								<dt><a href="http://est46.egloos.com/4113921" target="_blank">오늘의 전단지: 160516</a></dt>
+								<dd><a href="http://est46.egloos.com/4113921" target="_blank"> - &lt;초인> 전단  - &lt;미 비포 유> 전단  - &lt;특별수사> 전단: 메가박스 신촌</a></dd>
+							</dl>
+							<div class="info_user">
+								by <a href="http://est46.egloos.com" class="user_id" target="_blank">EST</a>
+							</div>
+							</div>
+						</li>
+						<li class="top">
+							<div class="valley_list_wrap">
+								<a href="http://credhomaro.egloos.com/3157353" class="thumb_photo" target="_blank"><img src="http://md.egloos.com/thumbnail.gif" data-src="http://thumbnail.egloos.net/175x118/http://pds25.egloos.com/pds/201605/16/07/f0072207_5739dc3b9ed6c.jpg" alt="영화 곡성 보고 왔습니다." onerror="this.src='http://md.egloos.com/thumbnail.gif';"/><span class="img_border"></span></a>
+							<dl>
+								<dt><a href="http://credhomaro.egloos.com/3157353" target="_blank">영화 곡성 보고 왔습니다.</a></dt>
+								<dd><a href="http://credhomaro.egloos.com/3157353" target="_blank"> 작년 11월에 검은 사제들을 동네 영화관에서 보았는데, 6개월만에 또 영화관에 갔다. 게다가 이번에도 한국 영화를 보았다. 곡성을 호평하는 사람이든 혹평하는 사람이든 몰입감 하나는 다들 입을 모아 인정한다고 하더니만, 정말 2시간 넘게 내내 스크린에서 눈을 떼지 못했다.     영화를 본 직후의 내 느낌은 이러하다.         뫼비우스의 띠를 앞면과 뒷면으로 정리할 수 없듯, 이 영화도 종구네 가족을 중심으로 한 삼파전(외지인/일광/무명) 인물들을 꼬아두었다는 것이다. 영화 마지막 장면에서 엔딩이 올라가는 순간 "그래서 뭐야"라는 말이 내 입에서 절로 나왔는데,  아마 감독이 관객에게 기대한 바가 그거라고 생각한다.     영화를 보고 나서 인터넷상에서 먼저 본 관객들 감상을 보니까 "그래서 누가 사건의</a></dd>
+							</dl>
+							<div class="info_user">
+								by <a href="http://credhomaro.egloos.com" class="user_id" target="_blank">Esperos</a>
+							</div>
+							</div>
+						</li>
+						<li class="top right">
+							<div class="valley_list_wrap">
+								<a href="http://bluecoke.egloos.com/7202370" class="thumb_photo" target="_blank"><img src="http://md.egloos.com/thumbnail.gif" data-src="http://thumbnail.egloos.net/175x118/http://pds26.egloos.com/pds/201605/16/95/b0337695_5739dfb781459.jpg" alt="2014)위크앤드,ウィ-クエンド, WEEKEND" onerror="this.src='http://md.egloos.com/thumbnail.gif';"/><span class="img_border"></span></a>
+							<dl>
+								<dt><a href="http://bluecoke.egloos.com/7202370" target="_blank">2014)위크앤드,ウィ-クエンド, WEEKEND</a></dt>
+								<dd><a href="http://bluecoke.egloos.com/7202370" target="_blank">  네 무덤에 침 뱉는 일본 버전.  AKB48 출신이라는데..역시 일본은 다르구만. 그다지 19금은 아닌 덤이..이 영화의 최대 큰 함정</a></dd>
+							</dl>
+							<div class="info_user">
+								by <a href="http://bluecoke.egloos.com" class="user_id" target="_blank">파란 콜라</a>
+							</div>
+							</div>
+						</li>
+						<li class="left">
+							<div class="valley_list_wrap">
+								<a href="http://kotone.egloos.com/7202365" class="thumb_photo" target="_blank"><img src="http://md.egloos.com/thumbnail.gif" data-src="http://thumbnail.egloos.net/175x118/http://pds25.egloos.com/pds/201605/16/91/b0029591_5739dc376cff2.jpg" alt="영화 '고양이는 불러도 오지 않는다' 6월16일 개봉 예정" onerror="this.src='http://md.egloos.com/thumbnail.gif';"/><span class="img_border"></span></a>
+							<dl>
+								<dt><a href="http://kotone.egloos.com/7202365" target="_blank">영화 '고양이는 불러도 오지 않는다' 6월16일 개봉 예정</a></dt>
+								<dd><a href="http://kotone.egloos.com/7202365" target="_blank"> 사코타님께서 알려주신 정보입니다. 고양이가 두 마리 나오는 일본영화 '고양이는 불러도 오지 않는다'가 오는 6월 16일에 개봉할 예정이라고 합니다. 제1회 J필름페스티벌 상영작이었다고 하더군요. 우선 메인포스터부터. 원작은 스기사쿠 씨의 &lt;어쩌다 고양이 집사> 만화책입니다.  그리고 이쪽의 링크는 예고편 동영상이 있는 주소입니다.     * INFORMATION  제목    &lt;고양이는 불러도 오지 않는다>  원제    猫なんかよんでもこない  감독    야마모토 토루  주연    카자마 슌스케, 츠루노 타케시, 마츠오카 마유  러닝타임    103분  관람등급    전체관람가  개봉    2016년 6월 16일  수입    엔케이컨텐츠  배급    디스테이션     * SYNOPSIS  부를 땐 안</a></dd>
+							</dl>
+							<div class="info_user">
+								by <a href="http://kotone.egloos.com" class="user_id" target="_blank">코토네</a>
+							</div>
+							</div>
+						</li>
+						<li class="">
+							<div class="valley_list_wrap">
+								<a href="http://metgabi.egloos.com/9849211" class="thumb_photo" target="_blank"><img src="http://md.egloos.com/thumbnail.gif" data-src="http://thumbnail.egloos.net/175x118/http://pds21.egloos.com/pds/201605/16/57/a0317057_5739c5e91a647.jpg" alt="검은 사제들 (2015)" onerror="this.src='http://md.egloos.com/thumbnail.gif';"/><span class="img_border"></span></a>
+							<dl>
+								<dt><a href="http://metgabi.egloos.com/9849211" target="_blank">검은 사제들 (2015)</a></dt>
+								<dd><a href="http://metgabi.egloos.com/9849211" target="_blank">   '곡성'을 보고 분노한 나는 집에 돌아오자마자 이 영화를 유료 결제한다. 그리고 분노를 넘어 체한 듯 답답했던 명치가 시원해짐을 느낀다. 까스활명수를 몇 병 들이킨 듯 개운한 영화다.    보여주고자 하는 바가 명확하고 제 갈 길을 관객에게 정확히 제시하며 그 길로 안전하게, 하지만 스릴 넘치고 재미나게 이끈다. 새로운 시대의 한국형 오컬트 장르 영화의 가능성을 봤다.    그러나 동시에 좌절감을 느꼈다. 가뭄에 콩 나듯이라도 들려오던 '퇴마록'의 리메이크판 이야기가 어쩐지 쏙 들어갈 것만 같은 불길한 예감이 들었기 때문이다. 강동원이 현암, 김윤석이 박신부인 퇴마록을 보고싶어졌다.    사제복이 강동원을 입었다는 세간의 평가에 동의한다. 장동건, 원빈이 아시아식으로 잘생긴 남자 배우의 끝판왕이라면 강동</a></dd>
+							</dl>
+							<div class="info_user">
+								by <a href="http://metgabi.egloos.com" class="user_id" target="_blank">멧가비</a>
+							</div>
+							</div>
+						</li>
+						<li class="right">
+							<div class="valley_list_wrap">
+								<a href="http://atonal.egloos.com/4113899" class="thumb_photo" target="_blank"><img src="http://md.egloos.com/thumbnail.gif" data-src="http://thumbnail.egloos.net/175x118/http://pds21.egloos.com/pds/201605/16/08/a0015808_5739bf8a9c13b.jpg" alt="북미 박스오피스 '캡틴 아메리카: 시빌 워' 9억 달러 돌파" onerror="this.src='http://md.egloos.com/thumbnail.gif';"/><span class="img_border"></span></a>
+							<dl>
+								<dt><a href="http://atonal.egloos.com/4113899" target="_blank">북미 박스오피스 '캡틴 아메리카: 시빌 워' 9억 달러 돌파</a></dt>
+								<dd><a href="http://atonal.egloos.com/4113899" target="_blank">   '캡틴 아메리카 : 시빌 워'가 북미 박스오피스 2주 연속 1위를 차지했습니다. 2주차 주말수익은 첫주대비 59.5%나 줄어들었음에도 7256만 달러... 드랍률이 적진 않은 편인데 절대치가 너무 크다 보니 그럼에도 첫주말이라고 해도 믿을 것 같은, 그런 기준으로 봐도 훌륭한-_-; 수준의 성적입니다. 상영관당 성적도 1만 7171달러나 되고요.    북미 누적 수익은 2억 9589만 달러로 2주만에 3억 달러 돌파를 눈앞에 두고 있으며, 해외수익은 6억 4500만 달러로 둘을 합친 전세계 수익은 9억 4천만 달러를 넘겼습니다. 배트맨 대 슈퍼맨을 가뿐하게 제친 것은 물론이고 10억 달러 돌파는 너무나도 당연한 기세. 제작비 2억 5천만 달러의 손익분기점 그게 뭔가요 우걱우걱.        2위는 전주 </a></dd>
+							</dl>
+							<div class="info_user">
+								by <a href="http://atonal.egloos.com" class="user_id" target="_blank">로오나</a>
+							</div>
+							</div>
+						</li>
+						<li class="bottom left">
+							<div class="valley_list_wrap">
+								<a href="http://metgabi.egloos.com/9849194" class="thumb_photo" target="_blank"><img src="http://md.egloos.com/thumbnail.gif" data-src="http://thumbnail.egloos.net/175x118/http://pds27.egloos.com/pds/201605/16/57/a0317057_5739c1bc033cb.jpg" alt="바바렐라 Barbarella, Queen Of The Galaxy (1968)" onerror="this.src='http://md.egloos.com/thumbnail.gif';"/><span class="img_border"></span></a>
+							<dl>
+								<dt><a href="http://metgabi.egloos.com/9849194" target="_blank">바바렐라 Barbarella, Queen Of The Galaxy (1968)</a></dt>
+								<dd><a href="http://metgabi.egloos.com/9849194" target="_blank">   사이키델릭 키드가 가벼운 약물을 흡입하고 자다가 꾸는 몽정 꿈이 이 영화처럼 생겼을 것 같다.    이 영화가 가끔 유쾌한 섹스 코미디 스페이스 오페라로 소개되는 경우가 있더라. 나는 이 영화를 처음 봤을 때, 섹스를 테마로 한 프랑스 전위 예술처럼 느꼈다. 하지만 모두 틀렸다. 이 영화는 몹시도 우울한 디스토피아 영화에 가깝다. 40세기의 지구는 손바닥을 맞대어 뇌파로만 섹스하는 세상이라고 한다. 이보다 더한 디스토피아를 나는 상상해 본 적이 없다. 전쟁통 험난한 피난길 여정 중에도 사랑은 싹 트고 아기가 태어난다 했거늘.    영화의 배경인 외계는 그나마 육체적인 섹스를 나눈다고는 하지만 그 수준이나 개방성 역시 의심된다. 오죽하면 지구 여인과의 동침 한 번에 천사가 날개를 펴겠는가. 오죽했으면 여왕</a></dd>
+							</dl>
+							<div class="info_user">
+								by <a href="http://metgabi.egloos.com" class="user_id" target="_blank">멧가비</a>
+							</div>
+							</div>
+						</li>
+						<li class="bottom no_img">
+							<div class="valley_list_wrap no_img">
+							<dl>
+								<dt><a href="http://eye2eye.egloos.com/3176666" target="_blank">곡성 (2016) / 나홍진</a></dt>
+								<dd><a href="http://eye2eye.egloos.com/3176666" target="_blank">  출처: 다음 영화  전라남도 곡성 지방 마을에 난데없이 공격적인 성향을 가진 사람이 늘어나 살인사건이 벌어지고 갈피를 잡지 못하던 동네 경찰 종구(곽도원)는 자신의 딸 효진(김환희)이 같은 증상을 보이자 원인을 찾기 위해 나선다. 의심을 받고 있는 일본인(쿠니무라 준)을 추적하는 사이에 정체를 알 수 없는 소녀(천우희)가 나타나고, 종구의 어머니는 용한 무당 일광(황정민)을 부른다.  의문의 연쇄 살인 사건을 추적하는 스릴러를 기본 구도로 오컬트 스타일의 분위기에 좀비 영화식 전개를 한국의 시골 마을을 배경으로 을씨년스럽게 표백하여 섞어 놓았다. 각각은 장르적인데 교묘하게 꼬아서 합쳐 놓아 어디서도 찾아볼 수 없는 독보적인 분위기를 갖춘 기괴한 힘이 넘치는 작품. 장르 영화를 한국식으로 소화해 독특한 분</a></dd>
+							</dl>
+							<div class="info_user">
+								by <a href="http://eye2eye.egloos.com" class="user_id" target="_blank">유지이</a>
+							</div>
+							</div>
+						</li>
+						<li class="bottom right">
+							<div class="valley_list_wrap">
+								<a href="http://jampuri.egloos.com/7201908" class="thumb_photo" target="_blank"><img src="http://md.egloos.com/thumbnail.gif" data-src="http://thumbnail.egloos.net/175x118/http://pds25.egloos.com/pds/201605/16/03/b0007603_573992ce03f2f.jpg" alt="삼토스와 댕기똘이 (1989)" onerror="this.src='http://md.egloos.com/thumbnail.gif';"/><span class="img_border"></span></a>
+							<dl>
+								<dt><a href="http://jampuri.egloos.com/7201908" target="_blank">삼토스와 댕기똘이 (1989)</a></dt>
+								<dd><a href="http://jampuri.egloos.com/7201908" target="_blank">     [웹소설] 적인왕 - ESOSUL 독점 연재         1989년에 조명화 감독/각본, 김청기 제작으로 만들어진 아동용 SF 영화.    내용은 지구 정복을 노리는 티토스가 부하인 삼토스에게 정찰임무를 줘서 지구에 먼저 보냈는데, 지구에 도착한 삼토스가 산속에서 할머니와 단 둘이 살면서 천자문을 공부하고 무예를 수련하던 똘이와 만난 뒤, 인간 모습으로 변신해 삼돌이라는 가명을 갖고 똘이네 가족과 함께 도시로 상경하면서 벌어지는 이야기다.    김청기 감독과 조명화 감독은 일찍이 슈퍼 홍길동 시리즈와 우레매 시리즈에서 호흡을 맞췄다.    이용식, 김정렬, 박미선, 이옥주, 이문수 등 당시 현직 개그맨이 대거 출현했고 아역 배우로는 정덕수, 김민정, 이재은 등이 나왔다.    아동 영화로선 캐스팅이</a></dd>
+							</dl>
+							<div class="info_user">
+								by <a href="http://jampuri.egloos.com" class="user_id" target="_blank">잠뿌리</a>
+							</div>
+							</div>
+						</li>
+					</ul>
+					<ul class="valley_list hidden" id="valley_list_sports">
+						<li class="top left">
+							<div class="valley_list_wrap">
+								<a href="http://number81.egloos.com/2204809" class="thumb_photo" target="_blank"><img src="http://md.egloos.com/thumbnail.gif" data-src="http://thumbnail.egloos.net/175x118/http://pds27.egloos.com/pds/201605/16/73/f0046673_5739cd2cbbb03.png" alt="저번에도 말했지만 누가 월요일 경기 아이디어 낸 거냐!!" onerror="this.src='http://md.egloos.com/thumbnail.gif';"/><span class="img_border"></span></a>
+							<dl>
+								<dt><a href="http://number81.egloos.com/2204809" target="_blank">저번에도 말했지만 누가 월요일 경기 아이디어 낸 거냐!!</a></dt>
+								<dd><a href="http://number81.egloos.com/2204809" target="_blank"> 게다가 스포티비 플러스는 모처럼 중계하면서 경기도 잘못 고름.  근데 왜 최정한을 거기다 넣은 겁니까.  최정한 하면 그거 생각나는데. 원래 FC서울에서는 미드 필더지 않았나?  군대도 갔다 온 걸로 아는데 연맹 기록이 이상하게 나온다.    산도적 같은 외모로 돌변한 것도 놀라운데 오늘 모두에게 주목을 받는 요상한 플레이도 놀라웠다.    일단 수염을 깎자.  그럼 나을듯.    [오늘의 챌린지 리그]  서울 이랜드: 대구FC=1:1  서울E 후반 3분 윤성열 AKR H∩ 타라바이 GA 정면 오버헤드킥 R-ST-G (득점:타라바이, 도움:윤성열)     대구 후반 20분 감한솔 PAR TL ∩ 파울로 GAR H-ST-G (득점:파울로, 도움:감한솔)왼쪽      - 슈팅은 무지 많이 한 편이군. 대구.  </a></dd>
+							</dl>
+							<div class="info_user">
+								by <a href="http://number81.egloos.com" class="user_id" target="_blank">謎卵</a>
+							</div>
+							</div>
+						</li>
+						<li class="top no_img">
+							<div class="valley_list_wrap no_img">
+							<dl>
+								<dt><a href="http://ahmolang.egloos.com/7202162" target="_blank">37차전 전평</a></dt>
+								<dd><a href="http://ahmolang.egloos.com/7202162" target="_blank">외국인 체력은 소중하고 강민호는 올해 뛰고 은퇴시킬 것인가? 란 의문이 드는 기용이 계속 되고 있습니다. 물론 내야진에 부상으로 구멍이 많이 생긴 현재이지만 그런 이유로 강민호에게 휴식을 주지 않는다면, 불가피한 강민호의 구멍은 훗날 어찌 할지...144경기는 절대 얕잡아 볼 수 없는 경기수입니다. 시즌 끝까지 100경기도 더 남았죠.  K팝 모델 워터디스펜서가 내일 아니면 모레쯤 다시 콜업될 것도 같습니다. 슥슥에게 데이면서 양학스탯적립에 올인한 3루수의 소중함을 깨달았다는 사람들도 많던데 전 그냥 3루에 대호터널이 재개장할 거 같단 우려만 드는군요.          사실 어제 경기에서 가장 큰 승인은 정훈의 목이 돌아갔던 것이 아닐까란 생각을 합니다. 2루수로 출전한 이여상이 계속 펑고를 받으면서도 별로</a></dd>
+							</dl>
+							<div class="info_user">
+								by <a href="http://ahmolang.egloos.com" class="user_id" target="_blank">미스터 X</a>
+							</div>
+							</div>
+						</li>
+						<li class="top right">
+							<div class="valley_list_wrap">
+								<a href="http://ptnic.egloos.com/4403744" class="thumb_photo" target="_blank"><img src="http://md.egloos.com/thumbnail.gif" data-src="http://thumbnail.egloos.net/175x118/http://pds21.egloos.com/pds/201605/16/43/d0098543_5739bf5c462a5.gif" alt="HEO드립" onerror="this.src='http://md.egloos.com/thumbnail.gif';"/><span class="img_border"></span></a>
+							<dl>
+								<dt><a href="http://ptnic.egloos.com/4403744" target="_blank">HEO드립</a></dt>
+								<dd><a href="http://ptnic.egloos.com/4403744" target="_blank"> ================================================================================================================================================================================================================================================================================================================================================================================================================</a></dd>
+							</dl>
+							<div class="info_user">
+								by <a href="http://ptnic.egloos.com" class="user_id" target="_blank">펜타토닉</a>
+							</div>
+							</div>
+						</li>
+						<li class="left no_img">
+							<div class="valley_list_wrap no_img">
+							<dl>
+								<dt><a href="http://tirano.egloos.com/4113893" target="_blank">부천 왜이러냐...완전 물이 올랐네</a></dt>
+								<dd><a href="http://tirano.egloos.com/4113893" target="_blank">오늘 경기에서 6연승의 강원을 상대로.3:1 승  근데 더 웃기는건...전반전 점유율이 30:70 이라는 상황에서 2:1로 앞섬.심지어 전반전 슈팅수 2. 그것도 유효슈팅수 2가 아니라 그냥 슈팅수 2. 슈팅한거 다 들어가버림.  후반도 거의 비슷할 지경.뭐여 이거...  얘들 진짜 포항산 뽕 거하게 맞은건가...서울E랜드vs대구전이 현재 진행중입니다만 중간순위 3위 됐심다.다득점에서 강원과 동률인데 득실차에서 아쉽게 1골 모잘라서 3위.  현재 서울E랜드 1 : 0 대구FC인 관계로 이대로 끝나면 부천은 3위로 올라서는 것과 동시에 기세 엄청나게 타게 됩니다.4일 휴식뒤 홈경기. 그리고 6일 휴식뒤 원정(충주) 이므로 FA컵으로 인한 후유증에선 벗어나고 송선호 감독이 생각한 1라운드는 잘 마무리 될거 같습</a></dd>
+							</dl>
+							<div class="info_user">
+								by <a href="http://tirano.egloos.com" class="user_id" target="_blank">홍차도둑</a>
+							</div>
+							</div>
+						</li>
+						<li class=" no_img">
+							<div class="valley_list_wrap no_img">
+							<dl>
+								<dt><a href="http://kaid.egloos.com/3176670" target="_blank">박태환이 리우에 갈 수 있을려나?</a></dt>
+								<dd><a href="http://kaid.egloos.com/3176670" target="_blank">[취재파일] 박태환, 사실상 무산된 연기 요청   박태환과 체육회의'치킨게임'.. 향후 시나리오는   박태환 CAS 중재제소, 얻을 것 없는 무리수         박태환측에선 기존 두 사례   CAS 2011/O/2422 : IOC서 '약 걸린놈은 다음 올림픽 출전 자격 박탈(=오사카룰)' 했다가 USOC(미국 올림픽 위원회)서 클레임 걸어서 짜진 사건CAS 2011/A/2658 : 영국 BOA(영국 올림픽 협회)에서 '약 걸린놈은 올림픽 출전자격 영구 박탈' 걸어놨는데 저건땜에 다 풀리게 되자 빡쳐서 WADA상대로 약쟁이 OUT 시비걸었다가 짜진건  가 아무래도 자기한테 유리하니까 나도 뎀벼서 자격 따보자! 이거 같은데   [출전자격 n년 박탈과 다음 올림픽 박탈이 다르다! 라는 내로남불 원리가 적용되진 </a></dd>
+							</dl>
+							<div class="info_user">
+								by <a href="http://kaid.egloos.com" class="user_id" target="_blank">파군성</a>
+							</div>
+							</div>
+						</li>
+						<li class="right no_img">
+							<div class="valley_list_wrap no_img">
+							<dl>
+								<dt><a href="http://psychict.egloos.com/7202034" target="_blank">히어로즈 정회찬....</a></dt>
+								<dd><a href="http://psychict.egloos.com/7202034" target="_blank">  저건 어디서 나온 거구 투수냐... 투구폼이 키를 다 살려주지는 못한 모양이라 조금 아쉽지만 뭐 그래도 타점이 높네.    우리 장민익이는 뭐 하고 있을까?</a></dd>
+							</dl>
+							<div class="info_user">
+								by <a href="http://psychict.egloos.com" class="user_id" target="_blank">동네 최씨</a>
+							</div>
+							</div>
+						</li>
+						<li class="bottom left">
+							<div class="valley_list_wrap">
+								<a href="http://maruppang.egloos.com/4277530" class="thumb_photo" target="_blank"><img src="http://md.egloos.com/thumbnail.gif" data-src="http://thumbnail.egloos.net/175x118/http://pds27.egloos.com/pds/201605/16/89/f0307589_5739825617bcc.jpg" alt="더 추해지기 전에..." onerror="this.src='http://md.egloos.com/thumbnail.gif';"/><span class="img_border"></span></a>
+							<dl>
+								<dt><a href="http://maruppang.egloos.com/4277530" target="_blank">더 추해지기 전에...</a></dt>
+								<dd><a href="http://maruppang.egloos.com/4277530" target="_blank">         각동님의 말씀을 받들길</a></dd>
+							</dl>
+							<div class="info_user">
+								by <a href="http://maruppang.egloos.com" class="user_id" target="_blank">마루빵</a>
+							</div>
+							</div>
+						</li>
+						<li class="bottom">
+							<div class="valley_list_wrap">
+								<a href="http://itrooms.egloos.com/6001680" class="thumb_photo" target="_blank"><img src="http://md.egloos.com/thumbnail.gif" data-src="http://thumbnail.egloos.net/175x118/http://pds21.egloos.com/pds/201605/16/92/c0210492_573976fb59352.png" alt="2016 프로야구 KBO 리그 순위 2016.05.16" onerror="this.src='http://md.egloos.com/thumbnail.gif';"/><span class="img_border"></span></a>
+							<dl>
+								<dt><a href="http://itrooms.egloos.com/6001680" target="_blank">2016 프로야구 KBO 리그 순위 2016.05.16</a></dt>
+								<dd><a href="http://itrooms.egloos.com/6001680" target="_blank"> 2016 프로야구 KBO 리그 순위 2016.05.16    삼성 9위...    낯설은 순위입니다~~    시즌 초반 9위에서 다시 5위까지 올라갔었는데 어느 순간 또 다시 9위    한화는 올해 아무래도 10위를 못 벗어날 것 같은~    야구에 흥미를 잃은거 같기도 하고요~    중계를 보고 있을때 이기고 있더라도 질 것 같은~~ ㅎ    </a></dd>
+							</dl>
+							<div class="info_user">
+								by <a href="http://itrooms.egloos.com" class="user_id" target="_blank">딸기아빠</a>
+							</div>
+							</div>
+						</li>
+						<li class="bottom right">
+							<div class="valley_list_wrap">
+								<a href="http://glasmoon.egloos.com/6001669" class="thumb_photo" target="_blank"><img src="http://md.egloos.com/thumbnail.gif" data-src="http://thumbnail.egloos.net/175x118/http://pds21.egloos.com/pds/201605/16/68/c0024768_573966ad35bb4.jpg" alt="三神合體!?" onerror="this.src='http://md.egloos.com/thumbnail.gif';"/><span class="img_border"></span></a>
+							<dl>
+								<dt><a href="http://glasmoon.egloos.com/6001669" target="_blank">三神合體!?</a></dt>
+								<dd><a href="http://glasmoon.egloos.com/6001669" target="_blank">     벼르고 벼르던 히어로즈의 주말 원정 경기! ...를 핑계삼아 고척돔에 놀러갔습니다.  이사 후 가까워지면서 자전거 마실 반경 안에 확보하게 되었거든요.  고척으로 옮기기 전에 목동 구장도 한 번 가봤어야 했는데 거길 못가봤네.. 하여간.        처음 경험한 돔 구장에 대한 첫 소감은 의외로 유용하다는 느낌?  토요일 갔을 때는 원정 뙤약볕 핸디캡을 피하게 해주었고, 일요일엔 폭우 와중에도 경기를 했으니까요.  그러나 신설 구장이다보니 내외 시설은 아직 미비한 편이고 무엇보다 인근 교통은 그야말로 헬;;;  그걸 뚫고 자동차로 오시려거든 그냥 집에서 편하게 중계로 보세요.         토요일의 경기 내용은 지나치게 일방적이어서 동행은 재미없다며 중반 이후 히어로즈를 응원했는데  최근 베어스의 떠</a></dd>
+							</dl>
+							<div class="info_user">
+								by <a href="http://glasmoon.egloos.com" class="user_id" target="_blank">glasmoon</a>
+							</div>
+							</div>
+						</li>
+					</ul>
+					<ul class="valley_list hidden" id="valley_list_travel">
+						<li class="top left">
+							<div class="valley_list_wrap">
+								<a href="http://awrence.egloos.com/5870131" class="thumb_photo" target="_blank"><img src="http://md.egloos.com/thumbnail.gif" data-src="http://thumbnail.egloos.net/175x118/http://pds25.egloos.com/pds/201605/17/78/c0088678_5739fb9b391d1.jpg" alt="6954: 부친용 사진" onerror="this.src='http://md.egloos.com/thumbnail.gif';"/><span class="img_border"></span></a>
+							<dl>
+								<dt><a href="http://awrence.egloos.com/5870131" target="_blank">6954: 부친용 사진</a></dt>
+								<dd><a href="http://awrence.egloos.com/5870131" target="_blank"> </a></dd>
+							</dl>
+							<div class="info_user">
+								by <a href="http://awrence.egloos.com" class="user_id" target="_blank">씽씽아크바</a>
+							</div>
+							</div>
+						</li>
+						<li class="top">
+							<div class="valley_list_wrap">
+								<a href="http://quf100.egloos.com/6001795" class="thumb_photo" target="_blank"><img src="http://md.egloos.com/thumbnail.gif" data-src="http://thumbnail.egloos.net/175x118/http://pds27.egloos.com/pds/201605/17/89/c0208389_5739e211d23df.jpg" alt="포항 크루즈/유람선  좋았는뎁!!" onerror="this.src='http://md.egloos.com/thumbnail.gif';"/><span class="img_border"></span></a>
+							<dl>
+								<dt><a href="http://quf100.egloos.com/6001795" target="_blank">포항 크루즈/유람선  좋았는뎁!!</a></dt>
+								<dd><a href="http://quf100.egloos.com/6001795" target="_blank">     하루가 후딱...지나가네요!!!오늘 오랜만에 딩굴딩굴 하면서하루를 보냈는데...정신 차리고 보니..저녁..ㅋ            다들...월요일..잘 보내셨나요!?                  오늘 핸드폰을 열어보다가작년 겨울...포항 크루즈 타고바다를 둥실둥실 떠다닌...동영상이 있어서투척!!!      할려고 했는데..아참..이글루슨...동영상이 안되지!!!!ㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠ        그래서 못 올렸다는 슬픈...이야기로 끄~읕!!      포항크루즈.....라고 하기엔...살짝 실망감이 있었지만(유람선..이라고 하자!!)그래두 나름 잼있었어요!!!    그리고 갈매기....엄청 몰리던데(새우깡 먹으려고...)새우깡 살려니까...넘 비싸더라구요!!ㅋ이럴 줄 알았으면 슈퍼에서 사오는건</a></dd>
+							</dl>
+							<div class="info_user">
+								by <a href="http://quf100.egloos.com" class="user_id" target="_blank">SUYA</a>
+							</div>
+							</div>
+						</li>
+						<li class="top right">
+							<div class="valley_list_wrap">
+								<a href="http://y3n313.egloos.com/4113909" class="thumb_photo" target="_blank"><img src="http://md.egloos.com/thumbnail.gif" data-src="http://thumbnail.egloos.net/175x118/http://pds25.egloos.com/pds/201605/16/66/a0014666_5739d6b5ef1a4.jpg" alt="(13) 니죠성" onerror="this.src='http://md.egloos.com/thumbnail.gif';"/><span class="img_border"></span></a>
+							<dl>
+								<dt><a href="http://y3n313.egloos.com/4113909" target="_blank">(13) 니죠성</a></dt>
+								<dd><a href="http://y3n313.egloos.com/4113909" target="_blank"> 여행 마지막 날 교토를 재방문하여 니죠성을 방문했습니다. 지난 밤 안좋은 경험을 했지만, 이왕 온 여행 뽕은 뽑아야겠다는 생각에 돌아오는 길에 교토를 들렀습니다.    니죠성二条城Nijō Castle  주소: 541 Nijojocho, Nakagyo Ward, Kyoto, Kyoto Prefecture 604-8301, Japan입장료: 600엔이용시간: 8:45-16:00, 니노마루 궁전 관람시간 9:00-16:00휴관일: 12.26부터 1.4까지와 7, 8, 12, 1월의 매주 화요일.    안에는 문화재에 대한 음성안내 서비스를 받을 수 있는 장치를 입장 후 입구 근처에서 판매하니 이용하실 분은 이용하시길 바랍니다. 니노마루 궁전으로 국보라고 하는군요.  안에 신발을 벗고 입장하여 둘러볼 수 있습니다.</a></dd>
+							</dl>
+							<div class="info_user">
+								by <a href="http://y3n313.egloos.com" class="user_id" target="_blank">LionHeart</a>
+							</div>
+							</div>
+						</li>
+						<li class="left">
+							<div class="valley_list_wrap">
+								<a href="http://kusenouta.egloos.com/7202256" class="thumb_photo" target="_blank"><img src="http://md.egloos.com/thumbnail.gif" data-src="http://thumbnail.egloos.net/175x118/http://pds21.egloos.com/pds/201605/16/67/b0396267_5739be982e900.jpg" alt="본격!중국어 배우고 싶어지는 여행(타이베이2015.12.2~4)&lt;2&gt;솽리엔에서 아침을" onerror="this.src='http://md.egloos.com/thumbnail.gif';"/><span class="img_border"></span></a>
+							<dl>
+								<dt><a href="http://kusenouta.egloos.com/7202256" target="_blank">본격!중국어 배우고 싶어지는 여행(타이베이2015.12.2~4)&lt;2&gt;솽리엔에서 아침을</a></dt>
+								<dd><a href="http://kusenouta.egloos.com/7202256" target="_blank">     밤비행기 타고 새벽에 숙소에 도착.딱 4시간 자고 일어나서 아침 먹으러 나왔다.지하철을 타고 간 곳은 핏탄코캉캉에서 본 솽리엔(雙蓮)아침시장      무슨 기념일인지 빨간등이 죽 장식되어 있었다.(상시 있는 걸지도)        이곳 때문에 등이 있는 건지도 모르겠다.&lt;문창궁&gt;이라고 하는 곳인데, 사람들이 중요한 시험이 있으면 기도하러 온다고 한다.요시다 요가 드라마의 성공을 바라며 기도를 올렸던 곳이기도 하다.    시장은 대충 둘러보고 서둘러(...) 식당을 찾았다.      오 럭키!바로 발견했다.전혀 헤매지 않고 목적지를 찾다니 이번 여행 뭔가 심상치 않다&gt;o&lt;  이곳도 역시 요시다 요가 방문했던 곳인데 두유와 빵 등을 파는 오래된 식당으로, 관광객들이 제법 오는지 일본어</a></dd>
+							</dl>
+							<div class="info_user">
+								by <a href="http://kusenouta.egloos.com" class="user_id" target="_blank">프레츠</a>
+							</div>
+							</div>
+						</li>
+						<li class="">
+							<div class="valley_list_wrap">
+								<a href="http://enatubosi.egloos.com/1898633" class="thumb_photo" target="_blank"><img src="http://md.egloos.com/thumbnail.gif" data-src="http://thumbnail.egloos.net/175x118/http://pds25.egloos.com/pds/201605/16/08/b0103808_5739bda0ef44e.jpg" alt="남미여행 (57) 푸에르토 이과수에 도착하다" onerror="this.src='http://md.egloos.com/thumbnail.gif';"/><span class="img_border"></span></a>
+							<dl>
+								<dt><a href="http://enatubosi.egloos.com/1898633" target="_blank">남미여행 (57) 푸에르토 이과수에 도착하다</a></dt>
+								<dd><a href="http://enatubosi.egloos.com/1898633" target="_blank"> * 앞으로 올리는 사진들은 모두 폰카입니다.       1.    부에노스 아이레스에서 이과수로 떠나는 날 아침.     호텔에서부터 공항으로 가는 버스 터미널까지 웨이가 짐을 들어줬다. 별 이유는 없고, 그냥 내가 칠칠맞으니까 또 카메라 같은 걸 털릴 수도 있으니까란다. 좀 생색내면서 도와줘도 괜찮은데, 저렇게 놀리는 척하며 부담스럽지 않게 사람들을 도와주는 점이 내가 웨이를 높게 사는 이유 중 하나다.     웨이의 잔소리는 헤어질 때도 여전했다. 이제 카메라도 잃어버렸으니 신경써야 할 물품은 줄었다, 여권과 핸드폰, 지갑만은 사수하라, 너 BsAs 오기 전에 숙소 예약하는 것도 까먹었다고 하지 않았냐, 분명 이과수쪽 숙소도 예약 안했을 것이다(정답), 푸에르토 이과수에 가면 무슨무슨 호스텔로 찾아가봐라</a></dd>
+							</dl>
+							<div class="info_user">
+								by <a href="http://enatubosi.egloos.com" class="user_id" target="_blank">enat</a>
+							</div>
+							</div>
+						</li>
+						<li class="right">
+							<div class="valley_list_wrap">
+								<a href="http://md7575.egloos.com/1170414" class="thumb_photo" target="_blank"><img src="http://md.egloos.com/thumbnail.gif" data-src="http://thumbnail.egloos.net/175x118/http://pds25.egloos.com/pds/201605/16/56/d0150456_573994507b57e.jpg" alt="[일본/후쿠오카]여행 셋째&amp;넷째날" onerror="this.src='http://md.egloos.com/thumbnail.gif';"/><span class="img_border"></span></a>
+							<dl>
+								<dt><a href="http://md7575.egloos.com/1170414" target="_blank">[일본/후쿠오카]여행 셋째&amp;넷째날</a></dt>
+								<dd><a href="http://md7575.egloos.com/1170414" target="_blank"> 11시쯤 료칸에서 차량으로 유후인 역까지 이동했다.비가 부슬부슬 내리고 있었고 우리는 오늘 버스를 타고 후쿠오카 시내로 이동해야했다..오늘밤을 술로 불사르려 했건만..망했지만 뭐.  도착 하자마자 락커를 찾아 짐을 넣은뒤, 어제 돌아다니며 찍어뒀던것들을 사러 돌아다녔다.어차피 버스를 타려면 4시는 되야했고..이것저것 구입하며 긴린코까지 가서 구경하고 오기로 했다.  예쁜 기념품샵들을 지나...  먹거리의 유혹도 뿌리치다보면..  연기 폴폴 나는 동네도 지나서...  요런 내천 따라가다가 길도 잃고...  와아~이집 이뻐..이런데 살고싶어...하며 가다보면...    (물안개 피어오르는 긴린코 호수)  어떻게..몰려다니는 사람들을 발견하게 되고, 그들을 따라가면 긴린코 호수에 다다르게 된다.관광객은 길을 잃지</a></dd>
+							</dl>
+							<div class="info_user">
+								by <a href="http://md7575.egloos.com" class="user_id" target="_blank">빨강별</a>
+							</div>
+							</div>
+						</li>
+						<li class="bottom left no_img">
+							<div class="valley_list_wrap no_img">
+							<dl>
+								<dt><a href="http://bluering.egloos.com/6001704" target="_blank">2016년 청계천 전통 등 전시</a></dt>
+								<dd><a href="http://bluering.egloos.com/6001704" target="_blank">  부처님 오신날을 맞이하여 2016년 5월 4일 ~ 5월 15일에 청계천에 가면  우리나라 전통 등이 전시되어 있다. 물 위에 전시된 전시물이 봄날의 일찍 찾아온 더위를 날려버리는 것 같다. 많은 시민과 관광객들이 화창한 날씨에 전시물을 보면서 즐거운 하루를 보내고 있었다.</a></dd>
+							</dl>
+							<div class="info_user">
+								by <a href="http://bluering.egloos.com" class="user_id" target="_blank">블루링</a>
+							</div>
+							</div>
+						</li>
+						<li class="bottom">
+							<div class="valley_list_wrap">
+								<a href="http://jungsu19.egloos.com/4113888" class="thumb_photo" target="_blank"><img src="http://md.egloos.com/thumbnail.gif" data-src="http://thumbnail.egloos.net/175x118/http://pds27.egloos.com/pds/201605/16/95/a0014295_573979b0d5884.jpg" alt="어머니 고향으로 부부여행." onerror="this.src='http://md.egloos.com/thumbnail.gif';"/><span class="img_border"></span></a>
+							<dl>
+								<dt><a href="http://jungsu19.egloos.com/4113888" target="_blank">어머니 고향으로 부부여행.</a></dt>
+								<dd><a href="http://jungsu19.egloos.com/4113888" target="_blank">                                     지난 5월 11일부터 13일까지 남편과 부여쪽으로 여행을 다녀왔습니다.  평일여행의 장점이라면 여행지 선택시 시간제약을 받지 않으면서 친절한 관광서비스를 제대로 대접받는다는 점입니다.    남편 직장에서 복리후생차원에서 제공하는(명분은 자기계발) 휴양지를 우리부부는 아이들을 키우느라 뒤로 미뤘었습니다.  수험생으로 사각의 틀에서 휴식없이 공부하는 아이들이 눈에 밟혀, 두 아이들이 모두 대학생이 되면 그때 누려도  늦지 않을거라 생각했거든요.  하지만 아이들이 대학생이 되어도 자유는 쉽게 찾아오지 않았습니다.  연로한 어머니가 계셨거든요.  그래서 어머니를 모시고 가자는 의견이 모아졌고, 어머니 살아생전에 어머니 고향을 다녀와 여한이 없게 해드라</a></dd>
+							</dl>
+							<div class="info_user">
+								by <a href="http://jungsu19.egloos.com" class="user_id" target="_blank">김정수</a>
+							</div>
+							</div>
+						</li>
+						<li class="bottom right">
+							<div class="valley_list_wrap">
+								<a href="http://md7575.egloos.com/1170410" class="thumb_photo" target="_blank"><img src="http://md.egloos.com/thumbnail.gif" data-src="http://thumbnail.egloos.net/175x118/http://pds27.egloos.com/pds/201605/16/56/d0150456_5739837889d1b.jpg" alt="[일본/후쿠오카]여행 둘째&amp;셋째날-료칸" onerror="this.src='http://md.egloos.com/thumbnail.gif';"/><span class="img_border"></span></a>
+							<dl>
+								<dt><a href="http://md7575.egloos.com/1170410" target="_blank">[일본/후쿠오카]여행 둘째&amp;셋째날-료칸</a></dt>
+								<dd><a href="http://md7575.egloos.com/1170410" target="_blank"> 사이가쿠칸, 언니1이 조금 좋은 곳에서 묵어보고 싶다하여 인당 18만정도의 가격인 사이가쿠칸을 예약하고 가게되었다.역에서 전화를 하니 역으로 핍업차량을 보내주었다.    차를타고 10분정도를 구불구불한 마을 뒷산길을 올라갔다. 그리고 당도!    체크인을 위해 식당의 한 테이블로 안내받고는 앉아서 조금 기다렸다.      (식당에서 내다본 풍경)  그때 폭설이 내리고 일주일? 그쯘 지났던 때인것 같았다. 멀리 보이는 산에 눈이 꽤나 많이 쌓여있는것이 운치있었다.하지만 우리 방은 정원이 보이는 곳이라 이 풍경을 즐기려면 식당에 내려와야만했다.    (뜨거운 수건과 모찌)  체크인을 위해 테이블로 안내되어 앉아있었다. 언니1은 열심히 뭔가를 적었다.  나는 뜨거운 수건으로 손을 닦으며 이것은 신의 한수라고 생각</a></dd>
+							</dl>
+							<div class="info_user">
+								by <a href="http://md7575.egloos.com" class="user_id" target="_blank">빨강별</a>
+							</div>
+							</div>
+						</li>
+					</ul>
+					<ul class="valley_list hidden" id="valley_list_fashion">
+						<li class="top left">
+							<div class="valley_list_wrap">
+								<a href="http://paradisco.egloos.com/1241152" class="thumb_photo" target="_blank"><img src="http://md.egloos.com/thumbnail.gif" data-src="http://thumbnail.egloos.net/175x118/http://pds25.egloos.com/pds/201605/17/93/f0120493_5739e7fc9bd7b.jpg" alt="홍콩 쇼핑" onerror="this.src='http://md.egloos.com/thumbnail.gif';"/><span class="img_border"></span></a>
+							<dl>
+								<dt><a href="http://paradisco.egloos.com/1241152" target="_blank">홍콩 쇼핑</a></dt>
+								<dd><a href="http://paradisco.egloos.com/1241152" target="_blank"> 쇼핑 하려고 홍콩에 갔었는데 거창하게 사 온건 없고, 화장품들을 주로 사왔다.        면세점   출국심사 하면 바로 보이는 면세점이 신라면세점이고 또 어반디케이여서, 유명한 메이크업 픽서를 사려고 하는데, 다른 손님을 접객중이라서 진열된 다른 여러개들을 보다가 나한테 없는(없을만한 색) 블러셔 Bittersweet까지 사고 나왔다.그래도 롯데면세점에 RMK 아이스라일락이 있겠지 하면서 엄청 걸어서 롯데면세점에 갔더니, 일인당 2개 살 수 있다고 해서 2개를 사고, 얼마어치 이상 사면 할인율이 높아진다고 해서 UV 립케어와 아이섀도우 스틱도 샀다.메이크업포에버 다이아몬드 파우더 11과 01은 인터넷 면세점에서 구매했음달팡 인트랄 세럼과 크림 세트가 있어서 얼굴 잘 붉어질 여름에 대비해서 샀다.      </a></dd>
+							</dl>
+							<div class="info_user">
+								by <a href="http://paradisco.egloos.com" class="user_id" target="_blank">unessa</a>
+							</div>
+							</div>
+						</li>
+						<li class="top">
+							<div class="valley_list_wrap">
+								<a href="http://sorimachi.egloos.com/7202351" class="thumb_photo" target="_blank"><img src="http://md.egloos.com/thumbnail.gif" data-src="http://thumbnail.egloos.net/175x118/http://pds25.egloos.com/pds/201605/16/19/b0367319_5739da9198541.jpg" alt="2보 전진을 위한 1보 후퇴" onerror="this.src='http://md.egloos.com/thumbnail.gif';"/><span class="img_border"></span></a>
+							<dl>
+								<dt><a href="http://sorimachi.egloos.com/7202351" target="_blank">2보 전진을 위한 1보 후퇴</a></dt>
+								<dd><a href="http://sorimachi.egloos.com/7202351" target="_blank"> 라네즈 올데이 안티폴루션 디펜서  설화수 퍼펙팅쿠션 브라이트닝 21호    VDL 아이 프라이머  로라메르시에 매트 아이컬러 캐시미어  에뛰드하우스 룩앳마이아이즈 진저밀크티  메이크업 포에버아쿠아 xl아이펜슬 m10    나스 블러시 파이널컷  나스 블러시 섹스어필  onl 위키드 블러셔 오렌지핑크    라비오뜨 와인틴트 쉬라즈 레드  나스 벨벳 매트 립펜슬 드래곤걸  맥 립스틱 플라밍고    마죠리카 마죠루카 프레스트 포어 커버  더샘 샘물어린 모공 픽서  맥 msf 미디엄다크     </a></dd>
+							</dl>
+							<div class="info_user">
+								by <a href="http://sorimachi.egloos.com" class="user_id" target="_blank">날아라펭귄</a>
+							</div>
+							</div>
+						</li>
+						<li class="top right">
+							<div class="valley_list_wrap">
+								<a href="http://smallattic.egloos.com/6001756" class="thumb_photo" target="_blank"><img src="http://md.egloos.com/thumbnail.gif" data-src="http://thumbnail.egloos.net/175x118/http://pds26.egloos.com/pds/201605/16/64/c0030364_5739c5c5abc8f.png" alt="종로_한복_한복집에서 들은 한복 원단 색 고르는 법" onerror="this.src='http://md.egloos.com/thumbnail.gif';"/><span class="img_border"></span></a>
+							<dl>
+								<dt><a href="http://smallattic.egloos.com/6001756" target="_blank">종로_한복_한복집에서 들은 한복 원단 색 고르는 법</a></dt>
+								<dd><a href="http://smallattic.egloos.com/6001756" target="_blank">   초여름에 가족 혼사가 있어서 한복을 입어야 하는데,제 결혼식 때 맞춘 한복은 겨울용이라 여름에 입을 수가 없었습니다.그래서 어쩔 수 없이 또 봄여름용으로 맞추러 감....  인터넷에 검색해봐도 죄 광고뿐이라어머니께서 혼주한복 맞추신 종로 M한복집으로 갔습니다.한복집에 젊은 여자 혼자 덜렁 가서 한복을 요구하다니!  한복줘....  제 요청사항은 다음과 같았습니다.  1. 새신부(아가씨) 한복과 겹치지 않을 것 (진한 녹색 배자, 흰색 저고리, 핫핑크 치마)2. 파스텔톤 싫음, 색동 싫음, 과한 자수 싫음3. 적당히 진한 색을 쓰면서도 혼주한복처럼 보이지 않을 것  요새 새색시 한복은 파스텔톤이 대세기는 한데...저 파스텔톤 싫거든요 잘 어울리지도 않고...제가 좋아하는 색은 한 톤 죽은 다소 칙칙한 원색</a></dd>
+							</dl>
+							<div class="info_user">
+								by <a href="http://smallattic.egloos.com" class="user_id" target="_blank">kiekie</a>
+							</div>
+							</div>
+						</li>
+						<li class="left">
+							<div class="valley_list_wrap">
+								<a href="http://firstshot.egloos.com/3544733" class="thumb_photo" target="_blank"><img src="http://md.egloos.com/thumbnail.gif" data-src="http://thumbnail.egloos.net/175x118/http://pds26.egloos.com/pds/201605/16/22/e0085422_5739c07dbbf08.jpg" alt="뭐라고! 우리 에리치 한복을 보고 저 멀리서 오더가 들어왔다고!!!" onerror="this.src='http://md.egloos.com/thumbnail.gif';"/><span class="img_border"></span></a>
+							<dl>
+								<dt><a href="http://firstshot.egloos.com/3544733" target="_blank">뭐라고! 우리 에리치 한복을 보고 저 멀리서 오더가 들어왔다고!!!</a></dt>
+								<dd><a href="http://firstshot.egloos.com/3544733" target="_blank">  제 DD 에리치 한복을 만들어주신 분인데, 이런 연락이 왔습니다~~     오오 세상에!!! 글로벌로 가는 한복..  다음에 한국 오게 되면 한벌 맞추고 가겠다고 했답니다.     만세!!!!    역시 한복은 어느나라 사람이 봐도 이쁜 복식인가 봅니다~~~ 크으~~  기분 좋아라~~    </a></dd>
+							</dl>
+							<div class="info_user">
+								by <a href="http://firstshot.egloos.com" class="user_id" target="_blank">한컷의낭만</a>
+							</div>
+							</div>
+						</li>
+						<li class="">
+							<div class="valley_list_wrap">
+								<a href="http://j2222.egloos.com/7202143" class="thumb_photo" target="_blank"><img src="http://md.egloos.com/thumbnail.gif" data-src="http://thumbnail.egloos.net/175x118/http://pds21.egloos.com/pds/201605/16/77/b0373977_5739b937eb958.jpg" alt="160516" onerror="this.src='http://md.egloos.com/thumbnail.gif';"/><span class="img_border"></span></a>
+							<dl>
+								<dt><a href="http://j2222.egloos.com/7202143" target="_blank">160516</a></dt>
+								<dd><a href="http://j2222.egloos.com/7202143" target="_blank"> 폭신폭신캐시미어, 달빛 비치는 오솔길, 꼬냑, 리골레토, 오렌지베이지, 프리티포피   로레알 매직프라이머닥터자르트 시카페어 리커버엘레강스 파우더 4호  VDL 아이프라이머이니스프리 폭신폭신캐시미어 이니스프리 달빛 비치는 오솔길로라메르시에 꼬냑 토니모리 젤아이라이너 브라운에뛰드하우스 컬픽스마스카라 블랙슈에무라 하드포뮬라 씰브라운  맥 소바+투쿨포스쿨 아트클래스바이로댕로라메르시에 새틴하이라이터 크림새틴  RMK 컬러퍼포먼스치크스 EX-01 오렌지베이지  토니모리 플레이오렌지질스튜어트 립블라썸 08 프리티포피       ㅡ시카페어..리커버는..단독으로..  -ㅅ-.. 달빛비치는오솔길 쉬머 타입이 아니라 글리터 타입 수준인데..? 눈에서는 베이스색 진짜 거의 안 나온다 손으로 발랐는데도아주 희미~~~하게 올라오고 </a></dd>
+							</dl>
+							<div class="info_user">
+								by <a href="http://j2222.egloos.com" class="user_id" target="_blank">하모</a>
+							</div>
+							</div>
+						</li>
+						<li class="right">
+							<div class="valley_list_wrap">
+								<a href="http://boouuum.egloos.com/1170416" class="thumb_photo" target="_blank"><img src="http://md.egloos.com/thumbnail.gif" data-src="http://thumbnail.egloos.net/175x118/http://pds25.egloos.com/pds/201605/16/28/d0111628_5739a6ba6c512.png" alt="스틸라 페어라이트 살까말까 고민고민" onerror="this.src='http://md.egloos.com/thumbnail.gif';"/><span class="img_border"></span></a>
+							<dl>
+								<dt><a href="http://boouuum.egloos.com/1170416" target="_blank">스틸라 페어라이트 살까말까 고민고민</a></dt>
+								<dd><a href="http://boouuum.egloos.com/1170416" target="_blank">          색도예쁘고 구성도좋고 다 좋은거 같은데  초록창검색해보면 다들 품평으로 포스팅한거다.....  직접 선택해서 구매한 사용자의 얘길들어보고 싶은데 죄다 품평이라 사기가 망설여진다...</a></dd>
+							</dl>
+							<div class="info_user">
+								by <a href="http://boouuum.egloos.com" class="user_id" target="_blank">펠리시닷</a>
+							</div>
+							</div>
+						</li>
+						<li class="bottom left">
+							<div class="valley_list_wrap">
+								<a href="http://ohmini.egloos.com/4277535" class="thumb_photo" target="_blank"><img src="http://md.egloos.com/thumbnail.gif" data-src="http://thumbnail.egloos.net/175x118/http://pds27.egloos.com/pds/201605/16/30/f0362830_5739937b08c1e.jpg" alt="2016년 5월 15일 화장 + else" onerror="this.src='http://md.egloos.com/thumbnail.gif';"/><span class="img_border"></span></a>
+							<dl>
+								<dt><a href="http://ohmini.egloos.com/4277535" target="_blank">2016년 5월 15일 화장 + else</a></dt>
+								<dd><a href="http://ohmini.egloos.com/4277535" target="_blank">       Base  어퓨 데일리선크림 SPF45, 미쯔요시 21p 컨실러, 더샘 그린베이스, 에스쁘아 프로테일러 리퀴드파운데이션 EX 포슬린, 이글립스 포어블러팩트 21호, 맥 라이츠카페이드, 투쿨포스쿨 아트바이로댕 쉐이딩, 에뛰드 레이디얼그레이    Brows  아리따움 매트포뮬라 gray brown    Eyes  에뛰드 아이프라이머, 삐아 모태청순, 맥 소바, 캔메이크 퍼펙트브라운 팔레트 5호 좌상, 에뛰드 드로잉쇼 아이라이너 블랙, 더샘 젤리펄코코아, 에뛰드 컬픽스마스카라 딸기초코퐁듀    Cheeks  오늘 위키드 블러셔 1호 오렌지핑크    Lips  잇츠스킨 매트립펜슬 쉬어로즈, 이니스프리 애플주이씨틴트 오렌지, 입생로랑 루즈퍼꾸뛰르 13호 오렌지        MOTD를 다음날 올리는 패기란^</a></dd>
+							</dl>
+							<div class="info_user">
+								by <a href="http://ohmini.egloos.com" class="user_id" target="_blank">Oh mini</a>
+							</div>
+							</div>
+						</li>
+						<li class="bottom">
+							<div class="valley_list_wrap">
+								<a href="http://bbwob.egloos.com/9849104" class="thumb_photo" target="_blank"><img src="http://md.egloos.com/thumbnail.gif" data-src="http://thumbnail.egloos.net/175x118/http://pds21.egloos.com/pds/201605/16/81/a0355381_5739886c8af1c.jpg" alt="0513 motd 언제적 엠오티디야" onerror="this.src='http://md.egloos.com/thumbnail.gif';"/><span class="img_border"></span></a>
+							<dl>
+								<dt><a href="http://bbwob.egloos.com/9849104" target="_blank">0513 motd 언제적 엠오티디야</a></dt>
+								<dd><a href="http://bbwob.egloos.com/9849104" target="_blank">   그래도 화장이 이쁘게 돼서 남길란다!!   베이스 아침에 깔았던 거 별로라 오후 수정 나스 틴모 알래스카 얼굴 바깥쪽에 깔고 안쪽엔 메포 페바 38 에뛰드 소녀팩트   눈!! 눈이 잘 기억은 안나는데 바비브라운 샌드듄, 스킨푸드 카페핑크 촉촉 에스쁘아 코퍼글로우 키스미 붓펜 브라운 에뛰드 컬픽스 데자뷰 파이버윅   볼 에뛰드 피치슈가케익 비욘드 무민 미디움코랄   입술 안나틴트       혜리...... 기여어        </a></dd>
+							</dl>
+							<div class="info_user">
+								by <a href="http://bbwob.egloos.com" class="user_id" target="_blank">noni</a>
+							</div>
+							</div>
+						</li>
+						<li class="bottom right no_img">
+							<div class="valley_list_wrap no_img">
+							<dl>
+								<dt><a href="http://senty.egloos.com/7201855" target="_blank">2016년의 첫 글이 뻘글이라니..</a></dt>
+								<dd><a href="http://senty.egloos.com/7201855" target="_blank">공부가 넘나 하기 싫은 관계로 뻘글을 쓰고있다  남친걸로 복지몰사이트를 구경하는데 나스가 없다ㅠㅠ Rmk 이번 여름 한정 블러셔는 페이지 조차 없고 쓸데없이 이번Ss 섀도우랑 아이라이너만 있는건 이해를 하겠는데 나스가 없다는건 너무 슬프다ㅠ_ㅠ  보니까 인기있는 라인은 안들어오고 온고잉 위주로 있는건지..근데 페일핑크는 없다ㅋㅋㅋㅋㅋㅋㅋ결국 인기있는건 재고가.. 나야 여름한정은 넘나 연보라라 관심없지만(상웜톤임) 예전 ex-09라든가 갖고싶은게 많았다.. 이미 없어진지 오래ㅠㅠㅠㅠ어반골드 블러셔 두종만 남아있는데 오렌지베이지? 인가 살짝 아쉬운 컬러라..      맥(병크때문에 안사고싶지만)이나 나스 디올이 입점이 안되어있다는건.. 겔랑 베네피트도 없고 캔메이크 에뛰드도 없다ㅜㅜ    슈에무라 페이지에 하드</a></dd>
+							</dl>
+							<div class="info_user">
+								by <a href="http://senty.egloos.com" class="user_id" target="_blank">센티</a>
+							</div>
+							</div>
+						</li>
+					</ul>
+					<ul class="valley_list hidden" id="valley_list_gag">
+						<li class="top left">
+							<div class="valley_list_wrap">
+								<a href="http://aronge.egloos.com/6001812" class="thumb_photo" target="_blank"><img src="http://md.egloos.com/thumbnail.gif" data-src="http://thumbnail.egloos.net/175x118/http://pds25.egloos.com/pds/201605/17/84/c0209584_5739f3d3ea9bb.png" alt="목사님과 마피아게임ㅋㅋ" onerror="this.src='http://md.egloos.com/thumbnail.gif';"/><span class="img_border"></span></a>
+							<dl>
+								<dt><a href="http://aronge.egloos.com/6001812" target="_blank">목사님과 마피아게임ㅋㅋ</a></dt>
+								<dd><a href="http://aronge.egloos.com/6001812" target="_blank">     </a></dd>
+							</dl>
+							<div class="info_user">
+								by <a href="http://aronge.egloos.com" class="user_id" target="_blank">아롱</a>
+							</div>
+							</div>
+						</li>
+						<li class="top">
+							<div class="valley_list_wrap">
+								<a href="http://aronge.egloos.com/6001811" class="thumb_photo" target="_blank"><img src="http://md.egloos.com/thumbnail.gif" data-src="http://thumbnail.egloos.net/175x118/http://pds27.egloos.com/pds/201605/17/84/c0209584_5739f2afb352c.jpg" alt="주소 알아내기 참 쉽죠?ㅎ" onerror="this.src='http://md.egloos.com/thumbnail.gif';"/><span class="img_border"></span></a>
+							<dl>
+								<dt><a href="http://aronge.egloos.com/6001811" target="_blank">주소 알아내기 참 쉽죠?ㅎ</a></dt>
+								<dd><a href="http://aronge.egloos.com/6001811" target="_blank">       진짜 도랏멘인가ㅋㅋㅋㅋㅋ    </a></dd>
+							</dl>
+							<div class="info_user">
+								by <a href="http://aronge.egloos.com" class="user_id" target="_blank">아롱</a>
+							</div>
+							</div>
+						</li>
+						<li class="top right">
+							<div class="valley_list_wrap">
+								<a href="http://funstories.egloos.com/7202418" class="thumb_photo" target="_blank"><img src="http://md.egloos.com/thumbnail.gif" data-src="http://thumbnail.egloos.net/175x118/http://pds21.egloos.com/pds/201605/16/53/b0306953_5739c2acedb72.jpg" alt="거유 치과 간호사의 비밀" onerror="this.src='http://md.egloos.com/thumbnail.gif';"/><span class="img_border"></span></a>
+							<dl>
+								<dt><a href="http://funstories.egloos.com/7202418" target="_blank">거유 치과 간호사의 비밀</a></dt>
+								<dd><a href="http://funstories.egloos.com/7202418" target="_blank">   골든위크 때 본가에 들렀을 때 의대 다니는 동생에게 '치과에서 치료 받을 때 거유 간호사 누님의 가슴이 뒤통수에 닿는 느낌이 좋았어' 라고 하니까 '그거 환자 진정용으로 가슴에 타올 같은 거 넣고 자주들 그래' 라는 말을 들었다. 올해 들어 제일 큰 쇼크였다.  그런데 착각이라도 그렇게 할 수 있다면 효과는 있는듯....  </a></dd>
+							</dl>
+							<div class="info_user">
+								by <a href="http://funstories.egloos.com" class="user_id" target="_blank">이야기꾼</a>
+							</div>
+							</div>
+						</li>
+						<li class="left">
+							<div class="valley_list_wrap">
+								<a href="http://julcara88.egloos.com/3176685" class="thumb_photo" target="_blank"><img src="http://md.egloos.com/thumbnail.gif" data-src="http://thumbnail.egloos.net/175x118/http://pds21.egloos.com/pds/201605/16/03/d0010203_5739d2e98ac02.jpg" alt="레바의 근황" onerror="this.src='http://md.egloos.com/thumbnail.gif';"/><span class="img_border"></span></a>
+							<dl>
+								<dt><a href="http://julcara88.egloos.com/3176685" target="_blank">레바의 근황</a></dt>
+								<dd><a href="http://julcara88.egloos.com/3176685" target="_blank"> 결국 영정당하는군요. (짤려도 할말 없긴하지만...)대놓고 야짤 그릴 땐 안 잘렸는데 읭읭이가 잘리는걸 보면 참 이해가 되질 않습니다.</a></dd>
+							</dl>
+							<div class="info_user">
+								by <a href="http://julcara88.egloos.com" class="user_id" target="_blank">줄카라</a>
+							</div>
+							</div>
+						</li>
+						<li class="">
+							<div class="valley_list_wrap">
+								<a href="http://silkyblue.egloos.com/1435839" class="thumb_photo" target="_blank"><img src="http://md.egloos.com/thumbnail.gif" data-src="http://thumbnail.egloos.net/175x118/http://pds27.egloos.com/pds/201605/16/59/c0103259_5739d8bb1a40a.jpg" alt="토마토먹는 커비" onerror="this.src='http://md.egloos.com/thumbnail.gif';"/><span class="img_border"></span></a>
+							<dl>
+								<dt><a href="http://silkyblue.egloos.com/1435839" target="_blank">토마토먹는 커비</a></dt>
+								<dd><a href="http://silkyblue.egloos.com/1435839" target="_blank">       뿅 ㅋㅋㅋ  너무 귀여워요 ㅋㅋㅋ  토마토로 변했어요 ㅋㅋ  아 귀엽다..  </a></dd>
+							</dl>
+							<div class="info_user">
+								by <a href="http://silkyblue.egloos.com" class="user_id" target="_blank">빵꼬얌</a>
+							</div>
+							</div>
+						</li>
+						<li class="right">
+							<div class="valley_list_wrap">
+								<a href="http://ahinhin.egloos.com/1435838" class="thumb_photo" target="_blank"><img src="http://md.egloos.com/thumbnail.gif" data-src="http://thumbnail.egloos.net/175x118/http://pds21.egloos.com/pds/201605/16/91/c0107391_5739d0f43f632.jpg" alt="남녀차별.jpg" onerror="this.src='http://md.egloos.com/thumbnail.gif';"/><span class="img_border"></span></a>
+							<dl>
+								<dt><a href="http://ahinhin.egloos.com/1435838" target="_blank">남녀차별.jpg</a></dt>
+								<dd><a href="http://ahinhin.egloos.com/1435838" target="_blank">                                                                                                                            ㅇㅇ</a></dd>
+							</dl>
+							<div class="info_user">
+								by <a href="http://ahinhin.egloos.com" class="user_id" target="_blank">아힝흥힝</a>
+							</div>
+							</div>
+						</li>
+						<li class="bottom left">
+							<div class="valley_list_wrap">
+								<a href="http://theurgistk.egloos.com/6001748" class="thumb_photo" target="_blank"><img src="http://md.egloos.com/thumbnail.gif" data-src="http://thumbnail.egloos.net/175x118/http://pds21.egloos.com/pds/201605/16/80/c0012180_5739c3d05341a.jpg" alt="할일이 많을때" onerror="this.src='http://md.egloos.com/thumbnail.gif';"/><span class="img_border"></span></a>
+							<dl>
+								<dt><a href="http://theurgistk.egloos.com/6001748" target="_blank">할일이 많을때</a></dt>
+								<dd><a href="http://theurgistk.egloos.com/6001748" target="_blank">       끄덕끄덕. </a></dd>
+							</dl>
+							<div class="info_user">
+								by <a href="http://theurgistk.egloos.com" class="user_id" target="_blank">theurgistk</a>
+							</div>
+							</div>
+						</li>
+						<li class="bottom">
+							<div class="valley_list_wrap">
+								<a href="http://funstories.egloos.com/7202154" class="thumb_photo" target="_blank"><img src="http://md.egloos.com/thumbnail.gif" data-src="http://thumbnail.egloos.net/175x118/http://pds25.egloos.com/pds/201605/15/53/b0306953_5738606de1903.png" alt="문과의 방어력" onerror="this.src='http://md.egloos.com/thumbnail.gif';"/><span class="img_border"></span></a>
+							<dl>
+								<dt><a href="http://funstories.egloos.com/7202154" target="_blank">문과의 방어력</a></dt>
+								<dd><a href="http://funstories.egloos.com/7202154" target="_blank">     잘못을 지적해주니까 건의 하라고 피함.자기들이 확인해보고 고쳐서 발표해도 될텐데 그걸 굳이 정식 민원으로 받아야 하나?그냥 자기들 하고 싶은말만 떠드는곳이 국립국어원 트위터  </a></dd>
+							</dl>
+							<div class="info_user">
+								by <a href="http://funstories.egloos.com" class="user_id" target="_blank">이야기꾼</a>
+							</div>
+							</div>
+						</li>
+						<li class="bottom right">
+							<div class="valley_list_wrap">
+								<a href="http://senia.egloos.com/4403742" class="thumb_photo" target="_blank"><img src="http://md.egloos.com/thumbnail.gif" data-src="http://thumbnail.egloos.net/175x118/http://pds21.egloos.com/pds/201605/16/61/d0052261_5739ae6c5fa46.jpg" alt="미국 대선의 판을 짜는 주갤러.jpg" onerror="this.src='http://md.egloos.com/thumbnail.gif';"/><span class="img_border"></span></a>
+							<dl>
+								<dt><a href="http://senia.egloos.com/4403742" target="_blank">미국 대선의 판을 짜는 주갤러.jpg</a></dt>
+								<dd><a href="http://senia.egloos.com/4403742" target="_blank">     ㅎㄷㄷ      </a></dd>
+							</dl>
+							<div class="info_user">
+								by <a href="http://senia.egloos.com" class="user_id" target="_blank">黑白</a>
+							</div>
+							</div>
+						</li>
+					</ul>
+					<ul class="valley_list hidden" id="valley_list_earlyadopter">
+						<li class="top left">
+							<div class="valley_list_wrap">
+								<a href="http://eggy.egloos.com/4113865" class="thumb_photo" target="_blank"><img src="http://md.egloos.com/thumbnail.gif" data-src="http://thumbnail.egloos.net/175x118/http://pds21.egloos.com/pds/201605/16/69/a0010769_573949a6ed643.jpg" alt="소니 a6300 개봉기" onerror="this.src='http://md.egloos.com/thumbnail.gif';"/><span class="img_border"></span></a>
+							<dl>
+								<dt><a href="http://eggy.egloos.com/4113865" target="_blank">소니 a6300 개봉기</a></dt>
+								<dd><a href="http://eggy.egloos.com/4113865" target="_blank">    크롭바디의 유용성은 이해해도 두가지 바디를 운용할 여유는 없지만, 여행만을 위한 일시적 조치로 a6300을 들였습니다. 네, 르망과 굿우드에서 자동차를 찍기 위해서죠. 동체추적 성능도 필요하고 연사 성능도 필요하고... 뭐 1.5배 더 땡겨지기도 하고요. 큐슈 지진 이후로 소니 바디 품귀현상이 일어나는 중인데, 한 일주일 뒤 센서공장이 재개될 거라지만 바디가 나오고 수출되는데는 또 걸릴테니 여행 때까지 구하기 쉽지 않을 수도 있겠다 싶었습니다. 장터에 괜찮은 가격에 나왔길래 낼름. 산진 며칠 됐는데 사실 당장 이거 갖고 할 건 없다보니 별로 뜯어볼 생각도 안 들고 방치하다 이제야 열어봤네요.           요즘 소니 박스는 점점 작아지는 거 같네요. 바디 크기에 비하면 널널하긴 하지만. 뒤쪽에는 4</a></dd>
+							</dl>
+							<div class="info_user">
+								by <a href="http://eggy.egloos.com" class="user_id" target="_blank">eggry</a>
+							</div>
+							</div>
+						</li>
+						<li class="top">
+							<div class="valley_list_wrap">
+								<a href="http://eggy.egloos.com/4113672" class="thumb_photo" target="_blank"><img src="http://md.egloos.com/thumbnail.gif" data-src="http://thumbnail.egloos.net/175x118/http://pds26.egloos.com/pds/201605/13/69/a0010769_57358a06b7558.jpg" alt="주시노 TK-225S 삼각대 구입" onerror="this.src='http://md.egloos.com/thumbnail.gif';"/><span class="img_border"></span></a>
+							<dl>
+								<dt><a href="http://eggy.egloos.com/4113672" target="_blank">주시노 TK-225S 삼각대 구입</a></dt>
+								<dd><a href="http://eggy.egloos.com/4113672" target="_blank">    P&I에 간 이유 중 하나는 삼각대, 모노포드 때문이었습니다. 여행에서 삼각대는 가급적 안 가져가는 주의지만(풍경촬영에 큰 흥미가 없기도 하고) 유럽여행이니까... 가능한 풀옵션을 갖추고픈 욕구가 있었습니다. 그리고 삼각대 외에 모노포드도 필요했습니다. 르망과 굿우드 촬영을 하려면 모노포드가 있는 게 좋을테니까요. 둘은 따로 쓰는 게 좋다지만 저는 여행용이기 때문에 둘 다 가져갈 거면 모노포드 분리가 되는 삼각대로 사고자 했습니다.     이름있는 브랜드 제품은 그다지 고려대상이 아니었습니다. 맨프로토는 브랜드 삼각대 치고는 싼 편에 속하긴 하는데, 두가지 단점이 있죠. 중저가 제품의 경우 맨프로토는 대부분 철제이며 묵직함과 튼튼함을 중시했다는 점입니다. 삼각대로써 기능은 좋을지 몰라도 휴대성은 꽝이란</a></dd>
+							</dl>
+							<div class="info_user">
+								by <a href="http://eggy.egloos.com" class="user_id" target="_blank">eggry</a>
+							</div>
+							</div>
+						</li>
+						<li class="top right">
+							<div class="valley_list_wrap">
+								<a href="http://brainage.egloos.com/5869820" class="thumb_photo" target="_blank"><img src="http://md.egloos.com/thumbnail.gif" data-src="http://thumbnail.egloos.net/175x118/http://pds25.egloos.com/pds/201605/11/35/c0073935_5732990c5d7e4.jpg" alt="2016 P&amp;I 포토쇼 -악세사리 위주 관람기" onerror="this.src='http://md.egloos.com/thumbnail.gif';"/><span class="img_border"></span></a>
+							<dl>
+								<dt><a href="http://brainage.egloos.com/5869820" target="_blank">2016 P&amp;I 포토쇼 -악세사리 위주 관람기</a></dt>
+								<dd><a href="http://brainage.egloos.com/5869820" target="_blank"> 올해도 포토쇼 시즌이 왔습니다. 이러저런 다양한 장비를 구경하고 저렴하고 편리하게 구할수 있는 좋은 행사이니 안 갈수 없지요.      다만.... 올해는 규모가 작년보다 줄었군요.    특히 매해 단골이던 삼성이 아예 없습니다. 이 친구들 정말 사업 철수할 생각이군요.  뭐 기업 입장에서 사업 철수가 자랑할만한 것은 아니지만 이미 물건구입한 사람들에 대한 책임은 져야할것인데 삼성의 카메라 사업하는 꼬라지는 그간의 축소와 재개과정에서 보기 좋지 못하긴 합니다. 하긴 그렇게 해왔으니 결국 이꼴이 된 것이긴 합니다.    여하간...      매해 느끼는 거지만 조명 부분에서 LED로의 전환은 대세군요. 스튜디오 장비도 채용이 일반적이고 밝기도 해마다 늘고 있습니다.         악세사리 주변기기 전문의 유쾌</a></dd>
+							</dl>
+							<div class="info_user">
+								by <a href="http://brainage.egloos.com" class="user_id" target="_blank">천하귀남</a>
+							</div>
+							</div>
+						</li>
+						<li class="left">
+							<div class="valley_list_wrap">
+								<a href="http://eggy.egloos.com/4113494" class="thumb_photo" target="_blank"><img src="http://md.egloos.com/thumbnail.gif" data-src="http://thumbnail.egloos.net/175x118/http://pds21.egloos.com/pds/201605/10/69/a0010769_5731d454a604c.jpg" alt="캐논 EF-M 28mm f3.5 IS STM 매크로, 라이트 달린 매크로 렌즈" onerror="this.src='http://md.egloos.com/thumbnail.gif';"/><span class="img_border"></span></a>
+							<dl>
+								<dt><a href="http://eggy.egloos.com/4113494" target="_blank">캐논 EF-M 28mm f3.5 IS STM 매크로, 라이트 달린 매크로 렌즈</a></dt>
+								<dd><a href="http://eggy.egloos.com/4113494" target="_blank">    데지카메인포 발 소식. 캐논의 미러리스 마운트인 EF-M용으로 처음 나오는 매크로 렌즈입니다. 매크로 렌즈 치곤 28mm(환산 42mm) 라는 화각은 좀 유니크하긴 합니다.     데지카메인포에 따르면 주요 특징은 아래와 같습니다.    - 세계 최경량 매크로 렌즈  - 손떨림 보정 내장  - 매크로 라이트 내장  - 최대 배율 1.2배  - 하이브리드 IS  - 1장의 UD 렌즈와 2장의 비구면 렌즈     이와 비슷한 렌즈라면 소니에서 E마운트로 30mm f3.5 렌즈를 내기는 했죠. 그거랑 비교하면 화각이나 조리개나 거의 같은 셈인데, 캐논은 링라이트가 기본 내장이라는 차이가 있네요. 환산 42mm로 들이밀려면 그림자가 지기 쉬울테니 링라이트는 분명 도움이 될 겁니다.     물론 본격적인 접사를</a></dd>
+							</dl>
+							<div class="info_user">
+								by <a href="http://eggy.egloos.com" class="user_id" target="_blank">eggry</a>
+							</div>
+							</div>
+						</li>
+						<li class="">
+							<div class="valley_list_wrap">
+								<a href="http://roricon.egloos.com/4113472" class="thumb_photo" target="_blank"><img src="http://md.egloos.com/thumbnail.gif" data-src="http://thumbnail.egloos.net/175x118/http://pds25.egloos.com/pds/201605/10/75/a0012875_573172c668784.jpg" alt="탐론에서 소니 A마운트로 35, 45mm 1.8 렌즈가 나오네요." onerror="this.src='http://md.egloos.com/thumbnail.gif';"/><span class="img_border"></span></a>
+							<dl>
+								<dt><a href="http://roricon.egloos.com/4113472" target="_blank">탐론에서 소니 A마운트로 35, 45mm 1.8 렌즈가 나오네요.</a></dt>
+								<dd><a href="http://roricon.egloos.com/4113472" target="_blank"> タムロン、「SP 35mm F/1.8」「SP 45mm F/1.8」のソニー用を発売 (와치 임프레스)    ⓒ 2016 Impress Corporation. All rights reserved.ⓒ 2016 Impress Corporation. All rights reserved.    탐론에서 35mm F 1.8, 45mm F 1.8 의 자사 단렌즈들이 소니 A 마운트로 나온다고 발표를 했습니다. 사실상 소니가 손을 놔버린 A 마운트입니다만, 일단 탐론 같은 서브파티 회사들 때문에 어찌 어찌 살 수는 있네요. (위의 사진은 니콘용이지만..) 해당 렌드즐은 나쁘지 않고 9만엔의 가격을 가지고 있는 가성비 좋은 렌즈들 입니다.    이미 소니 바디 사용자라면 E 마운트나 FE 마운트로 다 가지 않았냐? 말할 수도 있</a></dd>
+							</dl>
+							<div class="info_user">
+								by <a href="http://roricon.egloos.com" class="user_id" target="_blank">로리</a>
+							</div>
+							</div>
+						</li>
+						<li class="right">
+							<div class="valley_list_wrap">
+								<a href="http://brainage.egloos.com/5869760" class="thumb_photo" target="_blank"><img src="http://md.egloos.com/thumbnail.gif" data-src="http://thumbnail.egloos.net/175x118/http://pds26.egloos.com/pds/201605/10/35/c0073935_57314feea6fe7.jpg" alt="드론에도 유용할 충돌방지 컨트롤 칩" onerror="this.src='http://md.egloos.com/thumbnail.gif';"/><span class="img_border"></span></a>
+							<dl>
+								<dt><a href="http://brainage.egloos.com/5869760" target="_blank">드론에도 유용할 충돌방지 컨트롤 칩</a></dt>
+								<dd><a href="http://brainage.egloos.com/5869760" target="_blank">   전자 관련 잡지를 뒤적거리다 이런 칩이 나온 것이 보이더군요.    무선조종차량등에서 초음파 거리센서로 전방의 장애물을 감지한 뒤 충돌 위기가 생기면 모터의 출력을 제어해  충돌 시 피해를 줄이는 목적으로 사용한다고 합니다.    여러가지로 프로그래밍이 가능한데 이걸 보니 필요한곳 중 하나가 드론쪽입니다. 바닥이나 천정을 감지해 일정 높이를 유지하는것도 가능할 듯 하군요. 업체등이 구입가능한 개발킷트가 60$라고 하니 몇$정도면 제품에 추가가 가능할듯 합니다.    요즘 나오는 드론과 이러저런 정보를 보면 이 분야의 물건고르기는 너무도 복잡합니다. 특히 센서와 컨트롤러의 가격이 빠른속도로 하락중이라 작년에 100만원이던 부품이 올해는 20만원 아래가 됬다는 이야기도 흔하더군요.     10만원대 드론에 </a></dd>
+							</dl>
+							<div class="info_user">
+								by <a href="http://brainage.egloos.com" class="user_id" target="_blank">천하귀남</a>
+							</div>
+							</div>
+						</li>
+						<li class="bottom left">
+							<div class="valley_list_wrap">
+								<a href="http://roricon.egloos.com/4113386" class="thumb_photo" target="_blank"><img src="http://md.egloos.com/thumbnail.gif" data-src="http://thumbnail.egloos.net/175x118/http://pds21.egloos.com/pds/201605/09/75/a0012875_573010b301a6d.jpg" alt="저전력, 초소형의 새로운 진공관 Nutube 이야기" onerror="this.src='http://md.egloos.com/thumbnail.gif';"/><span class="img_border"></span></a>
+							<dl>
+								<dt><a href="http://roricon.egloos.com/4113386" target="_blank">저전력, 초소형의 새로운 진공관 Nutube 이야기</a></dt>
+								<dd><a href="http://roricon.egloos.com/4113386" target="_blank"> 超省電力の新たな真空管「Nutube」の音はどう違う? 個人販売も計画中 (와치 임프레스)    요즘 시대에도 진공관 신제품이.. (링크) 라는 글에서 언급했던 Nutube 진공관이 드디어 모습을 들어냈습니다.  사실 해당 제품은 VFD(Vacuum fluorescent display : 위키 링크) 의 응용으로 사실 vFD 구조가 진공관구와 비슷하기 때문에(실제 진공관으로 숫사 디스플레이 만드는 것을 보면 알 수 있죠) 반대로 VFD 구조를 이용해서 작은 진공관을 만들어보자는 생각으로 만들었습니다.    물론 음질적으로야 요즘 시대에 진공관이 필요한가? 라는 말을 할 수 있습니다만, 진공관구 특유의 음색이나 왜곡은 디지털 오디오 필터로는 해결할 수 없는 감성적인 부분이 있음은 부정할 수 없고, 기타앰프나 오디오용</a></dd>
+							</dl>
+							<div class="info_user">
+								by <a href="http://roricon.egloos.com" class="user_id" target="_blank">로리</a>
+							</div>
+							</div>
+						</li>
+						<li class="bottom">
+							<div class="valley_list_wrap">
+								<a href="http://eggy.egloos.com/4113373" class="thumb_photo" target="_blank"><img src="http://md.egloos.com/thumbnail.gif" data-src="http://thumbnail.egloos.net/175x118/http://pds27.egloos.com/pds/201605/09/69/a0010769_572fc89481f97.jpg" alt="FE 렌즈 리뷰어 3기 모집 중" onerror="this.src='http://md.egloos.com/thumbnail.gif';"/><span class="img_border"></span></a>
+							<dl>
+								<dt><a href="http://eggy.egloos.com/4113373" target="_blank">FE 렌즈 리뷰어 3기 모집 중</a></dt>
+								<dd><a href="http://eggy.egloos.com/4113373" target="_blank">    소니 FE 렌즈 리뷰어가 3기째에 접어들었군요. 이전에도 화려한 렌즈들이 지나갔지만 이번엔 역대 최고라고 해도 될 정도의 라인업. 갯수도 많은데다 그 중 2개가 최상위 렌즈인 GM 렌즈이고, 또 G 렌즈가 1개, 자이스 렌즈가 1개, 일반 소니 렌즈가 1개로 총 5개라는 호화 라인업입니다.     85mm f1.4 GM 렌즈도 관심사지만 저는 70-300G와 50.8에 더 많은 흥미가 생기네요. 70-300G는 FE 렌즈 중 가장 망원이란 점, 50.8은 저렴한 가격에 클래식한 렌즈 구성이 가져다주는 맛이 땡깁니다. 혹여 리뷰어 선정 되면 마침 활동시기에 유럽 여행을 갈 예정이라 사진 하나는 잔뜩 찍어서 올 거 같네요. 신청하실 생각 있으신 분은 링크 참조.  </a></dd>
+							</dl>
+							<div class="info_user">
+								by <a href="http://eggy.egloos.com" class="user_id" target="_blank">eggry</a>
+							</div>
+							</div>
+						</li>
+						<li class="bottom right">
+							<div class="valley_list_wrap">
+								<a href="http://eggy.egloos.com/4113324" class="thumb_photo" target="_blank"><img src="http://md.egloos.com/thumbnail.gif" data-src="http://thumbnail.egloos.net/175x118/http://pds27.egloos.com/pds/201605/08/69/a0010769_572ebcac4863b.jpg" alt="소니 FE 55mm f1.8 ZA &amp; 시그마 50mm f1.4 Art+MC-11 더블 리뷰" onerror="this.src='http://md.egloos.com/thumbnail.gif';"/><span class="img_border"></span></a>
+							<dl>
+								<dt><a href="http://eggy.egloos.com/4113324" target="_blank">소니 FE 55mm f1.8 ZA &amp; 시그마 50mm f1.4 Art+MC-11 더블 리뷰</a></dt>
+								<dd><a href="http://eggy.egloos.com/4113324" target="_blank">   1. 들어가는 말     a7 시리즈가 출시되고 FE 마운트가 나온 지 2년 넘는 기간 동안, 50mm 대 표준 단렌즈의 선택지는 하나 뿐이었습니다. FE 55mm f1.8 ZA 자이스 렌즈(이하 55.8ZA)죠. 조나 구조로 된 이 렌즈는 컴팩트한 크기에 놀라운 해상력으로 높은 평가를 받는 한편, 네이티브 50미리가 정가 100만원이 넘는 이 렌즈 하나 뿐이라 불평의 대상이 되기도 했습니다. 이제 FE 50mm f1.8이 나와서 비싼 렌즈만 있다는 불평은 다소 사그라들 듯 합니다만, 여전히 한가지 불만이 남아있습니다.     '쩜사는 왜 없는 건데?' 라는 당연한(?) 불만 말이죠. 물론 a7이 처음 나올 때만 해도 f1.4가 없는 거 자체가 불만일 순 있어도 50미리에 대한 불만일 순 없었습니다. f</a></dd>
+							</dl>
+							<div class="info_user">
+								by <a href="http://eggy.egloos.com" class="user_id" target="_blank">eggry</a>
+							</div>
+							</div>
+						</li>
+					</ul>                    <a id="valley_list_btn_more" href="http://valley.egloos.com/theme/food" target="_blank" class="btn_more">음식 테마 더보기</a>
+                </div>
+                <!--// 테마별 인기글 -->
+
+                <!-- 사이트맵 -->
+                <div class="sitemap">
+                    <div class="sitemap_wrap">
+                    
+                        <ul class="first-child">
+                            <li><a href="http://valley.egloos.com/" target="_blank">전체인기글</a></li>
+			    				<li><a href="http://valley.egloos.com/theme/movie" target="_blank">영화</a></li>
+			    				<li><a href="http://valley.egloos.com/theme/entertainment" target="_blank">방송&amp;연예</a></li>
+			    				<li><a href="http://valley.egloos.com/theme/game" target="_blank">게임</a></li>
+			    				<li><a href="http://valley.egloos.com/theme/animation" target="_blank">애니메이션</a></li>
+						</ul>
+						<ul>
+			    				<li><a href="http://valley.egloos.com/theme/comic" target="_blank">만화</a></li>
+			    				<li><a href="http://valley.egloos.com/theme/book" target="_blank">도서</a></li>
+			    				<li><a href="http://valley.egloos.com/theme/music" target="_blank">음악</a></li>
+			    				<li><a href="http://valley.egloos.com/theme/performance" target="_blank">공연&amp;전시</a></li>
+			    				<li><a href="http://valley.egloos.com/theme/food" target="_blank">음식</a></li>
+						</ul>
+						<ul>
+			    				<li><a href="http://valley.egloos.com/theme/pet" target="_blank">애완반려동물</a></li>
+			    				<li><a href="http://valley.egloos.com/theme/travel" target="_blank">여행</a></li>
+			    				<li><a href="http://valley.egloos.com/theme/photo" target="_blank">사진</a></li>
+			    				<li><a href="http://valley.egloos.com/theme/fashion" target="_blank">패션&amp;뷰티</a></li>
+			    				<li><a href="http://valley.egloos.com/theme/love" target="_blank">연애</a></li>
+						</ul>
+						<ul>
+			    				<li><a href="http://valley.egloos.com/theme/gag" target="_blank">개그</a></li>
+			    				<li><a href="http://valley.egloos.com/theme/daily" target="_blank">일상</a></li>
+			    				<li><a href="http://valley.egloos.com/theme/baby" target="_blank">육아</a></li>
+			    				<li><a href="http://valley.egloos.com/theme/technology" target="_blank">IT</a></li>
+			    				<li><a href="http://valley.egloos.com/theme/earlyadopter" target="_blank">얼리어답터</a></li>
+						</ul>
+						<ul>
+			    				<li><a href="http://valley.egloos.com/theme/shopping" target="_blank">지름</a></li>
+			    				<li><a href="http://valley.egloos.com/theme/auto" target="_blank">자동차</a></li>
+			    				<li><a href="http://valley.egloos.com/theme/sports" target="_blank">스포츠</a></li>
+			    				<li><a href="http://valley.egloos.com/theme/news" target="_blank">뉴스비평</a></li>
+			    				<li><a href="http://valley.egloos.com/theme/society" target="_blank">인문사회</a></li>
+						</ul>
+						<ul>
+			    				<li><a href="http://valley.egloos.com/theme/history" target="_blank">역사</a></li>
+			    				<li><a href="http://valley.egloos.com/theme/world" target="_blank">세계</a></li>
+			    				<li><a href="http://valley.egloos.com/theme/science" target="_blank">과학</a></li>
+			    				<li><a href="http://valley.egloos.com/theme/toy" target="_blank">토이</a></li>
+			    				<li><a href="http://valley.egloos.com/theme/creation" target="_blank">창작</a></li>
+						</ul>
+						<ul class="last">
+			    				<li><a href="http://valley.egloos.com/theme/flea" target="_blank">벼룩시장</a></li>
+			    				<li><a href="http://valley.egloos.com/theme/qna" target="_blank">지식Q&amp;A</a></li>
+			    				<li><a href="http://valley.egloos.com/theme/egloos" target="_blank">이글루스</a></li>
+			    				<li><a href="http://valley.egloos.com/theme/sotong" target="_blank">소통밸리</a></li>
+						</ul>                    </div>
+                </div>
+                <!--// 사이트맵 -->
+                <p class="scrollUp"><a href="#" title="맨 위로">Top</a></p>
+            </div>
+            <!--// col_left -->
+
+            <!-- col_right -->
+            <div class="col_right "> <!-- 로그인 시 log_in 클래스 추가해주세요 -->
+                <!-- 로그인 영역 -->
+                <div class="login_wrap">
+                	                    <!-- 로그인 전 -->
+                    <div class="login" id="">
+                        <h2 class="blind">로그인 영역</h2>
+                        <div class="person_box_log">
+                            <fieldset>
+                                <legend>로그인 영역</legend>
+                                <div class="mod_login">
+
+                                    <form action="https://sec.egloos.com/login/sauthid.php" method="post" name="authform" id="authform" onsubmit="return LoginUtil.runAuthMain(document.authform)">
+										<input type="hidden" name="returnurl" id="returnurl" value="http://www.egloos.com" />
+                                		<input type="hidden" name="frm" id="frm" value="" />
+                                		<input type="hidden" name="vt" value="7ZmY7IOB7J2Y65il6rys7Ie8">
+                                        <div class="login_egloos">
+                                            <div class="input_login_wrap">
+                                                <input type="text" name="userid" id="userid" tabindex="1" onfocus="$('userid_l').style.display = 'none';" value="" /> <label id="userid_l" for="userid" >아이디 입력</label>
+                                                <input type="password" name="userpwd" id="userpwd" tabindex="2" onfocus="$('userpwd_l').style.display = 'none';"  value="" /> <label id="userpwd_l" for="userpwd">비밀번호 입력</label>
+                                            </div>
+                                            <div class="btn_login_wrap" id="">
+                                                <button type="submit" name="lbtn" value="로그인">로그인</button>
+                                            </div>
+                                        </div>
+
+                                        <div class="txt_wrap" id="">
+                                        	<input type="checkbox" id="pcsaveid" name="pcsaveid" value="1" tabindex="4"  /><label for="pcsaveid">아이디저장</label>
+                                            <small>|</small><a href="https://sec.egloos.com/member/recovery/identify">아이디 · 비밀번호 찾기</a>
+                                        </div>
+
+                                    </form>
+                                </div>
+                                <div class="signup_wrap">
+                                    <a href="https://sec.egloos.com/member/signup/request" class="btn_signup"><span class="blind">블로그 만들기</span></a>
+                                    <a href="http://help.egloos.com/7162" class="btn_help">이글루스에 처음 오셨나요?</a>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                    <!--// 로그인 전 -->
+					                </div>
+                <!--// 로그인 영역 -->
+
+                <!-- 이슈검색어 -->
+                <div class="aside">
+                    
+	        <div id="issue" class="issue" style="z-index:998">
+	            <h3>
+	                <a href="http://zum.com" target="_blank"><span class="issue_title search_word1"><span class="blind">zum</span></span></a><span class="issue_title search_word2"><span class="blind">이슈 검색어</span></span>
+	                <span class="issue_time" id="issue_time">5/17 오전 1:56</span>
+	            </h3>
+	        </div>
+	        
+	        <div class="issue_wrap" style="display:block">
+	            <ol class="clear_float">
+
+					<li>
+	                    <a href="http://search.zum.com/search.zum?method=uni&option=accu&qm=g_real1.egloos&real1_id=1&query=%EC%A0%9C%EC%8B%9C%EC%B9%B4" class="dash" target="_blank">
+	                        <span class="num is_1"><em class="blind">1</em></span>
+	                        <span class="issue_keyword">제시카</span>
+	                        <span class="tc">동일</span>
+	                    </a>
+	                </li>
+
+					<li>
+	                    <a href="http://search.zum.com/search.zum?method=uni&option=accu&qm=g_real1.egloos&real1_id=2&query=aoa" class="dash" target="_blank">
+	                        <span class="num is_2"><em class="blind">2</em></span>
+	                        <span class="issue_keyword">aoa</span>
+	                        <span class="tc">동일</span>
+	                    </a>
+	                </li>
+
+					<li>
+	                    <a href="http://search.zum.com/search.zum?method=uni&option=accu&qm=g_real1.egloos&real1_id=3&query=%EB%AE%A4%EC%A7%81%EC%9B%8D%EC%8A%A4" class="up" target="_blank">
+	                        <span class="num is_3"><em class="blind">3</em></span>
+	                        <span class="issue_keyword">뮤직웍스</span>
+	                        <span class="tc">상승</span>
+	                    </a>
+	                </li>
+
+					<li>
+	                    <a href="http://search.zum.com/search.zum?method=uni&option=accu&qm=g_real1.egloos&real1_id=4&query=%EB%98%90+%EC%98%A4%ED%95%B4%EC%98%81" class="up" target="_blank">
+	                        <span class="num is_4"><em class="blind">4</em></span>
+	                        <span class="issue_keyword">또 오해영</span>
+	                        <span class="tc">상승</span>
+	                    </a>
+	                </li>
+
+					<li>
+	                    <a href="http://search.zum.com/search.zum?method=uni&option=accu&qm=g_real1.egloos&real1_id=5&query=%EA%B3%B5%EB%AF%BC%EC%A7%80" class="dash" target="_blank">
+	                        <span class="num is_5"><em class="blind">5</em></span>
+	                        <span class="issue_keyword">공민지</span>
+	                        <span class="tc">동일</span>
+	                    </a>
+	                </li>
+
+					<li>
+	                    <a href="http://search.zum.com/search.zum?method=uni&option=accu&qm=g_real1.egloos&real1_id=6&query=%EC%84%9C%ED%98%84%EC%A7%84" class="down" target="_blank">
+	                        <span class="num is_6"><em class="blind">6</em></span>
+	                        <span class="issue_keyword">서현진</span>
+	                        <span class="tc">다운</span>
+	                    </a>
+	                </li>
+
+					<li>
+	                    <a href="http://search.zum.com/search.zum?method=uni&option=accu&qm=g_real1.egloos&real1_id=7&query=%EC%98%A4%EB%8F%84%EC%96%B4" class="up" target="_blank">
+	                        <span class="num is_7"><em class="blind">7</em></span>
+	                        <span class="issue_keyword">오도어</span>
+	                        <span class="tc">상승</span>
+	                    </a>
+	                </li>
+
+					<li>
+	                    <a href="http://search.zum.com/search.zum?method=uni&option=accu&qm=g_real1.egloos&real1_id=8&query=%EB%8F%99%EB%84%A4%EB%B3%80%ED%98%B8%EC%82%AC+%EC%A1%B0%EB%93%A4%ED%98%B8" class="up" target="_blank">
+	                        <span class="num is_8"><em class="blind">8</em></span>
+	                        <span class="issue_keyword">동네변호사 조들호</span>
+	                        <span class="tc">상승</span>
+	                    </a>
+	                </li>
+
+					<li>
+	                    <a href="http://search.zum.com/search.zum?method=uni&option=accu&qm=g_real1.egloos&real1_id=9&query=%EC%9D%BC%EB%B3%B8+%EC%A7%80%EC%A7%84" class="up" target="_blank">
+	                        <span class="num is_9"><em class="blind">9</em></span>
+	                        <span class="issue_keyword">일본 지진</span>
+	                        <span class="tc">상승</span>
+	                    </a>
+	                </li>
+
+					<li>
+	                    <a href="http://search.zum.com/search.zum?method=uni&option=accu&qm=g_real1.egloos&real1_id=10&query=%EB%AA%AC%EC%8A%A4%ED%84%B0" class="up" target="_blank">
+	                        <span class="num is_10"><em class="blind">10</em></span>
+	                        <span class="issue_keyword">몬스터</span>
+	                        <span class="tc">상승</span>
+	                    </a>
+	                </li>
+
+	            </ol>
+	        </div>
+                </div>
+                <!--// 이슈검색어 -->
+
+                <!-- 공지사항 -->
+                <div class="notice">
+                    	<div class="title">
+		<h2><span class="blind">공지사항</span></h2>
+		<a class="btn_allview" target="_blank" href="http://ebc.egloos.com">전체보기</a>
+	</div>
+	<ul>
+                <li><a target="_blank" href="http://ebc.egloos.com/8510">이글루스 블로그 내 검색 개선 안내</a></li>
+                             <li><a target="_blank" href="http://ebc.egloos.com/8509">개인정보취급방침 개정안내</a></li>
+<li><a target="_blank" href="http://ebc.egloos.com/8508">4월 월간/주간 통계 복구 안내</a></li>
+             <li><a target="_blank" href="http://ebc.egloos.com/8506">비밀번호 변경 규칙 강화 안내</a></li>
+                <li><a target="_blank" href="http://ebc.egloos.com/8504">새해 인사 및 후속 대응상황 안내</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   
+		
+
+		
+
+	</ul>                </div>
+                <!--// 공지사항 -->
+
+                <!-- 활용팁 -->
+                <div class="tip">
+                    <div class="title">
+                        <h2><span class="blind">활용팁</span></h2>
+                    </div>
+                    <ul>
+                        <li class="ico01"><a href="http://help.egloos.com/7406" target="_blank"><span class="blind">모바일웹</span></a></li>
+                        <li class="ico02"><a href="http://valley.egloos.com/center/apps/33" target="_blank"><span class="blind">이글루스 아이폰</span></a></li>
+                        <li class="ico03"><a href="http://ebc.egloos.com/6302" target="_blank"><span class="blind">개인도메인</span></a></li>
+                        <li class="ico04"><a href="http://help.egloos.com/133" target="_blank"><span class="blind">마이리더</span></a></li>
+                        <li class="ico05"><a href="http://apicenter.egloos.com/" target="_blank"><span class="blind">API센터</span></a></li>
+                        <li class="ico06"><a href="http://ebc.egloos.com/8438" target="_blank"><span class="blind">다음뷰</span></a></li>
+                    </ul>
+                </div>
+                <!--// 활용팁 -->
+
+                <!-- 광고영역 243*158 -->
+		<div class="main_banner_wrap2">
+			<div id="adx_egloos_main_bottom"></div>
+			<script type="text/javascript" src="http://adxv.zum.com/view?slot=egloos_main_bottom"></script>
+		</div>
+                <!-- 광고영역 //-->
+
+            </div>
+            <!--// col_right -->
+
+        </div>
+        <!--// section_bottom -->
+    </div>
+    <!--// container -->
+
+<!-- footer -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-43898482-1', 'egloos.com');
+  ga('send', 'pageview');
+
+</script>
+<div id="footer">
+    <div class="copyright">
+        <ul>
+            <li class="li_start"><a href="http://www.egloos.com/rules/provision.php" target="_blank">이용약관</a></li>
+            <li><a href="http://www.egloos.com/rules/privacy.php" target="_blank"><b>개인정보취급방침</b></a></li>
+            <li><a href="http://www.egloos.com/rules/youthpolicy.php" target="_blank">청소년보호정책</a></li>
+            <li><a href="http://help.egloos.com/5027" target="_blank">이메일 수집거부</a></li>
+            <li><a href="http://apicenter.egloos.com/" target="_blank">API센터</a></li>
+            <li><a href="http://help.zum.com/inquiry/egloos_mail" target="_blank">고객센터</a></li>
+        </ul>
+        <p>Copyright ⓒ <a href="http://www.zuminternet.com" class="zum" target="_blank">ZUM internet.</a> All rights reserved.</p>
+    </div>
+</div>
+
+<iframe src="http://statweb.egloos.com/estat/send?bid=&ref=&uid=&mbid=&openflag=" style="width: 0px; height: 0px; border: 0px solid #fff;"></iframe>
+<!-- 모바일웹 보기 버튼 -->
+
+<script type="text/javascript">
+    (function() {
+      var at = document.createElement("script");
+      at.type = "text/javascript";
+      at.async = true;
+      at.src = "//estat.zum.com/scripts/at.js";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(at, s);
+    })();
+  </script>;
+
+<!-- 모바일웹 보기 버튼 -->
+    <!-- footer //-->
+</div>
+</body>
+</html>

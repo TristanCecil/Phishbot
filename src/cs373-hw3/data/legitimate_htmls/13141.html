@@ -1,0 +1,1219 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=euc-kr">
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+	<!-- // 20141210, 페이스북 open gragh 메타태그, 카이유키 -->
+	<meta property="og:type" content="website">
+	<meta property="og:site_name" content="피에이치피스쿨닷컴">
+	<meta property="fb:app_id" content="682927998492218">
+	<meta property="og:image" content="http://www.phpschool.com/images/common/fb_logo.jpg">
+	<meta property="og:title" content="WWW.PHPSCHOOL.COM">
+	<meta property="og:url" content="">
+	<meta property="og:description" content="개발자 커뮤티니 1위 PHPSCHOOL.COM 입니다.">
+	<link rel="shortcut icon" href="/favicon.ico" type="image/x-ico" />
+	<link rel="stylesheet" type="text/css" href="/css/reset.css" />
+	<link rel="stylesheet" type="text/css" href="/css/basic.css" />
+	<link rel="stylesheet" type="text/css" href="/css/font-awesome.css" />
+	<link rel="stylesheet" type="text/css" href="/skin/blue/css/button.css?x=1470008193" />
+	<link rel="stylesheet" type="text/css" href="/skin/blue/css/common.css?x=1470008193" />
+	<link rel="stylesheet" type="text/css" href="/skin/blue/css/main.css?x=1470008193" />
+
+    <title>PHPSCHOOL-국내 1위 개발자 커뮤니티!</title>
+
+	<script type="text/javascript" src="/js/jquery-1.7.1.min.js"></script>
+	<script type="text/javascript" src="/js/jquery-scrollnews.js"></script>
+	<script type="text/javascript" src="/js/common_basic.js"></script>
+	<script type="text/javascript" src="/js/keymaster.min.js"></script>
+    <script type="text/javascript" src="./gnuboard4/js/common.js"></script>
+	<script type="text/javascript" src="/js/jquery-blink.js"></script>
+
+	<script type="text/javascript">
+
+        // 자바스크립트에서 사용하는 전역변수 선언
+        var home_url     = "http://phpschool.com";
+        var g4_path      = "./gnuboard4";
+        var g4_bbs       = "bbs";
+        var g4_bbs_img   = "img";
+        var g4_url       = "http://phpschool.com";
+        var g4_is_member = "";
+        var g4_is_admin  = "";
+        var g4_bo_table  = "";
+        var g4_sca       = "";
+        var g4_charset   = "euc-kr";
+        var g4_is_gecko  = navigator.userAgent.toLowerCase().indexOf("gecko") != -1;
+        var g4_is_ie     = navigator.userAgent.toLowerCase().indexOf("msie") != -1;
+        
+        function image_empty() {
+            document.search_frm.keyword.style.backgroundImage = "";
+        }
+
+        // 게시판 이동 통일
+        function go_board(table) {
+            parent.location='/gnuboard4/bbs/board.php?bo_table='+table;
+        }
+
+        // 페이지 이동 통일
+        function go_menu(file) {
+            location.href='/'+file;
+        }
+
+        function Go_search(f) {
+
+            if(f.pattern.value=="검색어를 입력하세요" || !f.pattern.value) {
+                alert("검색어를 넣어주세요.");
+                f.pattern.value="";
+                f.pattern.focus();
+                return;
+            }
+
+            window.open("http://www.php.net/search.php?show=quickref&pattern="+f.pattern.value,"_blank");
+        }
+
+        $(document).ready(function(){
+
+				// 공지사항 롤링
+			$("#roll").Scroll({
+				line:1,
+				speed:500,
+				timer:3000
+			});
+				// TOP MENU
+            $(".top_menu .menu_list li").bind("mouseenter", function() {
+                if($(".all_service").css("display")=="block") {
+                    $(this).find("ul").show().height(207);
+                } else {
+                    $(this).find("ul").show().height("");
+                }
+            }).bind("mouseleave", function(){
+                $(this).find("ul").hide();
+            });
+
+            $("[name=btn_find_auth]").bind("click", function(e){
+                var v_url = $(e.target).attr("url");
+                win_password_forget(v_url);
+            });
+
+            $("[name=btn_more]").bind("click", function(e){
+                var v_url = $(e.target).attr("url");
+                window.location.href=v_url;
+            });
+
+            $("[name=btn_more]").attr("title", "more");
+
+            $("[name=btn_login_cpn]").bind("click", function(e){
+                var v_url = $(e.target).attr("url");
+                window.location.href=v_url;
+            });
+        });
+
+        // 이미지 교체
+        function convertImg (img_origin, img_convert) {
+            $("[name=" + img_origin + "]").hide();
+            $("[name=" + img_convert + "]").show();
+            return;
+        }
+
+		$(function() {
+			// 로그인 박스 탭 컨트롤
+			$(".login > .login_tab li").click(function() {
+				$(this).parent().find('.tab_on').attr('class','tab_off');
+				$(this).attr('class','tab_on');
+
+				$(this).parent().parent().find('.login_form').css('display','none');
+				$(".login ."+$(this).attr('tab')).css('display','');
+			});
+
+			// 메인 로그인 탭 컨트롤
+			$(".login_main > .login_tab > .tab_off").live("click", function() {
+				$(this).parent().find('.tab_on').attr('class','tab_off');
+				$(this).attr('class','tab_on');
+
+				$(this).parent().parent().find('.login_form').css('display','none');
+				$(".login_main ."+$(this).attr('tab')).css('display','');
+			});
+
+            // 본문영역 더블클릭 이벤트 죽이기
+            $("#wrapper").dblclick(function(){
+                return false;
+            });
+
+            // 더블클릭으로 상하단 이동
+            $("body").dblclick(function(){
+                if($(window).scrollTop() < ($("body").height() / 2)) {
+                    $(document).scrollTop($(document).height());
+                } else {
+                    $(document).scrollTop(0);
+                }
+            });
+		});
+
+    </script>
+</head><body >
+
+<div id="lightbox-container"></div>
+
+<div id="floatdiv" style="display:none;">
+	우측 상단 구석에 붙는 배너
+</div>
+
+<div id="wrapper">
+
+	<!-- 상단영역 //-->
+	<div id="header">
+
+		<div class="alarm">
+		</div>
+
+        <div class="global">
+			<div class="global_notice fl">
+				<div class="notice_title fl"><a href="/gnuboard4/bbs/board.php?bo_table=notice&page=1">공지사항</a></div>
+				<div class="notice_top3" id="roll">
+					<ul>
+										<li class="notice_subject">
+                            <a href="/gnuboard4/bbs/board.php?bo_table=notice&wr_id=9336">
+						[기능추가 안내] 텔레그램 PUSH 받기 기능을 추가했습...[38]                            </a>
+						</li>
+										<li class="notice_subject">
+                            <a href="/gnuboard4/bbs/board.php?bo_table=notice&wr_id=9327">
+						소모임에 최신글 카운트가 추가 되었습니다.[3]                            </a>
+						</li>
+										<li class="notice_subject">
+                            <a href="/gnuboard4/bbs/board.php?bo_table=notice&wr_id=9301">
+						2016년 4월 포인트 이벤트 당첨자를 발표합니다.[13]                            </a>
+						</li>
+									</ul>
+				</div>
+			</div>
+            
+            <ul class="global_menu fr">
+                <li><a href="/link/notice/6698"><span class="faicon">&#xf091;</span><span class="split">레벨포인트</span></a></li>
+                <li><a href="/guild_new/guild_attend.php"><span class="faicon">&#xf046;</span><span class="split">출석체크</span></a></li>
+                <li><a href="/community/rock_paper_scissors.php"><span class="faicon">&#xf0a4;</span>가위바위보</a></li>
+            </ul>
+        </div>
+		<div class="top_logo">
+   		<!--<div class="top_logo" style="top: 28px;left: 70px;">-->
+			<a href="/"><img src="/skin/blue/images/common/top_logo.png" alt="PHPSCHOOL" /></a>
+			<!--<a href="/"><img src="/skin/blue/images/common/top_logo_201502.png" alt="PHPSCHOOL" /></a>-->
+			<!-- <a href="/"><img src="/skin/blue/images/common/top_logo_201509.png" alt="PHPSCHOOL" /></a> -->
+			<!--<a href="/"><img src="/skin/blue/images/common/top_logo_2015_xmas.png" alt="PHPSCHOOL" /></a>-->
+			<!--<a href="/"><img src="/skin/blue/images/common/top_logo_2016_new.png" alt="PHPSCHOOL" /></a>-->
+		</div>
+
+		<!-- 통합검색 //-->
+		<div class="top_search">
+<form id="f_sch_tot">
+<input type="hidden" name="sch_tot_c" value="" />
+<input type="hidden" name="sch_sort_k" value="" />
+<!--	<ul class="hit_search">
+		<li class="icon"><img src="/skin/blue/images/common/icon_search.png" alt="인기검색어" /></li>
+		<li class="dash">MyAdmin</li>
+		<li class="dash">str_replace</li>
+		<li class="dash">left join</li>
+		<li class="dash">설사댄스</li>
+		<li>html5</li>
+	</ul>//-->
+	<p class="search_area">
+		<input class="input_top_search" type="text" name="sch_tot_k" value="" />
+		<button class="btn_search" onclick="submit_sch();"><span class="dh">검색</span></button>
+	</p>
+</form>
+</div>		<!-- 통합검색 //-->
+
+		<div class="top_menu">
+<div class='kuin_icon btn_link' url='/sub_main/kuin_main.php' title='구인'>1</div>			<h4 class="dn">[메인메뉴]</h4>
+			<ul class="menu_list">
+        <li><a href='/sub_main/qna_main.php'>질문/답변</a>
+<ul style='display:none;'>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=qna_install&page=1'>Install</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=qna_db&page=1'>Database</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=qna_function&page=1'>PHP function</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=qna_html&page=1'>HTML/Script</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=qna_ttrend&page=1'>Trend</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=qna_other&page=1'>ETC</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=any&page=1'>만능문답</a></li>
+</ul></li>
+<li><a href='/sub_main/class_main.php'>교육/자료</a>
+<ul style='display:none;'>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=teach&page=1'>강좌게시판</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=tipntech&page=1'>Tip&Tech</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=download&page=1'>다운로드</a></li>
+</ul></li>
+<li><a href='/sub_main/community_main.php'>커뮤니티</a>
+<ul style='display:none;'>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=talkbox_new&page=1'>새내기Talk</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=talkbox2&page=1'>토크박스</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=forum&page=1'>포럼</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=photo&page=1'>사진게시판</a></li>
+<li class='sub_menu'><a href='/sub_main/guild_main.php'>길드메인</a></li>
+<li class='sub_menu'><a href='/guild_new/guild_attend.php'>출석체크</a></li>
+</ul></li>
+<li><a href='/sub_main/group_main.php'>소모임</a>
+<ul style='display:none;'>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=group_gamer'>게이머</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=group_stock'>함께하는주식투자</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=group_pension'>산들바람식도락</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=group_gunpla'>프라당</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=group_camera'>사진방</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=group_hope'>희망스쿨</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=group_dumchit'>둠칫둠칫</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=group_oldman'>독거노인</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=group_startup'>스타트업</a></li>
+</ul></li>
+<li><a href='/sub_main/market_main.php'>의뢰/장터</a>
+<ul style='display:none;'>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=img_market&page=1'>이미지마켓</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=old_job&page=1'>의뢰마당</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=buynsell&page=1'>소프트장터</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=user_market&page=1'>중고장터</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=tailbuy&page=1'>해외공구마켓</a></li>
+</ul></li>
+<li><a href='/sub_main/kuin_main.php'>구인/구직</a>
+<ul style='display:none;'>
+<li class='sub_menu'><a href='/biznbaza/kuin_list.php'>구인</a></li>
+<li class='sub_menu'><a href='/biznbaza/kujik_list.php'>구직</a></li>
+<li class='sub_menu'><a href='/biznbaza/free_list.php'>프리랜서</a></li>
+</ul></li>
+<li><a href='/community/rock_paper_scissors.php'>포인트</a>
+<ul style='display:none;'>
+<li class='sub_menu'><a href='/community/rock_paper_scissors.php'>가위바위보</a></li>
+<li class='sub_menu'><a href='/event/lotto_event_list.php'>포인트이벤트</a></li>
+<li class='sub_menu'><a href='/event/auction_point_list.php'>포인트경매</a></li>
+</ul></li>
+<li><a href='/sub_main/schoolzone_main.php'>PHP스쿨</a>
+<ul style='display:none;'>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=notice&page=1'>공지사항</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=newsdesk&page=1'>새로운소식</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=bug'>버그/의견</a></li>
+<li class='sub_menu'><a href='/survey/survey_list.php'>설문조사</a></li>
+</ul></li>
+				<li class="btn_link all" js="$('#contentWrap .all_service').toggle();"><span class="faicon">&#xf0c9;</span></li>
+			</ul>
+		</div>
+	</div>
+	<!-- 상단영역 //-->
+
+	<!-- 본문영역 //-->
+	<div id="contentWrap">
+        <!-- 서비스전체보기 //-->
+		<div class="all_service" style="display: none;">
+            <ul class="all_menu">
+        <li><ul>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=qna_install&page=1'>Install</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=qna_db&page=1'>Database</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=qna_function&page=1'>PHP function</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=qna_html&page=1'>HTML/Script</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=qna_ttrend&page=1'>Trend</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=qna_other&page=1'>ETC</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=any&page=1'>만능문답</a></li>
+</ul></li>
+<li><ul>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=teach&page=1'>강좌게시판</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=tipntech&page=1'>Tip&Tech</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=download&page=1'>다운로드</a></li>
+</ul></li>
+<li><ul>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=talkbox_new&page=1'>새내기Talk</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=talkbox2&page=1'>토크박스</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=forum&page=1'>포럼</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=photo&page=1'>사진게시판</a></li>
+<li class='sub_menu'><a href='/sub_main/guild_main.php'>길드메인</a></li>
+<li class='sub_menu'><a href='/guild_new/guild_attend.php'>출석체크</a></li>
+</ul></li>
+<li><ul>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=group_gamer'>게이머</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=group_stock'>함께하는주식투자</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=group_pension'>산들바람식도락</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=group_gunpla'>프라당</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=group_camera'>사진방</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=group_hope'>희망스쿨</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=group_dumchit'>둠칫둠칫</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=group_oldman'>독거노인</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=group_startup'>스타트업</a></li>
+</ul></li>
+<li><ul>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=img_market&page=1'>이미지마켓</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=old_job&page=1'>의뢰마당</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=buynsell&page=1'>소프트장터</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=user_market&page=1'>중고장터</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=tailbuy&page=1'>해외공구마켓</a></li>
+</ul></li>
+<li><ul>
+<li class='sub_menu'><a href='/biznbaza/kuin_list.php'>구인</a></li>
+<li class='sub_menu'><a href='/biznbaza/kujik_list.php'>구직</a></li>
+<li class='sub_menu'><a href='/biznbaza/free_list.php'>프리랜서</a></li>
+</ul></li>
+<li><ul>
+<li class='sub_menu'><a href='/community/rock_paper_scissors.php'>가위바위보</a></li>
+<li class='sub_menu'><a href='/event/lotto_event_list.php'>포인트이벤트</a></li>
+<li class='sub_menu'><a href='/event/auction_point_list.php'>포인트경매</a></li>
+</ul></li>
+<li><ul>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=notice&page=1'>공지사항</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=newsdesk&page=1'>새로운소식</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=bug'>버그/의견</a></li>
+<li class='sub_menu'><a href='/survey/survey_list.php'>설문조사</a></li>
+</ul></li>
+			</ul>
+			<div class="service_bottom">
+				<a href="http://www.phps.kr" target="_blank"><img src="/skin/blue/images/common/icon_phps.gif" class="m mr15" alt="스쿨호스팅 바로가기" /></a>
+				<a href="http://www.dnszi.com" target="_blank"><img src="/skin/blue/images/common/icon_dnszi.gif" class="m mr15" alt="DNSZi 바로가기" /></a>
+				<a href="http://www.insdot.com/" target="_blank"><img src="/skin/blue/images/common/icon_insdot.gif" class="m" alt="인스닷 바로가기" /></a>
+  				<p class="btn_link close" js="$('#contentWrap .all_service').toggle();"><span class="faicon">&#xf00d;</span></p>
+			</div>
+		</div>
+		<!-- 서비스전체보기 //-->
+		<!-- 메인배너 //-->
+		<div class="main_banner" id="main_banner">
+			<div class="main_banner_area">
+                <!--/* OpenX Image Tag v2.4.7 */-->
+                <!--/*SSL Delivery CommentSSL Backup CommentComment */-->
+                <a href='http://openx.phpschool.com/delivery/ck.php?n=a2c87ff2&amp;cb=INSERT_RANDOM_NUMBER_HERE' target='_blank'><img src='http://openx.phpschool.com/delivery/avw.php?zoneid=23&amp;cb=INSERT_RANDOM_NUMBER_HERE&amp;n=a2c87ff2' border='0' alt='' /></a>
+
+                <!-- script type='text/javascript'>
+                <!--//<![CDATA[
+                   document.MAX_ct0 ='';
+                   var m3_u = (location.protocol=='https:'?'https://cas.criteo.com/delivery/ajs.php?':'http://cas.criteo.com/delivery/ajs.php?');
+                   var m3_r = Math.floor(Math.random()*99999999999);
+                   document.write ("<scr"+"ipt type='text/javascript' src='"+m3_u);
+                   document.write ("zoneid=312662");document.write("&amp;nodis=1");
+                   document.write ('&amp;cb=' + m3_r);
+                   if (document.MAX_used != ',') document.write ("&amp;exclude=" + document.MAX_used);
+                   document.write (document.charset ? '&amp;charset='+document.charset : (document.characterSet ? '&amp;charset='+document.characterSet : ''));
+                   document.write ("&amp;loc=" + escape(window.location).substring(0,1600));
+                   if (document.context) document.write ("&context=" + escape(document.context));
+                   if ((typeof(document.MAX_ct0) != 'undefined') && (document.MAX_ct0.substring(0,4) == 'http')) {
+                       document.write ("&amp;ct0=" + escape(document.MAX_ct0));
+                   }
+                   if (document.mmm_fo) document.write ("&amp;mmm_fo=1");
+                   document.write ("'></scr"+"ipt>");
+                //]]>-></script-->
+            </div>
+		</div>
+		<!-- 메인배너 //-->
+		
+		<!-- 로그인 //-->
+		<div class="login">
+			<ul class="login_tab">
+				<li class="tab_on" tab="member">일반<br/>회원</li>
+				<li class="tab_line"></li>
+				<li class="tab_off" tab="company">기업<br/>회원</li>
+			</ul>
+		
+<script type="text/javascript" language=JavaScript>
+
+function mb_login_submit(f) {
+
+	if (!f.mb_id.value) {
+        alert("일반회원 아이디를 입력하십시오..");
+        f.mb_id.focus();
+        return;
+    }
+
+    if (!f.mb_password.value) {
+        alert("일반회원 패스워드를 입력하십시오..");
+        f.mb_password.focus();
+        return;
+    }
+
+	// 보안접속에 따른 도메인 SSL 설정
+	if(f.sec.value == "1") {
+		var domain_start = "https://";
+	} else {
+		var domain_start = "http://";
+	}
+
+    f.action = domain_start+"phpschool.com/gnuboard4/bbs/login_check.php";
+	return true;
+}
+
+function email_resend() {
+	win_open("../../member/email_resend.php", "email_resend","left=200,top=100,width=400,height=195,scrollbars=0");
+}
+
+
+</script>
+
+
+<div class="login_form member" >
+    <form name="fmblogin" method="post" onsubmit="return mb_login_submit(document.fmblogin);" autocomplete="off">
+    <input type="hidden" name="url" value="/">
+    <input type="hidden" name="sec" id="sec" value="1">
+    <input type="hidden" name="auto_login" id="auto_login" value="">
+	<fieldset>
+		<legend>로그인 폼</legend>
+		<ul class="login_left">
+			<li>
+				<span class="bo">보안</span>
+				<span class="sec_btn">
+					<img src="/skin/blue/images/common/btn_secret_on_1.gif" class="m" alt="보안On" /><img src="/skin/blue/images/common/btn_secret_off_2.gif" alt="보안Off" class="btn_link m" js="$('.sec_btn').toggle(); $('#sec').val('0');" />
+				</span>
+				<span class="sec_btn" style="display: none;">
+					<img src="/skin/blue/images/common/btn_secret_on_2.gif" alt="보안On" class="btn_link m" js="$('.sec_btn').toggle(); $('#sec').val('1');" /><img src="/skin/blue/images/common/btn_secret_off_1.gif" alt="보안Off" class="m" />
+				</span>
+				<span class="pl10 bo">Auto</span>
+				<span class="auto_btn">
+					<img src="/skin/blue/images/common/btn_secret_on_2.gif" alt="자동On" class="btn_link m" js="if (confirm('자동로그인을 사용하시면 다음부터 회원아이디와 패스워드를 입력하실 필요가 없습니다.\n\n\공공장소에서는 개인정보가 유출될 수 있으니 사용을 자제하여 주십시오.\n\n자동로그인을 사용하시겠습니까?')) { $('.auto_btn').toggle(); $('#auto_login').val('1'); } else { $('#auto_login').val(''); }" /><img src="/skin/blue/images/common/btn_secret_off_1.gif" alt="자동Off" class="m" />
+				</span>
+				<span class="auto_btn" style="display: none;">
+					<img src="/skin/blue/images/common/btn_secret_on_1.gif" alt="자동On" class="m" /><img src="/skin/blue/images/common/btn_secret_off_2.gif" alt="자동Off" class="btn_link m" js="$('.auto_btn').toggle(); $('#auto_login').val('');" />
+				</span>
+			</li>
+			<li>
+				<span class="dn">일반회원아이디</span><input type="text" id="mb_id" name="mb_id" title="회원아이디" itemname="회원아이디" maxlength="20" value="" class="input_login" onblur="if (this.value.length==0) { this.className='input_login' } else { this.className='input_login focus' }" onfocus="this.className='input_login focus'">
+			</li>
+			<li >
+				<span class="dn">일반회원비밀번호</span><input type="password" id="mb_password" name="mb_password" title="회원비밀번호" itemname="회원비밀번호" maxlength="20" value="" class="input_login" onblur="if (this.value.length==0) { this.className='input_login' } else { this.className='input_login focus' }" onfocus="this.className='input_login focus'">
+			</li>
+			<li class="btn_text">
+				<a href="/gnuboard4/bbs/register.php"><span class="btn_join">일반회원가입</span></a>
+				<span class="split">|</span>
+				<a href="/member/id_pass_search.php"><span class="btn_id_search">ID/PW 찾기</span></a>
+			</li>
+		</ul><!-- .list-input -->
+		<ul class="login_right">
+			<li>
+				<label>
+					<input type="checkbox" name="id_save" value="1"  /> ID저장
+				</label>
+			</li>
+			<li>
+				<button class="btn_login" type="submit"><span class="dh">[로그인]</span></button>
+			</li>
+	</fieldset>
+	</form>
+</div>
+<script type="text/javascript" language=JavaScript>
+
+function cp_login_submit(f) {
+
+	if (!f.cp_id.value) {
+        alert("기업회원 아이디를 입력하십시오..");
+        f.mb_id.focus();
+        return;
+    }
+
+    if (!f.cp_password.value) {
+        alert("기업회원 패스워드를 입력하십시오..");
+        f.mb_password.focus();
+        return;
+    }
+
+	// 보안접속에 따른 도메인 SSL 설정
+	if(f.cp_sec.value == "1") {
+		var domain_start = "https://";
+	} else {
+		var domain_start = "http://";
+	}
+
+	f.action = domain_start+"phpschool.com/company/company_login_check.php";
+	return true;
+}
+
+
+</script>
+
+<div class="login_form company" style="display:none;">
+    <form name="fcplogin" method="post" onsubmit="return cp_login_submit(document.fcplogin);" autocomplete="off">
+    <input type="hidden" name="url" value="/">
+    <input type="hidden" name="cp_sec" value="1">
+    <input type="hidden" name="cp_auto_login" id="cp_auto_login" value="">
+	<fieldset>
+		<legend>로그인 폼</legend>
+		<ul class="login_left">
+			<li>
+				<span class="bo">보안</span>
+				<span class="sec_btn">
+					<img src="/skin/blue/images/common/btn_secret_on_1.gif" class="m" alt="보안On" /><img src="/skin/blue/images/common/btn_secret_off_2.gif" alt="보안Off" class="btn_link m" js="$('.sec_btn').toggle(); $('#cp_sec').val('0');" />
+				</span>
+				<span class="sec_btn" style="display: none;">
+					<img src="/skin/blue/images/common/btn_secret_on_2.gif" alt="보안On" class="btn_link m" js="$('.sec_btn').toggle(); $('#cp_sec').val('1');" /><img src="/skin/blue/images/common/btn_secret_off_1.gif" alt="보안Off" class="m" />
+				</span>
+				<span class="pl10 bo">Auto</span>
+				<span class="auto_btn">
+					<img src="/skin/blue/images/common/btn_secret_on_2.gif" alt="자동On" class="btn_link m" js="if (confirm('자동로그인을 사용하시면 다음부터 회원아이디와 패스워드를 입력하실 필요가 없습니다.\n\n\공공장소에서는 개인정보가 유출될 수 있으니 사용을 자제하여 주십시오.\n\n자동로그인을 사용하시겠습니까?')) { $('.auto_btn').toggle(); $('#auto_login').val('1'); } else { $('#cp_auto_login').val(''); }" /><img src="/skin/blue/images/common/btn_secret_off_1.gif" alt="자동Off" class="m" />
+				</span>
+				<span class="auto_btn" style="display: none;">
+					<img src="/skin/blue/images/common/btn_secret_on_1.gif" alt="자동On" class="m" /><img src="/skin/blue/images/common/btn_secret_off_2.gif" alt="자동Off" class="btn_link m" js="$('.auto_btn').toggle(); $('#cp_auto_login').val('');" />
+				</span>
+			</li>
+			<li>
+				<span class="dn">기업회원아이디</span><input type="text" id="cp_id" name="cp_id" title="회원아이디" itemname="회원아이디" maxlength="20" value="" class="input_login" onblur="if (this.value.length==0) { this.className='input_login' } else { this.className='input_login focus' }" onfocus="this.className='input_login focus'">
+			</li>
+			<li >
+				<span class="dn">기업회원비밀번호</span><input type="password" id="cp_password" name="cp_password" title="회원비밀번호" itemname="회원비밀번호" maxlength="20" value="" class="input_login" onblur="if (this.value.length==0) { this.className='input_login' } else { this.className='input_login focus' }" onfocus="this.className='input_login focus'">
+			</li>
+			<li class="btn_text">
+				<a href="/company/company_register.php"><span class="btn_join">기업회원가입</span></a>
+				<span class="split">|</span>
+				<a href="/member/company_id_pass_search.php"><span class="btn_id_search">ID/PW 찾기</span></a>
+			</li>
+		</ul><!-- .list-input -->
+		<ul class="login_right">
+			<li>
+				<label>
+					<input type="checkbox" name="cp_id_save" value="1"  /> ID저장
+				</label>
+			</li>
+			<li>
+				<button class="btn_login" type="submit"><span class="dh">[로그인]</span></button>
+			</li>
+	</fieldset>
+	</form>
+</div>		</div>
+		<!-- 로그인 //-->
+		<!-- 본문영역 //-->
+		<div class="content">
+			<!-- 서브메뉴 //-->
+			
+<script type='text/javascript'>
+<!--
+function go_join(idx) {
+	var passFlag = 0;
+	var obj = document.getElementsByName('item' + idx + '[]');
+
+	for(i=0;i<obj.length;i++) {
+		if ( obj[i].checked )
+			passFlag = 1;
+	}
+	if ( !passFlag ) {
+		alert("항목을 선택해주세요.");
+		return false;
+	}
+
+	if ( document.frm.opinion.value == '' ) {
+		if ( !confirm('설문참여하실때 의견을 등록하시면 의견에 대한 찬반투표를 받을수있습니다. 이대로 등록하시겠습니까?') ) {
+			document.frm.opinion.focus();
+			return false;
+		}
+	}
+
+	document.frm.flag.value = 'join';
+	document.frm.snum.value = idx;
+	document.frm.submit();
+}
+//-->
+</script>
+
+        <!-- IT 강좌 //-->
+		<div class="main_it_taech main_box">
+            <div class="box_title">IT 강좌
+	    		<p class="more">
+		    		<a href="/gnuboard4/bbs/board.php?bo_table=teach">더보기 <span class="faicon">&#xf04b</span></a>
+			    </p>
+            </div>
+            <ul class="taech_list">
+                <li class="btn_link" url="/gnuboard4/bbs/board.php?bo_table=teach&sfl=wr_subject&stx=%C0%CC%B9%CC%C1%F6%B0%FC%B7%C3">
+                    <img src="/images/main/it_teach_01.gif" />
+                    <span class="taech_title">PHP 이미지 강좌</span>
+                </li>
+                <li class="btn_link" url="/gnuboard4/bbs/board.php?bo_table=teach&sfl=wr_subject&stx=Codeigniter+%C0%D4%B9%AE">
+                    <img src="/images/main/it_teach_02.gif" />
+                    <span class="taech_title">Codeigniter 입문</span>
+                </li>
+            </ul>
+		</div>
+		<!-- IT 강좌 //-->
+		
+		<!-- 팁앤테크 //-->
+		<div class="main_tipntech main_box">
+            <div class="box_title">Tip&Tech
+                <p class="more">
+		    		<a href="/gnuboard4/bbs/board.php?bo_table=tipntech&page=1">더보기 <span class="faicon">&#xf04b</span></a>
+			    </p>
+            </div>
+			<ul class="article">
+					<li>
+					<nobr style="display:block; overflow:hidden;">
+					<a href='/gnuboard4/bbs/board.php?bo_table=tipntech&wr_id=80953'>
+					mysql_config_editor 간단정리[5.6.6 이상]<div class='img_new'></div></a>
+					</nobr>
+				</li>
+					<li>
+					<nobr style="display:block; overflow:hidden;">
+					<a href='/gnuboard4/bbs/board.php?bo_table=tipntech&wr_id=80943'>
+					mysql / mariadb utf8mb4 로 변환 [2]<div class='img_new'></div></a>
+					</nobr>
+				</li>
+					<li>
+					<nobr style="display:block; overflow:hidden;">
+					<a href='/gnuboard4/bbs/board.php?bo_table=tipntech&wr_id=80939'>
+					Chart js DB 연동 예제 [1]<div class='img_new'></div></a>
+					</nobr>
+				</li>
+					<li>
+					<nobr style="display:block; overflow:hidden;">
+					<a href='/gnuboard4/bbs/board.php?bo_table=tipntech&wr_id=80912'>
+					mod_execdir extension [7]<div class='img_new'></div></a>
+					</nobr>
+				</li>
+					<li>
+					<nobr style="display:block; overflow:hidden;">
+					<a href='/gnuboard4/bbs/board.php?bo_table=tipntech&wr_id=80903'>
+					mysql 접속자 많아서 버벅일때 팁입니다. [12]<div class='img_new'></div></a>
+					</nobr>
+				</li>
+					<li>
+					<nobr style="display:block; overflow:hidden;">
+					<a href='/gnuboard4/bbs/board.php?bo_table=tipntech&wr_id=80900'>
+					node.js 템플릿 없이 사용하기 [2]<div class='img_new'></div></a>
+					</nobr>
+				</li>
+				</ul>
+		</div>
+		<!-- 팁앤테크 //-->
+
+
+		<!-- 유료구인 //-->
+		<div class="main_job" style='border:none;' >
+            <!--/* OpenX Image Tag v2.4.7 */-->
+            <!--/*SSL Delivery CommentSSL Backup CommentComment */-->
+            <a href='http://openx.phpschool.com/delivery/ck.php?n=a4d3db29&amp;cb=INSERT_RANDOM_NUMBER_HERE' target='_blank'><img src='http://openx.phpschool.com/delivery/avw.php?zoneid=24&amp;cb=INSERT_RANDOM_NUMBER_HERE&amp;n=a4d3db29' border='0' alt='' /></a>
+		</div>
+
+		<!-- 유료구인 끝 //-->
+
+
+		<!-- Q&A //-->
+		<div class="main_qna main_box">
+            <div class="box_title">Q&A
+                <p class="more">
+		    		<a href="/sub_main/qna_main.php">더보기 <span class="faicon">&#xf04b</span></a>
+			    </p>
+            </div>
+			<ul class="list">
+					<li class="">
+                    <div class="cate_icon">
+                        <a href='/gnuboard4/bbs/board.php?bo_table=qna_install'>
+                            <img src="/skin/blue/images/main/main_icon_install.gif" class="m" />
+                        </a>
+                    </div>
+					<nobr style="display:block; overflow:hidden;">
+					<a href='/gnuboard4/bbs/board.php?bo_table=qna_install&wr_id=115061' title="우분투용 SetEnvIFNoCase">
+					우분투용 SetEnvIFNoCase					</a>
+					</nobr>
+					<nobr style="display:block; overflow:hidden;">
+					<a href='/gnuboard4/bbs/board.php?bo_table=qna_install&wr_id=115060' title="webknight + cloudflare">
+					webknight + cloudflare					</a>
+					</nobr>
+				</li>
+					<li class="mr1">
+                    <div class="cate_icon">
+                        <a href='/gnuboard4/bbs/board.php?bo_table=qna_db'>
+                            <img src="/skin/blue/images/main/main_icon_dbase.gif" class="m" />
+                        </a>
+                    </div>
+					<nobr style="display:block; overflow:hidden;">
+					<a href='/gnuboard4/bbs/board.php?bo_table=qna_db&wr_id=221074' title="개인웹서버 DB 이전 문제">
+					개인웹서버 DB 이전 문제[6]					</a>
+					</nobr>
+					<nobr style="display:block; overflow:hidden;">
+					<a href='/gnuboard4/bbs/board.php?bo_table=qna_db&wr_id=221067' title="회원 로그는 db에 저장하는게 맞나요?">
+					회원 로그는 db에 저장하는게 맞나요?[3]					</a>
+					</nobr>
+				</li>
+					<li class="">
+                    <div class="cate_icon">
+                        <a href='/gnuboard4/bbs/board.php?bo_table=qna_function'>
+                            <img src="/skin/blue/images/main/main_icon_function.gif" class="m" />
+                        </a>
+                    </div>
+					<nobr style="display:block; overflow:hidden;">
+					<a href='/gnuboard4/bbs/board.php?bo_table=qna_function&wr_id=437174' title="remote_addr 이 같은 아이피를 찍어냅니다.">
+					remote_addr 이 같은 아이피를 찍어냅니다....[4]					</a>
+					</nobr>
+					<nobr style="display:block; overflow:hidden;">
+					<a href='/gnuboard4/bbs/board.php?bo_table=qna_function&wr_id=437173' title="php에서 중복 제거된 행의 수 구하는 방법">
+					php에서 중복 제거된 행의 수 구하는 방법[1]					</a>
+					</nobr>
+				</li>
+					<li class="mr1">
+                    <div class="cate_icon">
+                        <a href='/gnuboard4/bbs/board.php?bo_table=qna_html'>
+                            <img src="/skin/blue/images/main/main_icon_html.gif" class="m" />
+                        </a>
+                    </div>
+					<nobr style="display:block; overflow:hidden;">
+					<a href='/gnuboard4/bbs/board.php?bo_table=qna_html&wr_id=274685' title="홈페이지에서 뒤로가기 시 다른 사이트 보여주는 방법 질문드립니다.">
+					홈페이지에서 뒤로가기 시 다른 사이트 보...[1]					</a>
+					</nobr>
+					<nobr style="display:block; overflow:hidden;">
+					<a href='/gnuboard4/bbs/board.php?bo_table=qna_html&wr_id=274684' title="다중 체크박스 컨트롤 질문있습니다.">
+					다중 체크박스 컨트롤 질문있습니다.					</a>
+					</nobr>
+				</li>
+					<li class=" bbx">
+                    <div class="cate_icon">
+                        <a href='/gnuboard4/bbs/board.php?bo_table=qna_ttrend'>
+                            <img src="/skin/blue/images/main/main_icon_trend.gif" class="m" />
+                        </a>
+                    </div>
+					<nobr style="display:block; overflow:hidden;">
+					<a href='/gnuboard4/bbs/board.php?bo_table=qna_ttrend&wr_id=7208' title="onCreate 변수 include 처러">
+					onCreate 변수 include 처러[2]					</a>
+					</nobr>
+					<nobr style="display:block; overflow:hidden;">
+					<a href='/gnuboard4/bbs/board.php?bo_table=qna_ttrend&wr_id=7203' title="음성 시험 기능을 홈페이지로 작업하려고합니다.">
+					음성 시험 기능을 홈페이지로 작업하려고합...[1]					</a>
+					</nobr>
+				</li>
+					<li class="mr1 bbx">
+                    <div class="cate_icon">
+                        <a href='/gnuboard4/bbs/board.php?bo_table=qna_other'>
+                            <img src="/skin/blue/images/main/main_icon_etc.gif" class="m" />
+                        </a>
+                    </div>
+					<nobr style="display:block; overflow:hidden;">
+					<a href='/gnuboard4/bbs/board.php?bo_table=qna_other&wr_id=138713' title="요즘은 Mux라는게 있던데요. 이게 http와는 어떤 점이 다른가요?">
+					요즘은 Mux라는게 있던데요. 이게 http와는...					</a>
+					</nobr>
+					<nobr style="display:block; overflow:hidden;">
+					<a href='/gnuboard4/bbs/board.php?bo_table=qna_other&wr_id=138712' title="[질문] 리눅스에서 대용량 파일을 삭제했는데, 디스크의 빈공간 크기가 변함이 없습니다.">
+					[질문] 리눅스에서 대용량 파일을 삭제했는...[1]					</a>
+					</nobr>
+				</li>
+				</ul>
+		</div>
+		<!-- Q&A //-->
+
+		<!-- 만능문답 //-->
+		<div class="main_any main_box">
+            <div class="box_title">만능문답
+                <p class="more">
+		    		<a href="/gnuboard4/bbs/board.php?bo_table=any">더보기 <span class="faicon">&#xf04b</span></a>
+			    </p>
+            </div>
+            <ul class="article">
+                <li>
+                <nobr style="display:block; overflow:hidden;">
+                <a href='/gnuboard4/bbs/board.php?bo_table=any&wr_id=40623'>
+                Switch 문법은 왜 들여쓰기를 이렇게 할... [5]<div class='img_new'></div></a>
+                </nobr>
+            </li>
+                <li>
+                <nobr style="display:block; overflow:hidden;">
+                <a href='/gnuboard4/bbs/board.php?bo_table=any&wr_id=40616'>
+                java 숫자형태 문자열 크기비교시 오류가... [3]<div class='img_new'></div></a>
+                </nobr>
+            </li>
+                <li>
+                <nobr style="display:block; overflow:hidden;">
+                <a href='/gnuboard4/bbs/board.php?bo_table=any&wr_id=40615'>
+                침대 매트리스 다들 몇년 사용하시나요??... [3]<div class='img_new'></div></a>
+                </nobr>
+            </li>
+                <li>
+                <nobr style="display:block; overflow:hidden;">
+                <a href='/gnuboard4/bbs/board.php?bo_table=any&wr_id=40610'>
+                안드로이드 스튜디오 ... 무슨 표시죠?? [3]<div class='img_new'></div></a>
+                </nobr>
+            </li>
+                <li>
+                <nobr style="display:block; overflow:hidden;">
+                <a href='/gnuboard4/bbs/board.php?bo_table=any&wr_id=40607'>
+                cakephp에 관련해서 정보를 어디서 얻을... [3]<div class='img_new'></div></a>
+                </nobr>
+            </li>
+                <li>
+                <nobr style="display:block; overflow:hidden;">
+                <a href='/gnuboard4/bbs/board.php?bo_table=any&wr_id=40606'>
+                예약 시스템 관련 질문 드려요~<div class='img_new'></div></a>
+                </nobr>
+            </li>
+                </ul>
+		</div>
+		<!-- 만능문답 //-->
+
+		<!-- 토크박스 //-->
+        <div class="main_talkbox main_box">
+            <div class="box_title">토크박스
+                <p class="more">
+		    		<a href="/gnuboard4/bbs/board.php?bo_table=talkbox2">더보기 <span class="faicon">&#xf04b</span></a>
+			    </p>
+            </div>
+            <ul class="article">
+                    <li class="">
+                    <div class="tb_text">
+                    <a href="/gnuboard4/bbs/board.php?bo_table=talkbox2&wr_id=1546544"><span class="subject">캬하~ [1]</span></a>
+                    <div class="mask"></div>
+                    <a href="/gnuboard4/bbs/board.php?bo_table=talkbox2&wr_id=1546544">                    https://www.youtube.com/watch?v=6vg-H1-Ylyk</a>
+                    </div>
+                </li>
+                    <li class="">
+                    <div class="tb_text">
+                    <a href="/gnuboard4/bbs/board.php?bo_table=talkbox2&wr_id=1546537"><span class="subject">크킄 흨콰한다 [8]</span></a>
+                    <div class="mask"></div>
+                    <a href="/gnuboard4/bbs/board.php?bo_table=talkbox2&wr_id=1546537">                    암흑의 다크에서 1세기를 보내고나서야&nbsp;
+
+흨콰한 몸으로 비로소 돌아왔도닼
+
+
+크히히히힠ㅋ키히킼</a>
+                    </div>
+                </li>
+                    <li class="">
+                    <div class="tb_text">
+                    <a href="/gnuboard4/bbs/board.php?bo_table=talkbox2&wr_id=1546534"><span class="subject">8월 1일에 [1]</span></a>
+                    <div class="mask"></div>
+                    <a href="/gnuboard4/bbs/board.php?bo_table=talkbox2&wr_id=1546534">                    눈 올것 같앗는데 말입니다</a>
+                    </div>
+                </li>
+                    <li class="mr1">
+                    <div class="tb_text">
+                    <a href="/gnuboard4/bbs/board.php?bo_table=talkbox2&wr_id=1546530"><span class="subject">잠을 못자서.. [3]</span></a>
+                    <div class="mask"></div>
+                    <a href="/gnuboard4/bbs/board.php?bo_table=talkbox2&wr_id=1546530">                    회사에서 졸면서 코딩해야겠네요.
+
+꾸벅꾸벅..
+
+휴가때 항상 늦게잤더니
+
+결국 휴가 끝나기 전날에도.. ㅜㅜ</a>
+                    </div>
+                </li>
+                </ul>
+        </div>
+		<!-- 토크박스 //-->
+
+		<!-- 소모임 //-->
+        <div class="main_group main_box">
+            <div class="box_title">소모임
+                <p class="more">
+		    		<a href="/sub_main/group_main.php">더보기 <span class="faicon">&#xf04b</span></a>
+			    </p>
+            </div>
+            <ul class="article">
+				<li>
+                <nobr style="display: block; overflow: hidden; text-overflow: ellipsis;">
+				<a href="/gnuboard4/bbs/board.php?bo_table=group_gunpla"><span class="group_name">[프라당]</span></a>
+				<a href='http://phpschool.com/gnuboard4/bbs/board.php?bo_table=group_gunpla&wr_id=1912'>
+					2016 건담 엑스포				</a>
+                </nobr>
+			</li>
+				<li>
+                <nobr style="display: block; overflow: hidden; text-overflow: ellipsis;">
+				<a href="/gnuboard4/bbs/board.php?bo_table=group_pension"><span class="group_name">[산들바람식도락]</span></a>
+				<a href='http://phpschool.com/gnuboard4/bbs/board.php?bo_table=group_pension&wr_id=1202'>
+					ㅊㅊㅊ				</a>
+                </nobr>
+			</li>
+				<li>
+                <nobr style="display: block; overflow: hidden; text-overflow: ellipsis;">
+				<a href="/gnuboard4/bbs/board.php?bo_table=group_pension"><span class="group_name">[산들바람식도락]</span></a>
+				<a href='http://phpschool.com/gnuboard4/bbs/board.php?bo_table=group_pension&wr_id=1201'>
+					ㅊㅊ				</a>
+                </nobr>
+			</li>
+				<li>
+                <nobr style="display: block; overflow: hidden; text-overflow: ellipsis;">
+				<a href="/gnuboard4/bbs/board.php?bo_table=group_startup"><span class="group_name">[스타트업]</span></a>
+				<a href='http://phpschool.com/gnuboard4/bbs/board.php?bo_table=group_startup&wr_id=401'>
+					돈 없이도 창업이 가능할까요?				</a>
+                </nobr>
+			</li>
+				<li>
+                <nobr style="display: block; overflow: hidden; text-overflow: ellipsis;">
+				<a href="/gnuboard4/bbs/board.php?bo_table=group_pension"><span class="group_name">[산들바람식도락]</span></a>
+				<a href='http://phpschool.com/gnuboard4/bbs/board.php?bo_table=group_pension&wr_id=1190'>
+					금요일 벙개 어때요???				</a>
+                </nobr>
+			</li>
+				<li>
+                <nobr style="display: block; overflow: hidden; text-overflow: ellipsis;">
+				<a href="/gnuboard4/bbs/board.php?bo_table=group_pension"><span class="group_name">[산들바람식도락]</span></a>
+				<a href='http://phpschool.com/gnuboard4/bbs/board.php?bo_table=group_pension&wr_id=1189'>
+					ㅊㅊ				</a>
+                </nobr>
+			</li>
+	            </ul>
+        </div>
+		<!-- 소모임 //-->
+
+		<!-- 포럼 //-->
+        <div class="main_forum main_box">
+            <div class="box_title">포럼
+                <p class="more">
+		    		<a href="/gnuboard4/bbs/board.php?bo_table=forum&page=1">더보기 <span class="faicon">&#xf04b</span></a>
+			    </p>
+            </div>
+            <ul class="article">
+	                <li >
+                    <nobr style="display:block; overflow:hidden;">
+                    <a href='/gnuboard4/bbs/board.php?bo_table=forum&wr_id=151919'>
+                    협업툴 & 모든인력이 최저임금인 회사 & 직원이 ... [6]<div class='img_new'></div></a>
+                    </nobr>
+                </li>
+	                <li >
+                    <nobr style="display:block; overflow:hidden;">
+                    <a href='/gnuboard4/bbs/board.php?bo_table=forum&wr_id=151880'>
+                    레거시 시스템에 대해 어떻게 생각하시나요? [23]<div class='img_new'></div></a>
+                    </nobr>
+                </li>
+	                <li >
+                    <nobr style="display:block; overflow:hidden;">
+                    <a href='/gnuboard4/bbs/board.php?bo_table=forum&wr_id=151860'>
+                    부서 간 떠넘기기 어느 부서에서 결제를 올리는 ... [9]<div class='img_new'></div></a>
+                    </nobr>
+                </li>
+	            </ul>
+        </div>
+		<!-- 포럼 //-->
+
+		<!-- 자료실 //-->
+        <div class="main_download main_box">
+            <div class="box_title">자료실
+                <p class="more">
+		    		<a href="/gnuboard4/bbs/board.php?bo_table=download&page=1">더보기 <span class="faicon">&#xf04b</span></a>
+			    </p>
+            </div>
+            <ul class="article">
+	                <li >
+                    <nobr style="display:block; overflow:hidden;">
+                    <a href='/gnuboard4/bbs/board.php?bo_table=download&wr_id=17523'>
+                    NodeJs 를 이용한 Simple 현재접속자 [2]<div class='img_new'></div></a>
+                    </nobr>
+                </li>
+	                <li >
+                    <nobr style="display:block; overflow:hidden;">
+                    <a href='/gnuboard4/bbs/board.php?bo_table=download&wr_id=17519'>
+                    국가별 아이피 대역 msyql 테이블 [3]<div class='img_new'></div></a>
+                    </nobr>
+                </li>
+	                <li >
+                    <nobr style="display:block; overflow:hidden;">
+                    <a href='/gnuboard4/bbs/board.php?bo_table=download&wr_id=17510'>
+                    Mysql Monitor - 데이터베이스 모니터 [1]<div class='img_new'></div></a>
+                    </nobr>
+                </li>
+	            </ul>
+        </div>
+		<!-- 자료실 //-->
+
+		<!-- 하단배너 //-->
+        <div class='right_banner'>
+            <script type='text/javascript'>
+            <!--//<![CDATA[
+               document.MAX_ct0 ='';
+               var m3_u = (location.protocol=='https:'?'https://cas.criteo.com/delivery/ajs.php?':'http://cas.criteo.com/delivery/ajs.php?');
+               var m3_r = Math.floor(Math.random()*99999999999);
+               document.write ("<scr"+"ipt type='text/javascript' src='"+m3_u);
+               document.write ("zoneid=312666");document.write("&amp;nodis=1");
+               document.write ('&amp;cb=' + m3_r);
+               if (document.MAX_used != ',') document.write ("&amp;exclude=" + document.MAX_used);
+               document.write (document.charset ? '&amp;charset='+document.charset : (document.characterSet ? '&amp;charset='+document.characterSet : ''));
+               document.write ("&amp;loc=" + escape(window.location).substring(0,1600));
+               if (document.context) document.write ("&context=" + escape(document.context));
+               if ((typeof(document.MAX_ct0) != 'undefined') && (document.MAX_ct0.substring(0,4) == 'http')) {
+                   document.write ("&amp;ct0=" + escape(document.MAX_ct0));
+               }
+               if (document.mmm_fo) document.write ("&amp;mmm_fo=1");
+               document.write ("'></scr"+"ipt>");
+            //]]>--></script>
+            <!--/* OpenX Image Tag v2.4.7 */-->
+            <!--/*SSL Delivery CommentSSL Backup CommentComment */-->
+            <!--<a href='http://openx.phpschool.com/delivery/ck.php?n=ac586115&amp;cb=INSERT_RANDOM_NUMBER_HERE' target='_blank'><img src='http://openx.phpschool.com/delivery/avw.php?zoneid=21&amp;cb=INSERT_RANDOM_NUMBER_HERE&amp;n=ac586115' border='0' alt='' /></a>-->
+        </div>
+		<!-- 하단배너 //-->
+
+		<!-- 이미지마켓 //-->
+        <div class="main_imgmarket main_box">
+            <div class="box_title">이미지마켓
+                <p class="more">
+		    		<a href="/gnuboard4/bbs/board.php?bo_table=img_market">더보기 <span class="faicon">&#xf04b</span></a>
+			    </p>
+            </div>
+            <ul class="photo_list">
+					<li >
+                    <a href='http://phpschool.com/gnuboard4/bbs/board.php?bo_table=img_market&wr_id=65'>
+                        <img class="photo" src="./gnuboard4/data/file/img_market/1932123566_3d0dd75d_webdesign_source7.gif" width="123" height="83" />
+                    </a>
+                </li>
+					<li >
+                    <a href='http://phpschool.com/gnuboard4/bbs/board.php?bo_table=img_market&wr_id=64'>
+                        <img class="photo" src="./gnuboard4/data/file/img_market/1932123566_35ea9526_webdesign_source6.gif" width="123" height="83" />
+                    </a>
+                </li>
+					<li >
+                    <a href='http://phpschool.com/gnuboard4/bbs/board.php?bo_table=img_market&wr_id=63'>
+                        <img class="photo" src="./gnuboard4/data/file/img_market/1932123566_725402da_webdesign_source5.gif" width="123" height="83" />
+                    </a>
+                </li>
+					<li >
+                    <a href='http://phpschool.com/gnuboard4/bbs/board.php?bo_table=img_market&wr_id=62'>
+                        <img class="photo" src="./gnuboard4/data/file/img_market/1932123566_06387e0a_webdesign_source4.gif" width="123" height="83" />
+                    </a>
+                </li>
+					<li >
+                    <a href='http://phpschool.com/gnuboard4/bbs/board.php?bo_table=img_market&wr_id=61'>
+                        <img class="photo" src="./gnuboard4/data/file/img_market/1932123566_ac71eda4_vectoriconset.gif" width="123" height="83" />
+                    </a>
+                </li>
+	            </ul>
+        </div>
+		<!-- 이미지마켓 //-->
+
+		<!-- 사진게시판 //-->
+        <div class="main_photo main_box">
+            <div class="box_title">사진게시판
+                <p class="more">
+		    		<a href="/gnuboard4/bbs/board.php?bo_table=photo">더보기 <span class="faicon">&#xf04b</span></a>
+			    </p>
+            </div>
+            <ul class="photo_list">
+					<li ><a href='/gnuboard4/bbs/board.php?bo_table=photo&wr_id=392543'>
+				<img src="./gnuboard4/data/file/photo/thumb_3024557161_8aba93be_Ego579dff642440a.jpg" alt="가정의 평화" title="가정의 평화" /></a></li>
+					<li ><a href='/gnuboard4/bbs/board.php?bo_table=photo&wr_id=392542'>
+				<img src="./gnuboard4/data/file/photo/thumb_3024557161_4300c2b2_CA4579dff92546a1.gif" alt="응급환자 발생 [1]" title="응급환자 발생 [1]" /></a></li>
+					<li ><a href='/gnuboard4/bbs/board.php?bo_table=photo&wr_id=392541'>
+				<img src="./gnuboard4/data/file/photo/thumb_3024557161_5aabe00e_Dw9579e030d7405c.jpg" alt="이게 뭐예요..??? [1]" title="이게 뭐예요..??? [1]" /></a></li>
+					<li ><a href='/gnuboard4/bbs/board.php?bo_table=photo&wr_id=392523'>
+				<img src="./gnuboard4/data/file/photo/thumb_3024557161_361e689a_1.jpg" alt="가슴 .. 가슴.. [8]" title="가슴 .. 가슴.. [8]" /></a></li>
+					<li ><a href='/gnuboard4/bbs/board.php?bo_table=photo&wr_id=392522'>
+				<img src="./gnuboard4/data/file/photo/thumb_3024557161_f5f2a677_AxA579c15a68f45d.gif" alt="책상의 진화 [3]" title="책상의 진화 [3]" /></a></li>
+					<li class='pr0'><a href='/gnuboard4/bbs/board.php?bo_table=photo&wr_id=392521'>
+				<img src="./gnuboard4/data/file/photo/thumb_3024557161_6b605362_GA0579c16ab87442.jpg" alt="휴대폰 보조 베터리 [1]" title="휴대폰 보조 베터리 [1]" /></a></li>
+					<li ><a href='/gnuboard4/bbs/board.php?bo_table=photo&wr_id=392511'>
+				<img src="./gnuboard4/data/file/photo/thumb_1794747396_9f243b61_BouncyAgileGoa.gif" alt="심장폭행 [6]" title="심장폭행 [6]" /></a></li>
+					<li ><a href='/gnuboard4/bbs/board.php?bo_table=photo&wr_id=392506'>
+				<img src="./gnuboard4/data/file/photo/thumb_1935634362_38648557_284029C1A4BFB5C8C620.jpg" alt="잠실 [3]" title="잠실 [3]" /></a></li>
+	            </ul>
+        </div>
+		<!-- 사진게시판 //-->		</div>
+	</div>
+	<!-- 본문영역 //-->
+
+	<!-- 하단영역 //-->
+	<div id="footer">
+		<!-- 서비스전체보기 //-->
+		<div class="all_service" style="">
+			<div class="service_title">
+				<span>School Biz ▶</span>
+				<a href="http://www.phps.kr" target="_blank"><img src="/skin/blue/images/common/icon_phps_bottom.gif" class="m ml15" alt="스쿨호스팅 바로가기" /></a>
+				<a href="http://www.dnszi.com" target="_blank"><img src="/skin/blue/images/common/icon_dnszi_bottom.gif" class="m ml15" alt="DNSZi 바로가기" /></a>
+				<a href="http://www.insdot.com/" target="_blank"><img src="/skin/blue/images/common/icon_insdot_bottom.gif" class="m ml15" alt="인스닷 바로가기" /></a>
+
+					</div>
+			<ul class="all_menu" >
+        <li class='group'><ul>
+<li class='sub_title'><a href='/sub_main/qna_main.php'>질문/답변</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=qna_install&page=1'>Install</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=qna_db&page=1'>Database</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=qna_function&page=1'>PHP function</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=qna_html&page=1'>HTML/Script</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=qna_ttrend&page=1'>Trend</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=qna_other&page=1'>ETC</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=any&page=1'>만능문답</a></li>
+</ul></li>
+<li class='group'><ul>
+<li class='sub_title'><a href='/sub_main/class_main.php'>교육/자료</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=teach&page=1'>강좌게시판</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=tipntech&page=1'>Tip&Tech</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=download&page=1'>다운로드</a></li>
+</ul></li>
+<li class='group'><ul>
+<li class='sub_title'><a href='/sub_main/community_main.php'>커뮤니티</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=talkbox_new&page=1'>새내기Talk</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=talkbox2&page=1'>토크박스</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=forum&page=1'>포럼</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=photo&page=1'>사진게시판</a></li>
+<li class='sub_menu'><a href='/sub_main/guild_main.php'>길드메인</a></li>
+<li class='sub_menu'><a href='/guild_new/guild_attend.php'>출석체크</a></li>
+</ul></li>
+<li class='group'><ul>
+<li class='sub_title'><a href='/sub_main/group_main.php'>소모임</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=group_gamer'>게이머</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=group_stock'>함께하는주식투자</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=group_pension'>산들바람식도락</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=group_gunpla'>프라당</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=group_camera'>사진방</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=group_hope'>희망스쿨</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=group_dumchit'>둠칫둠칫</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=group_oldman'>독거노인</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=group_startup'>스타트업</a></li>
+</ul></li>
+<li class='group'><ul>
+<li class='sub_title'><a href='/sub_main/market_main.php'>의뢰/장터</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=img_market&page=1'>이미지마켓</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=old_job&page=1'>의뢰마당</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=buynsell&page=1'>소프트장터</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=user_market&page=1'>중고장터</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=tailbuy&page=1'>해외공구마켓</a></li>
+</ul></li>
+<li class='group'><ul>
+<li class='sub_title'><a href='/sub_main/kuin_main.php'>구인/구직</a></li>
+<li class='sub_menu'><a href='/biznbaza/kuin_list.php'>구인</a></li>
+<li class='sub_menu'><a href='/biznbaza/kujik_list.php'>구직</a></li>
+<li class='sub_menu'><a href='/biznbaza/free_list.php'>프리랜서</a></li>
+</ul></li>
+<li class='group'><ul>
+<li class='sub_title'><a href='/community/rock_paper_scissors.php'>포인트</a></li>
+<li class='sub_menu'><a href='/community/rock_paper_scissors.php'>가위바위보</a></li>
+<li class='sub_menu'><a href='/event/lotto_event_list.php'>포인트이벤트</a></li>
+<li class='sub_menu'><a href='/event/auction_point_list.php'>포인트경매</a></li>
+</ul></li>
+<li class='group'><ul>
+<li class='sub_title'><a href='/sub_main/schoolzone_main.php'>PHP스쿨</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=notice&page=1'>공지사항</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=newsdesk&page=1'>새로운소식</a></li>
+<li class='sub_menu'><a href='/gnuboard4/bbs/board.php?bo_table=bug'>버그/의견</a></li>
+<li class='sub_menu'><a href='/survey/survey_list.php'>설문조사</a></li>
+</ul></li>
+			</ul>
+		</div>
+		<!-- 서비스전체보기 //-->
+		
+		<!-- 회사정보 //-->
+		<ul class="company_menu">
+			<li class="btn_link" url="/html_sub/company_01.html">회사소개</li>
+			<li class="split">|</li>
+            <!--<li class="btn_link" url="/html_sub/site_map.php">사이트맵</li>
+			<li class="split">|</li>//-->
+			<li class="btn_link" url="/html_sub/policy_service.php">이용약관</li>
+			<li class="split">|</li>
+			<li class="text_color1 btn_link" url="/html_sub/info_guard.php">개인정보처리방침</li>
+			<li class="split">|</li>
+			<li class="btn_link" url="/html_sub/no_email_robot.php">이메일 무단수집 거부</li>
+			<!--<li class="split">|</li>
+			<li class="btn_link" url="/html_sub/recruit.html">인재채용</li>
+			<li class="split">|</li>
+			<li class="btn_link" url="/html_sub/apply_partner.php">제휴문의</li>-->
+			<li class="split">|</li>
+			<li class="text_color2 btn_link" url="/html_sub/product_ad.php">광고안내</li>
+		</ul>
+
+		<ul class="company_info">
+			<li><span class="text_color1">(주)피에이치피스쿨닷컴</span>　사업번호 119-86-25309　통판 2010-서울금천-0082호　직업정보 서울관악 제2010-03호　서울시 금천구 가산동 371-28 우림라이온스밸리A동 8층</li>
+			<li>대표 임성진　개인정보보호정책 및 담당 하미향　전화 1544-5811(내선4)　팩스 02-6903-9705　E-mail member@phpschool.com</li>
+			<li class="text_color1 pt5">Copyright <span class="bo">PHPSCHOOL.com</span> All rights reserved.</li>
+		</ul>
+		
+		<div class="logo">
+			<a href="/"><img src="/skin/blue/images/common/bottom_logo.png" alt="PHPSCHOOL" /></a>			
+		</div>
+		<!-- 회사정보 //-->
+	</div>
+	<!-- 하단영역 //-->
+</div>
+
+<input type="hidden" id="comment_push" value="0">
+
+<script language="javascript" src="./gnuboard4/js/wrest.js"></script>
+
+<!-- 새창 대신 사용하는 iframe -->
+<iframe width=0 height=0 name='hiddenframe' style='display:none;'></iframe>
+
+<!-- GOOGLE LOG -->
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-12894558-1");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+
+</body>
+</html>

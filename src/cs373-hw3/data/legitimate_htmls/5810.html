@@ -1,0 +1,759 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="/res/css/style.css"/>
+<script type="text/javascript" language="javascript" src="/res/javascript/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" language="javascript" src="/res/javascript/popup.js"></script>
+<script type="text/javascript" language="javascript" src="/res/javascript/mi_base64.js"></script>
+<script type="text/javascript" language="javascript" src="/res/javascript/ZeroClipboard.js"></script>
+<script type="text/javascript" language="javascript" src="/res/javascript/global.js"></script>
+<title>磁力下载站,cili001.com,最新美剧下载,日剧下载,电影下载,韩剧下载</title>
+<meta name="keywords" content="MAG磁力下载站,宇宙影视,OABT,美剧下载,日剧下载,电影下载,韩剧下载">
+<meta name="description" content="MAG磁力下载站为提供最新最快的美剧、电影、韩剧、日剧资源的下载站">
+</head>
+<body>
+<div class="header-box">
+  <div class="w">
+      <div class="top-links">
+          <a href="javascript:popup_show();">Signin</a><span id="rss"><a href="#">磁力订阅</a><a href="#">电驴订阅</a></span><span style="display:none;">(<a rel="/rss.php?">All<span></span></a><a rel="/rss.php?cid=1">美剧</a><a rel="/rss.php?cid=6">HR-电影</a><a rel="/rss.php?cid=25">MP4-电影</a><a rel="/rss.php?cid=21">日剧</a><a rel="/rss.php?cid=26">韩剧</a><a rel="/rss.php?cid=28">纪录片</a><a rel="/rss.php?cid=3">其他</a><a rel="/rss.php?cid=18">音乐电视</a><a rel="/rss.php?cid=23">公开课</a><a rel="/rss.php?cid=5">RMVB电影</a>)</span>
+        </div>
+      <div class="search-box">
+          <div class="logo"><a href="/"><img src="/res/images/logo.png"></a></div>
+          <form name="search" action="/" method="get"><input type="text" name="topic_title3" value="" class="keywords" /><input type="submit" class="submit" value="Search" /></form>
+            <div class="search-hot"></div>
+        </div>
+        <div class="ad-box">
+          <script type="text/javascript" src="http://g2.ousns.net/zydh/ga-728.js"></script>
+
+           <div id="floatAD_l" style="display:none;width:160px;"> <script type="text/javascript" src="http://g2.ousns.net/zydh/ga-160-left.js"></script>
+ </div>
+           <div id="floatAD_r" style="display:none;width:160px;"> <script type="text/javascript" src="http://g2.ousns.net/zydh/ga-160-right.js"></script>
+ </div>
+        </div>
+    </div>
+</div>
+<script>
+var is_login = 0;
+$(document).ready(
+  function (){
+    if(is_login){
+    $('#login_text').text('');
+  }
+    $('#rss a:first').click(function (){
+      if($(this).css('font-weight')=='bold'){
+        $(this).css('font-weight','normal');
+        $(this).parent().next().hide();
+      }else{
+        $('#rss a').css('font-weight','normal');
+        $(this).css('font-weight','bold').parent().next().show().find('a').each(function(k,v){
+          if(k==0){
+            $(this).find('span').text(' Magnet');
+          }
+          $(this).attr('href',$(this).attr('rel'));
+        });
+      }
+    }).next().click(function(){
+      if($(this).css('font-weight')=='bold'){
+        $(this).css('font-weight','normal');
+        $(this).parent().next().hide();
+      }else{
+        $('#rss a').css('font-weight','normal');
+        $(this).css('font-weight','bold').parent().next().show().find('a').each(function(k,v){
+          if(k==0){
+            $(this).find('span').text(' ED2K');
+          }
+          $(this).attr('href',$(this).attr('rel')+'&type=ed2k');
+        });
+      }
+    }).parent().next().find('a').attr('target','_blank').css('cursor','pointer');
+  }
+);
+
+ZeroClipboard.setMoviePath('/res/javascript/ZeroClipboard.swf');
+
+function copy_complete()
+{
+  alert('done!');
+}
+
+function copyUrl(tempCurLink){
+  if(window.clipboardData){
+    var ok=window.clipboardData.setData("Text",tempCurLink);
+    if(ok) alert("done!");
+  }else{
+    alert("Sorry,it only be used for IE!");
+  }
+}
+
+$.getJSON('/index/get_hotkey',function(R){
+  var html = '';
+  for(key in R.data){
+    html += '<a href="/?topic_title3='+R.data[key]+'" title="'+R.data[key]+'">'+R.data[key]+'</a>';
+  }
+  $('.search-hot').html(html);
+});
+
+$(document).ready(function(){
+  GLOBAL.AD.FloatAD();
+  $(window).trigger('resize');
+});
+</script>
+
+  <div class="logins_popup" id="popup" style="display:none;">
+    <div class="menu_bor">
+      <div class="menu_form_header" id="popup_drag" style="cursor:move;">
+        <img class="menu_form_exit" id="popup_exit" src="/res/images/close1.gif" /> Welcome
+    </div>
+      <div class="menu_form_body">
+        <form method="post" action="/index/login">
+          <table>
+            <tr>
+              <th>Username：</th>
+              <td><input class="txts" name="user_name" id="user_name" type="text" /></td>
+            </tr>
+            <tr>
+              <th>Password：</th>
+              <td><input class="txts" name="user_pwd" id="user_pwd" type="password" /></td>
+            </tr>
+            <tr>
+              <th></th>
+              <td ><input class="btn" style="height:20px;" type="submit" value="login"/></td>
+            </tr>
+          </table>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="address_popup" id="popup1" style="display:none;background-color:#fff;z-index:999">
+    <div class="menu_bor">
+      <div class="menu_form_header" id="popup1_drag">
+        <img class="menu_form_exit" id="popup1_exit" src="/res/images/close1.gif" /> upload torrent</em>
+    </div>
+      <div class="menu_form_body" style="height:600px;overflow:auto;">
+        <form method="post" action="/index/topic_add" enctype="multipart/form-data">
+          <table>
+            <tr>
+              <td height="26">&nbsp;</td>
+              <td colspan="3"><input class="btn" style="height:20px;" type="submit" value="publish" />&nbsp;&nbsp;&nbsp;<input class="btn" style="height:20px;" type="reset" value="reset" /></td>
+            </tr>
+            <tr>
+              <td width="10%" align="right">Name：</td>
+              <td width="67%" valign="top"><input class="txtz" name="topic_title" type="text" style="width:500px;" /></td>
+              <td width="8%" align="right">Category：</td>
+              <td width="15%">
+                <select name="class_id">
+                  <option value="1">美剧</option><option value="6">HR-电影</option><option value="25">MP4-电影</option><option value="21">日剧</option><option value="26">韩剧</option><option value="28">纪录片</option><option value="3">其他</option><option value="18">音乐电视</option><option value="23">公开课</option><option value="5">RMVB电影</option>              </select>
+              </td>
+            </tr>
+            <tr>
+              <td height="26" align="right">magnet link：</td>
+              <td colspan="3"><textarea name="topic_magnet" id="topic_magnet" style="width:500px;height:60px;"></textarea></td>
+            </tr>
+            <tr>
+              <td height="26" align="right">ed2k link：</td>
+              <td colspan="3"><textarea name="topic_ed2k" id="topic_ed2k" style="width:500px;height:60px;"></textarea></td>
+            </tr>
+            <tr>
+              <td height="26" align="right">qvod link：</td>
+              <td colspan="3"><textarea name="topic_qvod" id="topic_qvod" style="width:500px;height:60px;"></textarea></td>
+            </tr>
+            <tr>
+              <td height="26" align="right">disk link：</td>
+              <td colspan="3"><textarea name="topic_disk" id="topic_disk" style="width:500px;height:60px;"></textarea></td>
+            </tr>
+            <tr>
+              <td height="26" align="right">filesize：</td>
+              <td colspan="3"><input type="text" name="file_size" id="file_size" style="width:100px;height:20px;"></td>
+            </tr>
+            <!-- <tr>
+              <td height="230" align="right" valign="top">intro：</td>
+              <td colspan="3" valign="top">
+              <textarea name="topic_data" id="topic_data" style="display:none"></textarea>
+              <iframe id="Editor" name="Editor" src="ubb/editor.html?id=topic_data" frameBorder="0" marginHeight="0" marginWidth="0" scrolling="No" style="height:420px;width:100%"></iframe>
+              </td>
+            </tr> -->
+            <tr>
+              <td height="26">&nbsp;</td>
+              <td colspan="3"><input class="btn" style="height:20px;" type="submit" value="publish" />&nbsp;&nbsp;&nbsp;<input class="btn" style="height:20px;" type="reset" value="reset" /></td>
+            </tr>
+          </table>
+        </form>
+      </div>
+    </div>
+  </div>
+<!--弹出发布层样式 End-->
+
+<div class="middle-box">
+  <div class="w">
+      <div class="tab-box">
+        <a href='/' class="selected" >全部资源</a>
+          <a href="/?cid=1"  >美剧</a><a href="/?cid=6"  >HR-电影</a><a href="/?cid=25"  >MP4-电影</a><a href="/?cid=21"  >日剧</a><a href="/?cid=26"  >韩剧</a><a href="/?cid=28"  >纪录片</a><a href="/?cid=3"  >其他</a><a href="/?cid=18"  >音乐电视</a><a href="/?cid=23"  >公开课</a><a href="/?cid=5"  >RMVB电影</a>        </div>
+
+        <dl class="list-item">
+                        <dt>2016-05-22</dt>            <dd magnet="magnet:?xt=urn:btih:b141b1a11bfd80f27b8f6ecc20e261d3d59f01fc&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E5%8F%A4%E6%88%98%E5%9C%BA%E4%BC%A0%E5%A5%87.Outlander.S02E05.%E4%B8%AD%E8%8B%B1%E5%AD%97%E5%B9%95.WEB-HR.AC3.1024X576.x264.mp4|511913098|e059fba01336d71307b950103a64babd|h=awmd45nbyctkemvq7ysmigkddy6xbhd3|/" topic_id="100227">
+              <span class="a">17:19</span>
+              <span class="b"><a href="/100227.html">古战场传奇.Outlander.S02E05.中英字幕.WEB-HR.AC3.1024X576.x264.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>488.2 MB</b><a href="/100227.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:371a81cdd27d700a15581cfd7c39f3176c4c3122&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E6%98%9F%E6%98%9F%E4%B9%8B%E7%81%AB.Hi.no.Ko.Ep08.Chi_Jap.HDTVrip.1280X720-ZhuixinFan.mp4|628860233|02f9046c701413f46b6450fdb55cbd71|h=i6kfqpym7njfhtyaszhyt5d7uqf6xfm6|/" topic_id="100226">
+              <span class="a">16:11</span>
+              <span class="b"><a href="/100226.html">星星之火.Hi.no.Ko.Ep08.Chi_Jap.HDTVrip.1280X720-ZhuixinFan.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>599.7 MB</b><a href="/100226.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:dc69fecb65a4abd2c7cb10b29fb4d3abcbaf3c66&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E6%A0%BC%E6%9E%97.Grimm.S05E21.%E4%B8%AD%E8%8B%B1%E5%AD%97%E5%B9%95.HDTVrip.1024X576.mp4|825378663|774da5746582c9604b68d1d58f6ecb14|h=c7hrmb4c2dk4h7cohd47sfj2e4hmshaw|/" topic_id="100225">
+              <span class="a">14:59</span>
+              <span class="b"><a href="/100225.html">格林.Grimm.S05E21.中英字幕.HDTVrip.1024X576.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>787.1 MB</b><a href="/100225.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:4d3b08d696665b7f1c617022061a1d71667f666c&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|La.Grande.Bellezza.2013.%E7%BB%9D%E7%BE%8E%E4%B9%8B%E5%9F%8E.720p.Chi_Ita.ZMZ-BD-MP4.mp4|2104998765|3da9b8f1f360f5cb1e7311318c9ec124|h=jychuqlwnjmn4rp4z3voeq4qopkfskbz|/" topic_id="100224">
+              <span class="a">13:27</span>
+              <span class="b"><a href="/100224.html">La.Grande.Bellezza.2013.绝美之城.720p.Chi_Ita.ZMZ-BD-MP4.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>2.0 GB</b><a href="/100224.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:10d6fbcde466ad11943a50de7c525157f1db0f1f&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|The.Originals.S03E22.%E5%8F%8C%E8%AF%AD%E5%AD%97%E5%B9%95.HDTVrip.720p.UnIon%E5%AD%97%E5%B9%95%E7%BB%84.mkv|640672570|208989bfc83b02b4c9194cedfe18eb1b|h=cwtdjvfhrvftwz5ibdwmfjds4cmqgqrr|/" topic_id="100223">
+              <span class="a">12:22</span>
+              <span class="b"><a href="/100223.html">The.Originals.S03E22.双语字幕.HDTVrip.720p.UnIon字幕组.mkv【L】</a></span>
+              <span class="c"></span>
+              <span class="d"><b>611.0 MB</b><a href="/100223.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:7a588836a6deac2c7ff8098f1942f83d4720f2e0&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E5%A4%96%E5%8C%85%E5%85%AC%E5%8F%B8.Outsourced.S01E01.%E4%B8%AD%E8%8B%B1%E5%AD%97%E5%B9%95.WEB-HR.AAC.1024X576.x264.mp4|228427457|b30dfaa6d39ccc0c95207c2119972d9b|h=2ymqh6adl2btmf3di7mkarwu362ii76e|/" topic_id="100222">
+              <span class="a">12:18</span>
+              <span class="b"><a href="/100222.html">外包公司.Outsourced.S01E01.中英字幕.WEB-HR.AAC.1024X576.x264.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>217.8 MB</b><a href="/100222.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:82ddc9219b74b84041a452bf921ba65717ba120b&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E7%94%9F%E6%B4%BB%E5%A4%A7%E7%88%86%E7%82%B8.The.Big.Bang.Theory.S09E23.%E4%B8%AD%E8%8B%B1%E5%AD%97%E5%B9%95.WEB-HR.AAC.1024X576.x264.mp4|185464804|de6f40b82ade297a1d58d79936ae8b15|h=hp3vwdmyjlckr5jgws5nieafr4txc2sm|/" topic_id="100221">
+              <span class="a">12:08</span>
+              <span class="b"><a href="/100221.html">生活大爆炸.The.Big.Bang.Theory.S09E23.中英字幕.WEB-HR.AAC.1024X576.x264.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>176.9 MB</b><a href="/100221.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:203990ce57d5bcacad7164f7ba1d4b561979a542&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E9%80%86%E8%BD%AC%E5%A5%87%E5%85%B5.Turn.S03E04.720p.HDTV.x264.%E5%8F%8C%E8%AF%AD%E5%AD%97%E5%B9%95.%E6%B7%B1%E5%BD%B1%E5%AD%97%E5%B9%95%E7%BB%84.mp4|528331279|aea452ff1d919a2af36033757435cac8|h=owq3lvhoozwdvrh4d7sjtac3mxrr45qv|/" topic_id="100220">
+              <span class="a">11:52</span>
+              <span class="b"><a href="/100220.html">逆转奇兵.Turn.S03E04.720p.HDTV.x264.双语字幕.深影字幕组.mp4【L】</a></span>
+              <span class="c"></span>
+              <span class="d"><b>503.9 MB</b><a href="/100220.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:7e6a9de9a9fd63a610a1f2993a150fd1427ca989&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E6%98%9F%E9%99%85%E6%BC%AB%E6%AD%A5.Wonder.Over.Yonder.S02E15.HR-HDTV.x264.AAC.Chs.Eng-Deefun%E8%BF%AA%E5%B9%BB%E5%AD%97%E5%B9%95%E7%BB%84.mkv|282574517|0f9915ebbc76412963d1b5269f22d93c|h=ewgcf6e646ixsq3pvpsl542qthcxbypa|/" topic_id="100219">
+              <span class="a">11:50</span>
+              <span class="b"><a href="/100219.html">星际漫步.Wonder.Over.Yonder.S02E15.HR-HDTV.x264.AAC.Chs.Eng-Deefun迪幻字幕组.mkv【L】</a></span>
+              <span class="c"></span>
+              <span class="d"><b>269.5 MB</b><a href="/100219.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:c2339964a70a222f9e03caf44740ffd46704c4df&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E6%98%9F%E9%99%85%E6%BC%AB%E6%AD%A5.Wander.Over.Yonder.S02E15.Chs.Eng-Deefun%E8%BF%AA%E5%B9%BB%E5%AD%97%E5%B9%95%E7%BB%84.mp4|129954443|5d298d2c1040f17a2fb4ed72094acff8|h=5jei2663rvqugw22mseq7ktykswfrzxr|/" topic_id="100218">
+              <span class="a">11:45</span>
+              <span class="b"><a href="/100218.html">星际漫步.Wander.Over.Yonder.S02E15.Chs.Eng-Deefun迪幻字幕组.mp4【L】</a></span>
+              <span class="c"></span>
+              <span class="d"><b>123.9 MB</b><a href="/100218.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:1c07e00acab92d3a83f881c2521c82b87d270922&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E5%90%8C%E5%A6%BB%E4%BF%B1%E4%B9%90%E9%83%A8.Grace.And.Frankie.S02E12.%E4%B8%AD%E8%8B%B1%E5%AD%97%E5%B9%95.HDTVrip.1024X576.mp4|303515053|64b66ec4b5233e2ce4b32fb02ec6cf28|h=rbxr7efol5bwmjp53io235jqtftphdql|/" topic_id="100217">
+              <span class="a">11:41</span>
+              <span class="b"><a href="/100217.html">同妻俱乐部.Grace.And.Frankie.S02E12.中英字幕.HDTVrip.1024X576.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>289.5 MB</b><a href="/100217.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:943420e0b11c0cec21f966083f90aa5ae0e02f58&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E7%94%9F%E6%B4%BB%E5%A4%A7%E7%88%86%E7%82%B8.The.Big.Bang.Theory.S09E18.%E4%B8%AD%E8%8B%B1%E5%AD%97%E5%B9%95.WEB-HR.AAC.1024X576.x264.mp4|192481720|e78ed85d06891b35e12c66491820e0f8|h=3722f57abpv37a55j3zmu72djcscjkya|/" topic_id="100216">
+              <span class="a">10:50</span>
+              <span class="b"><a href="/100216.html">生活大爆炸.The.Big.Bang.Theory.S09E18.中英字幕.WEB-HR.AAC.1024X576.x264.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>183.6 MB</b><a href="/100216.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:c7eece4fd95f589a4239fdd67864d1a6c92d86ce&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E7%94%9F%E6%B4%BB%E5%A4%A7%E7%88%86%E7%82%B8.The.Big.Bang.Theory.S09E19.%E4%B8%AD%E8%8B%B1%E5%AD%97%E5%B9%95.WEB-HR.AAC.1024X576.x264.mp4|206650601|da7a707719855d0bd46cada7998c1e8b|h=faj3ip4ik6rsz2uaw2fpsuquzb2qgc6u|/" topic_id="100215">
+              <span class="a">10:48</span>
+              <span class="b"><a href="/100215.html">生活大爆炸.The.Big.Bang.Theory.S09E19.中英字幕.WEB-HR.AAC.1024X576.x264.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>197.1 MB</b><a href="/100215.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:4bbfb44601b37365f8ff6d96eb30ffed98451a24&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E7%94%9F%E6%B4%BB%E5%A4%A7%E7%88%86%E7%82%B8.The.Big.Bang.Theory.S09E20.%E4%B8%AD%E8%8B%B1%E5%AD%97%E5%B9%95.WEB-HR.AAC.1024X576.x264.mp4|189238588|1b7e0346c22323f39f91bf2d40133565|h=5chm337miolfajjjecgvyzc4m6qtpb6a|/" topic_id="100214">
+              <span class="a">10:46</span>
+              <span class="b"><a href="/100214.html">生活大爆炸.The.Big.Bang.Theory.S09E20.中英字幕.WEB-HR.AAC.1024X576.x264.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>180.5 MB</b><a href="/100214.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:51020bd318f8698403a0a9f677884b5cc521ae82&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E7%94%9F%E6%B4%BB%E5%A4%A7%E7%88%86%E7%82%B8.The.Big.Bang.Theory.S09E21.%E4%B8%AD%E8%8B%B1%E5%AD%97%E5%B9%95.WEB-HR.AAC.1024X576.x264.mp4|185197495|923100c66f22a49d47cbd7366adc02ab|h=b5reeyum4pjeed5gp7zu5yixtbjmmhn6|/" topic_id="100213">
+              <span class="a">10:44</span>
+              <span class="b"><a href="/100213.html">生活大爆炸.The.Big.Bang.Theory.S09E21.中英字幕.WEB-HR.AAC.1024X576.x264.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>176.6 MB</b><a href="/100213.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:8a56aade7250e74b29a8583acc12271d27ec098b&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E7%94%9F%E6%B4%BB%E5%A4%A7%E7%88%86%E7%82%B8.The.Big.Bang.Theory.S09E22.%E4%B8%AD%E8%8B%B1%E5%AD%97%E5%B9%95.WEB-HR.AAC.1024X576.x264.mp4|199420399|82597e613dd35ed8203d009db3f6665e|h=phq6ulwodn4otly2ufi524s4ylq5hoox|/" topic_id="100212">
+              <span class="a">10:42</span>
+              <span class="b"><a href="/100212.html">生活大爆炸.The.Big.Bang.Theory.S09E22.中英字幕.WEB-HR.AAC.1024X576.x264.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>190.2 MB</b><a href="/100212.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:ab4893b5b49c059afb79fae203f31329ddfaf228&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E7%94%9F%E6%B4%BB%E5%A4%A7%E7%88%86%E7%82%B8.The.Big.Bang.Theory.S09E24.END.%E4%B8%AD%E8%8B%B1%E5%AD%97%E5%B9%95.WEB-HR.AAC.1024X576.x264.mp4|197436672|69c3d1fcfb141b4911df46bbf670e37b|h=4hxyzjycmaqbeir3khuq6mbyuz4f2o6s|/" topic_id="100211">
+              <span class="a">10:37</span>
+              <span class="b"><a href="/100211.html">生活大爆炸.The.Big.Bang.Theory.S09E24.END.中英字幕.WEB-HR.AAC.1024X576.x264.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>188.3 MB</b><a href="/100211.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:53ab3e2f1f79b5f1b9ce944961cd8ea384028b23&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E6%98%9F%E6%98%9F%E4%B9%8B%E7%81%AB.Hi.no.Ko.Ep08.Chi_Jap.HDTVrip.852X480-ZhuixinFan.mp4|187522533|f49fa14ae5f28b84c7932461f58df1fe|h=cgpgnykn3up3lwvvim2aa2miguiqjwuk|/" topic_id="100210">
+              <span class="a">05:47</span>
+              <span class="b"><a href="/100210.html">星星之火.Hi.no.Ko.Ep08.Chi_Jap.HDTVrip.852X480-ZhuixinFan.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>178.8 MB</b><a href="/100210.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:e51b221758c2a5d021080b98d3cb7383f7302763&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E8%8A%9D%E5%8A%A0%E5%93%A5%E5%8C%BB%E9%99%A2.Chicago.Med.S01E18.%E4%B8%AD%E8%8B%B1%E5%AD%97%E5%B9%95.WEB-HR.AAC.1024X576.x264.mp4|429195810|12ad997085162aa573e8c0155b759180|h=ercgipvjmqfp4572owb2oucncw675ub7|/" topic_id="100209">
+              <span class="a">02:40</span>
+              <span class="b"><a href="/100209.html">芝加哥医院.Chicago.Med.S01E18.中英字幕.WEB-HR.AAC.1024X576.x264.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>409.3 MB</b><a href="/100209.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:2eec71354c6e7db8849adb550625a4d378cae21a&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E8%8A%9D%E5%8A%A0%E5%93%A5%E5%8C%BB%E9%99%A2.Chicago.Med.S01E17.%E4%B8%AD%E8%8B%B1%E5%AD%97%E5%B9%95.WEB-HR.AAC.1024X576.x264.mp4|429105881|7cb72bd06c121f4a6fece8d1a9568f68|h=x6k2s2ga7ocf4qfeocyzkr4hay5z2gnx|/" topic_id="100208">
+              <span class="a">02:37</span>
+              <span class="b"><a href="/100208.html">芝加哥医院.Chicago.Med.S01E17.中英字幕.WEB-HR.AAC.1024X576.x264.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>409.2 MB</b><a href="/100208.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:968b48dfb2ea20943e7f4848d612e9bdd4b87379&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E8%8A%9D%E5%8A%A0%E5%93%A5%E5%8C%BB%E9%99%A2.Chicago.Med.S01E16.%E4%B8%AD%E8%8B%B1%E5%AD%97%E5%B9%95.WEB-HR.AAC.1024X576.x264.mp4|423074513|069d01cdefd19a26b749521be1a645ea|h=awwovhdk2obtgdme2uzzzggasxokg2mt|/" topic_id="100207">
+              <span class="a">02:32</span>
+              <span class="b"><a href="/100207.html">芝加哥医院.Chicago.Med.S01E16.中英字幕.WEB-HR.AAC.1024X576.x264.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>403.5 MB</b><a href="/100207.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:8ce87ba6ef4041284d947d28316da7c3e3f9f4a0&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E5%A4%A7%E5%8F%94%E5%B1%80%E7%89%B9%E5%B7%A5.The%20Man%20from%20U.N.C.L.E.S01E12.Chi_Eng.DVDrip.640x480-%E6%8B%89%E9%A3%8E%E5%AD%97%E5%B9%95%E7%BB%84.mp4|180898365|2915e72e3e3de10429a999ef4d2d1b7c|h=ly7ginds6t5colevmlrpfingpbwr6wy6|/" topic_id="100206">
+              <span class="a">01:14</span>
+              <span class="b"><a href="/100206.html">大叔局特工.The Man from U.N.C.L.E.S01E12.Chi_Eng.DVDrip.640x480-拉风字幕组.mp4【L】</a></span>
+              <span class="c"></span>
+              <span class="d"><b>172.5 MB</b><a href="/100206.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:6e9ebbda3c78d7b6cad2564c8659a2ecb5fa34c0&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E5%A4%A7%E5%8F%94%E5%B1%80%E7%89%B9%E5%B7%A5.The%20Man%20from%20U.N.C.L.E.S01E11.Chi_Eng.DVDrip.640x480-%E6%8B%89%E9%A3%8E%E5%AD%97%E5%B9%95%E7%BB%84.mp4|190380628|bc2cb4dd5c9f0aaf01df99f202ca75eb|h=t4rsifz6tafefcyxljxbbiaugoedj476|/" topic_id="100205">
+              <span class="a">00:55</span>
+              <span class="b"><a href="/100205.html">大叔局特工.The Man from U.N.C.L.E.S01E11.Chi_Eng.DVDrip.640x480-拉风字幕组.mp4【L】</a></span>
+              <span class="c"></span>
+              <span class="d"><b>181.6 MB</b><a href="/100205.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:2e2f25c476e71418283f9f43b5030c9881c67e2e&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E9%BB%91%E5%B8%86.Black.Sails.S03E04.%E4%B8%AD%E8%8B%B1%E5%AD%97%E5%B9%95.WEB-HR.AAC.1024X576.x264.v2.mp4|537998646|35dcb02bc5a12e7ffbfe1bd9a410a8a3|h=c25unpqhx7hlyicbe7utuftakedz2off|/" topic_id="100204">
+              <span class="a">00:18</span>
+              <span class="b"><a href="/100204.html">黑帆.Black.Sails.S03E04.中英字幕.WEB-HR.AAC.1024X576.x264.v2.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>513.1 MB</b><a href="/100204.html" class="btn-d">下载文件</a></span>
+            </dd>              <dt>2016-05-21</dt>            <dd magnet="magnet:?xt=urn:btih:7bd65876367369ed3e3e7ff9c34ec3ec0d2ebc6a&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E9%BB%91%E5%90%83%E9%BB%91.Banshee.S04E08.END.%E4%B8%AD%E8%8B%B1%E5%AD%97%E5%B9%95.HDTVrip.AAC.1024X576.mp4|594403917|b9c3762a0958f7fe3d1780799a97f8f7|h=vvatuaon3otrtgygdm7ybgsy5xp37zcu|/" topic_id="100203">
+              <span class="a">23:23</span>
+              <span class="b"><a href="/100203.html">黑吃黑.Banshee.S04E08.END.中英字幕.HDTVrip.AAC.1024X576.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>566.9 MB</b><a href="/100203.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:6e9535eef9698287084fa0c114724e4d4c1160fb&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E5%A7%8B%E7%A5%96%E5%AE%B6%E6%97%8F.The.Originals.S03E22.%E4%B8%AD%E8%8B%B1%E5%AD%97%E5%B9%95.HDTVrip.1024X576.mp4|427798042|520eeaac2f61d6d0547397b0bd4cef22|h=upyqlqhijot6uf66zkjpshw7m4nhqzwt|/" topic_id="100202">
+              <span class="a">23:21</span>
+              <span class="b"><a href="/100202.html">始祖家族.The.Originals.S03E22.中英字幕.HDTVrip.1024X576.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>408.0 MB</b><a href="/100202.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:db514f302c07da54efaaca139e7a5cc4d620978c&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E4%B8%83%E4%B8%AA%E5%B0%8F%E7%9F%AE%E4%BA%BA.The.7D.S02E10.%E4%B8%AD%E8%8B%B1%E5%AD%97%E5%B9%95.HR-HDTV.AAC.1024X576.x264.mp4|225006557|bc951daecbdb1d1fc6ef92c395308f44|h=ge36m3xarqj7gbbmreevjoopsd5tszrl|/" topic_id="100201">
+              <span class="a">23:16</span>
+              <span class="b"><a href="/100201.html">七个小矮人.The.7D.S02E10.中英字幕.HR-HDTV.AAC.1024X576.x264.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>214.6 MB</b><a href="/100201.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:064c3c82546384f4a2914636bc049c22d4959024&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E9%BB%91%E5%B8%86.Black.Sails.S03E10.%E4%B8%AD%E8%8B%B1%E5%AD%97%E5%B9%95.WEB-HR.AAC.1024X576.x264.mp4|497873478|5aed945623acf6a063fa229c406242df|h=666zebnbp3mlk5xjxoblzanxtenzxckk|/" topic_id="100200">
+              <span class="a">23:13</span>
+              <span class="b"><a href="/100200.html">黑帆.Black.Sails.S03E10.中英字幕.WEB-HR.AAC.1024X576.x264.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>474.8 MB</b><a href="/100200.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:e3fec359c857f50fb941dab7ea929324108ebedc&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E9%BB%91%E5%B8%86.Black.Sails.S03E09.%E4%B8%AD%E8%8B%B1%E5%AD%97%E5%B9%95.WEB-HR.AAC.1024X576.x264.mp4|576374638|39856991c07436b6fab4d4993dce3bc7|h=uefkefw7bqh3jw34rsxdzeb6nnwi6vjw|/" topic_id="100199">
+              <span class="a">23:04</span>
+              <span class="b"><a href="/100199.html">黑帆.Black.Sails.S03E09.中英字幕.WEB-HR.AAC.1024X576.x264.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>549.7 MB</b><a href="/100199.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:9ff55346b5c5815eb13d1199eb705373aa839ca7&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E6%88%91%E4%B8%8D%E6%98%AF%E7%BB%93%E4%B8%8D%E4%BA%86%E5%A9%9A%EF%BC%8C%E5%8F%AA%E6%98%AF%E4%B8%8D%E6%83%B3.Watashi.Kekkon.Dekinainjanakute.Shinain.Desu.Ep06.Chi_Jap.HDTVrip.1280X720-ZhuixinFan.mp4|628683016|689b0c95d78049d7ff5f3405a08906fd|h=7f5htxne22dsblrr3ylfy3vbexro5ncx|/" topic_id="100198">
+              <span class="a">22:48</span>
+              <span class="b"><a href="/100198.html">我不是结不了婚，只是不想.Watashi.Kekkon.Dekinainjanakute.Shinain.Desu.Ep06.Chi_Jap.HDTVrip.1280X720-ZhuixinFan.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>599.6 MB</b><a href="/100198.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:515016a7884c8210fdefbf484abf9275f5b6ee2e&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E4%B8%83%E4%B8%AA%E5%B0%8F%E7%9F%AE%E4%BA%BA.The.7D.S02E09.%E4%B8%AD%E8%8B%B1%E5%AD%97%E5%B9%95.HR-HDTV.AAC.1024X576.x264.mp4|224759679|6289fc99016018a9f4cd2a5f983f40a8|h=m5v4urmw74ekcp2zsbver4q2cngl2535|/" topic_id="100197">
+              <span class="a">22:40</span>
+              <span class="b"><a href="/100197.html">七个小矮人.The.7D.S02E09.中英字幕.HR-HDTV.AAC.1024X576.x264.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>214.3 MB</b><a href="/100197.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:b09807cf193ef82b4868ffb07f69c6e6b549d6ae&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|Greys.Anatomy.S12E24.%E5%8F%8C%E8%AF%AD%E5%AD%97%E5%B9%95.720p.UnIon%E5%AD%97%E5%B9%95%E7%BB%84.v2.mkv|759269767|f5cd81af249f51c8c31693a6f062f737|h=jwkyxdyjnwngjn5es4f76yvpd33hzgu4|/" topic_id="100196">
+              <span class="a">22:08</span>
+              <span class="b"><a href="/100196.html">Greys.Anatomy.S12E24.双语字幕.720p.UnIon字幕组.v2.mkv【L】</a></span>
+              <span class="c"></span>
+              <span class="d"><b>724.1 MB</b><a href="/100196.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:db4978dfbc2897defb11cf8845c3195edf48da1f&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E6%91%A9%E7%99%BB%E5%AE%B6%E5%BA%AD.Modern.Family.S07E16.%E4%B8%AD%E8%8B%B1%E5%AD%97%E5%B9%95.WEB-HR.AC3.1024X576.x264.mp4|214882402|b1b17d656796efacf791243d59b4a5cc|h=lon66kymdlrwrr65iev3njty4j6wtssc|/" topic_id="100195">
+              <span class="a">22:03</span>
+              <span class="b"><a href="/100195.html">摩登家庭.Modern.Family.S07E16.中英字幕.WEB-HR.AC3.1024X576.x264.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>204.9 MB</b><a href="/100195.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:a2a838e6b8e9128c4c47e041128b39bc1076ecd7&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E6%91%A9%E7%99%BB%E5%AE%B6%E5%BA%AD.Modern.Family.S07E17.%E4%B8%AD%E8%8B%B1%E5%AD%97%E5%B9%95.WEB-HR.AC3.1024X576.x264.mp4|216139301|41bf187c09cd9774a2fdf48f480180e3|h=hkidyg67nxr26xgrtrht7ln2oueflq4v|/" topic_id="100194">
+              <span class="a">22:02</span>
+              <span class="b"><a href="/100194.html">摩登家庭.Modern.Family.S07E17.中英字幕.WEB-HR.AC3.1024X576.x264.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>206.1 MB</b><a href="/100194.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:0a2f5d555550b0305ff3b0fa300114ab3dfacbf5&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E6%91%A9%E7%99%BB%E5%AE%B6%E5%BA%AD.Modern.Family.S07E18.%E4%B8%AD%E8%8B%B1%E5%AD%97%E5%B9%95.WEB-HR.AC3.1024X576.x264.mp4|212049076|2b9192a4c01ddc9c837b87512bd0d77d|h=px7xga4wmezt34tsnl35phic73bw2lt3|/" topic_id="100193">
+              <span class="a">22:01</span>
+              <span class="b"><a href="/100193.html">摩登家庭.Modern.Family.S07E18.中英字幕.WEB-HR.AC3.1024X576.x264.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>202.2 MB</b><a href="/100193.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:cce10e216b4f30e5d2bf02f63b2b12ceefb44e54&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E6%91%A9%E7%99%BB%E5%AE%B6%E5%BA%AD.Modern.Family.S07E19.%E4%B8%AD%E8%8B%B1%E5%AD%97%E5%B9%95.WEB-HR.AC3.1024X576.x264.mp4|216140191|cd775943e698415c54bfa62802525b6d|h=z3zfyxrk4azd4g3tygqeqz5tux6ir3bo|/" topic_id="100192">
+              <span class="a">22:01</span>
+              <span class="b"><a href="/100192.html">摩登家庭.Modern.Family.S07E19.中英字幕.WEB-HR.AC3.1024X576.x264.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>206.1 MB</b><a href="/100192.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:a768d7ae97c23cac04eedac15a479ab06c459c14&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E6%91%A9%E7%99%BB%E5%AE%B6%E5%BA%AD.Modern.Family.S07E20.%E4%B8%AD%E8%8B%B1%E5%AD%97%E5%B9%95.WEB-HR.AC3.1024X576.x264.mp4|216110358|ed19df2fd04f63c75cc701d2e0e1350b|h=4yewphhk3wkv7wabz6ulc6fp4peqrkde|/" topic_id="100191">
+              <span class="a">22:00</span>
+              <span class="b"><a href="/100191.html">摩登家庭.Modern.Family.S07E20.中英字幕.WEB-HR.AC3.1024X576.x264.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>206.1 MB</b><a href="/100191.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:5b5cc536b8b4212a341a6c40b2709f3023f73a38&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E6%91%A9%E7%99%BB%E5%AE%B6%E5%BA%AD.Modern.Family.S07E21.%E4%B8%AD%E8%8B%B1%E5%AD%97%E5%B9%95.WEB-HR.AC3.1024X576.x264.mp4|215954923|d5f6b20b1c59ba31cff91f7e4d9dabf2|h=viyrgsqspbujcj5pdcqvfyhfb6kwqbtf|/" topic_id="100190">
+              <span class="a">21:59</span>
+              <span class="b"><a href="/100190.html">摩登家庭.Modern.Family.S07E21.中英字幕.WEB-HR.AC3.1024X576.x264.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>206.0 MB</b><a href="/100190.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:72b14786841a2f657074f49ae52ad67a6ae74149&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E9%BB%91%E5%B8%86.Black.Sails.S03E08.%E4%B8%AD%E8%8B%B1%E5%AD%97%E5%B9%95.WEB-HR.AAC.1024X576.x264.mp4|492470626|22e7cd1bf1f830a5a0bf98571ffd5d5a|h=l4z7rx2pr2cdb4ontyzsoalyxetieogz|/" topic_id="100189">
+              <span class="a">21:53</span>
+              <span class="b"><a href="/100189.html">黑帆.Black.Sails.S03E08.中英字幕.WEB-HR.AAC.1024X576.x264.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>469.7 MB</b><a href="/100189.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:48e88bdea13e3128dcddec2afc39282457317897&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E9%BB%91%E5%B8%86.Black.Sails.S03E07.%E4%B8%AD%E8%8B%B1%E5%AD%97%E5%B9%95.WEB-HR.AAC.1024X576.x264.mp4|577425311|14eb8582ddc46741814d6809d88b4d2a|h=rahe5xzvdcdsm5km5kofapi3r3fdo67b|/" topic_id="100188">
+              <span class="a">21:38</span>
+              <span class="b"><a href="/100188.html">黑帆.Black.Sails.S03E07.中英字幕.WEB-HR.AAC.1024X576.x264.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>550.7 MB</b><a href="/100188.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:4b5aab73e6d76c3df0dca84ec845f98eda8d28fe&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E5%A4%84%E5%A5%B3%E6%83%85%E7%BC%98.Jane.the.Virgin.S02E22.%E4%B8%AD%E8%8B%B1%E5%AD%97%E5%B9%95.HDTVrip.1024X576.mp4|425190369|1089674acd86114a24ad61ad59d6f5ad|h=553nwnvjisz2ocnazqjghhkgpiqc2e6r|/" topic_id="100187">
+              <span class="a">21:34</span>
+              <span class="b"><a href="/100187.html">处女情缘.Jane.the.Virgin.S02E22.中英字幕.HDTVrip.1024X576.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>405.5 MB</b><a href="/100187.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:7adf8c91f50b3b6d6e16de559cc02de517c573a8&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E9%BB%91%E5%B8%86.Black.Sails.S03E06.%E4%B8%AD%E8%8B%B1%E5%AD%97%E5%B9%95.WEB-HR.AAC.1024X576.x264.mp4|523294846|b80f30911f00e5ca67d64450347bcb14|h=k7r5ozgxfww4nzbm5px3pkowo5t3cmpg|/" topic_id="100186">
+              <span class="a">21:28</span>
+              <span class="b"><a href="/100186.html">黑帆.Black.Sails.S03E06.中英字幕.WEB-HR.AAC.1024X576.x264.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>499.1 MB</b><a href="/100186.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:e2e54039f42ea8cf49d766c45d9dd7bd29f7c7ed&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E6%96%B0%E7%89%A1%E4%B8%B9%E4%B8%8E%E8%94%B7%E8%96%87.Shin.Botan.to.Bara.Ep34.Chi_Jap.HDTVrip.720p-%E6%8B%89%E9%A3%8E%E5%AD%97%E5%B9%95%E7%BB%84.mp4|387660868|f5d3668173909bf377832b5c8c1657f5|h=7to7jlebklpi3wtlpeb22citp7majths|/" topic_id="100185">
+              <span class="a">21:16</span>
+              <span class="b"><a href="/100185.html">新牡丹与蔷薇.Shin.Botan.to.Bara.Ep34.Chi_Jap.HDTVrip.720p-拉风字幕组.mp4【L】</a></span>
+              <span class="c"></span>
+              <span class="d"><b>369.7 MB</b><a href="/100185.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:adcf26d6eaefbd38122dcb47689d998453270077&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E6%96%B0%E7%89%A1%E4%B8%B9%E4%B8%8E%E8%94%B7%E8%96%87.Shin.Botan.to.Bara.Ep33.Chi_Jap.HDTVrip.720p-%E6%8B%89%E9%A3%8E%E5%AD%97%E5%B9%95%E7%BB%84.mp4|403309031|81443f738e5dbb07161b7dd359d6cd72|h=4fzghczqu2i2azc7lcvxhwgb3necovrn|/" topic_id="100184">
+              <span class="a">20:46</span>
+              <span class="b"><a href="/100184.html">新牡丹与蔷薇.Shin.Botan.to.Bara.Ep33.Chi_Jap.HDTVrip.720p-拉风字幕组.mp4【L】</a></span>
+              <span class="c"></span>
+              <span class="d"><b>384.6 MB</b><a href="/100184.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:8965f8b2ea4631682a63a224e91668ea388b5ac6&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|Sissi.Die.Junge.Kaiserin.1956.%E8%8C%9C%E8%8C%9C%E5%85%AC%E4%B8%BB2.720p.Chi_Ger.ZMZ-BD-MP4.mp4|1581635774|434d19a149ad6ac9fdb1485c9d4b1558|h=t3wczgdnfqi24z5y3won357wfefqo5xs|/" topic_id="100183">
+              <span class="a">20:37</span>
+              <span class="b"><a href="/100183.html">Sissi.Die.Junge.Kaiserin.1956.茜茜公主2.720p.Chi_Ger.ZMZ-BD-MP4.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>1.5 GB</b><a href="/100183.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:118426690a43b5c8461e0ef9af45cd54d94af5cd&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E5%A4%A9%E8%8A%B1.Tenka.E04.%E4%B8%AD%E6%96%87%E5%AD%97%E5%B9%95.480X272.HDTVrip-%E6%8B%89%E9%A3%8E%E5%AD%97%E5%B9%95%E7%BB%84.mp4|82946246|04b29ce0aa493c5fd1874a470e6611c9|h=gsnlsjbrgw6gzgdwcgtayuifarepqmdn|/" topic_id="100182">
+              <span class="a">20:14</span>
+              <span class="b"><a href="/100182.html">天花.Tenka.E04.中文字幕.480X272.HDTVrip-拉风字幕组.mp4【L】</a></span>
+              <span class="c"></span>
+              <span class="d"><b>79.1 MB</b><a href="/100182.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:d39311d2488fac8e8d270d390a1474c7dd807213&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E7%A7%98%E5%AF%86.The.Secret.S01E04.%E4%B8%AD%E8%8B%B1%E5%AD%97%E5%B9%95.HDTVrip.1024X576.mp4|457753575|e345c58f23e6e1b5e59a0164b76970fc|h=dddmwk2bq3uofexoe3zoura3thjsbxse|/" topic_id="100181">
+              <span class="a">20:08</span>
+              <span class="b"><a href="/100181.html">秘密.The.Secret.S01E04.中英字幕.HDTVrip.1024X576.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>436.5 MB</b><a href="/100181.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:7a074134a20fda8eb86907b2beaf51ec4ed4f2eb&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E5%A4%A9%E8%8A%B1.Tenka.E03.%E4%B8%AD%E6%96%87%E5%AD%97%E5%B9%95.480X272.HDTVrip-%E6%8B%89%E9%A3%8E%E5%AD%97%E5%B9%95%E7%BB%84.mp4|82937503|9783d487378c3ead9ff68e1308927753|h=3ixos5mi7cbtq3fnjffdvrf67awyqplm|/" topic_id="100180">
+              <span class="a">20:05</span>
+              <span class="b"><a href="/100180.html">天花.Tenka.E03.中文字幕.480X272.HDTVrip-拉风字幕组.mp4【L】</a></span>
+              <span class="c"></span>
+              <span class="d"><b>79.1 MB</b><a href="/100180.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:fee930528263cd6154e1396004bd8a5326ac6bee&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E5%A4%A9%E8%8A%B1.Tenka.E02.%E4%B8%AD%E6%96%87%E5%AD%97%E5%B9%95.960X536.HDTVrip-%E6%8B%89%E9%A3%8E%E5%AD%97%E5%B9%95%E7%BB%84.mp4|282806767|02a089170d3acc94d86ac68feccf156b|h=i7mhwfkdqwswxun7rxqrxtatemil6dsf|/" topic_id="100179">
+              <span class="a">19:56</span>
+              <span class="b"><a href="/100179.html">天花.Tenka.E02.中文字幕.960X536.HDTVrip-拉风字幕组.mp4【L】</a></span>
+              <span class="c"></span>
+              <span class="d"><b>269.7 MB</b><a href="/100179.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:6ce1f692beef1ee61bd94dfb07ec103b7dce63a2&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E5%A4%A9%E8%8A%B1.Tenka.E01.%E4%B8%AD%E6%96%87%E5%AD%97%E5%B9%95.480X272.HDTVrip-%E6%8B%89%E9%A3%8E%E5%AD%97%E5%B9%95%E7%BB%84.mp4|61927788|1eb85cb01d0dfd302cc0cfe0f81f280d|h=jop67rx4sn7x4smlzcvjrfrvsilcmfps|/" topic_id="100178">
+              <span class="a">19:32</span>
+              <span class="b"><a href="/100178.html">天花.Tenka.E01.中文字幕.480X272.HDTVrip-拉风字幕组.mp4【L】</a></span>
+              <span class="c"></span>
+              <span class="d"><b>59.1 MB</b><a href="/100178.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:11066e95a378cd652e50ffeb1d1ba787e99e8a6d&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E5%8A%A0%E8%8F%B2%E7%8C%AB%E5%92%8C%E6%9C%8B%E5%8F%8B%E4%BB%AC.Garfield.and.Friends.S03E016.Chi_Eng.DVDrip.640x480-%E6%8B%89%E9%A3%8E%E5%AD%97%E5%B9%95%E7%BB%84.mp4|98070780|e5a89c98ecfde9b9e08f9e6b3c437eb7|h=a5ucaao5d247aom2sdljjgugmat4ab4k|/" topic_id="100177">
+              <span class="a">19:24</span>
+              <span class="b"><a href="/100177.html">加菲猫和朋友们.Garfield.and.Friends.S03E016.Chi_Eng.DVDrip.640x480-拉风字幕组.mp4【L】</a></span>
+              <span class="c"></span>
+              <span class="d"><b>93.5 MB</b><a href="/100177.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:32cdbf2ddc2907db7bc3f2eea6b7916bf5a60aed&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E5%8A%A0%E8%8F%B2%E7%8C%AB%E5%92%8C%E6%9C%8B%E5%8F%8B%E4%BB%AC.Garfield.and.Friends.S03E015.Chi_Eng.DVDrip.640x480-%E6%8B%89%E9%A3%8E%E5%AD%97%E5%B9%95%E7%BB%84.mp4|97019088|b3f776a4a6e67d58c4b8c0eed0e5de8c|h=fmlpz7pumrjk5lkg3n62rgy4wfbmnlcq|/" topic_id="100176">
+              <span class="a">19:14</span>
+              <span class="b"><a href="/100176.html">加菲猫和朋友们.Garfield.and.Friends.S03E015.Chi_Eng.DVDrip.640x480-拉风字幕组.mp4【L】</a></span>
+              <span class="c"></span>
+              <span class="d"><b>92.5 MB</b><a href="/100176.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:15e164f29c2dcd0ae89fac6dea6f1a359085e93c&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E4%B9%9F%E8%AE%A9%E6%88%91%E6%9C%89%E7%82%B9%E5%B0%8F%E6%89%A7%E7%9D%80.Sono.Okodawari.Watashi.ni.mo.Kureyo.Ep07.Chi_Jap.HDTVrip.1280X720-ZhuixinFan.mp4|314538177|14d41f169578183651e39b30be3ef5ec|h=dcwoznmsfjxseoibszp5gtmplbmz6xp5|/" topic_id="100175">
+              <span class="a">19:13</span>
+              <span class="b"><a href="/100175.html">也让我有点小执着.Sono.Okodawari.Watashi.ni.mo.Kureyo.Ep07.Chi_Jap.HDTVrip.1280X720-ZhuixinFan.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>300.0 MB</b><a href="/100175.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:5078a3ea884f2885ea1dd9ac28fb8d40d8919812&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E6%88%91%E4%B8%8D%E6%98%AF%E7%BB%93%E4%B8%8D%E4%BA%86%E5%A9%9A%EF%BC%8C%E5%8F%AA%E6%98%AF%E4%B8%8D%E6%83%B3.Watashi.Kekkon.Dekinainjanakute.Shinain.Desu.Ep06.Chi_Jap.HDTVrip.852X480-ZhuixinFan.mp4|275292698|2eb8d7a8c378019b575b34f5b211ffc3|h=m55ityzxepjgorsl7lqfy4sf6z73vv6b|/" topic_id="100174">
+              <span class="a">19:06</span>
+              <span class="b"><a href="/100174.html">我不是结不了婚，只是不想.Watashi.Kekkon.Dekinainjanakute.Shinain.Desu.Ep06.Chi_Jap.HDTVrip.852X480-ZhuixinFan.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>262.5 MB</b><a href="/100174.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:8709132584b3e0b881b27b9fe82e2a3586e4d77f&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E5%8D%95%E8%BA%AB%E5%85%AC%E5%AF%93.The.Odd.Couple.S02E11.%E4%B8%AD%E8%8B%B1%E5%AD%97%E5%B9%95.HR-HDTV.AAC.1024X576.x264.mp4|193356119|297eeae51f9bf733de10f15cca496cc2|h=u2m2usyli4uedl6w4nexlcmjaixxqcn7|/" topic_id="100173">
+              <span class="a">18:48</span>
+              <span class="b"><a href="/100173.html">单身公寓.The.Odd.Couple.S02E11.中英字幕.HR-HDTV.AAC.1024X576.x264.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>184.4 MB</b><a href="/100173.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:3538c4ae3b997b2c4633fefa11548948cb7eee92&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|Er.Ist.Wieder.Da.2015.%E5%B8%8C%E7%89%B9%E5%8B%92%E5%9B%9E%E6%9D%A5%E4%BA%86.720p.Chi_Ger.ZMZ-BD-MP4.mp4|1730416391|b8e85269d7809cf03cda8f92285afcb1|h=gxsvnqnlett4tl5rmomjozezrexqizzt|/" topic_id="100172">
+              <span class="a">18:35</span>
+              <span class="b"><a href="/100172.html">Er.Ist.Wieder.Da.2015.希特勒回来了.720p.Chi_Ger.ZMZ-BD-MP4.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>1.6 GB</b><a href="/100172.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:c6f2efbae9e1e95bb3111bdd74bd7c2b054767cc&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E8%B0%8D%E7%BD%91.Quantico.S01E22.%E4%B8%AD%E8%8B%B1%E5%AD%97%E5%B9%95.WEB-HR.AAC.1024X576.x264.mp4|429426161|4c905ce2d6d1f2fcea23070b7eff32ef|h=fcqxp3agvlspowin35csgec7mq5ummog|/" topic_id="100171">
+              <span class="a">17:58</span>
+              <span class="b"><a href="/100171.html">谍网.Quantico.S01E22.中英字幕.WEB-HR.AAC.1024X576.x264.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>409.5 MB</b><a href="/100171.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:3d7227b22a3bf9af160964a9d1a67eed361f2c88&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E6%9A%97%E5%A4%9C%E8%8B%B1%E9%9B%84NAOTO.Night.Hero.NAOTO.Ep06.Chi_Jap.HDTVrip.1280X720-ZhuixinFan.mp4|367185156|f6f1c729c0d729f3d7822c12e649cf35|h=g5nmehbx52r6vfemr3wv5j7poumenxek|/" topic_id="100170">
+              <span class="a">17:06</span>
+              <span class="b"><a href="/100170.html">暗夜英雄NAOTO.Night.Hero.NAOTO.Ep06.Chi_Jap.HDTVrip.1280X720-ZhuixinFan.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>350.2 MB</b><a href="/100170.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:f94171c4c2be436517b6404b4188461cee081346&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E4%B9%9F%E8%AE%A9%E6%88%91%E6%9C%89%E7%82%B9%E5%B0%8F%E6%89%A7%E7%9D%80.Sono.Okodawari.Watashi.ni.mo.Kureyo.Ep07.Chi_Jap.HDTVrip.852X480-ZhuixinFan.mp4|113611738|9e51e3553b601a1073d153f434606a09|h=pwhqze4ahrtt7gne2zk7yhfhcsd4zllf|/" topic_id="100169">
+              <span class="a">17:06</span>
+              <span class="b"><a href="/100169.html">也让我有点小执着.Sono.Okodawari.Watashi.ni.mo.Kureyo.Ep07.Chi_Jap.HDTVrip.852X480-ZhuixinFan.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>108.3 MB</b><a href="/100169.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:0631ee26e40a1f12c167967c1b4f74ad741d717b&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E7%A5%9E%E7%9B%BE%E5%B1%80%E7%89%B9%E5%B7%A5.Marvels.Agents.of.S.H.I.E.L.D.S03E22.720p.HDTV.x264.%E4%B8%AD%E8%8B%B1%E5%8F%8C%E8%AF%AD-%E6%B7%B1%E5%BD%B1%E5%AD%97%E5%B9%95%E7%BB%84.mp4|564962673|d26f622cd977be09f469a6cf87fe37e4|h=xxxxjrgtnhbqbamugq4hbzjjqayareml|/" topic_id="100168">
+              <span class="a">16:13</span>
+              <span class="b"><a href="/100168.html">神盾局特工.Marvels.Agents.of.S.H.I.E.L.D.S03E22.720p.HDTV.x264.中英双语-深影字幕组.mp4【L】</a></span>
+              <span class="c"></span>
+              <span class="d"><b>538.8 MB</b><a href="/100168.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:4205a1d7f25ee516da0dc0aa78c977f0bb19b73a&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|Greys.Anatomy.S12E24.%E5%8F%8C%E8%AF%AD%E5%AD%97%E5%B9%95.720p.UnIon%E5%AD%97%E5%B9%95%E7%BB%84.mkv|759558450|90f5bbab707551b4f7f025260a7a5b50|h=2y33lnmwzbwor57l7smmlcvcfsyzl4wa|/" topic_id="100167">
+              <span class="a">14:42</span>
+              <span class="b"><a href="/100167.html">Greys.Anatomy.S12E24.双语字幕.720p.UnIon字幕组.mkv【L】</a></span>
+              <span class="c"></span>
+              <span class="d"><b>724.4 MB</b><a href="/100167.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:0eff8668d7d33932379e6978bc8eb33b6330cbe3&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E9%BB%91%E8%89%B2%E5%AD%A4%E5%84%BF.Orphan.Black.S04E06.720p.HDTV.x264.%E5%8F%8C%E8%AF%AD%E5%AD%97%E5%B9%95-%E6%B7%B1%E5%BD%B1%E5%AD%97%E5%B9%95%E7%BB%84.mp4|514838023|8b39f3907ab5f5bcae4ffc8d476b491a|h=sihpejgrf4z6qpjae3e5kdkjsm3ts4ot|/" topic_id="100166">
+              <span class="a">13:45</span>
+              <span class="b"><a href="/100166.html">黑色孤儿.Orphan.Black.S04E06.720p.HDTV.x264.双语字幕-深影字幕组.mp4【L】</a></span>
+              <span class="c"></span>
+              <span class="d"><b>491.0 MB</b><a href="/100166.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:6383c0e47d57afc818df5d1b39e0065a45fe87da&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E6%96%B0%E8%B4%B5.Upstart.Crow.S01E02.720p.HDTV.x264.%E5%8F%8C%E8%AF%AD%E5%AD%97%E5%B9%95-%E6%B7%B1%E5%BD%B1%E5%AD%97%E5%B9%95%E7%BB%84.mp4|437866101|997350228f10e320b3e063624a31f725|h=j7ahzm4x666ao3grgzz4s5mrc5h5sy6l|/" topic_id="100165">
+              <span class="a">12:04</span>
+              <span class="b"><a href="/100165.html">新贵.Upstart.Crow.S01E02.720p.HDTV.x264.双语字幕-深影字幕组.mp4【L】</a></span>
+              <span class="c"></span>
+              <span class="d"><b>417.6 MB</b><a href="/100165.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:c3da548e349565e28199b80af5b0a78a911caf4c&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E9%97%AA%E7%94%B5%E4%BE%A0.The.Flash.S02E22.720p.HDTV.x264.%E5%8F%8C%E8%AF%AD%E5%AD%97%E5%B9%95-%E6%B7%B1%E5%BD%B1%E5%AD%97%E5%B9%95%E7%BB%84.mp4|537950980|ef46568b0ffc0de58dea9ad5aadb4781|h=aqz3gzffco5pznfcbb75e4vdiap3xsww|/" topic_id="100164">
+              <span class="a">11:51</span>
+              <span class="b"><a href="/100164.html">闪电侠.The.Flash.S02E22.720p.HDTV.x264.双语字幕-深影字幕组.mp4【L】</a></span>
+              <span class="c"></span>
+              <span class="d"><b>4.0 GB</b><a href="/100164.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:c3da548e349565e28199b80af5b0a78a911caf4c&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E9%97%AA%E7%94%B5%E4%BE%A0.The.Flash.S02E22.720p.HDTV.x264.%E5%8F%8C%E8%AF%AD%E5%AD%97%E5%B9%95-%E6%B7%B1%E5%BD%B1%E5%AD%97%E5%B9%95%E7%BB%84.mp4|537950980|ef46568b0ffc0de58dea9ad5aadb4781|h=aqz3gzffco5pznfcbb75e4vdiap3xsww|/" topic_id="100163">
+              <span class="a">11:50</span>
+              <span class="b"><a href="/100163.html">闪电侠.The.Flash.S02E22.720p.HDTV.x264.双语字幕-深影字幕组.mp4【L】</a></span>
+              <span class="c"></span>
+              <span class="d"><b>513.0 MB</b><a href="/100163.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:8e636b49682e3387ecb23c2ae505da6c35be60a2&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E9%A3%9E%E5%A4%A9%E5%B0%8F%E5%A5%B3%E8%AD%A6.The.Powerpuff.Girls.2016.S01E16.720p.HDTV.x264.%E5%8F%8C%E8%AF%AD%E5%AD%97%E5%B9%95-%E6%B7%B1%E5%BD%B1%E5%AD%97%E5%B9%95%E7%BB%84.mp4|125885311|98aa1bec4bd5df8f7f8906b26b88d82a|h=nqzdremp4qkl3p3eplfqgtnl3kjaftjc|/" topic_id="100162">
+              <span class="a">11:41</span>
+              <span class="b"><a href="/100162.html">飞天小女警.The.Powerpuff.Girls.2016.S01E16.720p.HDTV.x264.双语字幕-深影字幕组.mp4【L】</a></span>
+              <span class="c"></span>
+              <span class="d"><b>120.1 MB</b><a href="/100162.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:4a996827baff172cb1c55d9dba0f1f9d45754201&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E7%BB%BF%E7%AE%AD%E4%BE%A0.Arrow.S04E22.720p.HDTV.X264.%E5%8F%8C%E8%AF%AD%E5%AD%97%E5%B9%95-%E6%B7%B1%E5%BD%B1%E5%AD%97%E5%B9%95%E7%BB%84.mp4|766275545|996105cf31f0992513008fac96867549|h=tyo2qdpdllk6cxoatnwukmf3sez23u74|/" topic_id="100161">
+              <span class="a">11:39</span>
+              <span class="b"><a href="/100161.html">绿箭侠.Arrow.S04E22.720p.HDTV.X264.双语字幕-深影字幕组.mp4【L】</a></span>
+              <span class="c"></span>
+              <span class="d"><b>730.8 MB</b><a href="/100161.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:c616443eaa8c9737def3cd4905be9a166091f16a&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E6%B5%B4%E8%A1%80%E9%BB%91%E5%B8%AE.Peaky.Blinders.S03E03.%E4%B8%AD%E8%8B%B1%E5%AD%97%E5%B9%95.HDTVrip.1024X576.mp4|584843514|e19c87723514fabda6fe8bd59016444b|h=sdv62zqvr2ac635lhwfqclg3r5z73w33|/" topic_id="100160">
+              <span class="a">09:14</span>
+              <span class="b"><a href="/100160.html">浴血黑帮.Peaky.Blinders.S03E03.中英字幕.HDTVrip.1024X576.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>557.8 MB</b><a href="/100160.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:3cd20b989c6566c75b870c3ddd62af7a8ad9cc50&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E6%9A%97%E5%A4%9C%E8%8B%B1%E9%9B%84NAOTO.Night.Hero.NAOTO.Ep06.Chi_Jap.HDTVrip.852X480-ZhuixinFan.mp4|178646343|204ee9ec5987763ddc4d5b68b3151ac4|h=6gogeisnfrebhy4b3x2rvodgtpnmu7vg|/" topic_id="100159">
+              <span class="a">05:07</span>
+              <span class="b"><a href="/100159.html">暗夜英雄NAOTO.Night.Hero.NAOTO.Ep06.Chi_Jap.HDTVrip.852X480-ZhuixinFan.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>170.4 MB</b><a href="/100159.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:c0dca2ed3946736ac9f34bc48598474ff8c9421e&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|GOODPARTNER%20%E6%97%A0%E6%95%8C%E7%9A%84%E5%BE%8B%E5%B8%88.GOODPARTNER.Muteki.no.Bengoshi.Ep05.Chi_Jap.HDTVrip.1280X720-ZhuixinFan.mp4|628809360|07481f405b925eab290a592dde14732f|h=oxbzpebih4ctxt46vjwnpswz4pvumel6|/" topic_id="100158">
+              <span class="a">01:42</span>
+              <span class="b"><a href="/100158.html">GOODPARTNER 无敌的律师.GOODPARTNER.Muteki.no.Bengoshi.Ep05.Chi_Jap.HDTVrip.1280X720-ZhuixinFan.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>599.7 MB</b><a href="/100158.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:d337cdfd27525a610896dbc146bd58041275c3f6&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E5%BF%83%E8%B7%B3.Heartbeat.S01E09.%E4%B8%AD%E8%8B%B1%E5%AD%97%E5%B9%95.HDTVrip.1024X576.mp4|418020889|becdbe5cfe60f7a691334594b6073cf6|h=4uiomu2si6kfmsdd57p2obxaj5nbv3gn|/" topic_id="100157">
+              <span class="a">00:44</span>
+              <span class="b"><a href="/100157.html">心跳.Heartbeat.S01E09.中英字幕.HDTVrip.1024X576.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>398.7 MB</b><a href="/100157.html" class="btn-d">下载文件</a></span>
+            </dd>              <dt>2016-05-20</dt>            <dd magnet="magnet:?xt=urn:btih:ad44dc375c7a288651de6ccb378b350094a0ced2&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E5%9C%B0%E7%90%83%E7%99%BE%E5%AD%90.The.100.S03E16.%E4%B8%AD%E8%8B%B1%E5%AD%97%E5%B9%95.HDTVrip.1024X576.mp4|408466025|3d583715a244a842d287272ed276f532|h=ikr52aw7guxrrpveqsktfia4cvrkoced|/" topic_id="100156">
+              <span class="a">23:52</span>
+              <span class="b"><a href="/100156.html">地球百子.The.100.S03E16.中英字幕.HDTVrip.1024X576.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>389.5 MB</b><a href="/100156.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:bd348ef9b05c5417f78e16ea8adcd9985f5aaee4&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E8%87%B4%E5%91%BD%E8%AF%B1%E6%83%91.The.Catch.US.S01E10.End.%E4%B8%AD%E8%8B%B1%E5%AD%97%E5%B9%95.HDTVrip.1024x576.mp4|413034465|d9ba1fd6ba1fbe54e42fc3d9858addcf|h=arilq3rv2secgf7pmbhi577lf5i2ydh2|/" topic_id="100155">
+              <span class="a">22:54</span>
+              <span class="b"><a href="/100155.html">致命诱惑.The.Catch.US.S01E10.End.中英字幕.HDTVrip.1024x576.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>393.9 MB</b><a href="/100155.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:299cf9b6a39bd35659937b8f8f7c37c7d988b852&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E5%8D%95%E8%BA%AB%E5%85%AC%E5%AF%93.The.Odd.Couple.S02E10.%E4%B8%AD%E8%8B%B1%E5%AD%97%E5%B9%95.HR-HDTV.AAC.1024X576.x264.mp4|215755031|73ce1fdef97c61d45f567d66019bdaa1|h=a53ibetb2i3kjqlm4zgxp7wxi4b7evau|/" topic_id="100154">
+              <span class="a">21:40</span>
+              <span class="b"><a href="/100154.html">单身公寓.The.Odd.Couple.S02E10.中英字幕.HR-HDTV.AAC.1024X576.x264.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>205.8 MB</b><a href="/100154.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:1230eb85a59f8607407d761f4632db547c07e393&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E9%AB%98%E4%B8%AD%E5%89%8D%E8%A6%81%E5%81%9A%E7%9A%84%E4%B8%80%E7%99%BE%E4%BB%B6%E4%BA%8B.100.Things.To.Do.Before.High.School.S01E21.HR-HDTV.x264.AAC.Chs.Eng-Deefun%E8%BF%AA%E5%B9%BB%E5%AD%97%E5%B9%95%E7%BB%84v2.mkv|282450682|fe70288b110be355186e52dd90dd4f3e|h=bwam2mq4ga76azb5mczkjooe3v25plxf|/" topic_id="100153">
+              <span class="a">21:40</span>
+              <span class="b"><a href="/100153.html">高中前要做的一百件事.100.Things.To.Do.Before.High.School.S01E21.HR-HDTV.x264.AAC.Chs.Eng-Deefun迪幻字幕组v2.mkv【L】</a></span>
+              <span class="c"></span>
+              <span class="d"><b>269.4 MB</b><a href="/100153.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:398988df980c3442df7f88bd89a23d1e35cbe71c&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E4%BD%8E%E4%BF%97%E6%80%AA%E8%B0%88.Penny.Dreadful.S03E02.%E4%B8%AD%E8%8B%B1%E5%AD%97%E5%B9%95.WEB-HR.AAC.1024X576.x264.mp4|544536749|ce4ded7fc1be7f48f57e7a9000253ecf|h=hth3edmamqvo3zzj7yp77su733twadjg|/" topic_id="100152">
+              <span class="a">21:14</span>
+              <span class="b"><a href="/100152.html">低俗怪谈.Penny.Dreadful.S03E02.中英字幕.WEB-HR.AAC.1024X576.x264.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>519.3 MB</b><a href="/100152.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:9be7af8580851f887d71a69bbb1f5a7518270a55&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E5%87%B6%E9%AC%BC%E6%81%B6%E7%81%B5.Supernatural.S11E22.%E4%B8%AD%E8%8B%B1%E5%AD%97%E5%B9%95.WEB-HR.AAC.1024X576.x264.mp4|415929873|1169e17c82746e2ac6300429e094d2a3|h=edaheq73guqxhqm5uznxnorm4oomqbdl|/" topic_id="100151">
+              <span class="a">20:59</span>
+              <span class="b"><a href="/100151.html">凶鬼恶灵.Supernatural.S11E22.中英字幕.WEB-HR.AAC.1024X576.x264.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>396.7 MB</b><a href="/100151.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:292544f9f70b4b379b7304688b70bc3260131931&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E8%87%B4%E5%91%BD%E8%AF%B1%E6%83%91.The.Catch.US.S01E09.%E4%B8%AD%E8%8B%B1%E5%AD%97%E5%B9%95.HDTVrip.1024x576.mp4|424946702|712774499ee6f5a9acf653ba6e894980|h=hrn6tiegct6bebt33qzfltts3hosjc2k|/" topic_id="100150">
+              <span class="a">20:44</span>
+              <span class="b"><a href="/100150.html">致命诱惑.The.Catch.US.S01E09.中英字幕.HDTVrip.1024x576.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>405.3 MB</b><a href="/100150.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:c3899a3593bad197ee5375596bbf985a3165185c&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|GOODPARTNER%20%E6%97%A0%E6%95%8C%E7%9A%84%E5%BE%8B%E5%B8%88.GOODPARTNER.Muteki.no.Bengoshi.Ep05.Chi_Jap.HDTVrip.852X480-ZhuixinFan.mp4|232725736|8089e48ae66de39f7254b7213a872dbc|h=opr2inzyp6pwgragk66hxh3a6iikz222|/" topic_id="100149">
+              <span class="a">20:12</span>
+              <span class="b"><a href="/100149.html">GOODPARTNER 无敌的律师.GOODPARTNER.Muteki.no.Bengoshi.Ep05.Chi_Jap.HDTVrip.852X480-ZhuixinFan.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>221.9 MB</b><a href="/100149.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:bcb414fb39aee02688ca9a232d3be9437c22139a&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|GOODPARTNER%20%E6%97%A0%E6%95%8C%E7%9A%84%E5%BE%8B%E5%B8%88.GOODPARTNER.Muteki.no.Bengoshi.Ep05.Chi_Jap.HDTVrip.852X480-ZhuixinFan.mp4.mp4|232725736|8089e48ae66de39f7254b7213a872dbc|h=opr2inzyp6pwgragk66hxh3a6iikz222|/" topic_id="100148">
+              <span class="a">20:08</span>
+              <span class="b"><a href="/100148.html">GOODPARTNER 无敌的律师.GOODPARTNER.Muteki.no.Bengoshi.Ep05.Chi_Jap.HDTVrip.852X480-ZhuixinFan.mp4.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>221.9 MB</b><a href="/100148.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:ccf13ecc4a134fcd564eb1e2035e61f89d4e6274&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E6%98%8E%E6%97%A5%E4%BC%A0%E5%A5%87.DCs.Legends.of.Tomorrow.S01E16.END.%E4%B8%AD%E8%8B%B1%E5%AD%97%E5%B9%95.HDTVrip.1024X576.mp4|427393417|6919353a4dc782acd14cdfbec933d003|h=kth26f4sxbjcmxr246txthfm4sd2dwcu|/" topic_id="100147">
+              <span class="a">20:02</span>
+              <span class="b"><a href="/100147.html">明日传奇.DCs.Legends.of.Tomorrow.S01E16.END.中英字幕.HDTVrip.1024X576.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>407.6 MB</b><a href="/100147.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:56ce039ea6a5c1ac257a3b2c17f3fb5c8bf20606&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E6%AC%B2%E5%A5%B4.Submission.S01E02.%E4%B8%AD%E8%8B%B1%E5%AD%97%E5%B9%95.HDTVrip.1024X576.mp4|252387775|b7f8c7d1167374f05437d697ac07d4cb|h=lbxxuc7qptvwoxz47bvg4b66pnewerjs|/" topic_id="100146">
+              <span class="a">19:59</span>
+              <span class="b"><a href="/100146.html">欲奴.Submission.S01E02.中英字幕.HDTVrip.1024X576.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>240.7 MB</b><a href="/100146.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:587f7afdce5ea7d4d12b2263ec694bb9badb87de&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E5%81%87%E4%BA%A6%E7%9C%9F.Faking.It.S03E04.%E4%B8%AD%E8%8B%B1%E5%AD%97%E5%B9%95.WEB-HR.AC3.1024X576.x264.mp4|218861894|23622cfe2fa6a803cdaa203481bbe35e|h=qq6iukggv5wbyoaz2xt2erbpbxc2h5du|/" topic_id="100145">
+              <span class="a">19:45</span>
+              <span class="b"><a href="/100145.html">假亦真.Faking.It.S03E04.中英字幕.WEB-HR.AC3.1024X576.x264.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>208.7 MB</b><a href="/100145.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:eb7defdc7536dfb8054c9357915ef55c75da71de&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E5%81%87%E4%BA%A6%E7%9C%9F.Faking.It.S03E05.%E4%B8%AD%E8%8B%B1%E5%AD%97%E5%B9%95.WEB-HR.AC3.1024X576.x264.mp4|210184130|5131da101a8be06b83a3a8e1d74fdcb6|h=64iax76unllxind7n5sg5v3ji55hiclr|/" topic_id="100144">
+              <span class="a">19:42</span>
+              <span class="b"><a href="/100144.html">假亦真.Faking.It.S03E05.中英字幕.WEB-HR.AC3.1024X576.x264.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>200.4 MB</b><a href="/100144.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:9d82f6e00f75573032c3cc980d17cfa14a64cd43&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E6%9E%81%E5%93%81%E8%80%81%E5%A6%88.Mom.S03E22.%E4%B8%AD%E8%8B%B1%E5%AD%97%E5%B9%95.HDTVrip.1024X576.mp4|192993218|1c439ff27a2215b1ce4312d30c7e3dc6|h=r4x5z45njzeual3ypaz27zhhhj7yygxy|/" topic_id="100143">
+              <span class="a">17:43</span>
+              <span class="b"><a href="/100143.html">极品老妈.Mom.S03E22.中英字幕.HDTVrip.1024X576.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>184.1 MB</b><a href="/100143.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:2a344381bc71b67371e48bd6c85eee51aab33150&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|Zootopia.2016.%E7%96%AF%E7%8B%82%E5%8A%A8%E7%89%A9%E5%9F%8E.720p.Chi_Eng.ZMZ-BDrip-MP4.mp4|1624424376|b61896880267c7baafa05845969ba281|h=55fgf5g5umewesj4oyzm6dc26acqoulk|/" topic_id="100142">
+              <span class="a">17:36</span>
+              <span class="b"><a href="/100142.html">Zootopia.2016.疯狂动物城.720p.Chi_Eng.ZMZ-BDrip-MP4.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>1.5 GB</b><a href="/100142.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:fb8ade4c30396b0cac4ac2e7861c9612f761a850&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|Murder,%20She%20Wrote.%E5%A5%B3%E4%BD%9C%E5%AE%B6%E4%B8%8E%E8%B0%8B%E6%9D%80%E6%A1%88.S02E13.%E5%8F%8C%E8%AF%AD%E5%AD%97%E5%B9%95.%E8%AF%91%E5%88%B6%E7%BB%84.mp4|421240533|1702c3b426c0dc6b157ba064d93160ff|h=klbts6av3fcxoqyg22iux5bd5coqxp7w|/" topic_id="100141">
+              <span class="a">17:05</span>
+              <span class="b"><a href="/100141.html">Murder, She Wrote.女作家与谋杀案.S02E13.双语字幕.译制组.mp4【L】</a></span>
+              <span class="c"></span>
+              <span class="d"><b>401.7 MB</b><a href="/100141.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:774b6449cca4abcd968d456c9e979ffa18311a61&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E7%BB%9D%E5%91%BD%E5%BE%8B%E5%B8%88.Better.Call.Saul.S02E10.%E4%B8%AD%E8%8B%B1%E5%AD%97%E5%B9%95.WEB-HR.AAC.1024X576.x264.mp4|482524621|6aa1acab1f3359641f9a2c01a115665b|h=bqbb4wuq3rzzweop556pa6hmglnutyla|/" topic_id="100140">
+              <span class="a">15:57</span>
+              <span class="b"><a href="/100140.html">绝命律师.Better.Call.Saul.S02E10.中英字幕.WEB-HR.AAC.1024X576.x264.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>460.2 MB</b><a href="/100140.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:e1b745c0fd3eb5fbd229d0067b294806b329e390&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E7%BB%9D%E5%91%BD%E5%BE%8B%E5%B8%88.Better.Call.Saul.S02E09.%E4%B8%AD%E8%8B%B1%E5%AD%97%E5%B9%95.WEB-HR.AAC.1024X576.x264.mp4|493502960|98cfcb116ff8641493867e34ef91350c|h=pipcoyhwsgtonwpuaielsdbaq2dfyne5|/" topic_id="100139">
+              <span class="a">15:56</span>
+              <span class="b"><a href="/100139.html">绝命律师.Better.Call.Saul.S02E09.中英字幕.WEB-HR.AAC.1024X576.x264.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>470.6 MB</b><a href="/100139.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:68e539bac07e1ef4800df758bb23a69d83eb6efb&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E7%BD%AA%E6%81%B6%E9%BB%91%E5%90%8D%E5%8D%95.The.Blacklist.S03E23.%E4%B8%AD%E8%8B%B1%E5%AD%97%E5%B9%95.HDTVrip.1024X576.mp4|424165246|bf4b046f6b915edf626ec9c6c087b62d|h=p42hkyiljcszg3uqrge7i7xyku5tnohc|/" topic_id="100138">
+              <span class="a">15:43</span>
+              <span class="b"><a href="/100138.html">罪恶黑名单.The.Blacklist.S03E23.中英字幕.HDTVrip.1024X576.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>404.5 MB</b><a href="/100138.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:ed9a0429c49f906de3d1963bcc5054fba3bee2c9&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E7%A5%9E%E7%9B%BE%E5%B1%80%E7%89%B9%E5%B7%A5.Marvels.Agents.of.S.H.I.E.L.D.S03E21.720p.HDTV.x264.%E4%B8%AD%E8%8B%B1%E5%8F%8C%E8%AF%AD-%E6%B7%B1%E5%BD%B1%E5%AD%97%E5%B9%95%E7%BB%84.mp4|561543798|59e1be1678ff15b4f9e1331ca69b6df9|h=erjoexzqna5bzecgexcje3sksslfp22o|/" topic_id="100137">
+              <span class="a">14:14</span>
+              <span class="b"><a href="/100137.html">神盾局特工.Marvels.Agents.of.S.H.I.E.L.D.S03E21.720p.HDTV.x264.中英双语-深影字幕组.mp4【L】</a></span>
+              <span class="c"></span>
+              <span class="d"><b>535.5 MB</b><a href="/100137.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:61059dd6dd02128407ab975587f102842cbd97d8&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E7%BE%8E%E5%9B%BD%E8%B0%8D%E6%A2%A6.The.Americans.S04E10.%E4%B8%AD%E8%8B%B1%E5%AD%97%E5%B9%95.HDTVrip.1024X576.mp4|462911522|fdb458de0475774ca94a41f89c08e83c|h=k3bdcdrprydewrwbav36b4aigbvfgwtz|/" topic_id="100136">
+              <span class="a">13:09</span>
+              <span class="b"><a href="/100136.html">美国谍梦.The.Americans.S04E10.中英字幕.HDTVrip.1024X576.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>441.5 MB</b><a href="/100136.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:4234c937a65f84b4807c51f010d5d6d329e8dba6&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|2016%E5%B9%B4%E6%AC%A7%E6%B4%B2%E6%AD%8C%E5%94%B1%E5%A4%A7%E8%B5%9B.Eurovision.Song.Contest.2016.%E4%B8%AD%E6%96%87%E5%AD%97%E5%B9%95.WEB-HR.AAC.1024X576.x264.mp4|2317571945|dc51db6a1e9fea1f4a914357a09f08e2|h=zhkburpwfl6mcqminlh74mvsxl2wmhja|/" topic_id="100135">
+              <span class="a">12:40</span>
+              <span class="b"><a href="/100135.html">2016年欧洲歌唱大赛.Eurovision.Song.Contest.2016.中文字幕.WEB-HR.AAC.1024X576.x264.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>2.2 GB</b><a href="/100135.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:695dc157dcf69819406b6bcef1ca3688819791cc&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E6%97%A9%E5%AD%90%E8%80%81%E5%B8%88%E8%A6%81%E7%BB%93%E5%A9%9A%EF%BC%8C%E6%98%AF%E7%9C%9F%E7%9A%84%E5%90%97%EF%BC%9F.Hayako.Sensei.Kekkonsurutte.Hontou.Deusuka.Ep05.Chi_Jap.HDTVrip.1280X720-ZhuixinFan.mp4|629068266|3c8262d3882b57a50741e036dc6a767e|h=be4nxvq4s6ab5igizzdu6rau2bkug4wg|/" topic_id="100134">
+              <span class="a">11:03</span>
+              <span class="b"><a href="/100134.html">早子老师要结婚，是真的吗？.Hayako.Sensei.Kekkonsurutte.Hontou.Deusuka.Ep05.Chi_Jap.HDTVrip.1280X720-ZhuixinFan.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>599.9 MB</b><a href="/100134.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:c1897e0567d47c9c623bef394563ef5caab18fd8&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E9%87%91%E8%89%B2%E5%B9%B4%E4%BB%A3.The.Goldbergs.2013.S03E24.%E4%B8%AD%E8%8B%B1%E5%AD%97%E5%B9%95.HR-HDTV.AAC.1024X576.x264V2.mp4|208359661|ebdceebb63c16a9691d7798af1aeff7b|h=uwruc32za3ftt4g7cvl6sipl26ahkihz|/" topic_id="100133">
+              <span class="a">10:02</span>
+              <span class="b"><a href="/100133.html">金色年代.The.Goldbergs.2013.S03E24.中英字幕.HR-HDTV.AAC.1024X576.x264V2.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>198.7 MB</b><a href="/100133.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:0d465950b7af752b593d19ab707bf291af146195&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E5%9C%B0%E5%B9%B3%E7%BA%BF.%E7%BD%91%E4%B8%8A%E5%AF%BB%E7%88%B1%E6%8C%87%E5%8D%97.BBC.Horizon.2016.How.to.Find.Love.Online.%E4%B8%AD%E8%8B%B1%E5%AD%97%E5%B9%95.HR-HDTV.AAC.1024X576.x264.mp4|586819602|6ade9d9c1052b4b5cda958c2304ab89b|h=rxjhari4ipbhr37ajgruts7jdiwp7hac|/" topic_id="100132">
+              <span class="a">09:08</span>
+              <span class="b"><a href="/100132.html">地平线.网上寻爱指南.BBC.Horizon.2016.How.to.Find.Love.Online.中英字幕.HR-HDTV.AAC.1024X576.x264.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>559.6 MB</b><a href="/100132.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:887feeb4f675d098bf6d2fbdc864a5faf6dc1858&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|BBC%E5%9C%B0%E5%B9%B3%E7%BA%BF.%E6%88%91%E4%BB%AC%E8%AF%A5%E5%85%B3%E4%BA%86%E5%8A%A8%E7%89%A9%E5%9B%AD%E5%90%97.BBC.Horizon.2016.Should.We.Close.Our.Zoos.%E4%B8%AD%E8%8B%B1%E5%AD%97%E5%B9%95.HR-HDTV.AAC.1024X576.x264.mp4|590767867|1a4a7c0366ec95b0e0e1ee101d125585|h=xes7p6zdgy4cksnvc6kgt7xtiuovgwq6|/" topic_id="100131">
+              <span class="a">09:04</span>
+              <span class="b"><a href="/100131.html">BBC地平线.我们该关了动物园吗.BBC.Horizon.2016.Should.We.Close.Our.Zoos.中英字幕.HR-HDTV.AAC.1024X576.x264.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>563.4 MB</b><a href="/100131.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:b754a1fb58da344f3acd1cd7a7aef71316c5104d&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E5%81%87%E4%BA%A6%E7%9C%9F.Faking.It.S03E03.%E4%B8%AD%E8%8B%B1%E5%AD%97%E5%B9%95.WEB-HR.AC3.1024X576.x264.mp4|211062200|858da2291d631ad490eafae23417e91c|h=oniaqhlti7kxsqo5das57wtywkgm72jb|/" topic_id="100130">
+              <span class="a">08:01</span>
+              <span class="b"><a href="/100130.html">假亦真.Faking.It.S03E03.中英字幕.WEB-HR.AC3.1024X576.x264.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>201.3 MB</b><a href="/100130.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:d2eb15ab17a9e3407d1167c831d18580fdca0034&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E6%97%A9%E5%AD%90%E8%80%81%E5%B8%88%E8%A6%81%E7%BB%93%E5%A9%9A%EF%BC%8C%E6%98%AF%E7%9C%9F%E7%9A%84%E5%90%97%EF%BC%9F.Hayako.Sensei.Kekkonsurutte.Hontou.Deusuka.Ep05.Chi_Jap.HDTVrip.852X480-ZhuixinFan.mp4|216667206|64d1c319d0d4eae318cde1a8434b6874|h=e2q3b2bdkut7yryyluldq2o7z35vnkw4|/" topic_id="100129">
+              <span class="a">05:38</span>
+              <span class="b"><a href="/100129.html">早子老师要结婚，是真的吗？.Hayako.Sensei.Kekkonsurutte.Hontou.Deusuka.Ep05.Chi_Jap.HDTVrip.852X480-ZhuixinFan.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>206.6 MB</b><a href="/100129.html" class="btn-d">下载文件</a></span>
+            </dd>            <dd magnet="magnet:?xt=urn:btih:e857233247a51081cdced906305894fbfdeb47c4&tr.1=http://tracker.openbittorrent.com/announce&tr.2=udp://tracker.openbittorrent.com:80/announce&tr.3=udp://tr.cili001.com:6666/announce&tr.4=http://tracker.publicbt.com/announce&tr.5=udp://open.demonii.com:1337&tr.6=udp://tracker.opentrackr.org:1337/announce&tr.7=http://tr.cili001.com:6666/announce" ed2k="ed2k://|file|%E6%97%A9%E5%AD%90%E8%80%81%E5%B8%88%E8%A6%81%E7%BB%93%E5%A9%9A%EF%BC%8C%E6%98%AF%E7%9C%9F%E7%9A%84%E5%90%97%EF%BC%9F.Hayako.Sensei.Kekkonsurutte.Hontou.Deusuka.Ep05.Chi_Jap.WEBTVrip.852X480-ZhuixinFan.mp4|214718219|627f7356cf931247062559e8bf7fcfe4|h=lgshdrlwj5dafbx3ogkj6pxoe2wxnpxt|/" topic_id="100128">
+              <span class="a">04:14</span>
+              <span class="b"><a href="/100128.html">早子老师要结婚，是真的吗？.Hayako.Sensei.Kekkonsurutte.Hontou.Deusuka.Ep05.Chi_Jap.WEBTVrip.852X480-ZhuixinFan.mp4[CiLi001.com]</a></span>
+              <span class="c"></span>
+              <span class="d"><b>204.8 MB</b><a href="/100128.html" class="btn-d">下载文件</a></span>
+            </dd>        </dl>
+    </div>
+</div>
+<div id="ad_banner_2" style="display:none;text-align:center;margin:5px 0;width:100%;"><script type="text/javascript" src="http://g2.ousns.net/zydh/ga-728.js"></script>
+</div>
+<div id="ad_banner_3" style="display:none;text-align:center;margin:5px 0;width:100%;"><script type="text/javascript" src="http://g2.ousns.net/zydh/ga-728.js"></script>
+</div>
+<script>
+$('#ad_banner_2').show().insertAfter('.list-item dd:eq(4)');
+$('#ad_banner_3').show().insertAfter('.list-item dd:eq(14)');
+
+var clip = null;
+
+$('.list-item dd').each(function(){
+  var topic_id = $(this).attr('topic_id');
+  var html = '';
+  if($(this).attr('magnet')) html += '<a class="cm">[MEG]</a>';
+  if($(this).attr('ed2k')) html += '<a class="ce">[EM]</a>';
+  if(is_login) html += '<a href="/index/topic_edit?tid='+topic_id+'" target="_blank">[编]</a><a target="_blank" href="/index/topic_del?tid='+topic_id+'" onclick="return delchk();">[删]</a>';
+  $(this).find('.c').append(html);
+});
+
+/*添加复制功能 start*/
+if($.browser.msie)
+{
+  $('.list-item dd .c .cm').click(function(){copyUrl($(this).parents('dd').attr('magnet'))});
+  $('.list-item dd .c .ce').click(function(){copyUrl($(this).parents('dd').attr('ed2k'))});
+}else{
+  $('.list-item dd .c .cm').mouseover(function(){
+    clip = new ZeroClipboard.Client();
+    clip.setText($(this).parents('dd').attr('magnet'));
+    clip.addEventListener('complete',copy_complete);
+    clip.glue($(this).get(0));
+  });
+
+  $('.list-item dd .c .ce').mouseover(function(){
+    clip = new ZeroClipboard.Client();
+    clip.setText($(this).parents('dd').attr('ed2k'));
+    clip.addEventListener('complete',copy_complete);
+    clip.glue($(this).get(0));
+  });
+}
+/*添加复制功能 end*/
+
+function delchk()
+{
+  if(window.confirm('确定删除资源?')){
+    return true;
+  }else{
+    return false;
+  }
+}
+</script>
+
+<style>.copyright a{color:#fff;width:0px;display: inline-block;}</style>
+<div class="footer-box">
+    <div class="w">
+        <div class="ad-box"><script type="text/javascript" src="http://g2.ousns.net/zydh/ga-footer.js?789"></script>
+ </div>
+        <div class="copyright">
+            Copyright   2015   Megnet   <script src="http://s95.cnzz.com/z_stat.php?id=1254180709&;web_id=1254180709" language="JavaScript"></script>
+        </div>
+    </div>
+</div>
+</body>
+</html>

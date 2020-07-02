@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+	<title>FreakShare - Easy One-Click File Hosting</title>
+	<meta http-equiv="language" content="en" />
+	<meta http-equiv="content-language" content="en" />
+	<meta name="google-site-verification" content="TgOb76icfA8zBO6H01ZqwP8A-3jinHP_D32ZM93UVME" />
+	<meta name="description" content="FreakShare - Easy One-Click File Hosting" />
+	<meta name="keywords" content="file upload, filehost, upload files, one click, hosting, file upload, file sharing, easy one click file hosting, webhosting, freak share, upload, host files, share files, email upload" />
+	<meta name='revisit-after' content="3 days" />
+	<meta name="robots" content="index, follow, all" />
+
+	<script type="text/javascript">
+//<![CDATA[
+try{if (!window.CloudFlare) {var CloudFlare=[{verbose:0,p:0,byc:0,owlid:"cf",bag2:1,mirage2:0,oracle:0,paths:{cloudflare:"/cdn-cgi/nexp/dok3v=1613a3a185/"},atok:"af33b7e16248f2a99d372b5cc98ec960",petok:"9e93ff5553681d6a228fb6a1419f644d5817eb79-1470101405-1800",adblock:1,betok:"71571197a1704fbae524d92d1000d579cacb2805-1470101405-120",zone:"freakshare.com",rocket:"0",apps:{},sha2test:0}];!function(a,b){a=document.createElement("script"),b=document.getElementsByTagName("script")[0],a.async=!0,a.src="//ajax.cloudflare.com/cdn-cgi/nexp/dok3v=0489c402f5/cloudflare.min.js",b.parentNode.insertBefore(a,b)}()}}catch(e){};
+//]]>
+</script>
+<link rel="stylesheet" href="http://freakshare.com/stuff/css/style.css" type="text/css" media="screen" charset="utf-8" />
+	<link rel="stylesheet" href="http://freakshare.com/stuff/css/dd.css" type="text/css" media="screen" charset="utf-8" />
+	<link rel="shortcut icon" href="http://freakshare.com/images/favicon.ico" type="image/x-icon"  />
+	<script type="text/javascript" language="javascript" src="http://freakshare.com/stuff/javascript/jquery.js"></script>
+	<script type="text/javascript" language="javascript" src="http://freakshare.com/stuff/javascript/jquery.MultiFile.js"></script>
+	<script type="text/javascript" language="javascript" src="http://freakshare.com/stuff/javascript/jquery.dd.js"></script>
+	
+	<script language="javascript">
+		$(document).ready(function(e) {
+		try {
+			$("#langmenu").msDropDown();
+		 	$("#langmenu").msDropDown({visibleRows:20});
+		} catch(e) {
+		alert(e);
+	  }
+	 }
+	)
+	</script>
+	
+		<script type="text/javascript" language="JavaScript">
+			<!--
+				$(function(){ // wait for document to load
+	$('#T7').MultiFile({
+		list: '#T7-list',
+		STRING: {
+			file: '$file',
+			remove:'<img src="http://freakshare.com/images/remove.png" alt="[x]" title="Remove" />'
+		}
+	});
+
+	$('#files1').keyup(function(){
+		limitLines('files1', 'notice');
+	});
+
+
+	$("#notification").change(function() {
+		$("#notification_form").toggle();
+	});
+
+
+});
+
+var u_starttime = 0;
+var uuid;
+
+function getTime(sec){
+
+     sec = parseInt(sec);
+     var std = parseInt(sec/3600);
+     var min = parseInt(((sec)-(std*3600))/60);
+     var sek = sec -(std*3600)-(min*60);
+
+     var output = '';
+     if(std == 0) {
+     	if(min == 0) {
+     		output = sek + ' Seconds';
+     	} else {
+     		output = min +' Minutes, '+sek+' Seconds';
+     	}
+     }
+     else {
+     	output = std+' Hours, '+ min +' Minutes, '+sek+' Seconds';
+     }
+     return output;
+}
+function runde(x, n) {
+	if (n < 1 || n > 14) return false;
+	var e = Math.pow(10, n);
+	var k = (Math.round(x * e) / e).toString();
+  	if (k.indexOf('.') == -1) k += '.';
+  	k += e.toString().substring(1);
+  	return k.substring(0, k.indexOf('.') + n+1);
+}
+function filesize(bytes) {
+	if(bytes < 1024) {
+		return bytes + ' Byte';
+	} else if (bytes < 1024*1024) {
+		return runde((bytes/1024), 1) + 'Kbyte';
+	} else {
+		return runde((bytes/1024/1024), 1) + 'Mbyte';
+	}
+}
+
+
+function StartUpload() {
+
+	for (i = 0; i < 32; i++) { uuid += Math.floor(Math.random() * 16).toString(16); }
+
+	document.getElementById("uploadform").action = document.getElementById("uploadform").action + "?X-Progress-ID=" + uuid;
+
+	u_starttime = Date.parse(new Date()); // uploadBegin
+
+    interval = window.setInterval("updatestatusbar()", 2200);
+    $('#submitlayer').hide('slow');
+    $('#selectlayer').hide('slow');
+	return true;
+}
+
+
+function updatestatusbar() {
+
+	var d = new Date();
+	var requestkey = d.getTime() + "-" + Math.random()*1000000;
+
+
+	$.getJSON("http://freakshare.com/request/jsonreq.php?url=&XProgressID=" + uuid + "&requestkey="+requestkey,
+    	function(data){
+    		//alert(data);
+    		$('#progressbarlayer').fadeIn('slow');
+
+			var timediff = (Date.parse(new Date()) - u_starttime)/1000;
+			x = (parseInt(data['received']) / 1024 / timediff);
+			var speed = Math.round(x);
+
+			var timeleft = Math.round((parseInt(data['size']) - parseInt(data['received'])) /1024 / speed);
+			percentage = Math.round(parseInt(data['received'])*100/parseInt(data['size']));
+			if(percentage > 100) {
+				percentage = 100;
+			}
+			var width = Math.round(percentage*3.8)
+			$("#progress").css("width", width+"px");
+			$("#progressvalue").html(percentage+'%');
+			$("#speed").html(speed + 'Kbyte/s');
+			/*if(data['filename'] > 60) {
+				data['filename'] = data['filename'].substr(0,57);
+				data['filename'] = data['filename'] + '...';
+			}*/
+			//$("#file").html(data['filename']);
+			$("#current").html(filesize(data['received']));
+			$("#total").html(filesize(data['size']));
+			$("#time").html(getTime(timeleft));
+        });
+}
+
+function changeupload(id) {
+	if(id == 'file') {
+		$('#tab_remote').removeClass('selected');
+		$('#tab_ftp').removeClass('selected');
+		$('#tabcontent_remote').slideUp('fast');
+		$('#tabcontent_ftp').slideUp('fast');
+	} else if (id == 'remote') {
+		$('#tab_file').removeClass('selected');
+		$('#tab_ftp').removeClass('selected');
+		$('#tabcontent_file').slideUp('fast');
+		$('#tabcontent_ftp').slideUp('fast');
+	} else {
+		$('#tab_remote').removeClass('selected');
+		$('#tab_file').removeClass('selected');
+		$('#tabcontent_remote').slideUp('fast');
+		$('#tabcontent_file').slideUp('fast');
+	}
+	$('#tab_' + id).addClass('selected');
+	$('#tabcontent_' + id).slideDown('fast');
+
+}
+
+
+
+
+
+
+			//-->
+		</script>
+	
+<script type="text/javascript">
+if (self != top) { top.location.href = self.location.href; }
+</script>
+</head>
+    <body>
+    	<div style="position:absolute;top:4px;right:0px;width:150px;">
+				<select name="langmenu" id="langmenu" onchange="top.location.href = 'http://freakshare.com/index.php?language=' + this.value;" style="width:150px;">
+				<option value="ES" title="http://freakshare.com/images/flag/es.gif" >Spain</option>
+				<option value="PT" title="http://freakshare.com/images/flag/pt.gif" >Portuguese</option>
+				<option value="FR" title="http://freakshare.com/images/flag/fr.gif" >French</option>
+				<option value="RU" title="http://freakshare.com/images/flag/ru.gif" >Russian</option>
+				<option value="PL" title="http://freakshare.com/images/flag/pl.gif" >Polish</option>
+				<option value="HU" title="http://freakshare.com/images/flag/hu.gif" >Hungarian</option>
+				<option value="RO" title="http://freakshare.com/images/flag/ro.gif" >Romanian</option>
+				<option value="AR" title="http://freakshare.com/images/flag/eg.gif" >Arabic</option>
+				<option value="TR" title="http://freakshare.com/images/flag/tr.gif" >Turkish</option>
+				<option value="TH" title="http://freakshare.com/images/flag/th.gif" >Thai</option>
+				<option value="VN" title="http://freakshare.com/images/flag/vn.gif" >Vietnamese</option>
+				<option value="JP" title="http://freakshare.com/images/flag/jp.gif" >Japanese</option>
+				<option value="KR" title="http://freakshare.com/images/flag/kr.gif" >Korean</option>
+				<option value="CN" title="http://freakshare.com/images/flag/cn.gif" >Chinese</option>
+				<option value="CT" title="http://freakshare.com/images/flag/cn.gif" >Chinese Tr.</option>
+				   <option value="EN" title="http://freakshare.com/images/flag/gb.gif" selected="selected">English</option>
+				    <option value="DE" title="http://freakshare.com/images/flag/de.gif" >German</option>
+		  		</select>
+		</div>
+        <div id="navigation">
+			<ul>
+				<li><a href="http://freakshare.com/">Home</a></li>
+				
+				    <li><b><a href="http://freakshare.com/shop.html">GET Premium</a></b></li>
+				    <li><a href="http://freakshare.com/register.html">Register</a></li>
+				    <li><a href="http://freakshare.com/login.html">Login</a></li>
+				    <li><a href="http://freakshare.com/faq.html">FAQ</a></li>
+				    <li><a href="http://freakshare.com/contact.html">Contact</a></li>
+    			
+			</ul>
+			<a href="http://freakshare.com/uploadtool.html" class="rechts">Tools</a>
+			<!-- <a href="http://freakshare.com/money.html" class="rechts"><b>Make Money</b></a> -->
+			<a href="http://freakshare.com/news.html" class="rechts">News</a>
+    	</div>
+
+	    <div id="logo">
+    		<a href="http://freakshare.com/">
+	            <img src="http://freakshare.com/images/freaksharelogo.png" alt="FreakShare.net" />
+   			</a>
+	    </div>
+	    	
+		<div id="content">
+			<noscript>
+				<div class="error" style="font-size:16px;">JavaScript is deactivated. Please activate Javascript!</div>
+			</noscript>
+			
+
+
+
+
+<div class="box">
+                             <h1>Why FreakShare? Some Features</h1>
+
+<img src="http://freakshare.com/gfx/tick.gif">&nbsp;FreakShare is the easiest way to host your data online. Even big files are no problem.<br />
+<img src="http://freakshare.com/gfx/tick.gif">&nbsp;Our Service is free, easy and fast. Just select a file and upload it to our Servers.<br />
+<img src="http://freakshare.com/gfx/tick.gif">&nbsp;After uploading you can send your Download-Link to your friends or partners.<br />
+<img src="http://freakshare.com/gfx/tick.gif">&nbsp;<a href="http://freakshare.com/shop.html">As a <b>premium member</b> you will get many extra features. Click here for more Information.</a><br />
+<img src="http://freakshare.com/gfx/tick.gif">&nbsp;Upload your files via our Remoteupload, Uploadtool or FTP.<br />
+<img src="http://freakshare.com/gfx/tick.gif">&nbsp;You can delete, rename, list, order, search or move your files to folders or even other Accounts.<br />
+<img src="http://freakshare.com/gfx/tick.gif">&nbsp;Perfect control: Statistics and History of all earnings and actions.<br />
+</div>
+
+
+		</div>
+
+<div id="footer" style="text-align=center;" align="center">
+Copyright &copy; 2007-2012 FreakShare.com, All Rights Reserved.<br /><br />
+<a href="http://freakshare.com/">Home</a> | <a href="http://freakshare.com/shop.html">Get Premium</a> | <a href="http://freakshare.com/reseller.html">Reseller</a> |  <a href="http://freakshare.com/reseller_application.html">Reseller Application</a> | <a href="http://freakshare.com/repabuse.html">Report Abuse</a> | <a href="http://freakshare.com/linkcheck.html">Link Check</a> | <a href="http://freakshare.com/about.html">About</a> | <!-- <a href="http://freakshare.com/imprint.html">Imprint</a> | --> <a href="http://freakshare.com/ippolicy.html">IP Policy</a> | <!-- <a href="http://freakshare.com/policy.html">Child Porn Policy</a> | --> <a href="http://freakshare.com/privacy-policy.html">Privacy Policy</a> | <a href="http://freakshare.com/terms-of-service.html">Terms of Service</a> | <a href="http://freakshare.com/contact.html">Contact</a>
+<div style="display:none;visibility:hidden;">
+</div>
+</div>
+
+
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-8797154-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+</body>
+</html>

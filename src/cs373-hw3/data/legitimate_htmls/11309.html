@@ -1,0 +1,2065 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<!--  main layout -->
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>找工作求职|找人才|全行业在线招聘模式领导者 -若邻网</title>
+<meta name="keywords" content="找工作,找人才,简历,求职,面试,求职招聘" />
+<meta name="description" content="若邻网在北上广深等全国热门城市提供300万招聘信息，30万企业招聘人员在线物色人才。提供2015年最新最全的招聘求职信息，让求职招聘更加高效便捷。" />
+<meta name="baidu_ssp_verify" content="012083dea3cb5ea1b27406bc9fe3dc22">
+<link rel="shortcut icon" href="/favicon.ico" />
+
+
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<!-- page Common css file -->
+
+<link href='http://s2.wealinkcdn.com/pc/css/basic.css?t=572c1063' rel='stylesheet' type='text/css' />
+<link href='http://s2.wealinkcdn.com/pc/css/public.css?t=572c1063' rel='stylesheet' type='text/css' /><script>
+    // console.log
+    if(window.console==undefined){
+        window.console={
+            log:function(msg){              
+            }
+        }      
+    }
+
+</script>
+<!-- page Common jquery file -->
+
+<script src='http://s2.wealinkcdn.com/lib/js/jquery/jquery-1.11.3.min.js?t=572c1063'></script>
+<script src='http://s2.wealinkcdn.com/lib/js/user.agent.js?t=572c1063'></script>
+<script>
+    //控制ajax 并发请求数量
+    (function(jQuery){
+        var old_ajax= jQuery.ajax;
+        var queue=[]
+        var c=0;
+        var max_c=4;
+        function ajax(arg){
+            var args=[]
+            for(var i=0;i<arguments.length;i++){
+                args.push(arguments[i]);
+            }
+            queue.push(args);
+            setTimeout(run,1);
+        }
+        function run(){
+            c++;
+            if(c>max_c){
+                return ;
+            }
+
+            var t=queue.shift();
+            if(t){
+                old_ajax.apply(jQuery,t).always(function(){
+                    c--;
+                    setTimeout(run,1);
+                })
+            }
+
+        }
+
+        //jQuery.ajax=ajax;
+
+
+    })(jQuery)
+
+</script>
+
+<script src='http://s2.wealinkcdn.com/lib/js/jquery.validate.min.js?t=572c1063'></script><!-- Start Alexa Certify Javascript -->
+<script type="text/javascript">
+    _atrk_opts = { atrk_acct:"qjU9k1a0Sn00MA", domain:"wealink.com",dynamic: true};
+    (function() { var as = document.createElement('script'); as.type = 'text/javascript'; as.async = true; as.src = "https://d31qbv1cthcecs.cloudfront.net/atrk.js"; var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(as, s); })();
+</script>
+<noscript><img src="https://d5nxst8fruw4z.cloudfront.net/atrk.gif?account=qjU9k1a0Sn00MA" style="display:none" height="1" width="1" alt="" /></noscript>
+<!-- End Alexa Certify Javascript -->
+
+<link href='http://s2.wealinkcdn.com/pc/css/search.css?t=572c1063' rel='stylesheet' type='text/css' />    <!-- 请置于所有广告位代码之前 -->
+    <script src="http://dup.baidustatic.com/js/ds.js"></script>
+    <script type="text/javascript">
+        BAIDU_CLB_preloadSlots
+        ("1112085","1112086","1112090","1112091","1117154","1117155","1117156","1117157","1117178", "1117179", "1117180",
+                "1117181","1117182","1117183","1112089","1117301","1117302","1117303","1112084", "1112083",
+                "1112216", "1112217","1116810","1116811","1116845","1112088","1116834","1116842","1116843","1112075","1139507", "1139534", "1139535", "1139536", "1139537");
+    </script>
+</head>
+<body>
+<!-- header start-->
+
+<script src='http://s2.wealinkcdn.com/lib/bower_components/js-cookie/src/js.cookie.js?t=572c1063'></script>
+<script>
+    //ajax 刷新用户菜单 的现实和隐藏
+    //$(".nav-menu").hide();
+    (function(){
+
+        var queue=[]
+        var data;
+
+        function load_cookie() {
+
+            var userinfo = Cookies.get('userinfo');
+            if(userinfo == undefined){
+                data = ({
+                    'status': 0, 'result': {
+                        'username': '',
+                        'identity': ''
+                    }
+                })
+                flush_view2();
+                return;
+            }
+            var arr = userinfo.split('|');
+            if (arr && arr[0] == '1') {
+                var uid = arr[1];
+                var username = Cookies.get('un-' + uid);
+                var identity = Cookies.get('st-' + uid);
+                if((identity=='')||(undefined==identity)){
+                    identity =1;
+                }
+                //console.log('username!=undefined ,',username!=undefined , username!='undefined' );
+                if (username && undefined!=username && 'undefined'!=username ) {
+                    data = ({
+                        'status': 1, 'result': {
+                            'username': username,
+                            'identity': identity
+                        }
+                    })
+
+                    flush_view2();
+                    return;
+                }
+            }
+        }
+
+
+
+
+        function getUserInfo(callback){
+            //console.log('push ');
+            //console.log('push ',callback.toString);
+            queue.push(callback);
+            flush_view2();
+        }
+
+
+        function flush_view2(){
+            if(!data){
+               // console.log('no data');
+                return;
+            }
+            while(1){
+                var callback=queue.shift()
+                if(!callback){
+                    break;
+                }
+                //console.log('call',callback.toString(),data)
+                callback(data)
+            }
+        }
+
+        window.getUserInfo=getUserInfo;
+
+        load_cookie();
+        //console.log('data',data);
+        if(!data){
+            $.ajax({
+                type: "POST",
+                url: "/passport/user/loginStatusAjax",
+                dataType: "json",
+                success: function(result) {
+
+                    //flush_view(data);
+                    data=result;
+                    flush_view2();
+                }
+
+            });
+        }
+
+
+    })()
+
+</script>
+<div class="header" id="header">
+    <div class="wrap">
+        <div class="login-box fl-right">
+                        <!-- 已登录 -->
+            <div class="login js_navlogin hidden" loginstate="1">
+                <p>
+                    <span class="user-name">&nbsp;</span>
+                        <span class="user-gravatar">                            
+                            <img src='http://s2.wealinkcdn.com/pc/images/basic/gravatar-default.jpg?t=572c1063' class='img-responsive'  alt='Responsive image'  widht='20'  height='20'  />                        </span>
+                </p>               
+                <div class="nav-userlist js_navuserlist" identitystate="1">
+                    <p><a href="/resume/my">我的简历</a></p>
+                    <p><a href="/apply/all">我申请的职位</a></p>
+                    <p><a href="/collect/list">我收藏的职位</a></p>
+                    <p><a href="/passport/switch">我要招人</a></p>
+                    <p><a href="/passport/manage">账号管理</a></p>
+                    <p class="btn-logout"><a href="/passport/logout" class="btn-logout">退出</a></p>
+                </div>
+                <div class="nav-userlist js_navuserlist" identitystate="2">
+                    <p><a href="/position/manage/online">我发布的职位</a></p>
+                    <p><a href="/apply/resume-manage/wait">我收到的简历</a></p>
+                    <p>
+                        <a href="/apply/resume-manage/wait?is_download=1">我下载的简历</a>
+                    </p>
+                    <p><a href="/gongsi/my/">我的公司主页</a></p>
+                    <p><a href="/passport/switch">我要找工作</a></p>
+                    <p><a href="/passport/manage">账号管理</a></p>
+                    <p class="btn-logout"><a href="/passport/logout" class="btn-logout">退出</a></p>
+                </div>
+            </div>
+            <!-- 未登录 -->
+            <div class="loginout " loginstate="0">
+                <a class="btn-sign" href="/passport/login" onclick="javascript:_gaq.push(['_trackEvent', 'top_navigation', 'login_entry'])" role="button"  target="_self" id="js-login" pop-data="#js_popuplogin">登录</a>
+                <a class="btn-register" href="/passport/register" onclick="javascript:_gaq.push(['_trackEvent', 'top_navigation', 'register_entry'])" role="button"  target="_self">注册</a>
+            </div>
+                    </div>
+
+        <a class="bl-logo" href="/">若邻网</a>
+                <ul class="nav fl-left " identitystate="1">
+            <li><a href="/">首页</a></li>
+            <li><a href="/resume/my" rel="nofollow">我的简历</a></li>
+            <li><a href="/apply/all" rel="nofollow">求职管理<span class="stat-num" id="messageSum"></span></a></li>
+            <li><a href="/about/mobile/index">手机版</a></li>
+        </ul>
+        <ul class="nav fl-left hidden" identitystate="2">
+            <li><a href="/">首页</a></li>
+            <li><a href="/position/manage/online" rel="nofollow">招聘管理<span id="resume-manage-num" class="stat-num"></span></a></li>
+            <li><a href="/zhiwei/publish" rel="nofollow" onclick="javascript:_gaq.push(['_trackEvent', 'index', 'release_job'])">发布职位</a></li>
+            <li><a href="/resume/search/search/" rel="nofollow">搜索人才</a></li>
+            <li><a href="/about/mobile/index">手机版</a></li>
+        </ul>
+        <ul class="nav fl-left hidden" identitystate="0">
+            <li><a href="/">首页</a></li>
+            <li><a href="/resume/my" rel="nofollow">我的简历</a></li>
+            <li><a href="/zhiwei/publish" rel="nofollow" onclick="javascript:_gaq.push(['_trackEvent', 'index', 'release_job'])">发布职位</a></li>
+            <li><a href="/about/mobile/index">手机版</a></li>
+        </ul>
+            </div>
+</div>
+<div class="clear"></div>
+<script>
+    getUserInfo(function(data){
+        if (data['status'] != 0) {
+            //已经登陆
+            $('[loginstate="0"]').addClass('hidden');
+            $('[loginstate="1"]').removeClass('hidden');
+            if (data['result']['username']) {
+                $(".user-name").html(data['result']['username']);
+            }
+
+            if (data['result']['identity'] == 1) {
+                $('[identitystate="2"]').addClass('hidden');
+                $('[identitystate="1"]').removeClass('hidden');
+
+            } else if (data['result']['identity'] == 2) {
+                $('[identitystate="1"]').addClass('hidden');
+                $('[identitystate="2"]').removeClass('hidden');
+            }
+        } else {
+            //未登录
+            $('[loginstate="1"]').addClass('hidden');
+            $('[loginstate="0"]').removeClass('hidden');
+            $('[identitystate="1"]').addClass('hidden');
+            $('[identitystate="2"]').addClass('hidden');
+            $('[identitystate="0"]').removeClass('hidden');
+        }
+    })
+
+    //消息通知个数小红点ajax
+    getUserInfo(function(data) {
+        if (data['status'] != 0 && data['result']['identity'] == 1) {
+            //求职者 ajax 获取通知个数
+            $.ajax({
+                type: "get",
+                url: "/position/apply/getMessageNumAjax",
+                dataType: "json",
+                success: function(data){
+                    if(data['faceNum']==0){
+                        $('#face span').removeClass("msg");
+                        data['faceNum']='';
+                    }
+                    if(data['notFitNum']==0){
+                        $('#notFit span').removeClass("msg");
+                        data['notFitNum']='';
+                    }
+                    if(data['messageSum']==0){
+                        data['messageSum']='';
+                    }
+                    if(data['status']==1){
+                        if(data['faceNum']!=''){
+                            $('#face span').addClass("msg");
+                        }
+                        if(data['notFitNum']!=''){
+                            $('#notFit span').addClass("msg");
+                        }
+                        if(data['messageSum']!=''){
+                            $('#messageSum').addClass("msg");
+                        }
+                        $('#face span').html(data['faceNum']);
+                        $('#notFit span').html(data['notFitNum']);
+                        $('#messageSum').html(data['messageSum']);
+                    }
+                }
+            });
+        } else if (data['status'] != 0 && data['result']['identity'] == 2){
+            $.ajax({
+                type: "post",
+                url: "/apply/resume-manage/getNumAjax",
+                dataType: "json",
+                success: function(data){
+                    if (data['status'] == 1 && data['num']!=0) {
+                        $("#resume-manage-num").html(data['num']);
+                        $("#resume-manage-num").addClass('msg');
+                    }else{
+                        $("#resume-manage-num").removeClass('msg');
+                    }
+                }
+            });
+        }
+    });
+</script>
+
+<!-- header end-->
+<div class="main">
+<div class="wrap">
+    <!-- 广告位：首页顶部通栏 -->
+    <script>
+        (function() {
+            var s = "_" + Math.random().toString(36).slice(2);
+            document.write('<div id="' + s + '"></div>');
+            (window.slotbydup=window.slotbydup || []).push({
+                id: '2424770',
+                container: s,
+                size: '980,90',
+                display: 'inlay-fix'
+            });
+        })();
+    </script>
+<div class="m-left4">
+    <div class="s-ebox1 pos-search">
+        <form id="pos_search_form" name="pos_search_form" action="/zhiwei/search/url">
+            <div class="ebox-input">
+                <input autocomplete="off"   class="form-control bor-c-green ajaxSearch" type="text" placeholder="请输入关键字，支持职位和公司名称" name="kw" id="" value="" onfocus="javascript:_gaq.push(['_trackEvent', 'index', 'click_searchBox'])"/>
+
+                <div class="clear"></div>
+            </div>
+            <div class="ebox-tag"><span class="pos-search-tag-title">热门搜索：</span>
+                                    <a href="/zhaopin/kw-%E5%93%81%E7%89%8C%E4%B8%93%E5%91%98/" onclick="javascript:_gaq.push(['_trackEvent', 'index', 'click_hotTopics'])"><strong>品牌专员</strong></a>
+                                    <a href="/zhaopin/kw-%E5%BD%B1%E8%A7%86%E7%AD%96%E5%88%92/" onclick="javascript:_gaq.push(['_trackEvent', 'index', 'click_hotTopics'])"><strong>影视策划</strong></a>
+                                    <a href="/zhaopin/kw-%E5%94%AE%E5%89%8D%E6%8A%80%E6%9C%AF%E6%94%AF%E6%8C%81/" onclick="javascript:_gaq.push(['_trackEvent', 'index', 'click_hotTopics'])"><strong>售前技术支持</strong></a>
+                                    <a href="/zhaopin/kw-SEO%E4%BC%98%E5%8C%96/" onclick="javascript:_gaq.push(['_trackEvent', 'index', 'click_hotTopics'])"><strong>SEO优化</strong></a>
+                                    <a href="/zhaopin/kw-%E6%9C%BA%E6%A2%B0%E5%B7%A5%E7%A8%8B%E5%B8%88/" onclick="javascript:_gaq.push(['_trackEvent', 'index', 'click_hotTopics'])"><strong>机械工程师</strong></a>
+                                    <a href="/zhaopin/kw-%E5%91%BC%E5%8F%AB%E4%B8%AD%E5%BF%83%E6%9C%8D%E5%8A%A1%E4%BA%BA%E5%91%98/" onclick="javascript:_gaq.push(['_trackEvent', 'index', 'click_hotTopics'])"><strong>呼叫中心服务人员</strong></a>
+                                    <a href="/zhaopin/kw-%E9%94%80%E5%94%AE%E5%8A%A9%E7%90%86/" onclick="javascript:_gaq.push(['_trackEvent', 'index', 'click_hotTopics'])"><strong>销售助理</strong></a>
+                                    <a href="/zhaopin/kw-%E5%9F%B9%E8%AE%AD%E8%AE%B2%E5%B8%88/" onclick="javascript:_gaq.push(['_trackEvent', 'index', 'click_hotTopics'])"><strong>培训讲师</strong></a>
+                                    <a href="/zhaopin/kw-%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/" onclick="javascript:_gaq.push(['_trackEvent', 'index', 'click_hotTopics'])"><strong>软件开发</strong></a>
+                                    <a href="/zhaopin/kw-%E6%8A%80%E6%9C%AF%E6%94%AF%E6%8C%81/" onclick="javascript:_gaq.push(['_trackEvent', 'index', 'click_hotTopics'])"><strong>技术支持</strong></a>
+                
+            </div>
+
+            <div class="ebox-condition">
+                <div class="select_pop js_popcity" maxSelectCount="3" SelectTxt="工作地点"><i class="ico_select_pop"></i>
+                    <input class="form-control control-sm js_pop_text" placeholder="工作地点" id="" name="city[text]"
+                           type="text" value=""
+                           readonly/>
+                    <input class="form-control control-sm js_pop_val" placeholder="" id="" name="city[id]"
+                           type="hidden"/>
+                </div>
+                <div class="select_pop js_popjobduty" maxSelectCount="3" SelectTxt="职能"><i class="ico_select_pop"></i>
+                    <input class="form-control control-sm js_pop_text" placeholder="职能" name="duty[text]" type="text"
+                           value=""
+                           readonly/>
+                    <input class="form-control control-sm js_pop_val" placeholder="" id="" name="duty[id]"
+                           type="hidden"/>
+                </div>
+                <div class="select_pop js_popindustry" maxSelectCount="3" SelectTxt="行业"><i
+                            class="ico_select_pop"></i>
+                    <input class="form-control control-sm js_pop_text" placeholder="行业" name="industry[text]" type="text"
+                           value=""
+                           readonly/>
+                    <input class="form-control control-sm js_pop_val" placeholder="" id="" name="industry[id]"
+                           type="hidden"/>
+                </div>
+            </div>
+            <div class="ebox-btn">
+                <!-- <div class="fl-right">                  
+                    <input class="btn_link fc-blue3" type="reset" value="重置">
+                </div> -->
+                <a href="javascript:;" onclick="javascript:_gaq.push(['_trackEvent', 'index', 'search_direct']);$('#pos_search_form').submit();" class="btn btn-orange w-220" id="pos_search_form_submit"><i class="ico ico-search"></i>搜索</a>
+            </div>
+        </form>
+    </div>
+    <div class="index_play">
+        <!-- 广告位：首页首屏中心滚动大banner -->
+        <script>
+            (function() {
+                var s = "_" + Math.random().toString(36).slice(2);
+                document.write('<div id="' + s + '"></div>');
+                (window.slotbydup=window.slotbydup || []).push({
+                    id: '2424766',
+                    container: s,
+                    size: '735,160',
+                    display: 'inlay-fix'
+                });
+            })();
+        </script>
+    </div>
+    <div class="" id="turnwrap1">
+        <div class="change-tab2" id="turntabwrap1">
+            <a href="javascript:;" tabid="0" onclick="javascript:_gaq.push(['_trackEvent', 'index', 'switch_newJob'])">最新职位</a>
+            <a href="javascript:;" tabid="1" onclick="javascript:_gaq.push(['_trackEvent', 'index', 'switch_recommendJob'])">推荐职位</a>
+        </div>
+        <div id="turncon1">
+            <div class="li_page">
+                <ul class="ullist-1 js_agent" agenttag="li" >
+                                            <li agenturl="/zhiwei/view/26437240/" agenttarget="_blank">
+    <div class="ulli-1" onclick="javascript:_gaq.push(['_trackEvent', 'index', 'check_job'])">
+        <h2 title="" class="ulli-1-title"><a target="_blank" href="/zhiwei/view/26437240/"
+                                             title="商品编辑">商品编辑</a>
+                                </h2>
+
+        <div class="txt-inline1">
+            <p><span>月薪：</span><b class="fc-red">
+                    4000-6000</b> 元            </p>
+
+            <p><span>地点：</span>
+                上海-普陀区            </p>
+
+            <p><span>经验：</span>不限</p>
+
+            <p><span>最低学历：</span>大专</p>
+                        <p class="p-w100"><span>职位诱惑：</span>绩效奖金 五险一金 年终奖金 节日福利</p>
+                        <div class="clear"></div>
+        </div>
+        <p class="fc-gray">3天内发布</p>
+
+    </div>
+    <div class="ulli-2" onclick="javascript:_gaq.push(['_trackEvent', 'index', 'check_job2'])">
+        <h5>
+            <span style="display: none;" title="知名企业" class="famous-icon">名</span>
+            <a class="item_company" cid="4845266" target="_blank"  href="/gongsi/jianjie/4845266/" title="">镜拓光学科技(上海)有限公司</a></h5>
+                    <div class="txt-list">
+                <p><span class="fc-gray">公司性质：</span>民营公司</p>
+
+                <p><span class="fc-gray">公司规模：</span>201-500职员</p>
+            </div>
+                        <p class="mt20">
+            <input type="button"
+                   class="btn btn-sm btn-primary w-110 apply_btn"
+                   pid="26437240" hr_uid="1395158"
+                   value="立即申请" />
+            <a class="btn btn-sm btn-green3 w-110" target="_blank"  href="/zhiwei/view/26437240/">查看详情</a>
+        </p>
+    </div>
+    <div class="clear"></div>
+</li>
+                                            <li agenturl="/zhiwei/view/27485997/" agenttarget="_blank">
+    <div class="ulli-1" onclick="javascript:_gaq.push(['_trackEvent', 'index', 'check_job'])">
+        <h2 title="" class="ulli-1-title"><a target="_blank" href="/zhiwei/view/27485997/"
+                                             title="客户主任">客户主任</a>
+                                </h2>
+
+        <div class="txt-inline1">
+            <p><span>月薪：</span><b class="fc-red">
+                    6000-8000</b> 元            </p>
+
+            <p><span>地点：</span>
+                北京-朝阳区            </p>
+
+            <p><span>经验：</span>1年以上</p>
+
+            <p><span>最低学历：</span>大专</p>
+                        <div class="clear"></div>
+        </div>
+        <p class="fc-gray">3天内发布</p>
+
+    </div>
+    <div class="ulli-2" onclick="javascript:_gaq.push(['_trackEvent', 'index', 'check_job2'])">
+        <h5>
+            <span style="display: none;" title="知名企业" class="famous-icon">名</span>
+            <a class="item_company" cid="404693" target="_blank"  href="/gongsi/jianjie/404693/" title="">上海欧安派广告传播有限公司</a></h5>
+                    <div class="txt-list">
+                <p><span class="fc-gray">公司性质：</span>外资(欧美)</p>
+
+                <p><span class="fc-gray">公司规模：</span>201-500职员</p>
+            </div>
+                        <p class="mt20">
+            <input type="button"
+                   class="btn btn-sm btn-primary w-110 apply_btn"
+                   pid="27485997" hr_uid="3424780"
+                   value="立即申请" />
+            <a class="btn btn-sm btn-green3 w-110" target="_blank"  href="/zhiwei/view/27485997/">查看详情</a>
+        </p>
+    </div>
+    <div class="clear"></div>
+</li>
+                                            <li agenturl="/zhiwei/view/31010129/" agenttarget="_blank">
+    <div class="ulli-1" onclick="javascript:_gaq.push(['_trackEvent', 'index', 'check_job'])">
+        <h2 title="" class="ulli-1-title"><a target="_blank" href="/zhiwei/view/31010129/"
+                                             title="人事行政专员">人事行政专员</a>
+                                </h2>
+
+        <div class="txt-inline1">
+            <p><span>月薪：</span><b class="fc-red">
+                    3000-4000</b> 元            </p>
+
+            <p><span>地点：</span>
+                北京-海淀区            </p>
+
+            <p><span>经验：</span>不限</p>
+
+            <p><span>最低学历：</span>大专</p>
+                        <p class="p-w100"><span>职位诱惑：</span>团队活动 绩效奖金 五险一金</p>
+                        <div class="clear"></div>
+        </div>
+        <p class="fc-gray">3天内发布</p>
+
+    </div>
+    <div class="ulli-2" onclick="javascript:_gaq.push(['_trackEvent', 'index', 'check_job2'])">
+        <h5>
+            <span style="display: none;" title="知名企业" class="famous-icon">名</span>
+            <a class="item_company" cid="470249" target="_blank"  href="/gongsi/jianjie/470249/" title="">意昂神州（北京）科技有限公司</a></h5>
+                    <div class="txt-list">
+                <p><span class="fc-gray">公司性质：</span>民营公司</p>
+
+                <p><span class="fc-gray">公司规模：</span>51-200职员</p>
+            </div>
+                        <p class="mt20">
+            <input type="button"
+                   class="btn btn-sm btn-primary w-110 apply_btn"
+                   pid="31010129" hr_uid="9186302"
+                   value="立即申请" />
+            <a class="btn btn-sm btn-green3 w-110" target="_blank"  href="/zhiwei/view/31010129/">查看详情</a>
+        </p>
+    </div>
+    <div class="clear"></div>
+</li>
+                                            <li agenturl="/zhiwei/view/31010128/" agenttarget="_blank">
+    <div class="ulli-1" onclick="javascript:_gaq.push(['_trackEvent', 'index', 'check_job'])">
+        <h2 title="" class="ulli-1-title"><a target="_blank" href="/zhiwei/view/31010128/"
+                                             title="经纪人">经纪人</a>
+                                </h2>
+
+        <div class="txt-inline1">
+            <p><span>月薪：</span><b class="fc-red">
+                    5000-10000</b> 元            </p>
+
+            <p><span>地点：</span>
+                上海-闸北区            </p>
+
+            <p><span>经验：</span>不限</p>
+
+            <p><span>最低学历：</span>高中</p>
+                        <div class="clear"></div>
+        </div>
+        <p class="fc-gray">3天内发布</p>
+
+    </div>
+    <div class="ulli-2" onclick="javascript:_gaq.push(['_trackEvent', 'index', 'check_job2'])">
+        <h5>
+            <span style="display: none;" title="知名企业" class="famous-icon">名</span>
+            <a class="item_company" cid="6663051" target="_blank"  href="/gongsi/jianjie/6663051/" title="">深圳市前海云房网络科技有限公司</a></h5>
+                    <div class="txt-list">
+                <p><span class="fc-gray">公司性质：</span>民营公司</p>
+
+                <p><span class="fc-gray">公司规模：</span>10000职员以上</p>
+            </div>
+                        <p class="mt20">
+            <input type="button"
+                   class="btn btn-sm btn-primary w-110 apply_btn"
+                   pid="31010128" hr_uid="11960965"
+                   value="立即申请" />
+            <a class="btn btn-sm btn-green3 w-110" target="_blank"  href="/zhiwei/view/31010128/">查看详情</a>
+        </p>
+    </div>
+    <div class="clear"></div>
+</li>
+                                            <li agenturl="/zhiwei/view/31010142/" agenttarget="_blank">
+    <div class="ulli-1" onclick="javascript:_gaq.push(['_trackEvent', 'index', 'check_job'])">
+        <h2 title="" class="ulli-1-title"><a target="_blank" href="/zhiwei/view/31010142/"
+                                             title="医药销售代表">医药销售代表</a>
+                                </h2>
+
+        <div class="txt-inline1">
+            <p><span>月薪：</span><b class="fc-red">
+                    4000-8000</b> 元            </p>
+
+            <p><span>地点：</span>
+                江苏-淮安            </p>
+
+            <p><span>经验：</span>不限</p>
+
+            <p><span>最低学历：</span>不限</p>
+                        <div class="clear"></div>
+        </div>
+        <p class="fc-gray">3天内发布</p>
+
+    </div>
+    <div class="ulli-2" onclick="javascript:_gaq.push(['_trackEvent', 'index', 'check_job2'])">
+        <h5>
+            <span style="display: none;" title="知名企业" class="famous-icon">名</span>
+            <a class="item_company" cid="6748196" target="_blank"  href="/gongsi/jianjie/6748196/" title="">南京启欧医疗科技有限公司</a></h5>
+                    <div class="txt-list">
+                <p><span class="fc-gray">公司性质：</span>民营公司</p>
+
+                <p><span class="fc-gray">公司规模：</span>11-50职员</p>
+            </div>
+                        <p class="mt20">
+            <input type="button"
+                   class="btn btn-sm btn-primary w-110 apply_btn"
+                   pid="31010142" hr_uid="11963148"
+                   value="立即申请" />
+            <a class="btn btn-sm btn-green3 w-110" target="_blank"  href="/zhiwei/view/31010142/">查看详情</a>
+        </p>
+    </div>
+    <div class="clear"></div>
+</li>
+                                            <li agenturl="/zhiwei/view/31010144/" agenttarget="_blank">
+    <div class="ulli-1" onclick="javascript:_gaq.push(['_trackEvent', 'index', 'check_job'])">
+        <h2 title="" class="ulli-1-title"><a target="_blank" href="/zhiwei/view/31010144/"
+                                             title="保安">保安</a>
+                                </h2>
+
+        <div class="txt-inline1">
+            <p><span>月薪：</span><b class="fc-red">
+                    2500-3000</b> 元            </p>
+
+            <p><span>地点：</span>
+                上海-奉贤区            </p>
+
+            <p><span>经验：</span>不限</p>
+
+            <p><span>最低学历：</span>初中</p>
+                        <div class="clear"></div>
+        </div>
+        <p class="fc-gray">3天内发布</p>
+
+    </div>
+    <div class="ulli-2" onclick="javascript:_gaq.push(['_trackEvent', 'index', 'check_job2'])">
+        <h5>
+            <span style="display: none;" title="知名企业" class="famous-icon">名</span>
+            <a class="item_company" cid="1900182" target="_blank"  href="/gongsi/jianjie/1900182/" title="">上海新驰物业有限公司</a></h5>
+                    <div class="txt-list">
+                <p><span class="fc-gray">公司性质：</span>民营公司</p>
+
+                <p><span class="fc-gray">公司规模：</span>51-200职员</p>
+            </div>
+                        <p class="mt20">
+            <input type="button"
+                   class="btn btn-sm btn-primary w-110 apply_btn"
+                   pid="31010144" hr_uid="11961430"
+                   value="立即申请" />
+            <a class="btn btn-sm btn-green3 w-110" target="_blank"  href="/zhiwei/view/31010144/">查看详情</a>
+        </p>
+    </div>
+    <div class="clear"></div>
+</li>
+                                            <li agenturl="/zhiwei/view/31010166/" agenttarget="_blank">
+    <div class="ulli-1" onclick="javascript:_gaq.push(['_trackEvent', 'index', 'check_job'])">
+        <h2 title="" class="ulli-1-title"><a target="_blank" href="/zhiwei/view/31010166/"
+                                             title="数据分析师">数据分析师</a>
+                                </h2>
+
+        <div class="txt-inline1">
+            <p><span>月薪：</span><b class="fc-red">
+                    6000-8000</b> 元            </p>
+
+            <p><span>地点：</span>
+                北京-朝阳区            </p>
+
+            <p><span>经验：</span>不限</p>
+
+            <p><span>最低学历：</span>本科</p>
+                        <div class="clear"></div>
+        </div>
+        <p class="fc-gray">3天内发布</p>
+
+    </div>
+    <div class="ulli-2" onclick="javascript:_gaq.push(['_trackEvent', 'index', 'check_job2'])">
+        <h5>
+            <span style="display: none;" title="知名企业" class="famous-icon">名</span>
+            <a class="item_company" cid="623930" target="_blank"  href="/gongsi/jianjie/623930/" title="">北京无双科技有限公司</a></h5>
+                    <div class="txt-list">
+                <p><span class="fc-gray">公司性质：</span>民营公司</p>
+
+                <p><span class="fc-gray">公司规模：</span>11-50职员</p>
+            </div>
+                        <p class="mt20">
+            <input type="button"
+                   class="btn btn-sm btn-primary w-110 apply_btn"
+                   pid="31010166" hr_uid="11961825"
+                   value="立即申请" />
+            <a class="btn btn-sm btn-green3 w-110" target="_blank"  href="/zhiwei/view/31010166/">查看详情</a>
+        </p>
+    </div>
+    <div class="clear"></div>
+</li>
+                                            <li agenturl="/zhiwei/view/31010158/" agenttarget="_blank">
+    <div class="ulli-1" onclick="javascript:_gaq.push(['_trackEvent', 'index', 'check_job'])">
+        <h2 title="" class="ulli-1-title"><a target="_blank" href="/zhiwei/view/31010158/"
+                                             title="Web前端高级工程师">Web前端高级工程师</a>
+                                </h2>
+
+        <div class="txt-inline1">
+            <p><span>月薪：</span><b class="fc-red">
+                    20000-30000</b> 元            </p>
+
+            <p><span>地点：</span>
+                北京-海淀区            </p>
+
+            <p><span>经验：</span>3年以上</p>
+
+            <p><span>最低学历：</span>本科</p>
+                        <p class="p-w100"><span>职位诱惑：</span>免费健身 五险一金 年底双薪 股票期权 弹性工作 包吃 定期</p>
+                        <div class="clear"></div>
+        </div>
+        <p class="fc-gray">3天内发布</p>
+
+    </div>
+    <div class="ulli-2" onclick="javascript:_gaq.push(['_trackEvent', 'index', 'check_job2'])">
+        <h5>
+            <span style="display: none;" title="知名企业" class="famous-icon">名</span>
+            <a class="item_company" cid="6747876" target="_blank"  href="/gongsi/jianjie/6747876/" title="">北京谱思科技有限公司</a></h5>
+                    <div class="txt-list">
+                <p><span class="fc-gray">公司性质：</span>民营公司</p>
+
+                <p><span class="fc-gray">公司规模：</span>11-50职员</p>
+            </div>
+                        <p class="mt20">
+            <input type="button"
+                   class="btn btn-sm btn-primary w-110 apply_btn"
+                   pid="31010158" hr_uid="7795124"
+                   value="立即申请" />
+            <a class="btn btn-sm btn-green3 w-110" target="_blank"  href="/zhiwei/view/31010158/">查看详情</a>
+        </p>
+    </div>
+    <div class="clear"></div>
+</li>
+                                            <li agenturl="/zhiwei/view/31010160/" agenttarget="_blank">
+    <div class="ulli-1" onclick="javascript:_gaq.push(['_trackEvent', 'index', 'check_job'])">
+        <h2 title="" class="ulli-1-title"><a target="_blank" href="/zhiwei/view/31010160/"
+                                             title="数据抓取/处理工程师">数据抓取/处理工程师</a>
+                                </h2>
+
+        <div class="txt-inline1">
+            <p><span>月薪：</span><b class="fc-red">
+                    20000-35000</b> 元            </p>
+
+            <p><span>地点：</span>
+                北京-海淀区            </p>
+
+            <p><span>经验：</span>3年以上</p>
+
+            <p><span>最低学历：</span>本科</p>
+                        <p class="p-w100"><span>职位诱惑：</span>免费健身 五险一金 年底双薪 股票期权 弹性工作 包吃 定期</p>
+                        <div class="clear"></div>
+        </div>
+        <p class="fc-gray">3天内发布</p>
+
+    </div>
+    <div class="ulli-2" onclick="javascript:_gaq.push(['_trackEvent', 'index', 'check_job2'])">
+        <h5>
+            <span style="display: none;" title="知名企业" class="famous-icon">名</span>
+            <a class="item_company" cid="6747876" target="_blank"  href="/gongsi/jianjie/6747876/" title="">北京谱思科技有限公司</a></h5>
+                    <div class="txt-list">
+                <p><span class="fc-gray">公司性质：</span>民营公司</p>
+
+                <p><span class="fc-gray">公司规模：</span>11-50职员</p>
+            </div>
+                        <p class="mt20">
+            <input type="button"
+                   class="btn btn-sm btn-primary w-110 apply_btn"
+                   pid="31010160" hr_uid="7795124"
+                   value="立即申请" />
+            <a class="btn btn-sm btn-green3 w-110" target="_blank"  href="/zhiwei/view/31010160/">查看详情</a>
+        </p>
+    </div>
+    <div class="clear"></div>
+</li>
+                                            <li agenturl="/zhiwei/view/29451445/" agenttarget="_blank">
+    <div class="ulli-1" onclick="javascript:_gaq.push(['_trackEvent', 'index', 'check_job'])">
+        <h2 title="" class="ulli-1-title"><a target="_blank" href="/zhiwei/view/29451445/"
+                                             title="嵌入式软件开发">嵌入式软件开发</a>
+                                </h2>
+
+        <div class="txt-inline1">
+            <p><span>月薪：</span><b class="fc-red">
+                    6000-12000</b> 元            </p>
+
+            <p><span>地点：</span>
+                上海-浦东新区            </p>
+
+            <p><span>经验：</span>3年以上</p>
+
+            <p><span>最低学历：</span>本科</p>
+                        <p class="p-w100"><span>职位诱惑：</span>五险一金 项目奖金 带薪年假 节日福利 </p>
+                        <div class="clear"></div>
+        </div>
+        <p class="fc-gray">3天内发布</p>
+
+    </div>
+    <div class="ulli-2" onclick="javascript:_gaq.push(['_trackEvent', 'index', 'check_job2'])">
+        <h5>
+            <span style="display: none;" title="知名企业" class="famous-icon">名</span>
+            <a class="item_company" cid="440662" target="_blank"  href="/gongsi/jianjie/440662/" title="">上海芝柯打印技术有限公司</a></h5>
+                    <div class="txt-list">
+                <p><span class="fc-gray">公司性质：</span>民营公司</p>
+
+                <p><span class="fc-gray">公司规模：</span>51-200职员</p>
+            </div>
+                        <p class="mt20">
+            <input type="button"
+                   class="btn btn-sm btn-primary w-110 apply_btn"
+                   pid="29451445" hr_uid="6084517"
+                   value="立即申请" />
+            <a class="btn btn-sm btn-green3 w-110" target="_blank"  href="/zhiwei/view/29451445/">查看详情</a>
+        </p>
+    </div>
+    <div class="clear"></div>
+</li>
+                                            <li agenturl="/zhiwei/view/31010157/" agenttarget="_blank">
+    <div class="ulli-1" onclick="javascript:_gaq.push(['_trackEvent', 'index', 'check_job'])">
+        <h2 title="" class="ulli-1-title"><a target="_blank" href="/zhiwei/view/31010157/"
+                                             title="旅游公司 前台兼渠道客服">旅游公司 前台兼渠道客服</a>
+                                </h2>
+
+        <div class="txt-inline1">
+            <p><span>月薪：</span><b class="fc-red">
+                    2500-3500</b> 元            </p>
+
+            <p><span>地点：</span>
+                北京-大兴区            </p>
+
+            <p><span>经验：</span>1年以上</p>
+
+            <p><span>最低学历：</span>中专</p>
+                        <div class="clear"></div>
+        </div>
+        <p class="fc-gray">3天内发布</p>
+
+    </div>
+    <div class="ulli-2" onclick="javascript:_gaq.push(['_trackEvent', 'index', 'check_job2'])">
+        <h5>
+            <span style="display: none;" title="知名企业" class="famous-icon">名</span>
+            <a class="item_company" cid="5673856" target="_blank"  href="/gongsi/jianjie/5673856/" title="">中商旅集团有限公司</a></h5>
+                    <div class="txt-list">
+                <p><span class="fc-gray">公司性质：</span>其他性质</p>
+
+                <p><span class="fc-gray">公司规模：</span>51-200职员</p>
+            </div>
+                        <p class="mt20">
+            <input type="button"
+                   class="btn btn-sm btn-primary w-110 apply_btn"
+                   pid="31010157" hr_uid="9613643"
+                   value="立即申请" />
+            <a class="btn btn-sm btn-green3 w-110" target="_blank"  href="/zhiwei/view/31010157/">查看详情</a>
+        </p>
+    </div>
+    <div class="clear"></div>
+</li>
+                                            <li agenturl="/zhiwei/view/31010174/" agenttarget="_blank">
+    <div class="ulli-1" onclick="javascript:_gaq.push(['_trackEvent', 'index', 'check_job'])">
+        <h2 title="" class="ulli-1-title"><a target="_blank" href="/zhiwei/view/31010174/"
+                                             title="外贸业务专员">外贸业务专员</a>
+                                </h2>
+
+        <div class="txt-inline1">
+            <p><span>月薪：</span><b class="fc-red">
+                    3000-5000</b> 元            </p>
+
+            <p><span>地点：</span>
+                广东-深圳-福田区            </p>
+
+            <p><span>经验：</span>1年以上</p>
+
+            <p><span>最低学历：</span>本科</p>
+                        <div class="clear"></div>
+        </div>
+        <p class="fc-gray">3天内发布</p>
+
+    </div>
+    <div class="ulli-2" onclick="javascript:_gaq.push(['_trackEvent', 'index', 'check_job2'])">
+        <h5>
+            <span style="display: none;" title="知名企业" class="famous-icon">名</span>
+            <a class="item_company" cid="4673431" target="_blank"  href="/gongsi/jianjie/4673431/" title="">深圳市明汕翻译有限公司</a></h5>
+                    <div class="txt-list">
+                <p><span class="fc-gray">公司性质：</span>民营公司</p>
+
+                <p><span class="fc-gray">公司规模：</span>11-50职员</p>
+            </div>
+                        <p class="mt20">
+            <input type="button"
+                   class="btn btn-sm btn-primary w-110 apply_btn"
+                   pid="31010174" hr_uid="7660924"
+                   value="立即申请" />
+            <a class="btn btn-sm btn-green3 w-110" target="_blank"  href="/zhiwei/view/31010174/">查看详情</a>
+        </p>
+    </div>
+    <div class="clear"></div>
+</li>
+                                            <li agenturl="/zhiwei/view/31010173/" agenttarget="_blank">
+    <div class="ulli-1" onclick="javascript:_gaq.push(['_trackEvent', 'index', 'check_job'])">
+        <h2 title="" class="ulli-1-title"><a target="_blank" href="/zhiwei/view/31010173/"
+                                             title="文案策划">文案策划</a>
+                                </h2>
+
+        <div class="txt-inline1">
+            <p><span>月薪：</span><b class="fc-red">
+                    4000-6000</b> 元            </p>
+
+            <p><span>地点：</span>
+                北京-丰台区            </p>
+
+            <p><span>经验：</span>不限</p>
+
+            <p><span>最低学历：</span>大专</p>
+                        <div class="clear"></div>
+        </div>
+        <p class="fc-gray">3天内发布</p>
+
+    </div>
+    <div class="ulli-2" onclick="javascript:_gaq.push(['_trackEvent', 'index', 'check_job2'])">
+        <h5>
+            <span style="display: none;" title="知名企业" class="famous-icon">名</span>
+            <a class="item_company" cid="1991984" target="_blank"  href="/gongsi/jianjie/1991984/" title="">北京创动诚讯网络科技有限公司</a></h5>
+                    <div class="txt-list">
+                <p><span class="fc-gray">公司性质：</span>民营公司</p>
+
+                <p><span class="fc-gray">公司规模：</span>51-200职员</p>
+            </div>
+                        <p class="mt20">
+            <input type="button"
+                   class="btn btn-sm btn-primary w-110 apply_btn"
+                   pid="31010173" hr_uid="11961646"
+                   value="立即申请" />
+            <a class="btn btn-sm btn-green3 w-110" target="_blank"  href="/zhiwei/view/31010173/">查看详情</a>
+        </p>
+    </div>
+    <div class="clear"></div>
+</li>
+                                            <li agenturl="/zhiwei/view/31010178/" agenttarget="_blank">
+    <div class="ulli-1" onclick="javascript:_gaq.push(['_trackEvent', 'index', 'check_job'])">
+        <h2 title="" class="ulli-1-title"><a target="_blank" href="/zhiwei/view/31010178/"
+                                             title="行政专员/助理 (招1人)">行政专员/助理 (招1人)</a>
+                                </h2>
+
+        <div class="txt-inline1">
+            <p><span>月薪：</span><b class="fc-red">
+                    2000-2500</b> 元            </p>
+
+            <p><span>地点：</span>
+                湖北-武汉            </p>
+
+            <p><span>经验：</span>2年以上</p>
+
+            <p><span>最低学历：</span>本科</p>
+                        <div class="clear"></div>
+        </div>
+        <p class="fc-gray">3天内发布</p>
+
+    </div>
+    <div class="ulli-2" onclick="javascript:_gaq.push(['_trackEvent', 'index', 'check_job2'])">
+        <h5>
+            <span style="display: none;" title="知名企业" class="famous-icon">名</span>
+            <a class="item_company" cid="6748081" target="_blank"  href="/gongsi/jianjie/6748081/" title="">武汉网聚众联科技有限公司</a></h5>
+                    <div class="txt-list">
+                <p><span class="fc-gray">公司性质：</span>民营公司</p>
+
+                <p><span class="fc-gray">公司规模：</span>11-50职员</p>
+            </div>
+                        <p class="mt20">
+            <input type="button"
+                   class="btn btn-sm btn-primary w-110 apply_btn"
+                   pid="31010178" hr_uid="6792007"
+                   value="立即申请" />
+            <a class="btn btn-sm btn-green3 w-110" target="_blank"  href="/zhiwei/view/31010178/">查看详情</a>
+        </p>
+    </div>
+    <div class="clear"></div>
+</li>
+                                            <li agenturl="/zhiwei/view/31010177/" agenttarget="_blank">
+    <div class="ulli-1" onclick="javascript:_gaq.push(['_trackEvent', 'index', 'check_job'])">
+        <h2 title="" class="ulli-1-title"><a target="_blank" href="/zhiwei/view/31010177/"
+                                             title="行政助理 文秘">行政助理 文秘</a>
+                                </h2>
+
+        <div class="txt-inline1">
+            <p><span>月薪：</span><b class="fc-red">
+                    1500-3000</b> 元            </p>
+
+            <p><span>地点：</span>
+                广东-广州-天河区            </p>
+
+            <p><span>经验：</span>不限</p>
+
+            <p><span>最低学历：</span>不限</p>
+                        <div class="clear"></div>
+        </div>
+        <p class="fc-gray">3天内发布</p>
+
+    </div>
+    <div class="ulli-2" onclick="javascript:_gaq.push(['_trackEvent', 'index', 'check_job2'])">
+        <h5>
+            <span style="display: none;" title="知名企业" class="famous-icon">名</span>
+            <a class="item_company" cid="2846208" target="_blank"  href="/gongsi/jianjie/2846208/" title="">广州米修广告有限公司</a></h5>
+                    <div class="txt-list">
+                <p><span class="fc-gray">公司性质：</span>民营公司</p>
+
+                <p><span class="fc-gray">公司规模：</span>11-50职员</p>
+            </div>
+                        <p class="mt20">
+            <input type="button"
+                   class="btn btn-sm btn-primary w-110 apply_btn"
+                   pid="31010177" hr_uid="3944342"
+                   value="立即申请" />
+            <a class="btn btn-sm btn-green3 w-110" target="_blank"  href="/zhiwei/view/31010177/">查看详情</a>
+        </p>
+    </div>
+    <div class="clear"></div>
+</li>
+                                            <li agenturl="/zhiwei/view/31010176/" agenttarget="_blank">
+    <div class="ulli-1" onclick="javascript:_gaq.push(['_trackEvent', 'index', 'check_job'])">
+        <h2 title="" class="ulli-1-title"><a target="_blank" href="/zhiwei/view/31010176/"
+                                             title="市场总监">市场总监</a>
+                                </h2>
+
+        <div class="txt-inline1">
+            <p><span>月薪：</span><b class="fc-red">
+                    5000-10000</b> 元            </p>
+
+            <p><span>地点：</span>
+                广东-广州-天河区            </p>
+
+            <p><span>经验：</span>1年以上</p>
+
+            <p><span>最低学历：</span>大专</p>
+                        <div class="clear"></div>
+        </div>
+        <p class="fc-gray">3天内发布</p>
+
+    </div>
+    <div class="ulli-2" onclick="javascript:_gaq.push(['_trackEvent', 'index', 'check_job2'])">
+        <h5>
+            <span style="display: none;" title="知名企业" class="famous-icon">名</span>
+            <a class="item_company" cid="6748178" target="_blank"  href="/gongsi/jianjie/6748178/" title="">广州亿启印务有限公司</a></h5>
+                    <div class="txt-list">
+                <p><span class="fc-gray">公司性质：</span>民营公司</p>
+
+                <p><span class="fc-gray">公司规模：</span>1-10职员</p>
+            </div>
+                        <p class="mt20">
+            <input type="button"
+                   class="btn btn-sm btn-primary w-110 apply_btn"
+                   pid="31010176" hr_uid="11962467"
+                   value="立即申请" />
+            <a class="btn btn-sm btn-green3 w-110" target="_blank"  href="/zhiwei/view/31010176/">查看详情</a>
+        </p>
+    </div>
+    <div class="clear"></div>
+</li>
+                                            <li agenturl="/zhiwei/view/31010187/" agenttarget="_blank">
+    <div class="ulli-1" onclick="javascript:_gaq.push(['_trackEvent', 'index', 'check_job'])">
+        <h2 title="" class="ulli-1-title"><a target="_blank" href="/zhiwei/view/31010187/"
+                                             title="网站运营（招10人）">网站运营（招10人）</a>
+                                </h2>
+
+        <div class="txt-inline1">
+            <p><span>月薪：</span><b class="fc-red">
+                    3000-3500</b> 元            </p>
+
+            <p><span>地点：</span>
+                湖北-武汉            </p>
+
+            <p><span>经验：</span>5年以上</p>
+
+            <p><span>最低学历：</span>本科</p>
+                        <div class="clear"></div>
+        </div>
+        <p class="fc-gray">3天内发布</p>
+
+    </div>
+    <div class="ulli-2" onclick="javascript:_gaq.push(['_trackEvent', 'index', 'check_job2'])">
+        <h5>
+            <span style="display: none;" title="知名企业" class="famous-icon">名</span>
+            <a class="item_company" cid="6748081" target="_blank"  href="/gongsi/jianjie/6748081/" title="">武汉网聚众联科技有限公司</a></h5>
+                    <div class="txt-list">
+                <p><span class="fc-gray">公司性质：</span>民营公司</p>
+
+                <p><span class="fc-gray">公司规模：</span>11-50职员</p>
+            </div>
+                        <p class="mt20">
+            <input type="button"
+                   class="btn btn-sm btn-primary w-110 apply_btn"
+                   pid="31010187" hr_uid="6792007"
+                   value="立即申请" />
+            <a class="btn btn-sm btn-green3 w-110" target="_blank"  href="/zhiwei/view/31010187/">查看详情</a>
+        </p>
+    </div>
+    <div class="clear"></div>
+</li>
+                                            <li agenturl="/zhiwei/view/31010180/" agenttarget="_blank">
+    <div class="ulli-1" onclick="javascript:_gaq.push(['_trackEvent', 'index', 'check_job'])">
+        <h2 title="" class="ulli-1-title"><a target="_blank" href="/zhiwei/view/31010180/"
+                                             title="董事长助理/秘书">董事长助理/秘书</a>
+                                </h2>
+
+        <div class="txt-inline1">
+            <p><span>月薪：</span><b class="fc-red">
+                    2000-3000</b> 元            </p>
+
+            <p><span>地点：</span>
+                安徽-宿州            </p>
+
+            <p><span>经验：</span>不限</p>
+
+            <p><span>最低学历：</span>大专</p>
+                        <div class="clear"></div>
+        </div>
+        <p class="fc-gray">3天内发布</p>
+
+    </div>
+    <div class="ulli-2" onclick="javascript:_gaq.push(['_trackEvent', 'index', 'check_job2'])">
+        <h5>
+            <span style="display: none;" title="知名企业" class="famous-icon">名</span>
+            <a class="item_company" cid="6748160" target="_blank"  href="/gongsi/jianjie/6748160/" title="">康奈鞋业（宿州）有限公司</a></h5>
+                    <div class="txt-list">
+                <p><span class="fc-gray">公司性质：</span>民营公司</p>
+
+                <p><span class="fc-gray">公司规模：</span>501-1000职员</p>
+            </div>
+                        <p class="mt20">
+            <input type="button"
+                   class="btn btn-sm btn-primary w-110 apply_btn"
+                   pid="31010180" hr_uid="11962175"
+                   value="立即申请" />
+            <a class="btn btn-sm btn-green3 w-110" target="_blank"  href="/zhiwei/view/31010180/">查看详情</a>
+        </p>
+    </div>
+    <div class="clear"></div>
+</li>
+                                            <li agenturl="/zhiwei/view/31009685/" agenttarget="_blank">
+    <div class="ulli-1" onclick="javascript:_gaq.push(['_trackEvent', 'index', 'check_job'])">
+        <h2 title="" class="ulli-1-title"><a target="_blank" href="/zhiwei/view/31009685/"
+                                             title="驻外英语翻译">驻外英语翻译</a>
+                                </h2>
+
+        <div class="txt-inline1">
+            <p><span>月薪：</span><b class="fc-red">
+                    10000-15000</b> 元            </p>
+
+            <p><span>地点：</span>
+                湖北-武汉-青山区            </p>
+
+            <p><span>经验：</span>1年以上</p>
+
+            <p><span>最低学历：</span>大专</p>
+                        <div class="clear"></div>
+        </div>
+        <p class="fc-gray">3天内发布</p>
+
+    </div>
+    <div class="ulli-2" onclick="javascript:_gaq.push(['_trackEvent', 'index', 'check_job2'])">
+        <h5>
+            <span style="display: none;" title="知名企业" class="famous-icon">名</span>
+            <a class="item_company" cid="369195" target="_blank"  href="/gongsi/jianjie/369195/" title="">武汉传神信息技术有限公司</a></h5>
+                    <div class="txt-list">
+                <p><span class="fc-gray">公司性质：</span>民营公司</p>
+
+                <p><span class="fc-gray">公司规模：</span>501-1000职员</p>
+            </div>
+                        <p class="mt20">
+            <input type="button"
+                   class="btn btn-sm btn-primary w-110 apply_btn"
+                   pid="31009685" hr_uid="4869786"
+                   value="立即申请" />
+            <a class="btn btn-sm btn-green3 w-110" target="_blank"  href="/zhiwei/view/31009685/">查看详情</a>
+        </p>
+    </div>
+    <div class="clear"></div>
+</li>
+                                            <li agenturl="/zhiwei/view/31009692/" agenttarget="_blank">
+    <div class="ulli-1" onclick="javascript:_gaq.push(['_trackEvent', 'index', 'check_job'])">
+        <h2 title="" class="ulli-1-title"><a target="_blank" href="/zhiwei/view/31009692/"
+                                             title="网店推广员">网店推广员</a>
+                                </h2>
+
+        <div class="txt-inline1">
+            <p><span>月薪：</span><b class="fc-red">
+                    2600-3500</b> 元            </p>
+
+            <p><span>地点：</span>
+                山东-威海            </p>
+
+            <p><span>经验：</span>2年以上</p>
+
+            <p><span>最低学历：</span>大专</p>
+                        <div class="clear"></div>
+        </div>
+        <p class="fc-gray">1周内发布</p>
+
+    </div>
+    <div class="ulli-2" onclick="javascript:_gaq.push(['_trackEvent', 'index', 'check_job2'])">
+        <h5>
+            <span style="display: none;" title="知名企业" class="famous-icon">名</span>
+            <a class="item_company" cid="6748096" target="_blank"  href="/gongsi/jianjie/6748096/" title="">威海佳士通进出口有限公司</a></h5>
+                    <div class="txt-list">
+                <p><span class="fc-gray">公司性质：</span>其他性质</p>
+
+                <p><span class="fc-gray">公司规模：</span>11-50职员</p>
+            </div>
+                        <p class="mt20">
+            <input type="button"
+                   class="btn btn-sm btn-primary w-110 apply_btn"
+                   pid="31009692" hr_uid="11960925"
+                   value="立即申请" />
+            <a class="btn btn-sm btn-green3 w-110" target="_blank"  href="/zhiwei/view/31009692/">查看详情</a>
+        </p>
+    </div>
+    <div class="clear"></div>
+</li>
+                                    </ul>
+                <div class="pages_more">
+                    <a href="/zhaopin/" class="more btn btn-info" onclick="javascript:_gaq.push(['_trackEvent', 'index', 'click_more'])">查看更多职位>></a>
+                </div>
+            </div>
+            <div class="li_page">
+                <div class="tips_1 hidden" id="recommended_pos_tips" >
+                    <div class="fl-right">
+                        <a href="javascript:;" id="js_recommended_pos_tips">[我知道了]</a>
+                    </div>
+                    <i class="ico ico-question-1"></i>推荐的职位基于你简历中最近一份工作的职能进行匹配给出~
+                </div>
+                <ul class="ullist-1 js_agent" agenttag="li"  id="recommended_pos_list">
+
+                </ul>
+                <div class="pages_more">
+                    <a href="/zhaopin/" class="more btn btn-info">查看更多职位>></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="m-right4">
+    <!-- 发布者 -->
+    <div class="sideuserbox" id="identity-2" style="display: none">
+        <a href="/zhiwei/publish" class="btn_update">
+            <i class="ico ico-resume"></i>
+            <p>发布职位</p>
+        </a>
+        <a href="/passport/manage" class="btn_set">
+            <i class="ico ico-set"></i>
+            <p>账号设置</p>
+        </a>
+        <div class="clear"></div>
+    </div>
+    <!-- 求职者 -->
+    <div class="sideuserbox" id="identity-1" style="display: none">
+        <a href="/resume/my" class="btn_update" onclick="javascript:_gaq.push(['_trackEvent', 'index', 'update_resume'])">
+            <i class="ico ico-resume"></i>
+            <p>更新简历</p>
+        </a>
+        <a href="/passport/manage" class="btn_set">
+            <i class="ico ico-set"></i>
+            <p>账号设置</p>
+        </a>
+        <div class="clear"></div>
+    </div>
+    <!-- 未登录 -->
+    <div class="sidewellcom" id="identity-0">
+        <i class="ico ico-smile"></i>欢迎来到若邻网
+    </div>
+    <script>
+        getUserInfo(function(data){
+            if (data['status'] != 0) {
+                $("#recommended_pos_tips").removeClass("hidden");
+                $("#js_recommended_pos_tips").on('click', function(event) {
+                    $("#recommended_pos_tips").remove();
+                   
+                });
+                //已经登陆
+                if (data['result']['identity'] == 1) {
+                    $("#identity-0").hide();
+                    $("#identity-1").show();
+                } else if (data['result']['identity'] == 2) {
+                    $("#identity-0").hide();
+                    $("#identity-2").show();
+
+                }
+            }else{
+                 $("#recommended_pos_tips").addClass("hidden");
+            }
+        })
+    </script>
+    <div class='i-ebox1 mt10'>
+        <div class="title" onclick="javascript:_gaq.push(['_trackEvent', 'index', 'click_recommendCompany'])"><i class="ico ico-square"></i>推荐公司</div>
+        <div class="conbox">
+            <ul class="i-recommend-company evenParent" even_cell="li">
+                                <li>
+                    <a href="/gongsi/jianjie/5304261/">
+                                                    <img src="http://img.wealinkcdn.com/company/logo/61/5304261/1452135616?imageView2/0/w/100/h/100" />                                            </a>
+                    <a href="/gongsi/jianjie/5304261/">云南分众传媒有限公司</a>
+                </li>
+
+                                <li>
+                    <a href="/gongsi/jianjie/369195/">
+                                                    <img src="http://img.wealinkcdn.com/company/logo/95/369195/1442027929?imageView2/0/w/100/h/100" />                                            </a>
+                    <a href="/gongsi/jianjie/369195/">武汉传神信息技术有限公司</a>
+                </li>
+
+                                <li>
+                    <a href="/gongsi/jianjie/4327137/">
+                                                    <img src="http://img.wealinkcdn.com/company/logo/37/4327137/1442025040?imageView2/0/w/100/h/100" />                                            </a>
+                    <a href="/gongsi/jianjie/4327137/">饿了么</a>
+                </li>
+
+                                <li>
+                    <a href="/gongsi/jianjie/93319/">
+                                                    <img src="http://img.wealinkcdn.com/company/logo/19/93319/1442028166?imageView2/0/w/100/h/100" />                                            </a>
+                    <a href="/gongsi/jianjie/93319/">中科软科技股份有限公司</a>
+                </li>
+
+                                <li>
+                    <a href="/gongsi/jianjie/390702/">
+                                                    <img src="http://img.wealinkcdn.com/company/logo/2/390702/1442026888?imageView2/0/w/100/h/100" />                                            </a>
+                    <a href="/gongsi/jianjie/390702/">迪卡侬体育用品有限公司</a>
+                </li>
+
+                                <li>
+                    <a href="/gongsi/jianjie/5744699/">
+                                                    <img src="http://img.wealinkcdn.com/company/logo/99/5744699/1442028113?imageView2/0/w/100/h/100" />                                            </a>
+                    <a href="/gongsi/jianjie/5744699/">诺维信集团(中国）</a>
+                </li>
+
+                
+            </ul>
+            <div class="clear"></div>
+        </div>
+    </div>
+    <div class="mt10">
+        <!-- 广告位：首页右侧边栏小banner1 -->
+        <script>
+            (function() {
+                var s = "_" + Math.random().toString(36).slice(2);
+                document.write('<div id="' + s + '"></div>');
+                (window.slotbydup=window.slotbydup || []).push({
+                    id: '2424798',
+                    container: s,
+                    size: '224,90',
+                    display: 'inlay-fix'
+                });
+            })();
+        </script>
+    </div>
+    <div class="mt10">
+        <!-- 广告位：首页右侧边栏小banner2 -->
+        <script>
+            (function() {
+                var s = "_" + Math.random().toString(36).slice(2);
+                document.write('<div id="' + s + '"></div>');
+                (window.slotbydup=window.slotbydup || []).push({
+                    id: '2424805',
+                    container: s,
+                    size: '224,90',
+                    display: 'inlay-fix'
+                });
+            })();
+        </script>
+    </div>
+    <div class="mt10">
+        <!-- 广告位：首页右侧边栏小banner3 -->
+        <script>
+            (function() {
+                var s = "_" + Math.random().toString(36).slice(2);
+                document.write('<div id="' + s + '"></div>');
+                (window.slotbydup=window.slotbydup || []).push({
+                    id: '2424811',
+                    container: s,
+                    size: '224,90',
+                    display: 'inlay-fix'
+                });
+            })();
+        </script>
+    </div>
+    <div class="mt10">
+        <!-- 广告位：首页右侧边栏小banner4 -->
+        <script>
+            (function() {
+                var s = "_" + Math.random().toString(36).slice(2);
+                document.write('<div id="' + s + '"></div>');
+                (window.slotbydup=window.slotbydup || []).push({
+                    id: '2424813',
+                    container: s,
+                    size: '224,90',
+                    display: 'inlay-fix'
+                });
+            })();
+        </script>
+    </div>
+    <div class="mt10">
+        <!-- 广告位：首页右侧边栏小banner5 -->
+        <script>
+            (function() {
+                var s = "_" + Math.random().toString(36).slice(2);
+                document.write('<div id="' + s + '"></div>');
+                (window.slotbydup=window.slotbydup || []).push({
+                    id: '2424815',
+                    container: s,
+                    size: '224,90',
+                    display: 'inlay-fix'
+                });
+            })();
+        </script>
+    </div>
+    <div class="mt10">
+        <!-- 广告位：首页右侧边栏小banner6 -->
+        <script>
+            (function() {
+                var s = "_" + Math.random().toString(36).slice(2);
+                document.write('<div id="' + s + '"></div>');
+                (window.slotbydup=window.slotbydup || []).push({
+                    id: '2424823',
+                    container: s,
+                    size: '224,90',
+                    display: 'inlay-fix'
+                });
+            })();
+        </script>
+    </div>
+    <div class="mt10">
+        <!-- 广告位：首页右侧边栏小banner7 -->
+        <script>
+            (function() {
+                var s = "_" + Math.random().toString(36).slice(2);
+                document.write('<div id="' + s + '"></div>');
+                (window.slotbydup=window.slotbydup || []).push({
+                    id: '2424826',
+                    container: s,
+                    size: '224,90',
+                    display: 'inlay-fix'
+                });
+            })();
+        </script>
+    </div>
+    <div class="mt10">
+        <!-- 广告位：首页右侧边栏小banner8 -->
+        <script>
+            (function() {
+                var s = "_" + Math.random().toString(36).slice(2);
+                document.write('<div id="' + s + '"></div>');
+                (window.slotbydup=window.slotbydup || []).push({
+                    id: '2424833',
+                    container: s,
+                    size: '224,90',
+                    display: 'inlay-fix'
+                });
+            })();
+        </script>
+    </div>
+    <div class="mt10">
+        <!-- 广告位：首页右侧边栏小banner9 -->
+        <script>
+            (function() {
+                var s = "_" + Math.random().toString(36).slice(2);
+                document.write('<div id="' + s + '"></div>');
+                (window.slotbydup=window.slotbydup || []).push({
+                    id: '2424837',
+                    container: s,
+                    size: '224,90',
+                    display: 'inlay-fix'
+                });
+            })();
+        </script>
+    </div>
+    <div class="mt10">
+        <!-- 广告位：首页右侧边栏小banner10 -->
+        <script>
+            (function() {
+                var s = "_" + Math.random().toString(36).slice(2);
+                document.write('<div id="' + s + '"></div>');
+                (window.slotbydup=window.slotbydup || []).push({
+                    id: '2424841',
+                    container: s,
+                    size: '224,90',
+                    display: 'inlay-fix'
+                });
+            })();
+        </script>
+    </div>
+    <!-- 广告位：首页右侧边栏大banner1 -->
+    <script>
+        (function() {
+            var s = "_" + Math.random().toString(36).slice(2);
+            document.write('<div id="' + s + '"></div>');
+            (window.slotbydup=window.slotbydup || []).push({
+                id: '2424848',
+                container: s,
+                size: '224,180',
+                display: 'inlay-fix'
+            });
+        })();
+    </script>
+
+    <!-- 广告位：首页右侧边栏大banner2 -->
+    <script>
+        (function() {
+            var s = "_" + Math.random().toString(36).slice(2);
+            document.write('<div id="' + s + '"></div>');
+            (window.slotbydup=window.slotbydup || []).push({
+                id: '2424850',
+                container: s,
+                size: '224,180',
+                display: 'inlay-fix'
+            });
+        })();
+    </script>
+
+    <!-- 广告位：首页右侧边栏大banner3 -->
+    <script>
+        (function() {
+            var s = "_" + Math.random().toString(36).slice(2);
+            document.write('<div id="' + s + '"></div>');
+            (window.slotbydup=window.slotbydup || []).push({
+                id: '2424852',
+                container: s,
+                size: '224,180',
+                display: 'inlay-fix'
+            });
+        })();
+    </script>
+
+    <!-- 广告位：首页右侧边栏大banner4 -->
+    <script>
+        (function() {
+            var s = "_" + Math.random().toString(36).slice(2);
+            document.write('<div id="' + s + '"></div>');
+            (window.slotbydup=window.slotbydup || []).push({
+                id: '2424857',
+                container: s,
+                size: '224,180',
+                display: 'inlay-fix'
+            });
+        })();
+    </script>
+
+    <!-- 广告位：首页右侧边栏大banner5 -->
+    <script>
+        (function() {
+            var s = "_" + Math.random().toString(36).slice(2);
+            document.write('<div id="' + s + '"></div>');
+            (window.slotbydup=window.slotbydup || []).push({
+                id: '2424859',
+                container: s,
+                size: '224,180',
+                display: 'inlay-fix'
+            });
+        })();
+    </script>
+
+    <!-- 广告位：首页右侧边栏大banner6 -->
+    <script>
+        (function() {
+            var s = "_" + Math.random().toString(36).slice(2);
+            document.write('<div id="' + s + '"></div>');
+            (window.slotbydup=window.slotbydup || []).push({
+                id: '2424861',
+                container: s,
+                size: '224,180',
+                display: 'inlay-fix'
+            });
+        })();
+    </script>
+
+
+</div>
+
+<div class="clear"></div>
+    <!-- 广告位：首页底部通栏 -->
+    <script>
+        (function() {
+            var s = "_" + Math.random().toString(36).slice(2);
+            document.write('<div id="' + s + '"></div>');
+            (window.slotbydup=window.slotbydup || []).push({
+                id: '2424784',
+                container: s,
+                size: '980,90',
+                display: 'inlay-fix'
+            });
+        })();
+    </script>
+</div>
+</div>
+<!-- main end-->
+<!-- 相关职能搜索 -->
+<div class="related-search">
+    <div class="wrap">
+        <div class="link-list2">
+            <h5>按职能首字母检索职能信息</h5>
+            <div class="mt10">
+                                    <a href="/letter/zhiwei_A">A</a>
+                                    <a href="/letter/zhiwei_B">B</a>
+                                    <a href="/letter/zhiwei_C">C</a>
+                                    <a href="/letter/zhiwei_D">D</a>
+                                    <a href="/letter/zhiwei_E">E</a>
+                                    <a href="/letter/zhiwei_F">F</a>
+                                    <a href="/letter/zhiwei_G">G</a>
+                                    <a href="/letter/zhiwei_H">H</a>
+                                    <a href="/letter/zhiwei_I">I</a>
+                                    <a href="/letter/zhiwei_J">J</a>
+                                    <a href="/letter/zhiwei_K">K</a>
+                                    <a href="/letter/zhiwei_L">L</a>
+                                    <a href="/letter/zhiwei_M">M</a>
+                                    <a href="/letter/zhiwei_N">N</a>
+                                    <a href="/letter/zhiwei_O">O</a>
+                                    <a href="/letter/zhiwei_P">P</a>
+                                    <a href="/letter/zhiwei_Q">Q</a>
+                                    <a href="/letter/zhiwei_R">R</a>
+                                    <a href="/letter/zhiwei_S">S</a>
+                                    <a href="/letter/zhiwei_T">T</a>
+                                    <a href="/letter/zhiwei_U">U</a>
+                                    <a href="/letter/zhiwei_V">V</a>
+                                    <a href="/letter/zhiwei_W">W</a>
+                                    <a href="/letter/zhiwei_X">X</a>
+                                    <a href="/letter/zhiwei_Y">Y</a>
+                                    <a href="/letter/zhiwei_Z">Z</a>
+                            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="link-list2">
+            <h5>按公司首字母检索公司信息</h5>
+
+            <div class="mt10">
+                                    <a href="/letter/gongsi_A">A</a>
+                                    <a href="/letter/gongsi_B">B</a>
+                                    <a href="/letter/gongsi_C">C</a>
+                                    <a href="/letter/gongsi_D">D</a>
+                                    <a href="/letter/gongsi_E">E</a>
+                                    <a href="/letter/gongsi_F">F</a>
+                                    <a href="/letter/gongsi_G">G</a>
+                                    <a href="/letter/gongsi_H">H</a>
+                                    <a href="/letter/gongsi_I">I</a>
+                                    <a href="/letter/gongsi_J">J</a>
+                                    <a href="/letter/gongsi_K">K</a>
+                                    <a href="/letter/gongsi_L">L</a>
+                                    <a href="/letter/gongsi_M">M</a>
+                                    <a href="/letter/gongsi_N">N</a>
+                                    <a href="/letter/gongsi_O">O</a>
+                                    <a href="/letter/gongsi_P">P</a>
+                                    <a href="/letter/gongsi_Q">Q</a>
+                                    <a href="/letter/gongsi_R">R</a>
+                                    <a href="/letter/gongsi_S">S</a>
+                                    <a href="/letter/gongsi_T">T</a>
+                                    <a href="/letter/gongsi_U">U</a>
+                                    <a href="/letter/gongsi_V">V</a>
+                                    <a href="/letter/gongsi_W">W</a>
+                                    <a href="/letter/gongsi_X">X</a>
+                                    <a href="/letter/gongsi_Y">Y</a>
+                                    <a href="/letter/gongsi_Z">Z</a>
+                
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+        <div class="link-list1 mt40">
+            <h5>常用链接</h5>
+            <ul>
+                                    <li><a href="http://www.wealink.com" target="_blank">找工作</a></li>
+                                    <li><a href="http://www.wealink.com" target="_blank">高薪职位</a></li>
+                                    <li><a href="http://www.wealink.com/zhiwei/shanghai_s/" target="_blank">上海招聘</a></li>
+                                    <li><a href="http://www.wealink.com/zhiwei/beijing_s/" target="_blank">北京招聘</a></li>
+                                    <li><a href="http://www.wealink.com/zhiwei/guangdong_s/1102/" target="_blank">广州招聘</a></li>
+                                    <li><a href="http://www.wealink.com/zhiwei/guangdong_s/" target="_blank">广东招聘</a></li>
+                                    <li><a href="http://www.wealink.com/zhiwei/zhejiang_s/" target="_blank">浙江招聘</a></li>
+                                    <li><a href="http://www.wealink.com/zhiwei/jiangsu_s/" target="_blank">江苏招聘</a></li>
+                                    <li><a href="http://www.wealink.com/zhiwei/anhui_s/" target="_blank">安徽招聘</a></li>
+                                    <li><a href="http://www.wealink.com/zhiwei/fujian_s/" target="_blank">福建招聘</a></li>
+                                    <li><a href="http://www.wealink.com/zhiwei/guangxi_s/" target="_blank">广西招聘</a></li>
+                                    <li><a href="http://www.wealink.com/zhiwei/hunan_s/" target="_blank">湖南招聘</a></li>
+                                    <li><a href="http://www.wealink.com/zhiwei/shandong_s/" target="_blank">山东招聘</a></li>
+                                    <li><a href="http://www.wealink.com/zhiwei/yunnan_s/" target="_blank">云南招聘</a></li>
+                                    <li><a href="http://www.wealink.com/zhiwei/sichuan_s/" target="_blank">四川招聘</a></li>
+                                    <li><a href="http://www.wealink.com/zhiwei/hubei_s/" target="_blank">湖北招聘</a></li>
+                                    <li><a href="http://www.wealink.com/zhiwei/henan_s/" target="_blank">河南招聘</a></li>
+                            </ul>
+            <div class="clear"></div>
+        </div>
+        <div class="link-list1">
+            <h5>合作伙伴</h5>
+            <ul>
+                
+                    
+                
+                                                    <li><a href="http://hao.360.cn/rencaizhaopin.html" target="_blank">360安全网站导航</a></li>
+                                    <li><a href="http://st.58.com/searchjob.shtml" target="_blank">汕头找工作</a></li>
+                                    <li><a href="http://home.focus.cn/hf/" target="_blank">合肥家居</a></li>
+                                    <li><a href="http://hd.hrloo.com/" target="_blank">质量管理</a></li>
+                                    <li><a href="http://www.i2ya.com/" target="_blank">二丫网</a></li>
+                                    <li><a href="http://www.gdrc.com/" target="_blank">广东人才网</a></li>
+                                    <li><a href="http://www.lvse.com/" target="_blank">绿色网站大全</a></li>
+                                    <li><a href="http://www.tradesns.com/" target="_blank">贸易企业社交网</a></li>
+                                    <li><a href="http://www.hiall.com.cn/" target="_blank">HiAll校园招聘</a></li>
+                                    <li><a href="http://www.1234wu.com/wzdh/rcsc.htm" target="_blank">123网址之家</a></li>
+                                    <li><a href="http://job.hxyjw.com/pinpai.php" target="_blank">海峡医疗人才网</a></li>
+                                    <li><a href="http://china.trade2cn.com/hezuo.html" target="_blank">中国诚商网</a></li>
+                                    <li><a href="http://www.26595.com/Rencai_Zhaopin/" target="_blank">265网址导航</a></li>
+                                    <li><a href="http://www.hui800.com/cities" target="_blank">惠800</a></li>
+                                    <li><a href="http://www.1122.com/wangzhi/shenghuo/zhaopin/" target="_blank">1122网址导航</a></li>
+                                    <li><a href="http://www.haorencai.net/" target="_blank">好人才</a></li>
+                                    <li><a href="http://shanghai.anjuke.com/" target="_blank">上海房产信息网</a></li>
+                                    <li><a href="http://m.yz2.sm.cn/?from=wa164458" target="_blank">神马搜索</a></li>
+                                    <li><a href="http://www.8gongli.com" target="_blank">生活服务</a></li>
+                                            </ul>
+            <div class="clear"></div>
+        </div>
+    </div>
+</div>
+<!-- footer start-->
+<div class="clear"></div>
+<div class="footer" id="js_footer">
+    <div class="wrap">
+        <div class="footer-link-list">
+            <p class="footer-li1">
+                                    <a href="http://m.wealink.com">移动版</a>
+
+
+
+|
+                                <a  href="/about/about/index">关于若邻</a>|<a  href="/about/about/contactUs">联系我们</a>|
+                <a  href="/about/about/joinUs">加入我们</a>|<a  href="/about/about/help">帮助中心</a>|
+                <a  href="/about/about/partner">友情链接</a>|<a href="/about/about/promise">网信承诺书</a>|
+                <a href="/about/about/response">网信责任状</a>
+            </p>        
+            <p class="footer-li2">Copyright©2005-2015 若邻网 沪ICP备05050523号</p>
+            <div class="picp">
+                <a rel="nofollow"  href="http://www.zx110.org/picp?sn=310101100041057" style="display:inline-block;*display:inline;zoom:1;width:150px;height:52px;position:relative;text-decoration:none;">
+                <img src='http://s2.wealinkcdn.com/pc/images/flag/picp_bg.png?t=572c1063' alt='沪公网备'  border='0'  style='width: 150px;'  />                <span align="center" style="font-size:12px;color:#001b75;padding:0;margin:0;text-decoration:none;top: 35px;left: 62px;position:absolute;cursor:pointer;">310101100041057</span>
+                </a>
+            </div>
+            <div class="clear"></div>
+        </div> 
+        <div class="clear"></div>     
+    </div>
+</div>
+<!-- 登录弹出层 start-->
+<div id="js_popuplogin" class="popUp">
+    <div id="gmask"></div>
+    <div class="pop mid">
+        <span class="close"></span>
+        <div class="pop-main">
+            <div class="pop-con">    
+                <div class="w340">
+                    <form action="/passport/login" id="login_form" name="login" class="form-signin ptb20" method="post">                    <input type="hidden" id="callback" name="callback" value="/" />                    <ul class="form-list1">
+                        <li class="label-inline1">
+                            <label for="username" class="label-1 fz-14">账  号</label>
+                            <input type="text" id="username" name="username" value="" class="form-control w-248 js_validate" placeholder="邮箱或手机号" />                        </li>
+
+                        <li  class="label-inline1">
+                            <label for="password"  class="label-1 fz-14">密  码</label>
+                            <input type="password" id="password" name="password" value="" class="form-control w-248 js_validate" placeholder="6-16个字符，不能有空格，区分大小写" autocomplete="off" />                        </li>
+                        <li>
+                            <a href="/passport/password/findPassword" class="fl-right">找回密码</a>                            <label>
+                                <input type="checkbox" name="remember" checked > 下次自动登录
+                            </label>
+                        </li>
+                        <li  class="mt20">
+                            <input type="submit" id="login_submit" value="登 录" class="btn btn-primary btn-lg btn-block mlr0" onclick="javascript:_gaq.push([&#039;_trackEvent&#039;, &#039;login_window&#039;, &#039;login&#039;])" />                        </li>
+                        <li class="tx-right">
+                            没有账号，<a target="_blank" href="/passport/register" class="fc-orange1" onclick="javascript:_gaq.push(['_trackEvent', 'login_window', 'switch_register'])">立即注册</a>
+                        </li>
+                    </ul>
+                    </form>                </div>
+                <div class="signin-bottom">
+    <h5 class="title2"><del>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</del>还可以使用以下方式登录<del>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</del></h5>
+    <div class="login-option">
+        <a  href="/passport/third-party-login/weibo" class="ico-weibo" onclick="javascript:_gaq.push(['_trackEvent', 'login_page', 'sina_login'])">微博</a>
+        <a  href="/passport/third-party-login/qq" class="ico-qq" onclick="javascript:_gaq.push(['_trackEvent', 'login_page', 'qq_login'])">QQ</a>
+        <a  href="/passport/third-party-login/wechat" class="ico-weixin" onclick="javascript:_gaq.push(['_trackEvent', 'login_page', 'wexin_login'])">微信</a>
+    </div>
+</div>                <div class="clear"></div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 登录弹出层 end -->
+
+<!--  Common js file -->
+
+<script src='http://s2.wealinkcdn.com/lib/js/jquery.ba-resize.js?t=572c1063'></script>
+<script src='http://s2.wealinkcdn.com/pc/js/basic.js?t=572c1063'></script>
+<script src='http://s2.wealinkcdn.com/pc/js/bl_jsvalidate.js?t=572c1063'></script>
+<script src='http://s2.wealinkcdn.com/lib/js/uuid.js?t=572c1063'></script><script>
+
+    $(function(){
+        if(!Cookies.get('uuid')){
+            Cookies.set('uuid',UUIDjs['new']().hex, { expires: 365*10 ,domain:'wealink.com'});
+        }
+    })
+</script>
+<script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-101112-3']);
+    _gaq.push(['_setDomainName', '.wealink.com']);
+    _gaq.push(['_addOrganic', 'baidu', 'word']);
+    _gaq.push(['_addOrganic', 'soso', 'w']);
+    _gaq.push(['_addOrganic', '3721', 'name']);
+    _gaq.push(['_addOrganic', 'so.360.cn', 'q']);
+    _gaq.push(['_addOrganic', 'yodao', 'q']);
+    _gaq.push(['_addOrganic', 'youdao', 'q']);
+    _gaq.push(['_addOrganic', 'vnet', 'kw']);
+    _gaq.push(['_addOrganic', 'sogou', 'query']);
+    _gaq.push(['_trackPageview']);
+    _gaq.push(['_trackPageLoadTime']);
+    (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+</script>
+<div style="display:none;"><script src="http://s11.cnzz.com/stat.php?id=3417842&web_id=3417842&show=pic" language="JavaScript"></script></div>
+<script>
+    $(function(){
+        /**
+         * 每日 求职者 人数统计
+         */
+        getUserInfo(function(data){
+            if (data['status'] != 0) {
+                //求职者
+                //生成统计图片链接 - 保存活跃度动作
+                var userinfo = Cookies.get('userinfo');
+                var arr = userinfo.split('|');
+                if (arr && arr[0] == '1') {
+                    var uid = arr[1];
+                }
+                var current_url = encodeURI(window.location.href);
+                var referrer = encodeURI(document.referrer);
+                var uuid = Cookies.get('uuid');
+                var identity = data['result']['identity'];
+                var userAgent = navigator.userAgent.toLowerCase();
+                //已经登陆
+                var imgSrc = '/main/stats/active?identity='+identity+'&uid='+uid+'&current_url='+current_url+'&referrer='+referrer+'&uuid='+uuid+'&ua='+userAgent;
+                $('body').append('<img style="display:none;" width="1" height="1" src="'+imgSrc+'" />');
+
+            }
+        });
+    })
+</script>
+<!-- footer end-->
+
+<script src='http://s2.wealinkcdn.com//lib/js/handlebars-v3.0.3.js?t=572c1063'></script>
+<script src='http://s2.wealinkcdn.com/pc/js/index.js?t=572c1063'></script>
+<script src='http://s2.wealinkcdn.com/pc/data/new_city.js?t=572c1063'></script>
+<script src='http://s2.wealinkcdn.com/pc/data/new_job_duty.js?t=572c1063'></script>
+<script src='http://s2.wealinkcdn.com/pc/data/new_industry.js?t=572c1063'></script>
+<script src='http://s2.wealinkcdn.com/pc/js/data_type.js?t=572c1063'></script>
+<script src='http://s2.wealinkcdn.com/pc/js/play.js?t=572c1063'></script><script type="text/javascript">
+    $(function () {
+        popnormal({
+            "popTplId": "#popup_sendemailtpl",//内容模板id
+            "eventEle": ".js_pop_send_email",//点击事件元素（不定义：立即弹出）
+            "popId": "popSendemail",//弹出层id 默认为popnormal,（可自定义）
+            "popCallbackFun": function (args, TfThis) {
+                console.log(args);
+            }
+        });
+        $.ajax({
+            url: '/main/index/recommendAjax',
+            type: 'POST',
+            dataType: 'html',
+            success: function (html) {
+                if (html != '') {
+                    //兼容  单数据源 对 1个模板1个位置
+                   $("#recommended_pos_list").html(html);
+                    refreshFamous();
+                }
+            }
+        });
+        $.ajax({
+            url: '/main/index/isEmailCheckedAjax',
+            type: 'POST',
+            dataType: 'html',
+            success: function (html) {
+                $("body").prepend(html);
+            }
+        });
+
+    })
+
+</script>
+
+<script type="text/javascript">
+//ajax 搜索提示 调用
+//搜索提示 返回数据结构 data： ["php\u5de5\u7a0b\u5e08","php\u7a0b\u5e8f\u5458","php\u9ad8\u7ea7","php\u4e2d\u7ea7"]
+ajaxSearchFun({
+    "eventEle":".ajaxSearch",
+    "promptUrl":"/position/search/autoCompleteAjax",
+    "searchCallback":function(args){
+        $('#pos_search_form').submit();        
+    }
+});
+</script>
+<!-- 从列表页 点击投递按钮 -->
+<div id="apply-content"></div>
+<script>
+    $(document).ready(function() {
+        $.ajax({
+            url: "/apply/batch-apply/single",
+            type: "post",
+            dataType: "html"
+        }).done(function (msg) {
+            if (msg != '') {
+                $("#apply-content").html(msg);
+            }
+        });
+    })
+</script><!--右侧悬浮导航 我要反馈 -->
+<div class="clear"></div>
+<!-- side-bar1 右测边栏 start -->
+<div class="side-bar1">
+    <a href="javascript:;" gotodata="body" class="js_goto">
+        <p class="sb-img">
+            <img src='http://s2.wealinkcdn.com/pc/images/basic/ico_arrowup.png?t=572c1063' alt=''  />            <span class="img-hover"><img src='http://s2.wealinkcdn.com/pc/images/basic/ico_arrowup_color.png?t=572c1063' alt=''  /></span>
+        </p>
+        <p class="sb-txt1">回到顶部</p>
+    </a>
+    <a href="javascript:;" class="js_pop_feedback">
+        <p class="sb-img">
+            <img src='http://s2.wealinkcdn.com/pc/images/basic/ico_feedback.png?t=572c1063' alt=''  />            <span class="img-hover"><img src='http://s2.wealinkcdn.com/pc/images/basic/ico_feedback_color.png?t=572c1063' alt=''  /></span>
+        </p>
+        <p class="sb-txt1">我要反馈</p>
+    </a>
+    <a href="javascript:;">
+        <p class="sb-img">
+            <img src='http://s2.wealinkcdn.com/pc/images/basic/ico_sb_qr.png?t=572c1063' alt=''  />            <span class="img-hover"><img src='http://s2.wealinkcdn.com/pc/images/basic/ico_sb_qr_color.png?t=572c1063' alt=''  /></span>
+        </p>
+        <p class="sb-txt1">关注微信</p>
+        <div class="sb-hover">
+            <i class="tips1"></i>
+            <i class="tips-arrow"></i>
+            <p class="qr-box">
+                <img src='http://s2.wealinkcdn.com/pc/images/bl_qr/bl_weixin.jpg?t=572c1063' alt=''  class='js_bl_qr_weixin'  />            </p>
+            <p class="qr-txt">(仅限本人使用)</p>
+        </div>
+    </a>
+    <a href="javascript:;">
+        <p class="sb-img">
+            <img src='http://s2.wealinkcdn.com/pc/images/basic/ico_sb_qr.png?t=572c1063' alt=''  />            <span class="img-hover"><img src='http://s2.wealinkcdn.com/pc/images/basic/ico_sb_qr_color.png?t=572c1063' alt=''  /></span>
+        </p>
+        <p class="sb-txt1">下载APP</p>
+        <div class="sb-hover">
+            <i class="tips1"></i>
+            <i class="tips-arrow"></i>
+            <p class="qr-box"><img src='http://s2.wealinkcdn.com/pc/images/bl_qr/app.jpg?t=572c1063' alt=''  /></p>
+            <p class="qr-txt">(扫描下载)</p>
+        </div>
+    </a>
+</div>
+<!--  side-bar1 右测边栏 end -->
+
+<script id="pop_feedbacktpl" type="text/x-handlebars-template">
+    <div class="feedback-list">
+        <form action="" id="feedback_form" name="feedback" method="post">
+            <ul class="form-list1 ">
+                <li>
+                    <textarea id="content" class="textarea1" maxlength="200" name="" placeholder="把你遇到的问题，或是想要的功能告诉我们（200字以内）"></textarea>
+                </li>
+                <li>
+                    <input id="phone" class="form-control w-450" placeholder="留下联系方式方便我们沟通（选填）"  type="text" name="" value="" />
+                </li>
+
+            </ul>
+            <div class="clear"></div>
+        </form>
+        <div class="pop_action">
+            <a href="javascript:;" id="feedback" class="btn btn-green2">提 交</a>
+            <a href="javascript:;" class="btn btn-gray">取  消</a>
+        </div>
+    </div>
+</script>
+<script type="text/javascript">
+    /*我要反馈*/
+    popnormal({
+        "popTplId":"#pop_feedbacktpl",
+        "eventEle":".js_pop_feedback",
+        "popId":"popnormal",
+        "headTitle":'我要反馈',
+        "popCallbackFun":function(args,TfThis){
+            placeholderFun();
+            $("#feedback").on('click', function (event) {
+                var content = $("#content").val();
+                var phone = $("#phone").val();
+                if(content == ''){
+                    poperror({
+                     "popconMsg":"反馈内容不能为空!",
+                     "popId":"poperror",//弹出层id 默认为poperror,（可自定义）
+                     "headTitle":"反馈提示",//失败标题
+                         "popCallbackFun":function(args,TfThis){
+                            var poperrorid = "#" + args.popId;
+                            $(poperrorid+" .close").on('click', function(event) {
+                            //关闭层做的操作
+                            //$(curpopid+" .close").trigger('click');//关闭该层
+                         });
+                        }
+                    });
+                }else{
+                    $.ajax({
+                        url: '/main/index/feedbackAjax',
+                        data:{"content":content,"phone":phone},
+                        type: 'POST',
+                        dataType: 'json',
+                        success: function (data) {
+                            if(data.status==1){
+                                popsucc({
+                                    "popconMsg":data.message,
+                                    "popId":"popsucc",//弹出层id popsucc,（可自定义）
+                                    "headTitle":"反馈提示"//标题
+                                });
+                            }
+                        }
+                    });
+                }
+            })
+        }
+    });
+    getUserInfo(function(data){
+        if (data['status'] != 0) {
+            //已经登陆
+            $(".js_bl_qr_weixin").attr('src','/main/wechat/getWxImg');
+        }
+    })
+</script><!-- 名企ICON -->
+<script>
+    var refreshFamous = function(){
+        $(".famous-icon").hide();
+        var cids = [];
+        $(".item_company").each(function(){
+            cids.push($(this).attr('cid'));
+        });
+        cids = cids.join(',');
+        var postData = {
+            'cids':cids
+        };
+        $.ajax({
+            url:'/position/famous/getInfo',
+            data:postData,
+            type:'post',
+            dataType:'json',
+            success:function(data){
+                console.log(data['result']);
+                $(".item_company").each(function(){
+                    if (data['result'][$(this).attr('cid')] == 1) {
+
+                        $(this).parent().find('.famous-icon').show();
+                        //$(this).before('<span title="知名企业" class="famous-icon">名</span>');
+                    }
+                })
+            }
+        })
+    }
+    $(document).ready(function() {
+        refreshFamous();
+    });
+</script></body>
+</html>

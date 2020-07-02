@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en" itemscope itemtype="http://schema.org/Organization"><head>
+
+	<script type="text/javascript">
+		if( !location.hash.indexOf('#kit/') || !location.hash.indexOf('#profile/') ){
+
+			var domainChunks = location.hostname.split('.'),
+				firstChunk = domainChunks[0],
+				newDomain;
+
+			switch( firstChunk ){
+				case 'witkit': newDomain = 'web.' + location.hostname; break;
+				// add more cases?
+			}
+
+			if( newDomain ) location.replace( location.href.replace( location.hostname, newDomain ) );
+
+		}
+	</script>
+
+		<meta itemprop="name" content="Encrypt your data with WitCrypt | Witkit">
+	<meta itemprop="description" content="Witkit is the safest and easiest way to manage your company.">
+	<meta itemprop="image" content="/favicon/site_icon.png">
+
+    <!--                __________
+    	stay safe:     /\         \
+        × • • × •     /::\         \
+        × × • × •    /:/\:\_________\
+        • × × • ×    \:\/:/         /
+        × × × × •     \::/         /
+        • × • × ×      \/_________/
+    -->
+
+	<meta charset="utf-8">
+	<meta content='en' name='language'>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="robots" content="index,follow,archive" />
+	<meta property="keywords" content="	security, communication, management, campaigns, agile, note, todo, task, project, end-to-end, free, account" />
+	<meta property="description" content="Witkit is the safest and easiest way to manage your company." />
+	<meta property="og:title" content="Encrypt your data with WitCrypt | Witkit" />
+	<meta property="og:type" content="website" />
+	<meta property="og:site_name" content="Witkit" />
+	<meta property="og:image" content="http://witkit.com/favicon/site_icon.png" />
+	<meta property="og:image:url" content="http://witkit.com/favicon/site_icon.png" />
+	<meta property="og:image:secure_url" content="https://witkit.com/favicon/site_icon.png" />
+	<meta property="og:image:width" content="192" />
+	<meta property="og:image:height" content="192" />
+	<meta property="og:url" content="http://witkit.com/" />
+	<meta property="og:description" content="Witkit is the safest and easiest way to manage your company." />
+
+	<link rel="apple-touch-icon" sizes="57x57" href="/favicon/apple-touch-icon-57x57.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="/favicon/apple-touch-icon-114x114.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="/favicon/apple-touch-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="/favicon/apple-touch-icon-144x144.png">
+	<link rel="apple-touch-icon" sizes="60x60" href="/favicon/apple-touch-icon-60x60.png">
+	<link rel="apple-touch-icon" sizes="120x120" href="/favicon/apple-touch-icon-120x120.png">
+	<link rel="apple-touch-icon" sizes="76x76" href="/favicon/apple-touch-icon-76x76.png">
+	<link rel="apple-touch-icon" sizes="152x152" href="/favicon/apple-touch-icon-152x152.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon-180x180.png">
+	<link rel="icon" type="image/png" href="/favicon/site_icon.png" sizes="192x192">
+	<link rel="icon" type="image/png" href="/favicon/favicon-160x160.png" sizes="160x160">
+	<link rel="icon" type="image/png" href="/favicon/favicon-96x96.png" sizes="96x96">
+	<link rel="icon" type="image/png" href="/favicon/favicon-16x16.png" sizes="16x16">
+	<link rel="icon" type="image/png" href="/favicon/favicon-32x32.png" sizes="32x32">
+	<meta name="msapplication-TileColor" content="#2d89ef">
+	<meta name="msapplication-TileImage" content="/favicon/mstile-144x144.png">
+
+	<title>Fly Through Work, Safely | Witkit</title>
+	<link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,300,600,400" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" type="text/css" href="css/landing_page.7f2e273b.css">
+
+	<!--[if lt IE 9]><script src="js/html5shiv-printshiv.js" media="all"></script><![endif]-->
+
+	<script>
+'use strict';
+
+var wkLocalStorage = {
+	setItem: function(key, value){
+		return wkLocalStorage.getProvider().setItem(key, value);
+	},
+
+	getItem: function(key, value){
+		return wkLocalStorage.getProvider().getItem(key, value);
+	},
+
+	removeItem: function(key, value){
+		return wkLocalStorage.getProvider().removeItem(key);
+	},
+
+	clear: function(){
+		return wkLocalStorage.getProvider().clear();
+	},
+
+	getProvider: function(){
+		var self = wkLocalStorage;
+
+		if(self.provider){
+			return self.provider;
+		} else {
+			tryStorage(localStorage, function(){
+				tryStorage(sessionStorage, function(){
+					self.provider = self.dummyProvider;
+				});
+			});
+
+			return self.provider;
+		}
+
+		function tryStorage(storage, fail){
+			var t = 'wkTest';
+			try {
+				storage.setItem(t, t);
+				if(storage.getItem(t) == t){
+					self.provider = storage;
+				} else {
+					fail();
+				}
+			} catch(e){
+				fail();
+			}
+		}
+	},
+
+	dummyProvider: {
+		setItem: function(key, value){
+			var msg = 'Dummy local storage provider: .setItem("' + key + '"); See value below:';
+
+			if(wk){
+				wk.logColor(msg);
+				wk.log(value);
+			} else {
+				console.log(msg);
+				console.log(value);
+			}
+		},
+
+		getItem: function(key){
+			var msg = 'Dummy local storage provider: .getItem("' + key + '"); Returning empty string.';
+
+			if(wk){
+				wk.logColor(msg);
+			} else {
+				console.log(msg);
+			}
+
+			return '';
+		},
+
+		removeItem: function(key){
+			var msg = 'Dummy local storage provider: .removeItem("' + key + '");';
+
+			if(wk){
+				wk.logColor(msg);
+			} else {
+				console.log(msg);
+			}
+		},
+
+		clear: function(){
+			var msg = 'Dummy local storage provider: .clear();';
+
+			if(wk){
+				wk.logColor(msg);
+			} else {
+				console.log(msg);
+			}
+		}
+	}
+};
+</script>
+		<script>
+		'use strict';
+
+		function parseURLParams(){
+			var str = location.search.substr(1),
+				params = {};
+
+			var pairs = str.split('&'), arr;
+
+			for(var i = 0; i < pairs.length; i++){
+
+				if( !pairs[ i ] ) continue;
+
+				arr = pairs[ i ].split('=');
+
+				if( !arr[0] ) continue;
+
+				params[ arr[0] ] = arr[1] ? decodeURIComponent( arr[1] ) : true;
+			}
+
+			return params;
+		}
+
+		window.URLParams = parseURLParams();
+
+		// console.log('URL params:');
+		// console.log(window.URLParams);
+
+		function getURLParameter(name) {
+			return window.URLParams[name];
+		}
+
+		var urlSessionId = getURLParameter('session_id'),
+			client = getURLParameter('client'),
+			platform = getURLParameter('platform');
+
+		if(urlSessionId){
+			// Session parameters can be included to URL
+			// That can be useful when session info has been obtained through different UI (such as native mobile UI)
+			wkLocalStorage.setItem('session_id', urlSessionId);
+			wkLocalStorage.setItem('session_ttl', getURLParameter('session_ttl'));
+			wkLocalStorage.setItem('session_timestamp', getURLParameter('session_timestamp'));
+			document.cookie = 'session_id=' + urlSessionId + '; domain=.witkit.com';
+		}
+
+	</script>
+
+
+	<script type="text/javascript">window.page = 'indexPage';</script>
+
+
+<script type="text/javascript">
+var _gaq = _gaq || [];
+_gaq.push(["_setAccount", "UA-39325067-1"]);
+_gaq.push(["_setDomainName", "witkit.com"]);
+_gaq.push(["_trackPageview"]);
+(function() {
+var ga = document.createElement("script"); ga.type = "text/javascript"; ga.async = true;
+ga.src = ("https:" == document.location.protocol ? "https://ssl" : "http://www") + ".google-analytics.com/ga.js";
+var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+</head>
+<body>
+	<div id="movie-background"></div>
+	<nav  class="init-nav" id="nav">
+	<div id="nav-content">
+		<div class="nav-background"></div>
+		<a target="_top" href="https://witkit.com/" class="witkit-logo" ></a>
+		<div class="feature gutter-padding clearfix">
+			<div class="nav-links">
+				<a class="navFeatures" href="features.html">Features</a>
+				<a class="navWitcrypt" href="witcrypt.html">Security</a>
+				<a class="navSupport" href="https://help.witkit.com/hc/en-us">Support</a>
+				<a class="navLogin" href="http://web.witkit.com/#/@page=login.html">Sign In</a>
+				<a class="navSignup signup" href="http://web.witkit.com/#/@page=signup.html">Get Started</a>
+			</div>
+		</div>
+	</div>
+	<div id="navicon" class="navicon"></div>
+</nav>
+
+
+
+<div id="menu" class="navicon-menu">
+	<ul class="menu">
+		<li><a class="navFeatures" href="features.html">Features</a></li>
+		<li><a class="navWitcrypt" href="witcrypt.html">Security</a></li>
+		<li><a class="navSupport" href="https://help.witkit.com/hc/en-us">Support</a></li>
+		<li><a class="navLogin" href="http://web.witkit.com/#/@page=login.html">Sign In</a></li>
+		<li><a class="navSignup" href="http://web.witkit.com/#/@page=signup.html">Get Started</a></li>
+
+	</ul>
+</div>
+
+<script type="text/javascript">
+
+	(function(){
+		if (window.innerWidth < 860){
+			document.getElementById('nav').className = 'fixed';
+			document.getElementsByClassName('nav-background')[0].className += ' opaque';
+		} else {
+			document.getElementsByClassName('nav-background')[0].className += ' transparent';
+		}
+
+		var currentLinkClass;
+
+		switch( window.page ){
+			case 'featurePage': currentLinkClass = 'navFeatures'; break;
+			case 'securityPage': currentLinkClass = 'navWitcrypt'; break;
+		}
+
+		if( currentLinkClass ){
+
+			var links = document.querySelectorAll('#menu .' + currentLinkClass + ', #nav .' + currentLinkClass);
+
+			for(var i = 0, len = links.length; i < len; i++){
+
+				var link = links[ i ];
+				link.className += ' active';
+				link.removeAttribute('href');
+			}
+		}
+
+	})();
+
+</script>
+
+	<div class="header-wrapper">
+		<section class="splash feature">
+			<div class="splash-wrapper cell">
+
+			<section class="gutter-padding reverse-table">
+				<div class="main-image cell">
+						<!-- <video autoplay="true" poster="i/start-small.png" id="main-image">
+							<source src="i/macbook-iphone.webm" type="video/webm">
+							<source src="i/macbook-iphone.mp4" type="video/mp4">
+						</video> -->
+				</div>
+
+				<div class="witkit-summery cell">
+					<h2>Collaborate with your team, <span class="b-highlight">safely</span>.</h2>
+					<p>Witkit is the secure platform for teams.
+					Discover the new way to protect your data and save time working.</p>
+					<div class="button-group">
+						<a target="_top" href="http://web.witkit.com/#/@page=signup.html"><button class="g-btn btn-gap">Get Started</button></a>
+						<a target="_top" href="http://web.witkit.com/#/@page=login.html"><button class="b-btn">Sign In</button></a>
+					</div>
+				</div>
+			</section>
+
+			<span class="continue gutter-padding">Keep scrolling</span>
+
+			</div>
+		</section>
+	</div>
+
+	<div id="movie-section">
+		<div id="video_container">
+			<div class="fade-video"></div>
+			<div id="video-tag">
+				<div class="video-text">
+					<h3>We would love to tell you about us.</h3>
+					<h2>Checkout our intro <span class="blue">video</span></h2>
+				</div>
+				<img id="play-btn" src="i/graphic_play-button.svg" alt="play video button">
+			</div>
+
+			<div id="wistia_8hq5abfi3l" class="wistia_embed backgroundVideo" style="width:920px;height:518px;"></div>
+		</div>
+		<div id="wistia_7j06z458qu" class="wistia_embed overlayVideo" style="width:920px;height:518px;"></div>
+		<div id="ex"><img src="i/ex.svg" width="23" height="23" alt="exit video button"/></div>
+	</div>
+
+	<div class="feature-wrapper clearfix">
+		<section class="feature table gutter-left">
+			<div class="details min-width cell">
+				<h2>Everything in one place</h2>
+				<p>Witkit offers everything you need to get work done under one roof.</p>
+				<ul>
+					<li><img src="i/icons/blue/icon_storage.svg" alt="">Store confidential files</li>
+					<li><img src="i/icon_conversation.svg" alt="">Secure line to message your team</li>
+					<li><img src="i/icons/blue/icon_task.svg" alt="">Manage your sensitive projects</li>
+					<li><img src="i/icons/blue/icon_post.svg" alt="">Brainstorm with your team</li>
+					<li><img src="i/icons/blue/icon2_calendar-small.svg" alt="">Setup events</li>
+				</ul>
+				<a href="features.html">See all features</a>
+			</div>
+
+			<div id="pagePanel" class="set-panel cell">
+				<div id="page-feature" class="image sink-screenshot">
+					<div class="inner"></div>
+				</div>
+				<div class="sink-screenshot">
+				 <div class="scroll-wrapper">
+					<div id="page-scroll" class="image sink-page-scroll">
+						<div class="inner"></div>
+					</div>
+					</div>
+				</div>
+			</div>
+
+		</section>
+	</div>
+
+	<hr>
+
+	<div class="feature-wrapper">
+		<section class="feature reverse-table gutter-padding clearfix">
+			<div class="details-center cell">
+				<div class="details-ver">
+					<h2>Secure</h2>
+					<p>Witkit is the first global business collaboration platform in the world to create end-to-end encryption for all your data. Nobody can acess your data. Not even the Witkit team.</p>
+				</div>
+			</div>
+			<div class="vertical-img cell">
+				<div id="chat-container">
+					<div class="line-wrapper">
+						<div id="first-bar" class="line"></div>
+						<div id="second-bar" class="line"></div>
+						<div id="third-bar" class="line"></div>
+					</div>
+					<div id="secure-chat" class="image">
+						<div class="inner"></div>
+					</div>
+				</div>
+			</div>
+		</section>
+	</div>
+	<hr>
+
+	<div class="feature-wrapper section-padding">
+		<section class="feature table gutter-padding clearfix">
+			<div class="details cell">
+				<h2>Social Collaboration</h2>
+				<p>Create kits with anyone, across departments or outside your organizations, from any device with absolute efficiency.</p>
+			</div>
+			<div id="profile-panel" class="horizontal-img cell">
+				<div id="profile-feature" class="image">
+					<div class="inner"></div>
+				</div>
+				<div id="profile-scroll-wrapper">
+					<div class="profile-wrapper">
+						<div id="profile-scroll" class="image">
+							<div class="inner"></div>
+						</div>
+					</div>
+					<div id="background-profile-fade"></div>
+				</div>
+			</div>
+		</section>
+	</div>
+
+	<div class="pattern-wrapper">
+		<section class="feature table gutter-padding">
+
+			<div class="details-center cell">
+				<div class="details-bottom min-width">
+					<h2>Get it on your devices</h2>
+					<p>Witkit can be accessed online from anywhere, but it can also be run natively on many devices</p>
+					<ul>
+						<li><a><img src="i/graphic_windows-device-blue.svg" alt="link to Windows device app">Windows Device</a><span> - Coming soon</span></li>
+						<li><a><img src="i/graphic_osx-device-blue.svg" alt="link to Mac device app">MacOS device</a><span> - Coming soon</span></li>
+						<li><a><img src="i/graphic_ios-device-blue.svg" alt="link to iPhone device app">iPhone</a><span> - Coming soon</span></li>
+						<!-- <li><a href="#"><div class="ul-circle"></div>Linux Device</a></li> -->
+						<li><a><img src="i/graphic_android-device-blue.svg" alt="link to Android device app">Android Device</a><span> - Coming soon</span></li>
+					</ul>
+				</div>
+			</div>
+
+			<div class="set-iphone-panel cell">
+				<div id="mobile-feature" class="iphone-image sink-iphone">
+					<div id="notification-cont">
+						<div id="iphone-notification"></div>
+					</div>
+					<div class="inner"></div>
+				</div>
+			</div>
+
+		</section>
+	</div>
+
+	<div class="try-witkit">
+		<section class="feature gutter-padding">
+			<a href="http://web.witkit.com/#/@page=signup.html"><button>Try Witkit for Free</button></a>
+		</section>
+	</div>
+
+
+
+		  <div class="footer">
+    <section class="feature gutter-padding">
+      <div class="footer-content clearfix">
+        <span class="left">&copy; 2015 Witkit Inc. Visit our <a href="witkit_terms.html">Terms of Use</a>.</span>
+        <ul class="right">
+          <!-- <li><a href="">About Us</a> | </li>  -->
+          <li><a href="//help.witkit.com" target="_blank">Support</a> |</li>
+          <li><a href="press_release.html">Press Release</a> |</li>
+          <!-- <li><a href="http://witkitinc.tumblr.com/" target="_blank">Blog</a> |</li> -->
+          <li><a href="//ca.linkedin.com/job/witkit/jobs/" target="_blank">Jobs</a></li>
+          <!-- <li><a href="">Contact Us</a></li> -->
+        </ul>
+      </div>
+    </section>
+  </div>
+
+			<!-- libs -->
+	<!--[if IE]>
+	<script type="text/javascript" src="/js/lib/ws/swfobject.js"></script>
+	<script type="text/javascript" src="/js/lib/ws/web_socket.js"></script>
+	<script type="text/javascript">
+		// Let the library know where WebSocketMain.swf is:
+		WEB_SOCKET_SWF_LOCATION = "/js/lib/ws/WebSocketMain.swf";
+	</script>
+	<![endif]-->
+
+	<script src="/dist/js/js_libs.86afa140.js"></script>
+<script type='text/javascript'>
+wkGlobalReplace = {
+'http://img.youtube.com': 'https://img.youtube.com',
+'http://s.witkit.com': 'https://s.witkit.com'
+};
+</script>
+		
+<script charset='ISO-8859-1' src='https://fast.wistia.com/assets/external/E-v1.js'></script>
+<script charset='ISO-8859-1' src='https://fast.wistia.com/labs/crop-fill/plugin.js'></script>
+
+<script src="dist/js/index.5ae3ad6a.js"></script>
+		
+
+</body>
+</html>

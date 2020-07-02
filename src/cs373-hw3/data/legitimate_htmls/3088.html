@@ -1,0 +1,512 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="description" content="今いるエリアのラジオが、スマホやパソコンで、今すぐ聴けるラジコ。CMも含めたAM・FM放送が、放送エリアに準じた地域なら無料で聴取可能。ラジコプレミアムなら全国のラジオ局が聴き放題。" />
+<meta name="keywords" content="radiko, ラジコ, ラジオ, インターネットラジオ, サイマルラジオ" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<meta name="robots" content="noydir" />
+<meta name="robots" content="noodp" />
+<meta name="robots" content="index,follow" />
+<meta http-equiv="imagetoolbar" content="no" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+<meta property="og:title" content="ラジオがネットで聴けるラジコ｜インターネットラジオならラジコ" />
+<meta property="og:image" content="http://radiko.jp/images/radiko-icon-circle.png" />
+<meta property="og:site_name" content="radiko.jp" />
+<meta property="og:description"
+content="今いるエリアのラジオが、スマホやパソコンで、今すぐ聴けるラジコ。
+CMも含めたAM・FM放送が、放送エリアに準じた地域なら無料で聴取可能。
+ラジコプレミアムなら全国のラジオ局が聴き放題。
+" />
+
+<title>ラジオがネットで聴けるラジコ</title>
+<link href="/styles/base.css?_=20160511" rel="stylesheet" type="text/css" />
+<link href="/styles/station.css?_=20140101" rel="stylesheet" type="text/css" />
+<link href="/styles/station_program.css?_=20140101" rel="stylesheet" type="text/css" />
+<link href="/styles/merge.css?_=20140101" rel="stylesheet" type="text/css" />
+<link href="/styles/scroll-program.css?_=20140101" rel="stylesheet" type="text/css" />
+<link href="/styles/search.css?_=20140101" rel="stylesheet" type="text/css" />
+<link href="/styles/top.css?_=20140101" rel="stylesheet" type="text/css" />
+<link href="/styles/toolbar.css?_=20140101" rel="stylesheet" type="text/css" />
+<link href="/styles/colorbox.css?_=20140101" rel="stylesheet" type="text/css" />
+<link href="/styles/menu.css?_=20140101" rel="stylesheet" type="text/css" />
+<link href="/styles/mypage.css?_=20140101" rel="stylesheet" type="text/css" />
+<link href="/styles/member.css?_=20140101" rel="stylesheet" type="text/css" />
+<link type="text/css" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/redmond/jquery-ui.css" rel="stylesheet" />
+<script type="text/javascript" src="/js/jquery-1.6.3.min.js"></script>
+<script type="text/javascript" src="/js/library.min.js"></script>
+<script type="text/javascript" src="/js/common.js?_=20150529"></script>
+<script type="text/javascript" src="/js/top.js?_=20140613"></script>
+<script type="text/javascript" src="/js/station_top.js?_=20140101"></script>
+<script type="text/javascript" src="/js/menu.js?_=20140101"></script>
+<script type="text/javascript" src="/js/tune_in.js?_=20140101"></script>
+<script type="text/javascript" src="/js/info.js?_=20140101"></script>
+<script type="text/javascript" src="/js/timetable_weekly.js?_=20140101"></script>
+<script type="text/javascript" src="/js/news_release.js?_=20140101"></script>
+<script type="text/javascript" src="/js/default.js?_=20140101"></script>
+<script type="text/javascript" src="/js/swfobject-2.1.js?_=20140101"></script>
+<script type="text/javascript" src="/js/player_4.1.0.js?_=20140101"></script>
+<script type="text/javascript" src="/js/station_program.js?_=20150529"></script>
+<script type="text/javascript" src="/js/timetable_search.js?_=20140101"></script>
+<script type="text/javascript" src="/js/search.js?_=20140101"></script>
+<script type="text/javascript" src="/js/scroll-program.js?_=20140101"></script>
+<script type="text/javascript" src="/js/jquery.colorbox.js"></script>
+<script type="text/javascript" src="/js/mypage.js?_=20140101"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1/i18n/jquery.ui.datepicker-ja.min.js"></script>
+<script type="text/javascript" src="/js/exvalidation.js?_=20140101"></script>
+<script type="text/javascript" src="/js/gcalendar-holidays.js?_=20140101"></script>
+<script type="text/javascript" src="/js/jquery-ui-timepicker-addon.js"></script>
+
+<script type="text/javascript">
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-21104474-1', 'auto');
+  ga('send', 'pageview');
+
+  ga('create', 'UA-21104474-2', 'auto', {'name': 'secondTracker'});
+  ga('secondTracker.send', 'pageview');
+</script>
+<script type="text/javascript">
+  (function() {
+    function is_mobile() {
+      var useragents = ['DoCoMo','KDDI','DDIPOKET','UP.Browser','J-PHONE','Vodafone','SoftBank'];
+      var pattern = new RegExp(useragents.join('|'), 'i');
+      return pattern.test(navigator.userAgent);
+    }
+    function is_wp() {
+      var useragents = ['IS12T'];
+      var pattern = new RegExp(useragents.join('|'), 'i');
+      return pattern.test(navigator.userAgent);
+    }
+    if (is_wp()) {
+      location.href="http://radiko.jp/mobile/";
+    }
+    else if (is_mobile()) {
+      location.href="http://radiko.jp/mobile/feature/";
+    }
+  })();
+</script>
+<script type="text/javascript">
+	jQuery(document).ready(function(){
+	});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function () {
+
+    // for IE
+    $("#search_text").val("キーワードから番組を検索");
+
+    // トップページからの検索遷移
+    $("#search_btn").click(function() {
+            $.Radiko.loadDisplayPageOnSearch('timetable_search');
+    });
+	if (window.uid3) {
+		uid3();
+	}
+
+	var textbox = $("#search_text");
+	textbox.focus(function () {
+		$(this).css("color","#666");
+		if(this.value==this.defaultValue){
+			$(this).val('');
+		}
+	}).blur(function() {
+		if($(this).val() == '' ){
+			$(this).val(this.defaultValue).css("color","#CCC");
+		}
+	}).keyup(function(e) {
+		var code = e.which; // recommended to use e.which, it's normalized across browsers
+		if(code==13)e.preventDefault();
+		if(code==13) {
+			$("#search_btn").click();
+		}
+	});
+	$("#goto_top").click(function() {
+		$(window).scrollTo(0, 500, {axis:"y"});
+	});
+});
+</script>
+</head>
+<body>
+
+<!-- Container -->
+<div id="container">
+	<!-- globalheader-cntl -->
+	<div id="globalheader-cntl">
+		<!-- Global Header -->
+		<div id="globalheader">
+			<!-- toolbar -->
+			<div id="toolbar"></div><!-- / #toolbar -->
+            <div id="info-bar"></div><!-- /#info-bar -->
+			<div id="radiko-logo" "><a href="#" class="a_top_default"><h1><img src="/images/top_radiko.png" alt="インターネットラジオならラジコ" width="117" height="39" /></h1><!--<img src="/images/top_logo.jpg" alt="株式会社radiko" width="101" height="26" />--></a></div>
+			<div id="areatitle">
+				<p id="area" class="free"><script type="text/javascript" src="/area"></script></p>
+			</div>
+			<!--<div id="radiko-socialbtn">
+			<div class="about_radiko">radiko.jpについて</div>
+			<div class="gl-share-btn">
+			<a onclick="javascript:open_sns_iframe('twitter','top');" class="twitter" href="#">ツイートする</a>
+			<a onclick="javascript:open_sns_iframe('mixi','top');" class="mixi" href="#">つぶやく</a>
+			<a onclick="javascript:open_sns_iframe('facebook','top');" class="fb1" href="#">シェア</a>
+			<a onclick="javascript:open_sns_iframe('facebook2','top');" class="fb2" href="#">いいね！</a>
+			</div>
+			</div>-->
+			<div class="search" id="search">
+				<!--<input value="" type="text" id="search_text"/>-->
+				<input type="text" id="search_text" name="word" class="ttsrh_f_input" value="キーワードから番組を検索" style="color:#CCC;" />
+				<input type="image" src="images/search_btn.png" alt="検索" id="search_btn" />
+			</div>
+			<div class="hbnr"></div>
+			<div id="station_menu_eria">
+				<ul id="station_menu" class="cfix">
+				</ul>
+			</div>
+			<div id="new_player">
+				<div id="player">
+					<div class="player_wrap">
+						<div id="controller_unit_header" class="clearfix" style="display:none;">
+						</div>
+						<div id="controller_unit_main">
+							<div id="external_controller_wrap">
+								<div id="external_controller">
+									<a style="border:0px none; margin:0px; padding:0px;" href="http://www.adobe.com/go/getflash/" target="_blank"><img src="/images/no_flash.gif" alt="Flashプレイヤーがインストールされていません" style="border:0px none; margin:0px; padding:0px;" /></a>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- end of controller_unit -->
+			    </div>
+			    <!-- 新プレイヤーの設置部分ここから-->
+			    <!-- 新プレイヤーの設置部分ここまで-->
+
+				<!-- 選局名　表示予定箇所ここから　-->
+				<div id="station_name">
+                    <div id="nameinn"></div>
+                </div>
+				<div id="telop">放送局名、もしくは番組表から選局してください</div>
+				<!-- 選局名　表示予定箇所ここまで-->
+		</div>
+			<!--<div id="balloon">&nbsp;</div>-->
+	</div>
+	<!-- / Global Header -->
+</div>
+
+<!-- Main -->
+<div id="main" class="cfix">
+</div>
+<!-- / Main -->
+
+</div>
+<!-- / Container -->
+
+<!-- footer_Container -->
+<div id="footer_container">
+	<!-- footer -->
+	<div class="footer">
+		<div class="footer-waku">
+	        <div id="radiko-socialbtn">
+	            <div class="gl-share-btn">
+	                <a onclick="javascript:open_sns_iframe('twitter','top');" class="twitter" href="#">ツイートする</a>
+	                <a onclick="javascript:open_sns_iframe('facebook2','top');" class="fb2" href="#">いいね！</a>
+	            </div>
+	        </div>
+			<p class="radiko-tool"><a href="#" class="a_download"><!-- <img alt="radiko.jp" src="/images/footer_radiko_tool.png" /> --></a></p>
+			<p class="f_area">
+				<a href="#" class="a_download">radiko.jpツール</a><span class="footer-slash">&nbsp;&nbsp;/&nbsp;&nbsp;</span>
+				<a href="#" class="a_area">配信エリア</a><span class="footer-slash">&nbsp;&nbsp;/&nbsp;&nbsp;</span>
+				<a href="#" class="a_howto">radiko.jpについて</a><span class="footer-slash">&nbsp;&nbsp;/&nbsp;&nbsp;</span>
+				<a href="#" class="a_news_release">ニュースリリース</a><span class="footer-slash">&nbsp;&nbsp;/&nbsp;&nbsp;</span>
+				<a href="http://faq.radiko.jp/" target="_blank">FAQ・お問い合わせ</a><span class="footer-slash">&nbsp;&nbsp;/&nbsp;&nbsp;</span>
+				<!--<a href="#" class="a_inquiry">お問い合わせ</a><span class="footer-slash">&nbsp;&nbsp;/&nbsp;&nbsp;</span>-->
+				<a href="#" class="a_guidelines">利用規約</a><span class="footer-slash">&nbsp;&nbsp;/&nbsp;&nbsp;</span>
+				<a href="#" class="a_privacy">プライバシーポリシー</a>
+			</p>
+			<p class="f_radiko">
+				<a href="#" class="a_about">株式会社radikoについて</a><span class="footer-slash">&nbsp;&nbsp;/&nbsp;&nbsp;</span>
+				<a href="http://www.mp-lab.co.jp/index.html" target="_blank">株式会社メディアプラットフォームラボについて</a><span class="footer-slash">&nbsp;&nbsp;/&nbsp;&nbsp;</span>
+				<a href="#" class="a_linkfree">リンクについて</a><span class="footer-slash">&nbsp;&nbsp;/&nbsp;&nbsp;</span>
+				<a href="#" class="a_commercial">特定商取引に関する法律に基づく表示</a>
+			</p>
+			<p class="page_top_new"><a id="goto_top" href="javascript:void(0);"><img width="88" height="25" alt="radiko.jp" src="/images/top_btn_footer01.png" /></a></p>
+			<p class="cr">Copyright © radiko co., Ltd. All rights reserved</p>
+			<div id="f_seo">
+              <div class="link_title">放送局一覧</div>
+              <div class="link_table">
+                  <div class="link_table_td">
+                    <div class="link_region_name">北海道・東北</div>
+                    <ul>
+                      <li><a href="/index/HBC">ＨＢＣラジオ</a></li>
+                      <li><a href="/index/STV">ＳＴＶラジオ</a></li>
+                      <li><a href="/index/AIR-G">AIR-G&#39;（FM北海道）</a></li>
+                      <li><a href="/index/NORTHWAVE">FM NORTH WAVE</a></li>
+                      <li><a href="/index/RAB">ＲＡＢ青森放送</a></li>
+                      <li><a href="/index/IBC">IBCラジオ</a></li>
+                      <li><a href="/index/FMI">エフエム岩手</a></li>
+                      <li><a href="/index/TBC">TBCラジオ</a></li>
+                      <li><a href="/index/YBC">YBC山形放送</a></li>
+                      <li><a href="/index/RFC">RFCラジオ福島</a></li>
+                      <li><a href="/index/FMF">ふくしまFM</a></li>
+                    </ul>
+                  </div>
+                  <div class="link_table_td">
+                    <div class="link_region_name">関東</div>
+                    <ul>
+                      <li><a href="/index/TBS">TBSラジオ</a></li>
+                      <li><a href="/index/QRR">文化放送</a></li>
+                      <li><a href="/index/LFR">ニッポン放送</a></li>
+                      <li><a href="/index/INT">InterFM897</a></li>
+                      <li><a href="/index/FMT">TOKYO FM</a></li>
+                      <li><a href="/index/FMJ">J-WAVE</a></li>
+                      <li><a href="/index/JORF">ラジオ日本</a></li>
+                      <li><a href="/index/BAYFM78">bayfm78</a></li>
+                      <li><a href="/index/NACK5">NACK5</a></li>
+                      <li><a href="/index/YFM">ＦＭヨコハマ</a></li>
+                      <li><a href="/index/IBS">IBS茨城放送</a></li>
+                      <li><a href="/index/CRT">CRT栃木放送</a></li>
+                      <li><a href="/index/RADIOBERRY">RadioBerry</a></li>
+                      <li><a href="/index/FMGUNMA">FMぐんま</a></li>
+                    </ul>
+                  </div>
+                  <div class="link_table_td">
+                    <div class="link_region_name">北陸・甲信越</div>
+                    <ul>
+                      <li><a href="/index/BSN">ＢＳＮラジオ</a></li>
+                      <li><a href="/index/FMNIIGATA">FM NIIGATA</a></li>
+                      <li><a href="/index/FMPORT">FM PORT</a></li>
+                      <li><a href="/index/KNB">ＫＮＢラジオ</a></li>
+                      <li><a href="/index/FMTOYAMA">ＦＭとやま</a></li>
+                      <li><a href="/index/MRO">MRO北陸放送ラジオ</a></li>
+                      <li><a href="/index/HELLOFIVE">エフエム石川</a></li>
+                      <li><a href="/index/FBC">FBCラジオ</a></li>
+                      <li><a href="/index/FM-FUJI">FM-FUJI</a></li>
+                      <li><a href="/index/SBC">SBCラジオ</a></li>
+                      <li><a href="/index/FMN">ＦＭ長野</a></li>
+                    </ul>
+                  </div>
+                  <div class="link_table_td">
+                    <div class="link_region_name">中部</div>
+                    <ul>
+                      <li><a href="/index/CBC">CBCラジオ</a></li>
+                      <li><a href="/index/TOKAIRADIO">東海ラジオ</a></li>
+                      <li><a href="/index/GBS">ぎふチャン</a></li>
+                      <li><a href="/index/ZIP-FM">ZIP-FM</a></li>
+                      <li><a href="/index/RADIONEO">RADIO NEO</a></li>
+                      <li><a href="/index/FMAICHI">＠FM</a></li>
+                      <li><a href="/index/FMGIFU">ＦＭ ＧＩＦＵ</a></li>
+                      <li><a href="/index/SBS">SBSラジオ</a></li>
+                      <li><a href="/index/K-MIX">K-MIX SHIZUOKA</a></li>
+                      <li><a href="/index/FMMIE">レディオキューブ ＦＭ三重</a></li>
+                    </ul>
+                  </div>
+                  <div class="link_table_td">
+                    <div class="link_region_name">近畿</div>
+                    <ul>
+                      <li><a href="/index/ABC">ABCラジオ</a></li>
+                      <li><a href="/index/MBS">MBSラジオ</a></li>
+                      <li><a href="/index/OBC">OBCラジオ大阪</a></li>
+                      <li><a href="/index/CCL">FM COCOLO</a></li>
+                      <li><a href="/index/802">FM802</a></li>
+                      <li><a href="/index/FMO">FM OSAKA</a></li>
+                      <li><a href="/index/KISSFMKOBE">Kiss FM KOBE</a></li>
+                      <li><a href="/index/CRK">CRKラジオ関西</a></li>
+                      <li><a href="/index/E-RADIO">e-radio FM滋賀</a></li>
+                      <li><a href="/index/KBS">KBS京都ラジオ </a></li>
+                      <li><a href="/index/ALPHA-STATION">α-STATION FM京都</a></li>
+                      <li><a href="/index/WBS">wbs和歌山放送</a></li>
+                    </ul>
+                  </div>
+                  <div class="link_table_td">
+                    <div class="link_region_name">中国・四国</div>
+                    <ul>
+                      <li><a href="/index/BSS">BSSラジオ</a></li>
+                      <li><a href="/index/RSK">ＲＳＫラジオ</a></li>
+                      <li><a href="/index/RCC">RCCラジオ</a></li>
+                      <li><a href="/index/HFM">広島FM</a></li>
+                      <li><a href="/index/KRY">ＫＲＹ山口放送</a></li>
+                      <li><a href="/index/JRT">ＪＲＴ四国放送</a></li>
+                      <li><a href="/index/RNB">RNB南海放送</a></li>
+                      <li><a href="/index/RKC">RKC高知放送</a></li>
+                    </ul>
+                  </div>
+                  <div class="link_table_td">
+                    <div class="link_region_name">九州・沖縄</div>
+                    <ul>
+                      <li><a href="/index/RKB">RKBラジオ</a></li>
+                      <li><a href="/index/KBC">KBCラジオ</a></li>
+                      <li><a href="/index/LOVEFM">LOVE FM</a></li>
+                      <li><a href="/index/CROSSFM">cross fm</a></li>
+                      <li><a href="/index/FMFUKUOKA">FM FUKUOKA </a></li>
+                      <li><a href="/index/NBC">NBC長崎放送</a></li>
+                      <li><a href="/index/FMNAGASAKI">FM長崎</a></li>
+                      <li><a href="/index/RKK">RKKラジオ</a></li>
+                      <li><a href="/index/FMK">FMKエフエム熊本</a></li>
+                      <li><a href="/index/OBS">OBSラジオ</a></li>
+                      <li><a href="/index/FM_OITA">エフエム大分</a></li>
+                      <li><a href="/index/MRT">宮崎放送</a></li>
+                      <li><a href="/index/MBC">ＭＢＣラジオ</a></li>
+                      <li><a href="/index/RBC">RBCiラジオ</a></li>
+                    </ul>
+                  </div>
+                  <div class="link_table_td">
+                    <div class="link_region_name">全国</div>
+                    <ul>
+                      <li><a href="/index/RN1">ラジオNIKKEI第1 </a></li>
+                      <li><a href="/index/RN2">ラジオNIKKEI第2</a></li>
+                      <li><a href="/index/HOUSOU-DAIGAKU">放送大学</a></li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="link_title">都道府県別</div>
+                <div class="link_table">
+                    <div class="link_table_tr">
+                        <div class="link_table_td"><a href="/index/JP1">北海道</a></div>
+                        <div class="link_table_td"><a href="/index/JP2">青森県</a></div>
+                        <div class="link_table_td"><a href="/index/JP3">岩手県</a></div>
+                        <div class="link_table_td"><a href="/index/JP4">宮城県</a></div>
+                        <div class="link_table_td"><a href="/index/JP5">秋田県</a></div>
+                        <div class="link_table_td"><a href="/index/JP6">山形県</a></div>
+                        <div class="link_table_td"><a href="/index/JP7">福島県</a></div>
+                    </div>
+                    <div class="link_table_tr">
+                        <div class="link_table_td"> <a href="/index/JP8">茨城県</a> </div>
+                        <div class="link_table_td"> <a href="/index/JP9">栃木県</a> </div>
+                        <div class="link_table_td"> <a href="/index/JP10">群馬県</a> </div>
+                        <div class="link_table_td"> <a href="/index/JP11">埼玉県</a> </div>
+                        <div class="link_table_td"> <a href="/index/JP12">千葉県</a> </div>
+                        <div class="link_table_td"> <a href="/index/JP13">東京都</a> </div>
+                        <div class="link_table_td"> <a href="/index/JP14">神奈川県</a> </div>
+                    </div>
+                    <div class="link_table_tr">
+                        <div class="link_table_td"> <a href="/index/JP15">新潟県</a> </div>
+                        <div class="link_table_td"> <a href="/index/JP19">山梨県</a> </div>
+                        <div class="link_table_td"> <a href="/index/JP20">長野県</a> </div>
+                        <div class="link_table_td"> <a href="/index/JP17">石川県</a> </div>
+                        <div class="link_table_td"> <a href="/index/JP16">富山県</a> </div>
+                        <div class="link_table_td"> <a href="/index/JP18">福井県</a> </div>
+                    </div>
+                    <div class="link_table_tr">
+                        <div class="link_table_td"> <a href="/index/JP23">愛知県</a> </div>
+                        <div class="link_table_td"> <a href="/index/JP21">岐阜県</a> </div>
+                        <div class="link_table_td"> <a href="/index/JP22">静岡県</a> </div>
+                        <div class="link_table_td"> <a href="/index/JP24">三重県</a> </div>
+                    </div>
+                    <div class="link_table_tr">
+                        <div class="link_table_td"> <a href="/index/JP27">大阪府</a> </div>
+                        <div class="link_table_td"> <a href="/index/JP28">兵庫県</a> </div>
+                        <div class="link_table_td"> <a href="/index/JP26">京都府</a> </div>
+                        <div class="link_table_td"> <a href="/index/JP25">滋賀県</a> </div>
+                        <div class="link_table_td"> <a href="/index/JP29">奈良県</a> </div>
+                        <div class="link_table_td"> <a href="/index/JP30">和歌山県</a> </div>
+                    </div>
+                    <div class="link_table_tr">
+                        <div class="link_table_td"> <a href="/index/JP33">岡山県</a> </div>
+                        <div class="link_table_td"> <a href="/index/JP34">広島県</a> </div>
+                        <div class="link_table_td"> <a href="/index/JP31">鳥取県</a> </div>
+                        <div class="link_table_td"> <a href="/index/JP32">島根県</a> </div>
+                        <div class="link_table_td"> <a href="/index/JP35">山口県</a> </div>
+                        <div class="link_table_td"> <a href="/index/JP37">香川県</a> </div>
+                        <div class="link_table_td"> <a href="/index/JP36">徳島県</a> </div>
+                        <div class="link_table_td"> <a href="/index/JP38">愛媛県</a> </div>
+                        <div class="link_table_td"> <a href="/index/JP39">高知県</a> </div>
+                    </div>
+                    <div class="link_table_tr">
+                        <div class="link_table_td"> <a href="/index/JP40">福岡県</a> </div>
+                        <div class="link_table_td"> <a href="/index/JP41">佐賀県</a> </div>
+                        <div class="link_table_td"> <a href="/index/JP42">長崎県</a> </div>
+                        <div class="link_table_td"> <a href="/index/JP43">熊本県</a> </div>
+                        <div class="link_table_td"> <a href="/index/JP44">大分県</a> </div>
+                        <div class="link_table_td"> <a href="/index/JP45">宮崎県</a> </div>
+                        <div class="link_table_td"> <a href="/index/JP46">鹿児島県</a> </div>
+                        <div class="link_table_td"> <a href="/index/JP47">沖縄県</a> </div>
+                    </div>
+                </div>
+				</div>
+			</div>
+		</div>
+	<!-- footer -->
+	<div id="log"></div>
+</div>
+<!-- footer_Container -->
+<!-- A-one -->
+<script type="text/javascript">
+(function(){
+  var oid = '0a44b7362c5d7b1f';
+  var interval = 300; // seconds
+  var timer;
+  try{
+    var params = {
+      getArea : function(){
+        return (typeof areaId != "undefined") ?  areaId : "";
+      },
+      getStation : function(){
+        return (typeof $.Radiko.stationId != "undefined") ?  $.Radiko.stationId : "";
+      },
+      getProgram : function(){
+        return (typeof $.Radiko.tickerProgram.title != "undefined") ?  $.Radiko.tickerProgram.title : "";
+      },
+      isPlaying : function(){
+        return (typeof isPlaying != "undefined") ?  isPlaying : !1;
+      }
+    }
+
+    var url_base = ('https:' == document.location.protocol ? 'https' : 'http')+'://a.one.impact-ad.jp/dc?';
+    var sendRequest = function(){
+      var collect_params = [];
+      var collect_url = "http://radiko.jp/";
+      if(params.getArea()){
+        collect_params.push(params.getArea());
+        if(params.getStation()){
+          collect_params.push(params.getStation());
+          if(params.getProgram()){
+            collect_params.push(params.getProgram());
+          }
+        }
+      }
+      var param_radiko_id = (typeof uid3 != "undefined") ? "&radiko_id="+uid3() : "";
+      (params.isPlaying()) ? collect_params.push("?playing=ON"+param_radiko_id) : collect_params.push("?playing=OFF"+param_radiko_id);
+      collect_url += collect_params.join("/");
+      var aone_params = [];
+      aone_params.push("oid=" + oid);
+      aone_params.push("src=" + encodeURIComponent(collect_url));
+
+      var img=document.createElement('img');
+      img.setAttribute('width', '1');
+      img.setAttribute('height', '1');
+      img.setAttribute('style', 'display:none');
+      img.src=url_base + aone_params.join("&");
+      var b = document.getElementsByTagName('script')[0];
+      b.parentNode.insertBefore(img, b);
+    };
+    if ("complete" == document.readyState){
+        sendRequest();
+    }else{
+        if(window.addEventListener) {
+            window.addEventListener("load", function(){sendRequest();}, false);
+        }else if (window.attachEvent) {
+            window.attachEvent("onload", function(){sendRequest();});
+        }else{
+            window.onload = function(){sendRequest();};
+        }
+    }
+    timer = setInterval(function(){sendRequest()}, interval * 1000);
+  }catch(e){clearInterval(timer)}
+})();
+</script>
+<!-- /A-one -->
+
+<div id="script-position"></div>
+<!-- TURN -->
+<noscript><iframe src="//d.turn.com/r/dft/id/L21rdC8zMjgvcGlkLzQ4NTg1NzE2L3QvMA?ns" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript><script>(function(a,b,d){var c=a.getElementsByTagName(b)[0],a=a.createElement(b);a.async=!0;a.src=d;c.parentNode.insertBefore(a,c)})(document,"script","//d.turn.com/r/dft/id/L21rdC8zMjgvcGlkLzQ4NTg1NzE2L3QvMA");</script>
+<!-- /TURN -->
+
+</body>
+</html>

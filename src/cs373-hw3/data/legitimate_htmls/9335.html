@@ -1,0 +1,693 @@
+
+<!-- saved from url=(0051)https://netbanking.canarabank.in/entry/ENULogin.jsp -->
+<html style="display: block;"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Canara Bank Internet Banking</title>
+<style>html { display:none }</style>
+	<script>
+		if (self == top) {
+			document.documentElement.style.display = 'block';
+		} else {
+			top.location = self.location;
+		}
+	</script>
+	
+ 
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0"> 
+<meta name="apple-mobile-web-app-capable" content="yes"> 
+<meta name="apple-mobile-web-app-status-bar-style" content="default"> 
+<meta name="HandheldFriendly" content="true"> 
+<meta name="MobileOptimized" content="width">
+
+<meta http-equiv="cache-control" content="no-cache">
+<meta http-equiv="cache-control" content="no-store">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0"> 
+
+<link href="./index_files/default.css" type="text/css" rel="STYLESHEET">
+<link href="./index_files/jquery-ui.css" type="text/css" rel="STYLESHEET">
+<link rel="SHORTCUT ICON" href="https://netbanking.canarabank.in/entry/images/oraclefav.ico">
+<script language="JavaScript" type="text/JavaScript" src="./index_files/jquery-1.6.4.min.js"></script>
+<script language="JavaScript" type="text/JavaScript" src="./index_files/jquery-ui-1.7.2.js"></script>
+<script language="JavaScript" type="text/JavaScript" src="./index_files/virtualkeyboard.js"></script>
+<script language="JavaScript" type="text/JavaScript" src="./index_files/security.js"></script>
+<script type="text/JavaScript" language="JavaScript" src="./index_files/common.js"></script><meta name="format-detection" content="telephone=no">
+
+
+
+
+<script language="JavaScript">
+//-----------------------------------------------------------------------------
+
+var speedMbps;
+var entry_field;
+var BW_THRESHOLD = 300.00 /* Upper Limit for redirecting to Classic UI */
+
+$(document).ready(function() {
+	$("#bwDialog").dialog({
+		autoOpen : false,
+		modal : true,
+		draggable : false,
+		resizable : false,
+		closeOnEscape : false,
+		buttons: {
+			OK: function() {
+				$(this).dialog("close");
+				return redirectToSummaryPage();
+			}
+		},
+		open: function(event, ui) {
+			$(this).parent().children().children("a.ui-dialog-titlebar-close").remove();
+		}
+	});
+});
+
+function redirectToSummaryPage() 
+{
+	
+		var scrW = screen.availWidth-10+"px";
+		var scrH = screen.availHeight-60+"px";
+	
+	// alert( scrW  );
+	// alert( scrH );
+	var windowName = document.frmLogon.fldLoginUserId.value.replace(/[^a-zA-z0-9]+/g,"a");
+	loginWindow = window.open ("", windowName ,
+			"dependant=no,directories=no,location=no,menubar=no"
+		+	",resizable=no,scrollbars=yes,titlebar=no,toolbar=no,"
+		+ "0, 0, top=0,left=0,status=1,"
+		+ "width=" + (scrW)
+		+ ",height=" + (scrH)); 	
+		
+		document.frmLogon.target = windowName ;
+		//=============================================
+		// Added by Uniken Team for TruBank Integration
+		// Change-2 Begins
+		// Comments: This code block Posts User Credentials to TruBank server or Entry Servlet of IMB
+		// If bAxsTruBank is TRUE, then Post User credentials to Entry Servlet of IMB
+		// Else Post User credentials to TruBankHome.jsp
+			
+				document.frmLogon.action = "TruBankHome.jsp";
+			
+		//Change-2 Ends
+		//=============================================
+			document.frmLogon.submit ();
+			loginWindow.focus();
+			 
+                document.frmLogon.fldLoginUserId.value 	= "";
+			
+			document.frmLogon.fldPassword.value 	= "";
+	return false;
+}
+
+function getBandWidth() 
+{
+	var startTime, endTime;
+	var imgSize = 983094; //bytes
+	var testImg = new Image();
+	testImg.src = "images/test.bmp" + "?n=" + Math.random();
+	startTime = (new Date()).getTime();
+
+	testImg.onload = function () {
+	    endTime = (new Date()).getTime();
+	    var duration = (endTime - startTime) / 1000;
+	    var bitsLoaded = imgSize * 8;
+	    var speedBps = bitsLoaded / duration;
+	    speedMbps = ((speedBps / 1024)/1024).toFixed(2);
+	}
+}
+
+//-----------------------------------------------------------------------------		
+function fLogon () {
+	var l_encPass = encrypt (document.frmLogon.fldPassword.value, document.frmLogon.fldEncrKey.value);
+	document.frmLogon.fldPassword.value = l_encPass;
+	l_encPass = null;
+	
+	var isLowBW = false;
+
+	var scr_w, scr_w1;
+	var scr_h, scr_h1;
+	
+		scr_w1 = 1015;
+		scr_h1 = 740;
+	
+
+	if (scr_w == '800')
+	{
+		scr_w1 = 785;
+		scr_h1 = 500;
+	}
+
+	if (document.frmLogon.fldLoginUserId.value == "") {
+		alert ("User Id must be entered");
+		document.frmLogon.fldLoginUserId.focus ();
+		return false;
+	}
+	if (document.frmLogon.fldPassword.value == "") {
+		alert ("Password must be entered");
+		document.frmLogon.fldPassword.focus ();
+		return false;
+	}
+	var lang=document.frmLogon.fldlanguage[document.frmLogon.fldlanguage.selectedIndex].value;
+	
+	document.frmLogon.fldLangId.value = lang;
+	//----User selected login language set in cookie 'id_prefLang'------
+		var c_name="id_prefLang";
+		document.cookie=c_name + "=" + lang;
+	//----- end of cookie---------- 
+	if(typeof loginWindow != 'undefined'){
+		try{
+			loginWindow.close();
+		}catch(e){
+		}
+	}
+
+	if(speedMbps <= BW_THRESHOLD) 
+	{
+		var UI_id = document.frmLogon.fldlitever;
+		for(var i = 0; i < UI_id.options.length; i++) {
+			if(UI_id.options[i].value == "L") {
+				UI_id.selectedIndex = i;
+				break;
+			}
+		}
+		isLowBW = true;
+	}
+	
+	var returnValue = false;
+	if(isLowBW) {
+		$("#bwDialog").dialog("open");
+		returnValue = false;
+	}
+	else {
+		returnValue = redirectToSummaryPage();
+	}
+	
+	
+	return returnValue;
+}
+//-----------------------------------------------------------------------------		
+function setheight () {
+	var isNS6 = (!document.all && document.getElementById) ? true : false;
+
+	if(isNS6==true) {
+		document.getElementById('TDlogin').style.height ='230px';
+	} else {
+		document.getElementById('TDlogin').style.height ='230px';
+	}
+}
+//-----------------------------------------------------------------------------
+function DeletePwd () {
+	if (document.frmLogon.chksecmod.checked) {
+		// Added by Uniken Team for TruBank Integration
+		if(entry_field == 'fldLoginUserId' && document.frmLogon.fldLoginUserId.value != ""){
+			var strNumField = new String(document.frmLogon.fldLoginUserId.value);
+			document.frmLogon.fldLoginUserId.value = strNumField.substring(0,strNumField.length-1);
+			document.frmLogon.fldLoginUserId.id="";
+		}
+		
+	if(entry_field == 'fldPassword' && document.frmLogon.fldPassword.value != ""){
+		var strNumField = new String(document.frmLogon.fldPassword.value);
+		document.frmLogon.fldPassword.value = strNumField.substring(0,strNumField.length-1);
+		document.frmLogon.fldPassword.id="";
+		}
+		doRandomize();
+	}
+	return false;
+}
+//-----------------------------------------------------------------------------
+function ClearPwd () {
+	if (document.frmLogon.chksecmod.checked) {
+			// Added by Uniken Team for TruBank Integration
+		if(entry_field == 'fldLoginUserId' && document.frmLogon.fldLoginUserId.value != ""){
+			document.frmLogon.fldLoginUserId.value = "";
+			entry_field='fldLoginUserId';
+		}
+		
+		if(entry_field == 'fldPassword' && document.frmLogon.fldPassword.value != ""){
+		document.frmLogon.fldPassword.value = "";
+			entry_field='fldPassword';
+		}
+		doRandomize();
+	}
+	return false;
+}
+//-----------------------------------------------------------------------------
+function SecurityWarning () {
+	var keyBoard = document.getElementById('login-keyboard').getElementsByTagName("input");
+	if (document.frmLogon.chksecmod.checked) {
+		document.frmLogon.elemC4.checked =true;
+		document.frmLogon.elemC4.disabled = false;
+		document.frmLogon.fldLoginUserId.readOnly =true;
+		document.frmLogon.fldLoginUserId.blur();
+		document.frmLogon.fldPassword.readOnly =true;
+		document.frmLogon.fldPassword.blur();
+		for(i=0; i<=keyBoard.length-1; i++){
+				keyBoard[i].disabled=false;
+				keyBoard[i].style.className='enableText'; 
+		}
+		document.getElementById("TDlogin").style.display="block";
+	} else {
+			
+		if (false == confirm("Use of Security Keyboard is recommended to protect your Password. \nAre you sure you choose NOT to use the Security Keyboard?")) {
+			document.frmLogon.chksecmod.checked = true;
+			}
+		else{
+					
+		document.frmLogon.elemC4.checked =false;
+		document.frmLogon.elemC4.disabled = true;
+document.getElementById("TDlogin").style.display="none";
+
+	
+		document.frmLogon.fldLoginUserId.readOnly =false;
+	
+		document.frmLogon.fldPassword.readOnly = false;
+		for(i=0; i<=keyBoard.length-1; i++){
+				 keyBoard[i].disabled=true;
+				keyBoard[i].style.className='disableText';
+                                 
+		}
+		
+		}
+	}
+	
+//	document.frmLogon.fldPassword.focus();
+}
+//-----------------------------------------------------------------------------
+function initialize() 
+	{
+		entry_field = 'fldLoginUserId';
+		getToken();
+		document.frmLogon.chksecmod.checked = false;
+		document.frmLogon.elemC4.checked =false;
+		document.frmLogon.elemC4.disabled = true;
+		document.frmLogon.fldPassword.focus ();
+		document.frmLogon.fldLoginUserId.focus ();
+/*		if (document.frmLogon.chksecmod.checked) {
+			document.frmLogon.fldPassword.readOnly =true;
+			document.frmLogon.fldPassword.blur();
+		} else { */
+		
+		//=============================================
+		// Added by Uniken Team for TruBank Integration
+		// Change-3 Begins
+		// Comments: If bAxsTruBank is TRUE, then set focus to fldPassword field
+		//document.frmLogon.fldLoginUserId.focus ();
+		
+		var bShowAlert = false;
+			
+					document.frmLogon.fldLoginUserId.readOnly =false;
+					document.frmLogon.fldLoginUserId.focus ();
+			
+			if (bShowAlert)
+				alert ("\nKindly click on the 'Home' button on CanSecure to login to Internet Banking\n\n");
+		
+		//Change-3 Ends
+		//=============================================
+
+		document.frmLogon.fldPassword.readOnly = false;
+		
+			var keyBoard = document.getElementById('login-keyboard').getElementsByTagName("BUTTON");
+			for(i=0; i<=keyBoard.length-1; i++){
+					keyBoard[i].disabled=true;
+					keyBoard[i].style.color='#AAAAAA';
+			}
+		
+		var keyBoard = document.getElementById('login-keyboard').getElementsByTagName("input");
+		for(i=0; i<=keyBoard.length-1; i++){
+				keyBoard[i].disabled=true;
+				keyBoard[i].style.className='disableText';
+		}
+	}
+//-----------------------------------------------------------------------------
+function changeIndicator(q) {
+	var l_caps_indicator;
+	l_caps_indicator = document.getElementById("capsindicator");
+
+	if(q==0) {
+		l_caps_indicator.innerHTML = "ON";
+	} else {
+		l_caps_indicator.innerHTML = "OFF";
+	}
+}
+//-----------------------------------------------------------------------------
+function locateBranches() {
+	
+	var scr_w, scr_w1;
+	var scr_h, scr_h1;
+	scr_w = screen.width;
+	scr_h = screen.availHeight;
+	scr_w1 = (screen.width) - 7;
+	scr_h1 = (screen.availHeight) - 60;
+
+	if (scr_w > 1024){
+		scr_w1 = 1020;
+	}
+	if (scr_h > 768){
+		scr_h1 = 708;
+	}
+	
+	window.open('http://www.canarabank.com/English/scripts/Locators.aspx','', 'toolbar=0,location=0,directories=0,status=1,menubar=0,scrollbars=1,resizable=0,left=0,top=0,width='+scr_w1+',height='+scr_h1);	
+}
+//------------------------------------------------------------------------------
+function aboutbox () {
+	window.open ("about.html", "NewWindow",
+			"dependant=no,directories=no,location=no,menubar=no"
+		+	",resizable=no,scrollbars=yes,titlebar=no,toolbar=no,"
+		+ "0, 0, top=0,left=0,status=1,width=400,height=300");
+}
+//------------------------------------------------------------------------------
+function keypressed(e,obj){ 
+	//if(event.keyCode==13){return fLogon()} 
+var code;	
+if(!e){
+	var e= window.event;
+}
+if(e.keyCode){
+code=e.keyCode;
+}
+else if(e.which){
+code=e.which;
+}
+if(code==13){return fLogon()}
+
+} 
+//-----------------------------------------------------------------------------
+function  integer (n) {
+	return n%(0xffffffff+1);
+}
+//-----------------------------------------------------------------------------
+function getToken() 
+{
+	document.frmtoken.submit();
+}
+function MM_openBrWindow(theURL,winName,features) { //v2.0
+        window.open(theURL,winName,features);
+}
+//-----------------------------------------------------------------------------
+function changeFocus(p_element){
+		document.getElementsByName(p_element)[0].focus();
+		entry_field =p_element;
+	}
+
+function DisableLoginId(){
+	document.frmLogon.fldLoginUserId.readOnly =true;
+	document.frmLogon.fldPassword.focus();
+}
+	//------------------------------------------------------------------------------
+setInterval(function(){
+
+      $('blink').each(function(){
+
+        $(this).css('visibility' , $(this).css('visibility') === 'hidden' ? '' : 'hidden')
+
+      });
+
+    }, 500);
+	//------------------------------------------------------------------------------
+function changeLang(){
+
+	var bnd = document.frmLogon.fldlanguage.value;
+        if (bnd == "eng") {
+               document.frmLogon.fldLangId.value = "eng";
+		}else{
+			document.frmLogon.fldLangId.value = "hnd";
+		}
+	
+}
+//------------------------------------------------------------------------------ Added by Satyendra Singh , Online Banking Group
+function showdiv(msg,t,l)
+{
+var a=document.getElementById("msghindi");
+a.innerHTML=msg;
+a.style.visibility="visible";
+a.style.top=t;
+a.style.left=l;
+}
+//------------------------------------------------------------------------------ Added by Satyendra Singh , Online Banking Group
+function hidediv()
+{
+document.getElementById('msghindi').style.visibility="hidden";
+}
+</script>
+
+<link rel="stylesheet" type="text/css" href="./index_files/ddlevelsmenu-base.css">
+<link rel="stylesheet" type="text/css" href="./index_files/ddlevelsmenu-topbar.css">
+<link rel="stylesheet" type="text/css" href="./index_files/ddlevelsmenu-sidebar.css">
+<script type="text/javascript" src="./index_files/ddlevelsmenu.js" language="javascript"></script>
+</head>
+
+<body class="LoginWorkArea" style="overflow:auto;" vlink="#0000ff" topmargin="0" leftmargin="0" scroll="no" onLoad="initialize();setheight(); getBandWidth();" onkeyup="keypressed(event,this.id)">
+<script type="text/javascript">
+ddlevelsmenu.setup("ddsidemenubar", "sidebar") //ddlevelsmenu.setup("mainmenuid", "topbar|sidebar")
+</script>
+
+
+<!--<marquee style="position: absolute; text-align: center; left: 320px; top: 65px; font-size: 16px; font-weight: bold; font-family: tahoma; width: 40%;" width="40%">
+"Due to the Maintenance activity, Internet Banking and Mobile Banking Services shall not be available on 01st April 2016 between 12:30 PM to 02:00 PM. Inconvenience is regretted" </marquee> -->
+
+
+
+<!--<span style = "position:absolute; text-align:center; left: 450px; top:250; font-size:16px; font-weight:bold;font-family:tahoma;">
+<blink><img src="images/alert_final.png" height="40px"/></blink><br/> USERS LOGGING IN FOR THE FIRST TIME SHOULD CHANGE <br/>BOTH LOGIN AND TRANSACTION PASSWORDS. </br>PLEASE <div style="color: blue;text-decoration:underline; display :inline;" onclick="MM_openBrWindow('UpdatePassword.htm','FirstTimeReset','scrollbars=yes,width=auto,height=auto,top=0,left=0,status=yes,titlebar=no,toolbar=no,dependant=no,directories=no,location=no,menubar=no,resizable=yes')">
+<span class="content" ><a class="linktxt5" href="#">CLICK HERE</a></span>
+</div> TO UPDATE THE PASSWORD.</span> -->
+
+<!-- <marquee style="position: absolute; text-align: center; left: 320px; top: 65px; font-size: 16px; font-weight: bold; font-family: tahoma; width: 40%;" width="40%">
+Due to the Maintenance activity, Internet Banking and Mobile Banking Services shall not be available on 18th Mar 2016 between 02:00 AM to 03:00 AM. Inconvenience is regretted” </marquee> --->
+
+<!--- <marquee style="position: absolute; text-align: center; left: 320px; top: 65px; font-size: 16px; font-weight: bold; font-family: tahoma; width: 40%;" width="40%">
+Due to technical issues with some of the Internet Service Providers, access to Canara Bank Net Banking website is facing intermittent disruption in service. The matter is being attended to.</marquee> --->
+
+<!--<div style="position: absolute; text-align: center; left: 320px; top: 120px; font-size:40px; font-weight: bold; font-family: tahoma; width: 40%; " width="40%">
+<blink>Redesigned Site</blink></div>-->
+<span style="position:absolute; text-align:center; left: 5px; top:380; font-size:14px; font-weight:bold;font-family:tahoma; color:black;"> Toll Free Number  </span><span style="position:absolute; text-align:center; left: 150px; top:380; font-size:14px; font-weight:bold;font-family:tahoma; color:black;">:&nbsp;18004250018 </span>
+<span style="position:absolute; text-align:center; left: 5px; top:398; font-size:14px; font-weight:bold;font-family:tahoma; color:black;"> Email ID for help</span> <span style="position:absolute; text-align:center; left: 150px; top:398; font-size:14px; font-weight:bold;font-family:tahoma; color:black;">:&nbsp;imbhelpdesk@canarabank.com </span>
+<span style="position:absolute; text-align:center; left: 5px; top:418; font-size:14px; font-weight:bold;font-family:tahoma; color:black;"> Missed Call Number for Balance Enquiry : 0 9015 483 483 </span>
+<span style="position:absolute; text-align:center; left: 5px; top:438; font-size:14px; font-weight:bold;font-family:tahoma; color:black;"> (Please dial from your registered Mobile Number) </span>
+
+
+
+<form name="frmLogon" method="post" action="./index_files/internet.html" autocomplete="off">
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#03AEF1">
+        <tbody><tr>
+            <td align="center" valign="top">
+               <img src="./index_files/canara1.png">
+            </td>
+        </tr>
+      <!--  <tr>
+      <td><div style="background:#fff; color:#F00; font-size:14px; padding-top:5px;"><marquee direction="left" onmouseout="this.scrollAmount=2" onmouseover="this.scrollAmount=0" scrollamount="5" height="30">“Due to the Maintenance activity, Internet Banking and Mobile Banking Services will not be available on 08th April 2016 between 03:00 AM to 03:30 AM. Inconvenience is regretted”.</marquee></div></td>
+        </tr>-->
+</tbody></table>
+<div style="background-color:#CAE3F9;">
+<table cellpadding="0" cellspacing="0" width="100%" >
+<tbody><tr>
+<td align="center">
+
+<div class="mainbg">
+<table width="100%" cellpadding="0" cellspacing="0"     style="background-image: url('loginbg.png');   background-repeat: no-repeat;">
+<tbody>
+<tr>
+<td width="20%" valign="top">
+<br><br><br><br><br><br><br>
+
+<div class="newLinks" style="position:absolute; left:29px;">
+<!---<a href="#" onclick="MM_openBrWindow('ResetPassword.html','forgot','scrollbars=yes,width=auto,height=auto,top=0,left=0,status=yes,titlebar=no,toolbar=no,dependant=no,directories=no,location=no,menubar=no,resizable=yes')">FORGOT PASSWORD</a><br />--->
+<a href="https://netbanking.canarabank.in/entry/ENULogin.jsp#" style="font-family:tahoma;font-size:15px;background:red;" onMouseOver="showdiv('We have redesigned the Site for better user experience, You have to enter your NetBanking Login credentials in next screen','200px','300px')" onMouseOut="hidediv()">Click Here for Netbanking LOGIN</a><br>
+<a href="#" onClick="MM_openBrWindow(&#39;https://netbanking.canarabank.in/entry/tnc.html&#39;,&#39;ONBUIDC&#39;,&#39;scrollbars=yes,width=auto,height=auto,top=0,left=0,status=yes,titlebar=no,toolbar=no,dependant=no,directories=no,location=no,menubar=no,resizable=yes&#39;)">New User?? Register here</a><br>
+
+<a href="#" onClick="MM_openBrWindow(&#39;https://netbanking.canarabank.in/entry/UnlockUserId.html&#39;,&#39;forgot&#39;,&#39;scrollbars=yes,width=auto,height=auto,top=0,left=0,status=yes,titlebar=no,toolbar=no,dependant=no,directories=no,location=no,menubar=no,resizable=yes&#39;)">Unlock UserID</a><br>
+<a href="#" onClick="MM_openBrWindow(&#39;https://netbanking.canarabank.in/entry/UnlockUserId.html&#39;,&#39;forgot&#39;,&#39;scrollbars=yes,width=auto,height=auto,top=0,left=0,status=yes,titlebar=no,toolbar=no,dependant=no,directories=no,location=no,menubar=no,resizable=yes&#39;)">Activate UserID</a><br>
+</div>
+</td>
+<td valign="top" width="60%">
+<div class="mainbgTD">
+<br>
+<div class="netHeading"><br><br>
+<br>
+<br>
+</div>
+</div>
+</td>
+<td width="20%" valign="top" align="center">
+
+<div id="ddsidemenubar" class="markermenu">
+<ul>
+<li><a target="_blank" href="https://www.canarabank.in/English/Downloads/PKI Consolidated Guidelines-Customer.docx">&nbsp;&nbsp;&nbsp;PKI(Digital Signature) Guidelines</a></li>
+<li><a target="_blank" rel="app"><img src="./index_files/arrow-right.gif" class="rightarrowpointer" style="width: 12px; height: 12px; left: 302px;">&nbsp;&nbsp;&nbsp;Application Forms</a></li>
+<li><a target="_blank" href="https://canarabank.net.in/mWallet/eWltstrt.aspx">&nbsp;&nbsp;&nbsp;Canara mWallet</a></li>
+<li><a target="_blank" href="https://epayment.canarabank.in/PPFEpayment/de/PPFHome.aspx">&nbsp;&nbsp;&nbsp;Online PPF A/C Opening</a></li>
+<li><a target="_blank" href="https://www.billdesk.com/pgidsk/pgmerc/instpy/CNBIndex.jsp">&nbsp;&nbsp;&nbsp;Bill Payments</a></li>
+<li><a target="_blank" href="http://www.canarabank.com/English/scripts/CBCanaraEtax.aspx">&nbsp;&nbsp;&nbsp;Online TAX Payment</a></li>
+<li><a target="_blank" href="http://www.canmoney.in/">&nbsp;&nbsp;&nbsp;Online Trading</a></li>
+<li><a target="_blank" href="https://canarabank.net.in/cpgrs/web_pages/cpgrs_gateway.aspx">&nbsp;&nbsp;&nbsp;Grievance Redressal</a></li>
+<li><a target="_blank" href="https://www.canarabank.in/English/Scripts/tutorial/FAQs.html">&nbsp;&nbsp;&nbsp;CanDigital FAQs</a></li>
+<li><a target="_blank" href="https://www.canarabank.in/English/Downloads/anti-phising.pdf">&nbsp;&nbsp;&nbsp;Anti Phishing</a></li>
+<li><a target="_blank" href="https://www.canarabank.in/English/Downloads/ABOUT%20EMAIL%20FRAUDS.pdf">&nbsp;&nbsp;&nbsp;About Email Frauds</a></li>
+<li><a target="_blank" href="https://www.canarabank.in/English/Downloads/Security.pdf">&nbsp;&nbsp;&nbsp;Security</a></li>
+<li><a target="_blank" href="https://www.canarabank.in/English/Downloads/FRAUD%20REPORTING.pdf">&nbsp;&nbsp;&nbsp;Fraud Reporting</a></li>
+<!---
+<li><a style="text-decoration: none;color: #000000;" class="linktxt5" href="https://netbanking.canarabank.in/entry/ENULogin.jsp#" onclick="MM_openBrWindow(&#39;tnc.html&#39;,&#39;ONBUIDC&#39;,&#39;scrollbars=yes,width=auto,height=auto,top=0,left=0,status=yes,titlebar=no,toolbar=no,dependant=no,directories=no,location=no,menubar=no,resizable=yes&#39;)">&nbsp;&nbsp;&nbsp;Online NetBanking User Creation</a></li>
+<li><a style="text-decoration: none; color: #000000;" onclick="MM_openBrWindow(&#39;https://www.canarabank.in/English/Scripts/dwnldcsr.htm&#39;,&#39;forgot&#39;,&#39;scrollbars=yes,width=auto,height=auto,top=0,left=0,status=yes,titlebar=no,toolbar=no,dependant=no,directories=no,location=no,menubar=no,resizable=yes&#39;)" class="linktxt5" href="https://netbanking.canarabank.in/entry/ENULogin.jsp#">&nbsp;&nbsp;&nbsp;Download CanDigital</a></li>
+<li><a style="text-decoration: none;    color: #000000;" onclick="MM_openBrWindow(&#39;FAQ123.htm&#39;,&#39;FAQ&#39;,&#39;scrollbars=yes,width=auto,height=auto,top=0,left=0,status=yes,titlebar=no,toolbar=no,dependant=no,directories=no,location=no,menubar=no,resizable=yes&#39;)" class="linktxt5" href="https://netbanking.canarabank.in/entry/ENULogin.jsp#">&nbsp;&nbsp;&nbsp;FAQ'S</a></li>
+<li><a style="text-decoration: none; color: #000000;" onclick="MM_openBrWindow(&#39;https://www.canarabank.in/English/Scripts/IMBTutorial/home.html&#39;,&#39;&#39;,&#39;scrollbars=yes,width=auto,height=auto,top=0,left=0,status=yes,titlebar=no,toolbar=no,dependant=no,directories=no,location=no,menubar=no,resizable=yes&#39;)" class="linktxt5" href="https://netbanking.canarabank.in/entry/ENULogin.jsp#">&nbsp;&nbsp;&nbsp;View DEMOS</a></li>
+<!---<li><a target="_blank" href="https://www.entrust.net/customer/profile.cfm?domain=www.canarabank.in">&nbsp;&nbsp;&nbsp;SSL Certification</a></li> -->
+</ul>
+</div>
+
+
+</td>
+</tr>
+</tbody></table>
+</div>
+</td>
+</tr>
+</tbody></table>
+</div>
+
+<div class="middle">
+<table cellpadding="0" cellspacing="0" width="100%">
+<tbody><tr>
+<td align="center">
+<div style="width:auto;margin:0 auto;">
+<br>
+<br>
+<table cellpadding="4" cellspacing="0">
+<tbody><tr>
+<td class="style5"><div class="middleHead" onclick="MM_openBrWindow(&#39;https://netbanking.canarabank.in/entry/tnc.html&#39;,&#39;ONBUIDC&#39;,&#39;scrollbars=yes,width=auto,height=auto,top=0,left=0,status=yes,titlebar=no,toolbar=no,dependant=no,directories=no,location=no,menubar=no,resizable=yes&#39;)">
+<img src="./index_files/newuser.png">
+<span class="content">
+
+<br>
+    <a style="        
+    text-decoration: none;
+    color: #000000;
+" "="" class="linktxt5" href="#">Online NetBanking User Creation</a></span>
+</div> 
+</td>
+<td class="style4"><div class="middleHead">
+<img src="./index_files/trob.png">
+<br>
+<span class="content"><a style="
+    text-decoration: none;
+    color: #000000;
+" onclick="MM_openBrWindow(&#39;https://www.canarabank.in/English/Scripts/dwnldcsr.htm&#39;,&#39;forgot&#39;,&#39;scrollbars=yes,width=auto,height=auto,top=0,left=0,status=yes,titlebar=no,toolbar=no,dependant=no,directories=no,location=no,menubar=no,resizable=yes&#39;)" class="linktxt5" href="#">Download CanDigital</a></span>
+</div></td>
+<td class="style3"><div class="middleHead">
+
+<img src="./index_files/faq.png">
+<br>
+<span class="content"><a style="
+    text-decoration: none;
+    color: #000000;
+" onclick="MM_openBrWindow(&#39;https://netbanking.canarabank.in/entry/FAQ123.htm&#39;,&#39;FAQ&#39;,&#39;scrollbars=yes,width=auto,height=auto,top=0,left=0,status=yes,titlebar=no,toolbar=no,dependant=no,directories=no,location=no,menubar=no,resizable=yes&#39;)" class="linktxt5" href="#">FAQ'S</a></span>
+</div></td>
+<td><div class="middleHead">
+
+<img src="./index_files/demo.png">
+<br>
+<span class="content"><a style="
+    text-decoration: none;
+    color: #000000;
+" onclick="MM_openBrWindow(&#39;https://www.canarabank.in/English/Scripts/IMBTutorial/home.html&#39;,&#39;&#39;,&#39;scrollbars=yes,width=auto,height=auto,top=0,left=0,status=yes,titlebar=no,toolbar=no,dependant=no,directories=no,location=no,menubar=no,resizable=yes&#39;)" class="linktxt5" href="#">View DEMOS</a></span>
+</div></td>
+<!---<td><div class="middleHead">
+<img src="images/CanMobile.jpg" height="52px" style="padding:2px;" />
+<br />
+<span class="content">
+<a href="http://www.canarabank.com/English/scripts/canmobile.aspx" target="_blank" style="color: #000000;text-decoration:none;"> CanMobile</a>
+</span>
+</div></td>--->
+</tr>
+</tbody></table>
+<br>
+<br>
+<div class="alertMsg">
+&nbsp;&nbsp;&nbsp;Phishing Alert: <ol>
+  <li> Canara Bank <strong>never sends</strong> email for getting customer information. <br>
+  </li>
+  <li>Please report immediately to nearest branch if you receive any e-mail purported to be originated by Canara Bank to gather your <strong>UserID</strong> or <strong>Password</strong> or any other personal information. <br>
+  </li>
+  <li>Our Bank does not ask for the details of your account/PIN/password. Therefore any one pretending to be asking you for information from the bank/technical team may be fraudulent entities, so please beware. <br>
+  </li>
+  <li>You should know how to operate net transactions and if you are not familiar you may refrain from doing so. You may seek bank's guidance in this regard. <br>
+  </li>
+  <li>Bank is not responsible for online transactions going wrong. We shall also not be responsible for wrong transactions and wanton disclosure of details by you. <br>
+  </li>
+  <li>Viewing option and transactions option on the net are different. You may exercise your option diligently.<br>
+  </li>
+</ol>
+<br><br>
+</div>
+</div>
+</td>
+</tr>
+</tbody></table>
+
+</div>
+   <table width="100%" border="0" cellspacing="0" cellpadding="0" id="Table2">
+			<tbody><tr>
+				<td valign="top" height="40" bgcolor="#32aad1">&nbsp;</td>
+				<td width="1000" valign="middle" height="40" bgcolor="#32aad1">
+					<table width="97%" border="0" align="center" cellspacing="0" cellpadding="0" id="Table3">
+						<tbody><tr>
+							<td width="60%" class="textwhite">© Copyright 2011.
+								<span class="textwhitebold">Canara Bank</span>, All right 
+								reserved.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="textwhite" target="_self" href="https://canarabank.in/English/Scripts/Disclaimer.aspx">Disclaimer</a>&nbsp;<span class="footerdiv">&nbsp;|&nbsp;</span>&nbsp;<a class="textwhite" target="_self" href="https://canarabank.in/English/Scripts/TermsOfUse.aspx">Terms 
+									of Use</a>&nbsp;<span class="footerdiv">&nbsp;|&nbsp;</span>&nbsp;<a class="textwhite" target="_self" href="https://canarabank.in/English/Scripts/CustEdu.aspx">Customer 
+									Education</a></td>
+							<td width="18%" height="40" class="textwhite"><!--a target="_blank" href="https://www.entrust.net/customer/profile.cfm?domain=www.canarabank.in"><img border="0" alt="Secured By Entrust, SSL (Secure Sockets Layer). Verify" src="./index_files/SSL-certificate-seal.gif"></a--></td>
+							<td width="28%" align="right">
+								<table width="85%" border="0" cellspacing="0" cellpadding="0" id="Table4">
+									<tbody><tr>
+										<td align="left" class="header3">Useful Downloads</td>
+										<td width="25" align="right"><a target="_blank" href="http://get.adobe.com/reader/"><img width="21" height="26" border="0" alt="Download PDF Reader" src="./index_files/pdf.gif"></a></td>
+										<td width="30" align="right"><a target="_blank" href="http://get.adobe.com/flashplayer/"><img width="25" height="25" border="0" alt="Download Adobe Flash Player" src="./index_files/flash.gif"></a></td>
+										<td width="30" align="right"><a target="_blank" href="http://www.microsoft.com/download/en/default.aspx"><img width="24" height="25" border="0" alt="Download Latest IE version" src="./index_files/ie.gif"></a></td>
+										<td width="30" align="right"><a target="_blank" href="http://ftp.netscape.com/pub/netscape8/english/8.0.4/windows/win32/nsb-install-8-0-4.exe"><img width="24" height="24" border="0" alt="Download Latest Netscape Browser" src="./index_files/netscape.gif"></a></td>
+									</tr>
+								</tbody></table>
+							</td>
+						</tr>
+					</tbody></table>
+<table cellspacing="0" cellpadding="0" width="100%" border="0" id="Table5">
+  <tbody><tr>
+    <td valign="top" height="26">&nbsp;</td>
+	
+	
+	
+	<br>
+    <td width="1000" valign="middle" height="26" align="center" style="color:#ffffff;font-size:13px;font-family:Tahoma;">Best viewed with Internet Explorer Ver IE 8.0 and higher or Google Chrome, Mozilla Firefox, Safari, Opera with a resolution of 1024*768.  Please upgrade your browser. </td>
+    <td valign="middle" height="26">&nbsp;</td>
+  </tr>
+</tbody></table>
+				</td>
+				<td valign="top" height="40" bgcolor="#32aad1">&nbsp;</td>
+			</tr>
+		</tbody></table>
+    <input type="hidden" name="fldDeviceId" value="01">
+    <input type="hidden" name="fldLangId" value="">
+    <input type="hidden" name="fldRequestId" value="RRLGN01">
+    <input type="hidden" name="fldEncrKey" value="11e6lkl5ge6goccst2q31ftv53">
+    <input type="hidden" name="fldudf" value="fldlitever">
+    </form>
+    <form name="frmtoken" method="post" action="./index_files/internet.html" target="frmnew">
+    <input type="hidden" name="fldDeviceId" value="01">
+    <input type="hidden" name="fldLangId" value="eng">
+    <input type="hidden" name="fldRequestId" value="RRLGN00">
+    <input type="hidden" name="fldData">
+    <input type="hidden" name="fldudf" value="fldlitever">
+    </form>
+    <iframe name="frmnew" width="0px" height="0px" class="iframe" marginwidth="0px" marginheight="0px" scrolling="no" frameborder="1" src="./index_files/internet.html">	
+</iframe>
+
+
+
+<!--Added by Satyendra Singh Online Banking Group -->
+<div id="msghindi" style="z-index:99999999999999;visibility:hidden; font-family:tahoma; border-radius: 10px;text-align:center; border:solid rgb(200, 200, 200); background:white; color:black; font-size:12px; opacity: 0.8; filter: alpha(opacity=80);  width:200px; position:absolute; font-weight:bold;padding:10px;"></div>
+
+<div class="ui-dialog ui-widget ui-widget-content ui-corner-all" tabindex="-1" role="dialog" aria-labelledby="ui-dialog-title-bwDialog" style="display: none; position: absolute; overflow: hidden; z-index: 1000; outline: 0px;"><div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix" unselectable="on"><span class="ui-dialog-title" id="ui-dialog-title-bwDialog" unselectable="on">Low Bandwidth</span><a href="https://netbanking.canarabank.in/entry/ENULogin.jsp#" class="ui-dialog-titlebar-close ui-corner-all" role="button" unselectable="on"><span class="ui-icon ui-icon-closethick" unselectable="on">close</span></a></div><div id="bwDialog" class="ui-dialog-content ui-widget-content">
+	<p>The current bandwidth seems to be low. Redirecting to Classic View...</p>
+</div><div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix"><button type="button" class="ui-state-default ui-corner-all">OK</button></div></div><iframe class="ddiframeshim" src="./index_files/blank.html" frameborder="0"></iframe><iframe class="ddiframeshim" src="./index_files/blank.html" frameborder="0"></iframe><div class="ddsubmenustyle" style="z-index: 2000; left: 0px; top: 0px; visibility: hidden;"><ul id="app" style="visibility: hidden;">
+<li><a href="https://www.canarabank.in/English/Downloads/applicationform_retail_combined.doc">Retail Banking</a></li>
+<li><a href="http://www.canarabank.com/Upload/English/Content/canmobile/application.pdf" style="text-decoration:none;">Mobile Banking</a></li>
+<li><a href="https://www.canarabank.in/English/Downloads/applicationform_corporate.doc">Corporate Banking</a></li>
+</ul></div><span id="VBar" style="position: absolute; top: 0px; left: 0px; height: 0px; width: 2px; border-left-width: 1px; border-left-style: dotted; border-left-color: black; display: none; background: silver;"></span></body></html>

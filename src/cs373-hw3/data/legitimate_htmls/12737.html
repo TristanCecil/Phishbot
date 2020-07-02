@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>    UnitPay - Универсальное платежное решение
+</title>
+
+            <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+        <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+        <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+        <meta name="keywords" content="Электронные платежи, мобильная комерция, СМС, SMS, оплата, webmoney, монетизация онлайн игр, шлюз, подписка, биллинг, платежи, сервисы, МТ-тарификация, агрегатор, интегратор ">
+        <meta name="description" content="Мобильные платежи, электронные платежи, Webmoney, услуги SMS биллинга и мобильной коммерции от Unitpay" />
+        <meta name='yandex-verification' content='6466e0233c66acc0' />
+        <meta name="google-site-verification" content="pIfneIpoERaFfeVsWB-R0Wr4WJtw8NcnKiLmdCYcEXI" />
+                    <link rel="stylesheet" href="/css/f1bf4bd.css?v21"/>
+    
+        <link rel="stylesheet" href="/css/23cadfd.css?v13" />
+    
+    <style>
+        .prettyprint {
+            background: #fbfbfb;
+            padding: 14px 0;
+            margin: 0;
+            border: none;
+            line-height: 18px;
+        }
+        .prettyprint * {
+            font-family: "Roboto Slab", Verdana, Helvetica, sans-serif !important;
+        }
+        .prettyprint li {
+            margin-bottom: 0;
+        }
+
+        .alert-info .pln,
+        .alert-success .pln {
+            color: inherit;
+        }
+
+        ol.linenums {
+            font-size: 11px !important;
+        }
+        .well_code {
+            padding: 19px 12px;
+        }
+
+        .str, .atv {
+            color: #b35e14;
+        }
+    </style>
+        <!--[if lt IE 9]>
+    <script src='//html5shim.googlecode.com/svn/trunk/html5.js'></script>
+    <![endif]-->
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+            <script src="/js/9ccc0ce.js?v12"></script>
+    
+    <script src="https://widget.unitpay.ru/unitpay.js?1"></script>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
+    <script type="text/javascript">
+        google.load("feeds", "1");
+    </script>
+    <script type="text/javascript">
+        function parseDate(stamp)
+        {
+            var date = new Date(Date.parse(stamp));
+            var y = date.getFullYear();
+            var d = date.getDate();
+            var mon = date.getMonth();
+            var months = [
+                "января", "февраля", "марта", "апреля", "мая", "июня", "июля",
+                "августа", "сентября", "октября", "ноября", "декабря"
+            ];
+            var s = months[mon];
+            var h = date.getHours();
+            var m = date.getMinutes().toString().length == 1 ? '0' + date.getMinutes() : date.getMinutes();
+
+            return  d + " " + s + " " + y + "<span class='time'> в " + h + ":" + m + "</span>";
+        }
+        function displayfeed(result){
+            var rssoutput = '';
+            if (!result.error) {
+                var thefeeds=result.feed.entries;
+                for (var i=0; i<thefeeds.length; i++) {
+                    rssoutput+="<div class='span4'><blockquote>" +
+                            "<p>" + thefeeds[i].content.replace(/<\/?[^>]+>/gi, '').substring(0,145) + "..</p>" +
+                            "<small>"  + parseDate(thefeeds[i].publishedDate) + " <a href='" + thefeeds[i].link + "'>" + thefeeds[i].title + "</a></small> " +
+                            "</blockquote></div>";
+                }
+                rssoutput = '<div class="row-fluid">' + rssoutput + '</div>' +
+                '<ul id="4" class="pager">' +
+                        '<li><a title="Остальные записии из блога" href="http://blog.unitpay.ru"> К другим записям блога → </a>' +
+                '</li></ul>';
+                $('#lastPosts').html(rssoutput).addClass('well well-large');
+            }
+        }
+
+        jQuery(function () {
+            prettyPrint();
+            var feedurl="http://blog.unitpay.ru/feeds/posts/default";
+            var feedlimit=3;
+            var feedpointer=new google.feeds.Feed(feedurl); //Google Feed API method
+            feedpointer.setNumEntries(feedlimit); //Google Feed API method
+            feedpointer.load(displayfeed); //Google Feed API method
+
+            var i = 0;
+            $("[rel='tooltip']").tooltip({
+                html: true
+            });
+            function bigMediaAnimation() {
+                $('.big-media__payments__list').animate({top: '+=14px'}, 800, function () {
+                    if (i % 7 == 0) {
+                        $('.big-media__payments__list').css("top", "-98px");
+                        i = 0;
+                    }
+                });
+                i++;
+            }
+
+            $('.unitpay_popup_chat').click(function(){
+                window.open("https://v2.zopim.com/widget/livechat.html?key=2SnHBLA0zl6XjF7FJwYE9LrJcWLccnoi","","width=500,height=500");
+            });
+
+            var interval = setInterval(function () {
+                bigMediaAnimation();
+                clearInterval(interval);
+                setInterval(function () {
+                    bigMediaAnimation();
+                }, 3000);
+            }, 1000);
+
+            $('.paymentMethod a').mouseover(function(){
+                $(this).animate({
+                    opacity: 0.7
+                }, 200, function() {
+                });
+            }).mouseout(function(){
+                $(this).stop().css('opacity', 1);
+            });
+
+            $('a[href*="#"]').on('click', function (e) {
+                e.preventDefault();
+
+                var target = this.hash;
+                var $target = $(target);
+
+                $('html, body').stop().animate({
+                    'scrollTop': $target.offset().top
+                }, 900, 'swing', function () {
+                    window.location.hash = target;
+                });
+            });
+
+        });
+
+        var pay = function () {
+            var payment = new UnitPay({
+                sum: 1,
+                desc: "Демо платеж",
+                account: "orderId",
+                publicKey: "demo"
+            });
+            payment.success(function (params) {
+                console.log(params);
+            });
+            payment.error(function (message, params) {
+                console.log(message);
+            });
+            return false;
+        };
+
+    </script>
+    <style type="text/css">
+
+    </style>
+<!-- Yandex.Metrika counter -->
+    <script type="text/javascript">
+        (function (d, w, c) {
+            (w[c] = w[c] || []).push(function () {
+                try {
+                    w.yaCounter19082071 = new Ya.Metrika({id: 19082071,
+                        clickmap: true,
+                        trackLinks: true,
+                        accurateTrackBounce: true});
+                } catch (e) {
+                }
+            });
+
+            var n = d.getElementsByTagName("script")[0],
+                    s = d.createElement("script"),
+                    f = function () {
+                        n.parentNode.insertBefore(s, n);
+                    };
+            s.type = "text/javascript";
+            s.async = true;
+            s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js";
+
+            if (w.opera == "[object Opera]") {
+                d.addEventListener("DOMContentLoaded", f, false);
+            } else {
+                f();
+            }
+        })(document, window, "yandex_metrika_callbacks");
+    </script>
+    <noscript>
+        <div><img src="//mc.yandex.ru/watch/19082071" style="position:absolute; left:-9999px;" alt=""/></div>
+    </noscript>
+    <!-- /Yandex.Metrika counter -->
+</head>
+
+<body id="home"><div class="topbar"><div class="header"><div class="container"><a class="brand" href="https://unitpay.ru/"><img src="/images/f8ede98.png" alt="Лого" height="28"
+                     width="102"></a><div class="pull-right"><a class="btn success" href="https://unitpay.ru/signup">
+                    Добавить магазин
+                </a><a class="btn primary" href="https://unitpay.ru/partner/">
+                    Войти
+                </a></div><ul     class="nav" currentLinkClass="active"><li     class="first"><a href="/#tariffs"    >Тарифы</a></li><li    ><a href="/#widget"    >Виджет</a></li><li    ><a href="http://help.unitpay.ru"     target="_blank">Документация</a></li><li     class="last"><a href="/contact"    >Контакты</a></li></ul></div></div></div><div class="hero ac"><video class="video-background" src="" autoplay></video><div class="container"><h1>Универсальное платежное решение</h1><h2 style="font-size: 24px">Объединяем бизнес и деньги ваших клиентов</h2><div class="big-media"><div class="big-media__payments"><div class="big-media__payments__list first"></div><div class="big-media__payments__list last"></div></div></div></div></div><div class="container content"><div class="row" id="unitpay-benefits" style="margin-bottom: 70px"><div class="section"><div class="span8"><div class="row"><div class="span8"><div class="fa fa-bolt front-icon"></div><div class="front-feature"><h3>Минимизация расходов</h3><p><a href="https://unitpay.ru/webmoney">Пополняйте кошелек</a> в системе WebMoney, сокращая расходы на комиссию при оплате товаров и услуг.
+                                </p></div></div></div><div class="row"><div class="span8"><div class="fa fa-life-ring front-icon"></div><div class="front-feature"><h3>Круглосуточная техподдержка</h3><p><a class="unitpay_popup_chat" href="#">Чат</a>, горячая линия 8-800-700-7240, <a href="skype:unitpay">skype</a> и
+                                    почта <a href="">office@unitpay.ru</a> к Вашим услугам в режиме 24/7.
+                                </p></div></div></div><div class="row"><div class="span8"><div class="fa fa-bicycle front-icon"></div><div class="front-feature"><h3>Простая интеграция</h3><p>
+                                    Максимально понятная и полезная <a href="https://unitpay.ru/doc">документация</a> расскажет все о нашем API.
+                                </p></div></div></div></div></div><div class="span8"><div class="row"><div class="span8"><div class="fa fa-sitemap front-icon"></div><div class="front-feature"><h3>Универсальная форма оплаты</h3><p>
+                                Вы получаете все доступные методы оплаты «из коробки» в нашей единой
+                                <a target="_blank"
+                                   href="https://unitpay.ru/pay/demo/mc?sum=10&amp;account=demo&amp;desc=DEMO+%D0%BF%D0%BB%D0%B0%D1%82%D0%B5%D0%B6+Unitpay.ru">платежной форме</a>.
+                            </p></div></div></div><div class="row"><div class="span8"><div class="fa fa-umbrella front-icon"></div><div class="front-feature"><h3>Компенсация фрода</h3><p>
+                                Компенсируем часть фрода для добросовестных партнеров в ущерб собственному доходу.
+                            </p></div></div></div><div class="row"><div class="span8"><div class="fa fa-paper-plane-o front-icon"></div><div class="front-feature"><h3>Быстрое подключение</h3><p>
+                                Процедура подключения проходит в минимальные сроки, без излишних «бюрократических проволочек».
+                            </p></div></div></div></div></div></div><div id="widget"></div><hr style="margin: 0;"><div class="container content"><div class="row widget-promo"><div class="span8"><section id="widget-preview" class="widget-preview clearfix"><div onclick="return pay();" data-path-hover="m 180,0 -180,0 L 0,0 180 0,0 z"><figure><img src="/images/60b714f.png"><svg viewBox="0 0 175 420" preserveAspectRatio="none"><path d="M180,159.96191307639953C180,159.96191307639953,0,217.9443004478417,0,217.9443004478417C0,217.9443004478417,0,0,0,0C0,0,180,0,180,0C180,0,180,159.96191307639953,180,159.96191307639953"></path><desc>Created with Snap</desc><defs></defs></svg><figcaption><h3>Виджет</h3><p class="muted">Оплата в два клика</p></figcaption></figure></div></section><script>
+                    (function() {
+                        function init() {
+                            var speed = 250,
+                                easing = mina.easeinout;
+
+                            [].slice.call ( document.querySelectorAll( '#widget-preview > div' ) ).forEach( function( el ) {
+                                var s = Snap( el.querySelector( 'svg' ) ), path = s.select( 'path' ),
+                                        pathConfig = {
+                                            from : path.attr( 'd' ),
+                                            to : el.getAttribute( 'data-path-hover' )
+                                        };
+
+                                el.addEventListener( 'mouseenter', function() {
+                                    path.animate( { 'path' : pathConfig.to }, speed, easing );
+                                } );
+
+                                el.addEventListener( 'mouseleave', function() {
+                                    path.animate( { 'path' : pathConfig.from }, speed, easing );
+                                } );
+                            } );
+                        }
+                        init();
+                    })();
+                </script></div><div class="span8"><pre class="prettyprint linenums" style="margin-bottom: 0;">
+
+    &lt;script src="https://widget.unitpay.ru/unitpay.js"&gt;&lt;/script&gt;
+
+    &lt;script&gt;
+        var payment = new UnitPay({
+            publicKey: "demo",
+            sum: 1,
+            account: "demo",
+            desc: "Описание платежа"
+        });
+        payment.success(function (params) {
+            console.log('Успешный платеж');
+        });
+        payment.error(function (message, params) {
+            console.log(message);
+        });
+    &lt;/script&gt;
+
+</pre></div></div></div><div class="well paymentMethods-well" style="margin-bottom: 56px"><div id="tariffs"></div><div class="container"><h3 style="margin-bottom: 0">Наша комиссия не более 1%</h3><div class="row-fluid"><p class="lead muted" style="">Подключаем в течение одного рабочего дня</p><div class="paymentMethods"><div class="first paymentMethod"><a class="sprite-yandex" href="https://unitpay.ru/pay/demo/yandex?sum=10&account=demo&desc=DEMO+%D0%BF%D0%BB%D0%B0%D1%82%D0%B5%D0%B6+Unitpay.ru&operator=mts&hideMenu=true" target="_blank"></a></div><div class="paymentMethod"><a href="https://unitpay.ru/pay/demo/webmoney?sum=10&account=demo&desc=DEMO+%D0%BF%D0%BB%D0%B0%D1%82%D0%B5%D0%B6+Unitpay.ru&operator=mts&hideMenu=true" target="_blank" class="sprite-webmoney"></a></div><div class="paymentMethod" style="position: relative; left: 20px;"><a href="https://unitpay.ru/pay/demo/qiwi?sum=10&account=demo&desc=DEMO+%D0%BF%D0%BB%D0%B0%D1%82%D0%B5%D0%B6+Unitpay.ru&operator=mts&hideMenu=true" target="_blank" class="sprite-qiwi"></a></div><div class="paymentMethod"  ><a href="https://unitpay.ru/pay/demo/card?sum=10&account=demo&desc=DEMO+%D0%BF%D0%BB%D0%B0%D1%82%D0%B5%D0%B6+Unitpay.ru&operator=mts&hideMenu=true" target="_blank" class="sprite-mastercard"></a></div><div class="paymentMethod"><a href="https://unitpay.ru/pay/demo/paypal?sum=10&account=demo&desc=DEMO+%D0%BF%D0%BB%D0%B0%D1%82%D0%B5%D0%B6+Unitpay.ru&operator=mts&hideMenu=true" target="_blank" class="sprite-paypal"></a></div><div class="first paymentMethod"><a href="https://unitpay.ru/pay/demo/mc?sum=10&operator=mts&account=demo&desc=DEMO+%D0%BF%D0%BB%D0%B0%D1%82%D0%B5%D0%B6+Unitpay.ru&operator=mts&hideMenu=true" target="_blank" class="sprite-mts"></a></div><div class="paymentMethod"><a href="https://unitpay.ru/pay/demo/mc?sum=10&operator=tele2&account=demo&desc=DEMO+%D0%BF%D0%BB%D0%B0%D1%82%D0%B5%D0%B6+Unitpay.ru&hideMenu=true" target="_blank" class="sprite-tele2"></a></div><div class="paymentMethod" style="position: relative; left: 20px;"><a href="https://unitpay.ru/pay/demo/mc?sum=10&operator=mf&account=demo&desc=DEMO+%D0%BF%D0%BB%D0%B0%D1%82%D0%B5%D0%B6+Unitpay.ru&hideMenu=true" target="_blank" class="sprite-megafon"></a></div><div class="paymentMethod"><a href="https://unitpay.ru/pay/demo/mc?sum=10&operator=beeline&account=demo&desc=DEMO+%D0%BF%D0%BB%D0%B0%D1%82%D0%B5%D0%B6+Unitpay.ru&hideMenu=true" target="_blank" class="sprite-beeline"></a></div><div class="paymentMethod"><a href="https://unitpay.ru/pay/demo/alfaClick?sum=10&account=demo&desc=DEMO+%D0%BF%D0%BB%D0%B0%D1%82%D0%B5%D0%B6+Unitpay.ru&operator=mts&hideMenu=true" target="_blank" class="sprite-alfaBank"></a></div><div class="paymentMethod first"><a href="https://unitpay.ru/pay/demo/cash?sum=10&operator=euroset&account=demo&desc=DEMO+%D0%BF%D0%BB%D0%B0%D1%82%D0%B5%D0%B6+Unitpay.ru&hideMenu=true" target="_blank" class="sprite-euroset"></a></div><div class="paymentMethod"><a href="https://unitpay.ru/pay/demo/cash?sum=10&operator=svyaznoy&account=demo&desc=DEMO+%D0%BF%D0%BB%D0%B0%D1%82%D0%B5%D0%B6+Unitpay.ru&hideMenu=true" target="_blank" class="sprite-svyaznoy"></a></div><div class="paymentMethod" style="position: relative; left: 20px;"><a href="https://unitpay.ru/pay/demo/card?sum=10&account=demo&desc=DEMO+%D0%BF%D0%BB%D0%B0%D1%82%D0%B5%D0%B6+Unitpay.ru&operator=mts&hideMenu=true" target="_blank" class="sprite-visa"></a></div><div class="paymentMethod"><a href="https://unitpay.ru/pay/demo/sms?sum=10&account=demo&desc=DEMO+%D0%BF%D0%BB%D0%B0%D1%82%D0%B5%D0%B6+Unitpay.ru&operator=mts&hideMenu=true" target="_blank" class="sprite-sms"></a></div><div class="paymentMethod"><a href="https://unitpay.ru/pay/demo/liqpay?sum=10&account=demo&desc=DEMO+%D0%BF%D0%BB%D0%B0%D1%82%D0%B5%D0%B6+Unitpay.ru&operator=mts&hideMenu=true" target="_blank" class="sprite-liqpay"></a></div></div></div></div></div><div class="container content"><div class="ac" style="margin-bottom: 34px;"><h3>
+                Принимайте платежи от ваших клиентов
+                <div style="margin-bottom: 5px"></div><a class="btn large success" href="https://unitpay.ru/signup" style="width:30%"
+                   title="Регистрация нового партнера"><strong>Быстрая регистрация → </strong><small> 2 минуты Вашего времени</small></a>
+                &nbsp;
+                <a style="width: 300px" class="btn btn-primary large primary" target="_blank"
+                   href="https://unitpay.ru/pay/demo?sum=10&amp;account=demo&amp;desc=DEMO+%D0%BF%D0%BB%D0%B0%D1%82%D0%B5%D0%B6+Unitpay.ru&amp;sign=6e44a7a6e6f28105ac54eabee47c1860"><strong>Пробный платеж →</strong><br><small style="color:#fff">Универсальная форма оплаты</small></a></h3></div><div class="sqs-block-content"><div id="lastPosts"></div></div></div><footer id="footer"><div class="container"><div id="footer-blocks" data-updated-on="1356038527530" data-type="block-field"
+             class="sqs-layout sqs-grid-12 columns-12 null"><div class="row sqs-row" style="margin-bottom: 0"><div class="col sqs-col-3 span-3"><div id="block-4c8b31c59a2c4494c3b7" data-block-type="44"
+                         class="sqs-block markdown-block"><div class="sqs-block-content"><h4 id="navigate">Навигация</h4><ul class="unstyled"><li><a href="https://unitpay.ru/partner/signin">Личный кабинет</a></li><li><a href="https://unitpay.ru/signup">Добавить магазин</a></li><li><a href="http://help.unitpay.ru" target="_blank">Документация</a></li></ul><h4 id="integrate">Unitpay</h4><ul class="unstyled"><li><a href="https://unitpay.ru/wallet">Универсальный кошелек</a></li></ul></div></div></div><div class="col sqs-col-3 span-3"><div id="block-4e09efdd0696f0a54536" data-block-type="44"
+                         class="sqs-block markdown-block"><div class="sqs-block-content"><h4 id="more">Дополнительно</h4><ul class="unstyled"><li><a href="https://unitpay.ru/offer">Публичная оферта</a></li><li><a href="https://unitpay.ru/conditions">Требования платежных систем</a></li><li><a href="https://unitpay.ru/webmoney">Пополнение кошелька WebMoney</a></li></ul><img class="loading-img" src="/images/77d1a72.png" alt="Загрузка"></div></div></div><div class="col sqs-col-3 span-2"><div id="block-4852e55b8a7f79411af3" data-block-type="44"
+                         class="sqs-block markdown-block"><div class="sqs-block-content"><h4 id="company">Предложения</h4><ul class="unstyled"><li><a href="https://unitpay.ru/business">Для бизнеса</a></li><li><a href="https://unitpay.ru/business">Для онлайн игр</a></li><li><a href="https://unitpay.ru/business">Для сервисов объявлени</a></li><!--
+                                <li><a href="#">Для онлайн игр</a></li><li><a href="#">Для сервисов объявлений</a></li>
+                                --></ul><img src="/images/a51daf2.png"><img style="margin-left:5px;" src="/images/d2a3c55.png"></div></div></div><div class="col sqs-col-2 span-4"><div class="sqs-block-content"><h4 id="getintouch">На связи</h4><ul class="unstyled contact"><li style="color: #ffffff">8-800-700-7240</li><li><i class="fa fa-envelope"></i><a href="mailto:office@unitpay.ru">office@unitpay.ru</a></li><li><i class="fa fa-skype"></i><a href="skype:unitpay">unitpay</a></li><li><i class="fa fa-twitter"></i><a href="https://twitter.com/unitpay" target="_blank">@unitpay</a></li><li><b>H</b><a href="http://habrahabr.ru/users/unitpay/" target="_blank">unitpay</a></li><li><i class="fa fa-vk"></i><a href="http://vk.com/clubunitpay" target="_blank">clubunitpay</a></li></ul></div></div></div></div></div><div id="footer-floor"><div class="container"><div id="footer-floor-blocks" data-updated-on="1353966823379" data-type="block-field"
+                 class="sqs-layout sqs-grid-12 columns-12 null"><div class="row sqs-row"><div class="col sqs-col-6 span-6"><div id="block-94ebe6ef6ecaa7b7f269" data-block-type="44"
+                             class="sqs-block markdown-block"><div class="sqs-block-content"><p>
+                                    &copy; 2013 - 2016 <a href="http://www.unitpay.ru">UnitMobile, LLC.</a></p></div></div></div><div class="col sqs-col-6 span-6"></div></div></div></div></div></footer></body>
+</html>

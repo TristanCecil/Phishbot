@@ -1,0 +1,466 @@
+
+
+
+<!DOCTYPE html>
+<html lang="es" xml:lang="es" class="app no-js">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta charset="utf-8">
+
+    <title>Desc&uacute;brelo</title>
+    <meta name="description" content="Desc&uacute;brelo es un sitio de entretenimiento donde podr&aacute;s encontrar tests, quizzes y otro juegos divertidos para ti y tus amigos.">
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Desc&uacute;brelo">
+    <meta property="og:description" content="Desc&uacute;brelo es un sitio de entretenimiento donde podr&aacute;s encontrar tests, quizzes y otro juegos divertidos para ti y tus amigos.">
+
+    <meta property="og:image" content="http://static.descubrelo.la/assets/img/share_home.png">
+    <meta property="og:url" content="http://descubrelo.la">
+    <meta property="og:site_name" content="descubrelo.la">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="800">
+    <meta property="og:image:height" content="420">
+
+    <meta property="og:updated_time" content="2016-05-24T22:58:58-05:00">
+    <meta name="publish-date" content="2016-05-24">
+
+    <meta name="author" content="Descúbrelo">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@descubreloin">
+    <meta name="twitter:title" content="Desc&uacute;brelo">
+    <meta name="twitter:description" content="">
+    <meta name="twitter:image" content="http://static.descubrelo.la/assets/img/share_home.png">
+    <meta name="twitter:domain" content="descubrelo.la">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<meta name="robots" content="index, follow">
+
+<meta property="fb:app_id" content="718269241598623">
+<meta property="fb:admins" content="100006113209443">
+<meta property="fb:admins" content="100000328450141">
+
+<link rel="dns-prefetch" href="//static.descubrelo.la">
+<link rel="dns-prefetch" href="//connect.facebook.net">
+<link rel="dns-prefetch" href="//pagead2.googlesyndication.com">
+<link rel="dns-prefetch" href="//maxcdn.bootstrapcdn.com">
+<link rel="dns-prefetch" href="//ajax.googleapis.com">
+
+<link href="http://static.descubrelo.la/assets/img/favicon.ico" rel="shortcut icon">
+
+    <link rel="stylesheet" href="http://static.descubrelo.la/assets/css/all-9.10.min.css">
+
+<script type="text/javascript">
+    var init_font = function () {
+        var css = "* { font-family: 'Open Sans' !important; }",
+                head = document.head || document.getElementsByTagName('head')[0],
+                style = document.createElement('style');
+
+        style.type = 'text/css';
+        if (style.styleSheet)
+            style.styleSheet.cssText = css;
+        else
+            style.appendChild(document.createTextNode(css));
+
+        head.appendChild(style);
+    };
+</script>
+<link href="//fonts.googleapis.com/css?family=Open+Sans:400" rel="stylesheet" onload="init_font();">
+
+<script type="text/javascript">
+    var descubrelo = {
+        lang: 'es',
+        csrf_token: '',
+        root_url: 'http://descubrelo.la',
+        base_url: 'http://descubrelo.la',
+        login_url: 'http://descubrelo.la/registro/facebook/solicitar',
+        photo_url: 'http://descubrelo.la/registro/facebook/foto/solicitar',
+        link_url: 'http://descubrelo.la/registro/facebook/enlace/solicitar',
+        current_url: 'http://descubrelo.la',
+        cookie_domain: '.descubrelo.la',
+        url_after_share: 'http://descubrelo.la'
+    };
+
+    
+    var fb_loaded = false;
+    var fb_request_login = false;
+    var fb_permissions = '';
+    var after_login = false;
+    var after_login_init = null;
+    var current_user = null;
+    var current_test = null;
+    var current_quiz = null;
+    var analytics = {
+        page: '/',
+        title: document.title,
+        from_ads: false,
+        has_logged_in: false,
+        has_registered: false
+    };
+</script>
+
+
+
+
+</head>
+<body>
+<div id="fb-root"></div>
+<div class="hide"><div id="_wau9d3"></div></div>
+
+<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+	<div class="container">
+		<div class="navbar-header">
+			<a href="http://descubrelo.la?ref=logo" class="navbar-brand">
+				ESCÚBRELO</a>
+
+			<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+		</div>
+
+		<div class="navbar-collapse collapse" id="navbar-main">
+			<ul class="nav navbar-nav">
+				
+				<li><a href="http://descubrelo.la/tests">Todos los Tests</a></li>
+				<li><a href="http://descubrelo.la/quizzes">Todos los Quizzes</a></li>
+			</ul>
+
+			<ul class="nav navbar-nav navbar-right">
+									<li><a href="http://descubrelo.la/iniciar-sesion" id="btn-login">Iniciar sesi&oacute;n</a></li>
+					<li><a href="http://descubrelo.la/registro" id="btn-register">Registrarse</a></li>
+							</ul>
+		</div>
+	</div>
+</div>
+
+
+	<div id="modal-login" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog modal-xs pop-center-screen">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close close-lang" data-dismiss="modal">
+						<span aria-hidden="true">&times;</span>
+						<span class="sr-only">Cerrar</span></button>
+					<h4 class="modal-title">Iniciar sesi&oacute;n</h4>
+				</div>
+				<div class="modal-body">
+					<div id="login-warning-message" style="display: none;">
+						<div class="alert alert-danger">
+							Tienes que iniciar sesi&oacute;n para continuar.
+						</div>
+					</div>
+
+					<p class="text-gris">Click aqu&iacute; para iniciar sesi&oacute;n con Facebook, es m&aacute;s r&aacute;pido!</p>
+					<p><a href="javascript:" class="form-login-facebook btn btn-info btn-facebook btn-lg">
+							<span>Iniciar sesi&oacute;n</span></a></p>
+					<p class="form-login-social-loading" style="display: none;">
+						<img width="20" src="http://static.descubrelo.la/assets/img/loading.gif">
+						Cargando...
+					</p>
+
+					<hr>
+
+					<p class="text-gris">&iquest;No tienes cuenta en Facebook? Entonces crea una cuenta con tu correo electr&oacute;nico aqu&iacute; en Desc&uacute;brelo.</p>
+					<p><a class="btn btn-default" href="http://descubrelo.la/registro">
+							Crear una cuenta</a></p>
+					<p>
+						<br>&iquest;Ya tienes cuenta en Desc&uacute;brelo?
+						<a href="http://descubrelo.la/iniciar-sesion">Iniciar sesi&oacute;n</a>.
+					</p>
+
+					<div class="clearfix"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="modal-register" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog modal-xs pop-center-screen">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close close-lang" data-dismiss="modal">
+						<span aria-hidden="true">&times;</span>
+						<span class="sr-only">Cerrar</span>
+					</button>
+					<h4 class="modal-title">Registrarse</h4>
+				</div>
+				<div class="modal-body">
+					<p class="text-gris">Click aqu&iacute; para registrarte con Facebook, es m&aacute;s r&aacute;pido!</p>
+
+					<p><a href="javascript:" class="form-login-facebook btn btn-info btn-facebook btn-lg">
+							<span>Iniciar sesi&oacute;n</span></a></p>
+					<p class="form-login-social-loading" style="display: none;">
+						<img width="20" src="http://static.descubrelo.la/assets/img/loading.gif">
+						Cargando...
+					</p>
+					<hr>
+
+					<p class="text-gris">&iquest;No tienes cuenta en Facebook? Entonces crea una cuenta con tu correo electr&oacute;nico aqu&iacute; en Desc&uacute;brelo.</p>
+					<p><a class="btn btn-default" href="http://descubrelo.la/registro">
+							Crear una cuenta</a></p>
+					<p>
+						<br>&iquest;Ya tienes cuenta en Desc&uacute;brelo?
+						<a href="http://descubrelo.la/iniciar-sesion">Iniciar sesi&oacute;n</a>.
+					</p>
+
+					<div class="clearfix"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+<div class="container" id="main">
+    
+    
+    <div class="row">
+        
+            <div class="col-md-6 col-lg-4 col-sm-12">
+                                <div class="cs1 panel panel-beso ">
+                    <div class="panel-heading">
+                        <h3 class="tac panel-title">
+                            &iquest;Qui&eacute;n debe darte un beso?
+                        </h3>
+                    </div>
+
+                                        <div class="panel-body cs3" style="background: url('http://static.descubrelo.la/assets/img/es/test/beso/background.png') center center;">
+                        <h4 class="text-info text-center cs6">
+                            Descubre qui&eacute;n de tus amigos te debe un beso.
+                        </h4>
+
+                        <div class="text-center">
+                            <img class="cs4" src="http://static.descubrelo.la/assets/img/es/test/beso/image.png"/>
+                        </div>
+
+                        <div class="text-center">
+                                                            <a href="http://descubrelo.la/test/beso"
+                                   class="cs5 btn btn-beso">
+                                    Ir al Test
+                                </a>
+                                                    </div>
+                    </div>
+                </div>
+            </div>
+
+        
+            <div class="col-md-6 col-lg-4 col-sm-12">
+                                <div class="cs1 panel panel-primary ">
+                    <div class="panel-heading">
+                        <h3 class="tac panel-title">
+                            &iquest;Cu&aacute;l es la frase t&iacute;pica de mam&aacute;?
+                        </h3>
+                    </div>
+
+                                        <div class="panel-body cs3" style="background: url('http://static.descubrelo.la/assets/img/es/test/mama/background.png') center center;">
+                        <h4 class="text-info text-center cs6">
+                            Qu&eacute; es lo que m&aacute;s suele decirte tu mam&aacute;, desc&uacute;brelo.
+                        </h4>
+
+                        <div class="text-center">
+                            <img class="cs4" src="http://static.descubrelo.la/assets/img/es/test/mama/image.png"/>
+                        </div>
+
+                        <div class="text-center">
+                                                            <a href="http://descubrelo.la/test/mama"
+                                   class="cs5 btn btn-primary">
+                                    Ir al Test
+                                </a>
+                                                    </div>
+                    </div>
+                </div>
+            </div>
+
+        
+            <div class="col-md-6 col-lg-4 col-sm-12">
+                                <div class="cs1 panel panel-danger ">
+                    <div class="panel-heading">
+                        <h3 class="tac panel-title">
+                            &iquest;Cu&aacute;ndo te vas a casar?
+                        </h3>
+                    </div>
+
+                                        <div class="panel-body cs3" style="background: url('http://static.descubrelo.la/assets/img/es/test/casar/background.png') center center;">
+                        <h4 class="text-info text-center cs6">
+                            &iquest;Quieres saber cuando te casar&aacute;s? Desc&uacute;brelo aqu&iacute;.
+                        </h4>
+
+                        <div class="text-center">
+                            <img class="cs4" src="http://static.descubrelo.la/assets/img/es/test/casar/image.png"/>
+                        </div>
+
+                        <div class="text-center">
+                                                            <a href="http://descubrelo.la/test/casar"
+                                   class="cs5 btn btn-danger">
+                                    Ir al Test
+                                </a>
+                                                    </div>
+                    </div>
+                </div>
+            </div>
+
+        
+            <div class="col-md-6 col-lg-4 col-sm-12">
+                                <div class="cs1 panel panel-sexy ">
+                    <div class="panel-heading">
+                        <h3 class="tac panel-title">
+                            &iquest;C&oacute;mo eres seg&uacute;n tu signo?
+                        </h3>
+                    </div>
+
+                                        <div class="panel-body cs3" style="background: url('http://static.descubrelo.la/assets/img/es/test/signo/background.png') center center;">
+                        <h4 class="text-info text-center cs6">
+                            Descubre qu&eacute; dice tu signo del zodiaco sobre ti.
+                        </h4>
+
+                        <div class="text-center">
+                            <img class="cs4" src="http://static.descubrelo.la/assets/img/es/test/signo/image.png"/>
+                        </div>
+
+                        <div class="text-center">
+                                                            <a href="http://descubrelo.la/test/signo"
+                                   class="cs5 btn btn-sexy">
+                                    Ir al Test
+                                </a>
+                                                    </div>
+                    </div>
+                </div>
+            </div>
+
+        
+            <div class="col-md-6 col-lg-4 col-sm-12">
+                                <div class="cs1 panel panel-info ">
+                    <div class="panel-heading">
+                        <h3 class="tac panel-title">
+                            &iquest;Qu&eacute; fuiste en tu vida pasada?
+                        </h3>
+                    </div>
+
+                                        <div class="panel-body cs3" style="background: url('http://static.descubrelo.la/assets/img/es/test/vidapasada/background.png') center center;">
+                        <h4 class="text-info text-center cs6">
+                            Descubre c&oacute;mo fue tu vida en el pasado.
+                        </h4>
+
+                        <div class="text-center">
+                            <img class="cs4" src="http://static.descubrelo.la/assets/img/es/test/vidapasada/image.png"/>
+                        </div>
+
+                        <div class="text-center">
+                                                            <a href="http://descubrelo.la/test/vidapasada"
+                                   class="cs5 btn btn-info">
+                                    Ir al Test
+                                </a>
+                                                    </div>
+                    </div>
+                </div>
+            </div>
+
+        
+            <div class="col-md-6 col-lg-4 col-sm-12">
+                                <div class="cs1 panel panel-success ">
+                    <div class="panel-heading">
+                        <h3 class="tac panel-title">
+                            &iquest;Cu&aacute;l es tu pecado?
+                        </h3>
+                    </div>
+
+                                        <div class="panel-body cs3" style="background: url('http://static.descubrelo.la/assets/img/es/test/pecado/background.png') center center;">
+                        <h4 class="text-info text-center cs6">
+                            Descubre por qu&eacute; no te dejar&aacute;n entrar al cielo aqu&iacute;.
+                        </h4>
+
+                        <div class="text-center">
+                            <img class="cs4" src="http://static.descubrelo.la/assets/img/es/test/pecado/image.png"/>
+                        </div>
+
+                        <div class="text-center">
+                                                            <a href="http://descubrelo.la/test/pecado"
+                                   class="cs5 btn btn-success">
+                                    Ir al Test
+                                </a>
+                                                    </div>
+                    </div>
+                </div>
+            </div>
+
+            </div>
+
+
+            <div class="row">
+            <div class="col-md-6 col-lg-4 col-sm-12 col-md-push-6 col-lg-push-8">
+                <a href="http://descubrelo.la?page=2" class="btn btn-primary cs7 cs12" style="margin-top: 0;">
+                    Siguiente
+                </a>
+            </div>
+        </div>
+    
+
+    <div style="text-align: left; margin-bottom: .75em; max-width: 970px;" class="clearfix">
+        <div style="padding-bottom: 0; font-size: 12px; color: #555; text-align: center;">
+            Publicidad
+        </div>
+
+                            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-8498294343360822"
+                 data-ad-slot="6433427797"
+                 data-ad-format="horizontal"></ins>
+            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+            </div>
+
+</div>
+
+<div class="footer text-center container">
+    <div class="col-md-3">
+        <ul class="cs11">
+            <li><a href="http://descubrelo.la/terminos">T&eacute;rminos de uso</a></li>
+            <li><a href="http://descubrelo.la/privacidad">Pol&iacute;tica de privacidad</a></li>
+            <li><a href="mailto:contacto@descubrelo.la">Contacto</a></li>
+
+        </ul>
+    </div>
+    <div class="col-md-3">
+        <ul class="cs11">
+
+            <li><a href="https://www.facebook.com/descubrelo.in" target="_blank">S&iacute;guenos en Facebook</a></li>
+            <li><a href="https://www.instagram.com/descubreloin" target="_blank">S&iacute;guenos en Instagram</a></li>
+            <li><a href="https://twitter.com/descubreloin" target="_blank">S&iacute;guenos en Twitter</a></li>
+
+        </ul>
+    </div>
+    <div class="col-md-6">
+        <ul class="cs11">
+            <li>Descúbrelo © 2016.</li>
+            <li>Los resultados mostrados en todos los juegos son ficticios; por lo tanto, no deben tomarse en ning&uacute;n caso como reales.</li>
+        </ul>
+    </div>
+</div>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="http://static.descubrelo.la/assets/js/all-9.10.min.js"></script>
+
+<script type="text/javascript">
+            jQuery(function ($) {
+            $.ajaxSetup({cache: true});
+            $.getScript('http://connect.facebook.net/es_LA/sdk.js', function () {
+                if (typeof FB !== "undefined")
+                    FB.init({
+                        appId: '718269241598623',
+                        cookie: true,
+                        xfbml: true,
+                        version: 'v2.5'
+                    });
+
+                fb_init_callback();
+            });
+
+            init_site();
+        });
+    </script>
+
+</body>
+</html>

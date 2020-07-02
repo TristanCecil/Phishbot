@@ -1,0 +1,1086 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+
+    <title>CocoaChina_让移动开发更简单</title>
+    <meta name="keywords" content="iPhone开发,iOS开发,iPad开发,Mac开发,苹果开发中文站,iPhone开发中文站,CocoaChina首页, Mac OS开发, Cocoa介绍,移动互联网,触控科技,Cocoa,Apple,developer,iOS,iPhone,iPad,iMac,iPod Touch,iPhone5,iPhone4S,iPad3,招聘,iPhone程序员,Objective-c,iPhone应用外包,ios6,ios面试,Cocos2d-x,cocos2d,iTunes,App Store,苹果开发" />
+    <meta name="description" content="CocoaChina前身是全球成立最早规模最大的苹果开发中文站，现致力为所有移动开发者提供资讯服务、问答服务、代码下载、工具库及人才招聘服务" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="baidu-tc-cerfication" content="3300a939a1098c27e94457b75a0bb8c1" />
+    <script type='text/javascript'>
+        function gotoMobilePage() {
+            var sUserAgent = navigator.userAgent.toLowerCase();
+            var agent_iphone = /iphone/i;
+            var agent_android = /android/i;
+            //var agent_ipad = /ipad/i;
+            var agent_ipod = /ipod/i;
+            var agent_wphone = /windows phone/i;
+            if(agent_iphone.test(sUserAgent) || agent_android.test(sUserAgent) || agent_ipod.test(sUserAgent) || agent_wphone.test(sUserAgent)){
+                var re = /\/\w+\/\d+\/(\d+)\.html/, 
+                    result = re.exec(window.location.pathname);
+                if ( result )
+                {
+                    window.location.href = "http://www.cocoachina.com/cms/wap.php?action=article&id=" + result[1];
+                } else {
+                    window.location.href = "http://m.cocoachina.com/";
+                }
+            }
+        }
+        gotoMobilePage(); 
+    </script>
+    <link rel="stylesheet" href="http://cdn.cocimg.com/assets/css/global.css?v=20150818" media="all">
+    <link rel="stylesheet" href="http://cdn.cocimg.com/assets/css/index.css?v=20151015" media="all">
+    <link href="http://cdn.cocimg.com/assets/css/module.css?v=20150906" rel="stylesheet">
+    <link href="http://cdn.cocimg.com/assets/css/style.css?v=20150818" rel="stylesheet">
+    <link href="http://cdn.cocimg.com/assets/css/navheader.css?v=20160301" rel="stylesheet" />
+    <script src="http://cdn.cocimg.com/assets/js/jquery.min.js?v=20150818" type="text/javascript"></script>
+    <script type="text/javascript" src="http://cdn.cocimg.com/assets/js/navbar.js?v=20151013"></script>
+    <script type='text/javascript' src='http://js.adm.cnzz.net/js/abase.js'></script>
+    <script type="text/javascript" src="http://s.csbew.com/k.js"></script>
+    
+</head>
+<body>
+
+    <div class="nav-header">
+            <div class="nav-header-top">
+                <div class="nav-logo nav-fl"><a href="/"><img src="http://cdn.cocimg.com/assets/images/logo.png?v=201510272" /></a></div>
+                <div class="nav-list nav-fl">
+                    <ul>
+                        <li><a href="/news/">资讯</a></li>
+                        <li><a href="/bbs/">论坛</a></li>
+                        <li><a target="_blank" href="http://code.cocoachina.com/" title="CODE">代码</a></li>
+                        <li><a href="http://tools.cocoachina.com" title="工具" target='_blank'>工具</a></li>
+                        <li><a target="_blank" href="http://job.cocoachina.com/" title="JOB">招聘</a></li>
+                        <li><a target="_blank" href="http://cvp.cocos.com/" title="CVP">CVP</a></li>
+                        <li><a target="_blank" href="http://waikuai.cocoachina.com/" title="waikuai">外快</a></li>
+                        <li><a target="_blank" href="http://blog.cocoachina.com/" title="blog">博客</a><span class="new-item-flag">new</span></li>
+                    </ul>
+                </div>
+                <div class="nav-search nav-fl">
+                    <div class="nav-search-flag" style="display:block"><img src="http://cdn.cocimg.com/assets/img/search-icon.png?v=20150825" /></div>
+                    <div class="nav-search-form" style="display:none">
+                        <form action="/cms/plus/search.php" name="formsearch" method="post" target="_blank">
+                            <input type="hidden" name="kwtype" value="0" />
+                            <input type="hidden" name="searchtype" value="titlekeyword" />
+                            <input name="keyword" type="text" placeholder="站内搜索" />
+                            <input type="button" />
+                        </form>
+                    </div>
+                </div>
+                <div class="nav-user nav-fr">
+                    <!-- #region 未登录时显示此区域 -->
+                    <div class="nav-user-login" style="display:block">
+                        <a href="/bbs/login.php">登录</a>|
+                        <a href="/bbs/register.php">注册</a>
+                    </div>
+                    <!-- #endregion -->
+                    <!-- #region 已登录时显示此区域 -->
+                    <div class="nav-user-name" style="display:none">
+                        <div><alert></alert><img src="/assets/img/user.png" />Guest</div>
+                        <ul>
+                            <li><a href="#"><img src="/assets/img/i-man.png" />我的主页</a></li>
+                            <li><alert></alert><a href="#"><img src="/assets/img/i-mail.png" />我的消息</a></li>
+                            <li><a href="#"><img src="/assets/img/i-setting.png" />账户设置</a></li>
+                            <li><a href="index-offline.html"><img src="/assets/img/i-logout.png" />退出</a></li>
+                        </ul>
+                    </div>
+                    <!-- #endregion -->
+                </div>
+                <div class="nav-clear"></div>
+            </div>
+        <div class="nav-header-bottom">
+            <ul>
+                <li><a id="ios" href="/ios/" title="ios">iOS开发</a></li>
+                <li><a id="swift" href="/swift/" title="swift">Swift</a></li>
+                <li><a id="app_store" href="/appstore/" title="appstore">App Store研究</a></li>
+                <li><a id="design" href="/design/" title="design">产品设计</a></li>
+                <li><a id="review" href="/review/" title="review">应用</a></li>
+                <li><a id="review" href="/vr/" title="review">VR</a></li>
+                <li><a id="game" href="/game/" title="game">游戏开发</a></li>
+                <li><a id="apple" href="/apple/" title="apple">苹果相关</a></li>
+                <!-- <li><a id="cocos" href="/cocos/" title="cocos">Cocos引擎</a></li>-->
+                <!--<li><a id="webapp" href="/webapp/" title="HTML5">HTML5</a></li>-->
+                <li><a id="android" href="/android/" title="android">安卓相关</a></li>
+                <li><a id="market" href="/market/" title="market">营销推广</a></li>
+                <li><a id="industry" href="/industry/" title="industry">业界动态</a></li>
+                <li><a id="programmer" href="/programmer/" title="programmer">程序人生</a></li>
+            </ul>
+        </div>
+    </div>
+
+<div class="middle">
+    <div class="m-ad2">
+        <div class="ad2-l">
+            <script type="text/javascript">
+                _acK({aid:115823,format:0,mode:1,gid:1,serverbaseurl:"afp.csbew.com/"});
+            </script>
+        </div>
+        <div class="ad2-r">
+            <script type="text/javascript">
+                _acK({aid:115825,format:0,mode:1,gid:1,serverbaseurl:"afp.csbew.com/"});
+            </script>
+        </div>
+    </div>
+    <div class="m-banner">
+        <div class="m-role">
+            <div class="role-tab">
+                <ul class="role-main" id="slide_list">
+                    <li class="current">
+                        <a href="http://www.cocoachina.com/ios/20160520/16364.html" title="Clang Attributes 黑魔法小记" target="_blank">
+                            <img src="http://cc.cocimg.com/api/uploads/160520/4bcf5a94cf94976ba4490f71381a5dc6.jpg" alt="Clang Attributes 黑魔法小记" title="Clang Attributes 黑魔法小记" />
+                            <span>Clang Attributes 黑魔法小记<i>本文会介绍几个有意思的 “黑魔法” Attribute，说不定在某些场景下会起到意想不到的效果哦~</i></span>
+                        </a>
+                    </li>
+ <li>
+                        <a href="http://www.cocoachina.com/programmer/20160520/16365.html" title="程序员这样优化简历 一投制胜" target="_blank">
+                            <img src="http://cc.cocimg.com/api/uploads/160519/477ee7f8e39615ac09feab3817fe3b05.jpg" alt="程序员这样优化简历 一投制胜" title="程序员这样优化简历 一投制胜" />
+                            <span>程序员这样优化简历 一投制胜<i>为什么你投十份简历，只有一两家公司约你？又或者为什么你每投一份简历都能获得面试机会？最根本的原因，就是一方在汲汲渴求</i></span>
+                        </a>
+                    </li>
+ <li>
+                        <a href="http://www.cocoachina.com/ios/20160520/16004.html" title="MVVM奇葩说" target="_blank">
+                            <img src="http://cc.cocimg.com/api/uploads/160519/e20467e89d0975c428a61d0643c612b7.jpg" alt="MVVM奇葩说" title="MVVM奇葩说" />
+                            <span>MVVM奇葩说<i>受MVC或MVP架构的影响，对MVVM最初印象以为这是一个以ViewModel为核心，处理View和Model的开发架构。于是乎在原有MVC的基础上，创建了一</i></span>
+                        </a>
+                    </li>
+ <li>
+                        <a href="http://www.cocoachina.com/ios/20160520/16358.html" title="UIApplication的详细介绍" target="_blank">
+                            <img src="http://cc.cocimg.com/api/uploads/160519/80a50ef1014859958b9aa1bb9e5ed8c1.jpg" alt="UIApplication的详细介绍" title="UIApplication的详细介绍" />
+                            <span>UIApplication的详细介绍<i>利用UIApplication对象,能进行一些应用级别的操作。可以设置应用程序图标右上角的红色提醒数字、设置联网指示器的可见性、可以设</i></span>
+                        </a>
+                    </li>
+ <li>
+                        <a href="http://www.cocoachina.com/programmer/20160519/16354.html" title="闭嘴吧，冒名顶替综合症们，我太会编程了" target="_blank">
+                            <img src="http://cc.cocimg.com/api/uploads/160519/e7fb641d8ed21949f0f7308e73ab303b.jpg" alt="闭嘴吧，冒名顶替综合症们，我太会编程了" title="闭嘴吧，冒名顶替综合症们，我太会编程了" />
+                            <span>闭嘴吧，冒名顶替综合症们，我太会编程了<i>无论你称之为冒名顶替综合征还是简单地只是你的自请求尊功能失常，我们都有某些时刻感到像一个冒牌货，这一点，总有一天，我</i></span>
+                        </a>
+                    </li>
+
+                </ul>
+
+                <div class="role-h" id="slide_click">
+                    <a href="http://www.cocoachina.com/ios/20160520/16364.html" 
+
+                        target="_blank" rel= "1"  title="Clang Attributes 黑魔法小记"
+                        class= "first current"><span>Clang Attributes 黑魔法小记</span></a>
+<a href="http://www.cocoachina.com/programmer/20160520/16365.html" 
+
+                        target="_blank" rel= "2"  title="程序员这样优化简历 一投制胜"
+                        class=""><span>程序员这样优化简历 一投制胜</span></a>
+<a href="http://www.cocoachina.com/ios/20160520/16004.html" 
+
+                        target="_blank" rel= "3"  title="MVVM奇葩说"
+                        class=""><span>MVVM奇葩说</span></a>
+<a href="http://www.cocoachina.com/ios/20160520/16358.html" 
+
+                        target="_blank" rel= "4"  title="UIApplication的详细介绍"
+                        class=""><span>UIApplication的详细介绍</span></a>
+<a href="http://www.cocoachina.com/programmer/20160519/16354.html" 
+
+                        target="_blank" rel= "5"  title="闭嘴吧，冒名顶替综合症们，我太会编程了"
+                        class=""><span>闭嘴吧，冒名顶替综合症们，我太会编程了</span></a>
+
+                </div>
+
+            </div>
+        </div>
+
+        <div class="m-coco">
+            <h2>
+                <a href="http://www.cocoachina.com/special/" target="_blank" title="专题">专题</a>
+                <a href="http://www.cocoachina.com/special/" class="more right" title="更多专题">更多</a>
+            </h2>
+            <div class="spec-list">
+                <div class="spec-item">
+                    <div class= "spec-item-title spec-hidden">
+                        <span>CocoaChina翻译活动上线啦！</span></div>
+                    <a href="http://www.cocoachina.com/special/translation/" title="CocoaChina翻译活动上线啦！" target="_blank">
+                        <div class= "spec-item-detail spec-block">
+                            <img src="http://cc.cocimg.com/api/uploads/160120/ddcc21e16ca2d6a9e56d74344f907c46.jpg" alt="CocoaChina翻译活动上线啦！" />
+                            <div>CocoaChina翻译活动上线啦！</div>
+                        </div>
+                    </a>
+                </div><div class="spec-item">
+                    <div class="spec-item-title">
+                        <span>程序员求职专题：求职季，求职技</span></div>
+                    <a href="http://www.cocoachina.com/special/career/" title="程序员求职专题：求职季，求职技" target="_blank">
+                        <div class="spec-item-detail">
+                            <img src="http://cc.cocimg.com/api/uploads/151210/651a9d618c8d1c447a0117a9c4c2c297.jpg" alt="程序员求职专题：求职季，求职技" />
+                            <div>程序员求职专题：求职季，求职技</div>
+                        </div>
+                    </a>
+                </div><div class="spec-item">
+                    <div class="spec-item-title">
+                        <span>JOIN US，下一个大牛就是你！</span></div>
+                    <a href="http://www.cocoachina.com/bbs/read.php?tid=329297" title="JOIN US，下一个大牛就是你！" target="_blank">
+                        <div class="spec-item-detail">
+                            <img src="http://cc.cocimg.com/api/uploads/151030/21ed05ed1f9d7c4ffa48b8a2227be38d.gif" alt="JOIN US，下一个大牛就是你！" />
+                            <div>JOIN US，下一个大牛就是你！</div>
+                        </div>
+                    </a>
+                </div><div class="spec-item">
+                    <div class="spec-item-title">
+                        <span>APP动效设计的点睛之美</span></div>
+                    <a href="http://www.cocoachina.com/special/appdesign/" title="APP动效设计的点睛之美" target="_blank">
+                        <div class="spec-item-detail">
+                            <img src="http://cc.cocimg.com/api/uploads/150929/fac97ed21b3591d686577cc9ceff14ff.jpg" alt="APP动效设计的点睛之美" />
+                            <div>APP动效设计的点睛之美</div>
+                        </div>
+                    </a>
+                </div><div class="spec-item">
+                    <div class="spec-item-title spec-last">
+                        <span>表有方寸，心无桎梏</span></div>
+                    <a href="http://www.cocoachina.com/applewatch/" title="表有方寸，心无桎梏" target="_blank">
+                        <div class="spec-item-detail">
+                            <img src="http://cc.cocimg.com/api/uploads/150811/ea89ea0696b9a71d9584c016023aafe0.jpg" alt="表有方寸，心无桎梏" />
+                            <div>表有方寸，心无桎梏</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="m-downcode">
+        <h2><a href="http://code.cocoachina.com/" target="_blank">代码下载</a></h2>
+        <div class="code-tags">
+            <span>热门分类: </span>
+            <a href="http://code.cocoachina.com/list/30/1" title="瀑布流"target="_blank">瀑布流</a><a href="http://code.cocoachina.com/list/31/1" title="图文混排"target="_blank">图文混排</a><a href="http://code.cocoachina.com/list/20/1" title="手势交互"target="_blank">手势交互</a><a href="http://code.cocoachina.com/list/8/1" title="导航"target="_blank">导航</a><a href="http://code.cocoachina.com/list/32/1" title="菜单"target="_blank">菜单</a><a href="http://code.cocoachina.com/list/33/1" title="视图动画" class = "light" target="_blank">视图动画</a><a href="http://code.cocoachina.com/list/34/1" title="特效"target="_blank">特效</a><a href="http://code.cocoachina.com/list/27/1" title="键盘"target="_blank">键盘</a><a href="http://code.cocoachina.com/list/24/1" title="音频视频"target="_blank">音频视频</a><a href="http://code.cocoachina.com/list/35/1" title="数据持久化"target="_blank">数据持久化</a><a href="http://code.cocoachina.com/list/36/1" title="系统功能"target="_blank">系统功能</a><a href="http://code.cocoachina.com/list/28/1" title="游戏源码" class = "light" target="_blank">游戏源码</a><a href="http://code.cocoachina.com/list/37/1" title="日历"target="_blank">日历</a><a href="http://code.cocoachina.com/list/21/1" title="绘图"target="_blank">绘图</a><a href="http://code.cocoachina.com/list/25/1" title="网络"target="_blank">网络</a><a href="http://code.cocoachina.com/list/6/1" title="标签"target="_blank">标签</a><a href="http://code.cocoachina.com/list/1/1" title="按钮"target="_blank">按钮</a><a href="http://code.cocoachina.com/list/14/1" title="分段选择"target="_blank">分段选择</a><a href="http://code.cocoachina.com/list/42/1" title="文本输入"target="_blank">文本输入</a><a href="http://code.cocoachina.com/list/12/1" title="滑杆"target="_blank">滑杆</a><a href="http://code.cocoachina.com/list/11/1" title="开关"target="_blank">开关</a><a href="http://code.cocoachina.com/list/10/1" title="指示器"target="_blank">指示器</a><a href="http://code.cocoachina.com/list/9/1" title="进度条"target="_blank">进度条</a><a href="http://code.cocoachina.com/list/38/1" title="页数控制"target="_blank">页数控制</a><a href="http://code.cocoachina.com/list/16/1" title="文字视图"target="_blank">文字视图</a><a href="http://code.cocoachina.com/list/15/1" title="网页视图"target="_blank">网页视图</a><a href="http://code.cocoachina.com/list/7/1" title="地图"target="_blank">地图</a><a href="http://code.cocoachina.com/list/4/1" title="滚动视图" class = "light" target="_blank">滚动视图</a><a href="http://code.cocoachina.com/list/5/1" title="选择器"target="_blank">选择器</a><a href="http://code.cocoachina.com/list/39/1" title="搜索框"target="_blank">搜索框</a>
+            <br><br><br><br><br><br>
+            <div class="light">
+                <script type="text/javascript">
+                    _acK({aid:115829,format:0,mode:1,gid:1,serverbaseurl:"afp.csbew.com/"});
+                </script>
+            </div>
+        </div>
+        <div class="code-list">
+            <ul>
+                
+        <li>
+            <a href='http://code.cocoachina.com/view/131078' title='Animation-Gestures' target='_blank'>Animation-Gestures</a>
+        </li>
+        <li>
+            <a href='http://code.cocoachina.com/view/131077' title='仿简书个人界面' target='_blank'>仿简书个人界面</a>
+        </li>
+        <li>
+            <a href='http://code.cocoachina.com/view/131076' title='DBMetaballLoading' target='_blank'>DBMetaballLoading</a>
+        </li>
+        <li>
+            <a href='http://code.cocoachina.com/view/131075' title='仿今日头条制作的tabBar导航(带夜间模式)' target='_blank'>仿今日头条制作的tabBar导航(带夜间模式)</a>
+        </li>
+        <li>
+            <a href='http://code.cocoachina.com/view/131074' title='简单的Segment' target='_blank'>简单的Segment</a>
+        </li>
+        <li>
+            <a href='http://code.cocoachina.com/view/131073' title='图片浏览器' target='_blank'>图片浏览器</a>
+        </li>
+        <li>
+            <a href='http://code.cocoachina.com/view/131072' title='flipboard' target='_blank'>flipboard</a>
+        </li>
+                <li>
+                    <div class="light">
+                        <script type="text/javascript">
+                            _acK({aid:115835,format:0,mode:1,gid:1,serverbaseurl:"afp.csbew.com/"});
+                        </script>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="code-list">
+            <ul>
+                
+        <li>
+            <a href='http://code.cocoachina.com/view/131071' title='微博项目纯代码' target='_blank'>微博项目纯代码</a>
+        </li>
+        <li>
+            <a href='http://code.cocoachina.com/view/131070' title='轻松解决xml解析问题' target='_blank'>轻松解决xml解析问题</a>
+        </li>
+        <li>
+            <a href='http://code.cocoachina.com/view/131069' title='保存图片到本地，十分有用，不骗你' target='_blank'>保存图片到本地，十分有用，不骗你</a>
+        </li>
+        <li>
+            <a href='http://code.cocoachina.com/view/131068' title='新手学习，自定义转场动画' target='_blank'>新手学习，自定义转场动画</a>
+        </li>
+        <li>
+            <a href='http://code.cocoachina.com/view/131067' title='断点下载' target='_blank'>断点下载</a>
+        </li>
+        <li>
+            <a href='http://code.cocoachina.com/view/131066' title='YYRotoSwift' target='_blank'>YYRotoSwift</a>
+        </li>
+        <li>
+            <a href='http://code.cocoachina.com/view/131065' title='工程框架' target='_blank'>工程框架</a>
+        </li>
+                <li>
+                    <div class="light">
+                        <script type="text/javascript">
+                            _acK({aid:115837,format:0,mode:1,gid:1,serverbaseurl:"afp.csbew.com/"});
+                        </script>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="m-ad2">
+        <div class="ad2-l">
+            <script type="text/javascript">
+                _acK({aid:115839,format:0,mode:1,gid:1,serverbaseurl:"afp.csbew.com/"});
+            </script>
+        </div>
+        <div class="ad2-r">
+            <script type="text/javascript">
+                _acK({aid:115841,format:0,mode:1,gid:1,serverbaseurl:"afp.csbew.com/"});
+            </script>
+        </div>
+    </div>
+
+    <div class="m-forum">
+        <div class="forum-l">
+            <div class="forum-l-t">
+                <h2>论坛热帖</h2>
+                <div class="forum-hot-list">
+                    
+            <div class='forum-hot-item'>
+                <div class='forum-hot-count'>1</div>
+                <div class='forum-hot-title'><a href='http://www.cocoachina.com/bbs/read.php?tid-1682500.html' title='被苹果删关键词' target='_blank'>被苹果删关键词</a></div>
+            </div>
+            <div class='forum-hot-item'>
+                <div class='forum-hot-count'>2</div>
+                <div class='forum-hot-title'><a href='http://www.cocoachina.com/bbs/read.php?tid-1682431.html' title='"贪吃蛇"实现&源码大放送~  ' target='_blank'>"贪吃蛇"实现&源码大放送~  </a></div>
+            </div>
+            <div class='forum-hot-item'>
+                <div class='forum-hot-count'>3</div>
+                <div class='forum-hot-title'><a href='http://www.cocoachina.com/bbs/read.php?tid-1682402.html' title='作为一名第一份工作了两个月的菜鸟，我该走吗？' target='_blank'>作为一名第一份工作了两个月的菜鸟，我该走吗？</a></div>
+            </div>
+            <div class='forum-hot-item'>
+                <div class='forum-hot-count'>4</div>
+                <div class='forum-hot-title'><a href='http://www.cocoachina.com/bbs/read.php?tid-1682458.html' title='工程莫名其妙崩了，大神快来救我！' target='_blank'>工程莫名其妙崩了，大神快来救我！</a></div>
+            </div>
+            <div class='forum-hot-item'>
+                <div class='forum-hot-count'>5</div>
+                <div class='forum-hot-title'><a href='http://www.cocoachina.com/bbs/read.php?tid-1682327.html' title='被刷榜大约有十来天了，admob广告收入今天似乎增加不少' target='_blank'>被刷榜大约有十来天了，admob广告收入今天似乎增加不少</a></div>
+            </div>
+            <div class='forum-hot-item'>
+                <div class='forum-hot-count'>6</div>
+                <div class='forum-hot-title'><a href='http://www.cocoachina.com/bbs/read.php?tid-1682231.html' title='苹果审核真的变为2天了么' target='_blank'>苹果审核真的变为2天了么</a></div>
+            </div>
+            <div class='forum-hot-item'>
+                <div class='forum-hot-count'>7</div>
+                <div class='forum-hot-title'><a href='http://www.cocoachina.com/bbs/read.php?tid-112915.html' title='弹出模态ViewController，改变视图大小的折中方法' target='_blank'>弹出模态ViewController，改变视图大小的折中方法</a></div>
+            </div>
+            <div class='forum-hot-item'>
+                <div class='forum-hot-count'>8</div>
+                <div class='forum-hot-title'><a href='http://www.cocoachina.com/bbs/read.php?tid-1682215.html' title='大事！重要！iOS IPv6 最新升级攻略' target='_blank'>大事！重要！iOS IPv6 最新升级攻略</a></div>
+            </div>
+            <div class='forum-hot-item'>
+                <div class='forum-hot-count'>9</div>
+                <div class='forum-hot-title'><a href='http://www.cocoachina.com/bbs/read.php?tid-1682312.html' title='马上培训结束，我是真的不知道简历该怎么编' target='_blank'>马上培训结束，我是真的不知道简历该怎么编</a></div>
+            </div>
+            <div class='forum-hot-item'>
+                <div class='forum-hot-count'>10</div>
+                <div class='forum-hot-title'><a href='http://www.cocoachina.com/bbs/read.php?tid-1682332.html' title='最近一周的数据，不谈了，伤感' target='_blank'>最近一周的数据，不谈了，伤感</a></div>
+            </div>
+            <div class='forum-hot-item'>
+                <div class='forum-hot-count'>11</div>
+                <div class='forum-hot-title'><a href='http://www.cocoachina.com/bbs/read.php?tid-1682208.html' title='遇见好的代码,你们会敲一遍么?' target='_blank'>遇见好的代码,你们会敲一遍么?</a></div>
+            </div>
+            <div class='forum-hot-item'>
+                <div class='forum-hot-count'>12</div>
+                <div class='forum-hot-title'><a href='http://www.cocoachina.com/bbs/read.php?tid-1681512.html' title='一元市场前途堪忧' target='_blank'>一元市场前途堪忧</a></div>
+            </div>
+            <div class='forum-hot-item'>
+                <div class='forum-hot-count'>13</div>
+                <div class='forum-hot-title'><a href='http://www.cocoachina.com/bbs/read.php?tid-1681947.html' title='又到收入低迷期了......' target='_blank'>又到收入低迷期了......</a></div>
+            </div>
+            <div class='forum-hot-item'>
+                <div class='forum-hot-count'>14</div>
+                <div class='forum-hot-title'><a href='http://www.cocoachina.com/bbs/read.php?tid-1682112.html' title='皇上不急太监急，坐俩月了没事干' target='_blank'>皇上不急太监急，坐俩月了没事干</a></div>
+            </div>
+            <div class='forum-hot-item forum-hot-item-last'>
+                <div class='forum-hot-count'>15</div>
+                <div class='forum-hot-title'><a href='http://www.cocoachina.com/bbs/read.php?tid=1681983' title='作为一只刚培训iOS出来的女程序猿，找的第一份工作就是Swift，我的心情只剩呵呵' target='_blank'>作为一只刚培训iOS出来的女程序猿，找的第一份工作就是Swift，我的心情只剩呵呵</a></div>
+            </div>
+                </div>
+            </div>
+
+            <div class="forum-l-ad1">
+                <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                <!-- CC首页论坛热帖下方广告 -->
+                <ins class="adsbygoogle"
+                     style="display:inline-block;width:280px;height:96px"
+                     data-ad-client="ca-pub-1180518835303646"
+                     data-ad-slot="6745147168"></ins>
+                <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+            </div>
+
+
+            <div class="forum-r-b2">
+                <div class="elite-box">
+                    <h3><a href="http://www.cocoachina.com/special/jinghua/" target="_blank" class="subscribe">每周精华周刊</a></h3>
+                    <ul>
+                        <li><a href="http://www.cocoachina.com/app/jinghua/template/cocoachina2016-123.html" target="_blank" title="每个Xcode开发者应该知道的七个使用技巧">第123期 每个Xcode开发者应该知道的七个使用技巧</a></li><li><a href="http://www.cocoachina.com/app/jinghua/template/cocoachina2016-122.html" target="_blank" title="程序猿的年终总结，各种版本各种残">第122期 程序猿的年终总结，各种版本各种残</a></li><li><a href="http://www.cocoachina.com/app/jinghua/template/cocoachina2015-121.html" target="_blank" title="iOS崩溃调试的使用和技巧总结">第121期 iOS崩溃调试的使用和技巧总结</a></li><li><a href="http://www.cocoachina.com/app/jinghua/template/cocoachina2015-120.html" target="_blank" title="详解苹果的黑魔法 - KVO 的奥秘">第120期 详解苹果的黑魔法 - KVO 的奥秘</a></li>
+                        <li class="m-b-take">
+                            <form action="" method="POST" name="take-form">
+                                <input name="email" id="demail" type="text" onfocus="$('#result').html('')" placeholder="输入常用邮箱订阅" class="take-mail" /><input type="button" onclick="subscribe()" value="订阅" class="take-btn" />
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="forum-c">
+            <h2>
+                <a href="http://www.cocoachina.com/news/" target="_blank">滚动</a>
+                <a href="http://www.cocoachina.com/deliver.php" class="right light" title="投稿爆料" target="_blank">投稿爆料</a>
+            </h2>
+            <ul>
+                
+            <li style="border-top:none;">
+                <a title='源码推荐(0521)：弹幕，超炫的点赞动画，网易新闻' target='_blank' href='http://www.cocoachina.com/ios/20160521/16377.html'>
+                    <p class='img'><img src='http://cc.cocimg.com/api/uploads/160520/a91744110a3e6c08505187befcfcf324.jpg' alt='源码推荐(0521)：弹幕，超炫的点赞动画，网易新闻' /></p>
+                    <div>
+                        <h4>源码推荐(0521)：弹幕，超炫的点赞动画，网易新闻</h4>
+                        <p>弹幕；用CAEmitterLayer封装的一个超炫的点赞按钮，有oc版和swift版本的；网易新闻界面的简单实现，包括上下的联动 label的放大与缩小</p>
+                        <span>1天前</span>
+                    </div>
+                </a>
+            </li>
+            
+            <li >
+                <a title='Clang Attributes 黑魔法小记' target='_blank' href='http://www.cocoachina.com/ios/20160520/16364.html'>
+                    <p class='img'><img src='http://cc.cocimg.com/api/uploads/160519/862cdc1a7e29615b9674eaa5ed2fbfa0.jpg' alt='Clang Attributes 黑魔法小记' /></p>
+                    <div>
+                        <h4>Clang Attributes 黑魔法小记</h4>
+                        <p>本文会介绍几个有意思的 “黑魔法” Attribute，说不定在某些场景下会起到意想不到的效果哦~</p>
+                        <span>1天前</span>
+                    </div>
+                </a>
+            </li>
+            
+            <li >
+                <a title='Swift 实现聊天界面思路过程解析' target='_blank' href='http://www.cocoachina.com/swift/20160520/16368.html'>
+                    <p class='img'><img src='http://cc.cocimg.com/api/uploads/160520/2fc54d9fd71b121ac37a1a446975121f.jpg' alt='Swift 实现聊天界面思路过程解析' /></p>
+                    <div>
+                        <h4>Swift 实现聊天界面思路过程解析</h4>
+                        <p>该篇文章主要介绍一个实现聊天界面的思路过程，附有源码，该工程实现聊天的基本功能。</p>
+                        <span>1天前</span>
+                    </div>
+                </a>
+            </li>
+            
+            <li >
+                <a title='多名日本女星的iCloud账户被盗、私照外泄，你的密码安全吗？' target='_blank' href='http://www.cocoachina.com/apple/20160520/16371.html'>
+                    <p class='img'><img src='http://cc.cocimg.com/api/uploads/160520/f39d45cedce8a57e201823946b80614f.jpg' alt='多名日本女星的iCloud账户被盗、私照外泄，你的密码安全吗？' /></p>
+                    <div>
+                        <h4>多名日本女星的iCloud账户被盗、私照外泄，你的密码安全吗？</h4>
+                        <p>长泽雅美、武井咲、北川景子、纱荣子、尾崎娜娜……多名日本女星的iCloud账户被一位日本黑客入侵，大量的私密照片遭泄，继好莱坞女星iCloud艳照门后，在色情业发达的邻国也出现了i</p>
+                        <span>1天前</span>
+                    </div>
+                </a>
+            </li>
+            
+            <li >
+                <a title='App之“文字”的设计技巧' target='_blank' href='http://www.cocoachina.com/design/20160520/16361.html'>
+                    <p class='img'><img src='http://cc.cocimg.com/api/uploads/160520/84253f8b222272d21c79aa89311963af.jpg' alt='App之“文字”的设计技巧' /></p>
+                    <div>
+                        <h4>App之“文字”的设计技巧</h4>
+                        <p>人类获取信息的方式从最早的象形文字到现代富媒体的形式，富媒体让信息的表达不再仅限于文字，它可以包括文字、图案、表情、色彩、语音、音乐、视频等。文字作为最直接，最有效的方式仍然是信息</p>
+                        <span>1天前</span>
+                    </div>
+                </a>
+            </li>
+            
+            <li >
+                <a title='谷歌推Instant App：无需下载应用 也能使用基本功能' target='_blank' href='http://www.cocoachina.com/apple/20160520/16376.html'>
+                    <p class='img'><img src='http://cc.cocimg.com/api/uploads/160520/3c0f557226bbd4be47f7bcebad1faaf8.jpg' alt='谷歌推Instant App：无需下载应用 也能使用基本功能' /></p>
+                    <div>
+                        <h4>谷歌推Instant App：无需下载应用 也能使用基本功能</h4>
+                        <p>或许每个智能手机用户都曾遇到过这样的问题：当有人给你发来某个链接，你打开后会跳出推荐你安装某个应用app的窗口，否则你要么无法使用这一APP的功能，要么只能忍受非常简陋难用的功能界</p>
+                        <span>1天前</span>
+                    </div>
+                </a>
+            </li>
+            
+            <li >
+                <a title='苹果标志性Home键将成为历史？又一项证据被挖了出来' target='_blank' href='http://www.cocoachina.com/apple/20160520/16375.html'>
+                    <p class='img'><img src='http://cc.cocimg.com/api/uploads/160520/34f815e363a5cd7d73914e6432b6202d.jpg' alt='苹果标志性Home键将成为历史？又一项证据被挖了出来' /></p>
+                    <div>
+                        <h4>苹果标志性Home键将成为历史？又一项证据被挖了出来</h4>
+                        <p>据科技博客BRG报道，越来越多的证据表明美国苹果公司正在设计没有Home键的iPhone。</p>
+                        <span>1天前</span>
+                    </div>
+                </a>
+            </li>
+            
+            <li >
+                <a title='苹果 CEO Tim Cook 这次访华时再次会晤工信部部长' target='_blank' href='http://www.cocoachina.com/apple/20160520/16374.html'>
+                    <p class='img'><img src='http://cc.cocimg.com/api/uploads/160520/393c5feed471f73459f1c7397765508d.jpg' alt='苹果 CEO Tim Cook 这次访华时再次会晤工信部部长' /></p>
+                    <div>
+                        <h4>苹果 CEO Tim Cook 这次访华时再次会晤工信部部长</h4>
+                        <p>5月17日，工业和信息化部部长苗圩会见美国苹果公司首席执行官蒂姆·库克。</p>
+                        <span>1天前</span>
+                    </div>
+                </a>
+            </li>
+            
+            <li >
+                <a title='苹果供应商掌门：明年iPhone采用玻璃机身' target='_blank' href='http://www.cocoachina.com/apple/20160520/16373.html'>
+                    <p class='img'><img src='http://cc.cocimg.com/api/uploads/160520/103a76a4f5a1b3930f92248a098bf94a.jpg' alt='苹果供应商掌门：明年iPhone采用玻璃机身' /></p>
+                    <div>
+                        <h4>苹果供应商掌门：明年iPhone采用玻璃机身</h4>
+                        <p>有传言称2017年发布的iPhone将采用全新玻璃机身设计。iPhone金属机身生产厂商可成科技董事长兼首席执行官洪水树周四的发言进一步提高了这一传言可信度。</p>
+                        <span>1天前</span>
+                    </div>
+                </a>
+            </li>
+            
+            <li >
+                <a title='苹果悄悄加强设备解锁条件 8小时未用需输密码' target='_blank' href='http://www.cocoachina.com/apple/20160520/16372.html'>
+                    <p class='img'><img src='http://cc.cocimg.com/api/uploads/160520/f138f0a0fcd6d563168b51f9d8903cbf.jpg' alt='苹果悄悄加强设备解锁条件 8小时未用需输密码' /></p>
+                    <div>
+                        <h4>苹果悄悄加强设备解锁条件 8小时未用需输密码</h4>
+                        <p>现在有人发现，苹果悄悄加强了设备解锁条件。现在，如果一台设备在过去6天没有解锁过，那么用户在解锁的时候将被要求输入密码；如果设备触摸ID在过去8小时没有被用过，那么用户在使用触摸I</p>
+                        <span>1天前</span>
+                    </div>
+                </a>
+            </li>
+            
+            </ul>
+            <a class="more" title="more" href="http://www.cocoachina.com/news/" target="_blank">更多&gt;&gt;</a>
+        </div>
+
+        <div class="forum-r">
+            <div class="forum-r-b">
+                <h2>
+                    <a href="http://waikuai.cocoachina.com/" title="外快" target="_blank">外快</a>
+                    <a href="http://waikuai.cocoachina.com/apply" title="发布招聘" class="right light" target="_blank">成为技术顾问</a>
+                </h2>
+                <ul>
+                    
+            <li class=''>
+                <a href='http://waikuai.cocoachina.com/consultant/detail/136902' class='mrpol-ttl' target='_blank' title='sunkai'>sunkai</a>
+                <span>其它 | 4年 | iOS开发工程师</span>
+                <div class='hire-salary'>500元/天</div>
+            </li>
+            <li class=''>
+                <a href='http://waikuai.cocoachina.com/consultant/detail/262728' class='mrpol-ttl' target='_blank' title='xu.ch'>xu.ch</a>
+                <span>上海市 | 3年 | iOS开发工程师</span>
+                <div class='hire-salary'>900元/天</div>
+            </li>
+            <li class=''>
+                <a href='http://waikuai.cocoachina.com/consultant/detail/298209' class='mrpol-ttl' target='_blank' title='maikechen729'>maikechen729</a>
+                <span>北京市 | 4年 | iOS开发工程师</span>
+                <div class='hire-salary'>1500元/天</div>
+            </li>
+            <li class=''>
+                <a href='http://waikuai.cocoachina.com/consultant/detail/76206' class='mrpol-ttl' target='_blank' title='lq790312'>lq790312</a>
+                <span>其它 | 5年及以上 | iOS开发工程师</span>
+                <div class='hire-salary'>500元/天</div>
+            </li>
+            <li class='li-last'>
+                <a href='http://waikuai.cocoachina.com/consultant/detail/468662' class='mrpol-ttl' target='_blank' title='姚Charles'>姚Charles</a>
+                <span>北京市 | 2年 | iOS开发工程师</span>
+                <div class='hire-salary'>300元/天</div>
+            </li>
+                </ul>
+            </div>
+
+            <div class="forum-r-b" style="margin-top:17px;">
+                <h2>
+                    <a href="http://job.cocoachina.com/" title="招聘" target="_blank">招聘</a>
+                    <a href="http://job.cocoachina.com/job/add" title="发布招聘" class="right light" target="_blank">发布招聘</a>
+                </h2>
+                <ul>
+                    
+            <li class=''>
+                <a href='http://job.cocoachina.com/job/show?id=67462' class='mrpol-ttl' target='_blank' title='iOS手机软件开发工程师'>iOS手机软件开发工程师</a>
+                <span>广州 | 三年 | 大专</span>
+                <div class='hire-salary'>6K-9K</div>
+            </li>
+            
+            <li class=''>
+                <a href='http://job.cocoachina.com/job/show?id=65858' class='mrpol-ttl' target='_blank' title='iOS高级开发工程师'>iOS高级开发工程师</a>
+                <span>北京 | 三年 | 本科</span>
+                <div class='hire-salary'>15K-25K</div>
+            </li>
+            
+            <li class=''>
+                <a href='http://job.cocoachina.com/job/show?id=67498' class='mrpol-ttl' target='_blank' title='java高级软件工程师'>java高级软件工程师</a>
+                <span>广州 | 三年 | 本科</span>
+                <div class='hire-salary'>10K-16K</div>
+            </li>
+            
+            <li class=''>
+                <a href='http://job.cocoachina.com/job/show?id=67499' class='mrpol-ttl' target='_blank' title='iOS软件工程师'>iOS软件工程师</a>
+                <span>广州 | 两年 | 本科</span>
+                <div class='hire-salary'>8K-12K</div>
+            </li>
+            
+            <li class='li-last'>
+                <a href='http://job.cocoachina.com/job/show?id=67500' class='mrpol-ttl' target='_blank' title='Web后端高级开发工程师'>Web后端高级开发工程师</a>
+                <span>广州 | 三年 | 本科</span>
+                <div class='hire-salary'>10K-16K</div>
+            </li>
+            
+                </ul>
+            </div>
+
+            <div class="forum-r-t">
+                <h2><a href="http://www.cocoachina.com/events/" target="_blank" title="活动">活动</a></h2>
+                <ul>
+                    
+            <li class='act-new'>
+                <a href='http://www.cocoachina.com/events/event/show/158' title='前端优化完全指南—应用性能管理大讲堂第十三期' target='_blank'>
+                    <img src='http://cc.cocimg.com/api/uploads/160520/edfdf3559e651329af85fe6e5cc503dd.jpg' alt='前端优化完全指南—应用性能管理大讲堂第十三期' />
+                    前端优化完全指南—应用性能管理大讲堂第十三期
+                </a>
+                <span class='act-info'>
+                    活动时间：2016-05-28 到 2016-05-28<br />已报名：2人
+                </span>
+                <a href='http://www.cocoachina.com/events/event/show/158' title='前端优化完全指南—应用性能管理大讲堂第十三期' target='_blank' class='apply-btn'>立即报名</a>
+            </li>
+            
+            <li class='act-new act-new-last'>
+                <a href='http://www.cocoachina.com/events/event/show/157' title='CTO VOICE：智能硬件从设计到量产，3小时跑通！【5.29深圳】' target='_blank'>
+                    <img src='http://cc.cocimg.com/api/uploads/160519/1d63d4fa04fbf28cfa6e11c1d7602b18.jpg' alt='CTO VOICE：智能硬件从设计到量产，3小时跑通！【5.29深圳】' />
+                    CTO VOICE：智能硬件从设计到量产，3小时跑通！【5.29深圳】
+                </a>
+                <span class='act-info'>
+                    活动时间：2016-05-29 到 2016-05-29<br />已报名：3人
+                </span>
+                <a href='http://www.cocoachina.com/events/event/show/157' title='CTO VOICE：智能硬件从设计到量产，3小时跑通！【5.29深圳】' target='_blank' class='apply-btn'>立即报名</a>
+            </li>
+            
+                </ul>
+            </div>
+
+            <div class="forum-r-ad2">
+                <script type="text/javascript">
+                    _acK({aid:115859,format:0,mode:1,gid:1,serverbaseurl:"afp.csbew.com/"});
+                </script>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="m-board">
+        <div class="board-box">
+            <h3><a href="/ios/" target="_blank" title="iOS开发">iOS开发</a></h3>
+            <ul>
+                <li class="m-b-hot">
+                    <a href="http://www.cocoachina.com/ios/20160521/16377.html" target="_blank" title="源码推荐(0521)：弹幕，超炫的点赞动画，网易新闻"><img src="http://cc.cocimg.com/api/uploads/160520/a91744110a3e6c08505187befcfcf324.jpg" alt="源码推荐(0521)：弹幕，超炫的点赞动画，网易新闻" />
+                    <p><span>源码推荐(0521)：弹幕，超炫的点赞动画，网易新闻</span></p></a>
+                </li>
+
+                <li><a href="http://www.cocoachina.com/ios/20160520/16364.html" target="_blank" title="Clang Attributes 黑魔法小记">Clang Attributes 黑魔法小记</a></li>
+<li><a href="http://www.cocoachina.com/ios/20160520/16363.html" target="_blank" title="Service Oriented 的 iOS 应用架构">Service Oriented 的 iOS 应用架构</a></li>
+<li><a href="http://www.cocoachina.com/ios/20160520/16359.html" target="_blank" title="去model化和数据对象">去model化和数据对象</a></li>
+<li><a href="http://www.cocoachina.com/ios/20160520/16004.html" target="_blank" title="MVVM奇葩说">MVVM奇葩说</a></li>
+
+            </ul>
+         </div><div class="board-box">
+            <h3><a href="/swift/" target="_blank" title="Swift">Swift</a></h3>
+            <ul>
+                <li class="m-b-hot">
+                    <a href="http://www.cocoachina.com/swift/20160520/16368.html" target="_blank" title="Swift 实现聊天界面思路过程解析"><img src="http://cc.cocimg.com/api/uploads/160520/2fc54d9fd71b121ac37a1a446975121f.jpg" alt="Swift 实现聊天界面思路过程解析" />
+                    <p><span>Swift 实现聊天界面思路过程解析</span></p></a>
+                </li>
+
+                <li><a href="http://www.cocoachina.com/swift/20160519/16343.html" target="_blank" title="实战：从零开始打造一个 Swift 网络框架">实战：从零开始打造一个 Swift 网络框架</a></li>
+<li><a href="http://www.cocoachina.com/swift/20160518/16319.html" target="_blank" title="【译】“错误”的使用 Swift 中的 Extension">【译】“错误”的使用 Swift 中的 Extension</a></li>
+<li><a href="http://www.cocoachina.com/swift/20160517/16291.html" target="_blank" title="Swift 实现俄罗斯方块详细思路解析（附完整项目）">Swift 实现俄罗斯方块详细思路解析（附完整项目）</a></li>
+<li><a href="http://www.cocoachina.com/swift/20160516/16285.html" target="_blank" title="一个类搞定UIScrollView那些事儿">一个类搞定UIScrollView那些事儿</a></li>
+
+            </ul>
+         </div><div class="board-box">
+            <h3><a href="/appstore/" target="_blank" title="App Store研究">App Store研究</a></h3>
+            <ul>
+                <li class="m-b-hot">
+                    <a href="http://www.cocoachina.com/appstore/20160518/16330.html" target="_blank" title="手游开发商App Store生存的三大法则"><img src="http://cc.cocimg.com/api/uploads/160518/32d10c4b4216b9ca8ca1bff26bba7e7a.jpg" alt="手游开发商App Store生存的三大法则" />
+                    <p><span>手游开发商App Store生存的三大法则</span></p></a>
+                </li>
+
+                <li><a href="http://www.cocoachina.com/appstore/20160513/16256.html" target="_blank" title="史上最全的App Store本地化扩展关键词答疑">史上最全的App Store本地化扩展关键词答疑</a></li>
+<li><a href="http://www.cocoachina.com/appstore/20160512/16238.html" target="_blank" title="AppAnnie应用商店首页推荐报告：推荐＝下载量提高140%">AppAnnie应用商店首页推荐报告：推荐＝下载量提高140%</a></li>
+<li><a href="http://www.cocoachina.com/appstore/20160512/16233.html" target="_blank" title="App Store上周故障，美国15%应用损失超50%下载量">App Store上周故障，美国15%应用损失超50%下载量</a></li>
+<li><a href="http://www.cocoachina.com/appstore/20160511/16220.html" target="_blank" title="App Store应用审查缩至24小时">App Store应用审查缩至24小时</a></li>
+
+            </ul>
+         </div><div class="board-box  b-box-4">
+            <h3><a href="/game/" target="_blank" title="游戏开发">游戏开发</a></h3>
+            <ul>
+                <li class="m-b-hot">
+                    <a href="http://www.cocoachina.com/game/20160519/16341.html" target="_blank" title="一大波能提高编程技能的游戏"><img src="http://cc.cocimg.com/api/uploads/160518/c8308951696c6c29ab54b01280f7c6ab.png" alt="一大波能提高编程技能的游戏" />
+                    <p><span>一大波能提高编程技能的游戏</span></p></a>
+                </li>
+
+                <li><a href="http://www.cocoachina.com/game/20160513/16255.html" target="_blank" title="成功免费手游吸引玩家参与的7大心理战术">成功免费手游吸引玩家参与的7大心理战术</a></li>
+<li><a href="http://www.cocoachina.com/game/20160503/16061.html" target="_blank" title="可能妨碍你的独立游戏开发的10件事">可能妨碍你的独立游戏开发的10件事</a></li>
+<li><a href="http://www.cocoachina.com/game/20160427/16016.html" target="_blank" title="CVP学员2周学习成果很流弊">CVP学员2周学习成果很流弊</a></li>
+<li><a href="http://www.cocoachina.com/game/20160426/16025.html" target="_blank" title="一年后游戏开发者打破沉默 开始吐槽苹果智能手表">一年后游戏开发者打破沉默 开始吐槽苹果智能手表</a></li>
+
+            </ul>
+         </div>
+
+        <div class="board-box">
+            <h3><a href="/design/" target="_blank" title="产品设计">产品设计</a></h3>
+            <ul>
+                <li class="m-b-hot">
+                    <a href="http://www.cocoachina.com/design/20160520/16361.html" target="_blank" title="App之“文字”的设计技巧"><img src="http://cc.cocimg.com/api/uploads/160520/84253f8b222272d21c79aa89311963af.jpg" alt="App之“文字”的设计技巧" />
+                    <p><span>App之“文字”的设计技巧</span></p></a>
+                </li>
+
+                <li><a href="http://www.cocoachina.com/design/20160520/16367.html" target="_blank" title="在场景为王的时代，做细致入微的设计">在场景为王的时代，做细致入微的设计</a></li>
+<li><a href="http://www.cocoachina.com/design/20160519/16345.html" target="_blank" title="为什么扁平化设计辣么火？它会过时么？">为什么扁平化设计辣么火？它会过时么？</a></li>
+<li><a href="http://www.cocoachina.com/design/20160519/16344.html" target="_blank" title="大神专访：我是如何为 MAC 应用 FLINTO 设计 UI 图标">大神专访：我是如何为 MAC 应用 FLINTO 设计 UI 图标</a></li>
+<li><a href="http://www.cocoachina.com/design/20160518/16297.html" target="_blank" title="新版MATERIAL DESIGN 官方动效指南（二）">新版MATERIAL DESIGN 官方动效指南（二）</a></li>
+
+            </ul>
+         </div><div class="board-box">
+            <h3><a href="/apple/" target="_blank" title="苹果相关">苹果相关</a></h3>
+            <ul>
+                <li class="m-b-hot">
+                    <a href="http://www.cocoachina.com/apple/20160520/16371.html" target="_blank" title="多名日本女星的iCloud账户被盗、私照外泄，你的密码安全吗？"><img src="http://cc.cocimg.com/api/uploads/160520/f39d45cedce8a57e201823946b80614f.jpg" alt="多名日本女星的iCloud账户被盗、私照外泄，你的密码安全吗？" />
+                    <p><span>多名日本女星的iCloud账户被盗、私照外泄，你的密码安全吗？</span></p></a>
+                </li>
+
+                <li><a href="http://www.cocoachina.com/apple/20160520/16376.html" target="_blank" title="谷歌推Instant App：无需下载应用 也能使用基本功能">谷歌推Instant App：无需下载应用 也能使用基本功能</a></li>
+<li><a href="http://www.cocoachina.com/apple/20160520/16375.html" target="_blank" title="苹果标志性Home键将成为历史？又一项证据被挖了出来">苹果标志性Home键将成为历史？又一项证据被挖了出来</a></li>
+<li><a href="http://www.cocoachina.com/apple/20160520/16374.html" target="_blank" title="苹果 CEO Tim Cook 这次访华时再次会晤工信部部长">苹果 CEO Tim Cook 这次访华时再次会晤工信部部长</a></li>
+<li><a href="http://www.cocoachina.com/apple/20160520/16373.html" target="_blank" title="苹果供应商掌门：明年iPhone采用玻璃机身">苹果供应商掌门：明年iPhone采用玻璃机身</a></li>
+
+            </ul>
+         </div><div class="board-box">
+            <h3><a href="/market/" target="_blank" title="营销推广">营销推广</a></h3>
+            <ul>
+                <li class="m-b-hot">
+                    <a href="http://www.cocoachina.com/market/20160517/16295.html" target="_blank" title="前索尼高管：推荐游戏和获取投资的14个技巧"><img src="http://cc.cocimg.com/api/uploads/160516/dfa50de18766771e6600b7a1a85c58f7.jpg" alt="前索尼高管：推荐游戏和获取投资的14个技巧" />
+                    <p><span>前索尼高管：推荐游戏和获取投资的14个技巧</span></p></a>
+                </li>
+
+                <li><a href="http://www.cocoachina.com/market/20160429/16055.html" target="_blank" title="跟苹果学如何「勾搭」用户：除了活儿要好，还要有个性！">跟苹果学如何「勾搭」用户：除了活儿要好，还要有个性！</a></li>
+<li><a href="http://www.cocoachina.com/market/20160412/15863.html" target="_blank" title="如何利用数据抓住你们的目标用户？">如何利用数据抓住你们的目标用户？</a></li>
+<li><a href="http://www.cocoachina.com/market/20160401/15831.html" target="_blank" title="五招教你如何做好游戏微信官方公众号">五招教你如何做好游戏微信官方公众号</a></li>
+<li><a href="http://www.cocoachina.com/market/20160331/15830.html" target="_blank" title="中国手游出海必须考虑清楚五大问题">中国手游出海必须考虑清楚五大问题</a></li>
+
+            </ul>
+         </div><div class="board-box  b-box-4">
+            <h3><a href="/industry/" target="_blank" title="业界动态">业界动态</a></h3>
+            <ul>
+                <li class="m-b-hot">
+                    <a href="http://www.cocoachina.com/industry/20160519/16351.html" target="_blank" title="谷歌今日宣战Facebook、苹果、Amazon，单挑整个世界！"><img src="http://cc.cocimg.com/api/uploads/160519/e8d82880d96d4dcc594ad73a7c2ea375.jpg" alt="谷歌今日宣战Facebook、苹果、Amazon，单挑整个世界！" />
+                    <p><span>谷歌今日宣战Facebook、苹果、Amazon，单挑整个世界！</span></p></a>
+                </li>
+
+                <li><a href="http://www.cocoachina.com/industry/20160517/16303.html" target="_blank" title="Twitter不再打算把链接和图片算进字数统计 或突破140字限制">Twitter不再打算把链接和图片算进字数统计 或突破140字限制</a></li>
+<li><a href="http://www.cocoachina.com/industry/20160516/16288.html" target="_blank" title="2016年5月TIOBE编程语言排行榜：Ruby创历史新高">2016年5月TIOBE编程语言排行榜：Ruby创历史新高</a></li>
+<li><a href="http://www.cocoachina.com/industry/20160513/16262.html" target="_blank" title="Google推出自带搜索功能的iOS虚拟键盘Gboard">Google推出自带搜索功能的iOS虚拟键盘Gboard</a></li>
+<li><a href="http://www.cocoachina.com/industry/20160513/16252.html" target="_blank" title="扎克伯格190 亿买来的加密聊天工具有了桌面版">扎克伯格190 亿买来的加密聊天工具有了桌面版</a></li>
+
+            </ul>
+         </div>
+
+        <div class="board-box">
+            <h3><a href="/review/" target="_blank" title="应用">应用</a></h3>
+            <ul>
+                <li class="m-b-hot">
+                    <a href="http://www.cocoachina.com/review/20160318/15717.html" target="_blank" title="Uber 增加「家庭账户」功能，以后可以找人帮你付车费了"><img src="http://cc.cocimg.com/api/uploads/160317/96120c291adda5a6bcfb205a8e4bb46c.jpg" alt="Uber 增加「家庭账户」功能，以后可以找人帮你付车费了" />
+                    <p><span>Uber 增加「家庭账户」功能，以后可以找人帮你付车费了</span></p></a>
+                </li>
+
+                <li><a href="http://www.cocoachina.com/review/20160315/15679.html" target="_blank" title="揭秘：Slack 是如何一步步地变成史上增长最逆天的企业级应用的？">揭秘：Slack 是如何一步步地变成史上增长最逆天的企业级应用的？</a></li>
+<li><a href="http://www.cocoachina.com/review/20160309/15622.html" target="_blank" title="多款第三方Snapchat应用正通过不安全的连接发送用户数据">多款第三方Snapchat应用正通过不安全的连接发送用户数据</a></li>
+<li><a href="http://www.cocoachina.com/review/20160218/15315.html" target="_blank" title="目前这10款虚拟现实应用值得你一试">目前这10款虚拟现实应用值得你一试</a></li>
+<li><a href="http://www.cocoachina.com/review/20160204/15229.html" target="_blank" title="用 4 天时间欺骗全世界：一款虚构出来的约架 App 为何能红遍网络？">用 4 天时间欺骗全世界：一款虚构出来的约架 App 为何能红遍网络？</a></li>
+
+            </ul>
+         </div><div class="board-box">
+            <h3><a href="/vr/" target="_blank" title="VR">VR</a></h3>
+            <ul>
+                <li class="m-b-hot">
+                    <a href="http://www.cocoachina.com/vr/20160519/16353.html" target="_blank" title="谷歌发布Daydream VR平台：有效降低眩晕感"><img src="http://cc.cocimg.com/api/uploads/160519/3a3551aa2acc39ff55df79628171e28e.jpg" alt="谷歌发布Daydream VR平台：有效降低眩晕感" />
+                    <p><span>谷歌发布Daydream VR平台：有效降低眩晕感</span></p></a>
+                </li>
+
+                <li><a href="http://www.cocoachina.com/vr/20160518/16316.html" target="_blank" title="MacBook 开发VR的环境准备篇">MacBook 开发VR的环境准备篇</a></li>
+<li><a href="http://www.cocoachina.com/vr/20160513/16268.html" target="_blank" title="AR增强现实游戏存风险，已致一位玩家溺死">AR增强现实游戏存风险，已致一位玩家溺死</a></li>
+<li><a href="http://www.cocoachina.com/vr/20160512/16250.html" target="_blank" title="黑科技作战，微软HoloLens打算卖给军方">黑科技作战，微软HoloLens打算卖给军方</a></li>
+<li><a href="http://www.cocoachina.com/vr/20160512/16249.html" target="_blank" title="金正恩开始打造虚拟现实实验室">金正恩开始打造虚拟现实实验室</a></li>
+
+            </ul>
+         </div><div class="board-box">
+            <h3><a href="/android/" target="_blank" title="Android相关">Android相关</a></h3>
+            <ul>
+                <li class="m-b-hot">
+                    <a href="http://www.cocoachina.com/android/20160520/16360.html" target="_blank" title="关于新版 Android N 的十件事：名字将由你来决定"><img src="http://cc.cocimg.com/api/uploads/160519/b912bce8e93b81e431bc494b4265a3e5.jpg" alt="关于新版 Android N 的十件事：名字将由你来决定" />
+                    <p><span>关于新版 Android N 的十件事：名字将由你来决定</span></p></a>
+                </li>
+
+                <li><a href="http://www.cocoachina.com/android/20160519/16355.html" target="_blank" title="谷歌送惊喜：Chrome浏览器可直接运行安卓应用">谷歌送惊喜：Chrome浏览器可直接运行安卓应用</a></li>
+<li><a href="http://www.cocoachina.com/android/20160518/16336.html" target="_blank" title="iOS市场份额缩水 谷歌安卓迎来2年内最强劲增长">iOS市场份额缩水 谷歌安卓迎来2年内最强劲增长</a></li>
+<li><a href="http://www.cocoachina.com/android/20160518/16335.html" target="_blank" title="传联想旗下摩托罗拉拟弃用Moto X 更名为Moto Z">传联想旗下摩托罗拉拟弃用Moto X 更名为Moto Z</a></li>
+<li><a href="http://www.cocoachina.com/android/20160502/16092.html" target="_blank" title="谷歌低调推进Android Auto 已有百款车型支持">谷歌低调推进Android Auto 已有百款车型支持</a></li>
+
+            </ul>
+         </div><div class="board-box  b-box-4">
+            <h3><a href="/programmer/" target="_blank" title="程序人生">程序人生</a></h3>
+            <ul>
+                <li class="m-b-hot">
+                    <a href="http://www.cocoachina.com/programmer/20160520/16370.html" target="_blank" title="95%的员工留存率，这家公司是如何做到的?"><img src="http://cc.cocimg.com/api/uploads/160520/8516ca2f3ca76291234118752607c6af.jpg" alt="95%的员工留存率，这家公司是如何做到的?" />
+                    <p><span>95%的员工留存率，这家公司是如何做到的?</span></p></a>
+                </li>
+
+                <li><a href="http://www.cocoachina.com/programmer/20160520/16365.html" target="_blank" title="程序员这样优化简历 一投制胜">程序员这样优化简历 一投制胜</a></li>
+<li><a href="http://www.cocoachina.com/programmer/20160519/16354.html" target="_blank" title="闭嘴吧，冒名顶替综合症们，我太会编程了">闭嘴吧，冒名顶替综合症们，我太会编程了</a></li>
+<li><a href="http://www.cocoachina.com/programmer/20160518/16317.html" target="_blank" title="程序员平时该如何学习来提升自己的技术">程序员平时该如何学习来提升自己的技术</a></li>
+<li><a href="http://www.cocoachina.com/programmer/20160518/16318.html" target="_blank" title="开发漫谈：40岁的程序员你该怎么办？">开发漫谈：40岁的程序员你该怎么办？</a></li>
+
+            </ul>
+         </div>
+    </div>
+
+    <h2 class="rank-tit">社区排行榜</h2>
+    <div class="m-rank">
+        <div class="rank-l">
+            <h3>一周最火文章排行榜</h3>
+            <ol>
+                <li><a href="http://www.cocoachina.com/industry/20160516/16288.html" title="2016年5月TIOBE编程语言排行榜：Ruby创历史新高" target="_blank"><i class="top3">1</i><em>2016年5月TIOBE编程语言排行榜：Ruby创历史新高</em><span>4192</span></a></li><li><a href="http://www.cocoachina.com/ios/20160516/16273.html" title="你真的了解load方法么？" target="_blank"><i class="top3">2</i><em>你真的了解load方法么？</em><span>4025</span></a></li><li><a href="http://www.cocoachina.com/ios/20160520/16358.html" title="UIApplication的详细介绍" target="_blank"><i class="top3">3</i><em>UIApplication的详细介绍</em><span>3694</span></a></li><li><a href="http://www.cocoachina.com/programmer/20160520/16365.html" title="程序员这样优化简历 一投制胜" target="_blank"><i class="">4</i><em>程序员这样优化简历 一投制胜</em><span>3519</span></a></li><li><a href="http://www.cocoachina.com/programmer/20160518/16318.html" title="开发漫谈：40岁的程序员你该怎么办？" target="_blank"><i class="">5</i><em>开发漫谈：40岁的程序员你该怎么办？</em><span>3518</span></a></li><li><a href="http://www.cocoachina.com/ios/20160518/16328.html" title="iOS 三种录制视频方式" target="_blank"><i class="">6</i><em>iOS 三种录制视频方式</em><span>3487</span></a></li><li><a href="http://www.cocoachina.com/design/20160517/16296.html" title="新版MATERIAL DESIGN官方动效指南（一）" target="_blank"><i class="">7</i><em>新版MATERIAL DESIGN官方动效指南（一）</em><span>3078</span></a></li><li><a href="http://www.cocoachina.com/programmer/20160516/16271.html" title="什么样的IT公司你应该考虑辞职" target="_blank"><i class="">8</i><em>什么样的IT公司你应该考虑辞职</em><span>2836</span></a></li><li><a href="http://www.cocoachina.com/ios/20160520/16004.html" title="MVVM奇葩说" target="_blank"><i class="">9</i><em>MVVM奇葩说</em><span>2783</span></a></li><li><a href="http://www.cocoachina.com/ios/20160517/16275.html" title="谈不完美的IBDesignable可视化效果编程" target="_blank"><i class="">10</i><em>谈不完美的IBDesignable可视化效果编程</em><span>2563</span></a></li><li><a href="http://www.cocoachina.com/programmer/20160519/16354.html" title="闭嘴吧，冒名顶替综合症们，我太会编程了" target="_blank"><i class="">11</i><em>闭嘴吧，冒名顶替综合症们，我太会编程了</em><span>2552</span></a></li><li><a href="http://www.cocoachina.com/programmer/20160516/16287.html" title="写个 Hello World 而已，要不要这么震撼？！" target="_blank"><i class="">12</i><em>写个 Hello World 而已，要不要这么震撼？！</em><span>2454</span></a></li><li><a href="http://www.cocoachina.com/programmer/20160517/16245.html" title="2016年星光熠熠的26位女工程师" target="_blank"><i class="">13</i><em>2016年星光熠熠的26位女工程师</em><span>2384</span></a></li><li><a href="http://www.cocoachina.com/design/20160519/16345.html" title="为什么扁平化设计辣么火？它会过时么？" target="_blank"><i class="">14</i><em>为什么扁平化设计辣么火？它会过时么？</em><span>2215</span></a></li><li><a href="http://www.cocoachina.com/ios/20160519/16342.html" title="15分钟弄懂 const 和 #define" target="_blank"><i class="">15</i><em>15分钟弄懂 const 和 #define</em><span>2159</span></a></li>
+            </ol>
+        </div>
+        <div class="rank-m">
+            <h3>一周论坛热帖排行榜</h3>
+            <ol>
+                <li><a href="http://www.cocoachina.com/bbs/read.php?tid=1682384" title="还记得初入职场的你吗？" target="_blank"><i class="top3">1</i><em>还记得初入职场的你吗？</em><span>29320</span></a></li><li><a href="http://www.cocoachina.com/bbs/read.php?tid=1682516" title="ios行情会好转吗？" target="_blank"><i class="top3">2</i><em>ios行情会好转吗？</em><span>3188</span></a></li><li><a href="http://www.cocoachina.com/bbs/read.php?tid=1682458" title="工程莫名其妙崩了，大神快来救我性命！" target="_blank"><i class="top3">3</i><em>工程莫名其妙崩了，大神快来救我性命！</em><span>2312</span></a></li><li><a href="http://www.cocoachina.com/bbs/read.php?tid=1682472" title="iOS 刚培训出来，就一个人单独做项目，求指教啊！！！" target="_blank"><i class="">4</i><em>iOS 刚培训出来，就一个人单独做项目，求指教啊！！！</em><span>1711</span></a></li><li><a href="http://www.cocoachina.com/bbs/read.php?tid=1682394" title="低迷日子才刚开始" target="_blank"><i class="">5</i><em>低迷日子才刚开始</em><span>1380</span></a></li><li><a href="http://www.cocoachina.com/bbs/read.php?tid=1682550" title="老板提的一个变态需求" target="_blank"><i class="">6</i><em>老板提的一个变态需求</em><span>1034</span></a></li><li><a href="http://www.cocoachina.com/bbs/read.php?tid=1682431" title="CVP认证学习--（何小成）贪吃蛇的实现" target="_blank"><i class="">7</i><em>CVP认证学习--（何小成）贪吃蛇的实现</em><span>966</span></a></li><li><a href="http://www.cocoachina.com/bbs/read.php?tid=1682393" title="问题解决,此帖已封,谢谢大家." target="_blank"><i class="">8</i><em>问题解决,此帖已封,谢谢大家.</em><span>872</span></a></li><li><a href="http://www.cocoachina.com/bbs/read.php?tid=1682559" title="app上架失败原因 2.16 如何解决" target="_blank"><i class="">9</i><em>app上架失败原因 2.16 如何解决</em><span>850</span></a></li><li><a href="http://www.cocoachina.com/bbs/read.php?tid=1682500" title="被苹果删关键词" target="_blank"><i class="">10</i><em>被苹果删关键词</em><span>809</span></a></li><li><a href="http://www.cocoachina.com/bbs/read.php?tid=1682498" title="appstore 有个叫 秘密花园的..这ASO做的.." target="_blank"><i class="">11</i><em>appstore 有个叫 秘密花园的..这ASO做的..</em><span>701</span></a></li><li><a href="http://www.cocoachina.com/bbs/read.php?tid=1682477" title="admob的ecpm越来越低 越来越低 越来越低 。。。。。。。" target="_blank"><i class="">12</i><em>admob的ecpm越来越低 越来越低 越来越低 。。。。。。。</em><span>631</span></a></li><li><a href="http://www.cocoachina.com/bbs/read.php?tid=1682619" title="tableview下拉之后内容消失的问题" target="_blank"><i class="">13</i><em>tableview下拉之后内容消失的问题</em><span>516</span></a></li><li><a href="http://www.cocoachina.com/bbs/read.php?tid=1682567" title="我是ios程序员为啥还让我做项目原型图啊" target="_blank"><i class="">14</i><em>我是ios程序员为啥还让我做项目原型图啊</em><span>446</span></a></li><li><a href="http://www.cocoachina.com/bbs/read.php?tid=1682379" title="iad公司倒闭了" target="_blank"><i class="">15</i><em>iad公司倒闭了</em><span>380</span></a></li>
+            </ol>
+        </div>
+        <div class="rank-r">
+            <h3>一周热门代码下载排行榜</h3>
+            <ol>
+                <li><a href="http://code.cocoachina.com/view/131071" title="微博项目纯代码" target="_blank"><i class="top3">1</i><em>微博项目纯代码</em><span>394</span></a></li><li><a href="http://code.cocoachina.com/view/131039" title="3D 效果－球" target="_blank"><i class="top3">2</i><em>3D 效果－球</em><span>332</span></a></li><li><a href="http://code.cocoachina.com/view/131077" title="仿简书个人界面" target="_blank"><i class="top3">3</i><em>仿简书个人界面</em><span>292</span></a></li><li><a href="http://code.cocoachina.com/view/130989" title="PickerView" target="_blank"><i class="">4</i><em>PickerView</em><span>245</span></a></li><li><a href="http://code.cocoachina.com/view/131064" title="LoginView" target="_blank"><i class="">5</i><em>LoginView</em><span>244</span></a></li><li><a href="http://code.cocoachina.com/view/131044" title="功能完善使用简单的图片浏览器(用过MJPhotoBrowser的朋友可以试试)" target="_blank"><i class="">6</i><em>功能完善使用简单的图片浏览器(用过MJPhotoBrowser的朋友可以试试)</em><span>230</span></a></li><li><a href="http://code.cocoachina.com/view/130941" title="tableViewHeader" target="_blank"><i class="">7</i><em>tableViewHeader</em><span>227</span></a></li><li><a href="http://code.cocoachina.com/view/131035" title="弹幕" target="_blank"><i class="">8</i><em>弹幕</em><span>214</span></a></li><li><a href="http://code.cocoachina.com/view/130981" title="支付宝、微信、银联、百度钱宝、银联、苹果支付" target="_blank"><i class="">9</i><em>支付宝、微信、银联、百度钱宝、银联、苹果支付</em><span>204</span></a></li><li><a href="http://code.cocoachina.com/view/130832" title="iOS高仿下厨房（Objective-C）" target="_blank"><i class="">10</i><em>iOS高仿下厨房（Objective-C）</em><span>185</span></a></li><li><a href="http://code.cocoachina.com/view/131065" title="工程框架" target="_blank"><i class="">11</i><em>工程框架</em><span>172</span></a></li><li><a href="http://code.cocoachina.com/view/130798" title="一句代码搞定毛玻璃特效" target="_blank"><i class="">12</i><em>一句代码搞定毛玻璃特效</em><span>169</span></a></li><li><a href="http://code.cocoachina.com/view/131038" title="超炫的点赞动画" target="_blank"><i class="">13</i><em>超炫的点赞动画</em><span>164</span></a></li><li><a href="http://code.cocoachina.com/view/130923" title="oc版的快速集成网易新闻, 腾讯视频, 头条等的顶部滑块的效果,实现多种效果的视图联动" target="_blank"><i class="">14</i><em>oc版的快速集成网易新闻, 腾讯视频, 头条等的顶部滑块的效果,实现多种效果的视图联动</em><span>163</span></a></li><li><a href="http://code.cocoachina.com/view/130924" title="导航渐变" target="_blank"><i class="">15</i><em>导航渐变</em><span>139</span></a></li>
+            </ol>
+        </div>
+
+    </div>
+
+    <div class="m-ad2" style="margin-top:20px;">
+        <div class="ad2-full">
+            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+            <!-- CC首页底部横幅 -->
+            <ins class="adsbygoogle"
+                 style="display:inline-block;width:970px;height:90px"
+                 data-ad-client="ca-pub-1180518835303646"
+                 data-ad-slot="6396089961"></ins>
+            <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+        <!-- CC首页310x90 -->
+        <!--
+        <div class="ad2-r">
+            <script async src="http://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+            <ins class="adsbygoogle"
+                 style="display:inline-block;width:310px;height:90px"
+                 data-ad-client="ca-pub-1180518835303646"
+                 data-ad-slot="5288543965"></ins>
+            <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+        -->
+    </div>
+
+</div>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-68950821-1', 'auto', {'name': 'newTracker'});
+  ga('newTracker.send', 'pageview');
+
+</script>
+
+</div>    
+<!--右侧浮动-->
+    <div class="r-bar">
+        <img src="http://cdn.cocimg.com/cms/templets/images/coco_weixin.png" class="weixin">
+    	<a href="http://weibo.com/cocoachina" target="_blank" title="" class="weibo">sina</a>
+        <a href="javascript:void(0);" target="_blank" title="" class="feedback">weixin</a>
+        <a href="mailto:support@cocoachina.com" title="" class="kefu">mail</a>
+        <a href="javascript:;" title="回到顶部" class="returntop">回到顶部</a>
+    </div>
+
+<script language="javascript" src="/cms/bbsauth_plus2015.php" type="text/javascript"></script>
+<script type="text/javascript">
+$(function(){
+    if (typeof(_user_info_html) != 'undefined' && _user_info_html)
+    {
+        $('.nav-user-login').hide();
+        $('.nav-user-name').html(_user_info_html).show();
+    }
+
+	var type = $('#type_name').html();
+	if(type)
+	{	
+		switch( type )
+		{
+			case 'iOS开发':
+				$('#ios').addClass('light');
+				break;
+			case 'AppStore研究':
+				$('#app_store').addClass('light');
+				break;
+			case 'Mac开发':
+				$('#mac').addClass('light');
+				break;
+			case '产品设计':
+				$('#design').addClass('light');
+				break;
+			case 'Cocos引擎':
+				$('#cocos').addClass('light');
+				break;
+			case 'WebApp':
+				$('#webapp').addClass('light');
+				break;
+			case 'Swift':
+				$('#swift').addClass('light');
+				break;
+			case '游戏开发':
+				$('#game').addClass('light');
+				break;
+			case '苹果相关':
+				$('#apple').addClass('light');
+				break;
+			case '营销推广':
+				$('#market').addClass('light');
+				break;		
+			case '业界动态':
+				$('#industry').addClass('light');
+				break;	
+			case '程序人生':
+				$('#programmer').addClass('light');
+				break;																																
+				
+		}
+	}
+});
+</script>
+<!--./cont-->
+<script type="text/javascript" src="/cms/templets/js/index.js?20111546514"></script>
+<script src="http://cdn.cocimg.com/cms/templets/js/jquery.colorbox-min.js" type="text/javascript"></script>
+<script language="javascript" src="/cms/bbsauth_new2015.php"  type="text/javascript"></script>
+<script src="/cms/templets/js/script.js?t=2045479411" type="text/javascript"></script>
+<script type="text/javascript">
+			jQuery(function()
+			{
+				//更改文章来源
+				var source = $('#source a').html();								
+				if( source == '未知' )
+					jQuery('#source a').html('CocoaChina');
+				if( jQuery('#source a').attr('href')=='')
+					jQuery('#source').html('来源：'+source);
+				
+				//获取用户登录的id
+//                var content = jQuery('.t-lid').attr("href");
+//                var uid = 0;
+//                if( content )
+//                {
+//                    content = content.split('=');
+//                    uid = content[1];
+//                }
+//                var timestamp = new Date().getTime();	
+//                var uid2 = parseInt(uid);
+//                if(uid2==uid && uid2!=0){
+//                    uid = uid<<2;			
+//                    uid = uid+''+timestamp;
+//                }else{
+//                    uid = "";
+//                }
+//                var oIframe=document.getElementById("comiframe");
+//                if(oIframe){
+//                    var oUrl=window.location.href;
+//                    oUrl = encodeURIComponent(oUrl);
+//
+//                    oIframe.src="/comment.php?url="+oUrl+"&uid="+uid;
+//                }
+
+				
+			});
+		</script>
+<!--footer-->
+<div class="footer clearfix">
+    <div class="footer-b">
+        <div>
+            <a href="/aboutus/index.html" target="_blank">关于我们</a>
+            <a href="/contactus/index.html" target="_blank">商务合作</a>
+            <a href="mailto:support@cocoachina.com" target="_blank">联系我们</a>
+            <a href="/corps" target="_blank">合作伙伴</a>
+        </div>
+        <p class="footer-b-p">北京触控科技有限公司版权所有</p>
+        <p>
+            &copy;2016 Chukong Technologies,Inc.
+            <i>
+                <a href="http://www.miibeian.gov.cn/" target="_blank">京ICP备 11006519号 　京ICP证 100954号</a> 京公网安备11010502020289 
+                <a href="http://182.131.21.137/ccnt-apply/admin/business/preview/business-preview!lookUrlRFID.action?main_id=A580B24B1AE846CE9DA949026D63939F" target="_blank">
+                    <img src="http://cdn.cocimg.com/cms/templets/images/jingwen.png" style="margin: -10px auto -14px -10px;" />
+                    京网文[2012]0426-138号
+                </a>
+            </i>
+        </p>
+    </div>
+</div>
+<!--./footer-->
+<script language="javascript" type="text/javascript" src="/cms/include/dedeajax2-min.js"></script>
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?88399e4c4cf744609c4fc8c3a8935691";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-16940817-2']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+  
+ 
+function search_check()
+{
+	var search_keyword = $('#search_keyword').val();
+
+	if( search_keyword.length < 2 )
+	{
+		alert("搜索关键字不能少于2个字节，请重新输入。");
+	}
+	else
+	{
+		$('#searchform').submit();
+	}
+}
+
+</script>
+<script type="text/javascript">
+_acK({aid:116313,format:0,mode:1,gid:1,serverbaseurl:"afp.csbew.com/"});
+</script>
+
+</body>
+</html>

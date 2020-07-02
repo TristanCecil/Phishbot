@@ -1,0 +1,537 @@
+<!DOCTYPE html><html lang="en-sg"><head>
+<script type="text/javascript">var dynLang = "en"; var _static_product_list = ["Origin.OFR.50.0000940", "Origin.OFR.50.0000823", "Origin.OFR.50.0000989", "Origin.OFR.50.0001022", "Origin.OFR.50.0000786", "OFB-EAST:109552299", "OFB-EAST:109550762", "Origin.OFR.50.0000920", "Origin.OFR.50.0001171", "Origin.OFR.50.0000781", "Origin.OFR.50.0000918", "Origin.OFR.50.0000943", "Origin.OFR.50.0000916"]; var _dynamic_product_list = []; var _sig = "dadaf6af22ff64745ea813d6bdbfd21f967837c5"; </script>
+<title>
+                Origin | Buy and Play PC Games
+        </title><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><meta name="description" content="Origin brings you great PC and Mac games. Play the latest RPGs, Shooters, Sim games, and more. Plus, try before you buy with game trials, and score full games, totally free!"/><meta property="og:description" content="Origin brings you great PC and Mac games. Play the latest RPGs, Shooters, Sim games, and more. Plus, try before you buy with game trials, and score full games, totally free!"/><meta name="lc" content="en_SG" /><meta property="og:title" content="Origin | Origin Games" /><meta property="og:locale" content="en_SG" /><meta property="og:type" content="game" /><meta property="og:image" content="https://eaassets04-a.akamaihd.net/origin-com-store-webassets/1.0.0.435557_1744bc51bbf2a7a1bcb3fb02e8749e6f631fcc570d972b62871a9bb8b7436c20/images/fa872b1.png" /><meta property="og:site_name" content="Origin" /><meta property="fb:admins" content="63911084" /><script>var isOptimizelyJsLoadError = false; function setOptimizelyNoJsError(){isOptimizelyJsLoadError = true;}</script><script src="https://eaassets-a.akamaihd.net/origin-com-store-damassets/content/dam/optimizely/597960210.js" onerror="setOptimizelyNoJsError()"></script><link rel="canonical" href="https://www.origin.com/en-sg/store/"/><meta data-url="/en-sg/store/" /><meta property="og:url" content="https://www.origin.com/en-sg/store/" /><link rel="shortcut icon" type="image/x-icon" href="https://eaassets04-a.akamaihd.net/origin-com-store-webassets/1.0.0.435557_1744bc51bbf2a7a1bcb3fb02e8749e6f631fcc570d972b62871a9bb8b7436c20/images/5537634.ico"/><link rel="stylesheet" href="https://eaassets02-a.akamaihd.net/origin-com-store-webassets/1.0.0.435557_1744bc51bbf2a7a1bcb3fb02e8749e6f631fcc570d972b62871a9bb8b7436c20/css/eea54c0.css" type="text/css" /><link rel="stylesheet" href="https://eaassets01-a.akamaihd.net/origin-com-store-webassets/1.0.0.435557_1744bc51bbf2a7a1bcb3fb02e8749e6f631fcc570d972b62871a9bb8b7436c20/css/f04e9b2.css" type="text/css" /><script src="https://eaassets01-a.akamaihd.net/origin-com-store-webassets/1.0.0.435557_1744bc51bbf2a7a1bcb3fb02e8749e6f631fcc570d972b62871a9bb8b7436c20/js/ea5d46c.js" type="text/javascript"></script><script type="text/javascript">
+            ;(function( $ ) {
+    'use strict';
+    
+    window.ratingData = [];
+    var userid = 0;
+    var dynRunning = true;
+
+    function gatherDynPrices(sig, isGus) {
+        var dynamic_product_list = [];
+        var static_product_list = [];
+
+        if(dynRunning === true && isGus === false) {
+            $('body').on('dyn', gatherDynPrices(sig, isGus));
+            return false;
+        }
+
+        dynRunning = true;
+
+        $('span.dyn-price').each(function(){
+            if($(this).hasClass('dyn-static')) {
+                static_product_list.push($(this).attr('data-id'));
+            } else {
+                dynamic_product_list.push($(this).attr('data-id'));
+            }        
+        });
+
+        if(static_product_list.length > 0 || dynamic_product_list.length > 0){
+            dynamicPrice(sig, static_product_list, dynamic_product_list, userid);
+        }
+    }
+
+    $('body').live('startDyn', function( event, sig, gus ) {
+        gatherDynPrices(sig, gus);
+    });
+
+    function dynamicPrice(sig, staticOffers, dynamicOffers, usr) {
+        var saveTxt = $('.dyn-discount').data('txt') !== undefined ? $('.dyn-discount').data('txt') : '';
+        var freeTxt = $('.dyn-discount').data('free') !== undefined ? $('.dyn-discount').data('free') : '';
+        var dynData = {
+            save: saveTxt,
+            free: freeTxt,
+            static_offers: staticOffers,
+            dynamic_offers: dynamicOffers,
+            sig: sig,
+            language: window.dynLang
+        };
+
+        $.ajax({
+            url: '/' + $('body').data('locale') + '/store/v3/dyn/' + usr,
+            type: 'GET',
+            data: {
+                data:JSON.stringify(dynData)
+            }
+        })
+        .done(function(data){
+            processDynamicPrices(data);
+        })
+        .fail(function(){
+            if(usr === 0) {
+                // if anonymous request fails, load default prices
+                failState();
+            } else {
+                // if logged in request fails, try anonymous 
+                dynamicPrice(sig, staticOffers, dynamicOffers, 0);
+            }
+        });
+    }
+
+    function processDynamicPrices(data) {
+        window.ratingData = data;
+        
+        $('.dyn').each(function(){
+            var product_id = $(this).data('id').toLowerCase();
+
+            if(typeof data[product_id] != 'undefined') {
+                if($(this).hasClass('dyn-price')) {
+                    $(this).parent().prepend(data[product_id].price);
+                } else if($(this).hasClass('dyn-strike')) {
+                    $(this).parent().prepend(data[product_id].strike);
+                } else if($(this).hasClass('dyn-float-price')) {
+                    $(this).parent().prepend(data[product_id].floatPrice);
+                } else if($(this).hasClass('dyn-float-strike')) {
+                    $(this).parent().prepend(data[product_id].floatStrike);
+                } else {
+                    $(this).parent().prepend(data[product_id].save);
+                }
+            } else {
+                if($(this).hasClass('dyn-price')) {
+                    $(this).parent().prepend($(this).data('defaultprice'));
+                }
+            }
+
+            $(this).remove();
+        });
+        
+        dynamicPriceComplete();
+    }
+
+    function failState() {
+        // anonymous rating request failed
+        $('span.dyn-price').each(function(){
+            $(this).parent().prepend($(this).data('defaultprice'));
+            $(this).remove();
+        });
+        
+        dynamicPriceComplete();
+    }
+
+    function removeVatFromZeroPricedOffers() {
+        $('.vat, .inc-vat').not('.vat.vat-nonzero, .inc-vat.vat-nonzero').each(function() {
+            var priceString;
+            var priceElem = $(this).hasClass('inc-vat') ? $(this).siblings('.actual-price') : $(this).parent('.price');
+            if(priceElem.length) {
+                priceString = findPriceText(priceElem);
+                if(isZeroPriced(priceString)) {
+                    $(this).remove();
+                    return true;
+                }
+            }
+            $(this).addClass('vat-nonzero');
+        });
+
+        function isZeroPriced(price) {
+            return (price && !parseInt(price.replace(/\D/g,'')));
+        }
+
+        function findPriceText(elem) {
+            var priceString = '';
+            if(elem.hasClass('actual-price')) {
+                priceString = elem.text();
+            } else {
+                priceString = elem.contents().filter(function() { 
+                    return this.nodeType === 3;
+                });
+                priceString = priceString.length > 0 && priceString[0].nodeValue ? priceString[0].nodeValue : '';
+            }
+            return priceString; 
+        }
+    }
+
+    function dynamicPriceComplete() {
+        dynRunning = false;
+        removeVatFromZeroPricedOffers();
+        $('body').trigger('dyn');
+    }
+
+    function isStoreHomePage() {
+    	if(window.location.pathname === '/' + $('body').data('locale') + '/store/') {
+    		return true;
+    	}
+    	return false;
+    }
+
+    // initialize global utag var
+    window.utag_data = {};
+
+    function runUtag(data) {
+        window.utag_data = {  
+          region : "",
+          locale : "en_SG", 
+          country : "sg", 
+          language : "en",
+          userid : data.userId, 
+          user_status : data.statusMessage,
+          referring_site : "",
+          mvt_experiment : "", 
+          mvt_variation : "", 
+          intcmp : data.intcmp, 
+          transaction_id : "", 
+          order_date : "",
+          payment_type : "", 
+          product_id : "", 
+          product_sku : "",
+          product_name : "", 
+          product_price : "", 
+          total_price : "", 
+          total_tax : "", 
+          total_shipping : "",
+          currency : "SGD",
+          product_quantity : "",
+          promo_code : data.promoCode,
+          product_discount : "",
+          promotion_applied : "",
+          product_category : "",
+          product_facets : "",
+          ecommerce_platform : "Origin",
+          platform : "",
+          studio : "",
+          game_name : "",
+          franchise_unit : "",
+          mdm_franchise : "",
+          mdm_master_title : "",
+          mdm_master_title_id : "",
+          unlocalized_title: "%unlocalized-title%",
+          unlocalized_franchise: "%unlocalized-franchise%"
+        };
+        
+        window.e_status = $.cookie('e-status');
+        window.e_productId = $.cookie('e-productId');
+        window.e_utag_productId = $.cookie('e-utag-productId');
+        
+        if ((window.e_status == 'success' && window.e_productId != null) || window.e_utag_productId != null)
+        {
+            $.cookie('e-utag-productId', '', { expires: -1, path: '/', domain: '.origin.com' });
+        
+            var pId = window.e_productId || window.e_utag_productId;
+            
+            utag_data.transaction_id = '';
+            utag_data.product_id = pId;
+            utag_data.product_sku = pId;
+            utag_data.product_name = $('.packart[data-productid="'+pId+'"]').data('title') || pId;
+            utag_data.product_price = 0;
+            utag_data.total_price = 0;
+            utag_data.product_quantity = 1;
+        }
+     
+        (function(a,b,c,d){
+            a='//tags.tiqcdn.com/utag/ea/originstore/prod/utag.js';
+            b=document;c='script';d=b.createElement(c);d.src=a;d.type='text/java'+c;d.async=true;
+            a=b.getElementsByTagName(c)[0];a.parentNode.insertBefore(d,a);
+        })();
+
+        userid = (data.userId != null && data.userId != '') ? data.userId : 0;
+
+        if(window._static_product_list.length > 0 || window._dynamic_product_list.length > 0) {
+            dynamicPrice(window._sig, window._static_product_list, window._dynamic_product_list, userid)
+        } else {
+            dynRunning = false;
+        }
+
+        $('body').trigger('gus-done');
+    }
+
+    function autoLoginInterval()
+    {
+        var loginIntervalPixel = '<img src="/oauth/refresh" style="position:absolute;bottom:0px;left:0px;display:none;z-index:-9999" alt=""/>';
+        $('body').append(loginIntervalPixel);
+    }
+
+    function notLoggedIn() {
+        var failData = {
+            userid: '',
+            intcmp: '',
+            statusMessage: 'Logged Out',
+            promoCode: ''
+        };
+
+                    if($.cookie('o_oa') != null) {
+                $.cookie('o_oa', null, { expires: -1, path: '/', domain: '.origin.com' });
+                $('body').removeClass('subscribed');
+                if(isStoreHomePage()) { window.location.reload(); }
+            }
+        
+        $('ul.display-logged-out')
+            .fadeIn('fast')
+            .css('display', 'inline-block');
+
+        runUtag(failData);
+    }
+
+    $('body').ready(function(){
+        var errors = {
+            PORTAL_UNAVAILABLE: "Sorry, our login authentication service is unavailable.",
+            ACCESS_DENIED: "Unable to log in. Please contact <a href=\"https:\/\/help.ea.com\">Origin Support<\/a> for assistance"
+        };
+
+        var qvWhitelist = ['intcmp', 'promo-code', 'friend-id', 'referring-site'];
+        var searchItems = window.location.search.substr(1).split('&');
+        var qvList = {};
+        var hasQv = false;
+        var autoLogin = window.location.search.substr(1).indexOf('auto-login=true') !== -1;
+        
+        for(var i = 0; i < searchItems.length; i++)
+        {
+            var qvItem = searchItems[i].split('=');
+            if(typeof qvItem[0] !== undefined && typeof qvItem[1] !== undefined && $.inArray(qvItem[0], qvWhitelist) !== -1)
+            {
+                qvList[qvItem[0]] = qvItem[1];
+            }
+        }
+        for(var key in qvList)
+        {   
+            
+            if(key.length > 0)
+            {
+                hasQv = true;
+            }
+        }
+
+        if(navigator.userAgent.indexOf('Origin') == -1)
+        {
+            $('body').removeClass('origin-client');
+        }
+
+        if($.cookie('o_cc') != 'z' && navigator.userAgent.indexOf('Origin') != -1 && window.location.search.indexOf('client-login-attempted') == -1) {
+            window.location.replace('https://accounts.ea.com/connect/auth?response_type=code&display=web2%2Flogin&client_id=live.origin.com&locale=en_SG&redirect_uri=https%3A%2F%2Fwww.origin.com%2Foauth%2Flogin%3Fru%3D%2Fen-sg%2Fstore%2F%3Flogin%3DWyJsb2dpbj1XeUlpWFElM0QlM0QiXQ%3D%3D');
+            
+            return;
+        }
+
+        if(hasQv || $.cookie('o_cc') === 'z' || autoLogin)
+        {
+            $.ajax({
+                url: '/' + $('body').data('locale') + '/store/v1/gus',
+                cache: false,
+                data: qvList
+            })
+            .done(function( data ){
+                if(data.isAuthenticated)
+                {
+                    $('ul.gus-avatar li.avatar').html('<img class="avatar" alt="" src="' + data.avatarUrl + '">' + $('ul.gus-avatar li.avatar').text() + data.displayname);
+
+                    $('ul.display-logged-in, ul.gus-avatar')
+                        .fadeIn("fast")
+                        .css('display', 'inline-block');
+
+                    if(data.hasUser)
+                    {
+                    
+                                            if(data.subscriberInfo.isSubscriber)
+                        {
+                        	if($.cookie('o_oa') == null) {
+                        		$.cookie('o_oa', true, { expires: 1, path: '/', domain: '.origin.com' });
+                        		if(isStoreHomePage()) { window.location.reload(); }
+                        	}
+                        	
+                            $('body').addClass('subscribed');
+                            $('.subs-billing-date').text(data.subscriberInfo.nextBillingDate);
+                        }
+                        else
+                        {
+                        	if($.cookie('o_oa') != null) {
+                        		$.cookie('o_oa', null, { expires: -1, path: '/', domain: '.origin.com' });
+                                $('body').removeClass('subscribed');
+                        		if(isStoreHomePage()) { window.location.reload(); }
+                        	}
+                        }
+                        
+                        window.subscriberInfo = data.subscriberInfo;
+                                            if(data.forceAutoLogin)
+                        {
+                            setTimeout(autoLoginInterval, 10*1000);
+                        }
+                        setInterval(autoLoginInterval, 29*60*1000);
+                    }
+
+                    if (data.hasLoginErrorMessage) {
+                        $('div.mod-alert p#mod-alert-message').html(errors[data.loginErrorMessage]);
+                        $('#loginErrorAlert').removeClass('hidden');
+                    }
+
+                    runUtag(data);
+                }
+                else
+                {
+                    if (data.hasLoginErrorMessage) {
+                        $('div.mod-alert p#mod-alert-message').html(errors[data.loginErrorMessage]);
+                        $('#loginErrorAlert').removeClass('hidden');
+                    }
+
+                    notLoggedIn();
+                }
+            })
+            .fail(function(){
+                notLoggedIn();
+            });
+        }
+        else
+        {
+            notLoggedIn();
+        }
+    });
+})( jQuery );
+            var _sf_startpt=(new Date()).getTime();
+            var _lchannel = 'o_cc';
+            window.EA={};
+
+            //open bundle item removal warning window
+            removeBundle = function(errorCode, url){
+                $('#cart-warning p.errorCode').text(errorCode);
+                $('#cart-warning a.btn-warning').attr('data-url', url);
+                $('#cart-warning a.btn-warning').removeClass('btn-disabled');
+                $('#cart-warning a.btn-warning').attr('target', 'minicart');
+                $('#cart-warning').modal({
+                    width: '450px'
+                });
+            };
+        </script>
+                  <script type="text/javascript">
+                    var w=window;
+                    if(w.performance||w.mozPerformance||w.msPerformance||w.webkitPerformance){var d=document,AKSB=AKSB||{};AKSB.q=[];AKSB.mark=function(a,b){AKSB.q.push(["mark",a,b||(new Date).getTime()])};AKSB.measure=function(a,b,c){AKSB.q.push(["measure",a,b,c||(new Date).getTime()])};AKSB.done=function(a){AKSB.q.push(["done",a])};AKSB.mark("firstbyte",(new Date).getTime());AKSB.prof={custid:"404686",ustr:"cs",originlat:0,clientrtt:65,ghostip:"58.27.124.241",
+                    ipv6:false,pct:10,clientip:"175.145.215.202",requestid:"1d7f8f6f",protocol:"",blver:6,akM:"e12",akN:"ae",akTT:"O",akTX:"1",akTI:"1d7f8f6f",ai:"265652",re:"false"};(function(a){var b=d.createElement("script");b.async="async";b.src=a;a=d.getElementsByTagName("script");a=a[a.length-
+                    1];a.parentNode.insertBefore(b,a)})(("https:"===d.location.protocol?"https:":"http:")+"//ds-aksb-a.akamaihd.net/aksb.min.js")};
+                  </script>
+                  </head><body class="en-sg origin-client language-en" attr-country="sg" attr-time="1462976063" data-locale="en-sg" data-fb-locale="en_SG" data-appkey="store"><script type="text/javascript">
+                if($.cookie('o_oa') != null) {
+                    $('body').addClass('subscribed');
+                }
+            </script><meta itemprop="datePublished" content="2016-05-11" /><div id="loginErrorAlert" class="mod-alert alert-message hidden"><div><p id="mod-alert-message"></p><a href="#" class="mod-alert-close"></a></div></div><div id="outer-wrapper" style="background:#959595;"><div class="alert-message-false"></div><div id="wrapper"><div class="gus-wrapper"><div class="container"><div class="row"><div class="span24 gus logged-out"><ul class="gus-avatar"><li class="border-right avatar">
+                        Welcome, 
+                    </li></ul><ul class="display-logged-in"><li class="border-right border-left origin-logout "><a href="https://accounts.ea.com/connect/logout?client_id=live.origin.com&locale=en_SG&redirect_uri=https%3A%2F%2Fwww.origin.com%2Foauth%2Flogout%3Fru%3D%2Fen-sg%2Fstore%2F%3Flogin%3DWyJsb2dpbj1XeUlpWFElM0QlM0QiXQ%3D%3D" class="">Log out</a></li></ul><ul class="display-logged-out"><li class="border-right origin-login "><a href="https://accounts.ea.com/connect/auth?response_type=code&display=web2%2Flogin&client_id=live.origin.com&locale=en_SG&redirect_uri=https%3A%2F%2Fwww.origin.com%2Foauth%2Flogin%3Fru%3D%2Fen-sg%2Fstore%2F%3Flogin%3DWyJsb2dpbj1XeUlpWFElM0QlM0QiXQ%3D%3D" class="">Login</a></li><li class="border-left border-right origin-register "><a href="https://accounts.ea.com/connect/auth?response_type=code&display=web2%2Fcreate&client_id=live.origin.com&locale=en_SG&redirect_uri=https%3A%2F%2Fwww.origin.com%2Foauth%2Flogin%3Fru%3D%2Fen-sg%2Fstore%2F%3Flogin%3DWyJsb2dpbj1XeUlpWFElM0QlM0QiXQ%3D%3D" class="">Register</a></li></ul><ul><li class="dropdown border-left border-right account-links "><a class="dropdown-toggle" href="https://account.origin.com/cp-ui/aboutme/index?locale=en_SG&env=prod&sourceType=web&gameId=ebisu">My Account</a><ul class="dropdown-menu"><li class=" subscriber"><a href="https://account.origin.com/cp-ui/subscription/index?locale=en_SG&env=prod&sourceType=web&gameId=ebisu" class=" ">Manage Membership</a></li><li><a href="https://account.origin.com/cp-ui/orderhistory/index?locale=en_SG&env=prod&sourceType=web&gameId=ebisu" class=" ">Order History</a></li><li><a href="https://account.origin.com/cp-ui/privacy/index?locale=en_SG&env=prod&sourceType=web&gameId=ebisu" class="">Privacy Settings</a></li></ul></li><li class="dropdown border-left "><a class="dropdown-toggle" href="https://help.ea.com">EA Help</a><ul class="dropdown-menu"><li><a href="https://help.ea.com/sg/origin" class="external-link">Origin Help</a></li><li><a href="https://www.origin.com/en-sg/faq" class="">FAQ</a></li><li><a href="https://help.ea.com/contact-us?product=origin&locale=sg" class="external-link">Contact Us</a></li></ul></li></ul><ul class="download"><li><a href="https://www.origin.com/en-sg/download" class="">Download Origin</a></li></ul></div></div></div></div><div class="container"><div class="navbar header"><div class="navbar-inner"><div class="container"><a href="/en-sg/store/origin-access/home?no-takeover=true" class="brand subscriber"><img src="https://eaassets02-a.akamaihd.net/origin-com-store-damassets/content/dam/OriginAsset/header-logo.png" alt="Origin"/></a><a href="/en-sg/store/?no-takeover=true" class="brand non-subscriber"><img src="https://eaassets01-a.akamaihd.net/origin-com-store-damassets/content/dam/OriginAsset/header-logo.png" alt="Origin"/></a><ul class="nav"><li class="dropdown "><a class="dropdown-toggle" href="/en-sg/store/browse">Browse</a><ul class="dropdown-menu"><li class="dropdown-submenu"><a href="/en-sg/store/browse/pc-download">All PC Games</a><ul class="dropdown-menu"><li><div class="flyout"><ul><li class="sub-header ">By Genre</li><li><a href="/en-sg/store/browse/pc-download/action" class="">Action</a></li><li><a href="/en-sg/store/browse/pc-download/adventure" class="">Adventure</a></li><li><a href="/en-sg/store/browse/pc-download/mmo" class="">MMO</a></li><li><a href="/en-sg/store/browse/pc-download/online" class="">Online</a></li><li><a href="/en-sg/store/browse/pc-download/puzzle" class="">Puzzle</a></li><li><a href="/en-sg/store/browse/pc-download/racing" class="">Racing</a></li><li><a href="/en-sg/store/browse/pc-download/role-playing" class="">RPG</a></li><li><a href="/en-sg/store/browse/pc-download/shooter" class="">Shooter</a></li><li><a href="/en-sg/store/browse/pc-download/simulation" class="">Simulation</a></li><li><a href="/en-sg/store/browse/pc-download/sports" class="">Sports</a></li><li><a href="/en-sg/store/browse/pc-download/strategy" class="">Strategy</a></li></ul></div></li></ul></li><li class="dropdown-submenu"><a href="/en-sg/store/deals">Deals</a><ul class="dropdown-menu"><li><div class="flyout"><ul><li class="sub-header">Deals</li><li><a href="/en-sg/store/deals" class=" ">On Sale</a></li><li><a href="/en-sg/store/browse/basegame/pricebargains" class="">Games Under $6</a></li><li><a href="/en-sg/store/browse/basegame/pricetier1" class="">Games Under $10</a></li></ul></div></li></ul></li><li class="divider "></li><li class="dropdown-submenu"><a href="/en-sg/store/browse/battlefield">Battlefield</a><ul class="dropdown-menu"><li><div class="flyout"><ul><li><a href="/en-sg/store/buy/battlefield-3/pc-download/base-game/standard-edition" class="">Battlefield 3</a></li><li><a href="/en-sg/store/buy/battlefield-4/pc-download/base-game/standard-edition" class="">Battlefield 4</a></li><li><a href="/en-sg/store/buy/battlefield-hardline/pc-download/base-game/digital-deluxe-edition" class=" ">Battlefield Hardline</a></li><li><a href="/en-sg/store/browse/battlefield/expansion" class="">Expansion Packs</a></li><li><a href="/en-sg/store/browse/battlefield/dlc" class="">Downloadable Content</a></li><li><a href="/en-sg/store/shop/battlefield" class=" ">What is Battlefield?</a></li></ul></div></li></ul></li><li class="dropdown-submenu"><a href="/en-sg/store/browse/the-sims">The Sims</a><ul class="dropdown-menu"><li><div class="flyout"><ul><li><a href="/en-sg/store/buy/sims-3-starter-pack/mac-pc-download/base-game/standard-edition " class="">The Sims 3</a></li><li><a href="/en-sg/store/buy/sims-4/mac-pc-download/base-game/digital-deluxe-edition" class="">The Sims 4</a></li><li><a href="/en-sg/store/browse/the-sims/expansion" class=" ">Expansion Packs</a></li><li><a href="/en-sg/store/browse/the-sims/dlc" class=" ">Downloadable Content</a></li></ul></div></li></ul></li><li class="dropdown-submenu"><a href="/en-sg/store/browse/star-wars">Star Wars™</a><ul class="dropdown-menu"><li><div class="flyout"><ul><li><a href="/en-sg/store/buy/star-wars-battlefront/pc-download/base-game/standard-edition" class=" ">Star Wars&trade; Battlefront</a></li><li><a href="/en-sg/store/buy/star-wars-the-old-republic/pc-download/base-game/play-for-free" class=" ">Star Wars&trade; The Old Republic</a></li><li><a href="/en-sg/store/browse/star-wars/expansion" class=" ">Expansion Packs</a></li><li><a href="/en-sg/store/browse/star-wars/dlc" class=" ">Downloadable Content</a></li></ul></div></li></ul></li><li class="dropdown-submenu"><a href="/en-sg/store/browse/dragon-age">Dragon Age</a><ul class="dropdown-menu"><li><div class="flyout"><ul><li><a href="/en-sg/store/buy/dragon-age-inquisition/pc-download/base-game/standard-edition" class=" ">Dragon Age&trade;: Inquisition</a></li><li><a href="/en-sg/store/buy/dragon-age-inquisition/pc-download/base-game/game-of-the-year-edition" class=" ">Dragon Age&trade;: Inquisition - Game of the Year Edition</a></li><li><a href="/en-sg/store/browse/dragon-age/expansion" class=" ">Expansion Packs</a></li><li><a href="/en-sg/store/browse/dragon-age/dlc" class=" ">Downloadable Content</a></li></ul></div></li></ul></li><li class="dropdown-submenu"><a href="/en-sg/store/browse/fifa">FIFA</a><ul class="dropdown-menu"><li><div class="flyout"><ul><li><a href="/en-sg/store/buy/fifa-15/pc-download/base-game/standard-edition" class=" ">FIFA 15</a></li><li><a href="/en-sg/store/buy/fifa-16/pc-download/base-game/standard-edition" class=" ">FIFA 16</a></li><li><a href="/en-sg/store/browse/fifa/currency" class=" ">FIFA Points</a></li><li><a href="/en-sg/store/shop/fifa" class=" ">What is FIFA?</a></li></ul></div></li></ul></li><li class="dropdown-submenu"><a href="/en-sg/store/browse/need-for-speed">Need for Speed</a><ul class="dropdown-menu"><li><div class="flyout"><ul><li><a href="/en-sg/store/buy/nfs-rivals-2014-/pc-download/base-game/standard-edition" class=" ">Need for Speed&trade; Rivals</a></li><li><a href="/en-sg/store/buy/needforspeed/pc-download/base-game/standard-edition" class=" ">Need for Speed&trade; </a></li><li><a href="/en-sg/store/browse/need-for-speed/dlc" class=" ">Downloadable Content</a></li></ul></div></li></ul></li><li class="dropdown-submenu"><a href="/en-sg/store/browse/plants-vs-zombies">Plants vs. Zombies</a><ul class="dropdown-menu"><li><div class="flyout"><ul><li><a href="/en-sg/store/buy/plants-vs-zombies/mac-pc-download/base-game/standard-edition" class=" ">Plants vs. Zombies&trade; Game of the Year Edition</a></li><li><a href="/en-sg/store/buy/plants-vs-zombies-garden-warfare/pc-download/base-game/standard-edition" class=" ">Plants vs. Zombies&trade; Garden Warfare</a></li><li><a href="/en-sg/store/buy/plants-vs-zombies-garden-warfare-2/pc-download/base-game/standard-edition" class=" ">Plants vs. Zombies&trade; Garden Warfare 2</a></li><li><a href="/en-sg/store/browse/plants-vs-zombies/currency" class=" ">Coin Packs</a></li></ul></div></li></ul></li><li class="divider "></li><li><a href="/en-sg/store/browse/mac-download" class="">All Mac Games</a></li></ul></li><li class="dropdown "><a class="dropdown-toggle" href="/en-sg/store/free-games">Free Games</a><ul class="dropdown-menu"><li><a href="/en-sg/store/free-games/on-the-house" class="">On the House</a></li><li><a href="/en-sg/store/free-games/trials" class=" ">Trials</a></li><li><a href="/en-sg/store/free-games/demos-betas" class="">Demos and Betas</a></li></ul></li><li class="dropdown non-subscriber"><a class="dropdown-toggle" href="/en-sg/store/origin-access">Origin Access</a><ul class="dropdown-menu"><li><a href="/en-sg/store/browse/vault-games" class=" ">Vault Games</a></li><li><a href="/en-sg/store/origin-access/trials" class=" ">Play First Trials</a></li><li><a href="/en-sg/store/../origin-access/faq" class=" ">Origin Access FAQ</a></li></ul></li><li class="dropdown subscriber"><a class="dropdown-toggle" href="/en-sg/store/origin-access/home?no-takeover=true">Origin Access</a><ul class="dropdown-menu"><li><a href="/en-sg/store/browse/vault-games" class=" ">Vault Games</a></li><li><a href="/en-sg/store/origin-access/trials" class=" ">Play First Trials</a></li><li><a href="/en-sg/store/../origin-access/faq" class=" ">Origin Access FAQ</a></li></ul></li></ul><ul class="header-cart"><li><a href="/en-sg/store/cart" class="cart"></a><div class="cart-dropdown"><iframe scrolling="no" frameborder="0" name="minicart" class="cart-loading"></iframe></div></li></ul><form class="navbar-form pull-right" method="get" action="/en-sg/store/browse"><input type="text" placeholder="Search..." data-placeholder="Search..." class="search" id="search-input" name="q" autocomplete="off" maxlength="100"><a href="/en-sg/store/browse" type="submit" class="btn-search" id="search-button"></a><a href="#" class="clear-search"></a><div class="searchFlyout"><div class="loading-typeahead light-gray"><p>SEARCHING...</p></div></div></form></div></div></div></div><!-- close container --><div id="heroic-carousel" class="carousel slide featuredCarouselStripe"><div class="carousel-inner"><div class="item active" style="background:url('https://eaassets02-a.akamaihd.net/origin-com-store-damassets/content/dam/eadam/M/Merchandising/Sims/Tunguska/SWBF_trial_hero_INTL_v1.png') no-repeat;"><div class="carousel-caption"><div class="cta bottom left dark"><h2>Play the Free Trial</h2><p class="">Get 4 hours for free in a galaxy far, far away.</p><a href="/en-sg/store/free-games/trials" class="btn btn-warning  ">Play Now</a></div></div><a href="/en-sg/store/free-games/trials" class="hidden-link  "></a></div><div class="item" style="background:url('https://eaassets-a.akamaihd.net/origin-com-store-damassets/content/dam/eadam/N/NFS_16/merch/SpeedLists_contentupdate_heroic_1200x715_NFS_en_US.png') no-repeat;"><div class="carousel-caption"><div class="cta bottom left dark"><img src="https://Eaassets-a.akamaihd.net/origin-com-store-final-assets-prod/185353/142.0x200.0/1024486_MB_142x200_en_US_^_2015-08-04-10-46-01_c751b403ecad202ce9071b1ba7c0674e2bdf76ad.jpg" alt="Need for Speed&trade;" class="packart"><h2>SpeedLists are Here</h2><p class="">Test your skills and take on the best in this competitive multiplayer update!</p><a href="/en-sg/store/buy/needforspeed/pc-download/base-game/standard-edition" class="btn btn-warning  ">Let's Go</a></div></div><a href="/en-sg/store/buy/needforspeed/pc-download/base-game/standard-edition" class="hidden-link  "></a></div><div class="item" style="background:url('https://eaassets-a.akamaihd.net/origin-com-store-damassets/content/dam/eadam/M/Merchandising/Sims/Tunguska/mecatalyst_se_hero_en_US_punch_v1.png') no-repeat;"><div class="carousel-caption"><div class="cta bottom left dark"><h2>Race for Freedom</h2><p class="">Experience fluid first-person movement and combat through Faith’s eyes.</p><a href="/en-sg/store/buy/mirrors-edge-catalyst/pc-download/base-game/standard-edition" class="btn btn-warning  ">Pre-order Now</a></div></div><a href="/en-sg/store/buy/mirrors-edge-catalyst/pc-download/base-game/standard-edition" class="hidden-link  "></a></div></div><a class="carousel-control displayOnHover left large" data-target="#heroic-carousel"></a><a class="carousel-control displayOnHover right large" data-target="#heroic-carousel"></a></div><script type="text/javascript">
+    $(document).ready(function(){
+        $('#heroic-carousel').carousel({
+            pause: "hover",
+            interval: 5000,
+            pills: true
+        });
+    });
+</script><div class="container"><!-- reopen container --><div id="ext-comp-1886" class="row" ><div id="ext-comp-6732" class="column span8 " ><div id="ext-comp-3735" class="text-image-stripe  unrelated" ><div class="striped-text"><div class="cta content dark"><h2 class="text-image-stripe-title">Prepare for Battle</h2><p class="text-image-stripe-subtitle">A new Battlefield is on the way. </p></div></div><a href="/en-sg/store/buy/tunguska/pc-download/base-game/deluxe-edition" class="text-image-stripe-link  "><img src="https://eaassets02-a.akamaihd.net/origin-com-store-damassets/content/dam/eadam/B/BATTLEFIELD1_(TUNGUSKA)/tunguska_txtimgpromo_en_US_v1.jpg" alt=""/></a></div></div><div id="ext-comp-6732" class="column span8 " ><div id="ext-comp-3735" class="text-image-stripe  unrelated" ><div class="striped-text"><div class="cta content dark"><h2 class="text-image-stripe-title">Pack More Into Life</h2><p class="text-image-stripe-subtitle">New experiences, new stuff, more fun!</p></div></div><a href="/en-sg/store/shop/the-sims" class="text-image-stripe-link  "><img src="https://eaassets-a.akamaihd.net/origin-com-store-damassets/content/dam/eadam/M/Merchandising/Sims/Tunguska/DLCtrio_txtimgpromo_304x392_TS4_en_US_v1.jpg" alt=""/></a></div></div><div id="ext-comp-2397" class="column span8 " ><div class="game-block module"><div class="module-header module-header-grey"><h2 class="box"><a href="/en-sg/store/browse/pc-download?q=" class="viewAll" data-sort="releaseDate" data-dir="desc">View All (546)</a> Best Sellers</h2></div><div class="content"><div class="game "
+    data-mastertitle="BATTLEFRONT"
+    data-franchise="star-wars"
+    data-title="STAR WARS™ Battlefront™"
+    data-platform="PC Download"
+    data-productid="Origin.OFR.50.0000940"
+    data-sku="Origin.OFR.50.0000940"><div class="hide floatValues"><p class="floatPrice"><span class="dyn dyn-float-price" data-id="Origin.OFR.50.0000940"></p><p class="floatStrike"><span class="dyn dyn-float-strike" data-id="Origin.OFR.50.0000940"></span></p></div><a href="/en-sg/store/buy/battlefront/pc-download/base-game/standard-edition"><img src="https://Eaassets-a.akamaihd.net/origin-com-store-final-assets-prod/192140/142.0x200.0/1030897_MB_142x200_en_US_^_2015-04-28-11-47-48_586d446ac360aa72ee9dd14fbf137bd95f6466b3.jpg" alt="STAR WARS&trade; Battlefront&trade;"/></a><h3 class="title"><a href="/en-sg/store/buy/battlefront/pc-download/base-game/standard-edition">STAR WARS&trade; Battlefront&trade;</a></h3><p class="platform">PC Download</p><p class="price"><span class="dyn dyn-price dyn-static dyn-loading" data-id="Origin.OFR.50.0000940" data-currency="SGD" data-defaultprice="$34.90"></span></p><p class="discount"><span class="dyn dyn-strike" data-id="Origin.OFR.50.0000940"></span></p><p class="save-text"><span class="dyn dyn-discount" data-txt="Save %count%%" data-free="Free" data-id="Origin.OFR.50.0000940"></span></p><div class="list-qv"><a class="btn btn-warning quick-view" href="/en-sg/store/buy/battlefront/pc-download/base-game/standard-edition" data-quickview="/en-sg/store/quickview/battlefront/pc-download/base-game/standard-edition?r=aHR0cHM6Ly93d3cub3JpZ2luLmNvbS9lbi1zZy9zdG9yZS8/bG9naW49V3lJaVhRJTNEJTNE">Quick View</a></div></div><div class="game "
+    data-mastertitle="UNRAVEL"
+    data-franchise="Unravel"
+    data-title="Unravel™"
+    data-platform="PC Download"
+    data-productid="Origin.OFR.50.0000823"
+    data-sku="Origin.OFR.50.0000823"><div class="hide floatValues"><p class="floatPrice"><span class="dyn dyn-float-price" data-id="Origin.OFR.50.0000823"></p><p class="floatStrike"><span class="dyn dyn-float-strike" data-id="Origin.OFR.50.0000823"></span></p></div><a href="/en-sg/store/buy/unravel/pc-download/base-game/standard-edition"><img src="https://Eaassets-a.akamaihd.net/origin-com-store-final-assets-prod/194331/142.0x200.0/1031469_MB_142x200_en_US_^_2015-06-08-12-38-57_4dd3c94be20e5c1d3edb79acdf60f3c080671c1f.jpg" alt="Unravel&trade;"/></a><h3 class="title"><a href="/en-sg/store/buy/unravel/pc-download/base-game/standard-edition">Unravel&trade;</a></h3><p class="platform">PC Download</p><p class="price"><span class="dyn dyn-price dyn-static dyn-loading" data-id="Origin.OFR.50.0000823" data-currency="SGD" data-defaultprice="$24.90"></span></p><p class="discount"><span class="dyn dyn-strike" data-id="Origin.OFR.50.0000823"></span></p><p class="save-text"><span class="dyn dyn-discount" data-txt="Save %count%%" data-free="Free" data-id="Origin.OFR.50.0000823"></span></p><div class="list-qv"><a class="btn btn-warning quick-view" href="/en-sg/store/buy/unravel/pc-download/base-game/standard-edition" data-quickview="/en-sg/store/quickview/unravel/pc-download/base-game/standard-edition?r=aHR0cHM6Ly93d3cub3JpZ2luLmNvbS9lbi1zZy9zdG9yZS8/bG9naW49V3lJaVhRJTNEJTNE">Quick View</a></div></div><div class="game "
+    data-mastertitle="THE WITCHER 3: WILD HUNT"
+    data-franchise="witcher"
+    data-title="The Witcher® 3: Wild Hunt Blood and Wine"
+    data-platform="PC Download"
+    data-productid="Origin.OFR.50.0000989"
+    data-sku="Origin.OFR.50.0000989"><div class="hide floatValues"><p class="floatPrice"><span class="dyn dyn-float-price" data-id="Origin.OFR.50.0000989"></p><p class="floatStrike"><span class="dyn dyn-float-strike" data-id="Origin.OFR.50.0000989"></span></p></div><a href="/en-sg/store/buy/the-witcher-3-wild-hunt/pc-download/addon/the-witcher-3-wild-hunt-blood-and-wine"><img src="https://Eaassets-a.akamaihd.net/origin-com-store-final-assets-prod/194188/142.0x200.0/1033417_MB_142x200_en_US_^_2016-04-19-09-03-33_267ba6ad60dd0ea147ab14568f2c7285ec0327b2.jpg" alt="The Witcher&reg; 3: Wild Hunt Blood and Wine"/></a><h3 class="title"><a href="/en-sg/store/buy/the-witcher-3-wild-hunt/pc-download/addon/the-witcher-3-wild-hunt-blood-and-wine">The Witcher&reg; 3: Wild Hunt Blood and Wine</a></h3><p class="platform">PC Download</p><p class="price"><span class="dyn dyn-price dyn-static dyn-loading" data-id="Origin.OFR.50.0000989" data-currency="SGD" data-defaultprice="$23.99"></span></p><p class="discount"><span class="dyn dyn-strike" data-id="Origin.OFR.50.0000989"></span></p><p class="save-text"><span class="dyn dyn-discount" data-txt="Save %count%%" data-free="Free" data-id="Origin.OFR.50.0000989"></span></p><div class="list-qv"><a class="btn btn-warning quick-view" href="/en-sg/store/buy/the-witcher-3-wild-hunt/pc-download/addon/the-witcher-3-wild-hunt-blood-and-wine" data-quickview="/en-sg/store/quickview/the-witcher-3-wild-hunt/pc-download/addon/the-witcher-3-wild-hunt-blood-and-wine?r=aHR0cHM6Ly93d3cub3JpZ2luLmNvbS9lbi1zZy9zdG9yZS8/bG9naW49V3lJaVhRJTNEJTNE">Quick View</a></div></div></div></div></div></div><div id="ext-comp-1947" class="row" ></div><div id="ext-comp-2156" class="row" ><div id="" class="column span24 " ><div id="ext-comp-2509" class="sortMenu"><ul><li class="first">Jump To</li><li class=""><a href="#8a12d5626fe3d27c977e6f2ac507d431da743030-content-header">Trending<div class="carot"></div></a></li><li class="last"><a href="#1c178c313688c47a194206a946498809ee7e4c3e-content-header">FIFA 16<div class="carot"></div></a></li></ul></div><div class="offerset " ><div id="8a12d5626fe3d27c977e6f2ac507d431da743030-content-header" class="contentHeader"><h2 id="ext-comp-3612">Trending</h2><a href="/en-sg/store/browse/pc-download?q=" class="viewAll" data-sort="rank" data-dir="desc">View All (546)</a></div><div id="8a12d5626fe3d27c977e6f2ac507d431da743030-carousel" class="carousel slide"><div class="carousel-inner"><div class="item active"><div class="packart" 
+    data-mastertitle="THE WITCHER 3: WILD HUNT"
+    data-franchise="witcher"
+    data-title="The Witcher® 3: Wild Hunt Blood and Wine"
+    data-platform="PC Download"
+    data-productid="Origin.OFR.50.0000989"
+    data-sku="Origin.OFR.50.0000989"
+><div class="extra"><div class="border-gradient"><div class="background-gradient"><a class="btn btn-warning quick-view" href="/en-sg/store/buy/the-witcher-3-wild-hunt/pc-download/addon/the-witcher-3-wild-hunt-blood-and-wine" data-quickview="/en-sg/store/quickview/the-witcher-3-wild-hunt/pc-download/addon/the-witcher-3-wild-hunt-blood-and-wine?r=aHR0cHM6Ly93d3cub3JpZ2luLmNvbS9lbi1zZy9zdG9yZS8/bG9naW49V3lJaVhRJTNEJTNE">Quick View</a><a href="/en-sg/store/buy/the-witcher-3-wild-hunt/pc-download/addon/the-witcher-3-wild-hunt-blood-and-wine"><img src="https://Eaassets-a.akamaihd.net/origin-com-store-final-assets-prod/194188/142.0x200.0/1033417_MB_142x200_en_US_^_2016-04-19-09-03-33_267ba6ad60dd0ea147ab14568f2c7285ec0327b2.jpg" alt="The Witcher&reg; 3: Wild Hunt Blood and Wine" class="packart-image"><div class="blackBoxSmall" style="display: none;"></div></a><h5><a href="/en-sg/store/buy/the-witcher-3-wild-hunt/pc-download/addon/the-witcher-3-wild-hunt-blood-and-wine" title="The Witcher&reg; 3: Wild Hunt Blood and Wine">The Witcher&reg; 3: Wild Hunt Blood and Wine</a></h5><div class="hide floatValues"><p class="floatPrice"><span class="dyn dyn-float-price" data-id="Origin.OFR.50.0000989"></span></p><p class="floatStrike"><span class="dyn dyn-float-strike" data-id="Origin.OFR.50.0000989"></span></p></div><div class="price-info"><p class="price"><span class="dyn dyn-price dyn-static dyn-loading" data-id="Origin.OFR.50.0000989" data-currency="SGD" data-defaultprice="$23.99"></span></p><p class="discount"><span class="dyn dyn-strike" data-id="Origin.OFR.50.0000989"></span></p><p class="save-text"><span class="dyn dyn-discount" data-txt="Save %count%%" data-free="Free" data-id="Origin.OFR.50.0000989"></span></p><div class="clearfix"></div></div><div class="clearfix"></div></div></div></div></div><div class="packart" 
+    data-mastertitle="MIRRORS EDGE CATALYST"
+    data-franchise="mirrors-edge"
+    data-title="Mirror&#039;s Edge™ Catalyst"
+    data-platform="PC Download"
+    data-productid="Origin.OFR.50.0001022"
+    data-sku="Origin.OFR.50.0001022"
+><div class="extra"><div class="border-gradient"><div class="background-gradient"><a class="btn btn-warning quick-view" href="/en-sg/store/buy/mirrors-edge-catalyst/pc-download/base-game/standard-edition" data-quickview="/en-sg/store/quickview/mirrors-edge-catalyst/pc-download/base-game/standard-edition?r=aHR0cHM6Ly93d3cub3JpZ2luLmNvbS9lbi1zZy9zdG9yZS8/bG9naW49V3lJaVhRJTNEJTNE">Quick View</a><a href="/en-sg/store/buy/mirrors-edge-catalyst/pc-download/base-game/standard-edition"><img src="https://Eaassets-a.akamaihd.net/origin-com-store-final-assets-prod/190134/142.0x200.0/1030900_MB_142x200_en_US_^_2015-06-09-16-57-41_a892a09654728976bcf8fb21e116665fb56c84e7.jpg" alt="Mirror's Edge&trade; Catalyst" class="packart-image"><div class="blackBoxSmall" style="display: none;"></div></a><h5><a href="/en-sg/store/buy/mirrors-edge-catalyst/pc-download/base-game/standard-edition" title="Mirror's Edge&trade; Catalyst">Mirror's Edge&trade; Catalyst</a></h5><div class="hide floatValues"><p class="floatPrice"><span class="dyn dyn-float-price" data-id="Origin.OFR.50.0001022"></span></p><p class="floatStrike"><span class="dyn dyn-float-strike" data-id="Origin.OFR.50.0001022"></span></p></div><div class="price-info"><p class="price"><span class="dyn dyn-price dyn-static dyn-loading" data-id="Origin.OFR.50.0001022" data-currency="SGD" data-defaultprice="$69.90"></span></p><p class="discount"><span class="dyn dyn-strike" data-id="Origin.OFR.50.0001022"></span></p><p class="save-text"><span class="dyn dyn-discount" data-txt="Save %count%%" data-free="Free" data-id="Origin.OFR.50.0001022"></span></p><div class="clearfix"></div></div><div class="clearfix"></div></div></div></div></div><div class="packart" 
+    data-mastertitle="PLANTS VS ZOMBIES GARDEN WARFARE 2"
+    data-franchise="plants-vs-zombies"
+    data-title="Plants vs. Zombies™ Garden Warfare 2: Standard Edition"
+    data-platform="PC Download"
+    data-productid="Origin.OFR.50.0000786"
+    data-sku="Origin.OFR.50.0000786"
+><div class="extra"><div class="border-gradient"><div class="background-gradient"><a class="btn btn-warning quick-view" href="/en-sg/store/buy/plants-vs-zombies-garden-warfare-2/pc-download/base-game/standard-edition" data-quickview="/en-sg/store/quickview/plants-vs-zombies-garden-warfare-2/pc-download/base-game/standard-edition?r=aHR0cHM6Ly93d3cub3JpZ2luLmNvbS9lbi1zZy9zdG9yZS8/bG9naW49V3lJaVhRJTNEJTNE">Quick View</a><a href="/en-sg/store/buy/plants-vs-zombies-garden-warfare-2/pc-download/base-game/standard-edition"><img src="https://Eaassets-a.akamaihd.net/origin-com-store-final-assets-prod/192470/142.0x200.0/1034840_MB_142x200_en_US_^_2015-06-05-11-40-25_b74a4b1d5ec234d08174020e0a7fc02e9f8a32f3.jpg" alt="Plants vs. Zombies&trade; Garden Warfare 2: Standard Edition" class="packart-image"><div class="blackBoxSmall" style="display: none;"></div></a><h5><a href="/en-sg/store/buy/plants-vs-zombies-garden-warfare-2/pc-download/base-game/standard-edition" title="Plants vs. Zombies&trade; Garden Warfare 2: Standard Edition">Plants vs. Zombies&trade; Garden Warfare 2: Standard Edition</a></h5><div class="hide floatValues"><p class="floatPrice"><span class="dyn dyn-float-price" data-id="Origin.OFR.50.0000786"></span></p><p class="floatStrike"><span class="dyn dyn-float-strike" data-id="Origin.OFR.50.0000786"></span></p></div><div class="price-info"><p class="price"><span class="dyn dyn-price dyn-static dyn-loading" data-id="Origin.OFR.50.0000786" data-currency="SGD" data-defaultprice="$69.90"></span></p><p class="discount"><span class="dyn dyn-strike" data-id="Origin.OFR.50.0000786"></span></p><p class="save-text"><span class="dyn dyn-discount" data-txt="Save %count%%" data-free="Free" data-id="Origin.OFR.50.0000786"></span></p><div class="clearfix"></div></div><div class="clearfix"></div></div></div></div></div><div class="packart" 
+    data-mastertitle="SIMS 4"
+    data-franchise="the-sims"
+    data-title="The Sims™ 4"
+    data-platform="Mac/PC Download"
+    data-productid="OFB-EAST:109552299"
+    data-sku="OFB-EAST:109552299"
+><div class="extra"><div class="border-gradient"><div class="background-gradient"><a class="btn btn-warning quick-view" href="/en-sg/store/buy/sims-4/mac-pc-download/base-game/standard-edition" data-quickview="/en-sg/store/quickview/sims-4/mac-pc-download/base-game/standard-edition?r=aHR0cHM6Ly93d3cub3JpZ2luLmNvbS9lbi1zZy9zdG9yZS8/bG9naW49V3lJaVhRJTNEJTNE">Quick View</a><a href="/en-sg/store/buy/sims-4/mac-pc-download/base-game/standard-edition"><img src="https://Eaassets-a.akamaihd.net/origin-com-store-final-assets-prod/55482/142.0x200.0/1011164_MB_142x200_en_US_^_2014-07-01-16-22-18_c6326a789813635b989d369f650cce4d223a674a.jpg" alt="The Sims&trade; 4" class="packart-image"><div class="blackBoxSmall" style="display: none;"></div></a><h5><a href="/en-sg/store/buy/sims-4/mac-pc-download/base-game/standard-edition" title="The Sims&trade; 4">The Sims&trade; 4</a></h5><div class="hide floatValues"><p class="floatPrice"><span class="dyn dyn-float-price" data-id="OFB-EAST:109552299"></span></p><p class="floatStrike"><span class="dyn dyn-float-strike" data-id="OFB-EAST:109552299"></span></p></div><div class="price-info"><p class="price"><span class="dyn dyn-price dyn-static dyn-loading" data-id="OFB-EAST:109552299" data-currency="SGD" data-defaultprice="$69.90"></span></p><p class="discount"><span class="dyn dyn-strike" data-id="OFB-EAST:109552299"></span></p><p class="save-text"><span class="dyn dyn-discount" data-txt="Save %count%%" data-free="Free" data-id="OFB-EAST:109552299"></span></p><div class="clearfix"></div></div><div class="clearfix"></div></div></div></div></div><div class="packart" 
+    data-mastertitle="BATTLEFIELD 4"
+    data-franchise="BATTLEFIELD"
+    data-title="Battlefield 4™ Premium"
+    data-platform="PC Download"
+    data-productid="OFB-EAST:109550762"
+    data-sku="OFB-EAST:109550762"
+><div class="extra"><div class="border-gradient"><div class="background-gradient"><a class="btn btn-warning quick-view" href="/en-sg/store/buy/battlefield-4/pc-download/addon/battlefield-4-premium" data-quickview="/en-sg/store/quickview/battlefield-4/pc-download/addon/battlefield-4-premium?r=aHR0cHM6Ly93d3cub3JpZ2luLmNvbS9lbi1zZy9zdG9yZS8/bG9naW49V3lJaVhRJTNEJTNE">Quick View</a><a href="/en-sg/store/buy/battlefield-4/pc-download/addon/battlefield-4-premium"><img src="https://Eaassets-a.akamaihd.net/origin-com-store-final-assets-prod/76889/142.0x200.0/1016080_MB_142x200_en_US_^_2013-08-23-10-28-13_d1d0898eb4fb6244e431eef7b7d8bac821b5bd7e.jpg" alt="Battlefield 4&trade; Premium Membership" class="packart-image"><div class="blackBoxSmall" style="display: none;"></div></a><h5><a href="/en-sg/store/buy/battlefield-4/pc-download/addon/battlefield-4-premium" title="Battlefield 4&trade; Premium Membership">Battlefield 4&trade; Premium Membership</a></h5><div class="hide floatValues"><p class="floatPrice"><span class="dyn dyn-float-price" data-id="OFB-EAST:109550762"></span></p><p class="floatStrike"><span class="dyn dyn-float-strike" data-id="OFB-EAST:109550762"></span></p></div><div class="price-info"><p class="price"><span class="dyn dyn-price dyn-static dyn-loading" data-id="OFB-EAST:109550762" data-currency="SGD" data-defaultprice="$49.90"></span></p><p class="discount"><span class="dyn dyn-strike" data-id="OFB-EAST:109550762"></span></p><p class="save-text"><span class="dyn dyn-discount" data-txt="Save %count%%" data-free="Free" data-id="OFB-EAST:109550762"></span></p><div class="clearfix"></div></div><div class="clearfix"></div></div></div></div></div></div></div></div><div class="clearfix"></div><hr/><div id="1c178c313688c47a194206a946498809ee7e4c3e-content-header" class="contentHeader"><h2 id="ext-comp-3612">FIFA 16</h2><a href="/en-sg/store/browse/fifa?q=" class="viewAll" data-sort="rank" data-dir="desc">View All (35)</a></div><div id="1c178c313688c47a194206a946498809ee7e4c3e-carousel" class="carousel slide"><div class="carousel-inner"><div class="item active"><div class="packart" 
+    data-mastertitle="FIFA 16"
+    data-franchise="fifa"
+    data-title="2,200 FIFA 16 Points"
+    data-platform="PC Download"
+    data-productid="Origin.OFR.50.0000920"
+    data-sku="Origin.OFR.50.0000920"
+><div class="extra"><div class="border-gradient"><div class="background-gradient"><a class="btn btn-warning quick-view" href="/en-sg/store/buy/fifa-16/pc-download/currency/2-200-fifa-16-points" data-quickview="/en-sg/store/quickview/fifa-16/pc-download/currency/2-200-fifa-16-points?r=aHR0cHM6Ly93d3cub3JpZ2luLmNvbS9lbi1zZy9zdG9yZS8/bG9naW49V3lJaVhRJTNEJTNE">Quick View</a><a href="/en-sg/store/buy/fifa-16/pc-download/currency/2-200-fifa-16-points"><img src="https://Eaassets-a.akamaihd.net/origin-com-store-final-assets-prod/182631/142.0x200.0/1031606_MB_142x200__en_US_^_2015-09-07-15-05-13_0f6124899407648ae75af703374276928834326e.jpg" alt="2,200 FIFA 16 Points" class="packart-image"><div class="blackBoxSmall" style="display: none;"></div></a><h5><a href="/en-sg/store/buy/fifa-16/pc-download/currency/2-200-fifa-16-points" title="2,200 FIFA 16 Points">2,200 FIFA 16 Points</a></h5><div class="hide floatValues"><p class="floatPrice"><span class="dyn dyn-float-price" data-id="Origin.OFR.50.0000920"></span></p><p class="floatStrike"><span class="dyn dyn-float-strike" data-id="Origin.OFR.50.0000920"></span></p></div><div class="price-info"><p class="price"><span class="dyn dyn-price dyn-static dyn-loading" data-id="Origin.OFR.50.0000920" data-currency="SGD" data-defaultprice="$32.00"></span></p><p class="discount"><span class="dyn dyn-strike" data-id="Origin.OFR.50.0000920"></span></p><p class="save-text"><span class="dyn dyn-discount" data-txt="Save %count%%" data-free="Free" data-id="Origin.OFR.50.0000920"></span></p><div class="clearfix"></div></div><div class="clearfix"></div></div></div></div></div><div class="packart" 
+    data-mastertitle="FIFA 16"
+    data-franchise="fifa"
+    data-title="FIFA 16"
+    data-platform="PC Download"
+    data-productid="Origin.OFR.50.0000781"
+    data-sku="Origin.OFR.50.0000781"
+><div class="extra"><div class="border-gradient"><div class="background-gradient"><div class="subscriber"><a class="btn btn-warning get-it-now product-OriginOFR500000781" href="#" data-entitlement-url="https://www.origin.com/en-sg/store/demos-trials-flat?productId=Origin.OFR.50.0000781&amp;ora=18&amp;returnUrl=https%3A%2F%2Fwww.origin.com%2Fen-sg%2Fstore%2F&amp;sig=d45bb43a22c6120172878bd2e214b0a4dbe185fb&amp;vault=1">Add to My Games</a><a class="btn quick-view" href="/en-sg/store/buy/fifa-16/pc-download/base-game/standard-edition" data-quickview="/en-sg/store/quickview/fifa-16/pc-download/base-game/standard-edition?r=aHR0cHM6Ly93d3cub3JpZ2luLmNvbS9lbi1zZy9zdG9yZS8=">Quick View</a></div><div class="non-subscriber"><a class="btn btn-warning quick-view" href="/en-sg/store/buy/fifa-16/pc-download/base-game/standard-edition" data-quickview="/en-sg/store/quickview/fifa-16/pc-download/base-game/standard-edition?r=aHR0cHM6Ly93d3cub3JpZ2luLmNvbS9lbi1zZy9zdG9yZS8/bG9naW49V3lJaVhRJTNEJTNE">Quick View</a></div><div class="demo-game-card"><div class="arrow"></div><h3><a href="/en-sg/store/buy/fifa-16/pc-download/base-game/standard-edition">FIFA 16</a></h3><hr/><a href="http://www.ea.com/1/product-eulas" class="external-link terms">End User License Agreement</a><a class="terms" data-toggle="modal" data-target=".aef5e474b8a08d73d95433cb4e264e19ac5f74e3">Terms and Conditions</a><div class="terms-modal modal hide aef5e474b8a08d73d95433cb4e264e19ac5f74e3" data-width="600"><a data-dismiss="modal"></a><p>INTERNET CONNECTION REQUIRED FOR PRODUCT ACTIVATION. INTERNET CONNECTION, EA ACCOUNT, ACCEPTANCE OF PRODUCT AND ORIGIN END USER LICENSE AGREEMENTS (EULAS), INSTALLATION OF THE ORIGIN CLIENT SOFTWARE (www.origin.com/about) AND REGISTRATION WITH ENCLOSED SINGLE-USE SERIAL CODE REQUIRED TO PLAY AND ACCESS ONLINE FEATURES. SERIAL CODE REGISTRATION IS LIMITED TO ONE EA ACCOUNT PER SERIAL CODE.&nbsp; SERIAL CODES ARE NON-TRANSFERABLE ONCE USED AND SHALL BE VALID, AT A MINIMUM, SO LONG AS ONLINE FEATURES ARE AVAILABLE.&nbsp; YOU MUST BE 13+ TO PLAY.&nbsp; ADDITIONAL CONTENT MAY BE PURCHASED IN-GAME. &nbsp;EA PRIVACY AND COOKIE POLICY AND TERMS OF SERVICE CAN BE FOUND AT www.ea.com. EULAS AND ADDITIONAL DISCLOSURES CAN BE FOUND AT www.ea.com/1/product-eulas.&nbsp; EA MAY RETIRE ONLINE FEATURES AFTER 30 DAYS NOTICE POSTED ON www.ea.com/1/service-updates.&nbsp; INCLUDES SOFTWARE THAT COLLECTS DATA ONLINE TO PROVIDE IN GAME ADVERTISING. &nbsp;EA MAY PROVIDE CERTAIN INCREMENTAL CONTENT AND/OR UPDATES FOR NO ADDITIONAL CHARGE, IF AND WHEN AVAILABLE.</p></div></div><a href="/en-sg/store/buy/fifa-16/pc-download/base-game/standard-edition"><img src="https://Eaassets-a.akamaihd.net/origin-com-store-final-assets-prod/182631/142.0x200.0/1032134_MB_142x200_en_US_^_2015-07-07-13-36-28_d72037429253e18e6e9fb1c082a3c59e8069e729.jpg" alt="FIFA 16" class="packart-image"><div class="blackBoxSmall" style="display: none;"></div></a><h5><a href="/en-sg/store/buy/fifa-16/pc-download/base-game/standard-edition" title="FIFA 16">FIFA 16</a></h5><div class="hide floatValues"><p class="floatPrice"><span class="dyn dyn-float-price" data-id="Origin.OFR.50.0000781"></span></p><p class="floatStrike"><span class="dyn dyn-float-strike" data-id="Origin.OFR.50.0000781"></span></p></div><div class="price-info"><div class="non-subscriber"><p class="subs-price">Included<br><span>with</span> <img src="https://eaassets04-a.akamaihd.net/origin-com-store-webassets/1.0.0.435557_1744bc51bbf2a7a1bcb3fb02e8749e6f631fcc570d972b62871a9bb8b7436c20/bundles/originstore/images/thor/subs-gametile-logo.png" alt=""><span class="subs-popup"><b>Included with Origin Access </b><br><br>Become a member for just <ins><span class="dyn dyn-price dyn-static dyn-loading" data-id="Origin.OFR.50.0001171" data-currency="SGD" data-defaultprice="--"></span></ins> a month and get access to the full version of this and other great PC games.<br><br><a href="https://www.origin.com/en-sg/store/origin-access">Learn More</a></span></p><p class="subs-base-price">or <span><span class="dyn dyn-price dyn-static dyn-loading" data-id="Origin.OFR.50.0000781" data-currency="SGD" data-defaultprice="$69.90"></span></span></p></div><div class="subscriber"><img src="https://eaassets03-a.akamaihd.net/origin-com-store-webassets/1.0.0.435557_1744bc51bbf2a7a1bcb3fb02e8749e6f631fcc570d972b62871a9bb8b7436c20/bundles/originstore/images/thor/subs-gametile-logo.png" alt=""></div><div class="clearfix"></div></div><div class="clearfix"></div></div></div></div></div><div class="packart" 
+    data-mastertitle="FIFA 16"
+    data-franchise="fifa"
+    data-title="1,050 FIFA 16 Points"
+    data-platform="PC Download"
+    data-productid="Origin.OFR.50.0000918"
+    data-sku="Origin.OFR.50.0000918"
+><div class="extra"><div class="border-gradient"><div class="background-gradient"><a class="btn btn-warning quick-view" href="/en-sg/store/buy/fifa-16/pc-download/currency/1-050-fifa-16-points" data-quickview="/en-sg/store/quickview/fifa-16/pc-download/currency/1-050-fifa-16-points?r=aHR0cHM6Ly93d3cub3JpZ2luLmNvbS9lbi1zZy9zdG9yZS8/bG9naW49V3lJaVhRJTNEJTNE">Quick View</a><a href="/en-sg/store/buy/fifa-16/pc-download/currency/1-050-fifa-16-points"><img src="https://Eaassets-a.akamaihd.net/origin-com-store-final-assets-prod/182631/142.0x200.0/1031606_MB_142x200__en_US_^_2015-09-07-15-05-13_0f6124899407648ae75af703374276928834326e.jpg" alt="1,050 FIFA 16 Points" class="packart-image"><div class="blackBoxSmall" style="display: none;"></div></a><h5><a href="/en-sg/store/buy/fifa-16/pc-download/currency/1-050-fifa-16-points" title="1,050 FIFA 16 Points">1,050 FIFA 16 Points</a></h5><div class="hide floatValues"><p class="floatPrice"><span class="dyn dyn-float-price" data-id="Origin.OFR.50.0000918"></span></p><p class="floatStrike"><span class="dyn dyn-float-strike" data-id="Origin.OFR.50.0000918"></span></p></div><div class="price-info"><p class="price"><span class="dyn dyn-price dyn-static dyn-loading" data-id="Origin.OFR.50.0000918" data-currency="SGD" data-defaultprice="$16.00"></span></p><p class="discount"><span class="dyn dyn-strike" data-id="Origin.OFR.50.0000918"></span></p><p class="save-text"><span class="dyn dyn-discount" data-txt="Save %count%%" data-free="Free" data-id="Origin.OFR.50.0000918"></span></p><div class="clearfix"></div></div><div class="clearfix"></div></div></div></div></div><div class="packart" 
+    data-mastertitle="FIFA 16"
+    data-franchise="fifa"
+    data-title="FIFA 16 Deluxe Edition"
+    data-platform="PC Download"
+    data-productid="Origin.OFR.50.0000943"
+    data-sku="Origin.OFR.50.0000943"
+><div class="extra"><div class="border-gradient"><div class="background-gradient"><a class="btn btn-warning quick-view" href="/en-sg/store/buy/fifa-16/pc-download/base-game/deluxe-edition" data-quickview="/en-sg/store/quickview/fifa-16/pc-download/base-game/deluxe-edition?r=aHR0cHM6Ly93d3cub3JpZ2luLmNvbS9lbi1zZy9zdG9yZS8/bG9naW49V3lJaVhRJTNEJTNE">Quick View</a><a href="/en-sg/store/buy/fifa-16/pc-download/base-game/deluxe-edition"><img src="https://Eaassets-a.akamaihd.net/origin-com-store-final-assets-prod/182631/142.0x200.0/1032135_MB_142x200_en_US_^_2015-07-07-13-14-05_cfb5bce166792a4e5af0e10e654a90b49c89a06e.jpg" alt="FIFA 16 Deluxe Edition" class="packart-image"><div class="blackBoxSmall" style="display: none;"></div></a><h5><a href="/en-sg/store/buy/fifa-16/pc-download/base-game/deluxe-edition" title="FIFA 16 Deluxe Edition">FIFA 16 Deluxe Edition</a></h5><div class="hide floatValues"><p class="floatPrice"><span class="dyn dyn-float-price" data-id="Origin.OFR.50.0000943"></span></p><p class="floatStrike"><span class="dyn dyn-float-strike" data-id="Origin.OFR.50.0000943"></span></p></div><div class="price-info"><p class="price"><span class="dyn dyn-price dyn-static dyn-loading" data-id="Origin.OFR.50.0000943" data-currency="SGD" data-defaultprice="$89.90"></span></p><p class="discount"><span class="dyn dyn-strike" data-id="Origin.OFR.50.0000943"></span></p><p class="save-text"><span class="dyn dyn-discount" data-txt="Save %count%%" data-free="Free" data-id="Origin.OFR.50.0000943"></span></p><div class="clearfix"></div></div><div class="clearfix"></div></div></div></div></div><div class="packart" 
+    data-mastertitle="FIFA 16"
+    data-franchise="fifa"
+    data-title="500 FIFA 16 Points"
+    data-platform="PC Download"
+    data-productid="Origin.OFR.50.0000916"
+    data-sku="Origin.OFR.50.0000916"
+><div class="extra"><div class="border-gradient"><div class="background-gradient"><a class="btn btn-warning quick-view" href="/en-sg/store/buy/fifa-16/pc-download/currency/500-fifa-16-points" data-quickview="/en-sg/store/quickview/fifa-16/pc-download/currency/500-fifa-16-points?r=aHR0cHM6Ly93d3cub3JpZ2luLmNvbS9lbi1zZy9zdG9yZS8/bG9naW49V3lJaVhRJTNEJTNE">Quick View</a><a href="/en-sg/store/buy/fifa-16/pc-download/currency/500-fifa-16-points"><img src="https://Eaassets-a.akamaihd.net/origin-com-store-final-assets-prod/182631/142.0x200.0/1031606_MB_142x200__en_US_^_2015-09-07-15-05-13_0f6124899407648ae75af703374276928834326e.jpg" alt="500 FIFA 16 Points" class="packart-image"><div class="blackBoxSmall" style="display: none;"></div></a><h5><a href="/en-sg/store/buy/fifa-16/pc-download/currency/500-fifa-16-points" title="500 FIFA 16 Points">500 FIFA 16 Points</a></h5><div class="hide floatValues"><p class="floatPrice"><span class="dyn dyn-float-price" data-id="Origin.OFR.50.0000916"></span></p><p class="floatStrike"><span class="dyn dyn-float-strike" data-id="Origin.OFR.50.0000916"></span></p></div><div class="price-info"><p class="price"><span class="dyn dyn-price dyn-static dyn-loading" data-id="Origin.OFR.50.0000916" data-currency="SGD" data-defaultprice="$8.00"></span></p><p class="discount"><span class="dyn dyn-strike" data-id="Origin.OFR.50.0000916"></span></p><p class="save-text"><span class="dyn dyn-discount" data-txt="Save %count%%" data-free="Free" data-id="Origin.OFR.50.0000916"></span></p><div class="clearfix"></div></div><div class="clearfix"></div></div></div></div></div></div></div></div><div class="clearfix"></div></div></div></div></div><!--/.container--><div class="footer-wrapper web"><div class="container"><div class="row"><div class="span15 site-map"><ul><li class="topLevel">
+	                                            Origin
+	                                            <ul><li><a href="https://www.origin.com/en-sg/about" class="">About Origin</a></li><li><a href="https://www.origin.com/en-sg/news" class="external-client-link">Origin News</a></li><li><a href="https://www.origin.com/en-sg/download" class="">Download Origin</a></li><li><a href="https://www.origin.com/en-sg/termsofsale" class="">Terms of Sale</a></li><li><a href="https://www.origin.com/en-sg/great-game-guarantee-terms" class="">Great Game Guarantee Terms</a></li><li><a href="https://www.origin.com/en-sg/great-game-guarantee" class="">About Great Game Guarantee</a></li><li><a href="https://www.origin.com/en-sg/release-notes" class="">Release Notes</a></li><li><a href="https://www.origin.com/en-sg/store/sitemap" class="">Site Map</a></li></ul></li><li class="topLevel">
+	                                            Electronic Arts
+	                                            <ul><li><a href="http://www.ea.com/1/legal-notices" class="external-client-link">Legal Notices</a></li><li><a href="https://www.origin.com/en-sg/termsofservice" class="">Terms of Service</a></li><li><a href="https://www.origin.com/en-sg/privacypolicy" class="external-client-link">Privacy and Cookie Policy</a></li><li class="truste-cookie-preference hide "><a href="/en-sg/store/#" class=" ">Cookie Preferences</a></li><li><a href="http://www.ea.com/1/product-eulas" class="external-client-link">End User License Agreement</a></li><li><a href="http://www.ea.com/about" class="">Corporate Information</a></li></ul></li><li class="topLevel">
+	                                            Help Center
+	                                            <ul><li><a href="https://help.ea.com" class="external-link">EA Help</a></li><li><a href="https://help.ea.com/sg/origin" class="external-link">Origin Help</a></li><li><a href="https://www.origin.com/en-sg/faq" class="">FAQ</a></li><li><a href="https://help.ea.com/contact-us?product=origin&locale=sg" class="external-link">Contact Us</a></li></ul></li><li class="topLevel">
+	                                            Language
+	                                            <ul><li class="language-box"><div class="language"><a href="#" class="languageBtn">&nbsp;</a><div class="languageFlyout"><ul><li><a href="https://www.origin.com/en-sg/store/" class="external-client-link">English</a></li></ul></div></div></li><li class="share">Social Media</li><li><ul><li class="showArt external-link"><a href="https://www.facebook.com/OriginInsider" class="external-link"><img src="https://eaassets02-a.akamaihd.net/origin-com-store-damassets/content/dam/dotcom/Assets/Resources/Social/facebook-socail-icons-23.png" alt=""/></a></li><li class="showArt external-link"><a href="https://twitter.com/originInsider" class="external-link"><img src="https://eaassets-a.akamaihd.net/origin-com-store-damassets/content/dam/dotcom/Assets/Resources/Social/twitter-socail-icons-23.png" alt=""/></a></li><li class="showArt external-link"><a href="https://www.youtube.com/user/OriginInsider" class="external-link"><img src="https://eaassets01-a.akamaihd.net/origin-com-store-damassets/content/dam/dotcom/Assets/Resources/Social/youtube-socail-icons-23.png" alt=""/></a></li></ul></li></ul></li></ul><div class="clearfix"></div></div><div class="span9 legal"><p>© 2016 Electronic Arts Inc.</p><p>Price is in Singapore dollars, and is applicable to Singapore residents only</p><a href="/en-sg/store/?no-takeover=true" class="brand"><img src="https://eaassets01-a.akamaihd.net/origin-com-store-damassets/content/dam/OriginAsset/header-logo.png" alt="Origin"/></a></div></div></div></div><div class="footer-wrapper client"><div class="container"><div class="row"><div class="span12 site-map"><ul><li class="topLevel">
+	                                            Electronic Arts
+	                                            <ul><li><a href="http://www.ea.com/1/legal-notices" class="">Legal Notices</a></li><li><a href="https://www.origin.com/en-sg/termsofservice" class="">Terms of Service</a></li><li><a href="https://www.origin.com/en-sg/privacypolicy" class="">Privacy and Cookie Policy</a></li><li class="truste-cookie-preference hide ignore-mobile-unbind "><a href="/en-sg/store/#" class=" ">Cookie Preferences</a></li><li><a href="http://www.ea.com/1/product-eulas" class=" ">End User License Agreement</a></li><li><a href="https://www.origin.com/en-sg/termsofsale" class="">Terms of Sale</a></li></ul></li><li class="topLevel">
+	                                            Language
+	                                            <ul><li class="language-box"><div class="language"><a href="#" class="languageBtn">&nbsp;</a><div class="languageFlyout"><ul><li><a href="https://www.origin.com/en-sg/store/" class=" ">English</a></li></ul></div></div></li></ul></li></ul><div class="clearfix"></div></div><div class="span12 legal"><p>© 2016 Electronic Arts Inc.</p><a href="/en-sg/store/?no-takeover=true" class="brand"><img src="https://eaassets01-a.akamaihd.net/origin-com-store-damassets/content/dam/OriginAsset/header-logo.png" alt="Origin"/></a></div></div></div></div></div><!--/#wrapper--><div id="clientVersionError" class="modal hide"><div class="cart-warning-body"><h3>Please update Origin</h3><p class="errorCode">Because you're running an older version of the Origin client, you may have some trouble accessing the Vault games and Play First Trials included in your Origin Access membership.</p></div><div class="cart-warning-footer"><a class="btn btn-warning" data-dismiss="modal" aria-hidden="true">Close</a></div></div></div><div id="myModal" class="modal hide"></div><div id="fb-root"></div><div id="cart-warning" class="modal hide"><div class="cart-warning-body"><h3>You're removing a bundle item</h3><p class="errorCode"></p><p>Click "Continue" below to remove this item.<br />Click "Cancel" to leave this item in your cart.</p></div><div class="cart-warning-footer"><a class="btn btn-warning" target="_top">Continue</a><a class="btn" data-dismiss="modal" aria-hidden="true">Cancel</a></div></div><div id="demoError" class="modal hide"><div class="cart-warning-body"><h3>Hang on a second.</h3><h3 class="accessorError hide">Adding your game is taking a while</h3><p class="errorCode generalError">There was an issue that kept us from completing your request. No need to panic, just give it another try later. </p><p class="errorCode ageError">According to our records, the age entered when setting up your account does not meet the minimum age required for the rating of this game.</p><p class="errorCode accessorError"></p></div><div class="cart-warning-footer"><a class="btn btn-warning" data-dismiss="modal" aria-hidden="true">Close</a></div></div><div id="pdpError" class="modal hide"><div class="cart-warning-body"><h3 class="errorCode redirectError hide"><b>The Origin store has shifted things around.</b></h3><p class="errorCode redirectError">We might not have the thing you’re looking for, but this could be something you’ll love.</p></div><div class="cart-warning-footer"><a class="btn btn-warning" data-dismiss="modal" aria-hidden="true">Close</a></div></div><div class="need-origin modal hide"><a href="#" class="close-window" data-dismiss="modal">x</a><h3 class="need-origin-h1">You need Origin to download this game</h3><h3 class="need-origin-h1-mobile">YOUR GAME IS WAITING</h3><p class="need-origin-p1">If you already have Origin installed, just click on the "Launch Origin" button and download the game from your game library.</p><p class="need-origin-p1-mobile">You have successfully activated this game. You can download and play it just as soon as you're back at your computer.</p><a href="origin://library" class="btn btn-warning ent">Launch Origin</a><div class="origin-screenshot"><img src="https://eaassets-a.akamaihd.net/origin-com-store-webassets/1.0.0.435557_1744bc51bbf2a7a1bcb3fb02e8749e6f631fcc570d972b62871a9bb8b7436c20/images/508c711.jpg" alt=""></div><h4>Don't have Origin?</h4><p>Origin is where you go to find the best that EA has to offer. The hottest games. Exclusive content. Early access. And more:</p><ul><li>Access your games from any Origin-powered machine</li><li>Stay connected with your friends</li><li>Enjoy special offers only for the Origin community</li></ul><a href="http://www.dm.origin.com/download" class="btn btn-download">Download Origin Now</a></div><script src="https://eaassets04-a.akamaihd.net/origin-com-store-webassets/1.0.0.435557_1744bc51bbf2a7a1bcb3fb02e8749e6f631fcc570d972b62871a9bb8b7436c20/js/8702750.js" type="text/javascript"></script><script type="text/javascript">
+        $('body').on('gus-done', function(){
+          if(typeof window.subscriberInfo != 'undefined' && window.subscriberInfo.isSubscriber && window.location.href.indexOf('origin-access/home') == -1)
+          {
+            window.location.replace('https://www.origin.com/en-sg/store/origin-access/home');
+          }
+
+          if((typeof window.subscriberInfo == 'undefined' || !window.subscriberInfo.isSubscriber) && window.location.href.indexOf('origin-access/home') != -1)
+          {
+            window.location.replace('https://www.origin.com/en-sg/store/');
+          }
+        });
+      </script><script type="application/ld+json">
+{
+   "@context": "http://schema.org",
+   "@type": "WebSite",
+   "url": "https://www.origin.com/en-sg/store/",
+   "potentialAction": {
+     "@type": "SearchAction",
+     "target": "https://www.origin.com/en-sg/store/browse?q={search_term}",
+     "query-input": "required name=search_term"
+   }
+}
+</script><script type="text/javascript"></script><!-- ### origin-store-1.0.0.435557 ### --></body></html>

@@ -1,0 +1,507 @@
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head><title>Time.is - exact time, any time zone</title>
+<script>
+var updint=1000,U="undefined",N=null,E=true,F=!E,O="object",S="string",D=document,A=0,fc={a:0},bfc=1,uT="Time.is ",sT,tD,pY=lY=241,cY=syncn=rsy=0,ztrans=0,newzo=0,ss={"0804":"&uarr; 06:39 &darr; 18:50 (12h 11m)","0805":"&uarr; 06:39 &darr; 18:50 (12h 11m)"},destT=0,yrp="",csup=1,czo=0,rqT=0,syncT=0,syncquota=10,earliest_syncT=0,xR=1,syncm='',syncdt='',adH=110,mZ=64,ltr=1,ticks=0,state={chosen_loc:0,current_page:"FRONT"};
+function _tD(M){sT=M;tD=new Date().getTime()-M-Math.round(lY/2);cY=lY-pY;if(cY<10)cY=10}
+_tD(1470265468296)
+function gob(e){if(typeof e==O)return e;if(D.getElementById)return D.getElementById(e);return eval(e)}
+function bluritem(e){e=gob(e);e.className=e.className.replace('focused','blr');bfc=1}
+function focusitem(e){bfc=0;e=gob(e);e.className=e.className.replace('blr','focused');e.className=e.className.replace('submitted','focused')}
+function mouseover(e){e.className=e.className.replace('mout','hovered')}
+function mouseout(e){e.className=e.className.replace('hovered','mout')}
+function setfocus(g){if(typeof fc[g]==U)fc[g]=1;else fc[g]++
+if(fc['a']!=0&&fc['a']!=g)losefocus(fc['a'])
+fc['a']=g;gob(g).className=gob(g).className.replace('hide','show');bfc=0}
+function losefocus(g){if(fc['a']!=g)fc[g]=0;else{fc[g]--;if(fc[g]<1){fc['a']=0;fc[g]=0;gob(g).className=gob(g).className.replace('show','hide');bfc=1}}}
+dmode=0
+function setcookie(n,v){var x=new Date();x.setDate(x.getDate()+365);D.cookie=n+'='+encodeURIComponent(v)+'; expires='+x.toGMTString()+'; path=/'
+if(D.cookie.length<1)csup=0}
+function httpSync(){
+nextSyncT=0
+array_name='main'
+xR=N
+gob('syncH').innerHTML=p_syncing;gob('syncDtl').innerHTML='&nbsp;';gob('msgs').className=gob('msgs').className.replace('hdn','vsbl')
+if(window.XMLHttpRequest)xR=new XMLHttpRequest()
+else if(window.ActiveXObject)xR=new ActiveXObject("Microsoft.XMLHTTP")
+if(xR!=N){
+rqT=new Date()
+czo=-rqT.getTimezoneOffset()
+xR.onreadystatechange=s_C
+xR.open('get','/t/?'+l+'.'+syncn+'.'+lY+'.'+tD+'.'+rsy+'p.'+czo+'.'+locs[array_name][conf['h']][1]+'.'+rqT.getTime()+'.'+sT+'.'+yrp,E)
+xR.send(N)
+yrp=''
+}else xR='N/A'
+}
+var Y=['','']
+function s_C(){
+var o,dots='...',sym=Y[0],syd=Y[1]
+if(xR.readyState==4){
+if(xR.status==200){
+var rpT=new Date(),n=rpT-rqT,r=xR.responseText.split("\n")
+sT=r[1]
+var prevST=syncT
+syncT=new Date()
+syncT.setTime(syncT.getTime()-tD)
+if(syncn===0||rsy||n<lY){if(r[0].length==13)r.unshift('ok');if(r.length<7||r[0]!=='ok'){
+if(r[0].substr(0,6)=='error:')p_failm=r[0].substr(6)
+else gob('msgs').className='w90 pulldowncv nonet'
+hideTO=setTimeout('sync_cleanup(0)',4000)
+}else{p_failm=p_fail
+if(rsy&&(syncT-prevST<60000)){syncquota--
+if(syncquota<0)earliest_syncT=new Date(syncT.getTime()+120000)
+}else if(earliest_syncT==0)syncquota=10
+}
+rsy=0
+lY=n
+_tD(r[1])
+
+Y=T_I.initClock()
+sym=Y[0]
+syd=Y[1]
+}
+nextSyncT=new Date()
+nextSyncT.setTime(nextSyncT.getTime()-tD+3600000)
+if(49<cY&&syncn<2){for(var i=0;i<syncn;i++)dots+='.'
+sym=p_syncing+dots
+syd=''
+syncn++
+httpSync()}
+else{o=gob('front_loc');if(o)o.style.visibility='visible'
+;o=gob('socbuttons');if(o)o.style.visibility='inherit'
+}
+if(syd=='')syd='&nbsp;'
+spdays={}
+for(i=5;i<r.length-1;i++)spdays[r[i].substr(0,4)]=r[i].substr(4,r[i].length)
+if(zone_id!=='UTC'){// zone_offset=r[2];zone_id=r[3]
+}
+}else{sym=p_conn_failed
+syd=xR.statusText
+if(syd!='')syd=' ('+syd+')'
+if(!A){if(xR.statusText!="")sym+=syd
+syd='<a href="javascript:T_I.check_again()">'+p_try_again+'</a>'
+}
+}
+gob('syncH').innerHTML=sym
+gob('syncDtl').innerHTML=syd
+setmsgH(0)
+}}
+function sg(q,sd){
+T_I.set_susdiv(sd);o=gob(sd)
+if((N!==q.match(/^Location \d+ \(optional\)$/))||q=='Enter location'||q=='Automatic')return ''
+q=q.replace(/ +$/,'').replace(/^ +/, '')
+if(q.length<4)q=q.toLowerCase()
+var n=sd.replace('susdiv','')
+if((typeof complocurls!=U)&&(typeof complocurls[n]!=U)&&(complocurls[n][0]==q))return ''
+if(typeof prevq[sd]!==U&&q==prevq[sd]||q==e_loc){o.className=o.className.replace('hide','show')
+return ''}
+if(q.length<1){o.innerHTML='';chosen_sus[sd]=0;prevq[sd]=q;current_q[sd]=q;return ''}
+prevq[sd]=q
+if(sus[q]){T_I.populate_sus(sd,q,1);return ''}
+var xh=N,xhp=[]
+if(window.XMLHttpRequest)xh=new XMLHttpRequest()
+else if(window.ActiveXObject)xh=new ActiveXObject('Microsoft.XMLHTTP')
+if(xh!=N){rqT=new Date()
+xh.onreadystatechange=function(){if(xh.readyState==4)if(xh.status==200){
+var xr=xh.responseText.split("\n"),st=xr.shift(),q1=xr.shift()
+for(var i in xr){
+if(i==='indexOf')break
+xr[i]=xr[i].split('	')
+}
+sus[q1]=xr
+if(typeof prevsustime[xhp['sd']]==U||prevsustime[xhp['sd']]<xhp['t']){prevsustime[xhp['sd']]=xhp['t'];T_I.populate_sus(xhp['sd'],xhp['q'],1)}}}
+xhp['sd']=sd
+xhp['t']=new Date()
+if(q=='.')q='.a'
+if(q=='..')q='.,'
+xhp['q']=q
+xh.open("get",'/s/'+l+'/'+q.length+'/'+encodeURIComponent(q.replace(/ /g,'_'))+'?'+xhp['t'].getTime(),E)
+xh.send(N)
+}else xh='N/A'
+}
+function arrows(sd,e){var k=e.which||e.keyCode
+if(k==40)T_I.cycle_sus(sd,1)
+else if(k==38)T_I.cycle_sus(sd,-1)
+else if(k==9||k==13)T_I.take_chosen(sd,k)
+else return E
+return F}
+function togglesimple(x){var g='',c=bod.className
+if(x!==0&&c.indexOf('simplify')!=-1){dmode=0;bod.className=c.replace('simplify','showall');x=1}
+else if(x!==1&&c.indexOf('showall')!=-1){dmode=1;bod.className=c.replace('showall','simplify');x=0;g='none'}else x=''
+if(x!==''){var gp=gob("___plusone_0");if(gp!=N)gp.style.display=g
+setsizes(1);T_I.tick('',0)}}var kacs={h:"/",j:"js:togglesimple(2)",s:"js:tl_a()",C:"/calendar"},kdown={k0:0,k17:0,k18:0}
+handle_keys=function(ev){
+if(!bfc)return E
+var e=ev||event
+var key=e.which||e.keyCode
+for(var k in kdown){
+if(k==='indexOf')break
+if(kdown[k]!=0){var d=new Date;if(kdown[k]<d.getUTCSeconds()-10)kdown[k]=0
+else return E}
+}
+if(typeof kacs[String.fromCharCode(key)]===S){
+var u=kacs[String.fromCharCode(key)]
+if(u.substr(0,3)=="js:")eval(u.substr(3))
+else {if(u.substr(0,5)=="http:")open(u,"_blank")
+else location=u
+}
+return F
+}
+if((96<key&&key<123)||(64<key&&key<91))t_search(1)
+return E
+}
+handle_arrow_keys=function(ev){
+if(fc["a"]==1)return E
+var e=ev||event
+var k=e.which||e.keyCode
+if(k==27){toggle_menu(0);t_search(0);return F}
+if(k==0||(16<k&&k<19)||k==91||k==93||k==224){var d=new Date;kdown["k"+k]=d.getUTCSeconds()}
+if(bfc&&36<k&&k<41&&typeof kacs[k]===S){
+var u=kacs[k]
+if(u.substr(0,3)=="js:")eval(u.substr(3))
+else location=u
+return F
+}
+return E
+}
+handle_keys_up=function(ev){
+var e=ev||event
+var k=e.which||e.keyCode
+if(k==0||(16<k&&k<19)||k==91||k==93||k==224)kdown["k"+k]=0
+}
+function toggle_more(){
+var t=gob('top'),cn='less'
+if(t.className=='less')cn='more'
+t.className=cn
+set_mw()
+}
+D.onkeypress=this.handle_keys
+D.onkeydown=this.handle_arrow_keys
+D.onkeyup=this.handle_keys_up
+</script>
+<meta name="description" content=""/>
+<meta property="og:image" content="http://static.time.is/img/shareable/time_is_110111.png"/><meta name="viewport" content="user-scalable=0, initial-scale=1, maximum-scale=1, minimum-scale=1, target-densitydpi=device-dpi, width=device-width" />
+<link rel="image_src" href="http://static.time.is/screenshots/Time.is_11.11.11_700x525.png"/><link rel="icon" type="image/png" href="http://static.time.is/favicon.ico"/>
+<link rel="apple-touch-icon" href="http://static.time.is/img/apple-touch-icon.png"/>
+<link rel="search" type="application/opensearchdescription+xml" title="Time.is" href="http://static.time.is/opensearch.xml"/>
+<link rel="alternate" type="application/rss+xml" title="Time Zone News from Time.is" href="http://rss.time.is/time_zone_news.rss"><style>
+*{margin:0;padding:0;border:0;outline:0}
+div,h1,h2,h3,label{clear:both}
+div,img,form{float:left}
+body{background:#fff}
+span a,.nw{white-space:nowrap}
+body,select,input,textarea{font:18px/26px 'Times New Roman',Times,FreeSerif,serif;color:#333;letter-spacing:2px}
+#twd,#twd1{font-family:'Times New Roman',Times,FreeSerif,serif}
+.divider{color:#ccc}
+.lsp{float:right;color:#333}
+.lsp ul{list-style:none;text-align:right}
+a:link,a:visited{color:#333;text-decoration:none;border-bottom:1px solid #ccc}
+
+h1,h2,#dd{font-size:36px;line-height:40px;font-weight:normal;letter-spacing:1px}
+.w90{margin-left:5%;width:90%}
+#c{padding-bottom:40px}
+#msgdiv{float:left;position:relative;z-index:8}
+div#msgs h1{margin-right:30px;float:left}
+.lg a:link,.lg a:visited{background:#c35;float:left;display:block;color:#fff;border:0;padding:20px;font:26px/20px 'Timeis',Verdana-Bold,'HelveticaNeue-CondensedBlack','Avenir-Black','Arial-BoldMT',Arial,sans-serif;font-weight:900;letter-spacing:2px}
+.lg{z-index:9;position:relative}
+#pl{display:none}
+#clock0 div{font-weight:bold;cursor:pointer;clear:none;color:#000;white-space:nowrap}
+#twd{letter-spacing:0}
+
+#top{width:90%;margin:0 5%}
+#clock0_bg{width:100%}
+#clock0,#pL,#lC,#dd,#daydiv{text-align:right}
+select{height:40px}
+#pL a:link,#pL a:visited,#pL1 a,#lC,#daydiv,#daydiv1{color:#333}
+
+#pL,#pL1{margin-bottom:20px}
+#favswindow{position:relative;xxheight:71px;width:100%}
+#favslider{width:2000px;position:absolute;right:0}
+#favs{width:100%;list-style:none;margin:0 0 10px 0;padding:0;float:right}
+#favs span{color:#999}
+.tbx div{clear:none;float:left;text-align:left;white-space:nowrap;font-size:18px;line-height:22px;font-style:normal;font-weight:normal;letter-spacing:2px}
+.tbx a{display:block;margin:0 0 10px 10px;padding:10px 20px;border:1px solid #eee;background:#eee;text-decoration:none}
+.txtin,.dateinput{background:#eee;border:1px solid #ddd;width:138px;padding:10px;color:#333}
+.mout{border-color:#eee}
+</style><link rel="stylesheet" href="http://static.time.is/t2.css?4"/><script src="http://static.time.is/t10.js"></script>
+</head>
+<body id="bdy" onload="in_s()" class="showall times bw "><div id="top">
+<div class="lg"><h2><a href="http://time.is/" target="_top" title="Time.is">Time.is</a></h2></div>
+<div class="icon-nav tr">
+<a href="#nav" onclick="return toggle_menu(1)" title="menu">
+<div style="margin-top:2px;width:100%;border-top:5px solid #aaa;padding:3px 0 2px 0;border-bottom:5px solid #aaa;margin-bottom:5px"></div>
+<div style="width:100%;border-top:5px solid #aaa;padding:2px 0;margin-bottom:4px"></div>
+</a>
+</div>
+<script>
+function t_search(x){
+var qb=gob('qbox'),qi=gob('q'),w=600
+if(x){
+scrollTo(0,0)
+qi.focus()
+if(ww<915)w=ww*.9-80
+if(qi.value.indexOf('')!=-1)qi.value=qi.value.replace('','');setfocus('susdiv');sg(qi.value,'susdiv');focusitem(qi);if(dmode)bod.className=bod.className.replace('simplify','showall');gob('qbox').className='fcs'
+}else{
+qi.blur()
+w=100
+if(ww<915)w=100
+if(ww<641||state.current_page=='Unix time')w=0
+if(qi.value==='')qi.value='';losefocus('susdiv');bluritem(qi);if(dmode)bod.className=bod.className.replace('showall','simplify');gob('qbox').className=''
+}
+qi.style.width=w+'px'
+}
+</script>
+<form id="qbox" class="tr" action="/" method="get" autocomplete="off" accept-charset="UTF-8" onsubmit="return T_I.submit(gob('q').value)">
+<input type="text" id="q" name="q" value="" tabindex="1" maxlength="100" accesskey="3" class="txtin blr mout"
+onfocus="t_search(1)"
+onblur="t_search(0)"
+onmouseover="mouseover(this)" onmouseout="mouseout(this)"
+onkeydown="arrows('susdiv',event)"
+onkeyup="sg(this.value,'susdiv')"/>
+<div id="susdiv" class="susdiv" onmouseover="setfocus('susdiv')" onmouseout="losefocus('susdiv')"></div>
+</form>
+</div><div id="time_section" class="w1"><div id="msgs" class="tr w90 vsbl"><div id="msgdiv"><h1 id="syncH" style="float:left">Exact time now:</h1></div><div id="syncDtl" class="w1">&nbsp;</div><div id="front_loc" class="w1" style="visibility:hidden">Time in <a href="Kuching">Kuching, Malaysia</a> now:</div></div><div id="clock0_bg" ondblclick="t_s()"><div class="w90" style="width:95%">
+<div id="clock0" style="font-size:100px;line-height:83px" onclick="togglesimple(2)"><div id="twd">07:04:28</div></div></div></div><noscript><h2 class="w90 error">The clock will update automatically if you turn on JavaScript in your browser.</h2></noscript><div id="dd" class="w90 tr" onclick="location='/calendar'" title="Click for calendar">Thursday, August 4, 2016, week 31</div><div id="daydiv" class="w90 tr" style="display:none"></div><div id="lC" class="w90 tr"><span id="locw">Sun: <span id="sun" class="nw">&uarr; 06:39 &darr; 18:50 (12h 11m)</span></span><div class="lsp w90 tr"></div></div><div class="w90 tr"><ul id="favs" class="tbx"><li><a href="/Tokyo" id="time1">Tokyo<br><span id="favt1">08:04</span></a></li><li><a href="/Beijing" id="time2">Beijing<br><span id="favt2">07:04</span></a></li><li><a href="/Moscow" id="time3">Moscow<br><span id="favt3">02:04</span></a></li><li><a href="/Paris" id="time4">Paris<br><span id="favt4">01:04</span></a></li><li><a href="/London" id="time5">London<br><span id="favt5">00:04</span></a></li><li><a href="/New_York" id="time6">New York<br><span id="favt6">19:04</span></a></li><li><a href="/Los_Angeles" id="time7">Los Angeles<br><span id="favt7">16:04</span></a></li></ul></div>
+</div>
+<script>
+bod=gob('bdy')
+var l='en',conf={d:'%l, %F %j, %Y, %W',t:'H:i:s',f:'t',c:'2',o:'',z:'1',a:'1',b:'51ea29.4e4185.28571f.2d99db.80265.1bb85e.1c3b23',w:'0',v:'20160803',h:0,i:'',Z:'1',m:'',u:''},locs={"favs":[['1850147','444','Tokyo','Tokyo, Japan','Tokyo','35.68950','139.69171','8,336,599',''],['1816670','43d','Beijing','Beijing, China','Beijing','39.90750','116.39723','7,480,601',''],['524901','71d','Moscow','Moscow, Russia','Moscow','55.75222','37.61556','10,381,222',''],['2988507','71f','Paris','Paris, France','Paris','48.85341','2.34880','2,138,551',''],['2643743','716','London','London, United Kingdom','London','51.50853','-0.12574','7,556,900',''],['5128581','161','New York','New York, United States','New_York','40.71427','-74.00597','8,175,133','10'],['5368361','14e','Los Angeles','Los Angeles, California, United States','Los_Angeles','34.05223','-118.24368','3,792,621','89']],"main":[['1735634','427','Kuching','Kuching, Malaysia','Kuching','1.55000','110.33333','570,407','']]},zones={'427':['Asia/Kuching','MYT',[480]],'444':['Asia/Tokyo','JST',[540]],'43d':['Asia/Shanghai','CST',[480]],'71d':['Europe/Moscow','MSK',[180]],'71f':['Europe/Paris','CEST',[120,1477789200,60]],'716':['Europe/London','BST',[60,1477789200,0]],'161':['America/New_York','EDT',[-240,1478412000,-300]],'14e':['America/Los_Angeles','PDT',[-420,1478422800,-480]]},
+susdest="/"
+zone_id="Asia/Kuching"
+zone_offset=480
+zone_code='427'
+p_time_diff="The difference from Time.is was %t (±%D). "
+p_time_diff_short="Diff: %t (±%D) "
+p_failh="The synchronization was unsuccessful. "
+p_fail="High accuracy could not be achieved because your connection or computer is slow or busy. "
+p_syncing="Synchronizing"
+p_conn_failed="Unable to connect with server."
+p_try_again="Try again?"
+p_no_match="No match"
+p_no_au="Sorry, sound requires a recent version of Firefox, Opera or Safari!"
+p_no_cookie_support="error_no_cookie_support"
+p_td="Today"
+e_loc="Enter location"
+
+days=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]
+daysh=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"]
+daysI=["S","M","T","W","T","F","S"]
+months=["January","February","March","April","May","June","July","August","September","October","November","December"]
+monthsh=["Jan.","Feb.","Mar.","Apr.","May","June","July","Aug.","Sept.","Oct.","Nov.","Dec."]
+p_exactt="Your time is exact!"
+p_t_is="The exact current time is:"
+p_w="week "
+p_wn="week %n"
+p_d="day"
+p_ds=" days"
+p_h=" hour"
+p_hs=" hours"
+p_m=" minute"
+p_ms=" minutes"
+p_s=" second"
+p_ss=" seconds"
+p_ss_short=" s"
+p_ur_late="Your clock is %t behind."
+p_ur_early="Your clock is %t ahead."
+p_acc="Accuracy of synchronization was ±%t."
+p_acc_short="Sync accuracy: ±%t"
+p_last_s="Last synchronization: %t"
+p_last_s_short="Last sync: %t"
+p_dec_sym="."
+p_and=" and "
+p_time_remaining="Time remaining: %t"
+p_time_since="Time since then: %t"
+
+p_now='now'
+p_yesterday='yesterday'
+p_tomorrow='tomorrow'
+p_today='today'
+p_in_n='in %n'
+p_ago='%n ago'
+p_In_x_days='In %n %days'
+p_x_days_ago='%n %days ago'
+p_x_days_before='[%n %days before] %other_date'
+p_x_days_after='[%n %days after] %other_date'
+
+p_today_date='[Today]: %d'
+units=[p_ss,p_ms,p_hs,p_ds],units_sing=[p_s,p_m,p_h,' '+p_d]
+
+p_enter_loc='Enter location'
+
+p_default_time_format='H:i:s'
+p_date_formats=['%l, %F %j, %Y, %W',
+'%l %d/%m/%y',
+'%l %d/%m/%y, %W',
+'%Y-%m-%d']
+
+
+spdays={}
+bgim=""
+noctp=1;adheight=0;show_big_clock=1;force24=0;beginning_of_time()
+onresize=function(){setsizes(2)}
+</script>
+<div class="tr" style="width:90%;padding:0px 5% 20px 5%"><div class="rad" style="float:right;padding-top:0"><div id="ad_1" style="width:768px;height:90px"></div>
+<script>
+var OX_ads=OX_ads||[]
+OX_ads.push({slot_id:"ad_1",auid:"538090345"})
+</script>
+<script src="http://ax-d.pixfuture.net/w/1.0/jstag"></script></div></div>
+<div class="w90"><div class="noprint tr faded" style="position:relative;float:right;margin-right:-10px">
+<div id="socbuttons"
+class="off" style="height:32px;margin-left:10px"></div><div id="social_div" class="hide"></div>
+<div class="noprint tr" style="font-size:14px;float:right;margin:0 10px 10px 10px">Share this page!</div></div></div>
+<section id="time_zone" class="wb">
+
+<h2 style="margin-bottom:20px"><span>Time zone</span></h2>
+<div class="keypoints"><ul><li>Malaysia Time (MYT), UTC +8</li><li>No daylight saving time, same UTC offset all year</li></ul></div><div class="infobox">
+ The IANA time zone identifier for Kuching is Asia/Kuching.
+</div><div style="margin-bottom:20px"><a href="https://en.wikipedia.org/wiki/Kuching" target="_blank">Read about Kuching in Wikipedia</a></div><div class="action_buttons"><div><a href="/h/1a7bd2" rel="nofollow"><span>Make Kuching time default</span></a></div><div><a href="." onclick="conf['b']+='.1a7bd2';delete conf['a'];T_I.recook();location='/';return false" rel="nofollow"><span>Add to favorite locations</span></a></div>
+</div><h2 style="margin-top:40px"><span>Sunrise, sunset, day length and solar time for Kuching</span></h2>
+<ul><li>Sunrise: 06:39</li><li>Sunset: 18:50</li><li>Day length: 12h 11m</li><li>Solar noon: 12:45</li><li>The current local time in Kuching is 45 minutes ahead of apparent solar time.</li></ul><div class="action_buttons"></div>
+</section>
+<section id="time_difference" class="wb" style="padding-top:0;xxbackground:#222">
+<div class="diff_table"><h2><span>Time difference <br><span>from Kuching</span></span></h2><table>
+<tr><td class="neg_diff"><a href="/Los_Angeles">Los Angeles</a><div><div><span>:</span> </div><div class="diff_bar"><div class="diff1"></div><div class="diff2"></div><div class="diff4"></div><div class="diff8"></div><div class="diff_bar_label">−15  hours</div></div></div></td><td></td></tr>
+<tr><td class="neg_diff"><a href="/New_York">New York</a><div><div><span>:</span> </div><div class="diff_bar"><div class="diff4"></div><div class="diff8"></div><div class="diff_bar_label">−12  hours</div></div></div></td><td></td></tr>
+<tr><td class="neg_diff"><a href="/UTC">UTC</a><div><div><span>:</span> </div><div class="diff_bar"><div class="diff8"></div><div class="diff_bar_label">−8  hours</div></div></div></td><td></td></tr>
+<tr><td class="neg_diff"><a href="/London">London</a><div><div><span>:</span> </div><div class="diff_bar"><div class="diff1"></div><div class="diff2"></div><div class="diff4"></div><div class="diff_bar_label">−7  hours</div></div></div></td><td></td></tr>
+<tr><td class="neg_diff"><a href="/Paris">Paris</a><div><div><span>:</span> </div><div class="diff_bar"><div class="diff2"></div><div class="diff4"></div><div class="diff_bar_label">−6  hours</div></div></div></td><td></td></tr>
+<tr><td class="neg_diff"><a href="/Istanbul">Istanbul</a><div><div><span>:</span> </div><div class="diff_bar"><div class="diff1"></div><div class="diff4"></div><div class="diff_bar_label">−5  hours</div></div></div></td><td></td></tr>
+<tr><td class="neg_diff"><a href="/Moscow">Moscow</a><div><div><span>:</span> </div><div class="diff_bar"><div class="diff1"></div><div class="diff4"></div><div class="diff_bar_label">−5  hours</div></div></div></td><td></td></tr>
+<tr><td class="neg_diff"><a href="/Dubai">Dubai</a><div><div><span>:</span> </div><div class="diff_bar"><div class="diff4"></div><div class="diff_bar_label">−4  hours</div></div></div></td><td></td></tr>
+<tr><td class="neg_diff"><a href="/New_Delhi">New Delhi</a><div><div><span>:</span> </div><div class="diff_bar"><div class="diff2"></div><div class="diff_5"></div><div class="diff_bar_label">−2.5  h</div></div></div></td><td></td></tr>
+<tr><td class="neg_diff"><a href="/Beijing">Beijing</a></td><td><div><div><span>:</span> </div><div class="diff_bar_label_0">0</div></div></td></tr>
+<tr><td class="neg_diff"><a href="/Singapore">Singapore</a></td><td><div><div><span>:</span> </div><div class="diff_bar_label_0">0</div></div></td></tr>
+<tr><td class="neg_diff"><a href="/Tokyo">Tokyo</a></td><td><div><div><span>:</span> </div><div class="diff_bar"><div class="diff1"></div><div class="diff_bar_label">+1 </div></div></div></td></tr>
+<tr><td class="neg_diff"><a href="/Sydney">Sydney</a></td><td><div><div><span>:</span> </div><div class="diff_bar"><div class="diff2"></div><div class="diff_bar_label">+2  h</div></div></div></td></tr>
+</table></div>
+
+<div class="action_buttons"><div><a href="/compare">Compare other time zones</a></div></div>
+<div class="rad" style="float:left"><div id="ad_2" style="width:768px;height:90px"></div>
+<script>
+var OX_ads=OX_ads||[]
+OX_ads.push({slot_id:"ad_2",auid:"538090346"})
+</script>
+<script src="http://ax-d.pixfuture.net/w/1.0/jstag"></script></div>
+</section><link rel="stylesheet" media="all" href="http://static.time.is/jvectormap/jquery-jvectormap-2.0.2.css"/>
+<script src="http://static.time.is/js/jquery-1.11.3.min.js"></script>
+<script src="http://static.time.is/jvectormap/jquery-jvectormap-2.0.0.min.js"></script>
+<script src="http://static.time.is/jvectormap/maps/jquery-jvectormap-world-mill-en.js"></script>
+<section id="map" class="tr wb" style="position:relative">
+<div id="maptext">
+<h2>Kuching on the map</h2>
+<ul><li>Location: Malaysia</li><li>Latitude: 1.55. Longitude: 110.33</li><li>Population: 570,000</li></ul>
+<div class="action_buttons"><a href="map/Kuching">Show larger map of Kuching</a></div>
+</div>
+
+<div id="worldmapcover"></div>
+<div id="worldmap"></div>
+</section><section id="largest_cities" class="tr wb">
+<h2>The 25 largest cities in <br><a href="Malaysia">Malaysia</a></h2>
+<div class="cloud"><a href="Alor_Star" class="s12">Alor Star</a> <a href="Batu_Pahat" class="s16">Batu Pahat</a> <a href="Bukit_Mertajam" class="s13">Bukit Mertajam</a> <a href="George_Town,_Malaysia" class="s9">George Town</a> <a href="Ipoh" class="s3 bold">Ipoh</a> <a href="Johor_Bahru" class="s2 bold">Johor Bahru</a> <a href="Klang" class="s2 bold">Klang</a> <a href="Kluang" class="s15">Kluang</a> <a href="Kota_Bharu" class="s1 bold">Kota Bharu</a> <a href="Kota_Kinabalu" class="s6">Kota Kinabalu</a> <a href="Kuala_Lumpur" class="s1 bold capital">Kuala Lumpur</a> <a href="Kuala_Terengganu" class="s9">Kuala Terengganu</a> <a href="Kuantan" class="s8">Kuantan</a> <a href="Kuching" class="s4 bold">Kuching</a> <a href="Kulim" class="s15">Kulim</a> <a href="Malacca" class="s14">Malacca</a> <a href="Miri" class="s11">Miri</a> <a href="Petaling_Jaya" class="s4 bold">Petaling Jaya</a> <a href="Sandakan" class="s6">Sandakan</a> <a href="Seremban" class="s7">Seremban</a> <a href="Shah_Alam" class="s5 bold">Shah Alam</a> <a href="Sibu" class="s13">Sibu</a> <a href="Sungai_Petani" class="s10">Sungai Petani</a> <a href="Taiping" class="s11">Taiping</a> <a href="Tawau" class="s8">Tawau</a> </div>
+<div class="rad"><div id="ad_3" style="width:768px;height:90px"></div>
+<script>
+var OX_ads=OX_ads||[]
+OX_ads.push({slot_id:"ad_3",auid:"538090347"})
+</script>
+<script src="http://ax-d.pixfuture.net/w/1.0/jstag"></script></div>
+</section>
+<section id="quote">
+<blockquote>"Don't wait. The time will never be just right."</blockquote>
+<cite>Napoleon Hill</cite>
+</section><div id="menupositioner" class="tr">
+<div id="close-menu" class="close-btn" onclick="toggle_menu(0)">×</div>
+
+<nav id="nav">
+<div>
+<h3 style="letter-spacing:1px"><a href="/" class="logo">Time.is</a> <span class="slogan"><span>- </span>exact time for any time zone</span></h3>
+
+<div id="menulinks"><ul><li class="chosen"><a href="/">Exact time now</a></li><li><a href="/compare">Time here&amp;there</a></li><li><a href="/time_zones">Time zones</a></li><li><a href="/just">Just time</a></li><li><a href="/calendar">Calendar</a></li><li id="aub"><a href="sound">Sound</a></li><li><a href="/customize">Customize</a></li></ul><ul><li><a href="/apps">Apps</a></li><li><a href="/widgets">Widgets</a></li><li><a href="/time_zone_news">Time zone news</a></li><li><a href="/mailing_list">Newsletter</a></li></ul><ul><li><a href="/UTC">UTC</a></li><li><a href="/Unix_time_now">Unix clock</a></li><li><a href="/Unix_time_converter">Unix time converter</a></li><li><a href="/leapsecond">Leap second 2016</a></li></ul><ul><li><a href="/about">About</a></li><li><a href="/contact">Contact</a></li></ul>
+</div>
+</div>
+
+<div id="follow_app">
+<div id="follow"><div>Follow us</div>
+<a href="https://www.facebook.com/exact.time.is" target="_blank" style="background:url('http://static.time.is/img/social_icons5.png') 224px 32px" onmouseover="Zpos(this,224,0)" onmouseout="Zpos(this,224,32)" title="Follow Time.is on Facebook">Facebook</a>
+<a href="https://twitter.com/Time_is" target="_blank" style="background:url('http://static.time.is/img/social_icons5.png') 192px 32px" onmouseover="Zpos(this,192,0)" onmouseout="Zpos(this,192,32)" title="Follow Time.is on Twitter">Twitter</a>
+<a href="https://plus.google.com/+timeis/posts" target="_blank" style="background:url('http://static.time.is/img/social_icons5.png') 160px 32px" onmouseover="Zpos(this,160,0)" onmouseout="Zpos(this,160,32)" title="Follow Time.is on Google+">Google+</a>
+</div>
+<div id="appbadge"><a href="https://itunes.apple.com/app/time.is-exact-time-for-any/id857189816?l=nb&amp;ls=1&amp;mt=8"><img src="http://static.time.is/img/Download_on_the_App_Store_Badge_US-UK_135x40.png" alt="Download on the App Store"></a></div>
+</div>
+
+</nav>
+
+<footer id="footer">
+<nav><ul class="hzlist" style="padding-bottom:0"><li class="first"><a href="/advertise">Advertise</a></li><li class="last"><a href="/terms_of_use">Terms of use</a></li><li><a href="/terms_of_use#privacy_policy">Privacy policy</a></li></ul></nav>
+<div>Time.is displays exact, official atomic clock time for any time zone (more than 7 million locations) in 44 languages.<br>
+Automated access is prohibited. 
+Support for cookies and JavaScript is required.
+<br>
+Copyright &copy; 2009-2016 <a href="http://digitz.no/">Digitz.no</a>.
+<span class="nw">All rights reserved.</span>
+</div>
+</footer>
+</div><script>try{WmapObj=new jvm.Map({
+container:$('#worldmap'),
+map: 'world_mill_en',
+zoomOnScroll:false,
+panOnDrag:false,
+dragDisabled:true,
+selectedRegions:['MY'],
+focusOn:{
+lat:1.5500000,
+lng:110.3333300,
+scale:3,
+},
+markers:[{latLng:[1.5500000,110.3333300],name:"Kuching, Malaysia"}],
+backgroundColor:'#324',
+regionStyle:{
+initial:{
+fill:'#75c'
+},
+hover:{
+fill:'#86d',
+"fill-opacity":1,
+},
+selected:{
+fill:'#87f'
+},
+selectedHover:{
+}
+},
+markerStyle:{
+initial:{
+fill:'#c35',
+stroke:'#000',
+"fill-opacity":1,
+"stroke-width":2,
+"stroke-opacity":1,
+r:10
+},
+hover:{
+stroke:'black',
+"stroke-width":2,
+cursor:'pointer'
+},
+selected:{
+fill:'blue'
+},
+selectedHover:{
+}
+}
+})
+}catch(err){}
+</script><script>
+var lang='en_US',glang='en',tweet='Exact time for any place on earth: ',like_url='http://time.is/'
+function in_s(){init_s('right','http://www.facebook.com/exact.time.is','http%3A%2F%2Ftime.ishttp%3A%2F%2Ftime.is%2F','http%3A%2F%2Fstatic.time.is%2Fscreenshots%2FTime.is_11.11.11_700x525.png','Exact+time+for+any+place+on+earth%3A+http%3A%2F%2Ftime.is%2F','',' data-colorscheme="dark"','loading...','Your name','Your email address<br>(will not be shared)','Receiver\'s name','Receiver\'s e-mail address','Send message')}
+</script><script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create','UA-69493661-1','auto')
+ga('send','pageview')
+</script>
+<script>
+_atrk_opts={atrk_acct:"sAKmm1akGFL1fn",domain:"time.is",dynamic:true};
+(function(){var as=document.createElement('script');as.type='text/javascript';as.async=true;as.src="https://d31qbv1cthcecs.cloudfront.net/atrk.js"; var s=document.getElementsByTagName('script')[0];s.parentNode.insertBefore(as,s);})();
+</script>
+<noscript><img src="https://d5nxst8fruw4z.cloudfront.net/atrk.gif?account=sAKmm1akGFL1fn" style="display:none" height="1" width="1" alt="" /></noscript></body></html>

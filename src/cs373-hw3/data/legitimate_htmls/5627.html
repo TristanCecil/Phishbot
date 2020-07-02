@@ -1,0 +1,1379 @@
+
+
+
+
+
+<!DOCTYPE HTML>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta content="IE=edge" http-equiv="X-UA-Compatible">
+<title>Works Mobile ビジネス向け コラボレーション サービス</title>
+<link rel="stylesheet" type="text/css" href="/jp/css/works_ini.css">
+<script type="text/javascript" src="/jp/js/commonUtils.js" ></script>
+<script type="text/javascript" src="/jp/js/jquery-1.9.1.js" ></script>
+<script type="text/javascript">
+function openHelpPage(url) {
+	openWindow(url, 'helpPage');
+}
+
+function openWindow(url, name) {
+	window.open(url, name);
+}
+</script>
+<script type="text/javascript" src="/jp/js/message/message_ja_JP.js"></script>
+<link rel="stylesheet" type="text/css" href="/jp/css/works_ja_JP.css">
+
+</head>
+<body>
+	<div id="wrap">
+		
+
+
+
+<div id="header-wrap">
+    <!--[if IE 8]>
+    <script type="text/javascript">
+       (function() {
+         if (!
+         /*@cc_on!@*/
+         0) return;
+         var e = "abbr, article, aside, audio, canvas, datalist, details, dialog, eventsource, figure, footer, header, hgroup, mark, menu, meter, nav, output, progress, section, time, video".split(', ');
+         var i= e.length;
+         while (i--){
+             document.createElement(e[i])
+         }
+    })()
+    </script>
+    <![endif]-->
+	<div class="header  clearfix affix" data-spy="affix" data-offset-top="0">
+		<div class="inner">
+			<h1>
+				<a class="ir" href="/jp/"><span class="visuallyhidden">WORKs MOBilE</span></a>
+			</h1>
+			<ul class="tmenu">
+				<li><a href="/jp/home/company">会社紹介</a></li>
+				<li><a href="https://home.worksmobile.com"  target="_blank">Myサービス</a></li>
+				<li><a href="https://admin.worksmobile.com/management/memberOrganization" target="_blank">管理者画面</a></li>
+				<li><a href="/jp/notice/index">お知らせ</a></li>
+				<li><a href="https://help.worksmobile.com/home.nhn?lang=ja"  target="_blank">ヘルプ</a></li>
+			</ul>
+			<ul class="nav">
+				<li><a href="/jp/">ホーム</a></li>
+				<li><a href="/jp/home/features_one">特長</a></li>
+				<li><a href="/jp/home/worksmobileapp">ツール</a></li>
+				<li><a href="/jp/home/security">セキュリティ</a></li>
+				<li><a href="/jp/home/price">利用料金</a></li>
+				<li><a href="/jp/home/support">お問い合わせ</a></li>
+				<li><a href="/jp/home/cases">導入事例</a></li>
+			</ul>
+			<a href="" class="btn-white goReg ft_col01" id="priceButton">無料利用</a><!-- price button -->
+			<!-- partner menu, if it is JP -->
+			<div class="btn-white-left">
+				
+				<span class="on" id="partnerMenu"></span>
+				<a href="/jp/home/partner" class="link_left"></a>
+				<ul class="arrow-pop" style="display:none">
+					<li><a href="/jp/home/partner">パートナー一覧</a></li>
+					<li><a id="partnerSystemMenu" href="/jp/home/partner#partnerSystem">パートナーになる</a></li>
+					<li class="last"><a href="/jp/partners/portal">パートナーポータル</a></li>
+				</ul>
+			</div>
+		</div><!-- //inner -->
+	</div>
+</div>
+<script type="text/javascript">
+$(document).ready(function() {
+	// This is events of partnerMenu: on, off
+	var $partnerMenu = $("#partnerMenu");
+	var $arrowPop = $('.arrow-pop');
+	// check whether there is partner menu, or not. It is just working on JP
+	if ($partnerMenu.length > 0 && $arrowPop.length > 0) {
+		var partnerMenus = {
+			on: function () {
+				$partnerMenu.addClass('on');
+				$arrowPop.toggle();
+			},
+			off: function () {
+				$partnerMenu.removeClass('on');
+				$arrowPop.toggle();
+			}
+		};
+		 $partnerMenu.removeClass('on');
+		 $("body").click(function (e) {
+			 var target = e.target;
+			 if (target === $partnerMenu[0]) {
+				 if ($partnerMenu.siblings('ul').is(':visible')) {
+					 partnerMenus.off();
+				 }
+				 else {
+					 partnerMenus.on();
+				 }
+			 }
+			 else if (!$arrowPop[0].contains(target)) {
+				 if ($partnerMenu.siblings('ul').is(':visible')) {
+					 partnerMenus.off();
+				 }
+			 }
+			 else {
+				 var href = target.getAttribute('href');
+				 if (href != null && href.indexOf('partnerSystem') > -1) {
+					 partnerMenus.off();
+				 }
+			 }
+		 });
+	 }
+});
+</script>
+
+		<div id="container">
+			<link rel="stylesheet" type="text/css" href="/jp/css/works5.css"/>
+
+
+
+
+
+<div id="pop_product" class="pop_layer" style="display:none;position:fixed;z-index:10000;">
+	<div class="lay_content">
+		<h1>製品のご紹介</h1>
+		<ul class="lite_tab tab">
+			<li class="selected"><strong>ライト</strong></li>
+			<li><a href="javascript:selectPrice('basic');">ベーシック</a></li>
+			<li><a href="javascript:selectPrice('premium');">プレミアム</a></li>
+		</ul>
+		<ul class="basic_tab tab">
+			<li><a href="javascript:selectPrice('lite');">ライト</a></li>
+			<li class="selected"><strong>ベーシック</strong></li>
+			<li><a href="javascript:selectPrice('premium');">プレミアム</a></li>
+		</ul>
+		<ul class="premium_tab tab">
+			<li><a href="javascript:selectPrice('lite');">ライト</a></li>
+			<li><a href="javascript:selectPrice('basic');">ベーシック</a></li>
+			<li class="selected"><strong>プレミアム</strong></li>
+		</ul>
+		<script>
+		$(document).ready(function(){
+			var ini = function () {
+				function cal(){
+					  var height=parseInt($(window).height())*0.654;
+					  var x;
+					  var y=170;
+					  return  x=(height-y);
+					}
+					$( "div.scrl_box" ).css( "height", function() {
+					  return cal();
+					});
+			};
+			ini();
+			$(window).on("resize", function () {ini()});
+		})
+		</script>
+		<div class="scrl_box lite price_pop_scrl_box">
+			<!-- Lite -->
+			<div class="lite_tab spot_infor" style="background: url(../img/home/ja_JP/img_prd_lite.png) no-repeat;">
+				<h2 class="blind">ライト</h2>
+				<h3 class="blind">安心して使える、速くて便利な業務用メッセンジャー</h3>
+				<p class="blind">Works One, カレンダー,ホーム</p>
+			</div>
+			<ul class="lite_tab infor">
+				<li>ライトは、Works Mobile One (メッセンジャー、無料・ビデオ通話、アドレス帳) とホーム (掲示板)、<br>アドレス帳をご利用いただけるプランです。</li>
+				<li>社外での活動が多い営業社員や、社員同士のコミュニケーションなど、リアルタイムでの<br>コミュニケーションに適しており、チーム単位のタイトなプロジェクト管理にも有効な製品です。</li>
+				<li>遠隔削除 (Remote Wipe)、監査・モニタリング、SLAが併せて提供されます。</li>
+			</ul>
+			<!-- Basic -->
+			<div class="basic_tab spot_infor" style="background: url(../img/home/ja_JP/img_prd_basic.png) no-repeat;">
+				<h2 class="blind">ベーシック</h2>
+				<h3 class="blind">いつでもどこでも、協業のための最適ツール</h3>
+				<p class="blind">Works One, メール, カレンダー, アドレス帳, Drive, Office, ホーム</p>
+			</div>
+			<ul class="basic_tab infor">
+				<li>ベーシックは、メール、カレンダー、Driveを始めとする基本的なグループウェアの機能がすべて<br>搭載されており、強力な協業ツールであるWorks Mobile One (メッセンジャー、無料・ビデオ通話、<br>アドレス帳)がセットになっています。</li>
+				<li>PCだけでなくモバイルでも緊密な協業とコミュニケーションが可能で、業務効率は大幅に向上します。</li>
+				<li>メール30GB、Drive30GB、グループフォルダ1TBの容量が提供されます。</li>
+				<li>遠隔削除 (Remote Wipe)、監査・モニタリング、SLAが基本で提供されます。</li>
+			</ul>
+			<!-- Premium -->
+			<div class="premium_tab spot_infor" style="background: url(../img/home/ja_JP/img_prd_premium.png) no-repeat;">
+				<h2 class="blind">プレミアム</h2>
+				<h3 class="blind">容量の心配無用、プレミアム ビジネスのすべて</h3>
+				<p class="blind">Works One, メール, カレンダー, アドレス帳, Drive, Office, ホーム</p>
+			</div>
+			<ul class="premium_tab infor">
+				<li>プレミアムは十分な容量でメール、ドライブを初めとするグループウェア機能の利用を可能とし、更にはアーカ<br>イブ機能も併せて提供されます。</li>
+				<li>メール無制限、Drive1TB、グループフォルダ10TB が提供され、容量の心配はありません。</li>
+				<li>遠隔削除 (Remote Wipe)、監査・モニタリング、SLAが基本で提供されます。</li>
+			</ul>
+			<h3 class="has_line">製品別機能比較一覧</h3>
+			<div class="tb_prd">
+				<table border="1" cellpadding="0" cellspacing="0" title="製品比較表">
+					<colgroup><col width="98"><col><col width="87"><col width="87"><col width="87"></colgroup>
+					<thead>
+						<tr>
+						<th colspan="2" class="blank">&nbsp;</th>
+						<th scope="col" class="lite"><p>ライト</p></th>
+						<th scope="col" class="basic"><p>ベーシック</p></th>
+						<th scope="col" class="premium"><p>プレミアム</p></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<th scope="row" rowspan="10">全般</th>
+							<td><p>全社監査機能</p></td>
+							<td class="lite"><p class="chk"><strong>y</strong></p></td>
+							<td class="basic"><p class="chk"><strong>y</strong></p></td>
+							<td class="premium"><p class="chk"><strong>y</strong></p></td>
+						</tr>
+						<tr>
+							<td><p>99.9%稼働時間保証(SLA)</p></td>
+							<td class="lite"><p class="chk"><strong>y</strong></p></td>
+							<td class="basic"><p class="chk"><strong>y</strong></p></td>
+							<td class="premium"><p class="chk"><strong>y</strong></p></td>
+						</tr>
+						<tr>
+							<td><p>全社モバイルアプリの利用制御(例外設定可能)</p></td>
+							<td class="lite"><p class="chk"><strong>y</strong></p></td>
+							<td class="basic"><p class="chk"><strong>y</strong></p></td>
+							<td class="premium"><p class="chk"><strong>y</strong></p></td>
+						</tr>
+						<tr>
+							<td><p>メール容量</p></td>
+							<td class="lite"></td>
+							<td class="basic"><p class="chk">30GB</p></td>
+							<td class="premium"><p class="chk">制限なし</p></td>
+						</tr>
+						<tr>
+							<td><p>個人Drive容量</p></td>
+							<td class="lite"></td>
+							<td class="basic"><p class="chk">30GB</p></td>
+							<td class="premium"><p class="chk">1TB</p></td>
+						</tr>
+						<tr>
+							<td><p>グループフォルダ容量</p></td>
+							<td class="lite"></td>
+							<td class="basic"><p class="chk">1TB</p></td>
+							<td class="premium"><p class="chk">10TB</p></td>
+						</tr>
+						<tr>
+							<td><p>接続環境設定(IP制限)</p></td>
+							<td class="lite"><p class="chk"><strong>y</strong></p></td>
+							<td class="basic"><p class="chk"><strong>y</strong></p></td>
+							<td class="premium"><p class="chk"><strong>y</strong></p></td>
+						</tr>
+						<tr>
+							<td><p>メール送受信ポリシーの設定</p></td>
+							<td class="lite"></td>
+							<td class="basic"><p class="chk"><strong>y</strong></p></td>
+							<td class="premium"><p class="chk"><strong>y</strong></p></td>
+						</tr>
+						<tr>
+							<td><p>ビジネスデータの保存処理(アーカイブ)</p></td>
+							<td class="lite"></td>
+							<td class="basic"></td>
+							<td class="premium"><p class="chk"><strong>y</strong></p></td>
+						</tr>
+						<tr>
+							<td><p>アーカイブデータ検索とエクスポート</p></td>
+							<td class="lite"></td>
+							<td class="basic"></td>
+							<td class="premium"><p class="chk"><strong>y</strong></p></td>
+						</tr>
+						<tr>
+							<th scope="row" rowspan="5">メッセンジャー</th>
+							<td><p>1:1, グループトーク</p></td>
+							<td class="lite"><p class="chk"><strong>y</strong></p></td>
+							<td class="basic"><p class="chk"><strong>y</strong></p></td>
+							<td class="premium"><p class="chk"><strong>y</strong></p></td>
+						</tr>
+						<tr>
+							<td><p>音声通話</p></td>
+							<td class="lite"><p class="chk"><strong>y</strong></p></td>
+							<td class="basic"><p class="chk"><strong>y</strong></p></td>
+							<td class="premium"><p class="chk"><strong>y</strong></p></td>
+						</tr>
+						<tr>
+							<td><p>ビデオ通話</p></td>
+							<td class="lite"><p class="chk"><strong>y</strong></p></td>
+							<td class="basic"><p class="chk"><strong>y</strong></p></td>
+							<td class="premium"><p class="chk"><strong>y</strong></p></td>
+						</tr>
+						<tr>
+							<td><p>ファイル送信</p></td>
+							<td class="lite"><p class="chk"><strong>y</strong></p></td>
+							<td class="basic"><p class="chk"><strong>y</strong></p></td>
+							<td class="premium"><p class="chk"><strong>y</strong></p></td>
+						</tr>
+						<tr>
+							<td><p>トーク検索</p></td>
+							<td class="lite"><p class="chk"><strong>y</strong></p></td>
+							<td class="basic"><p class="chk"><strong>y</strong></p></td>
+							<td class="premium"><p class="chk"><strong>y</strong></p></td>
+						</tr>
+						<tr>
+							<th scope="row" rowspan="2">アドレス帳</th>
+							<td><p>組織図</p></td>
+							<td class="lite"><p class="chk"><strong>y</strong></p></td>
+							<td class="basic"><p class="chk"><strong>y</strong></p></td>
+							<td class="premium"><p class="chk"><strong>y</strong></p></td>
+						</tr>
+						<tr>
+							<td><p>メーリンググループ</p></td>
+							<td class="lite"></td>
+							<td class="basic"><p class="chk"><strong>y</strong></p></td>
+							<td class="premium"><p class="chk"><strong>y</strong></p></td>
+						</tr>
+						<tr>
+							<th scope="row" rowspan="2">ホーム</th>
+							<td><p>レイアウトのカスタマイズ</p></td>
+							<td class="lite"><p class="chk"><strong>y</strong></p></td>
+							<td class="basic"><p class="chk"><strong>y</strong></p></td>
+							<td class="premium"><p class="chk"><strong>y</strong></p></td>
+						</tr>
+						<tr>
+							<td><p>外部掲示板との連携</p></td>
+							<td class="lite"><p class="chk"><strong>y</strong></p></td>
+							<td class="basic"><p class="chk"><strong>y</strong></p></td>
+							<td class="premium"><p class="chk"><strong>y</strong></p></td>
+						</tr>
+						<tr>
+							<th scope="row" rowspan="3">セキュリティ</th>
+							<td><p>SSL接続</p></td>
+							<td class="lite"><p class="chk"><strong>y</strong></p></td>
+							<td class="basic"><p class="chk"><strong>y</strong></p></td>
+							<td class="premium"><p class="chk"><strong>y</strong></p></td>
+						</tr>
+						<tr>
+							<td><p>パスワードポリシーの設定</p></td>
+							<td class="lite"><p class="chk"><strong>y</strong></p></td>
+							<td class="basic"><p class="chk"><strong>y</strong></p></td>
+							<td class="premium"><p class="chk"><strong>y</strong></p></td>
+						</tr>
+						<tr>
+							<td><p>モバイル端末の管理</p></td>
+							<td class="lite"><p class="chk"><strong>y</strong></p></td>
+							<td class="basic"><p class="chk"><strong>y</strong></p></td>
+							<td class="premium"><p class="chk"><strong>y</strong></p></td>
+						</tr>
+						<tr>
+							<th scope="row" rowspan="4">メール</th>
+							<td><p>迷惑メールフィルターとウイルス対策</p></td>
+							<td class="lite"></td>
+							<td class="basic"><p class="chk"><strong>y</strong></p></td>
+							<td class="premium"><p class="chk"><strong>y</strong></p></td>
+						</tr>
+						<tr>
+							<td><p>翻訳機能</p></td>
+							<td class="lite"></td>
+							<td class="basic"><p class="chk"><strong>y</strong></p></td>
+							<td class="premium"><p class="chk"><strong>y</strong></p></td>
+						</tr>
+						<tr>
+							<td><p>自動転送利用設定</p></td>
+							<td class="lite"></td>
+							<td class="basic"><p class="chk"><strong>y</strong></p></td>
+							<td class="premium"><p class="chk"><strong>y</strong></p></td>
+						</tr>
+						<tr>
+							<td><p>IMAP/POP/SMTPの利用設定</p></td>
+							<td class="lite"></td>
+							<td class="basic"><p class="chk"><strong>y</strong></p></td>
+							<td class="premium"><p class="chk"><strong>y</strong></p></td>
+						</tr>
+						<tr>
+							<th scope="row" rowspan="3">カレンダー</th>
+							<td><p>予定候補時間提案(モバイル専用)</p></td>
+							<td class="lite"></td>
+							<td class="basic"><p class="chk"><strong>y</strong></p></td>
+							<td class="premium"><p class="chk"><strong>y</strong></p></td>
+						</tr>
+						<tr>
+							<td><p>グループタスク</p></td>
+							<td class="lite"></td>
+							<td class="basic"><p class="chk"><strong>y</strong></p></td>
+							<td class="premium"><p class="chk"><strong>y</strong></p></td>
+						</tr>
+						<tr>
+							<td><p>CalDAVの利用設定</p></td>
+							<td class="lite"></td>
+							<td class="basic"><p class="chk"><strong>y</strong></p></td>
+							<td class="premium"><p class="chk"><strong>y</strong></p></td>
+						</tr>
+						<tr>
+							<th scope="row" rowspan="4">Drive</th>
+							<td><p>グループフォルダ</p></td>
+							<td class="lite"></td>
+							<td class="basic"><p class="chk"><strong>y</strong></p></td>
+							<td class="premium"><p class="chk"><strong>y</strong></p></td>
+						</tr>
+						<tr>
+							<td><p>ファイルバージョン管理</p></td>
+							<td class="lite"></td>
+							<td class="basic"><p class="chk"><strong>y</strong></p></td>
+							<td class="premium"><p class="chk"><strong>y</strong></p></td>
+						</tr>
+						<tr>
+							<td><p>ファイルの本文検索</p></td>
+							<td class="lite"></td>
+							<td class="basic"><p class="chk"><strong>y</strong></p></td>
+							<td class="premium"><p class="chk"><strong>y</strong></p></td>
+						</tr>
+						<tr>
+							<td><p>全社Drive利用管理</p></td>
+							<td class="lite"></td>
+							<td class="basic"><p class="chk"><strong>y</strong></p></td>
+							<td class="premium"><p class="chk"><strong>y</strong></p></td>
+						</tr>
+<!-- 						<tr>
+							<th scope="row" rowspan="2">Office</th>
+							<td><p>Officeファイルとの互換性</p></td>
+							<td class="lite"></td>
+							<td class="basic"><p class="chk"><strong>y</strong></p></td>
+							<td class="premium"><p class="chk"><strong>y</strong></p></td>
+						</tr> -->
+	<!-- 					<tr>
+							<td><p>テンプレートの提供</p></td>
+							<td class="lite"></td>
+							<td class="basic"><p class="chk"><strong>y</strong></p></td>
+							<td class="premium"><p class="chk"><strong>y</strong></p></td>
+						</tr> -->
+						<tr>
+							<th scope="row" rowspan="2">アドミン</th>
+							<td><p>カスタマイズロゴ</p></td>
+							<td class="lite"><p class="chk"><strong>y</strong></p></td>
+							<td class="basic"><p class="chk"><strong>y</strong></p></td>
+							<td class="premium"><p class="chk"><strong>y</strong></p></td>
+						</tr>
+						<tr>
+							<td><p>カスタマイズURL</p></td>
+							<td class="lite"></td>
+							<td class="basic"><p class="chk"><strong>y</strong></p></td>
+							<td class="premium"><p class="chk"><strong>y</strong></p></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<p class="close"><a href="javascript:;">hide layer</a></p>
+	</div>
+	<p class="align"></p>
+	<p class="bg"></p>
+</div>
+
+<div class="layer invitation" style="display:none;position:fixed;z-index:10000;">
+	<div class="ly_container">
+		<h2 class="ly_header">無料トライアルのお申込みについて</h2>
+
+		<div class="ly_content">
+			Works Mobileの無料トライアルにご興味を頂きまして誠にありがとうございます。<br>
+	現在は招待企業様が承認した企業様のみご参加いただけます。<br>
+	下記フォームに承認を依頼する招待企業の会社名を入力してください。
+		</div>
+		<form method="post" id="priceForm" action="/jp/joinup/domain">
+			<div class="ly_form_box">
+				<label class="form_tit" for="invitation_corp_name">招待企業名(半角英字)
+				</label>
+				<span class="input_cover">
+					<input type="text" id="invitation_corp_name" placeholder="入力してください。" value="" name="partnerName" class="partnerName">
+					<input type="hidden" id="productCode" name="productCode">
+					<span class="btn_remove"><i>reset</i></span>
+				</span>
+			</div>
+		</form>
+		<div class="confirm_action">
+			<a href="#" class="btn_cancel">キャンセル</a><a href="#" class="btn_registration">新規登録</a>
+		</div>
+		<p class="ly_content01">招待企業名をご存知ない企業様で、無料トライアルに参加したい、<br>
+		ご興味がある場合は、弊社までお問い合わせください。<br>
+		お問い合わせフォームは<a href="/jp/home/support">こちら</a>
+		</p>
+		<button class="btn_close close_invitation"><i>close layer</i></button>
+	</div>
+</div>
+
+<div class="layer alert" style="display:none;position:fixed;z-index:10000;">
+	<div class="ly_container">
+		<p class="alert_msg">一致する招待企業が存在しません。<br>
+再度入力してください。</p>
+		<button class="btn_confirm close_alert">確認</button>
+		<button class="btn_close close_alert"><i>close layer</i></button>
+	</div>
+</div>
+
+<script type="text/javascript">
+	$(document).ready(function(){
+		$("#lite_login").on("click", function(e) {
+			e.preventDefault();
+			// popupApplication("lite");
+			selectApplication("lite");
+		});
+		$("#basic_login").on("click", function(e) {
+			e.preventDefault();
+			// popupApplication("basic");
+			selectApplication("basic");
+		});
+		$("#premium_login").on("click", function(e) {
+			e.preventDefault();
+			// popupApplication("premium");
+			selectApplication("premium");
+		});
+	});
+
+	$(".close").on("click", function(e) {
+		e.preventDefault();
+		$("#pop_product").hide();
+		$("body").removeClass("body_hs");
+	});
+
+	$(".close_invitation").on("click", function(e){
+		e.preventDefault();
+		$(".invitation").hide();
+		$("body").removeClass("body_hs");
+	});
+
+	$(".btn_cancel").on("click", function(e){
+		e.preventDefault();
+		$(".invitation").hide();
+		$("body").removeClass("body_hs");
+	});
+
+	$(".btn_remove").on("click", function(e){
+		e.preventDefault();
+		$(".partnerName").val("");
+	});
+	// route to the domain view by productCode
+	var subFormProduct = function () {
+		var productCode = $("#productCode").val();
+		$("#priceForm").submit();
+	}
+	// subForm is used for confirm a partner.
+	var subForm = function (e) {
+		e.preventDefault();
+		var productCode = $("#productCode").val();
+		var partnerName = $.trim($(".partnerName").val());
+		if(!partnerName) return false;
+		$.ajax({
+			url: 'https://www.worksmobile.com/jp/admin/management/rest/isValidPartner',
+			type: 'POST',
+			dataType: 'json',
+			data: {partnerName: partnerName},
+			success : function (res) {
+				if(res.isValid == "true") {
+					$("#priceForm").submit();
+				} else {
+					popupAlert();
+				}
+			}
+		});
+	}
+	$(".btn_registration").on("click", subForm);
+	$("#invitation_corp_name").on("keypress", function (e) {
+		if(e.keyCode == 13) subForm(e);
+	})
+	$(".close_alert").on("click", function(e){
+		e.preventDefault();
+		closeAlert();
+	});
+
+	var popupAlert = function(){
+		$(".alert").show();
+	}
+
+	var closeAlert = function(){
+		$(".alert").hide();
+	}
+
+	// selecte a productCode - 20151222
+	var selectApplication = function(type) {
+		switch (type) {
+			case "lite":
+				$("#productCode").val("LT_T");
+				break;
+			case "basic":
+				$("#productCode").val("BS_T");
+				break;
+			case "premium":
+				$("#productCode").val("PRM_T");
+				break;
+			default:
+				break;
+		}
+		subFormProduct();	// route to the domain view by productCode
+	}
+	// select a product and call popup.
+	var popupApplication = function(type){
+		$(".partnerName").val("");
+		switch (type) {
+		case "lite":
+			$("#productCode").val("LT_T");
+			$(".invitation").show();
+			break;
+		case "basic":
+			$("#productCode").val("BS_T");
+			$(".invitation").show();
+			break;
+		case "premium":
+			$("#productCode").val("PRM_T");
+			$(".invitation").show();
+			break;
+		default:
+			break;
+		};
+		$("body").addClass("body_hs");
+	}
+
+	var selectPrice = function(type){
+		$(".price_pop_scrl_box").scrollTop(0);
+		switch (type) {
+		case "lite":
+			$(".lite_tab").show();
+			$(".basic_tab").hide();
+			$(".premium_tab").hide();
+			$(".scrl_box").addClass("lite");
+			$("th.lite").addClass("lite_selected");
+			$("td.lite").addClass("lite_selected");
+			$(".scrl_box").removeClass("basic");
+			$(".scrl_box").removeClass("premium");
+			$("th.basic_selected, td.basic_selected").removeClass("basic_selected");
+			$("th.premium_selected, td.premium_selected").removeClass("premium_selected");
+			break;
+		case "basic":
+			$(".lite_tab").hide();
+			$(".basic_tab").show();
+			$(".premium_tab").hide();
+			$(".scrl_box").addClass("basic");
+			$("th.basic").addClass("basic_selected");
+			$("td.basic").addClass("basic_selected");
+			$(".scrl_box").removeClass("lite");
+			$(".scrl_box").removeClass("premium");
+			$("th.lite_selected, td.lite_selected").removeClass("lite_selected");
+			$("th.premium_selected, td.premium_selected").removeClass("premium_selected");
+			break;
+		case "premium":
+			$(".lite_tab").hide();
+			$(".basic_tab").hide();
+			$(".premium_tab").show();
+			$(".scrl_box").addClass("premium");
+			$("th.premium").addClass("premium_selected");
+			$("td.premium").addClass("premium_selected");
+			$(".scrl_box").removeClass("lite");
+			$(".scrl_box").removeClass("basic");
+			$("th.lite_selected, td.lite_selected").removeClass("lite_selected");
+			$("th.basic_selected, td.basic_selected").removeClass("basic_selected");
+			break;
+		default:
+			break;
+		}
+	}
+
+	var popupPrice = function(type){
+		$("#pop_product").show();
+		$("body").addClass("body_hs");
+		selectPrice(type);
+	}
+</script>
+
+<div class="lywrap">
+  <div class="mdghd05mnimg">
+    <ul class="mdghd05ul">
+      <li class="mdghd05link item_cl01">
+        <div style="margin:325px auto 0;width:980px;z-index:10;">
+          <a href="/jp/landing/main" target="_blank" style="float:left;width:185px;height:45px;">
+            text
+          </a>
+        </div>
+      </li>
+      <li class="mdghd05link item_cl02">
+        <div style="margin:323px auto 0;width:980px;z-index:10;">
+          <a href="/jp/home/worksmobileapp" style="float:left;width:150px;height:45px;">
+            text
+          </a>
+          <a href="#" style="float:left;margin-left:10px;width:150px;height:45px;z-index:10" class="goReg">
+            text
+          </a>
+        </div>
+      </li>
+      <li class="mdghd05link item_cl03">
+        <div style="margin:323px auto 0;width:980px;z-index:10;">
+          <a href="/jp/home/worksmobileapp" style="float:left;width:150px;height:45px;">
+            text
+          </a>
+          <a href="#" style="float:left;margin-left:10px;width:150px;height:45px;z-index:10" class="goReg">
+            text
+          </a>
+        </div>
+      </li>
+      <li class="mdghd05link item_cl04">
+        <div style="margin:344px auto 0;width:980px;z-index:10;">
+          <a href="/jp/home/worksmobileapp" style="float:left;width:150px;height:45px;">
+            text
+          </a>
+          <a href="#" style="float:left;margin-left:10px;width:150px;height:45px;z-index:10" class="goReg">
+            text
+          </a>
+        </div>
+      </li>
+    </ul>
+    <ol class="mdghd05paging">
+      <li class="exselected slide" data-index="1">
+        <a href="javascript:;">
+        </a>
+      </li>
+      <li class="slide" data-index="2">
+        <a href="javascript:;">
+        </a>
+      </li>
+      <li class="slide" data-index="3">
+        <a href="javascript:;" class="a01">
+        </a>
+      </li>
+      <li class="slide" data-index="4">
+        <a href="javascript:;" class="a01">
+        </a>
+      </li>
+    </ol>
+  </div>
+  <!--/hEAdER-AREA-->
+  <!--cOnTEnTs-AREA-->
+  <div class="lycontents clearfix">
+    <div class="lycontentsinner clearfix">
+        <div class="con_free_desc">
+           <p>まずは30日間の無料トライアルで、Works Mobileのその使いやすさと利便性が<br>あなたのワークスタイルをどのように変えるか体験してみてください。</p>
+           <a href="/jp/home/price" class="btn">無料トライアル登録はこちら</a>
+        </div>
+      <section class="mdsec01 clearfix first">
+        <h2 class="h20ff clft">
+          	仕事が はかどる　気持ちが 伝わる<br />
+          	Works Mobile
+        </h2>
+        <p class="ft_distence_sty1">あたらしい働きかたをリードします<a href="/jp/home/features_one">詳しくはこちら</a></p>
+        <div class="mdsec01img_list">
+          <ul class="clearfix">
+            <li>
+              <p class="main_p"></p>
+              <div class="list_bottom">
+                <p class="ft_sty1" style="letter-spacing:-1.3px;letter-spacing:-1.6px\9">通勤中や外出先でパッと<br>確認、サッと伝える</p>
+                <span class="line_green line_green_sty1"></span>
+                <p class="ft_sty2">誰でも使える、素早く使える、手軽で使い慣れたメッセンジャー。<br>だから伝わる。だから便利。</p>
+              </div>
+            </li>
+            <li class="nth-cld02">
+              <p class="main_p"></p>
+              <div class="list_bottom">
+                <p class="ft_sty1">
+			                  仕事仲間と手軽に<br />
+			                  コミュニケーション
+                </p>
+                <span class="line_green line_green_sty2"></span>
+                <p class="ft_sty2 letter-narrow">
+			                  メッセージ、無料通話、ビデオ通話、メール、会議招待など、思いのままにコミュニケーションできます。<br />
+			                  メンバーはすべて社内アドレス帳に登録、<br/>
+			                  もう連絡先を探す必要はありません。
+                </p>
+              </div>
+            </li>
+            <li>
+              <p class="main_p"></p>
+              <div class="list_bottom">
+                <p class="ft_sty1" style="letter-spacing:-1.6px">
+			                  日本のビジネススタイル<br />
+			                  に最適
+                </p>
+                <span class="line_green line_green_sty2"></span>
+                <p class="ft_sty2">日本のビジネススタイルに合わせた使いやすさを研究し、迅速な改善とサポートシステムで、お客様が安心してお使いいただける仕事環境をご提供します。</p>
+              </div>
+            </li>
+            <div class="img_location_sty1"><img src="/jp/img/home/ja_JP/works_mobile.png" /></div>
+          </ul>
+          <ul class="clearfix">
+            <li>
+              <p class="main_p"></p>
+              <div class="list_bottom">
+                <p class="ft_sty1" style="letter-spacing:-1.3px;letter-spacing:-1.5px\9">
+			                  容量の心配はいりません<br />
+			                  お値段もお求めやすく
+                </p>
+                <span class="line_green line_green_sty2"></span>
+                <p class="ft_sty2">
+			                  実使用量に応じた合理的な費用で、<br/>
+			                  容量や費用の心配なく最高のサービスを<br/>
+			                  ご利用いただけます。
+                </p>
+              </div>
+            </li>
+            <li class="nth-cld02">
+              <p class="main_p"></p>
+              <div class="list_bottom">
+                <p class="ft_sty1">クラウドだから<br /> いつでも最新</p>
+                <span class="line_green line_green_sty2"></span>
+                <p class="ft_sty2" style="letter-spacing:-.5px">
+			                  仕事仲間と資料を共有するだけでなく<br />
+			                  同時に編集もできます。<br>
+			                  ストレージはたくさんありますので、<br/>
+			                  チームが大きくなっても心配ありません。<br/>
+			                  いつでも最新状態にアップデート<br/>
+			                  された機能をご利用いただけます。
+                </p>
+              </div>
+            </li>
+            <li>
+              <p class="main_p"></p>
+              <div class="list_bottom">
+                <p class="ft_sty1">最高レベルの<br/> セキュリティ技術</p>
+                <span class="line_green line_green_sty2"></span>
+                <p class="ft_sty2">ISO/IEC 27001とSOC2/3認証を同時に取得。通信暗号化(SSL)、24時間監視体制、厳格なセキュリティプロセス遵守、監査とコンプライアンス対応機能など、会社のデータを安全に管理します。</p>
+              </div>
+            </li>
+            <div class="img_location_sty1"><img src="/jp/img/home/ja_JP/works_mobile1.png" /></div>
+          </ul>
+        </div>
+      </section>
+      <section class="mdsec01 clearfix nt-child06">
+        <div class="mdsec01imgleft"><img alt="image" src="/jp/img/home/ja_JP/feature_works_00.png" /></div>
+        <div class="mdsec01txtright ft_distence_sty5">
+          <h2 style="text-align:left;font-size:40px;">おなじみの<br/>LINEキャラクターが<br/> ビジネスシーンに</h2>
+          <p class="mdsec01desc">
+            LINEスタンプを使ってビジネスコミュニケーションをもっと自由に。<br>
+		            同僚との仕事の会話でも、今日のランチを決める時にも、気軽にLINE<br>
+		            スタンプを使って豊かに表現してみてください。
+          </p>
+        </div>
+      </section>
+      <section class="mdsec01 clearfix nt-child02">
+        <h2 class="ft_distence_sty" style="line-height:57px"> 今までとは違う使いやすさで、<br/>あなたの仕事を助けます</h2>
+        <p class="ft_distence_sty2">Works Mobileは、本当に仕事で使えて、気持ちまで伝わるコミュニケーション環境を実現します。</p>
+        <div class="mdsec01lineit clearfix">
+          <ul>
+           <!-- Sateraito -->
+		    <li class="listbg_sty5 listbg_border01">
+		      <p class="desccont">
+			        SaaS型サービスのビジネス支援を<br>
+		        	展開するサテライトオフィス。<br>
+			        Works Mobileで、業務全体の対応<br>
+			                          スピードの底上げができました。
+		      </p>
+		      <a href="/jp/home/cases5" class="ftlink01">詳細はこちら</a>
+		    </li>
+		    <!-- Conexio -->
+		    <li class="listbg_sty1 list_off listbg_border01">
+		      <p class="desccont">
+				        全国に400店舗以上の携帯電話ショ<br>
+				        ップを展開するコネクシオ。スタッ<br>
+				        フにとっての使いやすさと馴染みや<br>
+				        すさでWorks Mobileを選びました。
+		      </p>
+		      <a href="/jp/home/cases4" class="ftlink01">詳細はこちら</a>
+		    </li>
+          </ul>
+        </div>
+        <a href="/jp/home/cases" class="link">その他の導入事例はこちら</a>
+      </section>
+      <section class="mdsec01 clearfix nt-child03">
+        <div class="mdsec01content clearfix nth-chd01">
+          <h2 class="ft_distence_sty01">Works Mobileサービス</h2>
+          <p class="ft_distence_sty6">素早いコミュニケーション、使いやすくて便利、気持ちまで伝わる、チームワークのためのすべて</p>
+          <div class="mdsec01imgleft"><img  alt="image" src="/jp/img/home/ja_JP/feature_works.png" style="width:465px;height:427px;margin-top:-10px" /></div>
+          <div class="mdsec01txtright ft_distence_sty3">
+            <h2 style="text-align:left;font-weight:normal">Works Mobile One</h2>
+            <p class="mdsec01desc" style="margin: 15px 0 0 2px">
+			            メッセンジャー、無料通話、ビデオ通話、メール、カレンダー、<br/>
+			              アドレス帳、ファイル管理をひとつのアプリに。<br/>
+			    Works Mobile Oneがあれば、 いつでも仕事仲間へすぐに連絡、<br>ちょっとした時間で素早く確認できます。<br/>
+			            今までとは違う便利さをWorks Mobileで体験してください。
+            </p>
+            <a href="/jp/home/worksmobileapp" class="alk" style="margin: 9px 0 0 3px">もっと見る</a>
+          </div>
+        </div>
+        <div class="mdsec01content clearfix nth-chd02">
+          <div class="mdsec01imgright"><img  alt="image" src="/jp/img/home/ja_JP/feature_works_01.png" style="margin-top:-10px" /></div>
+          <div class="mdsec01txtleft ft_distence_sty4">
+            <h2 style="text-align:left;font-weight:normal">メール</h2>
+            <p class="mdsec01desc" style="margin-top:11px">
+              Works Mobileを利用すれば大容量のメールボックスを自社ドメインの業務用メールアドレスで利用できます。<br/>
+                                                大容量ファイルの添付や開封確認など、ビジネスで便利な機能がたくさんあります。
+            </p>
+            <a href="/jp/home/mail" class="alk" style="margin: 11px 0 0 3px">もっと見る</a>
+          </div>
+        </div>
+        <div class="mdsec01content clearfix nth-chd03">
+          <div class="mdsec01imgleft"><img  alt="image" src="/jp/img/home/ja_JP/feature_works_02.png" style="margin: 3px 0 0 -1px" /></div>
+          <div class="mdsec01txtright ft_distence_sty5">
+            <h2 style="text-align:left;font-weight:normal">カレンダー</h2>
+            <p class="mdsec01desc">
+              Works Mobileカレンダーは、会議を設定する際に、出席者の<br/>
+		                    空き時間をひと目で確認して予定を決められるので、スケジ<br/>
+		                  ュール調整の手間が省けます。外出先からも自分の予定はも<br/>
+		                 ちろん、チームの予定も素早く簡単に確認できます。
+            </p>
+            <a href="/jp/home/calendar" class="alk" style="margin: 10px 0 0 2px">もっと見る</a>
+          </div>
+        </div>
+        <div class="mdsec01content clearfix nth-chd04">
+          <div class="mdsec01imgright"><img  alt="image" src="/jp/img/home/ja_JP/feature_works_03.png" style="margin:-3px 0 0" /></div>
+          <div class="mdsec01txtleft ft_distence_sty7">
+            <h2 style="text-align:left;font-weight:normal">アドレス帳</h2>
+            <p class="mdsec01desc">
+			              メンバーの名前や写真、役職・職級、所属する組織まで詳細に確認することができ、組織全体を把握することができます。<br />
+			              アドレス帳情報は、Works Mobileツール (トーク、メール、カレンダー共有、フォルダ共有) と連携され、メンバー同士が状況に応じて多様な方法で連絡・連携できます。
+            </p>
+            <a href="/jp/home/contact" class="alk" style="margin: 8px 0 0 2px">もっと見る</a>
+          </div>
+        </div>
+        <div class="mdsec01content clearfix nth-chd05">
+          <div class="mdsec01imgleft"><img  alt="image" src="/jp/img/home/ja_JP/feature_works_04.png" /></div>
+          <div class="mdsec01txtright ft_distence_sty8">
+            <h2 style="text-align:left;font-weight:normal">Drive</h2>
+            <p class="mdsec01desc" style="margin: 17px 0 0 2px">
+			              同じチームや組織メンバー間で、容量を気にすることなく、安全<br />
+			              にファイルを共有することができます。組織別、プロジェクト別<br />
+              <strong style='font-weight:normal;letter-spacing:-.9px'>にドキュメント、写真、動画を共有することができ、フォルダごとに</strong><br >
+              	閲覧権限を設定することが可能です。
+            </p>
+            <a href="/jp/home/drive" class="alk" style="margin: 11px 0 0 2px">もっと見る</a>
+          </div>
+        </div>
+        <div class="mdsec01content clearfix">
+          <div class="mdsec01imgright"><img  alt="image" src="/jp/img/home/ja_JP/feature_works_06.png" style="margin-left:0px" /></div>
+          <div class="mdsec01txtleft ft_distence_sty10">
+            <h2 style="text-align:left;font-weight:normal">ホーム</h2>
+            <p class="mdsec01desc" style="margin: 17px 0 0 2px">
+              	独自のホーム画面を作成することができ、掲示板機能で社内のお<strong style='font-weight:normal;letter-spacing:-.9px'>知らせやニュースの共有、チームでのディスカッションができます。</strong>
+            </p>
+            <a href="/jp/home/home" class="alk" style="margin: 11px 0 0 3px">もっと見る</a>
+          </div>
+        </div>
+      </section>
+      <section class="mdsec01 clearfix nt-child04">
+        <h2 class="title_distence_v1">ご利用手続き</h2>
+        <p class="mdsec01desc_v1">
+          Works Mobileのご利用を希望される場合は、本サイトに記載されたサービス案内をご確認いただいて、<br />
+                                   ご不明な点等ございましたら「お問い合わせ」フォームからお問い合わせください。
+        </p>
+        <div class="mdsec01step">
+          <ul>
+            <li class="nth-cd01">
+              <p>サービス紹介</p>
+              <a href="/jp/home/worksmobileapp" class="step_btn">もっと見る</a>
+            </li>
+            <li class="nth-cd02">
+              <p>利用料金</p>
+              <a href="" class="step_btn goReg">もっと見る</a>
+            </li>
+            <li>
+              <p>相談・お問い合わせ</p>
+              <a href="/jp/home/support" class="step_btn">もっと見る</a>
+            </li>
+            <li class="nth-cd04">
+              <p>Works Mobileに登録</p>
+              <a href="" class="step_btn_v1 goReg">無料利用</a>
+            </li>
+            <li class="nth-cd05">
+              <p>常時サポート</p>
+              <a href="/jp/home/support" class="step_btn">もっと見る</a>
+            </li>
+            <div class="img_location_sty1"><img src="/jp/img/home/ja_JP/main_step.png" /></div>
+          </ul>
+        </div>
+      </section>
+      <div class="prod">
+        <h2>Works Mobileの利用料金</h2>
+        <div class="plan_type clearfix">
+          <div class="plan lite">
+            <div class="summary" id="lite_login"><!-- Lite price box -->
+              <h3 class="blind">ライト</h3>
+              <ul class="blind">
+                <li>1ユーザー</li>
+                <li>¥300 / 月 (年間プラン)</li>
+                <li>¥360 / 月 (年間プラン)</li>
+                <li></li>
+              </ul>
+              <p class="lnk"><a href="javascript:;">無料トライアル登録></a></p><!-- Lite button -->
+            </div>
+            <div class="detail">
+              <h3>ライト</h3>
+              <ul>
+                <li>メッセンジャー</li>
+                <li>無料通話 </li>
+                <li>ビデオ通話 </li>
+				<li>アドレス帳</li>
+				<li>ホーム</li>
+				<li>デバイス管理</li>
+				<li>監査・モニタリング</li>
+				<li>SLA保証＊</li>
+              </ul>
+            </div>
+          </div>
+          <div class="plan basic" id="basic_login"><!-- Basic box -->
+            <div class="summary">
+              <h3 class="blind">べーシック</h3>
+              <ul class="blind">
+                <li>1ユーザー</li>
+                <li>¥500 / 月 (年間プラン)</li>
+                <li>¥600 / 月 (年間プラン)</li>
+                <li></li>
+              </ul>
+              <p class="lnk"><a href="javascript:;">無料トライアル登録></a></p><!-- Basic button -->
+            </div>
+            <div class="detail">
+              <h3>べーシック</h3>
+              <ul>
+                <li>メッセンジャー</li>
+				<li>無料通話 </li>
+				<li>ビデオ通話</li>
+				<li>メール 30GB</li>
+				<li>カレンダー</li>
+				<li>アドレス帳</li>
+				<li>Drive 30GB(グループフォルダ 1TB)</li>
+				<li>ホーム</li>
+				<li>デバイス管理</li>
+				<li>監査・モニタリング</li>
+				<li>SLA保証＊</li>
+              </ul>
+            </div>
+          </div>
+          <div class="plan premium">
+            <div class="summary" id="premium_login"><!-- Premium box -->
+              <h3 class="blind">プレミアム</h3>
+              <ul class="blind">
+                <li>1ユーザー</li>
+                <li>¥1,000 / 月 (年間プラン)</li>
+                <li>¥1,200 / 月 (年間プラン)</li>
+                <li></li>
+              </ul>
+              <p class="lnk"><a href="javascript:;">無料トライアル登録></a></p><!-- Premium button -->
+            </div>
+            <div class="detail">
+              <h3>プレミアム</h3>
+              <ul>
+                <li>メッセンジャー</li>
+				<li>無料通話</li>
+				<li>ビデオ通話</li>
+				<li>メール 無制限</li>
+				<li>カレンダー</li>
+				<li>アドレス帳</li>
+				<li>Drive 1TB(グループフォルダ 10TB)</li>
+				<li>ホーム</li>
+				<li>デバイス管理</li>
+				<li>監査・モニタリング</li>
+				<li>SLA保証＊</li>
+				<li>アーカイブ</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <p class="plan_desc">
+		          価格は全て税抜価格となっております。 <br/>
+		          ＊は無料トライアル期間には対応しておりません。
+        </p>
+        <p class="link"><a href="/jp/home/price">利用料金の詳細はこちら</a></p>
+      </div>
+      
+        <section class="mdsec01 clearfix nt-child05">
+          <div class="mdsec01content_da6">
+            <div class="lft">
+              <h2 style="text-align:left;font-size:24px;line-height:24px">お知らせ</h2>
+              <ul class="tb_content clearfix">
+                
+                  
+                    <li>
+                      <span class="main_sp">
+                        <strong class="desc_cl1"><a href="/jp/notice/index?detailId=90&rownum=1">[重要] メンバー削除時の仕様改善について</a></strong>
+                      </span>
+                      <span class="main_sp1">
+                        <strong class="desc_cl3">2016.05.19</strong>
+                      </span>
+                    </li>
+                  
+                  
+                  
+                
+                  
+                  
+                  
+                
+                  
+                  
+                    <li class="nth-child02">
+                      <span class="main_sp">
+                        <strong class="desc_cl1"><a href="/jp/notice/index?detailId=86&rownum=3">[イベント] 4/27 セミナー開催「メッセンジャーとスタンプで変わる！モバイルワークスタイル最新トレンド」（株式会社ウフル）</a></strong>
+                      </span>
+                      <span class="main_sp1">
+                        <strong class="desc_cl3">2016.04.15</strong>
+                      </span>
+                    </li>
+                  
+                  
+                
+                  
+                  
+                  
+                
+                  
+                  
+                  
+                    <li>
+                      <span class="main_sp">
+                        <strong class="desc_cl1"><a href="/jp/notice/index?detailId=66&rownum=5">[お知らせ] ライトプランでドメイン名による登録が可能になりました。</a></strong>
+                      </span>
+                      <span class="main_sp1">
+                        <strong class="desc_cl3">2016.04.01</strong>
+                      </span>
+                    </li>
+                  
+                
+                  
+                  
+                  
+                
+              </ul>
+            </div>
+            <div class="rht">
+              <a href="/jp/notice/index" class="all">すべて見る</a>
+              
+                <ul class="tb_content main_ulpd margin-top  clearfix" style="border:0">
+                  
+                    
+                    
+                    
+                  
+                    
+                      <li>
+                        <span class="main_sp">
+                          <strong class="desc_cl1"><a href="/jp/notice/index?detailId=87&rownum=2">[Works Mobile] アップデートのお知らせ（2016年4月27日予定）</a></strong>
+                        </span>
+                        <span class="main_sp1">
+                          <strong class="desc_cl3">2016.04.20</strong>
+                        </span>
+                      </li>
+                    
+                    
+                    
+                  
+                    
+                    
+                    
+                  
+                    
+                    
+                      <li class="nth-child02">
+                        <span class="main_sp">
+                          <strong class="desc_cl1"><a href="/jp/notice/index?detailId=85&rownum=4">[イベント] 4/20 セミナー講演「ワイヤレスの今後の利用方法、コミュニケーションアプリと合わせて・・・」（ユニアデックス株式会社主催）</a></strong>
+                        </span>
+                        <span class="main_sp1">
+                          <strong class="desc_cl3">2016.04.11</strong>
+                        </span>
+                      </li>
+                    
+                    
+                  
+                    
+                    
+                    
+                  
+                    
+                    
+                    
+                      <li>
+                        <span class="main_sp">
+                          <strong class="desc_cl1"><a href="/jp/notice/index?detailId=65&rownum=6">[イベント] 4/21 セミナー開催「LINEの使い勝手を持つビジネスコミュニケーションツール」と「オフィスサイネージ」のご紹介 (スターネット株式会社主催)</a></strong>
+                        </span>
+                        <span class="main_sp1">
+                          <strong class="desc_cl3">2016.03.29</strong>
+                        </span>
+                      </li>
+                    
+                  
+                </ul>
+              
+            </div>
+          </div>
+          <!--/mdsec02-->
+        </section>
+      
+      <section  id="blog" class="clearfix">
+        <div class="blog-con">
+           <h2 class="blog-head">
+	           <i>公式ブログ</i><em>Works Mobileの新しいニュースを公式ブログで確認してください。</em>
+               <a href="http://blog.worksmobile.co.jp/" target="_blank">すべて見る</a>
+           </h2>
+           <div class="con-data">
+              <a href="http://blog.worksmobile.co.jp/archives/5798135.html"  target="_blank">
+	             <div class="data f">
+	                <img alt="" src="/jp/img/blog/data01.png" alt="data01" class="img f">
+	                <div class="desc r">
+	                  <h3>Works Mobileの公式ブログを開設しました！</h3>
+	                  <p>みなさん、はじめまして！<br/>この度、Works Mobile（ワークスモバイル）の公式ブログを開設しました。</p>
+	                  <span class="ftlink01">詳細はこちら</span>
+	                </div>
+	             </div>
+              </a>
+              <a href="http://blog.worksmobile.co.jp/archives/5850076.html"  target="_blank">
+	             <div class="data r">
+	                <img alt="" src="/jp/img/blog/data02.png" alt="data02" class="img f">
+	                <div class="desc r">
+	                  <h3>Works Mobileとは？</h3>
+	                  <p>Works Mobileとは、簡単に言うと「仕事がはかどる」「気持ちが伝わる」ビジネス向けのコラボレーションサービスです。でも、これだけだ</p>
+	                  <span class="ftlink01">詳細はこちら</span>
+	                </div>
+	             </div>
+        	  </a>
+           </div>
+        </div>
+      </section>
+      <!--/lycontentsinner-->
+    </div>
+    <!--/lycontents-->
+  </div>
+  <!--/cOnTEnTs-AREA-->
+</div>
+<script type="text/javascript">
+    (function(){
+        $(".header").addClass("affix-top").removeClass("affix");
+        $(window).on("scroll", function () {
+            if($(window).scrollTop() == 0) {
+                $(".header").removeClass("affix").addClass("affix-top");
+            } else {
+                $(".header").removeClass("affix-top").addClass("affix");
+            }
+        });
+        var mainImgIdx = 1;
+        var userClick = false;
+        var maxIndex = 4;
+
+        // set mouse hover stop
+        $(".mdghd05link").hover(function(){
+            userClick = true;
+        }, function(){
+            userClick = false;
+        });
+        $(".mdghd05paging").hover(function(){
+            userClick = true;
+        }, function(){
+            userClick = true;
+        });
+
+        // set slide hover
+        $(".slide").hover(function() {
+            userClick = true;
+            var index = window.parseInt($(this).attr("data-index"));
+            $(".item_cl0" + mainImgIdx).stop();
+            mainImgIdx = index;
+            $(".mdghd05link").hide();
+            $(".item_cl0" + index).fadeIn("slow");
+            $(".exselected").removeClass("exselected");
+            $(this).addClass("exselected");
+            removeAddFont(mainImgIdx);  // remove and add the font class
+        }, function(){
+            userClick = true;
+        });
+
+        // auto play
+        setInterval(function(){
+            if(userClick){
+                return;
+            }
+            $(".mdghd05link").hide();
+            mainImgIdx++;
+            if(mainImgIdx > maxIndex){
+                mainImgIdx = 1;
+            }
+            $(".item_cl0" + mainImgIdx).fadeIn("slow");
+            $(".slide").removeClass("exselected");
+            $(".slide[data-index="+ mainImgIdx +"]").addClass("exselected");
+            removeAddFont(mainImgIdx);  // remove and add the font class
+        }, 8000);
+        // remove and add the font class by priceButton on header
+        function removeAddFont (idx) {
+          var $priceButton = $('#priceButton');
+          var fontClass = 'ft_col0';  // target font class which is started from 1 to 4 (green, blue, orange, black)
+          var delay = 600; // delay to change the font: slow:600, normal:400, fast:200
+          // remove font classes
+          for (var i = 0; i < 4; i++) {
+            $priceButton.removeClass(fontClass + (i + 1));
+          }
+          // // add a font class
+          // if (idx === 1 || idx === 2) {
+          //   idx = 1;
+          // }
+          // else {
+          //   idx -= 1;
+          // }
+          $priceButton.addClass(fontClass + idx, delay);
+        }
+    })();
+    $(document).ready(function() {
+        $(".nav").children("li").eq(0).addClass("selected");
+    });
+</script>
+
+		</div>
+		
+
+
+
+<div class="footer dark clearfix">
+    <div class="inner clearfix">
+        <div class="f-cols">
+            <ul class="col">
+                <li><a href="/jp">Works Mobileとは</a></li>
+                <li><a href="/jp/home/features_one">特長</a></li>
+                <li><a href="/jp/home/worksmobileapp">ツール</a></li>
+                <li><a href="/jp/home/security">セキュリティ</a></li>
+                <li><a href="/jp/home/price" class="goReg">利用料金</a></li>
+                <li><a href="/jp/home/support">お問い合わせ</a></li>
+                <li><a href="/jp/home/cases">導入事例</a></li>
+            </ul>
+            <ul class="col2">
+                <li><a href="/jp/home/company"  target="_blank">会社紹介</a></li>
+                <li><a href="https://home.worksmobile.com/" target="_blank">Myサービス</a></li>
+                <li><a href="https://admin.worksmobile.com/management/memberOrganization" target="_blank">管理者画面</a></li>
+                <li><a href="/jp/notice/index">お知らせ</a></li>
+                <li><a href="https://help.worksmobile.com/home.nhn?lang=ja"  target="_blank">ヘルプ</a></li>
+                <li><a href="http://blog.worksmobile.co.jp/" target="_blank">公式ブログ</a></li>
+            </ul>
+            <ul class="col3">
+                <li><a href="/jp/rules/service">サービス利用規約</a></li>
+                <li><a href="/jp/rules/private" >プライバシーポリシー</a></li>
+                <li><a href="/jp/rules/review">特定商取引法に基づく表記</a></li>
+            </ul>
+        </div><!-- //f-cols -->
+        <p class="copyright">  ⓒ Works Mobile Japan Corp.</p>
+    </div><!-- //inner -->
+    <hr>
+</div>
+
+	</div>
+    <div style=""></div>
+	<div class="jr_pop_container1" style="display:none">
+		<div class="jr_pop_content1 status_push">
+			<p class="desc">準備中です。</p>
+			<div class="btn_box cancel_pop">
+				<span class="btn_box_sty">確認</span>
+			</div>
+			<p class="close cancel_pop"><a href="#"></a></p>
+		</div>
+		<span class="jr_pop_content1_align"></span>
+		<div class="pop_content1_bg"></div>
+	</div>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$('.goReg').on("click", function(e) {
+				e.preventDefault();
+				window.location.href="/jp/home/price";
+			});
+			$('.cancel_pop').on("click", function() {
+				$(".jr_pop_container1").hide();
+			});
+		});
+	</script>
+	<div class="ly_wrapper" id="ly_wrapper" style="display:none">
+	</div>
+	
+<!-- Google Tag Manager -->
+<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-5MS8BZ"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager -->
+<!-- Tags -->
+<script src="/jp/js/tag/googleAd.js?20160513"></script>
+<!-- End Tags -->
+
+</body>
+</html>
